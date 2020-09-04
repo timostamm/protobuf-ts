@@ -13,5 +13,5 @@ npm i @protobuf-ts/runtime-rpc
 
 
 The types provided by this package are documented in the 
-[MANUAL](https://github.com/timostamm/protobuf-ts/tree/master/packages/MANUAL.md#rpc-support).  
-For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/tree/master/packages/README.md).
+[MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#rpc-support).  
+For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/blob/master/README.md).

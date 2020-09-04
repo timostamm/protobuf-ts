@@ -53,6 +53,6 @@ Take a look at `plugin-base.ts` and `descriptor-registry.ts`.
 
 ### Copyright
 
-- The files [plugin.ts](https://github.com/timostamm/protobuf-ts/tree/master/packages/plugin-framework/src/google/protobuf/compiler/plugin.ts) and [descriptor.ts](https://github.com/timostamm/protobuf-ts/tree/master/packages/plugin-framework/src/google/protobuf/descriptor.ts) are Copyright 2008 Google Inc., licensed under BSD-3-Clause
-- All other files are licensed under Apache-2.0, see [LICENSE](https://github.com/timostamm/protobuf-ts/tree/master/packages/plugin-framework/LICENSE). 
+- The files [plugin.ts](https://github.com/timostamm/protobuf-ts/blob/master/packages/plugin-framework/src/google/protobuf/compiler/plugin.ts) and [descriptor.ts](https://github.com/timostamm/protobuf-ts/blob/master/packages/plugin-framework/src/google/protobuf/descriptor.ts) are Copyright 2008 Google Inc., licensed under BSD-3-Clause
+- All other files are licensed under Apache-2.0, see [LICENSE](https://github.com/timostamm/protobuf-ts/blob/master/packages/plugin-framework/LICENSE). 
 

@@ -12,11 +12,11 @@ npm i -D @protobuf-ts/plugin
 npm i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/grpcweb-transport
 ``` 
 
-The gRPC web transport is documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/tree/master/packages/MANUAL.md#grpc-web-transport).   
-For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/tree/master/packages/README.md).
+The gRPC web transport is documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#grpc-web-transport).   
+For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/blob/master/README.md).
 
 
 ### Copyright
 
-The [gRPC status codes](https://github.com/timostamm/protobuf-ts/tree/master/packages/grpcweb-transport/src/goog-grpc-status-code.ts) are Copyright 2016 gRPC authors.
+The [gRPC status codes](https://github.com/timostamm/protobuf-ts/blob/master/packages/grpcweb-transport/src/goog-grpc-status-code.ts) are Copyright 2016 gRPC authors.
 

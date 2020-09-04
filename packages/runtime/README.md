@@ -10,14 +10,14 @@ as a dependency:
 npm i @protobuf-ts/runtime
 ``` 
 
-The types provided by this package are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/tree/master/packages/MANUAL.md#imessagetype).  
-For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/tree/master/packages/README.md).
+The types provided by this package are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#imessagetype).  
+For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/blob/master/README.md).
 
 
 ### Copyright
 
-- The [algorithm to decode UTF8](https://github.com/timostamm/protobuf-ts/tree/master/packages/runtime/src/protobufjs-utf8.ts) is Copyright 2016 by Daniel Wirtz, licensed under BSD-3-Clause.
-- The [algorithm to decode 32 bit varint](https://github.com/timostamm/protobuf-ts/tree/master/packages/runtime/src/protobufjs-varint.ts) is Copyright 2016 by Daniel Wirtz, licensed under BSD-3-Clause.
-- The [algorithm to encode and decode 64 bit varint](https://github.com/timostamm/protobuf-ts/tree/master/packages/runtime/src/goog-varint.ts) is Copyright 2008 Google Inc., licensed under BSD-3-Clause.
-- All other files are licensed under Apache-2.0, see [LICENSE](https://github.com/timostamm/protobuf-ts/tree/master/packages/runtime/LICENSE). 
+- The [algorithm to decode UTF8](https://github.com/timostamm/protobuf-ts/blob/master/READMEges/runtime/src/protobufjs-utf8.ts) is Copyright 2016 by Daniel Wirtz, licensed under BSD-3-Clause.
+- The [algorithm to decode 32 bit varint](https://github.com/timostamm/protobuf-ts/blob/master/packages/runtime/src/protobufjs-varint.ts) is Copyright 2016 by Daniel Wirtz, licensed under BSD-3-Clause.
+- The [algorithm to encode and decode 64 bit varint](https://github.com/timostamm/protobuf-ts/blob/master/packages/runtime/src/goog-varint.ts) is Copyright 2008 Google Inc., licensed under BSD-3-Clause.
+- All other files are licensed under Apache-2.0, see [LICENSE](https://github.com/timostamm/protobuf-ts/blob/master/packages/runtime/LICENSE). 
 

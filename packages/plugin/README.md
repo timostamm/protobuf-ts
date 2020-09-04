@@ -12,6 +12,6 @@ npm i -D @protobuf-ts/plugin
 npm i @protobuf-ts/runtime
 ``` 
 
-Plugin parameters and all other details are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/tree/master/packages/MANUAL.md#the-protoc-plugin).  
-For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/tree/master/packages/README.md).
+Plugin parameters and all other details are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#the-protoc-plugin).  
+For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/blob/master/README.md).
 

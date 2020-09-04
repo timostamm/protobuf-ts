@@ -12,11 +12,11 @@ npm i -D @protobuf-ts/plugin
 npm i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/twirp-transport
 ``` 
 
-The Twirp transport is documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/tree/master/packages/MANUAL.md#twirp-transport).   
-For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/tree/master/packages/README.md).
+The Twirp transport is documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#twirp-transport).   
+For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/blob/master/README.md).
 
 
 ### Copyright
 
-The [Twirp error codes](https://github.com/timostamm/protobuf-ts/tree/master/packages/twirp-transport/src/twitch-twirp-error-code.ts) 
+The [Twirp error codes](https://github.com/timostamm/protobuf-ts/blob/master/packages/twirp-transport/src/twitch-twirp-error-code.ts) 
 and clientcompat.proto are Copyright 2018 Twitch Interactive, Inc.
