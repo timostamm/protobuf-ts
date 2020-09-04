@@ -18,5 +18,5 @@ For a quick overview of `protobuf-ts`, check the repository [README](https://git
 
 ### Copyright
 
-The [Twirp error codes](https://github.com/timostamm/protobuf-ts/packages/twirp-transport/src/twitch-twirp-error-code.ts) 
+The [Twirp error codes](https://github.com/timostamm/protobuf-ts/tree/master/packages/twirp-transport/src/twitch-twirp-error-code.ts) 
 and clientcompat.proto are Copyright 2018 Twitch Interactive, Inc.

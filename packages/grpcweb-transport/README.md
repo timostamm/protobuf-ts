@@ -18,5 +18,5 @@ For a quick overview of `protobuf-ts`, check the repository [README](https://git
 
 ### Copyright
 
-The [gRPC status codes](https://github.com/timostamm/protobuf-ts/packages/grpcweb-transport/src/goog-grpc-status-code.ts) are Copyright 2016 gRPC authors.
+The [gRPC status codes](https://github.com/timostamm/protobuf-ts/tree/master/packages/grpcweb-transport/src/goog-grpc-status-code.ts) are Copyright 2016 gRPC authors.
 
