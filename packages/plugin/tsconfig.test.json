@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "spec/**/*.spec.ts",
+    "spec/support/*.ts"
+  ],
+  "compilerOptions": {
+    "outDir": "/tmp",
+    "paths": {
+      "@protobuf-ts/runtime": [
+        "../runtime"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+package spec;
+
+
+message JsonNamesMessage {
+
+    string scalar_field = 1 [json_name = "scalarFieldJsonName"];
+    repeated string repeated_scalar_field = 2 [json_name = "repeatedScalarFieldJsonName"];
+
+}

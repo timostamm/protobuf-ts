@@ -1,0 +1,16 @@
+syntax = "proto3";
+package spec;
+
+
+service ServerStreamingService {
+    rpc ServerStream (ServerStreamRequest) returns (stream ServerStreamResponse);
+}
+
+
+message ServerStreamRequest {
+    string question = 1;
+}
+
+message ServerStreamResponse {
+    string answer = 1;
+}

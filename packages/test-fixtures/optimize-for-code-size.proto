@@ -1,0 +1,9 @@
+syntax = "proto3";
+package spec;
+
+option optimize_for = CODE_SIZE;
+
+message OptimizeForCodeSizeMessage {
+    double double_field = 1;
+    float float_field = 2;
+}

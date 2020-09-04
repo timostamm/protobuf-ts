@@ -1,0 +1,19 @@
+syntax = "proto2";
+package spec;
+
+
+message Proto2OptionalsMessage {
+    optional string string_field = 1;
+    optional bytes bytes_field = 2;
+    optional TestEnum enum_field = 3;
+    optional TestMessage message_field = 4;
+
+    enum TestEnum {
+        ANY = 0;
+        YES = 1;
+        NO = 2;
+    }
+    message TestMessage {
+        required string field = 1;
+    }
+}

@@ -1,0 +1,52 @@
+syntax = "proto3";
+package spec;
+
+
+message EnumFieldMessage {
+
+    SimpleEnum enum_field = 1;
+
+    repeated SimpleEnum repeated_enum_field = 2;
+
+    AliasEnum alias_enum_field = 3;
+
+    PrefixEnum prefix_enum_field = 4;
+
+    enum TestEnum {
+        ANY = 0;
+        YES = 1;
+        NO = 2;
+    }
+
+}
+
+
+enum SimpleEnum {
+    // this is the default value
+    // and this comment has more
+    // than one line
+    ANY = 0;
+    // value for positive outcome
+    YES = 1;
+    // negative value
+    NO = 2;
+}
+
+
+// Both B and C have the same numerical value.
+enum AliasEnum {
+    option allow_alias = true;
+    A = 0;
+    B = 1;
+    C = 1;
+}
+
+
+// The generated enum values should drop the "PREFIX_"
+// part at the top if the target language allows
+// (basically every language except C++).
+enum PrefixEnum {
+    PREFIX_ENUM_ANY = 0;
+    PREFIX_ENUM_YES = 1;
+    PREFIX_ENUM_NO = 2;
+}

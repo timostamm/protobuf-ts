@@ -1,0 +1,11 @@
+syntax = "proto3";
+package spec;
+
+import "google/protobuf/empty.proto";
+
+message EmptyMessage {
+  // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/empty.proto
+  // https://github.com/Microsoft/TypeScript/issues/8032
+  google.protobuf.Empty empty_field = 1;
+}
+

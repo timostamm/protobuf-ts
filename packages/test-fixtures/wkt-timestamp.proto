@@ -1,0 +1,10 @@
+syntax = "proto3";
+package spec;
+
+import "google/protobuf/timestamp.proto";
+
+message TimestampMessage {
+  // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/timestamp.proto
+  google.protobuf.Timestamp timestamp_field = 1;
+}
+

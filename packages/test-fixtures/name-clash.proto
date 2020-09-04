@@ -1,0 +1,110 @@
+syntax = "proto3";
+package spec;
+
+message ReservedFieldNames {
+    // not allowed as object property, should be escaped
+    string __proto__ = 1;
+
+    // not allowed as object property, should be escaped
+    string to_string = 2;
+
+    // reserved for our ADT discriminator, should be escaped
+    string oneofKind = 3;
+}
+
+message ReservedFieldNamesInOneof {
+    oneof oneof_group {
+        // reserved for our ADT discriminator, should be escaped
+        string oneofKind = 1;
+
+        // not allowed as object property, should be escaped
+        string __proto__ = 2;
+
+        // not allowed as object property, should be escaped
+        string to_string = 3;
+    }
+}
+
+// reserved word, should be escaped
+message interface {
+}
+// reserved word, should be escaped
+message function {
+}
+// reserved word, should be escaped
+message instanceof {
+}
+// reserved word, should be escaped
+message switch {
+}
+// reserved word, should be escaped
+message case {
+}
+// reserved word, should be escaped
+message return {
+}
+// clash with runtime, must either be escaped or
+// `MessageType` must be imported under different name
+message MessageType {
+}
+
+
+message ClashParent {
+    // should clash with message ClashParent_ClashChild
+    message ClashChild {
+    }
+}
+
+// should clash with name of ClashParent.ClashChild
+message ClashParent_ClashChild {
+}
+
+
+message NoClashFields {
+    // ok as object property
+    string const = 1;
+    // ok as object property
+    string switch = 2;
+    // ok as object property
+    string case = 3;
+    // ok as object property
+    string function = 4;
+    // ok as object property
+    string interface = 5;
+    // ok as object property
+    string return = 6;
+}
+message NoClashOneof {
+    oneof kind {
+        // ok as object property
+        string const = 1;
+        // ok as object property
+        string switch = 2;
+        // ok as object property
+        string case = 3;
+        // ok as object property
+        string function = 4;
+        // ok as object property
+        string interface = 5;
+        // ok as object property
+        string return = 6;
+    }
+}
+// just here as a "namespace" for the enum
+message NoClashEnumWrap {
+    enum X {
+        // ok as object property
+        instanceof = 0;
+        // ok as object property
+        switch = 1;
+        // ok as object property
+        case = 3;
+        // ok as object property
+        function = 4;
+        // ok as object property
+        interface = 5;
+        // ok as object property
+        return = 6;
+    }
+}
+

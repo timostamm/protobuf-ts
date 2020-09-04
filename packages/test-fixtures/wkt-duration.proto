@@ -1,0 +1,10 @@
+syntax = "proto3";
+package spec;
+
+import "google/protobuf/duration.proto";
+
+message DurationMessage {
+  // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/duration.proto
+  google.protobuf.Duration duration_field = 1;
+}
+

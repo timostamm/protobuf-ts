@@ -1,0 +1,19 @@
+syntax = "proto3";
+package spec;
+
+
+message Proto3PackedMessage {
+
+    repeated double double_field = 1;
+    repeated uint32 uint32_field = 2;
+    repeated uint64 uint64_field = 3;
+
+    repeated double packed_double_field = 101 [packed = true];
+    repeated uint32 packed_uint32_field = 102 [packed = true];
+    repeated uint64 packed_uint64_field = 103 [packed = true];
+
+    repeated double unpacked_double_field = 201 [packed = false];
+    repeated uint32 unpacked_uint32_field = 202 [packed = false];
+    repeated uint64 unpacked_uint64_field = 203 [packed = false];
+
+}

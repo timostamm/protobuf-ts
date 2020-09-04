@@ -1,0 +1,10 @@
+syntax = "proto3";
+package spec;
+
+import "google/protobuf/field_mask.proto";
+
+message FieldMaskMessage {
+  // https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto
+  google.protobuf.FieldMask field_mask_field = 1;
+}
+

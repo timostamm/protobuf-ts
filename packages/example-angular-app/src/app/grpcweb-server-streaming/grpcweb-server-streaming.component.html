@@ -1,0 +1,74 @@
+<h2>gRPC-web server-streaming</h2>
+
+<p>
+  This is an example for an unary method call to the rpc <code>spec.AllMethodsService.ServerStream()</code>.<br>
+  It uses the <code>GrpcWebFetchTransport</code> from <code>@protobuf-ts/grpcweb-transport</code>.<br>
+  An example gRPC web server is available in <code>packages/example-dotnet-grpcweb-server</code>.
+</p>
+
+
+<button class="button" (click)="send()">Call!</button>
+
+
+<h5>GrpcWebOptions:</h5>
+<form>
+  <div class="grid-x grid-padding-x">
+    <div class="large-3 medium-4 cell">
+      <label>Base URL</label>
+      <input name="options_baseUrl" type="text" [(ngModel)]="options.baseUrl" placeholder="baseUrl"/>
+    </div>
+    <div class="large-3 medium-4 cell">
+      <label>Deadline (milliseconds)</label>
+      <input name="options_deadline" type="number" min="0" step="100" [(ngModel)]="options.deadline"
+             placeholder="deadline"/>
+    </div>
+    <div class="large-3 medium-4 cell">
+      <label>Format</label>
+      <select name="options_format" [(ngModel)]="options.format">
+        <option value="text">text</option>
+        <option value="binary">binary</option>
+      </select>
+    </div>
+  </div>
+</form>
+
+
+<h5>Request:</h5>
+<form>
+  <div class="grid-x grid-padding-x">
+    <div class="large-3 medium-4 cell">
+      <label>question</label>
+      <input name="request_question" type="text" [(ngModel)]="request.question" placeholder="question"/>
+    </div>
+    <div class="large-3 medium-4 cell">
+      <label>Delay response (milliseconds)</label>
+      <input name="request_pleaseDelayResponseMs" type="number" min="0" step="100"
+             [(ngModel)]="request.pleaseDelayResponseMs" placeholder=""/>
+    </div>
+    <div class="large-3 medium-6 cell">
+      <label>Send example response headers</label>
+      <input id="request_disableSendingExampleResponseHeaders"
+             name="request_disableSendingExampleResponseHeaders"
+             type="checkbox" [(ngModel)]="request.disableSendingExampleResponseHeaders"><label
+      for="request_disableSendingExampleResponseHeaders">disabled</label>
+    </div>
+    <div class="large-3 medium-6 cell">
+      <label>Please fail</label>
+      <select [(ngModel)]="request.pleaseFail" name="request_pleaseFail">
+        <option *ngFor="let opt of pleaseFailOptions" [ngValue]="opt.number">{{opt.name}}</option>
+      </select>
+    </div>
+  </div>
+</form>
+
+
+<ng-container *ngIf="outcome$ | async as infos">
+
+  <h5 *ngIf="infos.length > 0">Outcome:</h5>
+
+  <div class="callout" [ngClass]="info.mode" *ngFor="let info of infos">
+    <h6>{{info.title}}</h6>
+    <pre>{{info.content | json}}</pre>
+  </div>
+
+</ng-container>

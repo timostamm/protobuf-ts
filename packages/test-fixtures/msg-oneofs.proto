@@ -1,0 +1,34 @@
+syntax = "proto3";
+package spec;
+
+// Oneof with 2 scalar members
+message OneofScalarMemberMessage {
+
+    // Only one of (or none of) the fields below can be selected
+    oneof result {
+
+        // Contains the value if result available
+        int32 value = 1;
+
+        // Contains error message if result not available
+        string error = 2;
+    }
+}
+
+// Oneof with 2 message members
+message OneofMessageMemberMessage {
+
+    oneof objects {
+        TestMessageA a = 1;
+        TestMessageB b = 2;
+    }
+
+    message TestMessageA {
+        string name = 1;
+    }
+
+    message TestMessageB {
+        string name = 1;
+    }
+
+}

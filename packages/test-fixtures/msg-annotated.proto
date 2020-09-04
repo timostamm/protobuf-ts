@@ -1,0 +1,95 @@
+syntax = "proto3";
+package spec;
+
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.FieldOptions {
+
+    // scalar options
+    bool opt_bool = 1001;
+    uint32 opt_uint32 = 1002;
+    uint64 opt_uint64 = 1003;
+    string opt_string = 1004;
+    //    bytes opt_bytes = 1005;
+
+    // repeated scalar options
+    repeated bool opt_repeated_bool = 1101;
+    repeated uint32 opt_repeated_uint32 = 1102;
+    repeated uint64 opt_repeated_uint64 = 1103;
+    repeated string opt_repeated_string = 1104;
+    //    repeated bytes opt_repeated_bytes = 1105;
+
+    // enum options
+    OptionEnum opt_enum = 1200;
+    repeated OptionEnum opt_repeated_enum = 1201;
+
+    // message options
+    FieldUiBehaviour field_ui = 1300;
+    repeated FieldUiBehaviour repeated_field_ui = 1401;
+}
+
+extend google.protobuf.MessageOptions {
+
+    bool opt_example = 1001;
+
+}
+
+
+// Used for options
+enum OptionEnum {
+    OPTION_ENUM_UNSPECIFIED = 0;
+    OPTION_ENUM_YES = 1;
+    OPTION_ENUM_NO = 2;
+}
+
+// An annotation message, used by the extension field "spec.field_ui"
+// which extends google.protobuf.FieldOptions
+message FieldUiBehaviour {
+    string label = 2;
+    bool required = 3;
+    DataSource autocomplete = 4;
+    message DataSource {
+        string service_name = 1;
+        string method_name = 2;
+        string request_field_name = 3;
+    }
+}
+
+
+// shows the usage of custom field options
+message AnnotatedMessage {
+
+    option (spec.opt_example) = true;
+
+    int32 not_annotated = 1;
+
+    // annotated with the "spec.field_ui" field option
+    string user_name = 2 [(spec.field_ui) = {
+        label: "User name"
+        required: true
+        autocomplete {
+            service_name: "example.SomeService"
+            method_name: "autocompleteUsername"
+            request_field_name: "entered_text"
+        }
+    }];
+
+    // scalar annotations
+    int32 ann_scalar = 3 [(spec.opt_bool) = true, (spec.opt_uint32) = 123, (spec.opt_uint64) = 123456, (spec.opt_string) = "my string"];
+    int32 ann_repeated_scalar = 4 [(spec.opt_repeated_bool) = true, (spec.opt_repeated_bool) = false, (spec.opt_repeated_uint32) = 123, (spec.opt_repeated_uint32) = 456, (spec.opt_repeated_uint64) = 123456, (spec.opt_repeated_uint64) = 789101112, (spec.opt_repeated_string) = "hello...", (spec.opt_repeated_string) = "...world"];
+
+    // enum annotations
+    int32 ann_enum = 5 [(spec.opt_enum) = OPTION_ENUM_YES];
+    int32 ann_enum_zero = 6 [(spec.opt_enum) = OPTION_ENUM_UNSPECIFIED];
+    int32 ann_repeated_enum = 7 [(spec.opt_repeated_enum) = OPTION_ENUM_YES, (spec.opt_repeated_enum) = OPTION_ENUM_NO];
+
+    // defining a new option right in the message
+    extend google.protobuf.FieldOptions {
+        bool local_opt = 2000;
+    }
+    // annotated with a field option defined right in the message
+    int32 ann_local = 10 [(spec.AnnotatedMessage.local_opt) = true];
+
+}
+

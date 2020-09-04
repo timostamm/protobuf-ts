@@ -1,0 +1,34 @@
+syntax = "proto3";
+package spec;
+
+
+message ScalarMapsMessage {
+    map<string, string> str_str_field = 1;
+    map<string, int32> str_int32_field = 2;
+    map<string, int64> str_int64_field = 3;
+    map<string, bool> str_bool_field = 4;
+    map<string, bytes> str_bytes_field = 5;
+    map<int32, string> int32_str_field = 6;
+    map<int64, string> int64_str_field = 7;
+    map<bool, string> bool_str_field = 8;
+}
+
+message MessageMapMessage {
+    message MyItem {
+        string text = 1;
+    }
+    map<string, MyItem> str_msg_field = 1;
+    map<int32, MyItem> int32_msg_field = 2;
+    map<int64, MyItem> int64_msg_field = 3;
+}
+
+message EnumMapMessage {
+    enum MyEnum {
+        ANY = 0;
+        YES = 1;
+        NO = 2;
+    }
+    map<string, MyEnum> str_enu_field = 1;
+    map<int32, MyEnum> int32_enu_field = 2;
+    map<int64, MyEnum> int64_enu_field = 3;
+}

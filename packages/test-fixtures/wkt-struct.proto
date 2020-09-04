@@ -1,0 +1,21 @@
+syntax = "proto3";
+package spec;
+
+import "google/protobuf/struct.proto";
+
+message StructMessage {
+  google.protobuf.Struct struct_field = 1;
+}
+
+//message NullValueMessage {
+//  google.protobuf.NullValue null_value_field = 1;
+//}
+//
+//message ListValueMessage {
+//  google.protobuf.ListValue list_value_field = 1;
+//}
+
+//message ValueMessage {
+//  google.protobuf.Value value_field = 1;
+//}
+

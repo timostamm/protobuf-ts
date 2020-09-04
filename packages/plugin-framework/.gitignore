@@ -1,0 +1,6 @@
+/node_modules
+/coverage
+/build/**/*.ts
+/build/**/*.js
+/build/**/*.ts.map
+/build/**/*.js.map

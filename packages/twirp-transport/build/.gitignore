@@ -1,0 +1,3 @@
+# just here to make sure the folder is comitted
+# parent .gitignore excludes the build files, so that they are not
+# excluded for npm publish

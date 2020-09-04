@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "msg-nesting.proto";
+import "msg-sub-package.proto";
+
+// This message has no package.
+message NoPackageMessage {
+    spec.ParentMessage.ChildMessage.GrandChildMessage grand_child = 1;
+    spec.sub_package.SubPackageMessage sub_package_message = 2;
+}

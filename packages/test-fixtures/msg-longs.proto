@@ -1,0 +1,56 @@
+syntax = "proto3";
+package spec;
+
+
+message LongsMessage {
+
+    fixed64 fixed64_field_min = 1;
+    fixed64 fixed64_field_max = 2;
+
+    int64 int64_field_min = 3;
+    int64 int64_field_max = 4;
+
+    sfixed64 sfixed64_field_min = 5;
+    sfixed64 sfixed64_field_max = 6;
+
+    sint64 sint64_field_min = 7;
+    sint64 sint64_field_max = 8;
+
+    uint64 uint64_field_min = 9;
+    uint64 uint64_field_max = 10;
+
+    //
+
+    fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING];
+    fixed64 fixed64_field_max_str = 12 [jstype = JS_STRING];
+
+    int64 int64_field_min_str = 13 [jstype = JS_STRING];
+    int64 int64_field_max_str = 14 [jstype = JS_STRING];
+
+    sfixed64 sfixed64_field_min_str = 15 [jstype = JS_STRING];
+    sfixed64 sfixed64_field_max_str = 16 [jstype = JS_STRING];
+
+    sint64 sint64_field_min_str = 17 [jstype = JS_STRING];
+    sint64 sint64_field_max_str = 18 [jstype = JS_STRING];
+
+    uint64 uint64_field_min_str = 19 [jstype = JS_STRING];
+    uint64 uint64_field_max_str = 20 [jstype = JS_STRING];
+
+    //
+
+    fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER];
+    fixed64 fixed64_field_max_num = 22 [jstype = JS_NUMBER];
+
+    int64 int64_field_min_num = 23 [jstype = JS_NUMBER];
+    int64 int64_field_max_num = 24 [jstype = JS_NUMBER];
+
+    sfixed64 sfixed64_field_min_num = 25[jstype = JS_NUMBER];
+    sfixed64 sfixed64_field_max_num = 26 [jstype = JS_NUMBER];
+
+    sint64 sint64_field_min_num = 27 [jstype = JS_NUMBER];
+    sint64 sint64_field_max_num = 28 [jstype = JS_NUMBER];
+
+    uint64 uint64_field_min_num = 29 [jstype = JS_NUMBER];
+    uint64 uint64_field_max_num = 30 [jstype = JS_NUMBER];
+
+}

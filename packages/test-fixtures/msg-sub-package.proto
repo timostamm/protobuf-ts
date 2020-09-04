@@ -1,0 +1,9 @@
+syntax = "proto3";
+package spec.sub_package;
+
+import "msg-nesting.proto";
+
+// This message is in package `spec.sub_package`.
+message SubPackageMessage {
+    spec.ParentMessage.ChildMessage.GrandChildMessage grand_child = 1;
+}

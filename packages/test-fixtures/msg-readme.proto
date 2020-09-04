@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option optimize_for = CODE_SIZE;
+
+// A very simple protobuf message.
+message Person {
+    string name = 1;
+    uint64 id = 2;
+    int32 years = 3 [json_name = "baz"];
+    // maybe a jpeg?
+    optional bytes data = 5;
+}

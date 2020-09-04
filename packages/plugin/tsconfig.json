@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./build/",
+    "importHelpers": false,
+    "module": "CommonJS",
+    "target": "ES2015",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": false,
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@protobuf-ts/example-google-grpcweb-client",
+  "version": "1.0.0-alpha.35",
+  "private": true,
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@grpc/grpc-js": "^1.1.2",
+    "google-protobuf": "^3.12.2",
+    "grpc-web": "^1.2.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}

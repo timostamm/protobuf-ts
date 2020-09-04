@@ -1,0 +1,43 @@
+syntax = "proto3";
+package spec;
+
+
+message ParentMessage {
+
+    enum ParentEnum {
+        ANY = 0;
+        YES = 1;
+        NO = 2;
+    }
+
+    message ChildMessage {
+
+        string child = 1;
+
+        enum ChildEnum {
+            ANY = 0;
+            YES = 1;
+            NO = 2;
+        }
+
+        message GrandChildMessage {
+            string grand_child = 1;
+
+            enum GrandChildEnum {
+                ANY = 0;
+                YES = 1;
+                NO = 2;
+            }
+        }
+
+    }
+
+
+    ChildMessage child = 1;
+    repeated ChildMessage children = 2;
+    ChildMessage.ChildEnum child_enum = 3;
+    ChildMessage.GrandChildMessage grand_child = 4;
+    spec.ParentMessage.ChildMessage.GrandChildMessage other_grand_child = 5;
+
+
+}

@@ -1,0 +1,46 @@
+syntax = "proto3";
+package spec;
+
+
+import "google/api/annotations.proto";
+
+
+
+import "google/protobuf/descriptor.proto";
+extend google.protobuf.MethodOptions {
+    bool rpc_foo = 777777;
+    string rpc_bar = 888888;
+    fixed32 rpc_baz = 999999;
+    uint32 rpc_bay = 101010;
+}
+
+
+service AnnotatedService {
+    rpc Get (AnnoGetRequest) returns (AnnoGetResponse) {
+
+        option idempotency_level = NO_SIDE_EFFECTS;
+
+        option (spec.rpc_foo) = true;
+        option (spec.rpc_bar) = "hello";
+        option (spec.rpc_baz) = 9;
+        option (spec.rpc_bay) = 10;
+
+        option (google.api.http) = {
+            get: "/v1/{name=messages/*}"
+            additional_bindings {
+                get: "xxx"
+            }
+            additional_bindings {
+                get: "yyy"
+            }
+        };
+    };
+}
+
+
+message AnnoGetRequest {
+}
+
+message AnnoGetResponse {
+
+}

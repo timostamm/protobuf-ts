@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "files": [
+    "src/protobufts-plugin.ts",
+    "src/dump-plugin.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "spec/support/*"
+  ]
+}
