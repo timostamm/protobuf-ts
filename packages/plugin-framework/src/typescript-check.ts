@@ -7,7 +7,7 @@ export function setupCompiler(options: ts.CompilerOptions, files: GeneratedFile[
     const
         original = ts.createCompilerHost(options, true),
         host = new VirtualCompilerHost(original, files),
-        libs = options.lib ? options.lib.map(lib => require.resolve(`typescript/lib/lib.${lib}.d.ts`)) : [],
+        libs = options.lib ? options.lib.map(lib => require.resolve(`typescript/lib/lib.${lib.toLowerCase()}.d.ts`)) : [],
         roots = rootFileNames.concat(libs),
         program = ts.createProgram(roots, options, host);
     return [program, host];
