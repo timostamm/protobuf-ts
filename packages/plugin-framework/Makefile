@@ -15,7 +15,7 @@ build:
 
 clean:
 	@find build \( -name '*.js' -or -name '*.map' -or -name '*.ts' \) -delete;
-	@find build -type d -delete
+	@find build -type d ! -path build -delete
 	@find ../test-fixtures \( -name '*.codegenreq' -or -name '*.descriptorset' \) -delete;
 	@echo "'${@}' done"
 
