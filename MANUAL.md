@@ -394,7 +394,7 @@ option), so they are a good fit to represent protobuf enums, despite their
 idiosyncrasies. 
 
 
-`protobuf-ts` provides the following methods to work with TypeScript enum objects:
+`protobuf-ts` provides the following functions to work with TypeScript enum objects:
 
 - `listEnumNames(enumObj: any): string[]`
   
