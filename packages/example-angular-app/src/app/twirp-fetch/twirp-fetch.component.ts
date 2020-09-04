@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { BehaviorSubject } from "rxjs";
-import { RpcError, RpcOptions } from "@protobuf-ts/runtime-rpc";
-import { TwirpFetchTransport, TwirpOptions } from "@protobuf-ts/twirp-transport";
-import { HaberdasherClient, Size } from "../../protoc-gen-ts-out/service-twirp-example";
-import { TWIRP_TRANSPORT_OPTIONS } from "@protobuf-ts/runtime-angular";
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {RpcError, RpcOptions} from '@protobuf-ts/runtime-rpc';
+import {TwirpFetchTransport, TwirpOptions} from '@protobuf-ts/twirp-transport';
+import {HaberdasherClient, Size} from '../../protoc-gen-ts-out/service-twirp-example';
+import {TWIRP_TRANSPORT_OPTIONS} from '@protobuf-ts/runtime-angular';
 
 
 type Info = {
@@ -30,7 +30,7 @@ export class TwirpFetchComponent {
   private readonly client: HaberdasherClient;
 
   constructor(@Inject(TWIRP_TRANSPORT_OPTIONS) options: TwirpOptions) {
-    let transport = new TwirpFetchTransport(options);
+    const transport = new TwirpFetchTransport(options);
     this.client = new HaberdasherClient(transport);
   }
 
@@ -39,7 +39,7 @@ export class TwirpFetchComponent {
     try {
 
       // call-specific option, will be merged with the GrpcWebOptions above
-      let options: RpcOptions = {
+      const options: RpcOptions = {
 
         // you can set request headers here
         // meta: {},
@@ -49,31 +49,31 @@ export class TwirpFetchComponent {
       };
 
 
-      let call = this.client.makeHat(this.request, options);
+      const call = this.client.makeHat(this.request, options);
 
       this.clear();
 
       this.print({
-        title: "Request headers", mode: "secondary", content: call.requestHeaders
+        title: 'Request headers', mode: 'secondary', content: call.requestHeaders
       });
 
       this.print({
-        title: "Request message", mode: "secondary", content: call.request
+        title: 'Request message', mode: 'secondary', content: call.request
       });
 
-      let headers = await call.headers;
+      const headers = await call.headers;
       this.print({
-        title: "Response headers", mode: "secondary", content: headers
+        title: 'Response headers', mode: 'secondary', content: headers
       });
 
-      let message = await call.response;
+      const message = await call.response;
       this.print({
-        title: "Response message", mode: "primary", content: message
+        title: 'Response message', mode: 'primary', content: message
       });
 
-      let status = await call.status;
+      const status = await call.status;
       this.print({
-        title: "Response status", mode: "secondary", content: status
+        title: 'Response status', mode: 'secondary', content: status
       });
 
       // Twirp does not support response trailers
@@ -84,16 +84,16 @@ export class TwirpFetchComponent {
 
 
       // above was a lot of code, here is a simple alternative:
-      let justWantTheMessage = false;
+      const justWantTheMessage = false;
       if (justWantTheMessage) {
-        let {response} = await this.client.makeHat(this.request, options);
+        const {response} = await this.client.makeHat(this.request, options);
       }
 
 
     } catch (e) {
       if (e instanceof RpcError) {
         this.print({
-          title: "Caught RpcError", mode: "alert", content: {
+          title: 'Caught RpcError', mode: 'alert', content: {
             name: e.name,
             message: e.message,
             code: e.code,
@@ -102,7 +102,7 @@ export class TwirpFetchComponent {
         });
       } else {
         this.print({
-          title: "Caught Error", mode: "alert", content: e
+          title: 'Caught Error', mode: 'alert', content: e
         });
       }
     }

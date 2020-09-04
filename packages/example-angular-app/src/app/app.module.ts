@@ -1,16 +1,16 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {PbDatePipeModule, TwirpModule} from "@protobuf-ts/runtime-angular";
+import {PbDatePipeModule, TwirpModule} from '@protobuf-ts/runtime-angular';
 import {GrpcwebUnaryComponent} from './grpcweb-unary/grpcweb-unary.component';
-import {FormsModule} from "@angular/forms";
-import {GrpcwebServerStreamingComponent} from "./grpcweb-server-streaming/grpcweb-server-streaming.component";
-import {TwirpFetchComponent} from "./twirp-fetch/twirp-fetch.component";
-import {AllMethodsServiceClient} from "../protoc-gen-ts-out/service-all-methods";
-import {TwirpAngularComponent} from "./twirp-angular/twirp-angular.component";
-import {PbDatePipeComponent} from "./pb-date-pipe/pb-date-pipe.component";
-import {HaberdasherClient} from "../protoc-gen-ts-out/service-twirp-example";
-import {RpcOptions, UnaryCall} from "@protobuf-ts/runtime-rpc";
+import {FormsModule} from '@angular/forms';
+import {GrpcwebServerStreamingComponent} from './grpcweb-server-streaming/grpcweb-server-streaming.component';
+import {TwirpFetchComponent} from './twirp-fetch/twirp-fetch.component';
+import {AllMethodsServiceClient} from '../protoc-gen-ts-out/service-all-methods';
+import {TwirpAngularComponent} from './twirp-angular/twirp-angular.component';
+import {PbDatePipeComponent} from './pb-date-pipe/pb-date-pipe.component';
+import {HaberdasherClient} from '../protoc-gen-ts-out/service-twirp-example';
+import {UnaryCall} from '@protobuf-ts/runtime-rpc';
 
 
 @NgModule({
@@ -27,7 +27,7 @@ import {RpcOptions, UnaryCall} from "@protobuf-ts/runtime-rpc";
     // and sets up dependency injection.
     TwirpModule.forRoot({
       // don't forget the "twirp" prefix if your server requires it
-      baseUrl: "http://localhost:8080/twirp/",
+      baseUrl: 'http://localhost:8080/twirp/',
       sendJson: false,
 
       // You probably want to use Angular interceptors, but RPC
@@ -35,11 +35,11 @@ import {RpcOptions, UnaryCall} from "@protobuf-ts/runtime-rpc";
       interceptors: [
         {
           interceptUnary(next, method, input, options): UnaryCall {
-            let opt: RpcOptions = options ?? {};
-            if (!opt.meta)
-              opt.meta = {};
-            opt.meta['Authorization'] = 'xxx';
-            return next(method, input, opt);
+            if (!options.meta) {
+              options.meta = {};
+            }
+            options.meta.Authorization = 'xxx';
+            return next(method, input, options);
           }
         }
       ],

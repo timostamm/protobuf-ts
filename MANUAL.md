@@ -947,13 +947,10 @@ A message provides reflection information via its `IMessageType`:
  * The protobuf type name of the message, including package and
  * parent types if present.
  *
- * If the .proto file included a `package` statement, the type name
- * starts with '.'.
- *
  * Examples:
  * 'MyNamespaceLessMessage'
- * '.my_package.MyMessage'
- * '.my_package.ParentMessage.ChildMessage'
+ * 'my_package.MyMessage'
+ * 'my_package.ParentMessage.ChildMessage'
  */
 readonly typeName: string;
 
@@ -1263,13 +1260,12 @@ let options: RpcOptions = {
   interceptors: [
     {
       // adds auth header to unary requests
-      interceptUnary(next, method, input, options?: RpcOptions): UnaryCall {
-        let opt: RpcOptions = options ?? {};
-        if (!opt.meta) {
-          opt.meta = {};
+      interceptUnary(next, method, input, options: RpcOptions): UnaryCall {
+        if (!options.meta) {
+          options.meta = {};
         }
-        opt.meta['Authorization'] = 'your bearer token';
-        return next(method, input, opt);
+        options.meta['Authorization'] = 'your bearer token';
+        return next(method, input, options);
       }
     }
   ],

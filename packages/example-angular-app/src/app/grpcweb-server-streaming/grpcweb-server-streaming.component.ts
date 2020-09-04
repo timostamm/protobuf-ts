@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {GrpcWebFetchTransport, GrpcWebOptions} from "@protobuf-ts/grpcweb-transport";
-import {AllMethodsRequest, AllMethodsServiceClient, FailRequest} from "../../protoc-gen-ts-out/service-all-methods";
-import {EnumObjectValue, listEnumValues} from "@protobuf-ts/runtime";
-import {BehaviorSubject} from "rxjs";
-import {RpcError, RpcOptions, UnaryCall} from "@protobuf-ts/runtime-rpc";
+import {GrpcWebFetchTransport, GrpcWebOptions} from '@protobuf-ts/grpcweb-transport';
+import {AllMethodsRequest, AllMethodsServiceClient, FailRequest} from '../../protoc-gen-ts-out/service-all-methods';
+import {EnumObjectValue, listEnumValues} from '@protobuf-ts/runtime';
+import {BehaviorSubject} from 'rxjs';
+import {RpcError, RpcOptions, UnaryCall} from '@protobuf-ts/runtime-rpc';
 
 
 type Info = {
@@ -23,20 +23,20 @@ export class GrpcwebServerStreamingComponent {
 
 
   readonly options: GrpcWebOptions = {
-    baseUrl: "http://localhost:5000",
+    baseUrl: 'http://localhost:5000',
     deadline: 4000,
-    format: "binary",
+    format: 'binary',
 
     // simple example for how to add auth headers to each request
     // see `RpcInterceptor` for documentation
     interceptors: [
       {
         interceptUnary(next, method, input, options): UnaryCall {
-          let opt: RpcOptions = options ?? {};
-          if (!opt.meta)
-            opt.meta = {};
-          opt.meta['Authorization'] = 'xxx';
-          return next(method, input, opt);
+          if (!options.meta) {
+            options.meta = {};
+          }
+          options.meta.Authorization = 'xxx';
+          return next(method, input, options);
         }
       }
     ],
@@ -47,7 +47,7 @@ export class GrpcwebServerStreamingComponent {
   };
 
   readonly request: AllMethodsRequest = {
-    question: "what's up?",
+    question: 'what\'s up?',
     pleaseFail: FailRequest.FAIL_REQUEST_NONE,
     disableSendingExampleResponseHeaders: false,
     pleaseDelayResponseMs: 750,
@@ -64,11 +64,11 @@ export class GrpcwebServerStreamingComponent {
 
     try {
 
-      let transport = new GrpcWebFetchTransport(this.options);
-      let client = new AllMethodsServiceClient(transport);
+      const transport = new GrpcWebFetchTransport(this.options);
+      const client = new AllMethodsServiceClient(transport);
 
       // call-specific option, will be merged with the GrpcWebOptions above
-      let options: RpcOptions = {
+      const options: RpcOptions = {
 
         // you can set request headers here
         meta: {},
@@ -83,53 +83,53 @@ export class GrpcwebServerStreamingComponent {
 
       };
 
-      let call = client.serverStream(this.request, options);
+      const call = client.serverStream(this.request, options);
 
       this.clear();
 
       this.print({
-        title: "Request headers", mode: "secondary", content: call.requestHeaders
+        title: 'Request headers', mode: 'secondary', content: call.requestHeaders
       });
 
       this.print({
-        title: "Request message", mode: "secondary", content: call.request
+        title: 'Request message', mode: 'secondary', content: call.request
       });
 
-      let headers = await call.headers;
+      const headers = await call.headers;
       this.print({
-        title: "Response headers", mode: "secondary", content: headers
+        title: 'Response headers', mode: 'secondary', content: headers
       });
 
-      for await (let message of call.response) {
+      for await (const message of call.response) {
         this.print({
-          title: "Response message", mode: "primary", content: message
+          title: 'Response message', mode: 'primary', content: message
         });
       }
 
-      let status = await call.status;
+      const status = await call.status;
       this.print({
-        title: "Response status", mode: "secondary", content: status
+        title: 'Response status', mode: 'secondary', content: status
       });
 
-      let trailers = await call.trailers;
+      const trailers = await call.trailers;
       this.print({
-        title: "Response trailers", mode: "secondary", content: trailers
+        title: 'Response trailers', mode: 'secondary', content: trailers
       });
 
 
       // above was a lot of code, here is a simple alternative:
-      let justWantTheMessages = false;
+      const justWantTheMessages = false;
       if (justWantTheMessages) {
-        for await (let message of client.serverStream(this.request, options).response) {
+        for await (const message of client.serverStream(this.request, options).response) {
         }
       }
 
 
     } catch (e) {
-      console.error("caught", e);
+      console.error('caught', e);
       if (e instanceof RpcError) {
         this.print({
-          title: "Caught RpcError", mode: "alert", content: {
+          title: 'Caught RpcError', mode: 'alert', content: {
             name: e.name,
             message: e.message,
             code: e.code,
@@ -138,7 +138,7 @@ export class GrpcwebServerStreamingComponent {
         });
       } else {
         this.print({
-          title: "Caught Error", mode: "alert", content: e
+          title: 'Caught Error', mode: 'alert', content: e
         });
       }
     }

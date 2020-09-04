@@ -109,6 +109,7 @@ export interface MessageInfo {
  * "name": The original name of the .proto field.
  * "localName": The name of the field as used in generated code.
  * "jsonName": The name for JSON serialization / deserialization.
+ * "options": Custom field options from the .proto source in JSON format.
  *
  *
  * Other properties:

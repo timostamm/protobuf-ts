@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {DateTime} from "../../protoc-gen-ts-out/google/type/datetime";
-import {Timestamp} from "../../protoc-gen-ts-out/google/protobuf/timestamp";
+import {DateTime} from '../../protoc-gen-ts-out/google/type/datetime';
+import {Timestamp} from '../../protoc-gen-ts-out/google/protobuf/timestamp';
 
 @Component({
   selector: 'app-pb-date-pipe',
