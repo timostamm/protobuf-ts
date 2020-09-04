@@ -1,7 +1,7 @@
 @protobuf-ts/runtime-angular
 ============================
 
-Runtime library for using [protobuf-ts](https://github.com/timostamm/protobuf-ts/README.md) with Angular.
+Runtime library for using [protobuf-ts](https://github.com/timostamm/protobuf-ts/tree/master/packages/README.md) with Angular.
 
 If you generate code with the protobuf-ts plugin and the `enable_angular_annotations` 
 option, or if you want to use the `PbDatePipe` to format `google.protobuf.Timestamp` 
@@ -12,8 +12,8 @@ npm i @protobuf-ts/runtime-angular
 ``` 
 
 
-The features provided by this package are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/MANUAL.md#angular-support).  
-For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/README.md).
+The features provided by this package are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/tree/master/packages/MANUAL.md#angular-support).  
+For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/tree/master/packages/README.md).
 
 
 #### Building this project

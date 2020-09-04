@@ -10,8 +10,8 @@ as a dependency:
 npm i @protobuf-ts/runtime
 ``` 
 
-The types provided by this package are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/MANUAL.md#imessagetype).  
-For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/README.md).
+The types provided by this package are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/tree/master/packages/MANUAL.md#imessagetype).  
+For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/tree/master/packages/README.md).
 
 
 ### Copyright
