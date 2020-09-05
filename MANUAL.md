@@ -16,19 +16,13 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 
 ## What is protobuf-ts
 
-`protobuf-ts` is a plugin for the protocol buffer compiler that generates TypeScript.
-It includes runtime libraries for RPC via [Twirp](https://github.com/twitchtv/twirp) or 
-[gRPC web](https://github.com/grpc/grpc-web). 
+`protobuf-ts` consists of a protoc plugin to generate TypeScript from `.proto` definition 
+files, and several runtime libraries used by the generated code to keep the code size small. 
 
-`protobuf-ts` consists of the following packages: 
+The generated code has no external dependencies and strictly conforms to the protobuf spec. 
 
-- @protobuf-ts/plugin - the protocol buffer compiler plugin `protoc-gen-ts`
-- @protobuf-ts/runtime - the runtime library required to run the generated code
-- @protobuf-ts/runtime-twirp - the [Twirp](https://github.com/twitchtv/twirp) protocol for RPC clients
-- @protobuf-ts/runtime-grpcweb - the [gRPC web](https://github.com/grpc/grpc-web) protocol for RPC clients
-- @protobuf-ts/runtime-rpc - generic RPC functionality  
-- @protobuf-ts/runtime-angular - [Angular](https://angular.io/) support
-- @protobuf-ts/plugin-framework - a framework for writing `protoc` plugins in TypeScript
+The available packages are listed [herer](./packages/README.md) - but you probably want to 
+start with the plugin `@protobuf-ts/plugin`. 
 
 
 ## The protoc plugin
