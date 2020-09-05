@@ -21,7 +21,7 @@ files, and several runtime libraries used by the generated code to keep the code
 
 The generated code has no external dependencies and strictly conforms to the protobuf spec. 
 
-The available packages are listed [herer](./packages/README.md) - but you probably want to 
+The available packages are listed [here](./packages/) - but you probably want to 
 start with the plugin `@protobuf-ts/plugin`. 
 
 
