@@ -1,5 +1,6 @@
-protobuf-ts
+protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?style=svg)](https://app.circleci.com/pipelines/github/timostamm/protobuf-ts)
 ===========
+
 
 Protobuf and RPC for Node.js and the Web Browser. 
 
@@ -31,8 +32,13 @@ pete = Person.fromBinary(bytes);
 pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 ```
 
-It can also send the data over the network to a remote server, where it 
-can be read by other protobuf implementations.
+
+### Quickstart
+
+- grab the [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/test-fixtures/msg-readme.proto) 
+- `npm install @protobuf-ts/plugin`
+- `protoc --plugin node_modules/.bin/protoc-gen-ts --ts_out . msg-readme.proto`
+- add the `--experimental_allow_proto3_optional` flag if your protoc version asks for it
 
 
 ### Features
@@ -54,8 +60,7 @@ can be read by other protobuf implementations.
 - uses an [algebraic data type for oneof](MANUAL.md#oneof-representation) groups
 
 
-To get started, install the plugin with `npm i -D @protobuf-ts/plugin` 
-and read the [MANUAL](MANUAL.md) to learn more.
+Read the [MANUAL](MANUAL.md) to learn more.
 
 
 
@@ -75,21 +80,6 @@ and read the [MANUAL](MANUAL.md) to learn more.
 
 ### Building this project 
 
-This is a monorepo. It uses [lerna](https://github.com/lerna/lerna) to 
-manage versions and dependencies.  
-
-Building this project requires `node`, `npm`, `protoc` (3.12.3 or later), 
-`make`, `bazel`, `git`.
-
-The entire project can be built by running `make`. This will execute: 
-- `npm i` - installs `lerna` locally
-- `lerna bootstrap` - installs the dependencies of all packages, linking local packages
-- `lerna exec make` - runs `make` for all packages 
-
-See `Makefile` for details.
-
-The `packages/` directory contains all components of `protobuf-ts`. Some are public 
-npm packages, some are private and only required for development. Some components do not 
-use JavaScript at all, for example `example-dotnet-grpcweb-server`.  
-
-
+Building this project requires `node` (14.5.0), `npm`, `protoc` (3.12.3), 
+`make`, `bazel`, `git`.  
+The entire project can be built by running `make`.   
