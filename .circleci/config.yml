@@ -4,7 +4,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/node:12.10-browsers
+      - image: circleci/node:14.5.0-browsers
     steps:
       - go/install
 
