@@ -456,34 +456,51 @@ correctly narrow down.
 
 ## BigInt support
 
-Protocol buffers support five distinct 64 bit integral types:
-
-- INT64 - a signed 64 bit integer, serialized with variable length
-- UINT64 - an unsigned 64 bit integer, serialized with variable length
-- FIXED64 - an unsigned 64 bit integer, serialized with fixed size
-- SFIXED64 - a signed 64 bit integer, serialized with fixed size
-- SINT64 - a signed 64 bit integer, serialized with variable length, zig-zag encoded for smaller size with negative values
-
-They all can represent numbers out of the range of JavaScripts `number`. 
-
-`protobuf-ts` gives you the following options to represent those `.proto` 
-types in TypeScript:
+Protocol buffers have signed and unsigned 64 bit integral types, which cannot 
+be represented reliably by the JavaScript `number` primitive. `protobuf-ts` 
+gives you the following options to represent those `.proto` types in TypeScript:
 
 1. `bigint`  
    Enabled by default.  
    Lets you use the standard JavaScript operators. Not available in 
-   Safari / WebKit as of August 2020.
+   Safari / WebKit as of August 2020.  
+   Your tsconfig.json has to target ES2020 and you need Node.js 14.5.0 or higher. 
  
 2. `string`  
-   Enabled by setting the field option `[jstype = JS_STRING]`, or 
+   Enabled by setting the option `[jstype = JS_STRING]` on a field , or 
    by setting the [plugin parameter](#the-protoc-plugin) "long_type_string".  
-   Works in all Web Browsers. For arithmetic, you need a third party 
-   library like the excellent [long.js](https://github.com/dcodeIO/Long.js/).
+   Works in all Web Browsers. 
 
 3. `number`  
    Enabled by setting the field option `[jstype = JS_NUMBER]`.   
    Not recommended. `protobuf-ts` will try to detect overflows when 
    converting to/from `number` and raise an error.
+
+For example, the following .proto:
+
+```proto
+message LongTypes {
+    int64 normal = 1;
+    int64 string = 2 [jstype = JS_STRING];
+    int64 number = 3 [jstype = JS_NUMBER];
+}
+```
+
+Generates the following TypeScript: 
+
+```typescript
+interface LongTypes {
+    normal: bigint; // will be `string` with `--ts_opt long_type_string`
+    string: string;
+    number: number;
+}
+``` 
+
+Internally, `protobuf-ts` uses the two classes `PbLong` and `PbUlong` to 
+convert between the different representations and the wire format. 
+
+For arithmetic, you need a third party library like the excellent 
+[long.js](https://github.com/dcodeIO/Long.js/) if you cannot use `bigint`. 
 
 
 
@@ -922,8 +939,11 @@ where you can measure a noticeable performance increase.
 
 ## Running in Node.js
 
-`protobuf-ts` is tested Node.js version v14.7.0, but should 
-work in older versions as well. 
+`protobuf-ts` is tested with Node.js version 14.5.0. 
+
+Older versions certainly work, but may not support all features or require polyfills. 
+For example, if you target lower than ES2020 to run in an older node version, you 
+cannot use bigint.  
 
 If you are using the `grpcweb-transport` or `twirp-transport`, you probably 
 have to polyfill the fetch API. See the README files of the transport packages 
