@@ -1,6 +1,6 @@
 import {DateTime} from "../ts-out/google/type/datetime";
 import {makeDuration} from "./support/helpers";
-import {PbLong} from "@protobuf-ts/runtime/src";
+import {PbLong} from "@protobuf-ts/runtime";
 
 
 describe('google.type.DateTime', function () {
