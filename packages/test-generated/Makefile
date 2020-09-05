@@ -1,59 +1,60 @@
-.PHONY: default test-speed test-size test-speed-bigint test-size-bigint generate-size generate-speed generate-speed-bigint generate-size-bigint
+.PHONY: default clean test-runner test-conformance test-conformance-bigint test-spec test-spec-bigint generate-size generate-speed generate-speed-bigint generate-size-bigint
 
 PROTO_PATH = ../test-fixtures
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 SPECS := $(shell find spec -name '*.spec.ts')
+TEST_RUNNER = $(shell command -v conformance-test-runner 2> /dev/null)
 
 
 default:
-	make test-speed
-	make test-size
-	make test-speed-bigint
-	make test-size-bigint
+	make generate-speed 	   test-spec		test-conformance
+	make generate-size  	   test-spec		test-conformance
+	make generate-speed-bigint test-spec-bigint test-conformance-bigint
+	make generate-size-bigint  test-spec-bigint test-conformance-bigint
 
+
+clean:
+	@find ts-out -name '*.js' -delete
+	@echo "'${@}' done"
+
+test-runner:
+ifeq ("${TEST_RUNNER}", "")
+	make protobuf
+	$(eval TEST_RUNNER=protobuf/bazel-bin/conformance_test_runner)
+endif
 
 protobuf:
 	git clone git@github.com:protocolbuffers/protobuf.git protobuf \
 	&& cd protobuf \
 	&& git checkout -q c9d2bd2fc781fe67ebf306807b9b6edb4a0d2764 \
-	&& bazel build generated_protos build_files_updated_unittest test_messages_proto3_proto conformance_proto conformance_test conformance_test_runner
+	&& bazel build test_messages_proto3_proto conformance_proto conformance_test conformance_test_runner
+
+test-conformance: test-runner clean
+	@npx tsc --target ES2015 --module CommonJS --strict conformance_ts.ts
+	@chmod +x conformance_ts.js
+	@$(TEST_RUNNER) --enforce_recommended conformance_ts.js
 	@echo "'${@}' done"
 
+test-conformance-bigint: test-runner clean
+	@npx tsc --target ES2020 --module CommonJS --strict conformance_ts.ts
+	@chmod +x conformance_ts.js
+	@$(TEST_RUNNER) --enforce_recommended conformance_ts.js
+	@echo "'${@}' done"
 
-test-speed: generate-speed protobuf
+test-spec: clean
 	@./node_modules/.bin/ts-node \
 		--project tsconfig.json \
 		--require tsconfig-paths/register \
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$(SPECS)
-	protobuf/bazel-bin/conformance_test_runner --enforce_recommended conformance_ts.ts
 	@echo "'${@}' done"
 
-test-size: generate-size protobuf
-	@./node_modules/.bin/ts-node \
-		--project tsconfig.json \
-		--require tsconfig-paths/register \
-		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
-		$(SPECS)
-	protobuf/bazel-bin/conformance_test_runner --enforce_recommended conformance_ts.ts
-	@echo "'${@}' done"
-
-test-speed-bigint: generate-speed-bigint protobuf
+test-spec-bigint: clean
 	@./node_modules/.bin/ts-node \
 		--project tsconfig.bigint.json \
 		--require tsconfig-paths/register \
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$(SPECS)
-	protobuf/bazel-bin/conformance_test_runner --enforce_recommended conformance_ts.ts
-	@echo "'${@}' done"
-
-test-size-bigint: generate-size-bigint protobuf
-	@./node_modules/.bin/ts-node \
-		--project tsconfig.bigint.json \
-		--require tsconfig-paths/register \
-		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
-		$(SPECS)
-	protobuf/bazel-bin/conformance_test_runner --enforce_recommended conformance_ts.ts
 	@echo "'${@}' done"
 
 
@@ -67,6 +68,7 @@ generate-speed: $(PROTOS)
 		--proto_path=$(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
+	@echo "'${@}' done"
 
 
 generate-size: $(PROTOS)
@@ -79,6 +81,7 @@ generate-size: $(PROTOS)
 		--proto_path=$(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
+	@echo "'${@}' done"
 
 
 generate-size-bigint: $(PROTOS)
@@ -90,6 +93,7 @@ generate-size-bigint: $(PROTOS)
 		--proto_path=$(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
+	@echo "'${@}' done"
 
 
 generate-speed-bigint: $(PROTOS)
@@ -101,6 +105,7 @@ generate-speed-bigint: $(PROTOS)
 		--proto_path=$(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
+	@echo "'${@}' done"
 
 
 ${PROTO_PATH}/all.descriptorset: $(PROTOS)
@@ -111,3 +116,4 @@ ${PROTO_PATH}/all.descriptorset: $(PROTOS)
 		--include_imports \
 		--experimental_allow_proto3_optional \
 		$^
+	@echo "'${@}' done"

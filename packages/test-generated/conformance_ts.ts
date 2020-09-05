@@ -1,4 +1,4 @@
-#!/usr/bin/env npx ts-node -P tsconfig.bigint.json
+#!/usr/bin/env node
 
 import {ConformanceRequest, ConformanceResponse, TestCategory, WireFormat} from "./ts-out/conformance/conformance";
 import {TestAllTypesProto3} from "./ts-out/google/protobuf/test_messages_proto3";

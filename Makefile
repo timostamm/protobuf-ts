@@ -7,7 +7,7 @@ npm-install:
 	npm i
 
 lerna-make:
-	./node_modules/.bin/lerna exec make --stream
+	./node_modules/.bin/lerna exec --stream --ignore @protobuf-ts/example-* -- make
 
 lerna-bootstrap:
 	./node_modules/.bin/lerna bootstrap
