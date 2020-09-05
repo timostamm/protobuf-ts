@@ -1318,10 +1318,7 @@ service AllMethodsService {
 
 `@protobuf-ts/runtime-rpc` provides implementations for each of the four method types, 
 but since neither Twirp nor gRPC web support client streaming or duplex streaming calls, 
-those types are untested. All implementations are designed to be used with the `async` 
-keyword.
-
-In `protobuf-ts`, the implementations for all method types share the following properties: 
+those types are untested. All four method types share the following properties: 
 
 - `method: MethodInfo`   
   Reflection information about this call.
@@ -1377,23 +1374,22 @@ So a simple way to get the response message of a unary call would be:
 ```typescript
 let call = service.myMethod(foo);
 let response = await call.response;
-let status = await call.status;
-let trailers = await call.trak;
 ```
 
 But there is a caveat: gRPC and gRPC web use response trailers to indicate 
 server status. This means that it is possible that the server responds 
-with a message and then sends an error status. If you do not await 
-`status`, you will not notice the error status!
+with a message and then sends an error status. If you do not check the 
+`status`, you will miss the error status.
 
-For a better developer experience, the `UnaryCall` itself is awaitable, 
-guaranteeing that you will never miss an error status: 
+For a better developer experience, the `UnaryCall` itself is awaitable, and 
+will reject if an error status is received.
 
 ```typescript
+// possibly unnoticed error status:
 let call = await service.myMethod(foo);
 let response = call.response;
 
-// or:
+// better:
 let {response} = await service.myMethod(foo);
 ```
 
