@@ -45,10 +45,13 @@ code, but can be used to generate code in other languages.
 
 ### Getting started
 
-Take a look at `plugin-base.ts` and `descriptor-registry.ts`. 
-
-`@protobuf-ts/plugin` uses this framework. Take a look at the source.   
-
+- Check the types and comments of [descriptor.proto](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto)
+  and [plugin.proto](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/compiler/plugin.proto)
+  to get familiar with the plugin system of protoc.
+- Take a look at `descriptor-registry.ts` to see the if it can help you work with the 
+  descriptor protos that the compiler sends you.
+- Take a look at `plugin-base.ts` for a base class that can help with some plumbing.
+- Take a look at the source code of [protobuf-ts](https://github.com/timostamm/protobuf-ts/), which uses this framework.    
 
 
 ### Copyright

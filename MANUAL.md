@@ -30,7 +30,6 @@ start with the plugin `@protobuf-ts/plugin`.
 Installation:
 ```shell script
 npm i -D @protobuf-ts/plugin
-npm i @protobuf-ts/runtime
 ```
 
 This will install the plugin as a development dependency and the runtime 
@@ -51,7 +50,14 @@ protoc \
   protos/my.proto 
 ```
 
-Available parameters:
+
+Note that the generated code requires the runtime:
+```shell script
+npm i @protobuf-ts/runtime
+```
+
+
+Available plugin parameters:
 
 - "long_type_string"
   
@@ -1616,7 +1622,7 @@ provided by the `UnaryCall`, see [RPC method types](#rpc-method-types).
 
 To enable Angular support, 
 1. set the `enable_angular_annotations` [plugin parameter](#the-protoc-plugin)
-2. install all related packages with `npm -i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/runtime-angular @protobuf-ts/twirp-transport`
+2. install all related packages with `npm i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/runtime-angular @protobuf-ts/twirp-transport`
 
 
 Update your `app.module.ts` with the following:
