@@ -44,7 +44,7 @@ pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 ### Features
 
 - implements the [canonical proto3 JSON format](MANUAL.md#json-format)
-- implements the [binary format](MANUAL.md#binary-format)
+- implements the [binary format](MANUAL.md#binary-format) and respects [unknown fields](MANUAL.md#unknown-field-handling)
 - provides [gRPC web clients](MANUAL.md#grpc-web-transport)
 - provides [Twirp clients](MANUAL.md#twirp-transport)
 - supports [Angular](MANUAL.md#angular-support) dependency injection and pipes
