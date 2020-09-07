@@ -105,7 +105,7 @@ export class MessageType<T extends object> implements IMessageType<T> {
     clone(message: T): T {
         let copy = this.create();
         reflectionMergePartial<T>(this, copy, message);
-        return message as T;
+        return copy;
     }
 
 

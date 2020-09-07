@@ -897,8 +897,8 @@ several code generators:
 
 | generator               | version         | optimize for      | webpack output size |
 |-------------------------|----------------:|-------------------|--------------------:|
-| protobuf-ts | 1.0.0-alpha.35 | size | 40.619 b |
-| protobuf-ts | 1.0.0-alpha.35 | speed | 69.181 b |
+| protobuf-ts | 1.0.1 | size | 40.627 b |
+| protobuf-ts | 1.0.1 | speed | 69.189 b |
 | ts-proto | 1.26.0 |  | 111.825 b |
 | google-protobuf | 3.12.2 |  | 396.934 b |
 

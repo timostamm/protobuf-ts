@@ -1,13 +1,15 @@
 import {
     IMessageType,
     MessageInfo,
+    MessageType,
     normalizeFieldInfo,
     reflectionCreate,
     reflectionMergePartial,
-    ScalarType
+    RepeatType,
+    ScalarType,
+    UnknownMessage
 } from "../src";
 import {stubMessageType} from "./support/helpers";
-import {RepeatType} from "../src/reflection-info";
 
 
 describe('reflectionMergePartial()', () => {
@@ -128,6 +130,27 @@ describe('reflectionMergePartial()', () => {
             });
         });
 
+
+    });
+
+    describe('with repeated scalar field', function () {
+
+        let type = new MessageType<UnknownMessage>(".test.Message", [
+            {no: 1, name: "arr", kind: "scalar", T: ScalarType.INT32, repeat: RepeatType.PACKED}
+        ]);
+
+        it('keeps target array instance', () => {
+            let target: UnknownMessage = {
+                arr: [1,2,3]
+            };
+            let targetArr = target.arr;
+            let source = {
+                arr: []
+            };
+            reflectionMergePartial(type, source, target);
+            expect(target.arr).not.toBe(source.arr);
+            expect(target.arr).toBe(targetArr);
+        });
 
     });
 
