@@ -4,12 +4,11 @@ PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 
 
 generate: $(PROTOS)
-	@protoc \
-		--plugin=../plugin/bin/protoc-gen-ts \
+	@npx protoc \
 		--ts_out src/protoc-gen-ts-out/ \
 		--ts_opt enable_angular_annotations \
 		--ts_opt long_type_string \
-		--proto_path=$(PROTO_PATH) \
+		--proto_path $(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"

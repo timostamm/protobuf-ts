@@ -59,8 +59,7 @@ test-spec-bigint: clean
 
 
 generate-speed: $(PROTOS)
-	@protoc \
-		--plugin=../plugin/bin/protoc-gen-ts \
+	@npx protoc \
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_speed \
 		--ts_opt long_type_string \
@@ -72,8 +71,7 @@ generate-speed: $(PROTOS)
 
 
 generate-size: $(PROTOS)
-	@protoc \
-		--plugin=../plugin/bin/protoc-gen-ts \
+	@npx protoc \
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_code_size \
 		--ts_opt long_type_string \
@@ -85,8 +83,7 @@ generate-size: $(PROTOS)
 
 
 generate-size-bigint: $(PROTOS)
-	@protoc \
-		--plugin=../plugin/bin/protoc-gen-ts \
+	@npx protoc \
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_code_size \
 		--ts_opt generate_dependencies \
@@ -97,8 +94,7 @@ generate-size-bigint: $(PROTOS)
 
 
 generate-speed-bigint: $(PROTOS)
-	@protoc \
-		--plugin=../plugin/bin/protoc-gen-ts \
+	@npx protoc \
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_speed \
 		--ts_opt generate_dependencies \
@@ -109,7 +105,7 @@ generate-speed-bigint: $(PROTOS)
 
 
 ${PROTO_PATH}/all.descriptorset: $(PROTOS)
-	@protoc \
+	@npx protoc \
 		--descriptor_set_out=${@} \
 		--proto_path=${PROTO_PATH} \
 		--include_source_info \
