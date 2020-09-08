@@ -3,6 +3,7 @@
 #### Public packages published in the NPM registry
 
 - [@protobuf-ts/plugin](./plugin) - the protoc compiler plugin `protoc-gen-ts`
+- [@protobuf-ts/protoc](./protoc) - installs the protocol buffer compiler `protoc`
 - [@protobuf-ts/runtime](./runtime) - the runtime library required to run the generated code
 - [@protobuf-ts/twirp-transport](./twirp-transport) - the [Twirp](https://github.com/twitchtv/twirp) protocol for RPC clients
 - [@protobuf-ts/grpcweb-transport](./grpcweb-transport) - the [gRPC web](https://github.com/grpc/grpc-web) protocol for RPC clients

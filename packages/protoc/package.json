@@ -1,0 +1,21 @@
+{
+  "name": "@protobuf-ts/protoc",
+  "version": "1.0.1",
+  "description": "Installs the protocol buffer compiler \"protoc\" for you.",
+  "license": "Apache-2.0",
+  "author": "Timo Stamm <ts@timostamm.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timostamm/protobuf-ts.git",
+    "directory": "packages/protoc"
+  },
+  "bin": {
+    "protoc": "./protoc.js"
+  },
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
