@@ -17,8 +17,6 @@ jobs:
             sudo unzip -d '/usr/local' ${archive} 'bin/*' 'include/*'
             sudo chmod 755 /usr/local/bin/protoc
             rm ${archive}
-            ls -lha /usr/local/bin/protoc
-            /usr/local/bin/protoc --version
             protoc --version
 
       - run:
@@ -29,7 +27,7 @@ jobs:
             unzip ${archive}
             sudo cp libprotobuf.so.23 /usr/lib/
             sudo cp conformance-test-runner /usr/bin/
-            sudo chmod +x /usr/bin/conformance-test-runner
+            sudo chmod 755 /usr/bin/conformance-test-runner
             rm libprotobuf.so.23
             rm conformance-test-runner
             rm ${archive}
