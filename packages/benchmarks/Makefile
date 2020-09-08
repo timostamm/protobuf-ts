@@ -27,28 +27,28 @@ generate: $(PROTOS)
 	@protoc \
 		--ts_out ./testees/speed-out/ \
 		--ts_opt force_optimize_speed,long_type_string \
-		--plugin ../plugin/bin/protoc-gen-ts \
+		--plugin ./node_modules/.bin/protoc-gen-ts \
 		--proto_path $(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
 	@protoc \
 		--ts_out ./testees/size-out/ \
 		--ts_opt force_optimize_code_size,long_type_string \
-		--plugin ../plugin/bin/protoc-gen-ts \
+		--plugin ./node_modules/.bin/protoc-gen-ts \
 		--proto_path $(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
 	@protoc \
 		--ts_out ./testees/speed-bigint-out/ \
 		--ts_opt force_optimize_speed \
-		--plugin ../plugin/bin/protoc-gen-ts \
+		--plugin ./node_modules/.bin/protoc-gen-ts \
 		--proto_path $(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
 	@protoc \
 		--ts_out ./testees/size-bigint-out/ \
 		--ts_opt force_optimize_code_size \
-		--plugin ../plugin/bin/protoc-gen-ts \
+		--plugin ./node_modules/.bin/protoc-gen-ts \
 		--proto_path=$(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^
