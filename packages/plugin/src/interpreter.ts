@@ -299,6 +299,11 @@ export class Interpreter {
             info.localName = extensionName;
             info.jsonName = extensionName;
             info.oneof = undefined;
+
+        } else {
+
+            info.options = this.readOptions(fieldDescriptor);
+
         }
 
         return info as rt.PartialFieldInfo;
