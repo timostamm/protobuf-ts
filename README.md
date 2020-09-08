@@ -77,10 +77,3 @@ Read the [MANUAL](MANUAL.md) to learn more.
 - All other files are licensed under Apache-2.0, see [LICENSE](./LICENSE). 
 
 
-
-
-### Building this project 
-
-Building this project requires `node` (14.5.0), `npm`, `protoc` (3.12.3), 
-`make`, `bazel`, `git`.  
-The entire project can be built by running `make`.   
