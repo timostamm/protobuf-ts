@@ -38,6 +38,8 @@ following behaviour:
    downloaded release
 2. add a `--plugin` argument for all plugins found in `node_modules/.bin/`
 
+The package has been tested on macos, linux and windows.
+
 
 #### Installing a specific version
 
