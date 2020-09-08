@@ -15,7 +15,7 @@ jobs:
             archive=protoc-${version}-linux-x86_64.zip
             curl -O -L https://github.com/protocolbuffers/protobuf/releases/download/v${version}/${archive}
             sudo unzip -d '/usr/local' ${archive} 'bin/*' 'include/*'
-            sudo chmod +x /usr/local/bin/protoc
+            sudo chmod 766 /usr/local/bin/protoc
             rm ${archive}
             ls -lha /usr/local/bin/protoc
             /usr/local/bin/protoc --version
