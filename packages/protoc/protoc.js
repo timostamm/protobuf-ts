@@ -2,7 +2,7 @@
 
 // wraps protoc installed by install.js for calling with `npx protoc`
 // adds the following special behaviour:
-// 1. prepend a --proto_path argument to the include/ directory of the release
+// 1. add a --proto_path argument to the include/ directory of the release
 // 2. add a --plugin argument for all plugins found in node_modules/.bin
 
 const {spawnSync} = require('child_process');
@@ -17,13 +17,14 @@ if (!release) {
 
 let command = release.protocPath;
 let args = [
-    // always add the "include" directory of a protoc distribution to the proto path
-    "--proto_path", release.includePath,
     // pass all arguments to the process
-    ...process.argv.slice(2)
+    ...process.argv.slice(2),
+    // add the "include" directory of the installed protoc to the proto path
+    // do this last, otherwise it can shadow a user input
+    "--proto_path", release.includePath,
 ];
 
-// search for any protoc-gen-x plugins in .bin and add --plugin arguments for them
+// search for any protoc-gen-xxx plugins in .bin and add --plugin arguments for them
 for (let plugin of findProtocPlugins(process.cwd())) {
     args.unshift("--plugin", plugin);
 }
