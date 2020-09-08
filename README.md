@@ -1,4 +1,4 @@
-protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?style=svg)](https://app.circleci.com/pipelines/github/timostamm/protobuf-ts)
+protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?style=svg)](https://app.circleci.com/pipelines/github/timostamm/protobuf-ts) [![npm](https://img.shields.io/npm/v/@protobuf-ts/plugin)](https://www.npmjs.com/package/@protobuf-ts/plugin)
 ===========
 
 

@@ -9,7 +9,8 @@
     "Protocol Buffers",
     "protobuf",
     "TypeScript",
-    "Angular"
+    "Angular",
+    "Twirp"
   ],
   "repository": {
     "type": "git",

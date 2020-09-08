@@ -6,7 +6,6 @@ protobuf-ts manual
 
 - [What are protocol buffers](#what-are-protocol-buffers)
 - [What is protobuf-ts](#what-is-protobuf-ts)
-- [What is protobuf-ts](#what-is-protobuf-ts)
 - [The protoc plugin](#the-protoc-plugin)
 - [Generated code](#generated-code)
 - [IMessageType](#imessagetype)

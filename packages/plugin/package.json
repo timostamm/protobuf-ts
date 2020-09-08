@@ -1,7 +1,7 @@
 {
   "name": "@protobuf-ts/plugin",
   "version": "1.0.3",
-  "description": "A protocol buffer compiler plugin to generate typescript code.",
+  "description": "The protocol buffer compiler plugin \"protobuf-ts\" generates TypeScript, gRPC-web, Twirp, and more.",
   "bin": {
     "protoc-gen-ts": "./bin/protoc-gen-ts",
     "protoc-gen-dump": "./bin/protoc-gen-dump"
