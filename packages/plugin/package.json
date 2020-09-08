@@ -34,6 +34,7 @@
     "tslib": ">=1.6.1"
   },
   "dependencies": {
+    "@protobuf-ts/protoc": "^1.0.1",
     "@protobuf-ts/plugin-framework": "^1.0.1",
     "@protobuf-ts/runtime": "^1.0.1",
     "typescript": ">=3.8.3 <4"
