@@ -22,8 +22,8 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     parameters = {
         // @formatter:off
         long_type_string: {
-            description: "Sets jstype = JS_STRING for all fields where no option `jstype` was specified. \n" +
-                         "The default behaviour is to use native `bigint`.",
+            description: "Sets jstype = JS_STRING for all fields where no option `jstype` was \n"+
+                         "specified. The default behaviour is to use native `bigint`.",
             excludes: [],
         },
         disable_service_client: {
@@ -32,8 +32,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             excludes: ['enable_angular_annotations'],
         },
         generate_dependencies: {
-            description: "By default, only the PROTO_FILES passed to protoc are generated, not the files \n" +
-                         "they import. Set this option to generate code for dependencies too.",
+            description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
+                         "not the files they import. Set this option to generate code for dependencies \n" +
+                         "too.",
         },
         enable_angular_annotations: {
             description: "If set, the generated service client will have an angular @Injectable() \n" +
@@ -43,21 +44,21 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             excludes: ['disable_service_client'],
         },
         optimize_speed: {
-            description: "Sets optimize_for = SPEED for files where no 'option optimize_for' \n" +
-                          "was specified. Since SPEED is the default, this option has no effect.",
+            description: "Sets optimize_for = SPEED for proto files that have no file option \n" +
+                         "'option optimize_for'. Since SPEED is the default, this option has no effect.",
             excludes: ['force_optimize_speed'],
         },
         optimize_code_size: {
-            description: "Sets optimize_for = CODE_SIZE for files where no \n" +
-                         "'option optimize_for' was specified.",
+            description: "Sets optimize_for = CODE_SIZE for proto files that have no file option \n" +
+                         "'option optimize_for'.",
             excludes: ['force_optimize_speed'],
         },
         force_optimize_code_size: {
-            description: "Sets optimize-mode = CODE_SIZE for all files, ignoring any 'option optimize_for'.",
+            description: "Forces optimize_for = CODE_SIZE for all proto files, ignore file options.",
             excludes: ['optimize_code_size', 'force_optimize_speed']
         },
         force_optimize_speed: {
-            description: "Sets optimize-mode = SPEED for all files, ignoring any 'option optimize_for'.",
+            description: "Forces optimize_for = SPEED for all proto files, ignore file options.",
             excludes: ['optimize_code_size', 'force_optimize_code_size']
         },
         // @formatter:on

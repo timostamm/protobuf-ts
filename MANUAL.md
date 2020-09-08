@@ -53,45 +53,38 @@ npm i @protobuf-ts/runtime
 
 Available plugin parameters:
 
-- "long_type_string"
-  
-  Sets jstype = JS_STRING for all fields where no option `jstype` was specified. 
-  The default behaviour is to use native `bigint`.
+- "long_type_string"  
+  Sets jstype = JS_STRING for all fields where no option `jstype` was 
+  specified. The default behaviour is to use native `bigint`.
 
-- "disable_service_client"
-  
+- "disable_service_client"  
   Disables generation of service clients. By default, we generate a client 
-  (an interface, and an implementation class) for each service.
+  (an interface and an implementation class) for each service.
 
-- "generate_dependencies"
-  
-  By default, only the PROTO_FILES passed to protoc are generated, not the files 
-  they import. Set this option to generate code for dependencies too.
+- "generate_dependencies"  
+  By default, only the PROTO_FILES passed as input to protoc are generated, 
+  not the files they import. Set this option to generate code for dependencies 
+  too.
 
-- "enable_angular_annotations"
-  
+- "enable_angular_annotations"  
   If set, the generated service client will have an angular @Injectable() 
   annotation and the `RpcTransport` constructor argument is annotated with a 
   @Inject annotation. For this feature, you will need the npm package 
   '@protobuf-ts/runtime-angular'.
 
-- "optimize_speed"
-  
-  Sets optimize_for = SPEED for files where no 'option optimize_for' 
-  was specified. Since SPEED is the default, this option has no effect.
+- "optimize_speed"  
+  Sets optimize_for = SPEED for proto files that have no file option 
+  'option optimize_for'. Since SPEED is the default, this option has no effect.
 
-- "optimize_code_size"
-  
-  Sets optimize_for = CODE_SIZE for files where no 
-  'option optimize_for' was specified.
+- "optimize_code_size"  
+  Sets optimize_for = CODE_SIZE for proto files that have no file option 
+  'option optimize_for'.
 
-- "force_optimize_code_size"
-  
-  Sets optimize-mode = CODE_SIZE for all files, ignoring any 'option optimize_for'.
+- "force_optimize_code_size"  
+  Forces optimize_for = CODE_SIZE for all proto files, ignore file options.
 
-- "force_optimize_speed"
-  
-  Sets the optimize_for = SPEED for all files, ignoring any 'option optimize_for'.
+- "force_optimize_speed"  
+  Forces optimize_for = SPEED for all proto files, ignore file options.
 
 
 
