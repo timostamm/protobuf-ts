@@ -32,20 +32,14 @@ Installation:
 npm i -D @protobuf-ts/plugin
 ```
 
-This will install the plugin as a development dependency and the runtime 
-library as a dependency.  
-
-Note that you have to manually install the protocol buffer compiler `protoc`. 
-On macos, you can use [brew](https://brew.sh/) to install the compiler with `brew install protobuf`.
-Or you can download it from the [release page](https://github.com/protocolbuffers/protobuf/releases).
+This will install the plugin as a development dependency.  
+The protocol buffer compiler `protoc` is automatically installed ([explanation](./packages/protoc/README.md)). 
 
 Usage:
 ```shell script
-protoc \ 
-  --plugin node_modules/.bin/protoc-gen-ts \
-  --ts_out src \
+npx protoc \ 
+  --ts_out src/generated/ \
   --ts_opt long_type_string \
-  --ts_opt disable_service_client \
   --proto_path protos \
   protos/my.proto 
 ```

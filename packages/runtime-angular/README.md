@@ -1,19 +1,35 @@
 @protobuf-ts/runtime-angular
 ============================
 
-Runtime library for using [protobuf-ts](https://github.com/timostamm/protobuf-ts/blob/master/README.md) with Angular.
+Runtime library for using [protobuf-ts](https://github.com/timostamm/protobuf-ts/) with Angular.
 
-If you generate code with the protobuf-ts plugin and the `enable_angular_annotations` 
-option, or if you want to use the `PbDatePipe` to format `google.protobuf.Timestamp` 
-or `google.type.DateTime` like a JavaScript Date, you need this package as a dependency:
-                                                                                                      
+
+Installation:
+                                                                                         
 ```shell script
-npm i @protobuf-ts/runtime-angular
+npm i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/runtime-angular @protobuf-ts/twirp-transport
+``` 
+
+You probably want the protoc plugin as well: 
+                                                                                         
+```shell script
+npm i -D @protobuf-ts/plugin
 ``` 
 
 
-The features provided by this package are documented in the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#angular-support).  
-For a quick overview of `protobuf-ts`, check the repository [README](https://github.com/timostamm/protobuf-ts/blob/master/README.md).
+Usage:
+
+- generate code
+  ```shell script
+  npx protoc --ts_opt enable_angular_annotations --ts_out src/ my-message.proto
+  ```
+- import the `PbDatePipeModule` to get the date pipe that works with 
+  `google.protobuf.Timestamp` or `google.type.DateTime`
+- import `TwirpModule.forRoot()` to get a Twirp transport that uses the Angular `HttpClient`
+
+
+To learn more, please read the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#angular-support) 
+or check the repository [README](https://github.com/timostamm/protobuf-ts/README.md) for a quick overview.
 
 
 #### Building this project

@@ -37,7 +37,7 @@ pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 
 - grab the [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/test-fixtures/msg-readme.proto) 
 - `npm install @protobuf-ts/plugin`
-- `protoc --plugin node_modules/.bin/protoc-gen-ts --ts_out . msg-readme.proto`
+- `npx protoc --ts_out . msg-readme.proto`
 - add the `--experimental_allow_proto3_optional` flag if your protoc version asks for it
 
 
@@ -48,6 +48,7 @@ pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 - provides [gRPC web clients](MANUAL.md#grpc-web-transport)
 - provides [Twirp clients](MANUAL.md#twirp-transport)
 - supports [Angular](MANUAL.md#angular-support) dependency injection and pipes
+- automatically installs protoc
 - can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
 - supports [proto3 optionals](MANUAL.md#proto3-optional)
 - [supports bigint](MANUAL.md#bigint-support) for 64 bit integers
