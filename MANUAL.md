@@ -2,6 +2,44 @@ protobuf-ts manual
 ==================
 
 
+## Table of Contents
+
+- [What are protocol buffers](#what-are-protocol-buffers)
+- [What is protobuf-ts](#what-is-protobuf-ts)
+- [What is protobuf-ts](#what-is-protobuf-ts)
+- [The protoc plugin](#the-protoc-plugin)
+- [Generated code](#generated-code)
+- [IMessageType](#imessagetype)
+  - [Message type guards](#message-type-guards)
+- [Enum representation](#enum-representation)
+- [Oneof representation](#oneof-representation)
+- [BigInt support](#bigint-support)
+- [proto3 optionals](#proto3-optionals)
+- [proto2 support](#proto2-support)
+- [Well-known-types](#well-known-types)
+  - [google.protobuf.Any](#googleprotobufany)
+  - [google.protobuf.Timestamp](#googleprotobuftimestamp)
+  - [google.type.Color](#googletypecolor)
+  - [google.type.DateTime and google.type.Date](#googletypedatetime-and-googletypedate)
+- [Reflection](#reflection)
+  - [Field information](#field-information)
+  - [Custom options](#custom-options)
+- [Binary format](#binary-format)
+  - [Conformance](#conformance)
+  - [Unknown field handling](#unknown-field-handling)
+- [Code size vs speed](#code-size-vs-speed)
+- [Running in the Web Browser](#running-in-the-web-browser)
+- [Running in Node.js](#running-in-nodejs)
+- [RPC support](#rpc-support)
+  - [RPC options](#rpc-options)
+  - [RPC method types](#rpc-method-types)
+  - [gRPC web transport](#grpc-web-transport)
+  - [Twirp transport](#twirp-transport)
+- [Angular support](#angular-support)
+
+
+
+
 ## What are protocol buffers
 
 Protocol buffers are a definition language for simple data structures 
@@ -303,9 +341,45 @@ The `IMessageType` provides the following methods:
   Learn more about the [Message type guards](#message-type-guards).
 
 
-The `IMessageType` also provides [reflection information](#reflection-information) 
+The `IMessageType` also provides [reflection information](#reflection) 
 with the properties `typeName` and `fields`.  
 
+
+#### Message type guards
+
+The `IMessageType` provides two type guards for every message:
+
+- `is(arg: any, depth?: number): arg is T`
+  
+  Is the given value assignable to our message type 
+  and contains no excess properties?
+  
+- `isAssignable(arg: any, depth?: number): arg is T`
+  
+  Is the given value assignable to our message type, 
+  regardless of excess properties?  
+
+
+Both methods are [Type Guards](https://www.typescriptlang.org/docs/handbook/advanced-types.html#user-defined-type-guards), 
+and let the compiler know about the type. Example:
+
+```ts
+let message: unknown;
+if (MyMessage.is(message)) {
+    message.hello // the type of `message` is not `unknown` anymore
+} 
+```
+
+Note that `is()` checks for [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks), 
+as if you provided the message as a literal object. This should be desirable 
+in most cases, because it saves you from false properties when the message 
+has only one or two fields. If you do not care about excess properties, use `isAssignable()`. 
+
+Note that `is()` is different from `instanceof`. Any object can be compatible with 
+the message you are looking for, as long as it has the expected properties with the 
+expected types. For example, a `google.protobuf.Duration` has exactly the 
+same fields like a `google.protobuf.Timestamp` and `is()` will return 
+`true` for both. 
 
 
 
@@ -549,42 +623,6 @@ generated code:
 
 
 
-## Message type guards
-
-The `IMessageType` provides two type guards for every message:
-
-- `is(arg: any, depth?: number): arg is T`
-  
-  Is the given value assignable to our message type 
-  and contains no excess properties?
-  
-- `isAssignable(arg: any, depth?: number): arg is T`
-  
-  Is the given value assignable to our message type, 
-  regardless of excess properties?  
-
-
-Both methods are [Type Guards](https://www.typescriptlang.org/docs/handbook/advanced-types.html#user-defined-type-guards), 
-and let the compiler know about the type. Example:
-
-```ts
-let message: unknown;
-if (MyMessage.is(message)) {
-    message.hello // the type of `message` is not `unknown` anymore
-} 
-```
-
-Note that `is()` checks for [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks), 
-as if you provided the message as a literal object. This should be desirable 
-in most cases, because it saves you from false properties when the message 
-has only one or two fields. If you do not care about excess properties, use `isAssignable()`. 
-
-Note that `is()` is different from `instanceof`. Any object can be compatible with 
-the message you are looking for, as long as it has the expected properties with the 
-expected types. For example, a `google.protobuf.Duration` has exactly the 
-same fields like a `google.protobuf.Timestamp` and `is()` will return 
-`true` for both. 
- 
 
 
 ## Well-known-types
@@ -685,6 +723,197 @@ Note that `DateTime` is also supported by the `PbDatePipe` provided by
 
 
 
+## Reflection
+
+Reflection is a first-class feature of `protobuf-ts` and should be considered 
+a powerful tool for working with messages. 
+
+For example, it is possible to serialize a message to binary format using only 
+the reflection information. Other use cases for reflection can be input form 
+generation, message comparison algorithms, or transformation into another format 
+you may need. 
+
+A message provides reflection information via its `IMessageType`:
+```typescript
+/**
+ * The protobuf type name of the message, including package and
+ * parent types if present.
+ *
+ * Examples:
+ * 'MyNamespaceLessMessage'
+ * 'my_package.MyMessage'
+ * 'my_package.ParentMessage.ChildMessage'
+ */
+readonly typeName: string;
+
+/**
+ * Simple information for each message field, in the order
+ * of declaration in the source .proto.
+ */
+readonly fields: readonly FieldInfo[];
+``` 
+
+
+#### Field information
+
+The `FieldInfo` type distinguishes between the following kinds:
+
+- "scalar": string, bool, float, int32, etc.
+  See https://developers.google.com/protocol-buffers/docs/proto3#scalar
+
+- "enum": field was declared with an enum type.
+
+- "message": field was declared with a message type.
+
+- "map": field was declared with map<K,V>.
+
+
+Every field, regardless of it's kind, always has the following properties:
+
+- "no": The field number of the .proto field.
+- "name": The original name of the .proto field.
+- "localName": The name of the field as used in generated code.
+- "jsonName": The name for JSON serialization / deserialization.
+- "options": Custom field options from the .proto source in JSON format.
+
+
+Other properties:
+
+- Fields of kind "scalar", "enum" and "message" can have a "repeat" type.
+- Fields of kind "scalar" and "enum" can have a "repeat" type.
+- Fields of kind "scalar", "enum" and "message" can be member of a "oneof".
+
+A field can be only have one of the above properties set.
+
+Options for "scalar" fields:
+
+- 64 bit integral types can provide "L" - the JavaScript representation
+  type. 
+
+
+To learn more about reflection, have a look at the types declared in 
+`runtime/src/reflection-info.ts` and the source code of the reflection-based 
+operations. 
+
+Note that RPC also come with reflection information. See 
+`runtime-rpc/src/reflection-info.ts`. 
+
+
+#### Custom options
+
+`protobuf-ts` support custom field and method options and will add them to 
+the reflection information. 
+
+For example, consider the following service definition in .proto:
+
+```proto
+// import the proto that extends google.protobuf.MethodOptions
+import "google/api/annotations.proto";
+
+service AnnotatedService {
+    rpc Get (Request) returns (Reply) {
+        // now we can use the new options on the method
+        option (google.api.http) = {
+            get: "/v1/{name=messages/*}"
+            additional_bindings {
+                get: "xxx"
+            }
+            additional_bindings {
+                get: "yyy"
+            }
+        };
+    };
+}
+```
+
+In TypeScript generated code, those options look very similar:
+
+```typescript
+/**
+ * @generated from protobuf service spec.AnnotatedService
+ */
+export class AnnotatedServiceClient implements IAnnotatedServiceClient {
+    readonly typeName = "spec.AnnotatedService";
+    readonly methods: MethodInfo[] = [{
+        service: this,
+        name: "Get",
+        localName: "get",
+        I: AnnoGetRequest,
+        O: AnnoGetResponse,
+        options: {
+            // here are the options, in JSON format
+            "google.api.http": {
+                additionalBindings: [{
+                    get: "xxx"
+                }, {
+                    get: "yyy"
+                }],
+                get: "/v1/{name=messages/*}"
+            }
+        }
+    }];
+    // ...
+```
+
+It is very easy to create custom options. This is the source code for the 
+"google.api.http" option:
+
+```proto
+// google/api/annotations.proto:
+
+import "google/api/http.proto";
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.MethodOptions {
+  // See `HttpRule`.
+  HttpRule http = 72295728;
+}
+```
+
+As you can see, the option is a standard protobuf field. It can be a message 
+field like in the example above, or it can be a scalar, enum or repeated field. 
+
+In .proto, you set options in [text format](https://stackoverflow.com/questions/18873924/what-does-the-protobuf-text-format-look-like/18877167), 
+and `protobuf-ts` provides them in the canonical JSON format. This means that 
+you can parse message option fields using the appropriate message type:
+
+
+```typescript
+let client: AnnotatedServiceClient = ...
+
+let opt = client.methods[0].options;
+
+if (opt && "google.api.http" in opt) {
+    let rule = HttpRule.fromJson(opt["google.api.http"]);
+    if (rule) {
+        // now we have successfully read a 
+        // google.api.HttpRule from the option
+        let selector: string = rule.selector;
+        let bindings: HttpRule[] = rule.additionalBindings;
+    }
+}
+``` 
+
+To save you some typing, there is a convenience method available:
+
+```typescript
+import {readMethodOptions} from "@protobuf-ts/runtime-rpc";
+
+let rule = readMethodOptions(client, "get", "google.api.http", HttpRule);
+if (rule) {
+    let selector: string = rule.selector;
+    let bindings: HttpRule[] = rule.additionalBindings;
+}
+``` 
+
+Field options work the same way. In .proto, you create an extension for 
+`google.protobuf.FieldOptions`, and in TypeScript, you can read 
+`IMessageType.fields[].options`. If it is a message field, use 
+`readFieldOptions()` from `@protobuf-ts/runtime`. 
+
+
+
+
 ## Binary format
 
 `protobuf-ts` supports the binary format with the `IMessageType` methods 
@@ -741,7 +970,7 @@ required and recommended conformance tests of the [protobuf repository](https://
 
 The conformance testee is available in `packages/test-generated`. It 
 is run several times to test reflection ops and generated code (see 
-[Code size vs speed](#code-size-vs-speed)) as well as bigint and 
+[code size vs speed](#code-size-vs-speed)) as well as bigint and 
 string-based 64 bit integer support (see [Bigint support](#bigint-support)).
 
 
@@ -919,8 +1148,10 @@ The Angular example app `packages/example-angular-app` is using these polyfills
 and works with Edge 44. 
 
 For the Web Browser, it is recommended to use the `CODE_SIZE` optimization for 
-all messages, and explicitly set the file option `optimize_for = SPEED` only 
-where you can measure a noticeable performance increase.  
+all messages by setting plugin parameter `--ts_opt optimize_speed`. Then set the 
+file option `optimize_for = SPEED` for files where you can measure a noticeable 
+performance increase. See [code size vs speed](#code-size-vs-speed) for a output 
+size comparison.
 
 
 
@@ -936,192 +1167,6 @@ If you are using the `grpcweb-transport` or `twirp-transport`, you probably
 have to polyfill the fetch API. See the README files of the transport packages 
 for more information.  
 
-
-
-## Reflection information
-
-Reflection is a first-class feature of `protobuf-ts` and should be considered 
-a powerful tool for working with messages. 
-
-For example, it is possible to serialize a message to binary format using only 
-the reflection information. Other use cases for reflection can be input form 
-generation, message comparison algorithms, or transformation into another format 
-you may need. 
-
-A message provides reflection information via its `IMessageType`:
-```typescript
-/**
- * The protobuf type name of the message, including package and
- * parent types if present.
- *
- * Examples:
- * 'MyNamespaceLessMessage'
- * 'my_package.MyMessage'
- * 'my_package.ParentMessage.ChildMessage'
- */
-readonly typeName: string;
-
-/**
- * Simple information for each message field, in the order
- * of declaration in the source .proto.
- */
-readonly fields: readonly FieldInfo[];
-``` 
-
-The `FieldInfo` type distinguishes between the following kinds:
-
-- "scalar": string, bool, float, int32, etc.
-  See https://developers.google.com/protocol-buffers/docs/proto3#scalar
-
-- "enum": field was declared with an enum type.
-
-- "message": field was declared with a message type.
-
-- "map": field was declared with map<K,V>.
-
-
-Every field, regardless of it's kind, always has the following properties:
-
-- "no": The field number of the .proto field.
-- "name": The original name of the .proto field.
-- "localName": The name of the field as used in generated code.
-- "jsonName": The name for JSON serialization / deserialization.
-- "options": Custom field options from the .proto source in JSON format.
-
-
-Other properties:
-
-- Fields of kind "scalar", "enum" and "message" can have a "repeat" type.
-- Fields of kind "scalar" and "enum" can have a "repeat" type.
-- Fields of kind "scalar", "enum" and "message" can be member of a "oneof".
-
-A field can be only have one of the above properties set.
-
-Options for "scalar" fields:
-
-- 64 bit integral types can provide "L" - the JavaScript representation
-  type. 
-
-
-To learn more about reflection, have a look at the types declared in 
-`runtime/src/reflection-info.ts` and the source code of the reflection-based 
-operations. 
-
-Note that RPC also come with reflection information. See 
-`runtime-rpc/src/reflection-info.ts`. 
-
-
-#### Custom options
-
-`protobuf-ts` support custom field and method options and will add them to 
-the reflection information. 
-
-For example, consider the following service definition in .proto:
-
-```proto
-// import the proto that extends google.protobuf.MethodOptions
-import "google/api/annotations.proto";
-
-service AnnotatedService {
-    rpc Get (Request) returns (Reply) {
-        // now we can use the new options on the method
-        option (google.api.http) = {
-            get: "/v1/{name=messages/*}"
-            additional_bindings {
-                get: "xxx"
-            }
-            additional_bindings {
-                get: "yyy"
-            }
-        };
-    };
-}
-```
-
-In TypeScript generated code, those options look very similar:
-
-```typescript
-/**
- * @generated from protobuf service spec.AnnotatedService
- */
-export class AnnotatedServiceClient implements IAnnotatedServiceClient {
-    readonly typeName = "spec.AnnotatedService";
-    readonly methods: MethodInfo[] = [{
-        service: this,
-        name: "Get",
-        localName: "get",
-        I: AnnoGetRequest,
-        O: AnnoGetResponse,
-        options: {
-            // here are the options, in JSON format
-            "google.api.http": {
-                additionalBindings: [{
-                    get: "xxx"
-                }, {
-                    get: "yyy"
-                }],
-                get: "/v1/{name=messages/*}"
-            }
-        }
-    }];
-    // ...
-```
-
-It is very easy to create custom options. This is the source code for the 
-"google.api.http" option:
-
-```proto
-// google/api/annotations.proto:
-
-import "google/api/http.proto";
-import "google/protobuf/descriptor.proto";
-
-extend google.protobuf.MethodOptions {
-  // See `HttpRule`.
-  HttpRule http = 72295728;
-}
-```
-
-As you can see, the option is a standard protobuf field. It can be a message 
-field like in the example above, or it can be a scalar, enum or repeated field. 
-
-In .proto, you set options in [text format](https://stackoverflow.com/questions/18873924/what-does-the-protobuf-text-format-look-like/18877167), 
-and `protobuf-ts` provides them in the canonical JSON format. This means that 
-you can parse message option fields using the appropriate message type:
-
-
-```typescript
-let client: AnnotatedServiceClient = ...
-
-let opt = client.methods[0].options;
-
-if (opt && "google.api.http" in opt) {
-    let rule = HttpRule.fromJson(opt["google.api.http"]);
-    if (rule) {
-        // now we have successfully read a 
-        // google.api.HttpRule from the option
-        let selector: string = rule.selector;
-        let bindings: HttpRule[] = rule.additionalBindings;
-    }
-}
-``` 
-
-To save you some typing, there is a convenience method available:
-
-```typescript
-import {readMethodOptions} from "@protobuf-ts/runtime-rpc";
-
-let rule = readMethodOptions(client, "get", "google.api.http", HttpRule);
-if (rule) {
-    let selector: string = rule.selector;
-    let bindings: HttpRule[] = rule.additionalBindings;
-}
-``` 
-
-Field options work the same way. In .proto, you create an extension for 
-`google.protobuf.FieldOptions`, and in TypeScript, you can read 
-`IMessageType.fields[].options`. If it is a message field, use 
-`readFieldOptions()` from `@protobuf-ts/runtime`. 
 
 
 

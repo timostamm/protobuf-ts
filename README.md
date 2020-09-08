@@ -53,7 +53,7 @@ pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 - supports [proto3 optionals](MANUAL.md#proto3-optional)
 - [supports bigint](MANUAL.md#bigint-support) for 64 bit integers
 - every [message type](MANUAL.md#imessagetype) has methods to compare, clone, merge and type guard messages
-- provides [reflection information](MANUAL.md#reflection-information), 
+- provides [reflection information](MANUAL.md#reflection), 
   including [custom options](MANUAL.md#custom-options)
 - supports all [well-known-types](MANUAL.md#well-known-types) with custom JSON representation and helper methods
 - uses standard [TypeScript enums](MANUAL.md#enum-representation)
