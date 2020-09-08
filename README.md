@@ -48,7 +48,7 @@ pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 - provides [gRPC web clients](MANUAL.md#grpc-web-transport)
 - provides [Twirp clients](MANUAL.md#twirp-transport)
 - supports [Angular](MANUAL.md#angular-support) dependency injection and pipes
-- automatically installs protoc
+- automatically [installs protoc](./packages/protoc/README.md)
 - can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
 - supports [proto3 optionals](MANUAL.md#proto3-optional)
 - [supports bigint](MANUAL.md#bigint-support) for 64 bit integers

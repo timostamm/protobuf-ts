@@ -4,7 +4,7 @@
 Installs the protocol buffer compiler "protoc" for you. 
 
 
-Installation:
+Installation (not necessary if you have the [protobuf-ts plugin](https://github.com/timostamm/protobuf-ts/tree/master/packages/plugin) installed):
 ```shell script
 npm i -D @protobuf-ts/protoc
 ```
