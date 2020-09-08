@@ -17,6 +17,9 @@ jobs:
             sudo unzip -d '/usr/local' ${archive} 'bin/*' 'include/*'
             sudo chmod +x /usr/local/bin/protoc
             rm ${archive}
+            ls -lha /usr/local/bin/protoc
+            /usr/local/bin/protoc --version
+            protoc --version
 
       - run:
           name: Install conformance-test-runner
