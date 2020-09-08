@@ -62,7 +62,7 @@ async function main() {
         let filename = path.join(archivePath, header.filename);
         fs.mkdirSync(path.dirname(filename), {recursive: true});
         fs.writeFileSync(filename, data, {
-            mode: header.filename.includes("bin/") ? 0o766 : 0o666
+            mode: header.filename.includes("bin/") ? 0o755 : 0o666
         });
     });
 
