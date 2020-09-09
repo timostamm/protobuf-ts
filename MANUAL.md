@@ -1409,18 +1409,15 @@ let response = await call.response;
 
 But there is a caveat: gRPC and gRPC web use response trailers to indicate 
 server status. This means that it is possible that the server responds 
-with a message and then sends an error status. If you do not check the 
-`status`, you will miss the error status.
+with a message and *then* sends an error status. If you do not check the 
+`status`, you may be missing an error.
 
-For a better developer experience, the `UnaryCall` itself is awaitable, and 
-will reject if an error status is received.
+Response trailers are a very useful feature, but for simple unary calls, 
+awaiting two promises is cumbersome. For this reason, the `UnaryCall` itself 
+is awaitable, and will reject if an error status is received. Instead of awaiting `call.response`, you can simple await the 
+call:
 
 ```typescript
-// possibly unnoticed error status:
-let call = await service.myMethod(foo);
-let response = call.response;
-
-// better:
 let {response} = await service.myMethod(foo);
 ```
 
