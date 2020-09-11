@@ -1118,8 +1118,8 @@ several code generators:
 
 | generator               | version         | optimize for      | webpack output size |
 |-------------------------|----------------:|-------------------|--------------------:|
-| protobuf-ts | 1.0.1 | size | 40.627 b |
-| protobuf-ts | 1.0.1 | speed | 69.189 b |
+| protobuf-ts | 1.0.4 | size | 42,353 b |
+| protobuf-ts | 1.0.4 | speed | 72,558 b |
 | ts-proto | 1.26.0 |  | 111.825 b |
 | google-protobuf | 3.12.2 |  | 396.934 b |
 

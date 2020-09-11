@@ -43,6 +43,11 @@ const scalarTypeMapping = {
 export class FieldInfoGenerator {
 
 
+    // Use `2 /* NUMBER */` instead of `LongType.BIGINT`.
+    // Necessary for typescript compiler option "isolatedModules".
+    private inlineTypeEnums = true;
+
+
     constructor(
         private readonly registry: DescriptorRegistry,
         private readonly imports: TypescriptImportManager,
@@ -81,10 +86,7 @@ export class FieldInfoGenerator {
         if (fieldInfo.repeat !== undefined) {
             properties.push(ts.createPropertyAssignment(
                 "repeat",
-                ts.createPropertyAccess(
-                    ts.createIdentifier(this.imports.name('RepeatType', this.options.runtimeImportPath)),
-                    repeatTypeMapping[fieldInfo.repeat],
-                )
+                this.createRepeatType(fieldInfo.repeat)
             ));
         }
 
@@ -99,11 +101,11 @@ export class FieldInfoGenerator {
             case "scalar":
 
                 // T: Scalar field type.
-                properties.push(ts.createPropertyAssignment("T", this.createScalarT(fieldInfo.T)));
+                properties.push(ts.createPropertyAssignment("T", this.createScalarType(fieldInfo.T)));
 
                 // L?: JavaScript long type
                 if (fieldInfo.L !== undefined) {
-                    properties.push(ts.createPropertyAssignment("L", this.createScalarL(fieldInfo.L)));
+                    properties.push(ts.createPropertyAssignment("L", this.createLongType(fieldInfo.L)));
                 }
                 break;
 
@@ -120,7 +122,7 @@ export class FieldInfoGenerator {
 
             case "map":
                 // K: Map field key type.
-                properties.push(ts.createPropertyAssignment("K", this.createScalarT(fieldInfo.K)));
+                properties.push(ts.createPropertyAssignment("K", this.createScalarType(fieldInfo.K)));
 
                 // V: Map field value type.
                 properties.push(ts.createPropertyAssignment("V", this.createMapV(fieldInfo.V)));
@@ -162,7 +164,6 @@ export class FieldInfoGenerator {
         return partial;
     }
 
-
     private createMessageT(type: rt.IMessageType<rt.UnknownMessage>): ts.ArrowFunction {
         let descriptor = this.registry.resolveTypeName(type.typeName);
         let generatedMessage = this.imports.type(descriptor);
@@ -192,24 +193,52 @@ export class FieldInfoGenerator {
     }
 
 
-    private createScalarT(type: rt.ScalarType): ts.PropertyAccessExpression {
-        return ts.createPropertyAccess(
-            ts.createIdentifier(this.imports.name('ScalarType', this.options.runtimeImportPath)),
-            scalarTypeMapping[type],
-        )
+    private createRepeatType(type: rt.RepeatType): ts.Expression {
+        if (this.inlineTypeEnums) {
+            const expr = ts.createNumericLiteral(type.toString());
+            ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `RepeatType.${repeatTypeMapping[type]}`);
+            return expr;
+        } else {
+            return ts.createPropertyAccess(
+                ts.createIdentifier(this.imports.name('RepeatType', this.options.runtimeImportPath)),
+                repeatTypeMapping[type],
+            );
+        }
     }
 
-    private createScalarL(type: rt.LongType): ts.PropertyAccessExpression {
-        return ts.createPropertyAccess(
-            ts.createIdentifier(this.imports.name('LongType', this.options.runtimeImportPath)),
-            longTypeMapping[type],
-        )
+
+    private createScalarType(type: rt.ScalarType): ts.Expression {
+        if (this.inlineTypeEnums) {
+            const expr = ts.createNumericLiteral(type.toString());
+            ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `ScalarType.${scalarTypeMapping[type]}`);
+            return expr;
+        } else {
+            return ts.createPropertyAccess(
+                ts.createIdentifier(this.imports.name('ScalarType', this.options.runtimeImportPath)),
+                scalarTypeMapping[type],
+            );
+        }
     }
+
+
+    private createLongType(type: rt.LongType): ts.Expression {
+        if (this.inlineTypeEnums) {
+            const expr = ts.createNumericLiteral(type.toString());
+            ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `LongType.${longTypeMapping[type]}`);
+            return expr;
+        } else {
+            return ts.createPropertyAccess(
+                ts.createIdentifier(this.imports.name('LongType', this.options.runtimeImportPath)),
+                longTypeMapping[type],
+            );
+        }
+    }
+
 
     // V: Map field value type.
     private createMapV(mapV: (rt.PartialFieldInfo & { kind: "map" })["V"]): ts.ObjectLiteralExpression {
-        let T: ts.PropertyAccessExpression | ts.ArrowFunction;
-        let L: ts.PropertyAccessExpression | undefined = undefined;
+        let T: ts.Expression;
+        let L: ts.Expression | undefined = undefined;
         switch (mapV.kind) {
             case "message":
                 T = this.createMessageT(mapV.T());
@@ -218,9 +247,9 @@ export class FieldInfoGenerator {
                 T = this.createEnumT(mapV.T());
                 break;
             case "scalar":
-                T = this.createScalarT(mapV.T);
+                T = this.createScalarType(mapV.T);
                 if (mapV.L)
-                    L = this.createScalarL(mapV.L);
+                    L = this.createLongType(mapV.L);
                 break;
         }
         let properties: ts.ObjectLiteralElementLike[] = [
