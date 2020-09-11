@@ -115,7 +115,7 @@ export function readGrpcWebResponseTrailer(data: Uint8Array): [GrpcStatusCode, s
  * A grpc-frame type. Can be used to determine type of frame emitted by
  * `readGrpcWebResponseBody()`.
  */
-export const enum GrpcWebFrame { DATA = 0x00, TRAILER = 0x80 }
+export enum GrpcWebFrame { DATA = 0x00, TRAILER = 0x80 }
 
 
 /**

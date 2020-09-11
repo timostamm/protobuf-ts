@@ -406,10 +406,8 @@ export interface IBinaryWriter {
  * following value.
  *
  * See https://developers.google.com/protocol-buffers/docs/encoding#structure
- *
- * This is a const enum and cannot be used to lookup names.
  */
-export const enum WireType {
+export enum WireType {
 
     /**
      * Used for int32, int64, uint32, uint64, sint32, sint64, bool, enum

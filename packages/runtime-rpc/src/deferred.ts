@@ -1,4 +1,4 @@
-export const enum DeferredState {
+export enum DeferredState {
     PENDING,
     REJECTED,
     RESOLVED

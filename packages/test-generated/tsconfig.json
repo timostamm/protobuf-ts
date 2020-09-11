@@ -9,6 +9,13 @@
     "module": "CommonJS",
     "target": "ES2015",
     "baseUrl": "./",
+
+
+    // activated for issue #3
+    // react sets this option, breaking const enum
+    "isolatedModules": true,
+
+
     "strict": true,
     "lib": [
       "es2017",

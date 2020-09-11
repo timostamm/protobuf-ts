@@ -287,10 +287,8 @@ type fiPartialRules<T> = Omit<T, 'jsonName' | 'localName' | 'oneof' | 'repeat' |
  * Scalar value types. This is a subset of field types declared by protobuf
  * enum google.protobuf.FieldDescriptorProto.Type The types GROUP and MESSAGE
  * are omitted, but the numerical values are identical.
- *
- * This is a const enum and cannot be used to lookup names.
  */
-export const enum ScalarType {
+export enum ScalarType {
     // 0 is reserved for errors.
     // Order is weird for historical reasons.
     DOUBLE = 1,
@@ -340,10 +338,8 @@ export const enum ScalarType {
  * uint64 my_field = 1 [jstype = JS_STRING];
  * uint64 other_field = 2 [jstype = JS_NUMBER];
  * ```
- *
- * This is a const enum and cannot be used to lookup names.
  */
-export const enum LongType {
+export enum LongType {
 
     /**
      * Use JavaScript `bigint`.
@@ -384,10 +380,8 @@ export const enum LongType {
  * value for each element.
  *
  * `bytes` and `string` cannot be packed.
- *
- * This is a const enum and cannot be used to lookup names.
  */
-export const enum RepeatType {
+export enum RepeatType {
 
     /**
      * The field is not repeated.
