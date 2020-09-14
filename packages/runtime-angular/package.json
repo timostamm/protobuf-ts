@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/runtime-angular",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Runtime library for using protobuf-ts with angular",
   "license": "Apache-2.0",
   "author": "Timo Stamm <ts@timostamm.com>",
@@ -34,9 +34,9 @@
   "peerDependencies": {
     "@angular/common": ">=8.0.0 <=11.0.0",
     "@angular/core": ">=8.0.0 <=11.0.0",
-    "@protobuf-ts/runtime": "1.0.3",
-    "@protobuf-ts/runtime-rpc": "1.0.3",
-    "@protobuf-ts/twirp-transport": "1.0.3",
+    "@protobuf-ts/runtime": "1.0.4",
+    "@protobuf-ts/runtime-rpc": "1.0.4",
+    "@protobuf-ts/twirp-transport": "1.0.4",
     "rxjs": "~6.5.5"
   },
   "devDependencies": {
@@ -49,9 +49,9 @@
     "@angular/core": "~10.0.6",
     "@angular/platform-browser": "~10.0.6",
     "@angular/platform-browser-dynamic": "~10.0.6",
-    "@protobuf-ts/runtime": "^1.0.3",
-    "@protobuf-ts/runtime-rpc": "^1.0.3",
-    "@protobuf-ts/twirp-transport": "^1.0.3",
+    "@protobuf-ts/runtime": "^1.0.4",
+    "@protobuf-ts/runtime-rpc": "^1.0.4",
+    "@protobuf-ts/twirp-transport": "^1.0.4",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.47",

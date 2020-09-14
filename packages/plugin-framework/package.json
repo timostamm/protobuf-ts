@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/plugin-framework",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "framework to create protoc plugins",
   "license": "(Apache-2.0 AND BSD-3-Clause)",
   "author": "Timo Stamm <ts@timostamm.com>",
@@ -33,7 +33,7 @@
     "tslib": ">=1.6.1"
   },
   "dependencies": {
-    "@protobuf-ts/runtime": "^1.0.3",
+    "@protobuf-ts/runtime": "^1.0.4",
     "typescript": ">=3.8.3 <4"
   },
   "gitHead": "2742e3995c14cab17e74be919b59b878c8383ad9"
