@@ -47,6 +47,13 @@ message return {
 // `MessageType` must be imported under different name
 message MessageType {
 }
+// clash with global type "Error"
+// either this message name is escaped in generated code, or the generated
+// code must escape it's calls to the global error object (i.e. `new Error`)
+message Error {
+    string field_name = 1;
+    string message = 2;
+}
 
 
 message ClashParent {
