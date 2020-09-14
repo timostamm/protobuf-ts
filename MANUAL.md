@@ -1147,7 +1147,7 @@ The Angular example app `packages/example-angular-app` is using these polyfills
 and works with Edge 44. 
 
 For the Web Browser, it is recommended to use the `CODE_SIZE` optimization for 
-all messages by setting plugin parameter `--ts_opt optimize_speed`. Then set the 
+all messages by setting plugin parameter `--ts_opt optimize_code_size`. Then set the 
 file option `optimize_for = SPEED` for files where you can measure a noticeable 
 performance increase. See [code size vs speed](#code-size-vs-speed) for a output 
 size comparison.
