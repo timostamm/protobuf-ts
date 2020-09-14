@@ -282,7 +282,10 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                         ts.createStringLiteral("throw")
                     ),
                     ts.createThrow(ts.createNew(
-                        ts.createIdentifier("Error"),
+                        ts.createPropertyAccess(
+                            ts.createIdentifier("globalThis"),
+                            ts.createIdentifier("Error")
+                        ),
                         undefined,
                         [ts.createTemplateExpression(
                             ts.createTemplateHead(
@@ -799,7 +802,10 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                                     ]
                                 ),
                                 ts.createDefaultClause([ts.createThrow(ts.createNew(
-                                    ts.createIdentifier("Error"),
+                                    ts.createPropertyAccess(
+                                        ts.createIdentifier("globalThis"),
+                                        ts.createIdentifier("Error")
+                                    ),
                                     undefined,
                                     [ts.createStringLiteral("unknown map entry field for " + this.registry.formatQualifiedName(fieldDescriptor))]
                                 ))])
