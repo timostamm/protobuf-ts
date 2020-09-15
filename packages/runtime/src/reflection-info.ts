@@ -416,7 +416,7 @@ export function normalizeFieldInfo(field: PartialFieldInfo): FieldInfo {
 
 
 /**
- * Read custom field options from a generated service client.
+ * Read custom field options from a generated message type.
  */
 export function readFieldOptions<T extends object>(messageType: MessageInfo | IMessageType<any>, fieldName: string | number, extensionName: string, extensionType: IMessageType<T>): T | undefined {
     let info = messageType.fields.find((m, i) => m.localName == fieldName || i == fieldName);
