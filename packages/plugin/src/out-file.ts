@@ -12,12 +12,12 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import {Interpreter} from "./interpreter";
-import {InternalOptions} from "./options";
 import {CommentGenerator} from "./code-gen/comment-generator";
 import {ServiceClientGenerator} from "./code-gen/service-client-generator";
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
 import {MessageTypeGenerator} from "./code-gen/message-type-generator";
 import {EnumGenerator} from "./code-gen/enum-generator";
+import {InternalOptions} from "./our-options";
 
 
 /**

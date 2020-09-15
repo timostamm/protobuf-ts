@@ -2,11 +2,13 @@
 
 // wraps protoc installed by install.js for calling with `npx protoc`
 // adds the following special behaviour:
-// 1. add a --proto_path argument to the include/ directory of the release
-// 2. add a --plugin argument for all plugins found in node_modules/.bin
+// 1. add a `--proto_path` argument that points to the `include/` directory of the
+//    downloaded release
+// 2. add a `--plugin` argument for all plugins found in `node_modules/.bin/`
+// 3. add a `--proto_path` argument for `node_modules/@protobuf-ts/plugin`
 
 const {spawnSync} = require('child_process');
-const {listInstalled, findProtocPlugins} = require('./util');
+const {listInstalled, findProtocPlugins, findProtobufTs} = require('./util');
 
 let release = listInstalled()[0];
 if (!release) {
@@ -23,6 +25,12 @@ let args = [
     // do this last, otherwise it can shadow a user input
     "--proto_path", release.includePath,
 ];
+
+// search for @protobuf-ts/plugin in node_modules and add --proto_path argument
+let protobufTs = findProtobufTs(process.cwd());
+if (protobufTs) {
+    args.push("--proto_path", protobufTs);
+}
 
 // search for any protoc-gen-xxx plugins in .bin and add --plugin arguments for them
 for (let plugin of findProtocPlugins(process.cwd())) {

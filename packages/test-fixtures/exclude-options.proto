@@ -1,0 +1,49 @@
+syntax = "proto3";
+package spec;
+
+import "protobuf-ts.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/descriptor.proto";
+
+// just a sanity check - we should never exclude our own option
+option (ts.exclude_options) = "ts.*";
+
+// exclude specific
+option (ts.exclude_options) = "spec.mtd_opt1";
+option (ts.exclude_options) = "spec.fld_opt1";
+
+// exclude wildcard
+option (ts.exclude_options) = "spec.mtd_foo_*";
+option (ts.exclude_options) = "spec.fld_foo_*";
+
+
+extend google.protobuf.FieldOptions {
+    bool fld_opt1 = 1701;
+    bool fld_opt2 = 1702;
+    bool fld_foo = 1703;
+    bool fld_foo_bar = 1704;
+    bool fld_foo_baz = 1705;
+}
+
+message MessageWithExcludedOptions {
+    int32 field = 1 [(spec.fld_opt1) = true, (spec.fld_opt2) = true, (spec.fld_foo) = true, (spec.fld_foo_bar) = true, (spec.fld_foo_baz) = true];
+}
+
+
+extend google.protobuf.MethodOptions {
+    bool mtd_opt1 = 1701;
+    bool mtd_opt2 = 1702;
+    bool mtd_foo = 1703;
+    bool mtd_foo_bar = 1704;
+    bool mtd_foo_baz = 1705;
+}
+
+service ServiceWithExcludedOptions {
+    rpc Test (google.protobuf.Empty) returns (google.protobuf.Empty) {
+        option (spec.mtd_opt1) = true;
+        option (spec.mtd_opt2) = true;
+        option (spec.mtd_foo) = true;
+        option (spec.mtd_foo_bar) = true;
+        option (spec.mtd_foo_baz) = true;
+    }
+}

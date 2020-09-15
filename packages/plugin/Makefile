@@ -25,8 +25,9 @@ test: ${PROTO_PATH}/all.descriptorset
 
 ${PROTO_PATH}/all.descriptorset: $(PROTOS)
 	@protoc \
-		--descriptor_set_out=${@} \
-		--proto_path=${PROTO_PATH} \
+		--descriptor_set_out ${@} \
+		--proto_path ${PROTO_PATH} \
+		--proto_path . \
 		--include_source_info \
 		--include_imports \
 		--experimental_allow_proto3_optional \
@@ -37,8 +38,9 @@ ${PROTO_PATH}/all.codegenreq: $(PROTOS)
 	@protoc \
 		--dump_out=. \
 		--plugin=./bin/protoc-gen-dump \
-		--dump_opt="${@}" \
-		--proto_path=${PROTO_PATH} \
+		--dump_opt "${@}" \
+		--proto_path ${PROTO_PATH} \
+		--proto_path . \
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"

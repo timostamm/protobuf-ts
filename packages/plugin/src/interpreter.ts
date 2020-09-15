@@ -4,10 +4,12 @@ import {
     EnumDescriptorProto,
     FieldDescriptorProto,
     FieldOptions_JSType,
+    FileDescriptorProto,
     MethodDescriptorProto,
     OneofDescriptorProto,
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
+import {OurFileOptions, readOurFileOptions} from "./our-options";
 
 
 type JsonOptionsMap = {
@@ -15,6 +17,22 @@ type JsonOptionsMap = {
 }
 
 
+/**
+ * The protobuf-ts plugin generates code for message types from descriptor
+ * protos. This class also creates message types from descriptor protos, but
+ * but instead of generating code, it creates the type in-memory.
+ *
+ * This means that it is possible, for example, to read a message from binary
+ * data without any generated code.
+ *
+ * The protobuf-ts plugin uses the interpreter to read custom options at
+ * compile time and convert them to JSON.
+ *
+ * Since the interpreter creates fully functional message types including
+ * reflection information, the protobuf-ts plugin uses the interpreter as
+ * single source of truth for generating message interfaces and reflection
+ * information.
+ */
 export class Interpreter {
 
 
@@ -34,13 +52,30 @@ export class Interpreter {
 
 
     /**
-     * Searches for extensions to google.protobuf.FieldOptions
-     * (or MethodOptions) and returns a map of custom options for
-     * the provided field (or method).
+     * Returns a map of custom options for the provided descriptor.
      * The map is an object indexed by the extension field name.
      * The value of the extension field is provided in JSON format.
+     *
+     * This works by:
+     * - searching for option extensions for the given descriptor proto
+     *   in the registry.
+     * - for example, providing a google.protobuf.FieldDescriptorProto
+     *   searches for all extensions on google.protobuf.FieldOption.
+     * - extensions are just fields, so we build a synthetic message
+     *   type with all the (extension) fields.
+     * - the field names are created by DescriptorRegistry.getExtensionName(),
+     *   which produces for example "spec.option_name", where "spec" is
+     *   the package and "option_name" is the field name.
+     * - then we concatenate all unknown field data of the option and
+     *   read the data with our synthetic message type
+     * - the read message is then simply converted to JSON
+     *
+     * The optional "optionBlacklist" will exclude matching options.
+     * The blacklist can contain exact extension names, or use the wildcard
+     * character `*` to match a namespace or even all options.
+     *
      */
-    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto /*| DescriptorProto | ServiceDescriptorProto*/): JsonOptionsMap | undefined {
+    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto /*| DescriptorProto | ServiceDescriptorProto*/, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
         // if options message not present, there cannot be any extension options
         if (!descriptor.options) {
             return undefined;
@@ -57,36 +92,75 @@ export class Interpreter {
             optionsTypeName = 'google.protobuf.FieldOptions';
         } else if (MethodDescriptorProto.is(descriptor)) {
             optionsTypeName = 'google.protobuf.MethodOptions';
+        } else if (this.registry.fileOf(descriptor) === descriptor) {
+            optionsTypeName = 'google.protobuf.FileOptions';
         } else {
             throw new Error("interpreter expected field or method descriptor");
         }
 
         // create a synthetic type that has all extension fields for field options
-        let typeName = `$synthetic.${optionsTypeName}`;
+        const typeName = `$synthetic.${optionsTypeName}`;
         let type = this.messageTypes.get(typeName);
         if (!type) {
-            type = this.buildMessageType(typeName, this.registry.extensionsFor(optionsTypeName));
+            type = this.buildMessageType(typeName, this.registry.extensionsFor(optionsTypeName), []);
             this.messageTypes.set(typeName, type);
         }
 
         // concat all unknown field data
-        let unknownWriter = new rt.BinaryWriter();
+        const unknownWriter = new rt.BinaryWriter();
         for (let {no, wireType, data} of unknownFields)
             unknownWriter.tag(no, wireType).raw(data);
-        let unknownBytes = unknownWriter.finish();
+        const unknownBytes = unknownWriter.finish();
 
-        // read data and convert to JSON
-        let extendedOptions = type.fromBinary(unknownBytes, {readUnknownField: false});
-        let json = type.toJson(extendedOptions, {});
+        // read data
+        const options = type.fromBinary(unknownBytes, {readUnknownField: false});
+
+
+        // apply blacklist
+        if (excludeOptions) {
+            // we distinguish between literal blacklist (no wildcard)
+            let literals = excludeOptions.filter(str => !str.includes("*"));
+            // and wildcard, which we turn into RE
+            let wildcards = excludeOptions.filter(str => str.includes("*"))
+                .map(str => str.replace(/[.+\-?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*'));
+            // then we delete the blacklisted options
+            for (let key of Object.keys(options)) {
+                for (let str of literals)
+                    if (key === str)
+                        delete options[key];
+                for (let re of wildcards)
+                    if (key.match(re))
+                        delete options[key];
+            }
+        }
+
+
+        // were *all* options blacklisted?
+        if (!Object.keys(options).length) {
+            return undefined;
+        }
+
+
+        // return options as json
+        const json = type.toJson(options, {});
         assert(rt.isJsonObject(json));
         return json;
+    }
 
+
+    /**
+     * Read the custom file options declared in protobuf-ts.proto
+     */
+    readOurFileOptions(file: FileDescriptorProto): OurFileOptions {
+        return readOurFileOptions(file);
     }
 
 
     /**
      * Get a runtime type for the given message type name or message descriptor.
      * Creates the type if not created previously.
+     *
+     * Honors our file option "ts.exclude_options".
      */
     getMessageType(descriptorOrTypeName: string | DescriptorProto): rt.IMessageType<rt.UnknownMessage> {
         let descriptor = typeof descriptorOrTypeName === "string"
@@ -94,8 +168,12 @@ export class Interpreter {
             : descriptorOrTypeName;
         let typeName = this.registry.makeTypeName(descriptor);
         assert(DescriptorProto.is(descriptor));
-        let type = this.messageTypes.get(typeName) ?? this.buildMessageType(typeName, descriptor.field);
-        this.messageTypes.set(typeName, type);
+        let type = this.messageTypes.get(typeName);
+        if (!type) {
+            const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
+            type = this.buildMessageType(typeName, descriptor.field, ourFileOptions["ts.exclude_options"]);
+            this.messageTypes.set(typeName, type);
+        }
         return type;
     }
 
@@ -138,17 +216,17 @@ export class Interpreter {
     }
 
 
-    private buildMessageType(typeName: string, fields: FieldDescriptorProto[]): rt.IMessageType<rt.UnknownMessage> {
-        return new rt.MessageType(typeName, this.buildFieldInfos(fields));
+    private buildMessageType(typeName: string, fields: FieldDescriptorProto[], excludeOptions: readonly string[]): rt.IMessageType<rt.UnknownMessage> {
+        return new rt.MessageType(typeName, this.buildFieldInfos(fields, excludeOptions));
     }
 
 
-    private buildFieldInfos(fieldDescriptors: FieldDescriptorProto[]): rt.PartialFieldInfo[] {
-        return fieldDescriptors.map(d => this.buildFieldInfo(d));
+    private buildFieldInfos(fieldDescriptors: FieldDescriptorProto[], excludeOptions: readonly string[]): rt.PartialFieldInfo[] {
+        return fieldDescriptors.map(fd => this.buildFieldInfo(fd, excludeOptions));
     }
 
 
-    private buildFieldInfo(fieldDescriptor: FieldDescriptorProto): rt.PartialFieldInfo {
+    private buildFieldInfo(fieldDescriptor: FieldDescriptorProto, excludeOptions: readonly string[]): rt.PartialFieldInfo {
         assert(fieldDescriptor.number);
         assert(fieldDescriptor.name);
         let info: { [k: string]: any } = {};
@@ -302,7 +380,7 @@ export class Interpreter {
 
         } else {
 
-            info.options = this.readOptions(fieldDescriptor);
+            info.options = this.readOptions(fieldDescriptor, excludeOptions);
 
         }
 
