@@ -2,7 +2,7 @@ protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?st
 ===========
 
 
-Protobuf and RPC for Node.js and the Web Browser. 
+Protocol buffers and RPC for Node.js and the Web Browser. 
 
 For the following `.proto` file:
 ```proto
@@ -35,30 +35,35 @@ pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 
 ### Quickstart
 
-- grab the [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/test-fixtures/msg-readme.proto) 
+- download the example file [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/test-fixtures/msg-readme.proto) 
+
 - `npm install @protobuf-ts/plugin`
-- `npx protoc --ts_out . msg-readme.proto`
-- add the `--experimental_allow_proto3_optional` flag if your protoc version asks for it
+  > installs the plugin and the compiler "protoc"
+
+- `npx protoc --ts_out . --proto_path protos protos/msg-readme.proto`
+  > generates msg-readme.ts  
+  > if your protoc version asks for it, add the flag "--experimental_allow_proto3_optional"
 
 
 ### Features
 
-- implements the [canonical proto3 JSON format](MANUAL.md#json-format)
-- implements the [binary format](MANUAL.md#binary-format) and respects [unknown fields](MANUAL.md#unknown-field-handling)
-- provides [gRPC web clients](MANUAL.md#grpc-web-transport)
-- provides [Twirp clients](MANUAL.md#twirp-transport)
-- supports [Angular](MANUAL.md#angular-support) dependency injection and pipes
-- automatically [installs protoc](./packages/protoc/README.md)
-- can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
-- supports [proto3 optionals](MANUAL.md#proto3-optional)
-- [supports bigint](MANUAL.md#bigint-support) for 64 bit integers
-- every [message type](MANUAL.md#imessagetype) has methods to compare, clone, merge and type guard messages
-- provides [reflection information](MANUAL.md#reflection), 
+- [x] implements the [canonical proto3 JSON format](MANUAL.md#json-format)
+- [x] implements the [binary format](MANUAL.md#binary-format) and respects [unknown fields](MANUAL.md#unknown-field-handling)
+- [x] strictly [conforms to the protobuf spec](MANUAL.md#conformance)
+- [x] provides [gRPC web clients](MANUAL.md#grpc-web-transport)
+- [x] provides [Twirp clients](MANUAL.md#twirp-transport)
+- [x] supports [Angular](MANUAL.md#angular-support) dependency injection and pipes
+- [x] automatically [installs protoc](./packages/protoc/README.md)
+- [x] can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
+- [x] supports [proto3 optionals](MANUAL.md#proto3-optionals)
+- [x] [supports bigint](MANUAL.md#bigint-support) for 64 bit integers
+- [x] every [message type](MANUAL.md#imessagetype) has methods to compare, clone, merge and type guard messages
+- [x] provides [reflection information](MANUAL.md#reflection), 
   including [custom options](MANUAL.md#custom-options)
-- supports all [well-known-types](MANUAL.md#well-known-types) with custom JSON representation and helper methods
-- uses standard [TypeScript enums](MANUAL.md#enum-representation)
-- runs [in the Web Browser](MANUAL.md#running-in-the-web-browser) and in [Node.js](MANUAL.md#running-in-nodejs)
-- uses an [algebraic data type for oneof](MANUAL.md#oneof-representation) groups
+- [x] supports all [well-known-types](MANUAL.md#well-known-types) with custom JSON representation and helper methods
+- [x] uses standard [TypeScript enums](MANUAL.md#enum-representation)
+- [x] runs [in the Web Browser](MANUAL.md#running-in-the-web-browser) and in [Node.js](MANUAL.md#running-in-nodejs)
+- [x] uses an [algebraic data type for oneof](MANUAL.md#oneof-representation) groups
 
 
 Read the [MANUAL](MANUAL.md) to learn more.
