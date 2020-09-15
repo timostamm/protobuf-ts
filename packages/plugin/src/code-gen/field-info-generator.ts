@@ -3,39 +3,6 @@ import * as ts from "typescript";
 import {DescriptorRegistry, TypescriptImportManager, typescriptLiteralFromValue} from "@protobuf-ts/plugin-framework";
 
 
-const repeatTypeMapping = {
-    [rt.RepeatType.NO]: "NO",
-    [rt.RepeatType.PACKED]: "PACKED",
-    [rt.RepeatType.UNPACKED]: "UNPACKED",
-} as const;
-
-
-const longTypeMapping = {
-    [rt.LongType.STRING]: "STRING",
-    [rt.LongType.BIGINT]: "BIGINT",
-    [rt.LongType.NUMBER]: "NUMBER",
-} as const;
-
-
-const scalarTypeMapping = {
-    [rt.ScalarType.DOUBLE]: "DOUBLE",
-    [rt.ScalarType.FLOAT]: "FLOAT",
-    [rt.ScalarType.INT64]: "INT64",
-    [rt.ScalarType.UINT64]: "UINT64",
-    [rt.ScalarType.INT32]: "INT32",
-    [rt.ScalarType.FIXED64]: "FIXED64",
-    [rt.ScalarType.FIXED32]: "FIXED32",
-    [rt.ScalarType.BOOL]: "BOOL",
-    [rt.ScalarType.STRING]: "STRING",
-    [rt.ScalarType.BYTES]: "BYTES",
-    [rt.ScalarType.UINT32]: "UINT32",
-    [rt.ScalarType.SFIXED32]: "SFIXED32",
-    [rt.ScalarType.SFIXED64]: "SFIXED64",
-    [rt.ScalarType.SINT32]: "SINT32",
-    [rt.ScalarType.SINT64]: "SINT64",
-} as const;
-
-
 /**
  * Generates TypeScript code for runtime field information,
  * from runtime field information.
@@ -43,17 +10,10 @@ const scalarTypeMapping = {
 export class FieldInfoGenerator {
 
 
-    // Use `2 /* NUMBER */` instead of `LongType.BIGINT`.
-    // Necessary for typescript compiler option "isolatedModules".
-    private inlineTypeEnums = true;
-
-
     constructor(
         private readonly registry: DescriptorRegistry,
         private readonly imports: TypescriptImportManager,
-        private readonly options: {
-            runtimeImportPath: string;
-        },
+        private readonly options: {},
     ) {
     }
 
@@ -194,44 +154,23 @@ export class FieldInfoGenerator {
 
 
     private createRepeatType(type: rt.RepeatType): ts.Expression {
-        if (this.inlineTypeEnums) {
-            const expr = ts.createNumericLiteral(type.toString());
-            ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `RepeatType.${repeatTypeMapping[type]}`);
-            return expr;
-        } else {
-            return ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.name('RepeatType', this.options.runtimeImportPath)),
-                repeatTypeMapping[type],
-            );
-        }
+        const expr = ts.createNumericLiteral(type.toString());
+        ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `RepeatType.${rt.RepeatType[type]}`);
+        return expr;
     }
 
 
     private createScalarType(type: rt.ScalarType): ts.Expression {
-        if (this.inlineTypeEnums) {
-            const expr = ts.createNumericLiteral(type.toString());
-            ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `ScalarType.${scalarTypeMapping[type]}`);
-            return expr;
-        } else {
-            return ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.name('ScalarType', this.options.runtimeImportPath)),
-                scalarTypeMapping[type],
-            );
-        }
+        const expr = ts.createNumericLiteral(type.toString());
+        ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `ScalarType.${rt.ScalarType[type]}`);
+        return expr;
     }
 
 
     private createLongType(type: rt.LongType): ts.Expression {
-        if (this.inlineTypeEnums) {
-            const expr = ts.createNumericLiteral(type.toString());
-            ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `LongType.${longTypeMapping[type]}`);
-            return expr;
-        } else {
-            return ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.name('LongType', this.options.runtimeImportPath)),
-                longTypeMapping[type],
-            );
-        }
+        const expr = ts.createNumericLiteral(type.toString());
+        ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `LongType.${rt.LongType[type]}`);
+        return expr;
     }
 
 
