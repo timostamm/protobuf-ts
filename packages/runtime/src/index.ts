@@ -1,4 +1,6 @@
 // Public API of the protobuf-ts runtime.
+// Note: we do not use `export * from ...` to help tree shakers,
+// webpack verbose output hints that this should be useful
 
 // Convenience JSON typings and corresponding type guards
 export {JsonValue, JsonObject, typeofJsonValue, isJsonObject} from './json-typings';
