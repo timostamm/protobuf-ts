@@ -51,7 +51,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         let imports = new TypescriptImportManager(this, symbolTable, this);
         let commentGenerator = new CommentGenerator(this.registry);
         this.serviceClientGenerator = new ServiceClientGenerator(this.registry, imports, this.interpreter, this.options);
-        this.messageInterfaceGenerator = new MessageInterfaceGenerator(imports, this.registry, this.interpreter, commentGenerator, options);
+        this.messageInterfaceGenerator = new MessageInterfaceGenerator(this.registry, imports, this.interpreter, commentGenerator, options);
         this.messageTypeGenerator = new MessageTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, options)
         this.enumGenerator = new EnumGenerator(this.registry, imports, this.interpreter, commentGenerator);
     }

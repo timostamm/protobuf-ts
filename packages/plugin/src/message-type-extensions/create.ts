@@ -18,15 +18,10 @@ export class Create implements CustomMethodGenerator {
 
 
     constructor(
-        private readonly options: {
-            optimizeFor: FileOptions_OptimizeMode,
-            normalLongType: LongType,
-            oneofKindDiscriminator: string;
-            runtimeImportPath: string;
-        },
-        private readonly imports: TypescriptImportManager,
         private readonly registry: DescriptorRegistry,
+        private readonly imports: TypescriptImportManager,
         private readonly interpreter: Interpreter,
+        private readonly options: { optimizeFor: FileOptions_OptimizeMode; normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }
 

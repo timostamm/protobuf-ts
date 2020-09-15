@@ -18,8 +18,8 @@ export class MessageInterfaceGenerator {
 
 
     constructor(
-        private readonly imports: TypescriptImportManager,
         private readonly registry: DescriptorRegistry,
+        private readonly imports: TypescriptImportManager,
         private readonly interpreter: Interpreter,
         private readonly commentGenerator: CommentGenerator,
         private readonly options: {

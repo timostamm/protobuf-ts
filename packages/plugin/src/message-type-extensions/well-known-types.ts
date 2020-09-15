@@ -13,12 +13,9 @@ import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 export class WellKnownTypes implements CustomMethodGenerator {
 
     constructor(
-        private readonly imports: TypescriptImportManager,
-        private readonly options: {
-            normalLongType: LongType;
-            runtimeImportPath: string;
-        },
         private readonly typeNameLookup: ITypeNameLookup,
+        private readonly imports: TypescriptImportManager,
+        private readonly options: { normalLongType: LongType; runtimeImportPath: string },
     ) {
     }
 

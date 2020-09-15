@@ -26,14 +26,10 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
 
     constructor(
-        private readonly imports: TypescriptImportManager,
         private readonly registry: DescriptorRegistry,
+        private readonly imports: TypescriptImportManager,
         private readonly interpreter: Interpreter,
-        private readonly options: {
-            optimizeFor: FileOptions_OptimizeMode;
-            oneofKindDiscriminator: string;
-            runtimeImportPath: string
-        },
+        private readonly options: { optimizeFor: FileOptions_OptimizeMode; oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }
 

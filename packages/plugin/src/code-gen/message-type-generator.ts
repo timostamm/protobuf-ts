@@ -48,11 +48,11 @@ export class MessageTypeGenerator {
         }
     ) {
         this.fieldInfoGenerator = new FieldInfoGenerator(this.registry, this.imports, this.options);
-        this.wellKnown = new WellKnownTypes(this.imports, this.options, this.registry);
-        this.googleTypes = new GoogleTypes(this.imports, this.options, this.registry);
-        this.typeMethodCreate = new Create(this.options, this.imports, this.registry, this.interpreter);
-        this.typeMethodInternalBinaryRead = new InternalBinaryRead(this.imports, this.registry, this.interpreter, this.options);
-        this.typeMethodInternalBinaryWrite = new InternalBinaryWrite(this.imports, this.registry, this.interpreter, this.options);
+        this.wellKnown = new WellKnownTypes(this.registry, this.imports, this.options);
+        this.googleTypes = new GoogleTypes(this.registry, this.imports, this.options);
+        this.typeMethodCreate = new Create(this.registry, this.imports, this.interpreter, this.options);
+        this.typeMethodInternalBinaryRead = new InternalBinaryRead(this.registry, this.imports, this.interpreter, this.options);
+        this.typeMethodInternalBinaryWrite = new InternalBinaryWrite(this.registry, this.imports, this.interpreter, this.options);
     }
 
 

@@ -9,7 +9,7 @@ import {
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
-import {assert} from "@protobuf-ts/runtime";
+import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {Interpreter} from "../interpreter";
 
@@ -21,15 +21,10 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     constructor(
-        private readonly imports: TypescriptImportManager,
         private readonly registry: DescriptorRegistry,
+        private readonly imports: TypescriptImportManager,
         private readonly interpreter: Interpreter,
-        private readonly options: {
-            optimizeFor: FileOptions_OptimizeMode,
-            normalLongType: rt.LongType,
-            oneofKindDiscriminator: string;
-            runtimeImportPath: string;
-        },
+        private readonly options: { optimizeFor: FileOptions_OptimizeMode; normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }
 
