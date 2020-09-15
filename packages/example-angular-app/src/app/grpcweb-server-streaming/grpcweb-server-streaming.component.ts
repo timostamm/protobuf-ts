@@ -3,7 +3,7 @@ import {GrpcWebFetchTransport, GrpcWebOptions} from '@protobuf-ts/grpcweb-transp
 import {AllMethodsRequest, AllMethodsServiceClient, FailRequest} from '../../protoc-gen-ts-out/service-all-methods';
 import {EnumObjectValue, listEnumValues} from '@protobuf-ts/runtime';
 import {BehaviorSubject} from 'rxjs';
-import {RpcError, RpcOptions, UnaryCall} from '@protobuf-ts/runtime-rpc';
+import {RpcError, RpcOptions, ServerStreamingCall, UnaryCall} from '@protobuf-ts/runtime-rpc';
 
 
 type Info = {
@@ -36,6 +36,15 @@ export class GrpcwebServerStreamingComponent {
             options.meta = {};
           }
           options.meta.Authorization = 'xxx';
+          console.log('unary interceptor added authorization header (gRPC-web transport)');
+          return next(method, input, options);
+        },
+        interceptServerStreaming(next, method, input, options): ServerStreamingCall {
+          if (!options.meta) {
+            options.meta = {};
+          }
+          options.meta.Authorization = 'xxx';
+          console.log('server streaming interceptor added authorization header (gRPC-web transport)');
           return next(method, input, options);
         }
       }

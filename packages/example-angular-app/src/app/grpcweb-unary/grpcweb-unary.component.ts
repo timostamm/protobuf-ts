@@ -36,6 +36,7 @@ export class GrpcwebUnaryComponent {
             options.meta = {};
           }
           options.meta.Authorization = 'xxx';
+          console.log('unary interceptor added authorization header (gRPC-web transport)');
           return next(method, input, options);
         }
       }
