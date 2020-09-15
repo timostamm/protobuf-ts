@@ -1,4 +1,4 @@
-import {RpcCallShared, RpcCancelFn} from "./rpc-call-shared";
+import {RpcCallShared} from "./rpc-call-shared";
 import {RpcInputStream} from "./rpc-input-stream";
 import {RpcStatus} from "./rpc-status";
 import {RpcMetadata} from "./rpc-metadata";
@@ -65,7 +65,6 @@ export class ClientStreamingCall<I extends object = object, O extends object = o
      */
     readonly trailers: Promise<RpcMetadata>;
 
-    private readonly cancelFn: RpcCancelFn;
 
     constructor(
         method: MethodInfo<I, O>,
@@ -75,7 +74,6 @@ export class ClientStreamingCall<I extends object = object, O extends object = o
         response: Promise<O>,
         status: Promise<RpcStatus>,
         trailers: Promise<RpcMetadata>,
-        cancelFn: RpcCancelFn,
     ) {
         this.method = method;
         this.requestHeaders = requestHeaders;
@@ -84,15 +82,6 @@ export class ClientStreamingCall<I extends object = object, O extends object = o
         this.response = response;
         this.status = status;
         this.trailers = trailers;
-        this.cancelFn = cancelFn;
-    }
-
-
-    /**
-     * Cancel this call.
-     */
-    cancel(): void {
-        this.cancelFn();
     }
 
 

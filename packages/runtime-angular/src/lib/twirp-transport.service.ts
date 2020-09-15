@@ -14,7 +14,7 @@ import {
   UnaryCall
 } from "@protobuf-ts/runtime-rpc";
 import {isJsonObject, JsonValue, lowerCamelCase, utf8read} from "@protobuf-ts/runtime";
-import {Subject} from "rxjs";
+import {fromEvent, NEVER, of} from "rxjs";
 import {TwirpErrorCode, TwirpOptions} from "@protobuf-ts/twirp-transport";
 import {Inject, Injectable} from "@angular/core";
 import {TWIRP_TRANSPORT_OPTIONS} from "./twirp-transport-options";
@@ -55,8 +55,11 @@ export class TwirpTransport implements RpcTransport {
       defMessage = new Deferred<O>(),
       defStatus = new Deferred<RpcStatus>(),
       defTrailer = new Deferred<RpcMetadata>(),
-      cancellationToken = new Subject<void>(),
-      cancellationRequested = false;
+      abortObservable = !options.abort ? NEVER : (
+        options.abort.aborted
+          ? of(undefined)
+          : fromEvent(options.abort, "abort")
+      );
 
     this.http.request('POST', url, {
       body: requestBody,
@@ -65,12 +68,12 @@ export class TwirpTransport implements RpcTransport {
       observe: "response",
     })
       .pipe(
-        takeUntil(cancellationToken)
+        takeUntil(abortObservable)
       )
       .toPromise()
       .then(ngResponse => {
 
-        if (ngResponse === undefined && cancellationRequested)
+        if (ngResponse === undefined && options.abort?.aborted)
           return undefined;
 
         defHeader.resolve(parseMetadataFromResponseHeaders(ngResponse.headers));
@@ -105,7 +108,7 @@ export class TwirpTransport implements RpcTransport {
       })
 
       .then(message => {
-        if (message === undefined && cancellationRequested)
+        if (message === undefined &&  options.abort?.aborted)
           throw new RpcError("request cancelled", TwirpErrorCode[TwirpErrorCode.cancelled]);
         defMessage.resolve(message);
         defStatus.resolve({code: 'OK', detail: ''});
@@ -131,10 +134,6 @@ export class TwirpTransport implements RpcTransport {
       defMessage.promise,
       defStatus.promise,
       defTrailer.promise,
-      () => {
-        cancellationRequested = true;
-        cancellationToken.next();
-      },
     );
   }
 

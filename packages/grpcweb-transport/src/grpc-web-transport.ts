@@ -81,13 +81,11 @@ export class GrpcWebFetchTransport implements RpcTransport {
 
 
     serverStreaming<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: RpcOptions): ServerStreamingCall<I, O> {
-
         let
             opt = options as GrpcWebOptions,
             format = opt.format ?? 'text',
             url = this.makeUrl(method, opt),
             inputBytes = method.I.toBinary(input, opt.binaryOptions),
-            abort = new globalThis.AbortController(),
             defHeader = new Deferred<RpcMetadata>(),
             responseStream = new RpcOutputStreamController<O>(),
             maybeStatus: RpcStatus | undefined,
@@ -99,7 +97,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             method: 'POST',
             headers: createGrpcWebRequestHeader(new globalThis.Headers(), format, opt.deadline, opt.meta),
             body: createGrpcWebRequestBody(inputBytes, format),
-            signal: abort.signal
+            signal: options.abort
         })
             .then(fetchResponse => {
                 let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse);
@@ -171,7 +169,6 @@ export class GrpcWebFetchTransport implements RpcTransport {
             responseStream,
             defStatus.promise,
             defTrailer.promise,
-            () => abort.abort(),
         );
 
     }
@@ -184,7 +181,6 @@ export class GrpcWebFetchTransport implements RpcTransport {
             format = opt.format ?? 'text',
             url = this.makeUrl(method, opt),
             inputBytes = method.I.toBinary(input, opt.binaryOptions),
-            abort = new globalThis.AbortController(),
             defHeader = new Deferred<RpcMetadata>(),
             maybeMessage: O | undefined,
             defMessage = new Deferred<O>(),
@@ -197,7 +193,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             method: 'POST',
             headers: createGrpcWebRequestHeader(new globalThis.Headers(), format, opt.deadline, opt.meta),
             body: createGrpcWebRequestBody(inputBytes, format),
-            signal: abort.signal
+            signal: options.abort
         })
             .then(fetchResponse => {
                 let [statusCode, statusDetail, responseMeta] = readGrpcWebResponseHeader(fetchResponse);
@@ -274,7 +270,6 @@ export class GrpcWebFetchTransport implements RpcTransport {
             defMessage.promise,
             defStatus.promise,
             defTrailer.promise,
-            () => abort.abort(),
         );
     }
 

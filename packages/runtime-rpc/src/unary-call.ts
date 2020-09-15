@@ -1,4 +1,4 @@
-import {RpcCallShared, RpcCancelFn} from "./rpc-call-shared";
+import {RpcCallShared} from "./rpc-call-shared";
 import {RpcStatus} from "./rpc-status";
 import {MethodInfo} from "./reflection-info";
 import {RpcMetadata} from "./rpc-metadata";
@@ -67,8 +67,6 @@ export class UnaryCall<I extends object = object, O extends object = object> imp
     readonly trailers: Promise<RpcMetadata>;
 
 
-    private readonly cancelFn: RpcCancelFn;
-
     constructor(
         method: MethodInfo<I, O>,
         requestHeaders: RpcMetadata,
@@ -77,7 +75,6 @@ export class UnaryCall<I extends object = object, O extends object = object> imp
         response: Promise<O>,
         status: Promise<RpcStatus>,
         trailers: Promise<RpcMetadata>,
-        cancelFn: RpcCancelFn,
     ) {
         this.method = method;
         this.requestHeaders = requestHeaders;
@@ -86,15 +83,6 @@ export class UnaryCall<I extends object = object, O extends object = object> imp
         this.response = response;
         this.status = status;
         this.trailers = trailers;
-        this.cancelFn = cancelFn;
-    }
-
-
-    /**
-     * Cancel this call.
-     */
-    cancel(): void {
-        this.cancelFn();
     }
 
 

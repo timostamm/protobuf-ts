@@ -3,9 +3,6 @@ import {RpcStatus} from "./rpc-status";
 import {RpcMetadata} from "./rpc-metadata";
 
 
-export type RpcCancelFn = () => void;
-
-
 export interface RpcCallShared<I extends object, O extends object> {
 
     /**
@@ -50,11 +47,6 @@ export interface RpcCallShared<I extends object, O extends object> {
      * reject with a `RpcError`.
      */
     readonly trailers: Promise<RpcMetadata>;
-
-    /**
-     * Cancel this call.
-     */
-    cancel(): void;
 
 }
 
