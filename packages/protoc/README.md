@@ -4,10 +4,15 @@
 Installs the protocol buffer compiler "protoc" for you. 
 
 
-Installation (not necessary if you have the [protobuf-ts plugin](https://github.com/timostamm/protobuf-ts/tree/master/packages/plugin) installed):
+Installation (not necessary if you use the [protobuf-ts plugin](https://github.com/timostamm/protobuf-ts/tree/master/packages/plugin)):
+
 ```shell script
-npm i -D @protobuf-ts/protoc
-```
+# with npm:
+npm install @protobuf-ts/protoc
+
+# with yarn:
+yarn add @protobuf-ts/protoc
+```             
 
 Now you can run protoc as usual, you just have to prefix your command with `npx`:
 
@@ -20,6 +25,13 @@ Plugins are picked up automatically. If you have a `node_modules/.bin/protoc-gen
 ```shell script
 npx protoc --foo_out ./bar 
 ```
+
+If you use yarn, you can prefix your command with `yarn` instead of `npx`:
+
+```shell script
+yarn protoc --version 
+``` 
+
 
 
 #### How it works:

@@ -7,10 +7,25 @@ Create, clone, serialize, and compare protobuf messages. Get reflection
 information about message fields and custom options.
 
 Installation:
-               
+
 ```shell script
-npm i @protobuf-ts/runtime
-``` 
+# with npm:
+npm install @protobuf-ts/runtime
+
+# with yarn:
+yarn add @protobuf-ts/runtime
+```             
+
+You probably want the protoc plugin as well: 
+          
+```shell script
+# with npm:
+npm install -D @protobuf-ts/plugin
+
+# with yarn:
+yarn add --dev @protobuf-ts/plugin
+```
+                       
 
 To learn more, please read the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#imessagetype) 
 or check the repository [README](https://github.com/timostamm/protobuf-ts/README.md) for a quick overview.
