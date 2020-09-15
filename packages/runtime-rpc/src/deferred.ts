@@ -5,84 +5,42 @@ export enum DeferredState {
 }
 
 /**
- * A deferred promise. This is a "controller" for a promise,
- * which lets you pass a promise around and reject or resolve
- * it from the outside.
+ * A deferred promise. This is a "controller" for a promise, which lets you
+ * pass a promise around and reject or resolve it from the outside.
  *
- * The actual promise is only created when the "promise"
- * property is accessed.
+ * Warning: This class is to be used with care. Using it can make code very
+ * difficult to read. It is intended for use in library code that exposes
+ * promises, not for regular business logic.
  */
 export class Deferred<T> {
 
     /**
      * Get the current state of the promise.
      */
-    get state() {
+    get state(): DeferredState {
         return this._state;
     }
 
     /**
-     * Has the promise been acquired by accessing the "promise"
-     * property?
-     */
-    get hot(): boolean {
-        return !!this._promise;
-    }
-
-    /**
-     * Get the underlying promise.
-     * This changes the state from COLD to PENDING.
+     * Get the deferred promise.
      */
     get promise(): Promise<T> {
-        if (this._promise)
-            return this._promise;
-
-        switch (this._state) {
-            case DeferredState.PENDING:
-                if (!this._promise) {
-                    this._promise = new Promise<T>((resolve, reject) => {
-                            this._resolve = resolve;
-                            this._reject = reject;
-                        }
-                    )
-                }
-                return this._promise!;
-
-            case DeferredState.REJECTED:
-                if (!this._promise)
-                    if (!this.coldReject)
-                        throw new Error('broken state');
-                    else
-                        this._promise = Promise.reject(this.coldReject.reason);
-                return this._promise;
-
-            case DeferredState.RESOLVED:
-                if (!this._promise)
-                    if (!this.coldResolve)
-                        throw new Error('broken state');
-                    else
-                        this._promise = Promise.resolve(this.coldResolve.value);
-                return this._promise;
-
-        }
+        return this._promise;
     }
 
-    private _state = DeferredState.PENDING;
-
-    private coldReject: undefined | {
-        reason: any;
-    };
-
-    private coldResolve: undefined | {
-        value: T | PromiseLike<T>;
-    };
-
-    private _promise: Promise<T> | undefined;
-    private _resolve: any;
-    private _reject: any;
+    private readonly _promise: Promise<T>;
+    private _state: DeferredState = DeferredState.PENDING;
+    // @ts-ignore
+    private _resolve: (value: T | PromiseLike<T>) => void;
+    // @ts-ignore
+    private _reject: (reason?: any) => void;
 
 
     constructor() {
+        this._promise = new Promise<T>((resolve, reject) => {
+            this._resolve = resolve;
+            this._reject = reject;
+        });
     }
 
 
@@ -90,29 +48,21 @@ export class Deferred<T> {
      * Resolve the promise. Throws if the promise is already resolved or rejected.
      */
     resolve(value: T | PromiseLike<T>): void {
-        if (this._state !== DeferredState.PENDING)
-            throw new Error('cannot reject ' + this.state);
-
+        if (this.state !== DeferredState.PENDING)
+            throw new Error(`cannot resolve ${DeferredState[this.state].toLowerCase()}`);
+        this._resolve(value);
         this._state = DeferredState.RESOLVED;
-        if (this._resolve)
-            this._resolve(value);
-        else
-            this.coldResolve = {value};
     }
 
 
     /**
-     * Reject the promise. Throws if the promise is pending.
+     * Reject the promise. Throws if the promise is already resolved or rejected.
      */
     reject(reason: any): void {
-        if (this._state !== DeferredState.PENDING)
-            throw new Error('cannot reject ' + this.state);
-
+        if (this.state !== DeferredState.PENDING)
+            throw new Error(`cannot reject ${DeferredState[this.state].toLowerCase()}`);
+        this._reject(reason);
         this._state = DeferredState.REJECTED;
-        if (this._reject)
-            this._reject(reason);
-        else
-            this.coldReject = {reason};
     }
 
 

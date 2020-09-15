@@ -1,13 +1,23 @@
 import {Deferred, DeferredState} from "./deferred";
+import {assert} from "@protobuf-ts/runtime";
 
 
 /**
- * A stream of response messages. Messages can be read from
- * the stream via the AsyncIterable interface:
+ * A stream of response messages. Messages can be read from the stream via
+ * the AsyncIterable interface:
  *
  * ```typescript
  * for await (let message of response) {...
  * ```
+ *
+ * Some things to note:
+ * - If an error occurs, the `for await` will throw it.
+ * - If an error occurred before the `for await` was started, `for await`
+ *   will re-throw it.
+ * - If the stream is already complete, the `for await` will be empty.
+ * - If your `for await` consumes slower than the stream produces,
+ *   for example because you are relaying messages in a slow operation,
+ *   messages are queued.
  */
 export interface RpcOutputStream<T extends object = object> extends AsyncIterable<T> {
 
@@ -17,31 +27,33 @@ export interface RpcOutputStream<T extends object = object> extends AsyncIterabl
      * If an error occurred, the "error" argument is set.
      * If no more messages will be arriving, the "done" argument is true.
      */
-    onNext(callback: (message: T | undefined, error: Error | undefined, done: boolean) => void): RemoveListenerFn;
+    onNext(callback: NextCallback<T>): RemoveListenerFn;
 
     /**
      * Add a callback for every new message.
      */
-    onMessage(callback: (message: T) => void): RemoveListenerFn;
+    onMessage(callback: MessageCallback<T>): RemoveListenerFn;
 
     /**
      * Add a callback for stream completion.
      * Called when all messages have been read without error.
      */
-    onComplete(callback: () => void): RemoveListenerFn;
+    onComplete(callback: CompleteCallback): RemoveListenerFn;
 
     /**
      * Add a callback for errors.
      * After an error occurred, the stream will no longer receive messages or
      * anything else.
      */
-    onError(callback: (reason: Error) => void): RemoveListenerFn;
+    onError(callback: ErrorCallback): RemoveListenerFn;
 
 }
 
 
-type NextCallback<T> = (message: T | undefined, error: Error | undefined, done: boolean) => void;
-
+type NextCallback<T extends object> = (message: T | undefined, error: Error | undefined, done: boolean) => void;
+type MessageCallback<T extends object> = (message: T) => void;
+type CompleteCallback = () => void;
+type ErrorCallback = (reason: Error) => void;
 type RemoveListenerFn = () => void;
 
 
@@ -50,130 +62,205 @@ type RemoveListenerFn = () => void;
  */
 export class RpcOutputStreamController<T extends object = object> {
 
-    /**
-     * Is this stream already closed by a completion or error?
-     */
-    get closed(): boolean {
-        return this._closed;
-    }
-
-    private readonly _onNextListeners: NextCallback<T>[] = [];
-    private readonly _onMessageListeners: any[] = [];
-    private readonly _onErrorListeners: any[] = [];
-    private readonly _onCompleteListeners: any[] = [];
-    private _pendingResult = new Deferred<IteratorResult<T, null>>();
-    private _closed = false;
-
 
     constructor() {
     }
 
-    private assertOpen() {
-        if (this._closed)
-            throw new Error('stream is already closed');
-    }
 
+    // --- RpcOutputStream callback API
 
     onNext(callback: NextCallback<T>): RemoveListenerFn {
-        this._onNextListeners.push(callback);
+        return this.addLis(callback, this._lis.nxt);
+    }
+
+    onMessage(callback: MessageCallback<T>): RemoveListenerFn {
+        return this.addLis(callback, this._lis.msg);
+    }
+
+    onError(callback: ErrorCallback): RemoveListenerFn {
+        return this.addLis(callback, this._lis.err);
+    }
+
+    onComplete(callback: CompleteCallback): RemoveListenerFn {
+        return this.addLis(callback, this._lis.cmp);
+    }
+
+    private addLis<C>(callback: C, list: C[]): RemoveListenerFn {
+        list.push(callback);
         return () => {
-            let i = this._onNextListeners.indexOf(callback);
+            let i = list.indexOf(callback);
             if (i >= 0)
-                this._onNextListeners.splice(i, 1);
+                list.splice(i, 1);
         };
     }
 
-    onMessage(callback: (message: T) => void): RemoveListenerFn {
-        this._onMessageListeners.push(callback);
-        return () => {
-            let i = this._onMessageListeners.indexOf(callback);
-            if (i >= 0)
-                this._onMessageListeners.splice(i, 1);
-        };
+    // remove all listeners
+    private clearLis(): void {
+        for (let l of Object.values(this._lis))
+            l.splice(0, l.length);
     }
 
-    onError(callback: (reason: Error) => void): RemoveListenerFn {
-        this._onErrorListeners.push(callback);
-        return () => {
-            let i = this._onErrorListeners.indexOf(callback);
-            if (i >= 0)
-                this._onErrorListeners.splice(i, 1);
-        };
-    }
-
-    onComplete(callback: () => void): RemoveListenerFn {
-        this._onCompleteListeners.push(callback);
-        return () => {
-            let i = this._onCompleteListeners.indexOf(callback);
-            if (i >= 0)
-                this._onCompleteListeners.splice(i, 1);
-        };
-    }
+    private readonly _lis = {
+        nxt: [] as NextCallback<T>[],
+        msg: [] as MessageCallback<T>[],
+        err: [] as ErrorCallback[],
+        cmp: [] as CompleteCallback[],
+    };
 
 
-    [Symbol.asyncIterator](): AsyncIterator<T> {
-        if (!this._pendingResult) {
-            return {
-                next: () => Promise.resolve({
-                    done: true,
-                    value: null,
-                })
-            };
-        }
-        return {
-            next: () => this._pendingResult.promise,
-        };
+    // --- Controller API
+
+    /**
+     * Is this stream already closed by a completion or error?
+     */
+    get closed(): boolean {
+        return this._closed !== false;
     }
 
     /**
-     * Emits a new message. Throws if stream is already closed.
+     * Emit message, close with error, or close successfully, but only one
+     * at the time.
+     * Can be used to wrap a stream by using the other stream's `onNext`.
+     */
+    notifyNext(message: T | undefined, error: Error | undefined, done: boolean): void {
+        if (message)
+            this.notifyMessage(message);
+        if (error)
+            this.notifyError(error);
+        if (done)
+            this.notifyComplete();
+    }
+
+    /**
+     * Emits a new message. Throws if stream is closed.
      */
     notifyMessage(message: T): void {
-        this.assertOpen();
-        if (this._pendingResult.state === DeferredState.PENDING) {
-            let cur = this._pendingResult;
-            this._pendingResult = new Deferred<IteratorResult<T, null>>();
-            cur.resolve({
-                value: message,
-                done: false,
-            });
-        }
-        for (let i = 0; i < this._onMessageListeners.length; i++)
-            this._onMessageListeners[i](message);
-        for (let i = 0; i < this._onNextListeners.length; i++)
-            this._onNextListeners[i](message, undefined, false);
+        assert(!this.closed, 'stream is closed');
+        this.pushIt({value: message, done: false});
+        this._lis.msg.forEach(l => l(message));
+        this._lis.nxt.forEach(l => l(message, undefined, false));
     }
 
     /**
-     * Closes the stream with an error. Throws if stream is already closed.
+     * Closes the stream with an error. Throws if stream is closed.
      */
     notifyError(error: Error): void {
-        this.assertOpen();
-        this._closed = true;
-        this._pendingResult.rejectPending(error);
-        for (let i = 0; i < this._onErrorListeners.length; i++)
-            this._onErrorListeners[i](error);
-        for (let i = 0; i < this._onNextListeners.length; i++)
-            this._onNextListeners[i](undefined, error, true);
+        assert(!this.closed, 'stream is closed');
+        this._closed = error;
+        this.pushIt(error);
+        this._lis.err.forEach(l => l(error));
+        this._lis.nxt.forEach(l => l(undefined, error, true));
+        this.clearLis();
     }
 
     /**
-     * Closes the stream successfully. Throws if stream is already closed.
+     * Closes the stream successfully. Throws if stream is closed.
      */
     notifyComplete(): void {
-        this.assertOpen();
+        assert(!this.closed, 'stream is closed');
         this._closed = true;
-        this._pendingResult.resolvePending({
-            value: null,
-            done: true,
-        });
-        for (let i = 0; i < this._onCompleteListeners.length; i++)
-            this._onCompleteListeners[i]();
-        for (let i = 0; i < this._onNextListeners.length; i++)
-            this._onNextListeners[i](undefined, undefined, true);
-        this._onErrorListeners.splice(0, this._onErrorListeners.length);
-        this._onMessageListeners.splice(0, this._onMessageListeners.length);
-        this._onCompleteListeners.splice(0, this._onCompleteListeners.length);
+        this.pushIt({value: null, done: true});
+        this._lis.cmp.forEach(l => l());
+        this._lis.nxt.forEach(l => l(undefined, undefined, true));
+        this.clearLis();
+    }
+
+    private _closed: false | true | Error = false;
+
+
+    // --- RpcOutputStream async iterator API
+
+
+    // iterator state.
+    // is undefined when no iterator has been acquired yet.
+    private _itState: undefined | {
+        // a pending result. we yielded that because we were
+        // waiting for messages at the time.
+        p?: Deferred<IteratorResult<T, null>>,
+
+        // a queue of results that we produced faster that the iterator consumed
+        q: Array<IteratorResult<T, null> | Error>,
+    };
+
+
+    /**
+     * Creates an async iterator (that can be used with `for await {...}`)
+     * to consume the stream.
+     *
+     * Some things to note:
+     * - If an error occurs, the `for await` will throw it.
+     * - If an error occurred before the `for await` was started, `for await`
+     *   will re-throw it.
+     * - If the stream is already complete, the `for await` will be empty.
+     * - If your `for await` consumes slower than the stream produces,
+     *   for example because you are relaying messages in a slow operation,
+     *   messages are queued.
+     */
+    [Symbol.asyncIterator](): AsyncIterator<T> {
+
+        // init the iterator state, enabling pushIt()
+        if (!this._itState) {
+            this._itState = {q: []};
+        }
+
+        // if we are closed, we are definitely not receiving any more messages.
+        // but we can't let the iterator get stuck. we want to either:
+        // a) finish the new iterator immediately, because we are completed
+        // b) reject the new iterator, because we errored
+        if (this._closed === true)
+            this.pushIt({value: null, done: true});
+        else if (this._closed !== false)
+            this.pushIt(this._closed);
+
+        // the async iterator
+        return {
+            next: () => {
+                let state = this._itState;
+                assert(state, "bad state"); // if we don't have a state here, code is broken
+
+                // there should be no pending result.
+                // did the consumer call next() before we resolved our previous result promise?
+                assert(!state.p, "iterator contract broken");
+
+                // did we produce faster than the iterator consumed?
+                // return the oldest result from the queue.
+                let first = state.q.shift();
+                if (first)
+                    return ("value" in first) ? Promise.resolve(first) : Promise.reject(first);
+
+                // we have no result ATM, but we promise one.
+                // as soon as we have a result, we must resolve promise.
+                state.p = new Deferred<IteratorResult<T, null>>();
+                return state.p.promise;
+            },
+        };
+    }
+
+
+    // "push" a new iterator result.
+    // this either resolves a pending promise, or enqueues the result.
+    private pushIt(result: IteratorResult<T, null> | Error): void {
+        let state = this._itState;
+        if (!state)
+            return;
+
+        // is the consumer waiting for us?
+        if (state.p) {
+            // yes, consumer is waiting for this promise.
+            const p = state.p;
+            assert(p.state == DeferredState.PENDING, "iterator contract broken");
+
+            // resolve the promise
+            ("value" in result) ? p.resolve(result) : p.reject(result);
+
+            // must cleanup, otherwise iterator.next() would pick it up again.
+            delete state.p;
+
+        } else {
+            // we are producing faster than the iterator consumes.
+            // push result onto queue.
+            state.q.push(result);
+        }
     }
 
 

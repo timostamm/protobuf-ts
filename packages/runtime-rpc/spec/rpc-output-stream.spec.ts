@@ -21,7 +21,7 @@ describe('RpcOutputStreamController', function () {
             ctrl.notifyComplete();
             fail('missing expected error');
         } catch (e) {
-            expect(e.message).toBe('stream is already closed')
+            expect(e.message).toBe('stream is closed')
         }
     });
 
@@ -31,7 +31,7 @@ describe('RpcOutputStreamController', function () {
             ctrl.notifyError(new Error('testing'));
             fail('missing expected error');
         } catch (e) {
-            expect(e.message).toBe('stream is already closed')
+            expect(e.message).toBe('stream is closed')
         }
     });
 
@@ -41,7 +41,7 @@ describe('RpcOutputStreamController', function () {
             ctrl.notifyMessage({id: "foo"});
             fail('missing expected error');
         } catch (e) {
-            expect(e.message).toBe('stream is already closed')
+            expect(e.message).toBe('stream is closed')
         }
     });
 
@@ -76,7 +76,39 @@ describe('RpcOutputStream', function () {
             stream.onComplete(() => done());
         });
 
+        it('should allow to notify all listeners', function (jasmineDone) {
+            let aMsg = 0;
+            stream.onMessage(() => aMsg++);
+
+            let bMsg = 0;
+            stream.onMessage(() => bMsg++);
+
+            let aNext = 0;
+            stream.onNext(() => aNext++);
+
+            let bNext = 0;
+            stream.onNext(() => bNext++);
+
+            let aComplete = 0;
+            let bComplete = 0;
+            stream.onComplete(() => aComplete++);
+            stream.onComplete(() => bComplete++);
+            stream.onNext((message, error, done) => {
+                if (done) {
+                    expect(aMsg).toBe(3);
+                    expect(bMsg).toBe(3);
+                    expect(aNext).toBe(4);
+                    expect(bNext).toBe(4);
+                    expect(aComplete).toBe(1);
+                    expect(bComplete).toBe(1);
+                    jasmineDone();
+                }
+            });
+
+        });
+
     });
+
 
     describe('that is going to emit 3 messages', function () {
 
@@ -158,15 +190,36 @@ describe('RpcOutputStream', function () {
             expect(count).toBe(3);
         });
 
-        it('should have empty async iterator after iteration', async function () {
+        it('should async iterate 3 times, then empty', async function () {
             let firstCount = 0;
             for await (let item of stream) {
                 firstCount++;
                 expect(firstCount).toBeLessThanOrEqual(3);
             }
             for await (let item of stream) {
-                fail();
+                fail(item);
             }
+        });
+
+        it('should still async iterate correctly if consuming faster than produced', async function () {
+            let count = 0;
+            for await (let item of stream) {
+                count++;
+                expect(count).toBeLessThanOrEqual(3);
+                await delay(30);
+            }
+            expect(count).toBe(3);
+        });
+
+        it('should be easy to wrap', function (done) {
+            let wrapper = new RpcOutputStreamController();
+            stream.onNext(wrapper.notifyNext.bind(wrapper));
+            let callCount = 0;
+            wrapper.onMessage(() => callCount++);
+            wrapper.onComplete(() => {
+                expect(callCount).toBe(3);
+                done();
+            });
         });
 
     });
@@ -199,7 +252,7 @@ describe('RpcOutputStream', function () {
             expect(count).toBe(1)
         });
 
-        it('should async iterate reject', async function () {
+        it('should reject async iterate', async function () {
             try {
                 for await (let item of stream) {
                     //
@@ -209,7 +262,6 @@ describe('RpcOutputStream', function () {
                 expect(e.message).toBe('testing')
             }
         });
-
 
         it('should invoke onError callback', function (done) {
             let count = 0;
@@ -239,7 +291,7 @@ describe('RpcOutputStream', function () {
             ctrl.notifyComplete();
         });
 
-        it('should have an empty async iterator', async function () {
+        it('should for await empty', async function () {
             let numItemsIterated = 0;
             for await (let item of stream) {
                 numItemsIterated++;
