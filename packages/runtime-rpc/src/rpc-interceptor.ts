@@ -5,6 +5,7 @@ import {RpcTransport} from "./rpc-transport";
 import {MethodInfo} from "./reflection-info";
 import {RpcOptions} from "./rpc-options";
 import {UnaryCall} from "./unary-call";
+import {assertNever} from "@protobuf-ts/runtime";
 
 
 /**
@@ -21,12 +22,11 @@ import {UnaryCall} from "./unary-call";
  *
  * ```typescript
  * interceptUnary(next, method, input, options): UnaryCall {
- *   let opt: RpcOptions = options ?? {};
- *   if (!opt.meta) {
- *     opt.meta = {};
+ *   if (!options.meta) {
+ *     options.meta = {};
  *   }
- *   opt.meta['Authorization'] = 'xxx';
- *   return next(method, input, opt);
+ *   options.meta['Authorization'] = 'xxx';
+ *   return next(method, input, options);
  * }
  * ```
  *
@@ -107,68 +107,139 @@ export type NextDuplexStreamingFn = (method: MethodInfo, options: RpcOptions) =>
  * Used by generated client implementations.
  * @internal
  */
-export function stackUnaryInterceptors<I extends object, O extends object>(
+export function stackIntercept<I extends object, O extends object>(
+    kind: "unary",
     transport: RpcTransport,
     method: MethodInfo<I, O>,
+    options: RpcOptions,
     input: I,
-    options: RpcOptions): UnaryCall<I, O> {
-    let tail: NextUnaryFn = (mtd, inp, opt) => transport.unary(mtd, inp, opt);
-    for (const curr of (options.interceptors ?? []).filter(i => i.interceptUnary).reverse()) {
-        const next = tail;
-        tail = (mtd, inp, opt) => curr.interceptUnary!(next, mtd, inp, opt);
-    }
-    return tail(method, input, options) as UnaryCall<I, O>;
-}
+): UnaryCall<I, O>;
 
 /**
  * Creates a "stack" of of all server streaming interceptors specified in the given `RpcOptions`.
  * Used by generated client implementations.
  * @internal
  */
-export function stackServerStreamingInterceptors<I extends object, O extends object>(
+export function stackIntercept<I extends object, O extends object>(
+    kind: "serverStreaming",
     transport: RpcTransport,
     method: MethodInfo<I, O>,
+    options: RpcOptions,
     input: I,
-    options: RpcOptions): ServerStreamingCall<I, O> {
-    let tail: NextServerStreamingFn = (mtd, inp, opt) => transport.serverStreaming(mtd, inp, opt);
-    for (const curr of (options.interceptors ?? []).filter(i => i.interceptServerStreaming).reverse()) {
-        const next = tail;
-        tail = (mtd, inp, opt) => curr.interceptServerStreaming!(next, mtd, inp, opt);
-    }
-    return tail(method, input, options) as ServerStreamingCall<I, O>;
-}
+): ServerStreamingCall<I, O>;
 
 /**
  * Creates a "stack" of of all client streaming interceptors specified in the given `RpcOptions`.
  * Used by generated client implementations.
  * @internal
  */
-export function stackClientStreamingInterceptors<I extends object, O extends object>(
+export function stackIntercept<I extends object, O extends object>(
+    kind: "clientStreaming",
     transport: RpcTransport,
     method: MethodInfo<I, O>,
-    options: RpcOptions): ClientStreamingCall<I, O> {
-    let tail: NextClientStreamingFn = (mtd, opt) => transport.clientStreaming(mtd, opt);
-    for (const curr of (options.interceptors ?? []).filter(i => i.interceptClientStreaming).reverse()) {
-        const next = tail;
-        tail = (mtd, opt) => curr.interceptClientStreaming!(next, mtd, opt);
-    }
-    return tail(method, options) as ClientStreamingCall<I, O>;
-}
+    options: RpcOptions,
+): ClientStreamingCall<I, O> ;
 
 /**
  * Creates a "stack" of of all duplex streaming interceptors specified in the given `RpcOptions`.
  * Used by generated client implementations.
  * @internal
  */
+export function stackIntercept<I extends object, O extends object>(
+    kind: "duplex",
+    transport: RpcTransport,
+    method: MethodInfo<I, O>,
+    options: RpcOptions,
+): DuplexStreamingCall<I, O>;
+
+/**
+ * Creates a "stack" of of all interceptors specified in the given `RpcOptions`.
+ * Used by generated client implementations.
+ * @internal
+ */
+export function stackIntercept<I extends object, O extends object>(
+    kind: "unary" | "serverStreaming" | "clientStreaming" | "duplex",
+    transport: RpcTransport,
+    method: MethodInfo<I, O>,
+    options: RpcOptions,
+    input?: I,
+): UnaryCall<I, O> | ServerStreamingCall<I, O> | ClientStreamingCall<I, O> | DuplexStreamingCall<I, O> {
+    if (kind == "unary") {
+        let tail: NextUnaryFn = (mtd, inp, opt) => transport.unary(mtd, inp, opt);
+        for (const curr of (options.interceptors ?? []).filter(i => i.interceptUnary).reverse()) {
+            const next = tail;
+            tail = (mtd, inp, opt) => curr.interceptUnary!(next, mtd, inp, opt);
+        }
+        return tail(method, input!, options) as UnaryCall<I, O>;
+    }
+    if (kind == "serverStreaming") {
+        let tail: NextServerStreamingFn = (mtd, inp, opt) => transport.serverStreaming(mtd, inp, opt);
+        for (const curr of (options.interceptors ?? []).filter(i => i.interceptServerStreaming).reverse()) {
+            const next = tail;
+            tail = (mtd, inp, opt) => curr.interceptServerStreaming!(next, mtd, inp, opt);
+        }
+        return tail(method, input!, options) as ServerStreamingCall<I, O>;
+    }
+    if (kind == "clientStreaming") {
+        let tail: NextClientStreamingFn = (mtd, opt) => transport.clientStreaming(mtd, opt);
+        for (const curr of (options.interceptors ?? []).filter(i => i.interceptClientStreaming).reverse()) {
+            const next = tail;
+            tail = (mtd, opt) => curr.interceptClientStreaming!(next, mtd, opt);
+        }
+        return tail(method, options) as ClientStreamingCall<I, O>;
+    }
+    if (kind == "duplex") {
+        let tail: NextDuplexStreamingFn = (mtd, opt) => transport.duplex(mtd, opt);
+        for (const curr of (options.interceptors ?? []).filter(i => i.interceptDuplex).reverse()) {
+            const next = tail;
+            tail = (mtd, opt) => curr.interceptDuplex!(next, mtd, opt);
+        }
+        return tail(method, options) as DuplexStreamingCall<I, O>;
+    }
+    assertNever(kind);
+}
+
+
+
+/**
+ * @deprecated replaced by `stackIntercept()`, still here to support older generated code
+ */
+export function stackUnaryInterceptors<I extends object, O extends object>(
+    transport: RpcTransport,
+    method: MethodInfo<I, O>,
+    input: I,
+    options: RpcOptions): UnaryCall<I, O> {
+    return stackIntercept("unary", transport, method, options, input);
+}
+
+/**
+ * @deprecated replaced by `stackIntercept()`, still here to support older generated code
+ */
+export function stackServerStreamingInterceptors<I extends object, O extends object>(
+    transport: RpcTransport,
+    method: MethodInfo<I, O>,
+    input: I,
+    options: RpcOptions): ServerStreamingCall<I, O> {
+    return stackIntercept("serverStreaming", transport, method, options, input);
+}
+
+/**
+ * @deprecated replaced by `stackIntercept()`, still here to support older generated code
+ */
+export function stackClientStreamingInterceptors<I extends object, O extends object>(
+    transport: RpcTransport,
+    method: MethodInfo<I, O>,
+    options: RpcOptions): ClientStreamingCall<I, O> {
+    return stackIntercept("clientStreaming", transport, method, options);
+}
+
+/**
+ * @deprecated replaced by `stackIntercept()`, still here to support older generated code
+ */
 export function stackDuplexStreamingInterceptors<I extends object, O extends object>(
     transport: RpcTransport,
     method: MethodInfo<I, O>,
     options: RpcOptions): DuplexStreamingCall<I, O> {
-    let tail: NextDuplexStreamingFn = (mtd, opt) => transport.duplex(mtd, opt);
-    for (const curr of (options.interceptors ?? []).filter(i => i.interceptDuplex).reverse()) {
-        const next = tail;
-        tail = (mtd, opt) => curr.interceptDuplex!(next, mtd, opt);
-    }
-    return tail(method, options) as DuplexStreamingCall<I, O>;
+    return stackIntercept("duplex", transport, method, options);
 }
 

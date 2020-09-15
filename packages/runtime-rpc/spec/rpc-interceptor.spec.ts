@@ -11,13 +11,13 @@ import {
     RpcTransport,
     ServerStreamingCall,
     ServiceInfo,
-    stackUnaryInterceptors,
+    stackIntercept,
     UnaryCall
 } from "../src";
 import {IMessageType} from "@protobuf-ts/runtime";
 
 
-describe('stackUnaryInterceptors()', () => {
+describe('stackIntercept("unary")', () => {
 
     it('should invoke transport unary()', async () => {
         let options: RpcOptions = {
@@ -29,7 +29,7 @@ describe('stackUnaryInterceptors()', () => {
         let request: RequestMsg = {
             foo: "hello"
         };
-        let call = stackUnaryInterceptors<RequestMsg, ResponseMsg>(transport, xMethod, request, options);
+        let call = stackIntercept<RequestMsg, ResponseMsg>("unary", transport, xMethod, options, request);
         transport.resolveUnary(
             {i_am: "response header"},
             {bar: "world"},
@@ -73,7 +73,7 @@ describe('stackUnaryInterceptors()', () => {
         let request: RequestMsg = {
             foo: "hello"
         };
-        let call = stackUnaryInterceptors<RequestMsg, ResponseMsg>(transport, xMethod, request, options);
+        let call = stackIntercept<RequestMsg, ResponseMsg>("unary", transport, xMethod, options, request);
         transport.resolveUnary({}, {bar: "world"}, {code: "OK", detail: ""}, {});
         await call;
         expect(calledIc).toEqual(["a", "b"]);

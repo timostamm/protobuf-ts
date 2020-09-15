@@ -12,13 +12,28 @@ import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
+import {ServiceClientGeneratorCall} from "./service-client-generator-call";
 import assert = require("assert");
+
+
+export interface ClientMethodGenerator {
+
+    createUnary(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration;
+
+    createServerStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration;
+
+    createClientStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration;
+
+    createDuplexStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration;
+
+}
 
 
 export class ServiceClientGenerator {
 
 
     private readonly commentGenerator: CommentGenerator;
+    private readonly call: ClientMethodGenerator;
 
 
     constructor(
@@ -33,10 +48,11 @@ export class ServiceClientGenerator {
         },
     ) {
         this.commentGenerator = new CommentGenerator(this.registry);
+        this.call = new ServiceClientGeneratorCall(this.imports, this.interpreter, this.options);
     }
 
 
-    private createMethodLocalName(descriptor: MethodDescriptorProto): string {
+    private static createMethodLocalName(descriptor: MethodDescriptorProto): string {
         let escapeCharacter = '$';
         let reservedClassProperties = ["__proto__", "toString", "name", "constructor", "methods", "typeName", "_transport"];
         let name = descriptor.name;
@@ -46,6 +62,20 @@ export class ServiceClientGenerator {
             name = name + escapeCharacter;
         }
         return name;
+    }
+
+
+    private static determineMethodType(methodDescriptor: MethodDescriptorProto): "unary" | "serverStreaming" | "clientStreaming" | "duplex" {
+        if (methodDescriptor.clientStreaming && methodDescriptor.serverStreaming) {
+            return "duplex";
+        }
+        if (methodDescriptor.clientStreaming) {
+            return "clientStreaming";
+        }
+        if (methodDescriptor.serverStreaming) {
+            return "serverStreaming";
+        }
+        return "unary";
     }
 
 
@@ -64,25 +94,23 @@ export class ServiceClientGenerator {
      *
      */
     generateInterface(descriptor: ServiceDescriptorProto, source: TypescriptFile): ts.InterfaceDeclaration {
-        let IServiceClient = this.imports.type(descriptor, 'client-interface');
-        let methods = descriptor.method.map(methodDescriptor => {
-            let localName = this.createMethodLocalName(methodDescriptor);
-            let inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!);
-            let outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
+        const IServiceClient = this.imports.type(descriptor, 'client-interface');
+        const methods = descriptor.method.map((methodDescriptor, methodIndex) => {
+            const localName = ServiceClientGenerator.createMethodLocalName(methodDescriptor),
+                inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!),
+                outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
             assert(DescriptorProto.is(inputTypeDesc));
             assert(DescriptorProto.is(outputTypeDesc));
-            let method: ts.MethodSignature;
-            if (methodDescriptor.serverStreaming === true && methodDescriptor.clientStreaming === true) {
-                method = this.createDuplexStreamingMethodSignature(methodDescriptor, localName, inputTypeDesc, outputTypeDesc)
-            } else if (methodDescriptor.clientStreaming === true) {
-                method = this.createClientStreamingMethodSignature(methodDescriptor, localName, inputTypeDesc, outputTypeDesc)
-            } else if (methodDescriptor.serverStreaming === true) {
-                method = this.createServerStreamingMethodSignature(methodDescriptor, localName, inputTypeDesc, outputTypeDesc)
-            } else {
-                method = this.createUnaryMethodSignature(methodDescriptor, localName, inputTypeDesc, outputTypeDesc)
-            }
-            this.commentGenerator.addCommentsForDescriptor(method, methodDescriptor, 'appendToLeadingBlock');
-            return method;
+            const methodDeclaration = this.createMethod(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
+            const methodSignature = ts.createMethodSignature(
+                methodDeclaration.typeParameters,
+                methodDeclaration.parameters,
+                methodDeclaration.type,
+                methodDeclaration.name,
+                methodDeclaration.questionToken
+            );
+            this.commentGenerator.addCommentsForDescriptor(methodSignature, methodDescriptor, 'appendToLeadingBlock');
+            return methodSignature;
         });
 
         // export interface MyService {...
@@ -95,128 +123,6 @@ export class ServiceClientGenerator {
         this.commentGenerator.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         source.addStatement(statement);
         return statement;
-    }
-
-
-    createUnaryMethodSignature(methodDescriptor: MethodDescriptorProto, localName: string, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodSignature {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let UnaryCall = this.imports.name('UnaryCall', this.options.runtimeRpcImportPath);
-        return ts.createMethodSignature(
-            undefined,
-            [
-                ts.createParameter(
-                    undefined, undefined, undefined,
-                    ts.createIdentifier("request"),
-                    undefined,
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    undefined
-                ),
-                ts.createParameter(
-                    undefined, undefined, undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(RpcOptions, undefined),
-                    undefined
-                )
-            ],
-            ts.createTypeReferenceNode(
-                UnaryCall,
-                [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined)
-                ]
-            ),
-            ts.createIdentifier(localName),
-            undefined
-        );
-    }
-
-
-    createServerStreamingMethodSignature(methodDescriptor: MethodDescriptorProto, localName: string, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodSignature {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let ServerStreamingCall = this.imports.name('ServerStreamingCall', this.options.runtimeRpcImportPath);
-        return ts.createMethodSignature(
-            undefined,
-            [
-                ts.createParameter(
-                    undefined, undefined, undefined,
-                    ts.createIdentifier("request"),
-                    undefined,
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    undefined
-                ),
-                ts.createParameter(
-                    undefined, undefined, undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(RpcOptions, undefined),
-                    undefined
-                )
-            ],
-            ts.createTypeReferenceNode(
-                ServerStreamingCall,
-                [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined)
-                ]
-            ),
-            ts.createIdentifier(localName),
-            undefined
-        );
-    }
-
-
-    createClientStreamingMethodSignature(methodDescriptor: MethodDescriptorProto, localName: string, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodSignature {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let ClientStreamingCall = this.imports.name('ClientStreamingCall', this.options.runtimeRpcImportPath);
-        return ts.createMethodSignature(
-            undefined,
-            [
-                ts.createParameter(
-                    undefined, undefined, undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(RpcOptions, undefined),
-                    undefined
-                )
-            ],
-            ts.createTypeReferenceNode(
-                ClientStreamingCall,
-                [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined)
-                ]
-            ),
-            ts.createIdentifier(localName),
-            undefined
-        );
-    }
-
-
-    createDuplexStreamingMethodSignature(methodDescriptor: MethodDescriptorProto, localName: string, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodSignature {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let DuplexStreamingCall = this.imports.name('DuplexStreamingCall', this.options.runtimeRpcImportPath);
-        return ts.createMethodSignature(
-            undefined,
-            [
-                ts.createParameter(
-                    undefined, undefined, undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(RpcOptions, undefined),
-                    undefined
-                )
-            ],
-            ts.createTypeReferenceNode(
-                DuplexStreamingCall,
-                [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined)
-                ]
-            ),
-            ts.createIdentifier(localName),
-            undefined
-        );
     }
 
 
@@ -239,12 +145,12 @@ export class ServiceClientGenerator {
      *
      */
     generateImplementationClass(descriptor: ServiceDescriptorProto, source: TypescriptFile): ts.ClassDeclaration {
-        let ServiceClient = this.imports.type(descriptor, 'client-implementation');
-        let IServiceClient = this.imports.type(descriptor, 'client-interface');
-        let MethodInfo = this.imports.name('MethodInfo', this.options.runtimeRpcImportPath);
-        let RpcTransport = this.imports.name('RpcTransport', this.options.runtimeRpcImportPath);
+        const ServiceClient = this.imports.type(descriptor, 'client-implementation'),
+            IServiceClient = this.imports.type(descriptor, 'client-interface'),
+            MethodInfo = this.imports.name('MethodInfo', this.options.runtimeRpcImportPath),
+            RpcTransport = this.imports.name('RpcTransport', this.options.runtimeRpcImportPath);
 
-        let classDecorators: ts.Decorator[] = [];
+        const classDecorators: ts.Decorator[] = [];
         if (this.options.emitAngularAnnotations) {
             let Injectable = this.imports.name('Injectable', this.options.angularCoreImportPath);
             classDecorators.push(
@@ -254,7 +160,7 @@ export class ServiceClientGenerator {
             );
         }
 
-        let constructorDecorators: ts.Decorator[] = [];
+        const constructorDecorators: ts.Decorator[] = [];
         if (this.options.emitAngularAnnotations) {
             let RPC_TRANSPORT = this.imports.name('RPC_TRANSPORT', this.options.runtimeAngularImportPath);
             let Inject = this.imports.name('Inject', this.options.angularCoreImportPath);
@@ -269,7 +175,7 @@ export class ServiceClientGenerator {
             );
         }
 
-        let members: ts.ClassElement[] = [
+        const members: ts.ClassElement[] = [
 
             // readonly typeName = ".test.MyService";
             ts.createProperty(
@@ -303,31 +209,15 @@ export class ServiceClientGenerator {
 
         ];
 
-        for (let i = 0; i < descriptor.method.length; i++) {
-            let methodDescriptor = descriptor.method[i];
-            let localName = this.createMethodLocalName(methodDescriptor)
-            let inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!);
-            let outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
+        for (let methodIndex = 0; methodIndex < descriptor.method.length; methodIndex++) {
+            const methodDescriptor = descriptor.method[methodIndex],
+                localName = ServiceClientGenerator.createMethodLocalName(methodDescriptor),
+                inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!),
+                outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
             assert(DescriptorProto.is(inputTypeDesc));
             assert(DescriptorProto.is(outputTypeDesc));
-
-            if (methodDescriptor.serverStreaming === true && methodDescriptor.clientStreaming === true) {
-                members.push(
-                    this.createDuplexStreamingMethod(methodDescriptor, localName, i, inputTypeDesc, outputTypeDesc)
-                );
-            } else if (methodDescriptor.clientStreaming === true) {
-                members.push(
-                    this.createClientStreamingMethod(methodDescriptor, localName, i, inputTypeDesc, outputTypeDesc)
-                );
-            } else if (methodDescriptor.serverStreaming === true) {
-                members.push(
-                    this.createServerStreamingMethod(methodDescriptor, localName, i, inputTypeDesc, outputTypeDesc)
-                );
-            } else {
-                members.push(
-                    this.createServiceClientUnaryMethod(methodDescriptor, localName, i, inputTypeDesc, outputTypeDesc)
-                );
-            }
+            const methodDeclaration = this.createMethod(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
+            members.push(methodDeclaration);
         }
 
 
@@ -352,336 +242,27 @@ export class ServiceClientGenerator {
     }
 
 
-    protected createServiceClientUnaryMethod(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let UnaryCall = this.imports.name('UnaryCall', this.options.runtimeRpcImportPath);
-
-        return ts.createMethod(
-            undefined, undefined, undefined,
-            ts.createIdentifier(localName),
-            undefined, undefined,
-            [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(inputTypeDesc)), undefined)
-                ),
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
-                )
-            ],
-            ts.createTypeReferenceNode(
-                UnaryCall,
-                [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined),
-                ]
-            ),
-            ts.createBlock(
-                [
-                    // const method = this.methods[0], i = method.I.create(input);
-                    ts.createVariableStatement(
-                        undefined,
-                        ts.createVariableDeclarationList(
-                            [
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("method"),
-                                    undefined,
-                                    ts.createElementAccess(
-                                        ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("methods")),
-                                        ts.createNumericLiteral(methodIndex.toString())
-                                    )
-                                ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("i"),
-                                    undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(ts.createIdentifier("method"), ts.createIdentifier("I")),
-                                            ts.createIdentifier("create")
-                                        ),
-                                        undefined,
-                                        [ts.createIdentifier("input")]
-                                    )
-                                )
-                            ],
-                            ts.NodeFlags.Const
-                        )
-                    ),
-
-                    // const opt = this._transport.mergeOptions(options)
-                    ts.createVariableStatement(
-                        undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createIdentifier("opt"),
-                                undefined,
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createPropertyAccess(
-                                            ts.createThis(),
-                                            ts.createIdentifier("_transport")
-                                        ),
-                                        ts.createIdentifier("mergeOptions")
-                                    ),
-                                    undefined,
-                                    [ts.createIdentifier("options")]
-                                )
-                            )],
-                            ts.NodeFlags.Const
-                        )
-                    ),
-
-                    // return stackUnaryInterceptors(this._transport, method, i, opt);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackUnaryInterceptors', this.options.runtimeRpcImportPath)),
-                        undefined,
-                        [
-                            ts.createPropertyAccess(
-                                ts.createThis(),
-                                ts.createIdentifier("_transport")
-                            ),
-                            ts.createIdentifier("method"),
-                            ts.createIdentifier("i"),
-                            ts.createIdentifier("opt")
-                        ]
-                    )),
-                ],
-                true
-            )
-        );
-    }
-
-
-    protected createServerStreamingMethod(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let ServerStreamingCall = this.imports.name('ServerStreamingCall', this.options.runtimeRpcImportPath);
-
-        return ts.createMethod(
-            undefined, undefined, undefined,
-            ts.createIdentifier(localName),
-            undefined, undefined,
-            [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(inputTypeDesc)), undefined)
-                ),
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
-                )
-            ],
-            ts.createTypeReferenceNode(
-                ServerStreamingCall,
-                [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined),
-                ]
-            ),
-            ts.createBlock(
-                [
-                    // const method = this.methods[0], i = method.I.create(input);
-                    ts.createVariableStatement(
-                        undefined,
-                        ts.createVariableDeclarationList(
-                            [
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("method"),
-                                    undefined,
-                                    ts.createElementAccess(
-                                        ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("methods")),
-                                        ts.createNumericLiteral(methodIndex.toString())
-                                    )
-                                ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("i"),
-                                    undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(ts.createIdentifier("method"), ts.createIdentifier("I")),
-                                            ts.createIdentifier("create")
-                                        ),
-                                        undefined,
-                                        [ts.createIdentifier("input")]
-                                    )
-                                )
-                            ],
-                            ts.NodeFlags.Const
-                        )
-                    ),
-
-                    // const opt = this._transport.mergeOptions(options)
-                    ts.createVariableStatement(
-                        undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createIdentifier("opt"),
-                                undefined,
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createPropertyAccess(
-                                            ts.createThis(),
-                                            ts.createIdentifier("_transport")
-                                        ),
-                                        ts.createIdentifier("mergeOptions")
-                                    ),
-                                    undefined,
-                                    [ts.createIdentifier("options")]
-                                )
-                            )],
-                            ts.NodeFlags.Const
-                        )
-                    ),
-
-                    // return stackUnaryInterceptors(this._transport, method, i, opt);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackServerStreamingInterceptors', this.options.runtimeRpcImportPath)),
-                        undefined,
-                        [
-                            ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
-                            ts.createIdentifier("method"),
-                            ts.createIdentifier("i"),
-                            ts.createIdentifier("opt")
-                        ]
-                    )),
-                ],
-                true
-            )
-        );
-    }
-
-
-    protected createClientStreamingMethod(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let ClientStreamingCall = this.imports.name('ClientStreamingCall', this.options.runtimeRpcImportPath);
-
-        return ts.createMethod(
-            undefined, undefined, undefined,
-            ts.createIdentifier(localName),
-            undefined, undefined,
-            [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
-                )
-            ],
-            ts.createTypeReferenceNode(
-                ClientStreamingCall,
-                [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined),
-                ]
-            ),
-            ts.createBlock(
-                [
-
-                    // const opt = this._transport.mergeOptions(options)
-                    ts.createVariableStatement(
-                        undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createIdentifier("opt"),
-                                undefined,
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createPropertyAccess(
-                                            ts.createThis(),
-                                            ts.createIdentifier("_transport")
-                                        ),
-                                        ts.createIdentifier("mergeOptions")
-                                    ),
-                                    undefined,
-                                    [ts.createIdentifier("options")]
-                                )
-                            )],
-                            ts.NodeFlags.Const
-                        )
-                    ),
-
-                    // return stackClientStreamingInterceptors(this._transport, this.methods[2], opt);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackClientStreamingInterceptors', this.options.runtimeRpcImportPath)),
-                        undefined,
-                        [
-                            ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
-                            ts.createElementAccess(
-                                ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("methods")),
-                                ts.createNumericLiteral(methodIndex.toString())
-                            ),
-                            ts.createIdentifier("opt")
-                        ]
-                    )),
-                ],
-                true
-            )
-        );
-    }
-
-
-    protected createDuplexStreamingMethod(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let DuplexStreamingCall = this.imports.name('DuplexStreamingCall', this.options.runtimeRpcImportPath);
-
-        return ts.createMethod(
-            undefined, undefined, undefined,
-            ts.createIdentifier(localName),
-            undefined, undefined,
-            [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
-                )
-            ],
-            ts.createTypeReferenceNode(
-                DuplexStreamingCall,
-                [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined),
-                ]
-            ),
-            ts.createBlock(
-                [
-
-                    // const opt = this._transport.mergeOptions(options)
-                    ts.createVariableStatement(
-                        undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createIdentifier("opt"),
-                                undefined,
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createPropertyAccess(
-                                            ts.createThis(),
-                                            ts.createIdentifier("_transport")
-                                        ),
-                                        ts.createIdentifier("mergeOptions")
-                                    ),
-                                    undefined,
-                                    [ts.createIdentifier("options")]
-                                )
-                            )],
-                            ts.NodeFlags.Const
-                        )
-                    ),
-
-                    // return stackDuplexStreamingInterceptors(this._transport, this, this.methods[2], opt);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackDuplexStreamingInterceptors', this.options.runtimeRpcImportPath)),
-                        undefined,
-                        [
-                            ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
-                            ts.createElementAccess(
-                                ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("methods")),
-                                ts.createNumericLiteral(methodIndex.toString())
-                            ),
-                            ts.createIdentifier("opt")
-                        ]
-                    )),
-                ],
-                true
-            )
-        );
+    /**
+     * Create a service client method, using the method style set by the user.
+     */
+    protected createMethod(methodDescriptor: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto) {
+        const generator = this.call;
+        let declaration: ts.MethodDeclaration;
+        switch (ServiceClientGenerator.determineMethodType(methodDescriptor)) {
+            case "unary":
+                declaration = generator.createUnary(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
+                break;
+            case "serverStreaming":
+                declaration = generator.createServerStreaming(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
+                break;
+            case "clientStreaming":
+                declaration = generator.createClientStreaming(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
+                break;
+            case "duplex":
+                declaration = generator.createDuplexStreaming(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
+                break;
+        }
+        return declaration;
     }
 
 
@@ -695,10 +276,10 @@ export class ServiceClientGenerator {
      *   ]
      *
      */
-    createMethodInfo(descriptor: ServiceDescriptorProto): ts.ArrayLiteralExpression {
-        let methodInfos: ts.ObjectLiteralExpression[] = [];
+    protected createMethodInfo(descriptor: ServiceDescriptorProto): ts.ArrayLiteralExpression {
+        const methodInfos: ts.ObjectLiteralExpression[] = [];
         for (let methodDescriptor of descriptor.method) {
-            let localName = this.createMethodLocalName(methodDescriptor);
+            let localName = ServiceClientGenerator.createMethodLocalName(methodDescriptor);
             let inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!);
             let outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
             assert(DescriptorProto.is(inputTypeDesc));

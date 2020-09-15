@@ -18,12 +18,13 @@ export {ServerStreamingCall, FinishedServerStreamingCall} from './server-streami
 export {UnaryCall, FinishedUnaryCall} from './unary-call';
 export {
     NextUnaryFn,
-    stackDuplexStreamingInterceptors,
-    stackClientStreamingInterceptors,
     RpcInterceptor,
-    stackServerStreamingInterceptors,
-    stackUnaryInterceptors,
     NextClientStreamingFn,
     NextDuplexStreamingFn,
-    NextServerStreamingFn
+    NextServerStreamingFn,
+    stackIntercept,
+    stackDuplexStreamingInterceptors,
+    stackClientStreamingInterceptors,
+    stackServerStreamingInterceptors,
+    stackUnaryInterceptors
 } from './rpc-interceptor';
