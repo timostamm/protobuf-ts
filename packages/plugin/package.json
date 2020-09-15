@@ -13,7 +13,12 @@
     "Protocol Buffers",
     "protobuf",
     "TypeScript",
-    "protoc"
+    "protoc",
+    "bigint",
+    "Angular",
+    "gRPC-web",
+    "Twirp",
+    "Reflection"
   ],
   "repository": {
     "type": "git",

@@ -8,7 +8,9 @@
   "keywords": [
     "Protocol Buffers",
     "protobuf",
-    "TypeScript"
+    "TypeScript",
+    "bigint",
+    "Reflection"
   ],
   "repository": {
     "type": "git",
