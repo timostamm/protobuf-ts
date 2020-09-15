@@ -105,13 +105,7 @@ class MockTransport implements RpcTransport {
     readonly unaryTrailer = new Deferred<RpcMetadata>();
 
     unary<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: RpcOptions): UnaryCall<I, O> {
-        return new UnaryCall<I, O>(method, options.meta ?? {}, input, this.unaryHeaders.promise, this.unaryResponse.promise, this.unaryStatus.promise, this.unaryTrailer.promise, () => {
-            let e = new RpcError("request cancelled by user", "cancelled");
-            this.unaryHeaders.rejectPending(e);
-            this.unaryResponse.rejectPending(e);
-            this.unaryStatus.rejectPending(e);
-            this.unaryTrailer.rejectPending(e);
-        });
+        return new UnaryCall<I, O>(method, options.meta ?? {}, input, this.unaryHeaders.promise, this.unaryResponse.promise, this.unaryStatus.promise, this.unaryTrailer.promise);
     }
 
     clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>, options: RpcOptions): ClientStreamingCall<I, O> {

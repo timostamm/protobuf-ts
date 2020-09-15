@@ -16,20 +16,22 @@ import {RpcOptions} from "./rpc-options";
  * The transport receives reflection information about the service and
  * method being called.
  *
- * Your implementation **should** accept default `RpcOptions` (or an
+ * Some rules:
+ *
+ * a) An implementation **should** accept default `RpcOptions` (or an
  * interface that extends `RpcOptions`) in the constructor.
  *
- * You **must** merge the options given to `mergeOptions()` with your default
- * options. If you do not implement any extra options, or only primitive
- * values, you can use `mergeExtendedRpcOptions()` to get the desired
- * behaviour.
+ * b) An implementation **must** merge the options given to `mergeOptions()`
+ * with its default options. If no extra options are implemented, or only
+ * primitive option values are used, using `mergeExtendedRpcOptions()` will
+ * produce the required behaviour.
  *
- * You **must** pass `RpcOptions.jsonOptions` and `RpcOptions.binaryOptions`
- * to the `fromBinary`, `toBinary`, `fromJson` and `toJson` methods when
- * preparing a request or parsing a response.
+ * c) An implementation **must** pass `RpcOptions.jsonOptions` and
+ * `RpcOptions.binaryOptions` to the `fromBinary`, `toBinary`, `fromJson`
+ * and `toJson` methods when preparing a request or parsing a response.
  *
- * Your implementation can support arbitrary other options, but they must not
- * interfere with options keys of the binary or JSON options.
+ * d) An implementation may support arbitrary other options, but they **must
+ * not** interfere with options keys of the binary or JSON options.
  */
 export interface RpcTransport {
 

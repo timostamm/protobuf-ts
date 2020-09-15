@@ -55,6 +55,12 @@ export interface RpcOptions {
     binaryOptions?: Partial<BinaryReadOptions & BinaryWriteOptions>;
 
     /**
+     * A signal to cancel a call. Can be created with an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+     * The npm package `abort-controller` provides a polyfill for Node.js.
+     */
+    abort?: AbortSignal;
+
+    /**
      * A `RpcTransport` implementation may allow arbitrary
      * other options.
      */
