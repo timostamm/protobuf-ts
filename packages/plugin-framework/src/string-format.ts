@@ -321,7 +321,7 @@ export class StringFormat implements IStringFormat {
         if (o.startsWith('.')) {
             o = o.substring(1);
         }
-        return `rpc ${m}(${is}${i}) returns (${os}${o});`;
+        return `${m}(${is}${i}) returns (${os}${o});`;
     }
 
 
