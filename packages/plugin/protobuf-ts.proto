@@ -1,0 +1,36 @@
+// This proto file is part of protobuf-ts. It defines custom options
+// that are interpreted by @protobuf-ts/plugin.
+//
+// To use the options, add an import to this file:
+//
+//     import "protobuf-ts.proto";
+//
+// If you use @protobuf-ts/plugin, it should not be necessary to add a proto
+// path to the file. @protobuf-ts/protoc automatically adds
+// `--proto_path ./node_modules/@protobuf-ts/plugin` to your commands.
+
+syntax = "proto3";
+
+package ts;
+
+import "google/protobuf/descriptor.proto";
+
+
+// Custom file options interpreted by @protobuf-ts/plugin
+extend google.protobuf.FileOptions {
+
+    // Exclude field or method options from being emitted in reflection data.
+    //
+    // For example, to stop the data of the "google.api.http" method option
+    // from being exported in the reflection information, set the following
+    // file option:
+    //
+    // ```proto
+    // option (ts.exclude_options) = "google.api.http";
+    // ```
+    //
+    // The option can be set multiple times.
+    // `*` serves as a wildcard and will greedily match anything.
+    repeated string exclude_options = 777701;
+
+}
