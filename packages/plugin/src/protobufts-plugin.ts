@@ -14,7 +14,7 @@ import {OutFile} from "./out-file";
 import {createLocalTypeName} from "./code-gen/local-type-name";
 import {LongType} from "@protobuf-ts/runtime";
 import {Interpreter} from "./interpreter";
-import {makeInternalOptions} from "./options";
+import {makeInternalOptions} from "./our-options";
 
 
 export class ProtobuftsPlugin extends PluginBase<OutFile> {
@@ -63,6 +63,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         },
         // @formatter:on
     }
+
 
 
     constructor(private readonly version: string) {

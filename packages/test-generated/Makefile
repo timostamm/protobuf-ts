@@ -64,7 +64,8 @@ generate-speed: $(PROTOS)
 		--ts_opt force_optimize_speed \
 		--ts_opt long_type_string \
 		--ts_opt generate_dependencies \
-		--proto_path=$(PROTO_PATH) \
+		--proto_path $(PROTO_PATH) \
+		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"
@@ -76,7 +77,8 @@ generate-size: $(PROTOS)
 		--ts_opt force_optimize_code_size \
 		--ts_opt long_type_string \
 		--ts_opt generate_dependencies \
-		--proto_path=$(PROTO_PATH) \
+		--proto_path $(PROTO_PATH) \
+		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"
@@ -87,7 +89,8 @@ generate-size-bigint: $(PROTOS)
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_code_size \
 		--ts_opt generate_dependencies \
-		--proto_path=$(PROTO_PATH) \
+		--proto_path $(PROTO_PATH) \
+		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"
@@ -98,7 +101,8 @@ generate-speed-bigint: $(PROTOS)
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_speed \
 		--ts_opt generate_dependencies \
-		--proto_path=$(PROTO_PATH) \
+		--proto_path $(PROTO_PATH) \
+		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"
@@ -106,8 +110,9 @@ generate-speed-bigint: $(PROTOS)
 
 ${PROTO_PATH}/all.descriptorset: $(PROTOS)
 	@npx protoc \
-		--descriptor_set_out=${@} \
-		--proto_path=${PROTO_PATH} \
+		--descriptor_set_out ${@} \
+		--proto_path $(PROTO_PATH) \
+		--proto_path ../plugin/ \
 		--include_source_info \
 		--include_imports \
 		--experimental_allow_proto3_optional \

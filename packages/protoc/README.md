@@ -49,6 +49,7 @@ following behaviour:
 1. add a `--proto_path` argument that points to the `include/` directory of the 
    downloaded release
 2. add a `--plugin` argument for all plugins found in `node_modules/.bin/`
+3. add a `--proto_path` argument for `node_modules/@protobuf-ts/plugin` 
 
 The package has been tested on macos, linux and windows.
 

@@ -208,6 +208,16 @@ module.exports.findProtocVersionConfig = function findProtocVersionConfig(pkgPat
 
 /**
  * @param {string} cwd
+ * @returns {string|undefined}
+ */
+module.exports.findProtobufTs = function (cwd) {
+    let plugin = path.join(cwd, "node_modules", "@protobuf-ts", "plugin");
+    return fs.existsSync(plugin) ? plugin : undefined;
+}
+
+
+/**
+ * @param {string} cwd
  * @returns {string[]}
  */
 module.exports.findProtocPlugins = function (cwd) {

@@ -42,6 +42,7 @@ ${PROTO_PATH}/all.descriptorset: $(PROTOS)
 	@protoc \
 		--descriptor_set_out=${@} \
 		--proto_path=${PROTO_PATH} \
+		--proto_path ../plugin/ \
 		--include_source_info \
 		--include_imports \
 		--experimental_allow_proto3_optional \
@@ -52,6 +53,7 @@ ${PROTO_PATH}/all.codegenreq: $(PROTOS)
 	@protoc \
 		--dump_out=. \
 		--plugin=./bin/protoc-gen-dump \
+		--proto_path ../plugin/ \
 		--dump_opt="${@}" \
 		--proto_path=${PROTO_PATH} \
 		--experimental_allow_proto3_optional \

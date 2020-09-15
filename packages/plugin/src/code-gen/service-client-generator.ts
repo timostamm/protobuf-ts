@@ -737,7 +737,9 @@ export class ServiceClientGenerator {
             }
 
             // options:
-            let optionsMap = this.interpreter.readOptions(methodDescriptor);
+            const ourFileOptions = this.interpreter.readOurFileOptions(this.registry.fileOf(methodDescriptor));
+            const excludeOptions = ourFileOptions["ts.exclude_options"].concat("ts.method_style");
+            const optionsMap = this.interpreter.readOptions(methodDescriptor, excludeOptions);
             if (optionsMap) {
                 properties.push(ts.createPropertyAssignment(
                     ts.createIdentifier('options'),
