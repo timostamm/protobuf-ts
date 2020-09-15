@@ -56,7 +56,8 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 `protobuf-ts` consists of a protoc plugin to generate TypeScript from `.proto` definition 
 files, and several runtime libraries used by the generated code to keep the code size small. 
 
-The generated code has no external dependencies and strictly conforms to the protobuf spec. 
+The generated code has no dependencies besides the runtime (@protobuf-ts/runtime) and 
+strictly conforms to the protobuf spec. 
 
 The available packages are listed [here](./packages/) - but you probably want to 
 start with the plugin `@protobuf-ts/plugin`. 
@@ -66,10 +67,14 @@ start with the plugin `@protobuf-ts/plugin`.
 
 Installation:
 ```shell script
-npm i -D @protobuf-ts/plugin
+# with npm:
+npm install @protobuf-ts/plugin
+
+# with yarn:
+yarn add @protobuf-ts/plugin
 ```
 
-This will install the plugin as a development dependency.  
+This will install the plugin as a dependency in your package.  
 The protocol buffer compiler `protoc` is automatically installed ([explanation](./packages/protoc/README.md)). 
 
 Usage:
@@ -82,10 +87,14 @@ npx protoc \
 ```
 
 
-Note that the generated code requires the runtime:
-```shell script
-npm i @protobuf-ts/runtime
-```
+> **Note:** The generated code requires a runtime package. Install it with:
+> ```shell script
+> # with npm:
+> npm install @protobuf-ts/runtime
+> 
+> # with yarn:
+> yarn add @protobuf-ts/runtime
+> ```
 
 
 Available plugin parameters:
@@ -369,16 +378,14 @@ if (MyMessage.is(message)) {
 } 
 ```
 
-Note that `is()` checks for [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks), 
-as if you provided the message as a literal object. This should be desirable 
-in most cases, because it saves you from false properties when the message 
-has only one or two fields. If you do not care about excess properties, use `isAssignable()`. 
 
-Note that `is()` is different from `instanceof`. Any object can be compatible with 
-the message you are looking for, as long as it has the expected properties with the 
-expected types. For example, a `google.protobuf.Duration` has exactly the 
-same fields like a `google.protobuf.Timestamp` and `is()` will return 
-`true` for both. 
+> **Note:** `is()` checks for [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks).
+> `isAssignable()` ignores them.
+
+
+> **Note:** `is()` is different from `instanceof`. 
+> If two message have the same fields, `is()` returns true for both.
+
 
 
 
@@ -473,10 +480,11 @@ idiosyncrasies.
   Lists all values of a Typescript enum, as an array of objects with a "name"
   property and a "number" property.
   
-  Note that it is possible that a number appears more than once, because it is
-  possible to have aliases in an enum.
-  
   `[{name: "ANY", number: 0}, {name: "YES", number: 1}, {name: "NO", number: 2}]` for the enum above.
+  
+  > **Note:** it is possible that a number appears more than once if you 
+  > use enum aliases. 
+  
 
 
 
@@ -508,10 +516,9 @@ if (message.oneofKind === "value") {
  message.value // the union has been narrowed down
 }
 ```
-Note that you have to turn on the `strictNullChecks` TypeScript compiler 
-option in `tsconfig.json` for this feature. Otherwise, the compiler will not 
-correctly narrow down.  
 
+> **Note:** you have to turn on the `strictNullChecks` option in your 
+> `tsconfig.json` for this feature
 
 
 ## BigInt support
@@ -521,10 +528,13 @@ be represented reliably by the JavaScript `number` primitive. `protobuf-ts`
 gives you the following options to represent those `.proto` types in TypeScript:
 
 1. `bigint`  
-   Enabled by default.  
-   Lets you use the standard JavaScript operators. Not available in 
-   Safari / WebKit as of August 2020.  
-   Your tsconfig.json has to target ES2020 and you need Node.js 14.5.0 or higher. 
+   Enabled by default. Lets you use the standard JavaScript operators. 
+   
+   > **Note:** bigint is not available in Safari / WebKit as of August 2020.  
+   
+   > **Note:** Your tsconfig.json has to target ES2020 and you need Node.js 
+   > 14.5.0 or higher. 
+
  
 2. `string`  
    Enabled by setting the option `[jstype = JS_STRING]` on a field , or 
@@ -587,9 +597,9 @@ interface Proto3Optionals {
 }
 ```
 
-Note that this feature was added in `protoc` release [v3.12.0](https://github.com/protocolbuffers/protobuf/releases/tag/v3.12.0).
-As of August 2020, it is still experimental, you have to pass the `--experimental_allow_proto3_optional` 
-flag to `protoc`. 
+> **Note:** this feature was added in `protoc` release [v3.12.0](https://github.com/protocolbuffers/protobuf/releases/tag/v3.12.0).
+> You may have to pass the `--experimental_allow_proto3_optional` flag to `protoc`. 
+
 
 
 ## proto2 support
@@ -685,8 +695,9 @@ Any.toJson(any, {
   
   Converts a JavaScript Date to a `Timestamp`.
 
-Note that `Timestamp` is also supported by the `PbDatePipe` provided by 
-`@protobuf-ts/runtime-angular`.
+> **Note:** `Timestamp` is also supported by the `PbDatePipe` provided by 
+> `@protobuf-ts/runtime-angular`. 
+
 
 
 #### google.type.Color
@@ -717,8 +728,8 @@ Note that `Timestamp` is also supported by the `PbDatePipe` provided by
 Both types provide methods to convert to and from JavaScript Dates, similar 
 to `google.protobuf.Timestamp`. 
 
-Note that `DateTime` is also supported by the `PbDatePipe` provided by 
-`@protobuf-ts/runtime-angular`.
+> **Note:** `DateTime` is also supported by the `PbDatePipe` provided by 
+> `@protobuf-ts/runtime-angular`. 
 
 
 
@@ -794,8 +805,8 @@ To learn more about reflection, have a look at the types declared in
 `runtime/src/reflection-info.ts` and the source code of the reflection-based 
 operations. 
 
-Note that RPC also come with reflection information. See 
-`runtime-rpc/src/reflection-info.ts`. 
+> **Note:** RPC also comes with reflection information. See 
+> `runtime-rpc/src/reflection-info.ts`. 
 
 
 #### Custom options
@@ -996,7 +1007,7 @@ also exposes some methods to access the hidden fields:
 
 - `list(message: any, fieldNo?: number): UnknownField[]`  
   List unknown fields stored for the message.  
-  Note that there may be multiples fields with the same number.
+  > **Note:** There may be multiples fields with the same number.
   
 - `last(message: any, fieldNo: number): UnknownField | undefined`  
   Returns the last unknown field by field number.
@@ -1267,7 +1278,7 @@ for default options.
 
 The options:
 
-- `meta RpcMetadata`
+- `meta: RpcMetadata`
   
   Meta data for the call.
   
@@ -1277,12 +1288,12 @@ The options:
   If a key ends with `-bin`, it should contain binary data in base64
   encoding, allowing you to send serialized messages.
 
-- `deadline Date | number`
+- `deadline: Date | number`
   
   Deadline for the call. Can be a specific date or a
   timeout in milliseconds.
 
-- `interceptors RpcInterceptor[]`
+- `interceptors: RpcInterceptor[]`
   
   Interceptors can be used to manipulate request and response data.
   The most common use case is adding an "Authorization" header.
@@ -1300,8 +1311,8 @@ The options:
   Options for the [binary wire format](#binary-format).
 
 
-Please note that a `RpcTransport` implementation may provide 
-additional options.  
+> **Note:** A `RpcTransport` implementation may provide 
+> additional options.  
 
 
 Adding an "Authorization" header using an interceptor: 
@@ -1484,14 +1495,15 @@ or the nuget package `Grpc.AspNetCore.Web`, if you are using Grpc.AspNetCode.
 gRPC works with unary and server streaming methods. Client streaming and duplex 
 streaming is not supported. 
 
-This transport requires the fetch API. `globalThis.fetch`, `globalThis.Headers` and 
-`globalThis.AbortController` are expected. The transport is tested with 
-the polyfill packages [node-fetch](https://github.com/node-fetch/node-fetch) 
-and [`abort-controller`](https://github.com/mysticatea/abort-controller).
+To use the gRPC web transport, install the package `@protobuf-ts/grpcweb-transport`.
 
-To use the gRPC web transport, install the package `@protobuf-ts/grpcweb-transport`, 
-create an instance of `GrpcWebFetchTransport` and pass it to the generated service 
-clients. 
+> **Note:** This transport requires the fetch API (`globalThis.fetch` and 
+`globalThis.Headers`).
+> For Node.js, use the polyfill [node-fetch](https://github.com/node-fetch/node-fetch).  
+
+> **Note:** To cancel calls, you need an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+> For Node.js, use the polyfill [abort-controller](https://github.com/mysticatea/abort-controller).
+
 
 Example `.proto`:
 ```proto
@@ -1569,13 +1581,19 @@ This transport requires the fetch API. `globalThis.fetch`, `globalThis.Headers` 
 the polyfill packages [node-fetch](https://github.com/node-fetch/node-fetch) 
 and [`abort-controller`](https://github.com/mysticatea/abort-controller).
 
-If you use Angular, you do not need this package. `@protobuf-ts/runtime-angular` 
-includes the `TwirpTransport` that uses the Angular `HttpClient` instead of 
-the fetch API.
+To use the Twirp transport, install the package `@protobuf-ts/twirp-transport`.
 
-To use the Twirp transport, install the package `@protobuf-ts/twirp-transport`, 
-create an instance of `TwirpFetchTransport` and pass it to the generated service 
-clients. 
+> **Note:** This transport requires the fetch API (`globalThis.fetch` and 
+`globalThis.Headers`).  
+> For Node.js, use the polyfill [node-fetch](https://github.com/node-fetch/node-fetch).  
+
+> **Note:** To cancel calls, you need an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+> For Node.js, use the polyfill [abort-controller](https://github.com/mysticatea/abort-controller).
+
+> **Note:** If you use Angular, consider using the Twirp transport based on 
+> Angular's HttpClient. See [Angular support](#angular-support).
+
+
 
 Example `.proto`:
 ```proto
@@ -1714,3 +1732,6 @@ export class AppModule {
 }
 ```
 
+For more information, have a look at the example angular app in [packages/example-angular-app](./packages/example-angular-app). 
+It shows how the pipe is used, how Twirp is setup and can be run against an 
+example gRPC-web or Twirp server (also included in the examples). 
