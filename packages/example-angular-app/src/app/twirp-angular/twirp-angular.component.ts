@@ -71,10 +71,10 @@ export class TwirpAngularComponent {
       });
 
       // Twirp does not support response trailers
-      // let trailers = await call.trailers;
-      // this.print({
-      //   title: "Response trailers", mode: "secondary", content: trailers
-      // });
+      const trailers = await call.trailers;
+      this.print({
+        title: 'Response trailers (always empty, Twirp does not support hem)', mode: 'secondary', content: trailers
+      });
 
 
       // above was a lot of code, here is a simple alternative:
