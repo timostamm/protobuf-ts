@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -12,30 +11,36 @@ namespace example_dotnet_grpc_client
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            var channel = GrpcChannel.ForAddress("http://localhost:5000", new GrpcChannelOptions
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            var channel = GrpcChannel.ForAddress("http://localhost:5000", new GrpcChannelOptions());
+            var client = new AllMethodsService.AllMethodsServiceClient(channel);
+            try
             {
-                
-            });
-            var client = new Spec.AllMethodsService.AllMethodsServiceClient(channel);
-            MakeServerStreamingCall(client).GetAwaiter().GetResult();
+                var deadline = DateTime.UtcNow.Add(TimeSpan.FromMinutes(1));
+                var request = new AllMethodsRequest
+                {
+                    PleaseFail = FailRequest.None
+                };
+
+                // MakeServerStreamingCall(client, deadline, request).GetAwaiter().GetResult();
+                MakeUnaryCall(client, deadline, request).GetAwaiter().GetResult();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"ERROR");
+                Console.WriteLine($"{exception.Message}");
+            }
         }
 
 
-        private static async Task MakeServerStreamingCall(AllMethodsService.AllMethodsServiceClient client)
+        private static async Task MakeServerStreamingCall(AllMethodsService.AllMethodsServiceClient client, DateTime deadline, AllMethodsRequest request)
         {
-            var deadline = DateTime.UtcNow.Add(TimeSpan.FromMinutes(1));
 
-            var request = new AllMethodsRequest
-            {
-                
-            };
-            
             Console.WriteLine("starting call...");
             var call = client.ServerStream(request, Metadata.Empty, deadline, CancellationToken.None);
             var headers = call.ResponseHeadersAsync;
             Console.WriteLine("got response headers: " + headers);
-            
+
             Console.WriteLine("reading response stream...");
             await foreach (var m in call.ResponseStream.ReadAllAsync())
             {
@@ -49,17 +54,37 @@ namespace example_dotnet_grpc_client
             var trailers = call.GetTrailers();
             Console.WriteLine("read trailers: " + trailers);
         }
-        
-        
-        
+
+
+
+        private static async Task MakeUnaryCall(AllMethodsService.AllMethodsServiceClient client, DateTime deadline, AllMethodsRequest request)
+        {
+            Console.WriteLine("starting call...");
+            var call = client.UnaryAsync(request, Metadata.Empty, deadline, CancellationToken.None);
+            var headers = await call.ResponseHeadersAsync;
+            Console.WriteLine("got response headers: " + headers);
+
+            Console.WriteLine("reading response...");
+            var msg = await call.ResponseAsync;
+            Console.WriteLine("got response message: " + msg);
+
+            var status = call.GetStatus();
+            Console.WriteLine("read status: " + status);
+
+            var trailers = call.GetTrailers();
+            Console.WriteLine("read trailers: " + trailers);
+        }
+
+
+
         private async void TestingTheCsharpClientApi()
         {
-            var client = new Spec.AllMethodsService.AllMethodsServiceClient((ChannelBase) null);
+            var client = new AllMethodsService.AllMethodsServiceClient((ChannelBase) null);
 
             var deadline = DateTime.Now.Add(TimeSpan.FromMinutes(1));
 
             // new CallOptions()
-            
+
             // unary
 
             var unaryCall =
@@ -81,8 +106,8 @@ namespace example_dotnet_grpc_client
 
             serverStreamingCall.GetStatus();
             serverStreamingCall.GetTrailers();
-            
-            
+
+
             // client streaming
 
             var clientStreamingCall = client.ClientStream(Metadata.Empty, deadline, CancellationToken.None);
@@ -93,7 +118,7 @@ namespace example_dotnet_grpc_client
             clientStreamingCall.GetStatus();
             clientStreamingCall.GetTrailers();
 
-            
+
             // duplex streaming
 
             var duplexCall = client.Bidi(Metadata.Empty, deadline, CancellationToken.None);
