@@ -109,13 +109,6 @@ export class CommentGenerator {
     makeDeprecatedTag(descriptor: AnyDescriptorProto) {
         let deprecated = this.registry.isExplicitlyDeclaredDeprecated(descriptor);
 
-        console.error("makeDeprecatedTag for " + this.registry.formatQualifiedName(descriptor) );
-        console.error("deprecated:", deprecated);
-        console.error("isAnyTypeDescriptorProto(descriptor):", isAnyTypeDescriptorProto(descriptor));
-        if (isAnyTypeDescriptorProto(descriptor)) {
-            console.error("file depr:", this.registry.isExplicitlyDeclaredDeprecated(this.registry.fileOf(descriptor)));
-        }
-
         if (!deprecated && isAnyTypeDescriptorProto(descriptor)) {
             // an entire .proto file can be marked deprecated.
             // this means all types within are deprecated.

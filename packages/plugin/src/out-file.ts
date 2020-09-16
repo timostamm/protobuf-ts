@@ -11,14 +11,18 @@ import {
     TypescriptImportManager,
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
+import * as rpc from "@protobuf-ts/runtime-rpc";
 import {Interpreter} from "./interpreter";
 import {CommentGenerator} from "./code-gen/comment-generator";
-import {ServiceClientGenerator} from "./code-gen/service-client-generator";
+import {ServiceClientGeneratorBase} from "./code-gen/service-client-generator-base";
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
 import {MessageTypeGenerator} from "./code-gen/message-type-generator";
 import {EnumGenerator} from "./code-gen/enum-generator";
 import {InternalOptions} from "./our-options";
 import {ServiceTypeGenerator} from "./code-gen/service-type-generator";
+import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-call";
+import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
+import {ServiceClientGeneratorRxjs} from "./code-gen/service-client-generator-rxjs";
 
 
 /**
@@ -36,7 +40,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
 
 
     private readonly serviceTypeGenerator: ServiceTypeGenerator;
-    private readonly serviceClientGenerator: ServiceClientGenerator;
+    private readonly serviceClientGenerators: ServiceClientGeneratorBase[];
     private readonly messageInterfaceGenerator: MessageInterfaceGenerator;
     private readonly messageTypeGenerator: MessageTypeGenerator;
     private readonly enumGenerator: EnumGenerator;
@@ -53,7 +57,11 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         let imports = new TypescriptImportManager(this, symbolTable, this);
         let commentGenerator = new CommentGenerator(this.registry);
         this.serviceTypeGenerator = new ServiceTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, this.options);
-        this.serviceClientGenerator = new ServiceClientGenerator(this.registry, imports, this.interpreter, this.options);
+        this.serviceClientGenerators = [
+            new ServiceClientGeneratorCall(this.registry, imports, this.interpreter, this.options),
+            new ServiceClientGeneratorPromise(this.registry, imports, this.interpreter, this.options),
+            new ServiceClientGeneratorRxjs(this.registry, imports, this.interpreter, this.options),
+        ];
         this.messageInterfaceGenerator = new MessageInterfaceGenerator(this.registry, imports, this.interpreter, commentGenerator, options);
         this.messageTypeGenerator = new MessageTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, options)
         this.enumGenerator = new EnumGenerator(this.registry, imports, this.interpreter, commentGenerator);
@@ -110,12 +118,37 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
 
 
     generateServiceClientInterface(descriptor: ServiceDescriptorProto): void {
-        this.serviceClientGenerator.generateInterface(descriptor, this);
+
+        // TODO #8 honor plugin parameters
+        // TODO #8 allow multiple styles
+
+        const serviceOptionStyle = this.interpreter.readOurServiceOptions(descriptor)["ts.method_style"];
+        const defaultStyle = rpc.ClientMethodStyle.CALL;
+        const styles = serviceOptionStyle !== undefined ? [serviceOptionStyle] : [defaultStyle];
+
+        for (let gen of this.serviceClientGenerators) {
+            if (styles.includes(gen.style)) {
+                gen.generateInterface(descriptor, this);
+            }
+        }
     }
 
 
     generateServiceClientImplementation(descriptor: ServiceDescriptorProto): void {
-        this.serviceClientGenerator.generateImplementationClass(descriptor, this);
+
+        // TODO #8 honor plugin parameters
+        // TODO #8 allow multiple styles
+
+        const serviceOptionStyle = this.interpreter.readOurServiceOptions(descriptor)["ts.method_style"];
+        const defaultStyle = rpc.ClientMethodStyle.CALL;
+        const styles = serviceOptionStyle !== undefined ? [serviceOptionStyle] : [defaultStyle];
+
+        for (let gen of this.serviceClientGenerators) {
+            if (styles.includes(gen.style)) {
+                gen.generateImplementationClass(descriptor, this);
+            }
+        }
     }
+
 
 }

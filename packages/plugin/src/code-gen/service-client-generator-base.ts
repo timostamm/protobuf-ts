@@ -1,7 +1,5 @@
 import {
-    DescriptorProto,
     DescriptorRegistry,
-    MethodDescriptorProto,
     ServiceDescriptorProto,
     TypescriptFile,
     TypescriptImportManager
@@ -10,40 +8,23 @@ import * as ts from "typescript";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
-import {ClientMethodStyle} from "../our-options";
-import {ServiceClientGeneratorCall} from "./service-client-generator-call";
-import {ServiceClientGeneratorPromise} from "./service-client-generator-promise";
-import {ServiceClientGeneratorRxjs} from "./service-client-generator-rxjs";
 import assert = require("assert");
 
 
-export interface ClientMethodGenerator {
-
-    createUnary(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration;
-
-    createServerStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration;
-
-    createClientStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration;
-
-    createDuplexStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration;
-
-}
+export abstract class ServiceClientGeneratorBase {
 
 
-export class ServiceClientGenerator {
+    // TODO #8 make style a public property of client? add "style" to reserved name in Interpreter.createTypescriptNameForMethod and add to name-clash-proto
 
-
-    private readonly commentGenerator: CommentGenerator;
-    private readonly call: ClientMethodGenerator;
-    private readonly promise: ClientMethodGenerator;
-    private readonly rxjs: ClientMethodGenerator;
+    abstract readonly style: rpc.ClientMethodStyle;
+    protected readonly commentGenerator: CommentGenerator;
 
 
     constructor(
-        private readonly registry: DescriptorRegistry,
-        private readonly imports: TypescriptImportManager,
-        private readonly interpreter: Interpreter,
-        private readonly options: {
+        protected readonly registry: DescriptorRegistry,
+        protected readonly imports: TypescriptImportManager,
+        protected readonly interpreter: Interpreter,
+        protected readonly options: {
             runtimeRpcImportPath: string;
             angularCoreImportPath: string;
             emitAngularAnnotations: boolean;
@@ -52,44 +33,6 @@ export class ServiceClientGenerator {
         },
     ) {
         this.commentGenerator = new CommentGenerator(this.registry);
-        this.call = new ServiceClientGeneratorCall(this.imports, this.interpreter, this.options);
-        this.promise = new ServiceClientGeneratorPromise(this.imports, this.interpreter, this.options);
-        this.rxjs = new ServiceClientGeneratorRxjs(this.imports, this.interpreter, this.options);
-    }
-
-
-    // TODO #8 make style a public property of client? add "style" to reserved name in Interpreter.createTypescriptNameForMethod and add to name-clash-proto
-    private createRuntimeClientMethodStyle(style: rpc.ClientMethodStyle): ts.Expression {
-        const expr = ts.createNumericLiteral(style.toString());
-        ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `ClientMethodStyle.${rpc.ClientMethodStyle[style]}`);
-        return expr;
-    }
-
-
-    // TODO #8 should use same type for MethodInfo, stackIntercept(), and internally?
-    private static determineMethodType(methodDescriptor: MethodDescriptorProto): "unary" | "serverStreaming" | "clientStreaming" | "duplex" {
-        if (methodDescriptor.clientStreaming && methodDescriptor.serverStreaming) {
-            return "duplex";
-        }
-        if (methodDescriptor.clientStreaming) {
-            return "clientStreaming";
-        }
-        if (methodDescriptor.serverStreaming) {
-            return "serverStreaming";
-        }
-        return "unary";
-    }
-
-
-    // TODO #8 should be abstract class, each implementations doing specific method style
-    private determineMethodStyle(methodDescriptor: MethodDescriptorProto): ClientMethodStyle | undefined {
-        const serviceDescriptor = this.registry.parentOf(methodDescriptor);
-        assert(ServiceDescriptorProto.is(serviceDescriptor));
-        const ourServiceOptions = this.interpreter.readOurServiceOptions(serviceDescriptor);
-        if (ourServiceOptions["ts.method_style"] !== undefined) {
-            return ourServiceOptions["ts.method_style"];
-        }
-        return undefined;
     }
 
 
@@ -270,51 +213,43 @@ export class ServiceClientGenerator {
 
 
     /**
-     * Create a service client method, using the method style set by the user.
+     * Create any method type, switching to specific methods.
      */
     protected createMethod(methodInfo: rpc.MethodInfo) {
-
-        const serviceDescriptor = this.registry.resolveTypeName(methodInfo.service.typeName);
-        assert(ServiceDescriptorProto.is(serviceDescriptor));
-        const methodIndex = serviceDescriptor.method.findIndex(md => md.name === methodInfo.name);
-        assert(methodIndex !== undefined);
-        const methodDescriptor = serviceDescriptor.method[methodIndex];
-        assert(methodDescriptor);
-        const inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!);
-        assert(DescriptorProto.is(inputTypeDesc));
-        const outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
-        assert(DescriptorProto.is(outputTypeDesc));
-
-
-        const methodStyle = this.determineMethodStyle(methodDescriptor);
-        let generator: ClientMethodGenerator;
-        switch (methodStyle) {
-            case undefined:
-            case ClientMethodStyle.CALL:
-                generator = this.call;
-                break;
-            case ClientMethodStyle.PROMISE:
-                generator = this.promise;
-                break;
-            case ClientMethodStyle.RXJS:
-                generator = this.rxjs;
-                break;
-        }
         let declaration: ts.MethodDeclaration;
-
         if (methodInfo.serverStreaming && methodInfo.clientStreaming) {
-            declaration = generator.createDuplexStreaming(methodDescriptor, methodInfo.localName, methodIndex, inputTypeDesc, outputTypeDesc);
+            declaration = this.createDuplexStreaming(methodInfo);
         } else if (methodInfo.serverStreaming) {
-            declaration = generator.createServerStreaming(methodDescriptor, methodInfo.localName, methodIndex, inputTypeDesc, outputTypeDesc);
+            declaration = this.createServerStreaming(methodInfo);
         } else if (methodInfo.clientStreaming) {
-            declaration = generator.createClientStreaming(methodDescriptor, methodInfo.localName, methodIndex, inputTypeDesc, outputTypeDesc);
+            declaration = this.createClientStreaming(methodInfo);
         } else {
-            declaration = generator.createUnary(methodDescriptor, methodInfo.localName, methodIndex, inputTypeDesc, outputTypeDesc);
+            declaration = this.createUnary(methodInfo);
         }
-
         return declaration;
     }
 
+
+    protected abstract createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
+
+    protected abstract createServerStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
+
+    protected abstract createClientStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
+
+    protected abstract createDuplexStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
+
+
+    protected makeI(methodInfo: rpc.MethodInfo): ts.TypeReferenceNode {
+        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            this.registry.resolveTypeName(methodInfo.I.typeName)
+        )), undefined);
+    }
+
+    protected makeO(methodInfo: rpc.MethodInfo): ts.TypeReferenceNode {
+        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            this.registry.resolveTypeName(methodInfo.O.typeName)
+        )), undefined);
+    }
 
 }
 
