@@ -94,15 +94,8 @@ export class SymbolTable {
     /**
      * Is a name (of the given kind) registered for the the given descriptor?
      */
-    has(descriptor: AnyTypeDescriptorProto, kind?: string): boolean;
-
-    /**
-     * Is a name (of the given kind) registered for the given descriptor in the given file?
-     */
-    has(descriptor: AnyTypeDescriptorProto, file: GeneratedFile, kind?: string): boolean;
-
-    has(descriptor: AnyTypeDescriptorProto, b: GeneratedFile | string = 'default', kind = 'default'): boolean {
-        return this.find(descriptor, kind) !== undefined;
+    has(descriptor: AnyTypeDescriptorProto, kind = 'default'): boolean {
+        return !!this.find(descriptor, kind);
     }
 
 
