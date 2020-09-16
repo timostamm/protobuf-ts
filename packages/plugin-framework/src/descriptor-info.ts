@@ -313,7 +313,10 @@ export class DescriptorInfo implements IDescriptorInfo {
 
 
     isExtension(fieldDescriptor: FieldDescriptorProto): boolean {
-        let parent = this.tree.parentOf(fieldDescriptor);
+        if (fieldDescriptor.extendee === undefined) {
+            return false;
+        }
+        const parent = this.tree.parentOf(fieldDescriptor);
         return parent.extension.includes(fieldDescriptor);
     }
 
@@ -473,6 +476,9 @@ export class DescriptorInfo implements IDescriptorInfo {
 
 
     isExplicitlyDeclaredDeprecated(descriptor: AnyDescriptorProto): boolean {
+        if (FileDescriptorProto.is(descriptor)) {
+            return descriptor.options?.deprecated ?? false;
+        }
         if (DescriptorProto.is(descriptor)) {
             return descriptor.options?.deprecated ?? false;
         }
