@@ -6,10 +6,13 @@ import {
     FieldOptions_JSType,
     FileDescriptorProto,
     MethodDescriptorProto,
+    MethodOptions_IdempotencyLevel,
     OneofDescriptorProto,
     ServiceDescriptorProto,
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
+import {assert} from "@protobuf-ts/runtime";
+import * as rpc from "@protobuf-ts/runtime-rpc";
 import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
 
 
@@ -37,6 +40,7 @@ type JsonOptionsMap = {
 export class Interpreter {
 
 
+    private readonly serviceTypes = new Map<string, rpc.ServiceType>();
     private readonly messageTypes = new Map<string, rt.IMessageType<rt.UnknownMessage>>();
     private readonly enumInfos = new Map<string, rt.EnumInfo>();
 
@@ -76,7 +80,7 @@ export class Interpreter {
      * character `*` to match a namespace or even all options.
      *
      */
-    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto /*| DescriptorProto | ServiceDescriptorProto*/, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
+    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto | ServiceDescriptorProto /*| DescriptorProto */, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
         // if options message not present, there cannot be any extension options
         if (!descriptor.options) {
             return undefined;
@@ -95,6 +99,8 @@ export class Interpreter {
             optionsTypeName = 'google.protobuf.MethodOptions';
         } else if (this.registry.fileOf(descriptor) === descriptor) {
             optionsTypeName = 'google.protobuf.FileOptions';
+        } else if (ServiceDescriptorProto.is(descriptor)) {
+            optionsTypeName = 'google.protobuf.ServiceOptions';
         } else {
             throw new Error("interpreter expected field or method descriptor");
         }
@@ -188,6 +194,28 @@ export class Interpreter {
 
 
     /**
+     * Get a runtime type for the given service type name or service descriptor.
+     * Creates the type if not created previously.
+     *
+     * Honors our file option "ts.exclude_options".
+     */
+    getServiceType(descriptorOrTypeName: string | ServiceDescriptorProto): rpc.ServiceType {
+        let descriptor = typeof descriptorOrTypeName === "string"
+            ? this.registry.resolveTypeName(descriptorOrTypeName)
+            : descriptorOrTypeName;
+        let typeName = this.registry.makeTypeName(descriptor);
+        assert(ServiceDescriptorProto.is(descriptor));
+        let type = this.serviceTypes.get(typeName);
+        if (!type) {
+            const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
+            type = this.buildServiceType(typeName, descriptor.method, ourFileOptions["ts.exclude_options"]);
+            this.serviceTypes.set(typeName, type);
+        }
+        return type;
+    }
+
+
+    /**
      * Get runtime information for an enum.
      * Creates the info if not created previously.
      */
@@ -200,6 +228,76 @@ export class Interpreter {
         let enumInfo = this.enumInfos.get(typeName) ?? this.buildEnumInfo(descriptor);
         this.enumInfos.set(typeName, enumInfo);
         return enumInfo;
+    }
+
+
+    private static createTypescriptNameForMethod(descriptor: MethodDescriptorProto): string {
+        let escapeCharacter = '$';
+        let reservedClassProperties = ["__proto__", "toString", "name", "constructor", "methods", "typeName", "options", "_transport"];
+        let name = descriptor.name;
+        assert(name !== undefined);
+        name = rt.lowerCamelCase(name);
+        if (reservedClassProperties.includes(name)) {
+            name = name + escapeCharacter;
+        }
+        return name;
+    }
+
+
+    private buildServiceType(typeName: string, methods: MethodDescriptorProto[], excludeOptions: readonly string[]): rpc.ServiceType {
+        let desc = this.registry.resolveTypeName(typeName);
+        assert(ServiceDescriptorProto.is(desc));
+        return new rpc.ServiceType(
+            typeName,
+            methods.map(m => this.buildMethodInfo(m, excludeOptions)),
+            this.readOptions(desc, excludeOptions)
+        );
+    }
+
+
+    private buildMethodInfo(methodDescriptor: MethodDescriptorProto, excludeOptions: readonly string[]): rpc.PartialMethodInfo {
+        assert(methodDescriptor.name);
+        assert(methodDescriptor.inputType);
+        assert(methodDescriptor.outputType);
+        let info: { [k: string]: any } = {};
+
+        // name: The name of the method as declared in .proto
+        info.name = methodDescriptor.name;
+
+        // localName: The name of the method in the runtime.
+        let localName = Interpreter.createTypescriptNameForMethod(methodDescriptor);
+        if (localName !== rt.lowerCamelCase(methodDescriptor.name)) {
+            info.localName = localName;
+        }
+
+        // idempotency: The idempotency level as specified in .proto.
+        if (methodDescriptor.options) {
+            let idem = methodDescriptor.options.idempotencyLevel;
+            if (idem !== undefined && idem !== MethodOptions_IdempotencyLevel.IDEMPOTENCY_UNKNOWN) {
+                info.idempotency = MethodOptions_IdempotencyLevel[idem];
+            }
+        }
+
+        // serverStreaming: Was the rpc declared with server streaming?
+        if (methodDescriptor.serverStreaming) {
+            info.serverStreaming = true;
+        }
+
+        // clientStreaming: Was the rpc declared with client streaming?
+        if (methodDescriptor.clientStreaming) {
+            info.clientStreaming = true;
+        }
+
+        // I: The generated type handler for the input message.
+        info.I = this.getMessageType(methodDescriptor.inputType);
+
+        // O: The generated type handler for the output message.
+        info.O = this.getMessageType(methodDescriptor.outputType);
+
+        // options: Contains custom method options from the .proto source in JSON format.
+        info.options = this.readOptions(methodDescriptor, excludeOptions);
+
+        return info as rpc.PartialMethodInfo;
     }
 
 
@@ -226,12 +324,10 @@ export class Interpreter {
 
 
     private buildMessageType(typeName: string, fields: FieldDescriptorProto[], excludeOptions: readonly string[]): rt.IMessageType<rt.UnknownMessage> {
-        return new rt.MessageType(typeName, this.buildFieldInfos(fields, excludeOptions));
-    }
-
-
-    private buildFieldInfos(fieldDescriptors: FieldDescriptorProto[], excludeOptions: readonly string[]): rt.PartialFieldInfo[] {
-        return fieldDescriptors.map(fd => this.buildFieldInfo(fd, excludeOptions));
+        return new rt.MessageType(
+            typeName,
+            fields.map(fd => this.buildFieldInfo(fd, excludeOptions))
+        );
     }
 
 
@@ -255,7 +351,7 @@ export class Interpreter {
 
         // localName: The name of the field in the runtime.
         let localName = Interpreter.createTypescriptNameForField(fieldDescriptor, this.options.oneofKindDiscriminator);
-        if (localName !== rt.lowerCamelCase(fieldDescriptor.name!)) {
+        if (localName !== rt.lowerCamelCase(fieldDescriptor.name)) {
             info.localName = localName;
         }
 
@@ -464,13 +560,6 @@ export class Interpreter {
     }
 
 
-}
-
-
-function assert(condition: any, msg?: string): asserts condition {
-    if (!condition) {
-        throw new Error(msg);
-    }
 }
 
 

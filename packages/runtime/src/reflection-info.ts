@@ -173,7 +173,7 @@ interface fiShared {
     oneof: string | undefined;
 
     /**
-     * Contains custom field options from the .proto source.
+     * Contains custom field options from the .proto source in JSON format.
      */
     options?: { [extensionName: string]: JsonValue };
 
@@ -404,7 +404,7 @@ export enum RepeatType {
 
 
 /**
- * Makes FieldInfo from partial information.
+ * Turns PartialFieldInfo into FieldInfo.
  */
 export function normalizeFieldInfo(field: PartialFieldInfo): FieldInfo {
     field.localName = field.localName ?? lowerCamelCase(field.name);

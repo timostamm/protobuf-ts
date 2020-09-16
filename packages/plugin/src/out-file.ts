@@ -18,6 +18,7 @@ import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator"
 import {MessageTypeGenerator} from "./code-gen/message-type-generator";
 import {EnumGenerator} from "./code-gen/enum-generator";
 import {InternalOptions} from "./our-options";
+import {ServiceTypeGenerator} from "./code-gen/service-type-generator";
 
 
 /**
@@ -34,6 +35,7 @@ import {InternalOptions} from "./our-options";
 export class OutFile extends TypescriptFile implements GeneratedFile {
 
 
+    private readonly serviceTypeGenerator: ServiceTypeGenerator;
     private readonly serviceClientGenerator: ServiceClientGenerator;
     private readonly messageInterfaceGenerator: MessageInterfaceGenerator;
     private readonly messageTypeGenerator: MessageTypeGenerator;
@@ -50,6 +52,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         super(fileDescriptor.name!.replace('.proto', '.ts'));
         let imports = new TypescriptImportManager(this, symbolTable, this);
         let commentGenerator = new CommentGenerator(this.registry);
+        this.serviceTypeGenerator = new ServiceTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, this.options);
         this.serviceClientGenerator = new ServiceClientGenerator(this.registry, imports, this.interpreter, this.options);
         this.messageInterfaceGenerator = new MessageInterfaceGenerator(this.registry, imports, this.interpreter, commentGenerator, options);
         this.messageTypeGenerator = new MessageTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, options)
@@ -98,6 +101,11 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
 
     generateEnum(descriptor: EnumDescriptorProto): ts.EnumDeclaration {
         return this.enumGenerator.generateEnum(descriptor, this);
+    }
+
+
+    generateServiceType(descriptor: ServiceDescriptorProto): void {
+        this.serviceTypeGenerator.generateServiceType(descriptor, this);
     }
 
 

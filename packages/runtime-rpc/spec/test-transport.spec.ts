@@ -1,5 +1,6 @@
-import {ClientMethodStyle, MethodInfo, RpcError, RpcMetadata, RpcStatus, TestTransport} from "../src";
+import {RpcError, RpcMetadata, RpcStatus, TestTransport} from "../src";
 import {MessageType, ScalarType} from "@protobuf-ts/runtime";
+import {normalizeMethodInfo} from "../src/reflection-info";
 
 
 interface RequestMessage {
@@ -23,15 +24,12 @@ describe('TestTransport', () => {
 
     describe('unary call', function () {
 
-        const methodInfo: MethodInfo<RequestMessage, ResponseMessage> = {
+        const methodInfo = normalizeMethodInfo({
+            name: "unary",
             I: RequestMessage,
-            O: ResponseMessage,
-            name: "unary", localName: "unary",
-            style: ClientMethodStyle.CALL,
-            service: {
-                typeName: "test.Service", methods: [],
-            }
-        };
+            O: ResponseMessage
+        }, {typeName: "test.Service", methods: [], options: {}});
+
 
         it('should resolve with mock data', async function () {
             const
@@ -90,16 +88,12 @@ describe('TestTransport', () => {
 
     describe('server-streaming call', function () {
 
-        const methodInfo: MethodInfo<RequestMessage, ResponseMessage> = {
+        const methodInfo = normalizeMethodInfo({
+            name: "serverStreaming",
             I: RequestMessage,
             O: ResponseMessage,
-            name: "unary", localName: "unary",
-            style: ClientMethodStyle.CALL,
-            service: {
-                typeName: "test.Service", methods: [],
-            },
-            serverStreaming: true
-        };
+            serverStreaming: true,
+        }, {typeName: "test.Service", methods: [], options: {}});
 
         it('should resolve with mock data', async function () {
             const

@@ -115,3 +115,14 @@ message NoClashEnumWrap {
     }
 }
 
+// method names that class with reserved property names
+service NameClashService {
+    rpc __proto__ (Error) returns (Error);
+    rpc toString (Error) returns (Error);
+    rpc name (Error) returns (Error);
+    rpc constructor (Error) returns (Error);
+    rpc methods (Error) returns (Error);
+    rpc typeName (Error) returns (Error);
+    rpc options (Error) returns (Error);
+    rpc _transport (Error) returns (Error);
+}

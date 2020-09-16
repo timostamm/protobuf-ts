@@ -1,4 +1,4 @@
-import {IMessageType, JsonValue} from "@protobuf-ts/runtime";
+import {IMessageType, JsonValue, lowerCamelCase} from "@protobuf-ts/runtime";
 
 /**
  * Describes a protobuf service for runtime reflection.
@@ -8,9 +8,6 @@ export interface ServiceInfo {
     /**
      * The protobuf type name of the service, including package name if
      * present.
-     *
-     * If the .proto file included a `package` statement, the type name
-     * starts with '.'.
      */
     readonly typeName: string;
 
@@ -19,6 +16,11 @@ export interface ServiceInfo {
      * declaration in the source .proto.
      */
     readonly methods: MethodInfo[];
+
+    /**
+     * Contains custom service options from the .proto source in JSON format.
+     */
+    readonly options: { [extensionName: string]: JsonValue };
 }
 
 /**
@@ -37,10 +39,9 @@ export interface MethodInfo<I extends object = any, O extends object = any> {
     readonly name: string;
 
     /**
-     * The name of the method as used in generated code.
-     * May be omitted if it would be equal to `name`.
+     * The name of the method in the runtime.
      */
-    readonly localName?: string;
+    readonly localName: string;
 
     /**
      * The idempotency level as specified in .proto.
@@ -56,7 +57,7 @@ export interface MethodInfo<I extends object = any, O extends object = any> {
      *
      * See `google/protobuf/descriptor.proto`, `MethodOptions`.
      */
-    readonly idempotency?: undefined | 'NO_SIDE_EFFECTS' | 'IDEMPOTENT';
+    readonly idempotency: undefined | 'NO_SIDE_EFFECTS' | 'IDEMPOTENT';
 
     /**
      * Was the rpc declared with server streaming?
@@ -67,10 +68,10 @@ export interface MethodInfo<I extends object = any, O extends object = any> {
      * rpc Foo (FooRequest) returns (stream FooResponse);
      * ```
      */
-    readonly serverStreaming?: boolean;
+    readonly serverStreaming: boolean;
 
     /**
-     * Was the rpc declared with server streaming?
+     * Was the rpc declared with client streaming?
      *
      * Example declaration:
      *
@@ -78,7 +79,7 @@ export interface MethodInfo<I extends object = any, O extends object = any> {
      * rpc Foo (stream FooRequest) returns (FooResponse);
      * ```
      */
-    readonly clientStreaming?: boolean;
+    readonly clientStreaming: boolean;
 
     /**
      * The generated type handler for the input message.
@@ -93,17 +94,27 @@ export interface MethodInfo<I extends object = any, O extends object = any> {
     readonly O: IMessageType<O>;
 
     /**
-     * The method style (argument and return type).
-     * Can be set with the service option (ts.method_style).
+     * Contains custom method options from the .proto source in JSON format.
      */
-    readonly style: ClientMethodStyle;
-
-    /**
-     * Contains custom method options from the .proto source.
-     */
-    readonly options?: { [extensionName: string]: JsonValue };
+    readonly options: { [extensionName: string]: JsonValue };
 
 }
+
+
+/**
+ * Version of `MethodInfo` that does not include "service", and also allows
+ * the following properties to be omitted:
+ * - "localName": can be omitted if equal to lowerCamelCase(name)
+ * - "serverStreaming": omitting means `false`
+ * - "clientStreaming": omitting means `false`
+ * - "options"
+ */
+export type PartialMethodInfo<I extends object = any, O extends object = any> =
+    PartialPartial<Omit<MethodInfo<I, O>, "service">, "localName" | "idempotency" | "serverStreaming" | "clientStreaming" | "options">;
+
+
+// Make all properties in T optional, except those whose keys are in the union K.
+type PartialPartial<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
 
 
 /**
@@ -130,6 +141,23 @@ export enum ClientMethodStyle {
      * Use Observables from the "rxjs" package for requests and responses.
      */
     RXJS = 2
+}
+
+
+/**
+ * Turns PartialMethodInfo into MethodInfo.
+ */
+export function normalizeMethodInfo<I extends object = any, O extends object = any>(method: PartialMethodInfo<I, O>, service: ServiceInfo): MethodInfo<I, O> {
+    let m = method as any;
+    m.service = service;
+    m.localName = m.localName ?? lowerCamelCase(m.name);
+    // noinspection PointlessBooleanExpressionJS
+    m.serverStreaming = !!m.serverStreaming;
+    // noinspection PointlessBooleanExpressionJS
+    m.clientStreaming = !!m.clientStreaming;
+    m.options = m.options ?? {};
+    m.idempotency = m.idempotency ?? undefined;
+    return m as MethodInfo<I, O>;
 }
 
 

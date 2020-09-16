@@ -21,55 +21,6 @@ export class CommentGenerator {
     }
 
 
-
-    getCommentBlock(descriptor: AnyDescriptorProto, appendTrailingComments = false): string {
-        const source = this.registry.sourceCodeComments(descriptor);
-
-        // start with leading block
-        let commentBlock = source.leading ?? '';
-
-        // add trailing comments to the leading block
-        if (source.trailing && appendTrailingComments) {
-            if (commentBlock.length > 0) {
-                commentBlock += '\n\n';
-            }
-            commentBlock += source.trailing;
-        }
-
-        // if there were any leading comments, we need some space
-        if (commentBlock.length > 0) {
-            commentBlock += '\n\n'
-        }
-
-        // add deprecated information to the leading block
-        let deprecated = this.registry.isExplicitlyDeclaredDeprecated(descriptor);
-        if (!deprecated && isAnyTypeDescriptorProto(descriptor)) {
-            // an entire .proto file can be marked deprecated.
-            // this means all types within are deprecated.
-            // we mark them as deprecated, but dont touch members.
-            deprecated = this.registry.isExplicitlyDeclaredDeprecated(this.registry.fileOf(descriptor));
-        }
-        if (deprecated) {
-            commentBlock += '@deprecated\n';
-        }
-
-        // add source info to the leading block
-        if (OneofDescriptorProto.is(descriptor)) {
-            commentBlock += `@generated from protobuf oneof: ${descriptor.name}`;
-        } else if (EnumValueDescriptorProto.is(descriptor)) {
-            commentBlock += `@generated from protobuf enum value: ${this.registry.formatEnumValueDeclaration(descriptor)}`;
-        } else if (FieldDescriptorProto.is(descriptor)) {
-            commentBlock += `@generated from protobuf field: ${this.registry.formatFieldDeclaration(descriptor)}`;
-        } else if (MethodDescriptorProto.is(descriptor)) {
-            commentBlock += `@generated from protobuf rpc: ${this.registry.formatRpcDeclaration(descriptor)}`;
-        } else {
-            commentBlock += `@generated from protobuf ${this.registry.formatQualifiedName(descriptor)}`;
-        }
-
-        return commentBlock;
-    }
-
-
     /**
      * Adds comments from the .proto as a JSDoc block.
      *
@@ -116,4 +67,84 @@ export class CommentGenerator {
             }
         }
     }
+
+    /**
+     * Returns a block of source comments (no leading detached!),
+     * with @generated tags and @deprecated tag (if applicable).
+     */
+    getCommentBlock(descriptor: AnyDescriptorProto, appendTrailingComments = false): string {
+        const source = this.registry.sourceCodeComments(descriptor);
+
+        // start with leading block
+        let commentBlock = source.leading ?? '';
+
+        // add trailing comments to the leading block
+        if (source.trailing && appendTrailingComments) {
+            if (commentBlock.length > 0) {
+                commentBlock += '\n\n';
+            }
+            commentBlock += source.trailing;
+        }
+
+        // if there were any leading comments, we need some space
+        if (commentBlock.length > 0) {
+            commentBlock += '\n\n'
+        }
+
+        // add deprecated information to the leading block
+        commentBlock += this.makeDeprecatedTag(descriptor);
+
+        // add source info to the leading block
+        commentBlock += this.makeGeneratedTag(descriptor);
+
+        return commentBlock;
+    }
+
+
+    /**
+     * Returns "@deprecated\n" if explicitly deprecated.
+     * For top level types, also returns "@deprecated\n" if entire file is deprecated.
+     * Otherwise, returns "".
+     */
+    makeDeprecatedTag(descriptor: AnyDescriptorProto) {
+        let deprecated = this.registry.isExplicitlyDeclaredDeprecated(descriptor);
+
+        console.error("makeDeprecatedTag for " + this.registry.formatQualifiedName(descriptor) );
+        console.error("deprecated:", deprecated);
+        console.error("isAnyTypeDescriptorProto(descriptor):", isAnyTypeDescriptorProto(descriptor));
+        if (isAnyTypeDescriptorProto(descriptor)) {
+            console.error("file depr:", this.registry.isExplicitlyDeclaredDeprecated(this.registry.fileOf(descriptor)));
+        }
+
+        if (!deprecated && isAnyTypeDescriptorProto(descriptor)) {
+            // an entire .proto file can be marked deprecated.
+            // this means all types within are deprecated.
+            // we mark them as deprecated, but dont touch members.
+            deprecated = this.registry.isExplicitlyDeclaredDeprecated(this.registry.fileOf(descriptor));
+        }
+        if (deprecated) {
+            return '@deprecated\n';
+        }
+        return '';
+    }
+
+
+    /**
+     * Creates string like "@generated from protobuf field: string foo = 1;"
+     */
+    makeGeneratedTag(descriptor: AnyDescriptorProto): string {
+        if (OneofDescriptorProto.is(descriptor)) {
+            return `@generated from protobuf oneof: ${descriptor.name}`;
+        } else if (EnumValueDescriptorProto.is(descriptor)) {
+            return `@generated from protobuf enum value: ${this.registry.formatEnumValueDeclaration(descriptor)}`;
+        } else if (FieldDescriptorProto.is(descriptor)) {
+            return `@generated from protobuf field: ${this.registry.formatFieldDeclaration(descriptor)}`;
+        } else if (MethodDescriptorProto.is(descriptor)) {
+            return `@generated from protobuf rpc: ${this.registry.formatRpcDeclaration(descriptor)}`;
+        } else {
+            return `@generated from protobuf ${this.registry.formatQualifiedName(descriptor)}`;
+        }
+    }
+
+
 }

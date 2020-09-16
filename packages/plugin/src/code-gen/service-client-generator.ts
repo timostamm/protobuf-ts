@@ -2,14 +2,11 @@ import {
     DescriptorProto,
     DescriptorRegistry,
     MethodDescriptorProto,
-    MethodOptions_IdempotencyLevel,
     ServiceDescriptorProto,
     TypescriptFile,
-    TypescriptImportManager,
-    typescriptLiteralFromValue
+    TypescriptImportManager
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
-import * as rt from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
@@ -61,19 +58,15 @@ export class ServiceClientGenerator {
     }
 
 
-    private static createMethodLocalName(descriptor: MethodDescriptorProto): string {
-        let escapeCharacter = '$';
-        let reservedClassProperties = ["__proto__", "toString", "name", "constructor", "methods", "typeName", "_transport"];
-        let name = descriptor.name;
-        assert(name !== undefined);
-        name = rt.lowerCamelCase(name);
-        if (reservedClassProperties.includes(name)) {
-            name = name + escapeCharacter;
-        }
-        return name;
+    // TODO #8 make style a public property of client? add "style" to reserved name in Interpreter.createTypescriptNameForMethod and add to name-clash-proto
+    private createRuntimeClientMethodStyle(style: rpc.ClientMethodStyle): ts.Expression {
+        const expr = ts.createNumericLiteral(style.toString());
+        ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `ClientMethodStyle.${rpc.ClientMethodStyle[style]}`);
+        return expr;
     }
 
 
+    // TODO #8 should use same type for MethodInfo, stackIntercept(), and internally?
     private static determineMethodType(methodDescriptor: MethodDescriptorProto): "unary" | "serverStreaming" | "clientStreaming" | "duplex" {
         if (methodDescriptor.clientStreaming && methodDescriptor.serverStreaming) {
             return "duplex";
@@ -88,6 +81,7 @@ export class ServiceClientGenerator {
     }
 
 
+    // TODO #8 should be abstract class, each implementations doing specific method style
     private determineMethodStyle(methodDescriptor: MethodDescriptorProto): ClientMethodStyle | undefined {
         const serviceDescriptor = this.registry.parentOf(methodDescriptor);
         assert(ServiceDescriptorProto.is(serviceDescriptor));
@@ -114,23 +108,23 @@ export class ServiceClientGenerator {
      *
      */
     generateInterface(descriptor: ServiceDescriptorProto, source: TypescriptFile): ts.InterfaceDeclaration {
-        const IServiceClient = this.imports.type(descriptor, 'client-interface');
-        const methods = descriptor.method.map((methodDescriptor, methodIndex) => {
-            const localName = ServiceClientGenerator.createMethodLocalName(methodDescriptor),
-                inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!),
-                outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
-            assert(DescriptorProto.is(inputTypeDesc));
-            assert(DescriptorProto.is(outputTypeDesc));
-            const methodDeclaration = this.createMethod(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
-            const methodSignature = ts.createMethodSignature(
-                methodDeclaration.typeParameters,
-                methodDeclaration.parameters,
-                methodDeclaration.type,
-                methodDeclaration.name,
-                methodDeclaration.questionToken
+        const
+            interpreterType = this.interpreter.getServiceType(descriptor),
+            IServiceClient = this.imports.type(descriptor, 'client-interface');
+
+        const methods = interpreterType.methods.map(mi => {
+            const declaration = this.createMethod(mi);
+            const signature = ts.createMethodSignature(
+                declaration.typeParameters,
+                declaration.parameters,
+                declaration.type,
+                declaration.name,
+                declaration.questionToken
             );
-            this.commentGenerator.addCommentsForDescriptor(methodSignature, methodDescriptor, 'appendToLeadingBlock');
-            return methodSignature;
+            const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
+            assert(methodDescriptor);
+            this.commentGenerator.addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
+            return signature;
         });
 
         // export interface MyService {...
@@ -165,9 +159,12 @@ export class ServiceClientGenerator {
      *
      */
     generateImplementationClass(descriptor: ServiceDescriptorProto, source: TypescriptFile): ts.ClassDeclaration {
-        const ServiceClient = this.imports.type(descriptor, 'client-implementation'),
+        const
+            interpreterType = this.interpreter.getServiceType(descriptor),
+            ServiceType = this.imports.type(descriptor),
+            ServiceClient = this.imports.type(descriptor, 'client-implementation'),
             IServiceClient = this.imports.type(descriptor, 'client-interface'),
-            MethodInfo = this.imports.name('MethodInfo', this.options.runtimeRpcImportPath),
+            ServiceInfo = this.imports.name('ServiceInfo', this.options.runtimeRpcImportPath),
             RpcTransport = this.imports.name('RpcTransport', this.options.runtimeRpcImportPath);
 
         const classDecorators: ts.Decorator[] = [];
@@ -197,18 +194,31 @@ export class ServiceClientGenerator {
 
         const members: ts.ClassElement[] = [
 
-            // readonly typeName = ".test.MyService";
+            // typeName = Haberdasher.typeName;
             ts.createProperty(
-                undefined, [ts.createModifier(ts.SyntaxKind.ReadonlyKeyword)], ts.createIdentifier("typeName"),
-                undefined, undefined, ts.createStringLiteral(this.registry.makeTypeName(descriptor))
+                undefined, undefined, ts.createIdentifier("typeName"),
+                undefined, undefined, ts.createPropertyAccess(
+                    ts.createIdentifier(ServiceType),
+                    ts.createIdentifier("typeName")
+                )
             ),
 
-            // readonly methods: MethodInfo[] = [...];
+            // methods = Haberdasher.methods;
             ts.createProperty(
-                undefined, [ts.createModifier(ts.SyntaxKind.ReadonlyKeyword)], ts.createIdentifier("methods"),
-                undefined,
-                ts.createArrayTypeNode(ts.createTypeReferenceNode(MethodInfo, undefined)),
-                this.createMethodInfo(descriptor)
+                undefined, undefined, ts.createIdentifier("methods"),
+                undefined, undefined, ts.createPropertyAccess(
+                    ts.createIdentifier(ServiceType),
+                    ts.createIdentifier("methods")
+                )
+            ),
+
+            // options = Haberdasher.options;
+            ts.createProperty(
+                undefined, undefined, ts.createIdentifier("options"),
+                undefined, undefined, ts.createPropertyAccess(
+                    ts.createIdentifier(ServiceType),
+                    ts.createIdentifier("options")
+                )
             ),
 
             // constructor(@Inject(RPC_TRANSPORT) private readonly _transport: RpcTransport) {}
@@ -227,32 +237,29 @@ export class ServiceClientGenerator {
                 ts.createBlock([], true)
             ),
 
+
+            ...interpreterType.methods.map(mi => {
+                const declaration = this.createMethod(mi);
+                const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
+                assert(methodDescriptor);
+                this.commentGenerator.addCommentsForDescriptor(declaration, methodDescriptor, 'appendToLeadingBlock');
+                return declaration;
+            })
+
         ];
 
-        for (let methodIndex = 0; methodIndex < descriptor.method.length; methodIndex++) {
-            const methodDescriptor = descriptor.method[methodIndex],
-                localName = ServiceClientGenerator.createMethodLocalName(methodDescriptor),
-                inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!),
-                outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
-            assert(DescriptorProto.is(inputTypeDesc));
-            assert(DescriptorProto.is(outputTypeDesc));
-            const methodDeclaration = this.createMethod(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
-            members.push(methodDeclaration);
-        }
-
-
-        // export class MyService implements MyService
+        // export class MyService implements MyService, ServiceInfo
         const statement = ts.createClassDeclaration(
             classDecorators,
             [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
             ServiceClient,
             undefined,
-            [ts.createHeritageClause(
-                ts.SyntaxKind.ImplementsKeyword,
-                [ts.createExpressionWithTypeArguments(
-                    undefined, ts.createIdentifier(IServiceClient)
-                )]
-            )],
+            [
+                ts.createHeritageClause(ts.SyntaxKind.ImplementsKeyword, [
+                    ts.createExpressionWithTypeArguments(undefined, ts.createIdentifier(IServiceClient)),
+                    ts.createExpressionWithTypeArguments(undefined, ts.createIdentifier(ServiceInfo)),
+                ]),
+            ],
             members
         );
 
@@ -265,7 +272,20 @@ export class ServiceClientGenerator {
     /**
      * Create a service client method, using the method style set by the user.
      */
-    protected createMethod(methodDescriptor: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto) {
+    protected createMethod(methodInfo: rpc.MethodInfo) {
+
+        const serviceDescriptor = this.registry.resolveTypeName(methodInfo.service.typeName);
+        assert(ServiceDescriptorProto.is(serviceDescriptor));
+        const methodIndex = serviceDescriptor.method.findIndex(md => md.name === methodInfo.name);
+        assert(methodIndex !== undefined);
+        const methodDescriptor = serviceDescriptor.method[methodIndex];
+        assert(methodDescriptor);
+        const inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!);
+        assert(DescriptorProto.is(inputTypeDesc));
+        const outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
+        assert(DescriptorProto.is(outputTypeDesc));
+
+
         const methodStyle = this.determineMethodStyle(methodDescriptor);
         let generator: ClientMethodGenerator;
         switch (methodStyle) {
@@ -281,105 +301,20 @@ export class ServiceClientGenerator {
                 break;
         }
         let declaration: ts.MethodDeclaration;
-        switch (ServiceClientGenerator.determineMethodType(methodDescriptor)) {
-            case "unary":
-                declaration = generator.createUnary(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
-                break;
-            case "serverStreaming":
-                declaration = generator.createServerStreaming(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
-                break;
-            case "clientStreaming":
-                declaration = generator.createClientStreaming(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
-                break;
-            case "duplex":
-                declaration = generator.createDuplexStreaming(methodDescriptor, localName, methodIndex, inputTypeDesc, outputTypeDesc);
-                break;
+
+        if (methodInfo.serverStreaming && methodInfo.clientStreaming) {
+            declaration = generator.createDuplexStreaming(methodDescriptor, methodInfo.localName, methodIndex, inputTypeDesc, outputTypeDesc);
+        } else if (methodInfo.serverStreaming) {
+            declaration = generator.createServerStreaming(methodDescriptor, methodInfo.localName, methodIndex, inputTypeDesc, outputTypeDesc);
+        } else if (methodInfo.clientStreaming) {
+            declaration = generator.createClientStreaming(methodDescriptor, methodInfo.localName, methodIndex, inputTypeDesc, outputTypeDesc);
+        } else {
+            declaration = generator.createUnary(methodDescriptor, methodInfo.localName, methodIndex, inputTypeDesc, outputTypeDesc);
         }
+
         return declaration;
     }
 
-
-    /**
-     * Create service method information for the runtime.
-     *
-     * Example:
-     *
-     *   [
-     *     {service: this, name: 'get', I: MyGetRequest, O: MyGetResponse},
-     *   ]
-     *
-     */
-    protected createMethodInfo(descriptor: ServiceDescriptorProto): ts.ArrayLiteralExpression {
-        const methodInfos: ts.ObjectLiteralExpression[] = [];
-        for (let methodDescriptor of descriptor.method) {
-            let localName = ServiceClientGenerator.createMethodLocalName(methodDescriptor);
-            let inputTypeDesc = this.registry.resolveTypeName(methodDescriptor.inputType!);
-            let outputTypeDesc = this.registry.resolveTypeName(methodDescriptor.outputType!);
-            assert(DescriptorProto.is(inputTypeDesc));
-            assert(DescriptorProto.is(outputTypeDesc));
-            let properties: ts.ObjectLiteralElementLike[] = [
-                ts.createPropertyAssignment(ts.createIdentifier("service"), ts.createThis()),
-                ts.createPropertyAssignment(ts.createIdentifier("name"), ts.createStringLiteral(methodDescriptor.name!)),
-            ];
-            if (localName !== methodDescriptor.name) {
-                properties.push(
-                    ts.createPropertyAssignment(ts.createIdentifier("localName"), ts.createStringLiteral(localName)),
-                );
-            }
-            properties.push(
-                ts.createPropertyAssignment(ts.createIdentifier("I"), ts.createIdentifier(this.imports.type(inputTypeDesc))),
-                ts.createPropertyAssignment(ts.createIdentifier("O"), ts.createIdentifier(this.imports.type(outputTypeDesc))),
-            );
-            if (methodDescriptor.options) {
-                let idem = methodDescriptor.options.idempotencyLevel;
-                if (idem !== undefined && idem !== MethodOptions_IdempotencyLevel.IDEMPOTENCY_UNKNOWN) {
-                    let stringVal = MethodOptions_IdempotencyLevel[idem];
-                    properties.push(
-                        ts.createPropertyAssignment(ts.createIdentifier("idempotency"), ts.createStringLiteral(stringVal))
-                    );
-                }
-            }
-            if (methodDescriptor.clientStreaming) {
-                properties.push(
-                    ts.createPropertyAssignment(ts.createIdentifier("clientStreaming"), ts.createTrue())
-                );
-            }
-            if (methodDescriptor.serverStreaming) {
-                properties.push(
-                    ts.createPropertyAssignment(ts.createIdentifier("serverStreaming"), ts.createTrue())
-                );
-            }
-
-            // style:
-            properties.push(ts.createPropertyAssignment(
-                "style",
-                this.createRuntimeClientMethodStyle(this.determineMethodStyle(methodDescriptor) ?? ClientMethodStyle.CALL)
-            ));
-
-            // options:
-            const ourFileOptions = this.interpreter.readOurFileOptions(this.registry.fileOf(methodDescriptor));
-            const excludeOptions = ourFileOptions["ts.exclude_options"].concat("ts.method_style");
-            const optionsMap = this.interpreter.readOptions(methodDescriptor, excludeOptions);
-            if (optionsMap) {
-                properties.push(ts.createPropertyAssignment(
-                    ts.createIdentifier('options'),
-                    typescriptLiteralFromValue(optionsMap)
-                ));
-            }
-
-            methodInfos.push(
-                ts.createObjectLiteral([...properties], false)
-            );
-        }
-        return ts.createArrayLiteral(methodInfos, true);
-    }
-
-
-    private createRuntimeClientMethodStyle(style: rpc.ClientMethodStyle): ts.Expression {
-        const expr = ts.createNumericLiteral(style.toString());
-        ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `ClientMethodStyle.${rpc.ClientMethodStyle[style]}`);
-        return expr;
-    }
 
 }
 

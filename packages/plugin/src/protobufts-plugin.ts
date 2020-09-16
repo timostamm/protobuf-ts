@@ -107,6 +107,10 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
                 // we need some special handling for services
                 if (ServiceDescriptorProto.is(descriptor)) {
+
+                    // service type
+                    symbols.register(name, descriptor, file);
+
                     // we are generating clients only ATM. but we still need separate names.
                     // we intentionally reserve the names for services even if the user opted
                     // out of service client generation to make the generated code more stable.
@@ -138,6 +142,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
                 if (DescriptorProto.is(descriptor)) {
                     file.generateMessageType(descriptor);
+                }
+                if (ServiceDescriptorProto.is(descriptor)) {
+                    file.generateServiceType(descriptor);
                 }
                 if (ServiceDescriptorProto.is(descriptor) && !params.disable_service_client) {
                     file.generateServiceClientImplementation(descriptor);

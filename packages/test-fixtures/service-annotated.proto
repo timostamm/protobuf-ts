@@ -13,9 +13,15 @@ extend google.protobuf.MethodOptions {
     fixed32 rpc_baz = 999999;
     uint32 rpc_bay = 101010;
 }
+extend google.protobuf.ServiceOptions {
+    bool service_foo = 777777;
+}
 
 
 service AnnotatedService {
+
+    option (spec.service_foo) = true;
+
     rpc Get (AnnoGetRequest) returns (AnnoGetResponse) {
 
         option idempotency_level = NO_SIDE_EFFECTS;
