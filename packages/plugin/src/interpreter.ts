@@ -7,9 +7,10 @@ import {
     FileDescriptorProto,
     MethodDescriptorProto,
     OneofDescriptorProto,
+    ServiceDescriptorProto,
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
-import {OurFileOptions, readOurFileOptions} from "./our-options";
+import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
 
 
 type JsonOptionsMap = {
@@ -153,6 +154,14 @@ export class Interpreter {
      */
     readOurFileOptions(file: FileDescriptorProto): OurFileOptions {
         return readOurFileOptions(file);
+    }
+
+
+    /**
+     * Read the custom service options declared in protobuf-ts.proto
+     */
+    readOurServiceOptions(service: ServiceDescriptorProto): OurServiceOptions {
+        return readOurServiceOptions(service);
     }
 
 

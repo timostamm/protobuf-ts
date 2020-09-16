@@ -10,9 +10,13 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
+import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
+import {ClientMethodStyle} from "../our-options";
 import {ServiceClientGeneratorCall} from "./service-client-generator-call";
+import {ServiceClientGeneratorPromise} from "./service-client-generator-promise";
+import {ServiceClientGeneratorRxjs} from "./service-client-generator-rxjs";
 import assert = require("assert");
 
 
@@ -34,6 +38,8 @@ export class ServiceClientGenerator {
 
     private readonly commentGenerator: CommentGenerator;
     private readonly call: ClientMethodGenerator;
+    private readonly promise: ClientMethodGenerator;
+    private readonly rxjs: ClientMethodGenerator;
 
 
     constructor(
@@ -45,10 +51,13 @@ export class ServiceClientGenerator {
             angularCoreImportPath: string;
             emitAngularAnnotations: boolean;
             runtimeAngularImportPath: string;
+            normalClientMethodStyle: readonly rpc.ClientMethodStyle[];
         },
     ) {
         this.commentGenerator = new CommentGenerator(this.registry);
         this.call = new ServiceClientGeneratorCall(this.imports, this.interpreter, this.options);
+        this.promise = new ServiceClientGeneratorPromise(this.imports, this.interpreter, this.options);
+        this.rxjs = new ServiceClientGeneratorRxjs(this.imports, this.interpreter, this.options);
     }
 
 
@@ -76,6 +85,17 @@ export class ServiceClientGenerator {
             return "serverStreaming";
         }
         return "unary";
+    }
+
+
+    private determineMethodStyle(methodDescriptor: MethodDescriptorProto): ClientMethodStyle | undefined {
+        const serviceDescriptor = this.registry.parentOf(methodDescriptor);
+        assert(ServiceDescriptorProto.is(serviceDescriptor));
+        const ourServiceOptions = this.interpreter.readOurServiceOptions(serviceDescriptor);
+        if (ourServiceOptions["ts.method_style"] !== undefined) {
+            return ourServiceOptions["ts.method_style"];
+        }
+        return undefined;
     }
 
 
@@ -246,7 +266,20 @@ export class ServiceClientGenerator {
      * Create a service client method, using the method style set by the user.
      */
     protected createMethod(methodDescriptor: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto) {
-        const generator = this.call;
+        const methodStyle = this.determineMethodStyle(methodDescriptor);
+        let generator: ClientMethodGenerator;
+        switch (methodStyle) {
+            case undefined:
+            case ClientMethodStyle.CALL:
+                generator = this.call;
+                break;
+            case ClientMethodStyle.PROMISE:
+                generator = this.promise;
+                break;
+            case ClientMethodStyle.RXJS:
+                generator = this.rxjs;
+                break;
+        }
         let declaration: ts.MethodDeclaration;
         switch (ServiceClientGenerator.determineMethodType(methodDescriptor)) {
             case "unary":
@@ -317,6 +350,12 @@ export class ServiceClientGenerator {
                 );
             }
 
+            // style:
+            properties.push(ts.createPropertyAssignment(
+                "style",
+                this.createRuntimeClientMethodStyle(this.determineMethodStyle(methodDescriptor) ?? ClientMethodStyle.CALL)
+            ));
+
             // options:
             const ourFileOptions = this.interpreter.readOurFileOptions(this.registry.fileOf(methodDescriptor));
             const excludeOptions = ourFileOptions["ts.exclude_options"].concat("ts.method_style");
@@ -336,4 +375,11 @@ export class ServiceClientGenerator {
     }
 
 
+    private createRuntimeClientMethodStyle(style: rpc.ClientMethodStyle): ts.Expression {
+        const expr = ts.createNumericLiteral(style.toString());
+        ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `ClientMethodStyle.${rpc.ClientMethodStyle[style]}`);
+        return expr;
+    }
+
 }
+

@@ -6,8 +6,9 @@
 export {ClientStreamingCall} from './client-streaming-call';
 export {Deferred, DeferredState} from './deferred';
 export {DuplexStreamingCall} from './duplex-streaming-call';
-export {MethodInfo, ServiceInfo, readMethodOptions} from './reflection-info';
+export {MethodInfo, ServiceInfo, ClientMethodStyle, readMethodOptions} from './reflection-info';
 export {RpcTransport} from './rpc-transport';
+export {TestTransport} from './test-transport';
 export {RpcError} from './rpc-error';
 export {RpcInputStream} from './rpc-input-stream';
 export {RpcMetadata} from './rpc-metadata';

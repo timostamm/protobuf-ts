@@ -1,4 +1,5 @@
 import {
+    ClientMethodStyle,
     ClientStreamingCall,
     Deferred,
     DuplexStreamingCall,
@@ -141,6 +142,7 @@ const xMethod: MethodInfo = {
     name: "test",
     I: null as unknown as IMessageType<RequestMsg>,
     O: null as unknown as IMessageType<ResponseMsg>,
+    style: ClientMethodStyle.CALL,
 }
 
 xService.methods.push(xMethod);

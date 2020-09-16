@@ -65,6 +65,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     }
 
 
+    // TODO #8 add parameters: method_style_call, method_style_rxjs, method_style_promise; force_method_style_call, force_method_style_rxjs, force_method_style_promise
+
+
 
     constructor(private readonly version: string) {
         super();

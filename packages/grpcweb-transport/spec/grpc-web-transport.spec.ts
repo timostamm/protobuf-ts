@@ -1,5 +1,5 @@
 import {GrpcWebFetchTransport, GrpcWebOptions} from "../src";
-import {MethodInfo, RpcInterceptor, ServiceInfo} from "@protobuf-ts/runtime-rpc";
+import {ClientMethodStyle, MethodInfo, RpcInterceptor, ServiceInfo} from "@protobuf-ts/runtime-rpc";
 import {IMessageType} from "@protobuf-ts/runtime";
 
 describe('GrpcWebFetchTransport', () => {
@@ -51,6 +51,7 @@ describe('GrpcWebFetchTransport', () => {
             localName: methodLocalName,
             O: null as unknown as IMessageType<any>,
             I: null as unknown as IMessageType<any>,
+            style: ClientMethodStyle.CALL,
         };
         service.methods.push(method);
         let transport = new GrpcWebFetchTransport(options);
