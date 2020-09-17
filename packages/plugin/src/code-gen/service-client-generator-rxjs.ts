@@ -7,7 +7,7 @@ import {assert} from "@protobuf-ts/runtime";
 export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
 
 
-    readonly style = rpc.ClientMethodStyle.RXJS;
+    readonly style = rpc.ClientMethodStyle.RX;
 
 
     createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
@@ -775,8 +775,8 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
         assert(methodIndex >= 0);
 
 
-        // TODO #8 implement method style RXJS for client-streaming method
-        console.error("TODO #8 implement method style RXJS for client-streaming method " + methodInfo.service.typeName + " / " + methodInfo.name);
+        // TODO #8 implement method style RX for client-streaming method
+        console.error("TODO #8 implement method style RX for client-streaming method " + methodInfo.service.typeName + " / " + methodInfo.name);
 
 
         return ts.createMethod(
@@ -858,8 +858,8 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
         assert(methodIndex >= 0);
 
 
-        // TODO #8 implement method style RXJS for duplex method
-        console.error("TODO #8 implement method style RXJS for duplex method " + methodInfo.service.typeName + " / " + methodInfo.name);
+        // TODO #8 implement method style RX for duplex method
+        console.error("TODO #8 implement method style RX for duplex method " + methodInfo.service.typeName + " / " + methodInfo.name);
 
 
         return ts.createMethod(

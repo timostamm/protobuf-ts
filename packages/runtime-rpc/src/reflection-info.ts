@@ -140,7 +140,7 @@ export enum ClientMethodStyle {
     /**
      * Use Observables from the "rxjs" package for requests and responses.
      */
-    RXJS = 2
+    RX = 2
 }
 
 

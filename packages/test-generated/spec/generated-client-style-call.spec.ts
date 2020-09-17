@@ -6,7 +6,7 @@ import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
 
 
-describe('generated client style rxjs', () => {
+describe('generated client style call', () => {
 
 
     describe("unary", function () {

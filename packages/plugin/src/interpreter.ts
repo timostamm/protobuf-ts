@@ -119,9 +119,9 @@ export class Interpreter {
             unknownWriter.tag(no, wireType).raw(data);
         const unknownBytes = unknownWriter.finish();
 
-        // read data
-        const options = type.fromBinary(unknownBytes, {readUnknownField: false});
-
+        // read data, to json
+        const json = type.toJson(type.fromBinary(unknownBytes, {readUnknownField: false}));
+        assert(rt.isJsonObject(json));
 
         // apply blacklist
         if (excludeOptions) {
@@ -131,26 +131,21 @@ export class Interpreter {
             let wildcards = excludeOptions.filter(str => str.includes("*"))
                 .map(str => str.replace(/[.+\-?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*'));
             // then we delete the blacklisted options
-            for (let key of Object.keys(options)) {
+            for (let key of Object.keys(json)) {
                 for (let str of literals)
                     if (key === str)
-                        delete options[key];
+                        delete json[key];
                 for (let re of wildcards)
                     if (key.match(re))
-                        delete options[key];
+                        delete json[key];
             }
         }
 
-
         // were *all* options blacklisted?
-        if (!Object.keys(options).length) {
+        if (!Object.keys(json).length) {
             return undefined;
         }
 
-
-        // return options as json
-        const json = type.toJson(options, {});
-        assert(rt.isJsonObject(json));
         return json;
     }
 
@@ -208,7 +203,7 @@ export class Interpreter {
         let type = this.serviceTypes.get(typeName);
         if (!type) {
             const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
-            type = this.buildServiceType(typeName, descriptor.method, ourFileOptions["ts.exclude_options"]);
+            type = this.buildServiceType(typeName, descriptor.method, ourFileOptions["ts.exclude_options"].concat("ts.client_style"));
             this.serviceTypes.set(typeName, type);
         }
         return type;

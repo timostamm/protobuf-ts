@@ -6,9 +6,11 @@ import "protobuf-ts.proto";
 import "google/protobuf/wrappers.proto";
 
 
-service RxjsStyleService {
+service AllStyleService {
 
-    option (ts.method_style) = RXJS;
+    option (ts.client_style) = CALL;
+    option (ts.client_style) = RX;
+    option (ts.client_style) = PROMISE;
 
     rpc Unary (google.protobuf.StringValue) returns (google.protobuf.Int32Value);
     rpc ServerStream (google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);

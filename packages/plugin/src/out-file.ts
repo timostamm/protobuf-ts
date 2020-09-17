@@ -23,6 +23,7 @@ import {ServiceTypeGenerator} from "./code-gen/service-type-generator";
 import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-call";
 import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
 import {ServiceClientGeneratorRxjs} from "./code-gen/service-client-generator-rxjs";
+import {assert} from "@protobuf-ts/runtime";
 
 
 /**
@@ -47,13 +48,14 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
 
 
     constructor(
+        name: string,
         public readonly fileDescriptor: FileDescriptorProto,
         private readonly registry: DescriptorRegistry,
         symbolTable: SymbolTable,
         private readonly interpreter: Interpreter,
         private readonly options: InternalOptions,
     ) {
-        super(fileDescriptor.name!.replace('.proto', '.ts'));
+        super(name);
         let imports = new TypescriptImportManager(this, symbolTable, this);
         let commentGenerator = new CommentGenerator(this.registry);
         this.serviceTypeGenerator = new ServiceTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, this.options);
@@ -117,37 +119,17 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
     }
 
 
-    generateServiceClientInterface(descriptor: ServiceDescriptorProto): void {
-
-        // TODO #8 honor plugin parameters
-        // TODO #8 allow multiple styles
-
-        const serviceOptionStyle = this.interpreter.readOurServiceOptions(descriptor)["ts.method_style"];
-        const defaultStyle = rpc.ClientMethodStyle.CALL;
-        const styles = serviceOptionStyle !== undefined ? [serviceOptionStyle] : [defaultStyle];
-
-        for (let gen of this.serviceClientGenerators) {
-            if (styles.includes(gen.style)) {
-                gen.generateInterface(descriptor, this);
-            }
-        }
+    generateServiceClientInterface(descriptor: ServiceDescriptorProto, style: rpc.ClientMethodStyle): void {
+        const gen = this.serviceClientGenerators.find(g => g.style === style);
+        assert(gen);
+        gen.generateInterface(descriptor, this);
     }
 
 
-    generateServiceClientImplementation(descriptor: ServiceDescriptorProto): void {
-
-        // TODO #8 honor plugin parameters
-        // TODO #8 allow multiple styles
-
-        const serviceOptionStyle = this.interpreter.readOurServiceOptions(descriptor)["ts.method_style"];
-        const defaultStyle = rpc.ClientMethodStyle.CALL;
-        const styles = serviceOptionStyle !== undefined ? [serviceOptionStyle] : [defaultStyle];
-
-        for (let gen of this.serviceClientGenerators) {
-            if (styles.includes(gen.style)) {
-                gen.generateImplementationClass(descriptor, this);
-            }
-        }
+    generateServiceClientImplementation(descriptor: ServiceDescriptorProto, style: rpc.ClientMethodStyle): void {
+        const gen = this.serviceClientGenerators.find(g => g.style === style);
+        assert(gen);
+        gen.generateImplementationClass(descriptor, this);
     }
 
 

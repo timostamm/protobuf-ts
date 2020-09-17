@@ -12,7 +12,8 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import {OutFile} from "./out-file";
 import {createLocalTypeName} from "./code-gen/local-type-name";
-import {LongType} from "@protobuf-ts/runtime";
+import * as rt from "@protobuf-ts/runtime";
+import * as rpc from "@protobuf-ts/runtime-rpc";
 import {Interpreter} from "./interpreter";
 import {makeInternalOptions} from "./our-options";
 
@@ -65,7 +66,18 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     }
 
 
-    // TODO #8 add parameters: client_style_call, client_style_rxjs, client_style_promise; force_client_style_call, force_client_style_rxjs, force_client_style_promise
+
+    // TODO #8 parameters for client style - allow multiple times as well?
+    //
+    // i.E: "client_style_promise"
+    // Generate service clients with Promise return types.
+    // Ignores services with the option (ts.client_style).
+    //
+    // And: "force_client_style_promise"
+    // Generate service clients with Promise return types, even if the service option (ts.client_style) is set.
+
+
+    // TODO #8 update "disable_service_client"
 
 
 
@@ -81,22 +93,20 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             options = {
                 pluginCredit: `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameters ${request.parameter}` : ''),
                 emitAngularAnnotations: params.enable_angular_annotations,
-                normalLongType: params.long_type_string ? LongType.STRING : LongType.BIGINT
+                normalLongType: params.long_type_string ? rt.LongType.STRING : rt.LongType.BIGINT
             },
+            normalClientStyles = [rpc.ClientMethodStyle.CALL],
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
             interpreter = new Interpreter(registry, makeInternalOptions(options));
 
-
         let outFiles = registry.allFiles().map(fileDescriptor => {
 
-            const file = new OutFile(fileDescriptor, registry, symbols, interpreter, makeInternalOptions({
-                ...options,
-                optimizeFor: ProtobuftsPlugin.getFileOptimizeMode(
-                    fileDescriptor, params.force_optimize_code_size,
-                    params.force_optimize_speed, params.optimize_code_size
-                ),
-            }));
+            const
+                fileName = fileDescriptor.name!.replace('.proto', '.ts'),
+                fileOptimizeMode = ProtobuftsPlugin.getFileOptimizeMode(fileDescriptor, params.force_optimize_code_size, params.force_optimize_speed, params.optimize_code_size),
+                fileOptions = makeInternalOptions({...options, optimizeFor: fileOptimizeMode}),
+                file = new OutFile(fileName, fileDescriptor, registry, symbols, interpreter, fileOptions);
 
             registry.visitTypes(fileDescriptor, descriptor => {
                 // we are not interested in synthetic types like map entry messages
@@ -111,11 +121,18 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                     // service type
                     symbols.register(name, descriptor, file);
 
-                    // we are generating clients only ATM. but we still need separate names.
-                    // we intentionally reserve the names for services even if the user opted
-                    // out of service client generation to make the generated code more stable.
-                    symbols.register(name + 'Client', descriptor, file, 'client-implementation');
-                    symbols.register('I' + name + 'Client', descriptor, file, 'client-interface');
+                    // client symbols
+                    const styles = ProtobuftsPlugin.getClientStyles(descriptor, normalClientStyles, [], interpreter);
+                    for (let style of styles) {
+                        const styleNameLc = rpc.ClientMethodStyle[style].toLowerCase(),
+                            styleNameUcFirst = styleNameLc[0].toUpperCase() + styleNameLc.substring(1),
+                            localTypeName = createLocalTypeName(descriptor, registry),
+                            clientName = styles.length > 1 ? `${localTypeName}${styleNameUcFirst}Client` : `${localTypeName}Client`,
+                            clientInterfaceName = styles.length > 1 ? `I${localTypeName}${styleNameUcFirst}Client` : `I${localTypeName}Client`;
+                        symbols.register(clientName, descriptor, file, `${styleNameLc}-client`);
+                        symbols.register(clientInterfaceName, descriptor, file, `${styleNameLc}-client-interface`);
+                    }
+
                 } else {
                     symbols.register(name, descriptor, file);
                 }
@@ -131,9 +148,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 if (EnumDescriptorProto.is(descriptor)) {
                     file.generateEnum(descriptor);
                 }
-                if (ServiceDescriptorProto.is(descriptor) && !params.disable_service_client) {
-                    file.generateServiceClientInterface(descriptor);
-                }
+                // if (ServiceDescriptorProto.is(descriptor) && !params.disable_service_client) {
+                //     file.generateServiceClientInterface(descriptor);
+                // }
             });
 
             registry.visitTypes(fileDescriptor, descriptor => {
@@ -145,25 +162,46 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 }
                 if (ServiceDescriptorProto.is(descriptor)) {
                     file.generateServiceType(descriptor);
+                    for (let style of ProtobuftsPlugin.getClientStyles(descriptor, normalClientStyles, [], interpreter)) {
+                        file.generateServiceClientInterface(descriptor, style);
+                        file.generateServiceClientImplementation(descriptor, style);
+                    }
                 }
-                if (ServiceDescriptorProto.is(descriptor) && !params.disable_service_client) {
-                    file.generateServiceClientImplementation(descriptor);
-                }
+                // if (ServiceDescriptorProto.is(descriptor) && !params.disable_service_client) {
+                //     file.generateServiceClientImplementation(descriptor);
+                // }
             });
+
 
             return file;
         });
 
         // plugins should only return files requested to generate
         // unless our option "generate_dependencies" is set
-        return params.generate_dependencies
-            ? outFiles
-            : outFiles.filter(file => request.fileToGenerate.includes(file.fileDescriptor.name!));
+        if (!params.generate_dependencies) {
+            outFiles = outFiles.filter(file => request.fileToGenerate.includes(file.fileDescriptor.name!));
+        }
+
+        // our "protobuf-ts.proto" should not be emitted
+        outFiles = outFiles.filter(file => file.getFilename() !== "protobuf-ts.proto");
+        return outFiles;
     }
 
 
     // we support proto3-optionals, so we let protoc know
     protected getSupportedFeatures = () => [CodeGeneratorResponse_Feature.PROTO3_OPTIONAL];
+
+
+    private static getClientStyles(descriptor: ServiceDescriptorProto, normalStyles: rpc.ClientMethodStyle[], forcedStyles: rpc.ClientMethodStyle[], interpreter: Interpreter): rpc.ClientMethodStyle[] {
+        const styles = [...forcedStyles];
+        const service = interpreter.readOurServiceOptions(descriptor)["ts.client_style"];
+        if (service.length > 0) {
+            styles.push(...service);
+        } else {
+            styles.push(...normalStyles);
+        }
+        return styles;
+    }
 
 
     private static getFileOptimizeMode(file: FileDescriptorProto, forceCodeSize: boolean, forceSpeed: boolean, speed: boolean): OptimizeMode {

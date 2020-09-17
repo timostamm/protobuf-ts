@@ -39,14 +39,14 @@ export interface OurFileOptions {
 
 /**
  * Custom service options interpreted by @protobuf-ts/plugin
- * The extensions are declared in protobuf-ts.proto
  */
 export interface OurServiceOptions {
 
     /**
-     * Sets a method style for all methods of this service.
+     * Generate a client for this service with this style.
+     * Can be set multiple times to generate several styles.
      */
-    readonly ["ts.method_style"]?: ClientMethodStyle;
+    readonly ["ts.client_style"]: rpc.ClientMethodStyle[];
 }
 
 
@@ -73,7 +73,7 @@ export enum ClientMethodStyle {
     /**
      * Use Observables from the "rxjs" package for requests and responses.
      */
-    RXJS = 2
+    RX = 2
 }
 
 
@@ -123,10 +123,10 @@ const OurFileOptions = new rt.MessageType<OurFileOptions>("$synthetic.OurFileOpt
 const OurServiceOptions = new rt.MessageType<OurServiceOptions>("$synthetic.OurServiceOptions", [
     {
         no: 777701,
-        name: "ts.method_style", localName: "ts.method_style", jsonName: "ts.method_style",
+        name: "ts.client_style", localName: "ts.client_style", jsonName: "ts.client_style",
         kind: "enum",
-        opt: true,
-        T: () => ["ts.ClientMethodStyle", ClientMethodStyle],
+        T: () => ["ts.ClientMethodStyle", rpc.ClientMethodStyle],
+        repeat: rt.RepeatType.UNPACKED,
     }
 ]);
 
@@ -149,7 +149,6 @@ export interface InternalOptions {
     readonly runtimeAngularImportPath: string;
     readonly runtimeRpcImportPath: string;
     readonly runtimeImportPath: string;
-    readonly normalClientMethodStyle: readonly rpc.ClientMethodStyle[];
 }
 
 export function makeInternalOptions(options?: Partial<InternalOptions>): InternalOptions {
@@ -173,5 +172,4 @@ const defaultOptions: InternalOptions = {
     runtimeRpcImportPath: '@protobuf-ts/runtime-rpc',
     angularCoreImportPath: '@angular/core',
     runtimeImportPath: '@protobuf-ts/runtime',
-    normalClientMethodStyle: [rpc.ClientMethodStyle.CALL],
 } as const;
