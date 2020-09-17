@@ -40,8 +40,7 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
             ),
             ts.createBlock(
                 [
-                    // TODO #8 drop redundant "i"
-                    // const method = this.methods[0], opt = this._transport.mergeOptions(options), i = method.I.create(input);
+                    // const method = this.methods[0], opt = this._transport.mergeOptions(options);
                     ts.createVariableStatement(
                         undefined,
                         ts.createVariableDeclarationList(
@@ -69,24 +68,12 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
                                         [ts.createIdentifier("options")]
                                     )
                                 ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("i"),
-                                    undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(ts.createIdentifier("method"), ts.createIdentifier("I")),
-                                            ts.createIdentifier("create")
-                                        ),
-                                        undefined,
-                                        [ts.createIdentifier("input")]
-                                    )
-                                )
                             ],
                             ts.NodeFlags.Const
                         )
                     ),
 
-                    // return stackIntercept("unary", this._transport, method, opt, i);
+                    // return stackIntercept("unary", this._transport, method, opt, input);
                     ts.createReturn(ts.createCall(
                         ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
                         [
@@ -101,7 +88,7 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
                             ),
                             ts.createIdentifier("method"),
                             ts.createIdentifier("opt"),
-                            ts.createIdentifier("i"),
+                            ts.createIdentifier("input"),
                         ]
                     )),
                 ],
@@ -140,8 +127,7 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
             ),
             ts.createBlock(
                 [
-                    // TODO #8 drop redundant "i"
-                    // const method = this.methods[0], opt = this._transport.mergeOptions(options), i = method.I.create(input);
+                    // const method = this.methods[0], opt = this._transport.mergeOptions(options);
                     ts.createVariableStatement(
                         undefined,
                         ts.createVariableDeclarationList(
@@ -169,18 +155,6 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
                                         [ts.createIdentifier("options")]
                                     )
                                 ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("i"),
-                                    undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(ts.createIdentifier("method"), ts.createIdentifier("I")),
-                                            ts.createIdentifier("create")
-                                        ),
-                                        undefined,
-                                        [ts.createIdentifier("input")]
-                                    )
-                                )
                             ],
                             ts.NodeFlags.Const
                         )
@@ -198,7 +172,7 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
                             ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
                             ts.createIdentifier("method"),
                             ts.createIdentifier("opt"),
-                            ts.createIdentifier("i"),
+                            ts.createIdentifier("input"),
                         ]
                     )),
                 ],
