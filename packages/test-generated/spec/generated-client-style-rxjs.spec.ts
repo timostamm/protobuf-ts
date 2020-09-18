@@ -2,7 +2,7 @@ import {RpcError, TestTransport} from "@protobuf-ts/runtime-rpc";
 import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
 import {catchError, tap} from "rxjs/operators";
 import {AbortController} from "abort-controller";
-import {RxjsStyleServiceClient} from "../ts-out/service-style-rxjs";
+import {RxjsStyleServiceClient} from "../ts-out/service-style-rx";
 import {EMPTY} from "rxjs";
 
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
@@ -157,7 +157,7 @@ describe('generated client style rx', () => {
             await client.serverStream(StringValue.create(), {abort: abort.signal})
                 .pipe(
                     tap(x => msg.push(x), e => err = e),
-                    catchError(e => EMPTY)
+                    catchError(() => EMPTY)
                 )
                 .toPromise();
             expect(err).toBeUndefined();

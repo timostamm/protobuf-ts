@@ -7,14 +7,14 @@ TEST_RUNNER = $(shell command -v conformance-test-runner 2> /dev/null)
 
 
 default:
-	make generate-speed 	   test-spec		test-conformance
-	make generate-size  	   test-spec		test-conformance
-	make generate-speed-bigint test-spec-bigint test-conformance-bigint
-	make generate-size-bigint  test-spec-bigint test-conformance-bigint
+	make clean generate-speed 	     test-spec		  test-conformance
+	make clean generate-size  	     test-spec		  test-conformance
+	make clean generate-speed-bigint test-spec-bigint test-conformance-bigint
+	make clean generate-size-bigint  test-spec-bigint test-conformance-bigint
 
 
 clean:
-	@find ts-out -name '*.ts' -delete
+	@find ts-out \( -name '*.ts' -or -name '*.js' \) -delete
 	@echo "'${@}' done"
 
 test-runner:
@@ -29,19 +29,19 @@ protobuf:
 	&& git checkout -q c9d2bd2fc781fe67ebf306807b9b6edb4a0d2764 \
 	&& bazel build test_messages_proto3_proto conformance_proto conformance_test conformance_test_runner
 
-test-conformance: test-runner clean
+test-conformance: test-runner
 	@npx tsc --target ES2015 --module CommonJS --strict conformance_ts.ts
 	@chmod +x conformance_ts.js
 	@$(TEST_RUNNER) --enforce_recommended conformance_ts.js
 	@echo "'${@}' done"
 
-test-conformance-bigint: test-runner clean
+test-conformance-bigint: test-runner
 	@npx tsc --target ES2020 --module CommonJS --strict conformance_ts.ts
 	@chmod +x conformance_ts.js
 	@$(TEST_RUNNER) --enforce_recommended conformance_ts.js
 	@echo "'${@}' done"
 
-test-spec: clean
+test-spec:
 	@./node_modules/.bin/ts-node \
 		--project tsconfig.json \
 		--require tsconfig-paths/register \
@@ -49,7 +49,7 @@ test-spec: clean
 		$(SPECS)
 	@echo "'${@}' done"
 
-test-spec-bigint: clean
+test-spec-bigint:
 	@./node_modules/.bin/ts-node \
 		--project tsconfig.bigint.json \
 		--require tsconfig-paths/register \

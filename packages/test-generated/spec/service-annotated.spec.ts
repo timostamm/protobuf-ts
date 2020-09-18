@@ -1,6 +1,7 @@
 import {assert} from "@protobuf-ts/runtime";
 import {AnnotatedService, AnnotatedServiceClient} from "../ts-out/service-annotated";
 import {RpcTransport} from "@protobuf-ts/runtime-rpc";
+import {HttpRule} from "../ts-out/google/api/http";
 
 
 describe('spec.AnnotatedService', function () {
@@ -11,10 +12,6 @@ describe('spec.AnnotatedService', function () {
         it('should have "Get" method', function () {
             let mi = AnnotatedService.methods.find(mi => mi.name === "Get");
             assert(mi !== undefined);
-            expect(mi.options).toBeDefined();
-            if (mi.options) {
-                expect(mi.options["google.api.http"]).toBeDefined();
-            }
         });
 
         it('"Get" method should have "google.api.http" option', function () {
@@ -23,7 +20,32 @@ describe('spec.AnnotatedService', function () {
                 expect(mi.options).toBeDefined();
                 if (mi.options) {
                     expect(mi.options["google.api.http"]).toBeDefined();
+                    HttpRule.fromJson(mi.options["google.api.http"]);
                 }
+            }
+        });
+
+        it('"Get" method option "google.api.http" should be readable using HttpRule', function () {
+            let mi = AnnotatedService.methods.find(mi => mi.name === "Get");
+            if (mi !== undefined && mi.options !== undefined && mi.options["google.api.http"] !== undefined) {
+                const rule = HttpRule.fromJson(mi.options["google.api.http"]);
+                expect(rule).toEqual(HttpRule.create({
+                    pattern: {
+                        oneofKind: "get",
+                        get: "/v1/{name=messages/*}"
+                    },
+                    additionalBindings: [{
+                        pattern: {
+                            oneofKind: "get",
+                            get: "xxx"
+                        }
+                    }, {
+                        pattern: {
+                            oneofKind: "get",
+                            get: "yyy"
+                        }
+                    }]
+                }));
             }
         });
 

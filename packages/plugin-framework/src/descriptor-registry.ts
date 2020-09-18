@@ -259,4 +259,12 @@ export class DescriptorRegistry implements IDescriptorTree, ITypeNameLookup, ISo
         return this.descriptorInfo.shouldBePackedRepeated(descriptor);
     }
 
+    isFileUsed(file: FileDescriptorProto, inFiles: FileDescriptorProto[]): boolean {
+        return this.descriptorInfo.isFileUsed(file, inFiles);
+    }
+
+    isTypeUsed(type: AnyTypeDescriptorProto, inFiles: FileDescriptorProto[]): boolean {
+        return this.descriptorInfo.isTypeUsed(type, inFiles);
+    }
+
 }

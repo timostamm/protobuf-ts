@@ -66,7 +66,6 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     }
 
 
-
     // TODO #8 parameters for client style - allow multiple times as well?
     //
     // i.E: "client_style_promise"
@@ -78,7 +77,6 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
 
     // TODO #8 update "disable_service_client"
-
 
 
     constructor(private readonly version: string) {
@@ -182,8 +180,14 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             outFiles = outFiles.filter(file => request.fileToGenerate.includes(file.fileDescriptor.name!));
         }
 
-        // our "protobuf-ts.proto" should not be emitted
-        outFiles = outFiles.filter(file => file.getFilename() !== "protobuf-ts.proto");
+        // if a proto file is imported to use custom options, or if a proto file declares custom options,
+        // we do not to emit it. unless it was explicitly requested.
+        const outFileDescriptors = outFiles.map(of => of.fileDescriptor);
+        outFiles = outFiles.filter(of =>
+            request.fileToGenerate.includes(of.fileDescriptor.name!)
+            || registry.isFileUsed(of.fileDescriptor, outFileDescriptors)
+        );
+
         return outFiles;
     }
 
