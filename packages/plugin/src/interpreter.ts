@@ -203,7 +203,7 @@ export class Interpreter {
         let type = this.serviceTypes.get(typeName);
         if (!type) {
             const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
-            type = this.buildServiceType(typeName, descriptor.method, ourFileOptions["ts.exclude_options"].concat("ts.client_style"));
+            type = this.buildServiceType(typeName, descriptor.method, ourFileOptions["ts.exclude_options"].concat("ts.client"));
             this.serviceTypes.set(typeName, type);
         }
         return type;

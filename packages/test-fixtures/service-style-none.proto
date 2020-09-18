@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package spec;
+
+import "protobuf-ts.proto";
+import "google/protobuf/wrappers.proto";
+
+
+service NoneStyleService {
+
+    option (ts.client) = NONE;
+
+    rpc Unary (google.protobuf.StringValue) returns (google.protobuf.Int32Value);
+
+}

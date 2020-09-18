@@ -8,9 +8,9 @@ import "google/protobuf/wrappers.proto";
 
 service AllStyleService {
 
-    option (ts.client_style) = CALL;
-    option (ts.client_style) = RX;
-    option (ts.client_style) = PROMISE;
+    option (ts.client) = CALL;
+    option (ts.client) = RX;
+    option (ts.client) = PROMISE;
 
     rpc Unary (google.protobuf.StringValue) returns (google.protobuf.Int32Value);
     rpc ServerStream (google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);

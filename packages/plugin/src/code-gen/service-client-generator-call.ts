@@ -7,7 +7,7 @@ import {assert} from "@protobuf-ts/runtime";
 export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
 
 
-    readonly style = rpc.ClientMethodStyle.CALL;
+    readonly style = rpc.ClientStyle.CALL;
 
 
     createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {

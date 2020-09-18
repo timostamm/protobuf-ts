@@ -16,7 +16,7 @@ export abstract class ServiceClientGeneratorBase {
 
     // TODO #8 make style a public property of client? add "style" to reserved name in Interpreter.createTypescriptNameForMethod and add to name-clash-proto
 
-    abstract readonly style: rpc.ClientMethodStyle;
+    abstract readonly style: rpc.ClientStyle;
     protected readonly commentGenerator: CommentGenerator;
 
 
@@ -52,7 +52,7 @@ export abstract class ServiceClientGeneratorBase {
     generateInterface(descriptor: ServiceDescriptorProto, source: TypescriptFile): ts.InterfaceDeclaration {
         const
             interpreterType = this.interpreter.getServiceType(descriptor),
-            styleName = rpc.ClientMethodStyle[this.style].toLowerCase(),
+            styleName = rpc.ClientStyle[this.style].toLowerCase(),
             IServiceClient = this.imports.type(descriptor, `${styleName}-client-interface`);
 
         const methods = interpreterType.methods.map(mi => {
@@ -104,7 +104,7 @@ export abstract class ServiceClientGeneratorBase {
     generateImplementationClass(descriptor: ServiceDescriptorProto, source: TypescriptFile): ts.ClassDeclaration {
         const
             interpreterType = this.interpreter.getServiceType(descriptor),
-            styleName = rpc.ClientMethodStyle[this.style].toLowerCase(),
+            styleName = rpc.ClientStyle[this.style].toLowerCase(),
             ServiceType = this.imports.type(descriptor),
             ServiceClient = this.imports.type(descriptor, `${styleName}-client`),
             IServiceClient = this.imports.type(descriptor, `${styleName}-client-interface`),

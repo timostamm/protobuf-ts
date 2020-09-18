@@ -201,6 +201,9 @@ export abstract class PluginBase<T extends GeneratedFile> {
         if (error && typeof error.name == 'string' && error.name == 'ParameterError') {
             return error.name + '\n\n' + error.message;
         }
+        if (error && typeof error.name == 'string' && error.name == 'PluginMessageError') {
+            return error.message;
+        }
         if (types.isNativeError(error)) {
             return error.stack ?? error.toString();
         }

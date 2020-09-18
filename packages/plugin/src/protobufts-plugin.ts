@@ -6,6 +6,7 @@ import {
     EnumDescriptorProto,
     FileDescriptorProto,
     FileOptions_OptimizeMode as OptimizeMode,
+    IStringFormat,
     PluginBase,
     ServiceDescriptorProto,
     SymbolTable
@@ -23,19 +24,56 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     parameters = {
         // @formatter:off
         long_type_string: {
-            description: "Sets jstype = JS_STRING for all fields where no option `jstype` was \n"+
-                         "specified. The default behaviour is to use native `bigint`.",
+            description: "Sets jstype = JS_STRING for message fields with 64 bit integral values. \n"+
+                         "The default behaviour is to use native `bigint`. \n" +
+                         "Only applies to fields that do *not* use the option `jstype`.",
             excludes: [],
-        },
-        disable_service_client: {
-            description: "Disables generation of service clients. By default, we generate a client \n" +
-                         "(an interface and an implementation class) for each service.",
-            excludes: ['enable_angular_annotations'],
         },
         generate_dependencies: {
             description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
                          "not the files they import. Set this option to generate code for dependencies \n" +
                          "too.",
+        },
+        client_none: {
+            description: "Do not generate service clients. \n" +
+                         "Only applies to services that do *not* use the option `ts.client`. \n" +
+                         "If you do not want service clients at all, use `force_client_none`.",
+            excludes: ['client_call', 'client_promise', 'client_rx', 'force_client_call', 'force_client_promise', 'force_client_rx'],
+        },
+        client_call: {
+            description: "Use *Call return types for service clients. \n" +
+                         "Only applies to services that do *not* use the option `ts.client`. \n" +
+                         "Since CALL is the default, this option has no effect.",
+            excludes: ['client_none', 'client_promise', 'client_rx', 'force_client_none', 'force_client_call', 'force_client_promise', 'force_client_rx'],
+        },
+        client_promise: {
+            description: "Use Promise return types for service clients. \n" +
+                         "Only applies to services that do *not* use the option `ts.client`.",
+            excludes: ['client_none', 'client_call', 'client_rx', 'force_client_none', 'force_client_call', 'force_client_promise', 'force_client_rx'],
+        },
+        client_rx: {
+            description: "Use Observable return types from the `rxjs` package for service clients. \n" +
+                         "Only applies to services that do *not* use the option `ts.client`." ,
+            excludes: ['client_none', 'client_call', 'client_promise', 'force_client_none', 'force_client_call', 'force_client_promise', 'force_client_rx'],
+        },
+        disable_service_client: {
+            description: "Alias for `force_client_none`.",
+        },
+        force_client_none: {
+            description: "Do not generate service clients, ignore service options.",
+            excludes: ['client_call', 'client_promise', 'client_rx'],
+        },
+        force_client_call: {
+            description: "Force ts.client = CALL for all services, ignore service options.",
+            excludes: ['force_client_none', 'client_call', 'client_promise', 'client_rx'],
+        },
+        force_client_promise: {
+            description: "Force ts.client = PROMISE for all services, ignore service options.",
+            excludes: ['force_client_none', 'client_call', 'client_promise', 'client_rx'],
+        },
+        force_client_rx: {
+            description: "Force ts.client = RX for all services, ignore service options.",
+            excludes: ['force_client_none', 'client_call', 'client_promise', 'client_rx'],
         },
         enable_angular_annotations: {
             description: "If set, the generated service client will have an angular @Injectable() \n" +
@@ -66,19 +104,6 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     }
 
 
-    // TODO #8 parameters for client style - allow multiple times as well?
-    //
-    // i.E: "client_style_promise"
-    // Generate service clients with Promise return types.
-    // Ignores services with the option (ts.client_style).
-    //
-    // And: "force_client_style_promise"
-    // Generate service clients with Promise return types, even if the service option (ts.client_style) is set.
-
-
-    // TODO #8 update "disable_service_client"
-
-
     constructor(private readonly version: string) {
         super();
         this.version = version;
@@ -93,16 +118,18 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 emitAngularAnnotations: params.enable_angular_annotations,
                 normalLongType: params.long_type_string ? rt.LongType.STRING : rt.LongType.BIGINT
             },
-            normalClientStyles = [rpc.ClientMethodStyle.CALL],
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
-            interpreter = new Interpreter(registry, makeInternalOptions(options));
+            interpreter = new Interpreter(registry, makeInternalOptions(options)),
+            getClientStyles = ProtobuftsPlugin.makeClientStyleGetter(params, interpreter, registry),
+            getFileOptimizeMode = ProtobuftsPlugin.makeFileOptimizeGetter(params);
+
 
         let outFiles = registry.allFiles().map(fileDescriptor => {
 
             const
                 fileName = fileDescriptor.name!.replace('.proto', '.ts'),
-                fileOptimizeMode = ProtobuftsPlugin.getFileOptimizeMode(fileDescriptor, params.force_optimize_code_size, params.force_optimize_speed, params.optimize_code_size),
+                fileOptimizeMode = getFileOptimizeMode(fileDescriptor),
                 fileOptions = makeInternalOptions({...options, optimizeFor: fileOptimizeMode}),
                 file = new OutFile(fileName, fileDescriptor, registry, symbols, interpreter, fileOptions);
 
@@ -120,9 +147,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                     symbols.register(name, descriptor, file);
 
                     // client symbols
-                    const styles = ProtobuftsPlugin.getClientStyles(descriptor, normalClientStyles, [], interpreter);
+                    const styles = getClientStyles(descriptor);
                     for (let style of styles) {
-                        const styleNameLc = rpc.ClientMethodStyle[style].toLowerCase(),
+                        const styleNameLc = rpc.ClientStyle[style].toLowerCase(),
                             styleNameUcFirst = styleNameLc[0].toUpperCase() + styleNameLc.substring(1),
                             localTypeName = createLocalTypeName(descriptor, registry),
                             clientName = styles.length > 1 ? `${localTypeName}${styleNameUcFirst}Client` : `${localTypeName}Client`,
@@ -146,9 +173,6 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 if (EnumDescriptorProto.is(descriptor)) {
                     file.generateEnum(descriptor);
                 }
-                // if (ServiceDescriptorProto.is(descriptor) && !params.disable_service_client) {
-                //     file.generateServiceClientInterface(descriptor);
-                // }
             });
 
             registry.visitTypes(fileDescriptor, descriptor => {
@@ -160,14 +184,11 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 }
                 if (ServiceDescriptorProto.is(descriptor)) {
                     file.generateServiceType(descriptor);
-                    for (let style of ProtobuftsPlugin.getClientStyles(descriptor, normalClientStyles, [], interpreter)) {
+                    for (let style of getClientStyles(descriptor)) {
                         file.generateServiceClientInterface(descriptor, style);
                         file.generateServiceClientImplementation(descriptor, style);
                     }
                 }
-                // if (ServiceDescriptorProto.is(descriptor) && !params.disable_service_client) {
-                //     file.generateServiceClientImplementation(descriptor);
-                // }
             });
 
 
@@ -196,28 +217,84 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     protected getSupportedFeatures = () => [CodeGeneratorResponse_Feature.PROTO3_OPTIONAL];
 
 
-    private static getClientStyles(descriptor: ServiceDescriptorProto, normalStyles: rpc.ClientMethodStyle[], forcedStyles: rpc.ClientMethodStyle[], interpreter: Interpreter): rpc.ClientMethodStyle[] {
-        const styles = [...forcedStyles];
-        const service = interpreter.readOurServiceOptions(descriptor)["ts.client_style"];
-        if (service.length > 0) {
-            styles.push(...service);
-        } else {
-            styles.push(...normalStyles);
-        }
-        return styles;
+    private static makeClientStyleGetter(
+        params: {
+            disable_service_client: boolean,
+            client_none: boolean,
+            client_rx: boolean,
+            client_promise: boolean,
+            force_client_none: boolean,
+            force_client_call: boolean,
+            force_client_rx: boolean,
+            force_client_promise: boolean
+        },
+        interpreter: Interpreter,
+        stringFormat: IStringFormat
+    ): (descriptor: ServiceDescriptorProto) => rpc.ClientStyle[] {
+        return (descriptor: ServiceDescriptorProto) => {
+
+            // always check service options valid
+            const service = interpreter.readOurServiceOptions(descriptor)["ts.client"];
+            if (service.includes(rpc.ClientStyle.NONE) && service.some(s => s !== rpc.ClientStyle.NONE)) {
+                let err = new Error(`You provided invalid options for ${stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NONE, you cannot set additional client styles.`);
+                err.name = `PluginMessageError`;
+                throw err;
+            }
+
+            // clients disabled altogether?
+            if (params.disable_service_client || params.force_client_none) {
+                return [];
+            }
+
+            // forced has priority
+            const forced: rpc.ClientStyle[] = [];
+            if (params.force_client_call)
+                forced.push(rpc.ClientStyle.CALL);
+            if (params.force_client_rx)
+                forced.push(rpc.ClientStyle.RX);
+            if (params.force_client_promise)
+                forced.push(rpc.ClientStyle.PROMISE);
+            if (forced.length) {
+                return forced;
+            }
+
+            // service options have next best priority
+            if (service.length) {
+                return service
+                    .filter(s => s !== rpc.ClientStyle.NONE)
+                    .filter((value, index, array) => array.indexOf(value) === index);
+            }
+
+            // fall back to normal style
+            if (params.client_none)
+                return [];
+            else if (params.client_rx)
+                return [rpc.ClientStyle.RX];
+             else if (params.client_promise)
+                return [rpc.ClientStyle.PROMISE];
+             else
+                return [rpc.ClientStyle.CALL];
+        };
     }
 
-
-    private static getFileOptimizeMode(file: FileDescriptorProto, forceCodeSize: boolean, forceSpeed: boolean, speed: boolean): OptimizeMode {
-        if (forceCodeSize)
-            return OptimizeMode.CODE_SIZE;
-        if (forceSpeed)
+    private static makeFileOptimizeGetter(
+        params: {
+            force_optimize_code_size: boolean,
+            force_optimize_speed: boolean,
+            optimize_code_size: boolean,
+        }
+    ): (file: FileDescriptorProto) => OptimizeMode {
+        return (file: FileDescriptorProto) => {
+            if (params.force_optimize_code_size)
+                return OptimizeMode.CODE_SIZE;
+            if (params.force_optimize_speed)
+                return OptimizeMode.SPEED;
+            if (file.options?.optimizeFor)
+                return file.options.optimizeFor;
+            if (params.optimize_code_size)
+                return OptimizeMode.CODE_SIZE;
             return OptimizeMode.SPEED;
-        if (file.options?.optimizeFor)
-            return file.options.optimizeFor;
-        if (speed)
-            return OptimizeMode.CODE_SIZE;
-        return OptimizeMode.SPEED;
+        };
     }
 
 

@@ -119,14 +119,14 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
     }
 
 
-    generateServiceClientInterface(descriptor: ServiceDescriptorProto, style: rpc.ClientMethodStyle): void {
+    generateServiceClientInterface(descriptor: ServiceDescriptorProto, style: rpc.ClientStyle): void {
         const gen = this.serviceClientGenerators.find(g => g.style === style);
         assert(gen);
         gen.generateInterface(descriptor, this);
     }
 
 
-    generateServiceClientImplementation(descriptor: ServiceDescriptorProto, style: rpc.ClientMethodStyle): void {
+    generateServiceClientImplementation(descriptor: ServiceDescriptorProto, style: rpc.ClientStyle): void {
         const gen = this.serviceClientGenerators.find(g => g.style === style);
         assert(gen);
         gen.generateImplementationClass(descriptor, this);
