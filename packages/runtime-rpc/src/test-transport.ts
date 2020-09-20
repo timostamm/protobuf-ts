@@ -10,12 +10,29 @@ import {UnaryCall} from "./unary-call";
 import {ServerStreamingCall} from "./server-streaming-call";
 import {ClientStreamingCall} from "./client-streaming-call";
 import {DuplexStreamingCall} from "./duplex-streaming-call";
+import {RpcInputStream} from "./rpc-input-stream";
 
 
 /**
  * Mock data for the TestTransport.
  */
 interface TestTransportMockData {
+
+    /**
+     * Input stream behaviour for client streaming and bidi calls.
+     * If RpcError, sending a message rejects with this error.
+     * If number, sending message is delayed for N milliseconds.
+     * If omitted, sending a message is delayed for 10 milliseconds.
+     */
+    inputMessage?: RpcError | number;
+
+    /**
+     * Input stream behaviour for client streaming and bidi calls.
+     * If RpcError, completing the stream rejects with this error.
+     * If number, completing the stream is delayed for N milliseconds.
+     * If omitted, completing the stream is delayed for 10 milliseconds.
+     */
+    inputComplete?: RpcError | number;
 
     /**
      * If not provided, defaults to `{ responseHeader: "test" }`
@@ -41,7 +58,6 @@ interface TestTransportMockData {
      */
     trailers?: RpcMetadata | RpcError;
 }
-
 
 
 /**
@@ -218,15 +234,18 @@ export class TestTransport implements RpcTransport {
             headersPromise = this.promiseHeaders()
                 .then(delay(this.headerDelay, options.abort)),
             responsePromise: Promise<O> = headersPromise
-                .catch(_ => {})
+                .catch(_ => {
+                })
                 .then(delay(this.responseDelay, options.abort))
                 .then(_ => this.promiseSingleResponse(method)),
             statusPromise = responsePromise
-                .catch(_ => {})
+                .catch(_ => {
+                })
                 .then(delay(this.afterResponseDelay, options.abort))
                 .then(_ => this.promiseStatus()),
             trailersPromise = responsePromise
-                .catch(_ => {})
+                .catch(_ => {
+                })
                 .then(delay(this.afterResponseDelay, options.abort))
                 .then(_ => this.promiseTrailers());
         this.maybeSuppressUncaught(statusPromise, trailersPromise);
@@ -242,7 +261,8 @@ export class TestTransport implements RpcTransport {
             outputStream = new RpcOutputStreamController<O>(),
             responseStreamClosedPromise = headersPromise
                 .then(delay(this.responseDelay, options.abort))
-                .catch(() => {})
+                .catch(() => {
+                })
                 .then(() => this.streamResponses(method, outputStream, options.abort))
                 .then(delay(this.afterResponseDelay, options.abort)),
             statusPromise = responseStreamClosedPromise
@@ -255,14 +275,48 @@ export class TestTransport implements RpcTransport {
 
 
     clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>, options: RpcOptions): ClientStreamingCall<I, O> {
-        // TODO #8 implement TestTransport.clientStreaming
-        throw new Error("TODO #8 implement TestTransport.clientStreaming");
+        const
+            requestHeaders = options.meta ?? {},
+            headersPromise = this.promiseHeaders()
+                .then(delay(this.headerDelay, options.abort)),
+            responsePromise: Promise<O> = headersPromise
+                .catch(_ => {
+                })
+                .then(delay(this.responseDelay, options.abort))
+                .then(_ => this.promiseSingleResponse(method)),
+            statusPromise = responsePromise
+                .catch(_ => {
+                })
+                .then(delay(this.afterResponseDelay, options.abort))
+                .then(_ => this.promiseStatus()),
+            trailersPromise = responsePromise
+                .catch(_ => {
+                })
+                .then(delay(this.afterResponseDelay, options.abort))
+                .then(_ => this.promiseTrailers());
+        this.maybeSuppressUncaught(statusPromise, trailersPromise);
+        return new ClientStreamingCall<I, O>(method, requestHeaders, new TestInputStream(this.data, options.abort), headersPromise, responsePromise, statusPromise, trailersPromise);
     }
 
 
     duplex<I extends object, O extends object>(method: MethodInfo<I, O>, options: RpcOptions): DuplexStreamingCall<I, O> {
-        // TODO #8 implement TestTransport.duplex
-        throw new Error("TODO #8 implement TestTransport.duplex");
+        const
+            requestHeaders = options.meta ?? {},
+            headersPromise = this.promiseHeaders()
+                .then(delay(this.headerDelay, options.abort)),
+            outputStream = new RpcOutputStreamController<O>(),
+            responseStreamClosedPromise = headersPromise
+                .then(delay(this.responseDelay, options.abort))
+                .catch(() => {
+                })
+                .then(() => this.streamResponses(method, outputStream, options.abort))
+                .then(delay(this.afterResponseDelay, options.abort)),
+            statusPromise = responseStreamClosedPromise
+                .then(() => this.promiseStatus()),
+            trailersPromise = responseStreamClosedPromise
+                .then(() => this.promiseTrailers());
+        this.maybeSuppressUncaught(statusPromise, trailersPromise);
+        return new DuplexStreamingCall<I, O>(method, requestHeaders, new TestInputStream(this.data, options.abort), headersPromise, outputStream, statusPromise, trailersPromise);
     }
 
 }
@@ -281,4 +335,40 @@ function delay<T>(ms: number, abort?: AbortSignal): (v: T) => Promise<T> {
             }
         }
     });
+}
+
+
+class TestInputStream<T> implements RpcInputStream<T> {
+
+    private readonly data: Pick<TestTransportMockData, "inputMessage" | "inputComplete">;
+    private readonly abort?: AbortSignal;
+
+    constructor(data: Pick<TestTransportMockData, "inputMessage" | "inputComplete">, abort?: AbortSignal) {
+        this.data = data;
+        this.abort = abort;
+    }
+
+    send(message: T): Promise<void> {
+        if (this.data.inputMessage instanceof RpcError) {
+            return Promise.reject(this.data.inputMessage);
+        }
+        const delayMs = this.data.inputMessage === undefined
+            ? 10
+            : this.data.inputMessage;
+        return Promise.resolve(undefined)
+            .then(delay(delayMs, this.abort));
+    }
+
+    complete(): Promise<void> {
+        if (this.data.inputComplete instanceof RpcError) {
+            return Promise.reject(this.data.inputComplete);
+        }
+        const delayMs = this.data.inputComplete === undefined
+            ? 10
+            : this.data.inputComplete;
+        return Promise.resolve(undefined)
+            .then(delay(delayMs, this.abort));
+    }
+
+
 }

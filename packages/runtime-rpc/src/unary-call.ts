@@ -135,7 +135,7 @@ export interface FinishedUnaryCall<I extends object, O extends object> {
     readonly requestHeaders: Readonly<RpcMetadata>;
 
     /**
-     * The request message being sent.
+     * The request message that has been sent.
      */
     readonly request: Readonly<I>;
 

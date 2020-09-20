@@ -86,4 +86,66 @@ export class DuplexStreamingCall<I extends object = object, O extends object = o
     }
 
 
+    /**
+     * Instead of awaiting the response status and trailers, you can
+     * just as well await this call itself to receive the server outcome.
+     * Note that it may still be valid to send more request messages.
+     */
+    then<TResult1 = FinishedDuplexStreamingCall<I, O>, TResult2 = never>(
+        onfulfilled?: ((value: FinishedDuplexStreamingCall<I, O>) => (PromiseLike<TResult1> | TResult1)) | undefined | null,
+        onrejected?: ((reason: any) => (PromiseLike<TResult2> | TResult2)) | undefined | null
+    ): PromiseLike<TResult1 | TResult2> {
+        return this.promiseFinished().then(
+            value => onfulfilled ? Promise.resolve(onfulfilled(value)) : value as unknown as TResult1,
+            reason => onrejected ? Promise.resolve(onrejected(reason)) : Promise.reject(reason));
+    }
+
+
+    private async promiseFinished(): Promise<FinishedDuplexStreamingCall<I, O>> {
+        let [headers, status, trailers] =
+            await Promise.all([this.headers, this.status, this.trailers]);
+        return {
+            method: this.method,
+            requestHeaders: this.requestHeaders,
+            headers,
+            status,
+            trailers,
+        };
+    }
+
 }
+
+
+/**
+ * A completed duplex streaming RPC call. The server will not send any more
+ * messages, but it may still be valid to send request messages.
+ */
+export interface FinishedDuplexStreamingCall<I extends object, O extends object> {
+
+    /**
+     * Reflection information about this call.
+     */
+    readonly method: MethodInfo<I, O>;
+
+    /**
+     * Request headers being sent with the request.
+     */
+    readonly requestHeaders: Readonly<RpcMetadata>;
+
+    /**
+     * The response headers that the server sent.
+     */
+    readonly headers: RpcMetadata;
+
+    /**
+     * The response status the server replied with.
+     * The status code will always be OK.
+     */
+    readonly status: RpcStatus;
+
+    /**
+     * The trailers the server attached to the response.
+     */
+    readonly trailers: RpcMetadata;
+}
+
