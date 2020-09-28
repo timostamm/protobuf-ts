@@ -78,15 +78,42 @@ export class TestTransport implements RpcTransport {
     };
 
     /**
+     * Sent message(s) during the last operation.
+     */
+    public get sentMessages(): any[] {
+        if (this.lastInput instanceof TestInputStream) {
+            return this.lastInput.sent;
+        } else if (typeof this.lastInput == "object") {
+            return [this.lastInput.single];
+        }
+        return [];
+    }
+
+    /**
+     * Sending message(s) completed?
+     */
+    public get sendComplete(): boolean {
+        if (this.lastInput instanceof TestInputStream) {
+            return this.lastInput.completed;
+        } else if (typeof this.lastInput == "object") {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Suppress warning / error about uncaught rejections of
      * "status" and "trailers".
      */
     public suppressUncaughtRejections = true;
-    private data: TestTransportMockData;
+
+
+    private readonly data: TestTransportMockData;
     private readonly headerDelay = 10;
     private readonly responseDelay = 50;
     private readonly betweenResponseDelay = 10;
     private readonly afterResponseDelay = 10;
+    private lastInput: TestInputStream<any> | { single: any } | undefined
 
 
     /**
@@ -249,6 +276,7 @@ export class TestTransport implements RpcTransport {
                 .then(delay(this.afterResponseDelay, options.abort))
                 .then(_ => this.promiseTrailers());
         this.maybeSuppressUncaught(statusPromise, trailersPromise);
+        this.lastInput = {single: input};
         return new UnaryCall(method, requestHeaders, input, headersPromise, responsePromise, statusPromise, trailersPromise);
     }
 
@@ -270,6 +298,7 @@ export class TestTransport implements RpcTransport {
             trailersPromise = responseStreamClosedPromise
                 .then(() => this.promiseTrailers());
         this.maybeSuppressUncaught(statusPromise, trailersPromise);
+        this.lastInput = {single: input};
         return new ServerStreamingCall<I, O>(method, requestHeaders, input, headersPromise, outputStream, statusPromise, trailersPromise);
     }
 
@@ -295,7 +324,8 @@ export class TestTransport implements RpcTransport {
                 .then(delay(this.afterResponseDelay, options.abort))
                 .then(_ => this.promiseTrailers());
         this.maybeSuppressUncaught(statusPromise, trailersPromise);
-        return new ClientStreamingCall<I, O>(method, requestHeaders, new TestInputStream(this.data, options.abort), headersPromise, responsePromise, statusPromise, trailersPromise);
+        this.lastInput = new TestInputStream(this.data, options.abort);
+        return new ClientStreamingCall<I, O>(method, requestHeaders, this.lastInput, headersPromise, responsePromise, statusPromise, trailersPromise);
     }
 
 
@@ -316,7 +346,8 @@ export class TestTransport implements RpcTransport {
             trailersPromise = responseStreamClosedPromise
                 .then(() => this.promiseTrailers());
         this.maybeSuppressUncaught(statusPromise, trailersPromise);
-        return new DuplexStreamingCall<I, O>(method, requestHeaders, new TestInputStream(this.data, options.abort), headersPromise, outputStream, statusPromise, trailersPromise);
+        this.lastInput = new TestInputStream(this.data, options.abort);
+        return new DuplexStreamingCall<I, O>(method, requestHeaders, this.lastInput, headersPromise, outputStream, statusPromise, trailersPromise);
     }
 
 }
@@ -340,6 +371,16 @@ function delay<T>(ms: number, abort?: AbortSignal): (v: T) => Promise<T> {
 
 class TestInputStream<T> implements RpcInputStream<T> {
 
+    public get sent(): T[] {
+        return this._sent;
+    }
+
+    public get completed(): boolean {
+        return this._completed;
+    }
+
+    private _completed = false;
+    private readonly _sent: T[] = [];
     private readonly data: Pick<TestTransportMockData, "inputMessage" | "inputComplete">;
     private readonly abort?: AbortSignal;
 
@@ -356,6 +397,9 @@ class TestInputStream<T> implements RpcInputStream<T> {
             ? 10
             : this.data.inputMessage;
         return Promise.resolve(undefined)
+            .then(() => {
+                this._sent.push(message);
+            })
             .then(delay(delayMs, this.abort));
     }
 
@@ -367,6 +411,9 @@ class TestInputStream<T> implements RpcInputStream<T> {
             ? 10
             : this.data.inputComplete;
         return Promise.resolve(undefined)
+            .then(() => {
+                this._completed = true;
+            })
             .then(delay(delayMs, this.abort));
     }
 
