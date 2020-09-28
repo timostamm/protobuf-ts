@@ -540,7 +540,10 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                                                         ts.createIdentifier("reason"),
                                                         undefined,
                                                         ts.createTypeReferenceNode(
-                                                            ts.createIdentifier("Error"),
+                                                            ts.createQualifiedName(
+                                                                ts.createIdentifier("globalThis"),
+                                                                ts.createIdentifier("Error")
+                                                            ),
                                                             undefined
                                                         ),
                                                         undefined
@@ -1002,7 +1005,10 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                                                                 ts.createIdentifier("reason"),
                                                                 undefined,
                                                                 ts.createTypeReferenceNode(
-                                                                    ts.createIdentifier("Error"),
+                                                                    ts.createQualifiedName(
+                                                                        ts.createIdentifier("globalThis"),
+                                                                        ts.createIdentifier("Error")
+                                                                    ),
                                                                     undefined
                                                                 ),
                                                                 undefined
@@ -1301,13 +1307,14 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
 
     createDuplexStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
         let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let DuplexStreamingCall = this.imports.name('DuplexStreamingCall', this.options.runtimeRpcImportPath);
+        let RpcError = this.imports.name('RpcError', this.options.runtimeRpcImportPath);
+        let stackIntercept = this.imports.name("stackIntercept", this.options.runtimeRpcImportPath);
+        let Observable = this.imports.name('Observable', "rxjs");
+        let from = this.imports.name('from', "rxjs");
+        let switchMap = this.imports.name('switchMap', "rxjs/operators");
+        let concatMap = this.imports.name('concatMap', "rxjs/operators");
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
-
-
-        // TODO #8 implement method style RX for duplex method
-        console.error("TODO #8 implement method style RX for duplex method " + methodInfo.service.typeName + " / " + methodInfo.name);
 
 
         return ts.createMethod(
@@ -1316,14 +1323,17 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             undefined, undefined,
             [
                 ts.createParameter(
+                    undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
+                    ts.createTypeReferenceNode(ts.createIdentifier(Observable), [this.makeI(methodInfo),]), undefined
+                ),
+                ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
                     ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
                 )
             ],
             ts.createTypeReferenceNode(
-                DuplexStreamingCall,
+                Observable,
                 [
-                    this.makeI(methodInfo),
                     this.makeO(methodInfo),
                 ]
             ),
@@ -1361,20 +1371,499 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                         )
                     ),
 
-                    // return stackIntercept("duplex", this._transport, this, methods, opt);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
+                    // setup own abort signal because we want to abort on unsubscribe()
+                    ts.addSyntheticTrailingComment(
+                        ts.createVariableStatement(
+                            undefined,
+                            ts.createVariableDeclarationList(
+                                [ts.createVariableDeclaration(
+                                    ts.createIdentifier("abort"),
+                                    undefined,
+                                    ts.createNew(
+                                        ts.createPropertyAccess(
+                                            ts.createIdentifier("globalThis"),
+                                            ts.createIdentifier("AbortController")
+                                        ),
+                                        undefined,
+                                        []
+                                    )
+                                )],
+                                ts.NodeFlags.Const
+                            )
+                        ),
+                        SyntaxKind.SingleLineCommentTrivia, "setup own abort signal because we want to abort on unsubscribe()", true
+                    ),
+                    ts.createExpressionStatement(ts.createCallChain(
+                        ts.createPropertyAccessChain(
+                            ts.createPropertyAccess(
+                                ts.createIdentifier("opt"),
+                                ts.createIdentifier("abort")
+                            ),
+                            ts.createToken(ts.SyntaxKind.QuestionDotToken),
+                            ts.createIdentifier("addEventListener")
+                        ),
+                        undefined,
+                        undefined,
                         [
-                            this.makeI(methodInfo),
-                            this.makeO(methodInfo)
-                        ],
-                        [
-                            ts.createStringLiteral("duplex"),
-                            ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
-                            ts.createIdentifier("method"),
-                            ts.createIdentifier("opt")
+                            ts.createStringLiteral("abort"),
+                            ts.createArrowFunction(
+                                undefined,
+                                undefined,
+                                [],
+                                undefined,
+                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.createCall(
+                                    ts.createPropertyAccess(
+                                        ts.createIdentifier("abort"),
+                                        ts.createIdentifier("abort")
+                                    ),
+                                    undefined,
+                                    []
+                                )
+                            )
                         ]
                     )),
+                    ts.createExpressionStatement(ts.createBinary(
+                        ts.createPropertyAccess(
+                            ts.createIdentifier("opt"),
+                            ts.createIdentifier("abort")
+                        ),
+                        ts.createToken(ts.SyntaxKind.EqualsToken),
+                        ts.createPropertyAccess(
+                            ts.createIdentifier("abort"),
+                            ts.createIdentifier("signal")
+                        )
+                    )),
+
+                    // return an observable that completes when the server closes the request
+                    ts.addSyntheticLeadingComment(
+                        ts.createReturn(ts.createNew(
+                            ts.createIdentifier(Observable),
+                            [this.makeO(methodInfo)],
+                            [ts.createArrowFunction(
+                                undefined,
+                                undefined,
+                                [ts.createParameter(
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    ts.createIdentifier("subscriber"),
+                                    undefined,
+                                    undefined,
+                                    undefined
+                                )],
+                                undefined,
+                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.createBlock(
+                                    [
+
+                                        // cancel call on unsubscribe
+                                        ts.addSyntheticLeadingComment(
+                                            ts.createExpressionStatement(ts.createCall(
+                                                ts.createPropertyAccess(
+                                                    ts.createIdentifier("subscriber"),
+                                                    ts.createIdentifier("add")
+                                                ),
+                                                undefined,
+                                                [ts.createArrowFunction(
+                                                    undefined,
+                                                    undefined,
+                                                    [],
+                                                    undefined,
+                                                    ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                                    ts.createCall(
+                                                        ts.createPropertyAccess(
+                                                            ts.createIdentifier("abort"),
+                                                            ts.createIdentifier("abort")
+                                                        ),
+                                                        undefined,
+                                                        []
+                                                    )
+                                                )]
+                                            )), SyntaxKind.SingleLineCommentTrivia, "cancel call on unsubscribe", false
+                                        ),
+
+                                        // start the call
+                                        ts.addSyntheticLeadingComment(
+                                            ts.createVariableStatement(
+                                                undefined,
+                                                ts.createVariableDeclarationList(
+                                                    [ts.createVariableDeclaration(
+                                                        ts.createIdentifier("call"),
+                                                        undefined,
+                                                        ts.createCall(
+                                                            ts.createIdentifier(stackIntercept),
+                                                            [
+                                                                this.makeI(methodInfo),
+                                                                this.makeO(methodInfo),
+                                                            ],
+                                                            [
+                                                                ts.createStringLiteral("duplex"),
+                                                                ts.createPropertyAccess(
+                                                                    ts.createThis(),
+                                                                    ts.createIdentifier("_transport")
+                                                                ),
+                                                                ts.createIdentifier("method"),
+                                                                ts.createIdentifier("opt")
+                                                            ]
+                                                        )
+                                                    )],
+                                                    ts.NodeFlags.Const
+                                                )
+                                            ), SyntaxKind.SingleLineCommentTrivia, "start the call", false
+                                        ),
+
+                                        // map request and response errors to error our observable, but ignore cancellation
+                                        ts.addSyntheticLeadingComment(
+                                            ts.createVariableStatement(
+                                                undefined,
+                                                ts.createVariableDeclarationList(
+                                                    [ts.createVariableDeclaration(
+                                                        ts.createIdentifier("onErr"),
+                                                        undefined,
+                                                        ts.createArrowFunction(
+                                                            undefined,
+                                                            undefined,
+                                                            [ts.createParameter(
+                                                                undefined,
+                                                                undefined,
+                                                                undefined,
+                                                                ts.createIdentifier("reason"),
+                                                                undefined,
+                                                                ts.createTypeReferenceNode(
+                                                                    ts.createQualifiedName(
+                                                                        ts.createIdentifier("globalThis"),
+                                                                        ts.createIdentifier("Error")
+                                                                    ),
+                                                                    undefined
+                                                                ),
+                                                                undefined
+                                                            )],
+                                                            undefined,
+                                                            ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                                            ts.createBlock(
+                                                                [ts.createIf(
+                                                                    ts.createPrefix(
+                                                                        ts.SyntaxKind.ExclamationToken,
+                                                                        ts.createPropertyAccess(
+                                                                            ts.createIdentifier("subscriber"),
+                                                                            ts.createIdentifier("closed")
+                                                                        )
+                                                                    ),
+                                                                    ts.createIf(
+                                                                        ts.createBinary(
+                                                                            ts.createBinary(
+                                                                                ts.createIdentifier("reason"),
+                                                                                ts.createToken(ts.SyntaxKind.InstanceOfKeyword),
+                                                                                ts.createIdentifier(RpcError)
+                                                                            ),
+                                                                            ts.createToken(ts.SyntaxKind.AmpersandAmpersandToken),
+                                                                            ts.createBinary(
+                                                                                ts.createCall(
+                                                                                    ts.createPropertyAccess(
+                                                                                        ts.createPropertyAccess(
+                                                                                            ts.createIdentifier("reason"),
+                                                                                            ts.createIdentifier("code")
+                                                                                        ),
+                                                                                        ts.createIdentifier("toUpperCase")
+                                                                                    ),
+                                                                                    undefined,
+                                                                                    []
+                                                                                ),
+                                                                                ts.createToken(ts.SyntaxKind.EqualsEqualsToken),
+                                                                                ts.createStringLiteral("CANCELLED")
+                                                                            )
+                                                                        ),
+                                                                        ts.createExpressionStatement(ts.createCall(
+                                                                            ts.createPropertyAccess(
+                                                                                ts.createIdentifier("subscriber"),
+                                                                                ts.createIdentifier("complete")
+                                                                            ),
+                                                                            undefined,
+                                                                            []
+                                                                        )),
+                                                                        ts.createExpressionStatement(ts.createCall(
+                                                                            ts.createPropertyAccess(
+                                                                                ts.createIdentifier("subscriber"),
+                                                                                ts.createIdentifier("error")
+                                                                            ),
+                                                                            undefined,
+                                                                            [ts.createIdentifier("reason")]
+                                                                        ))
+                                                                    ),
+                                                                    undefined
+                                                                )],
+                                                                true
+                                                            )
+                                                        )
+                                                    )],
+                                                    ts.NodeFlags.Const
+                                                )
+                                            ), SyntaxKind.SingleLineCommentTrivia, "map request and response errors to error our observable, but ignore cancellation", false
+                                        ),
+
+                                        // for every input value, send request message, then complete the request
+                                        ts.addSyntheticLeadingComment(
+                                            ts.createVariableStatement(
+                                                undefined,
+                                                ts.createVariableDeclarationList(
+                                                    [ts.createVariableDeclaration(
+                                                        ts.createIdentifier("inputSub"),
+                                                        undefined,
+                                                        ts.createCall(
+                                                            ts.createPropertyAccess(
+                                                                ts.createCall(
+                                                                    ts.createPropertyAccess(
+                                                                        ts.createIdentifier("input"),
+                                                                        ts.createIdentifier("pipe")
+                                                                    ),
+                                                                    undefined,
+                                                                    [
+                                                                        ts.createCall(
+                                                                            ts.createIdentifier(switchMap),
+                                                                            undefined,
+                                                                            [ts.createArrowFunction(
+                                                                                undefined,
+                                                                                undefined,
+                                                                                [ts.createParameter(
+                                                                                    undefined,
+                                                                                    undefined,
+                                                                                    undefined,
+                                                                                    ts.createIdentifier("message"),
+                                                                                    undefined,
+                                                                                    undefined,
+                                                                                    undefined
+                                                                                )],
+                                                                                undefined,
+                                                                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                                                                ts.createCall(
+                                                                                    ts.createIdentifier(from),
+                                                                                    undefined,
+                                                                                    [ts.createCall(
+                                                                                        ts.createPropertyAccess(
+                                                                                            ts.createPropertyAccess(
+                                                                                                ts.createIdentifier("call"),
+                                                                                                ts.createIdentifier("request")
+                                                                                            ),
+                                                                                            ts.createIdentifier("send")
+                                                                                        ),
+                                                                                        undefined,
+                                                                                        [ts.createIdentifier("message")]
+                                                                                    )]
+                                                                                )
+                                                                            )]
+                                                                        ),
+                                                                        ts.createCall(
+                                                                            ts.createIdentifier(concatMap),
+                                                                            undefined,
+                                                                            [ts.createArrowFunction(
+                                                                                undefined,
+                                                                                undefined,
+                                                                                [],
+                                                                                undefined,
+                                                                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                                                                ts.createCall(
+                                                                                    ts.createIdentifier(from),
+                                                                                    undefined,
+                                                                                    [ts.createCall(
+                                                                                        ts.createPropertyAccess(
+                                                                                            ts.createPropertyAccess(
+                                                                                                ts.createIdentifier("call"),
+                                                                                                ts.createIdentifier("request")
+                                                                                            ),
+                                                                                            ts.createIdentifier("complete")
+                                                                                        ),
+                                                                                        undefined,
+                                                                                        []
+                                                                                    )]
+                                                                                )
+                                                                            )]
+                                                                        )
+                                                                    ]
+                                                                ),
+                                                                ts.createIdentifier("subscribe")
+                                                            ),
+                                                            undefined,
+                                                            [
+                                                                ts.createIdentifier("undefined"),
+                                                                ts.createArrowFunction(
+                                                                    undefined,
+                                                                    undefined,
+                                                                    [ts.createParameter(
+                                                                        undefined,
+                                                                        undefined,
+                                                                        undefined,
+                                                                        ts.createIdentifier("err"),
+                                                                        undefined,
+                                                                        undefined,
+                                                                        undefined
+                                                                    )],
+                                                                    undefined,
+                                                                    ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                                                    ts.createCall(
+                                                                        ts.createIdentifier("onErr"),
+                                                                        undefined,
+                                                                        [ts.createIdentifier("err")]
+                                                                    )
+                                                                )
+                                                            ]
+                                                        )
+                                                    )],
+                                                    ts.NodeFlags.Const
+                                                )
+                                            ),
+                                            SyntaxKind.SingleLineCommentTrivia, "for every input value, send request message, then complete the request", false
+                                        ),
+
+                                        // cancel input subscription when our observable is unsubscribed
+                                        ts.addSyntheticLeadingComment(
+                                            ts.createExpressionStatement(ts.createCall(
+                                                ts.createPropertyAccess(
+                                                    ts.createIdentifier("subscriber"),
+                                                    ts.createIdentifier("add")
+                                                ),
+                                                undefined,
+                                                [ts.createArrowFunction(
+                                                    undefined,
+                                                    undefined,
+                                                    [],
+                                                    undefined,
+                                                    ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                                    ts.createCall(
+                                                        ts.createPropertyAccess(
+                                                            ts.createIdentifier("inputSub"),
+                                                            ts.createIdentifier("unsubscribe")
+                                                        ),
+                                                        undefined,
+                                                        []
+                                                    )
+                                                )]
+                                            )),
+                                            SyntaxKind.SingleLineCommentTrivia, "cancel input subscription when our observable is unsubscribed", false
+                                        ),
+
+                                        // map response data to our observable
+                                        ts.addSyntheticLeadingComment(
+                                            ts.createExpressionStatement(ts.createCall(
+                                                ts.createPropertyAccess(
+                                                    ts.createPropertyAccess(
+                                                        ts.createIdentifier("call"),
+                                                        ts.createIdentifier("headers")
+                                                    ),
+                                                    ts.createIdentifier("catch")
+                                                ),
+                                                undefined,
+                                                [ts.createIdentifier("onErr")]
+                                            )),
+                                            SyntaxKind.SingleLineCommentTrivia, "map response data to our observable", false
+                                        ),
+                                        ts.createExpressionStatement(ts.createCall(
+                                            ts.createPropertyAccess(
+                                                ts.createPropertyAccess(
+                                                    ts.createIdentifier("call"),
+                                                    ts.createIdentifier("response")
+                                                ),
+                                                ts.createIdentifier("onMessage")
+                                            ),
+                                            undefined,
+                                            [ts.createArrowFunction(
+                                                undefined,
+                                                undefined,
+                                                [ts.createParameter(
+                                                    undefined,
+                                                    undefined,
+                                                    undefined,
+                                                    ts.createIdentifier("message"),
+                                                    undefined,
+                                                    undefined,
+                                                    undefined
+                                                )],
+                                                undefined,
+                                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                                ts.createCall(
+                                                    ts.createPropertyAccess(
+                                                        ts.createIdentifier("subscriber"),
+                                                        ts.createIdentifier("next")
+                                                    ),
+                                                    undefined,
+                                                    [ts.createIdentifier("message")]
+                                                )
+                                            )]
+                                        )),
+                                        ts.createExpressionStatement(ts.createCall(
+                                            ts.createPropertyAccess(
+                                                ts.createPropertyAccess(
+                                                    ts.createIdentifier("call"),
+                                                    ts.createIdentifier("response")
+                                                ),
+                                                ts.createIdentifier("onComplete")
+                                            ),
+                                            undefined,
+                                            [ts.createArrowFunction(
+                                                undefined,
+                                                undefined,
+                                                [],
+                                                undefined,
+                                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                                ts.createBinary(
+                                                    ts.createPropertyAccess(
+                                                        ts.createIdentifier("subscriber"),
+                                                        ts.createIdentifier("closed")
+                                                    ),
+                                                    ts.createToken(ts.SyntaxKind.BarBarToken),
+                                                    ts.createCall(
+                                                        ts.createPropertyAccess(
+                                                            ts.createIdentifier("subscriber"),
+                                                            ts.createIdentifier("complete")
+                                                        ),
+                                                        undefined,
+                                                        []
+                                                    )
+                                                )
+                                            )]
+                                        )),
+                                        ts.createExpressionStatement(ts.createCall(
+                                            ts.createPropertyAccess(
+                                                ts.createPropertyAccess(
+                                                    ts.createIdentifier("call"),
+                                                    ts.createIdentifier("response")
+                                                ),
+                                                ts.createIdentifier("onError")
+                                            ),
+                                            undefined,
+                                            [ts.createIdentifier("onErr")]
+                                        )),
+                                        ts.createExpressionStatement(ts.createCall(
+                                            ts.createPropertyAccess(
+                                                ts.createPropertyAccess(
+                                                    ts.createIdentifier("call"),
+                                                    ts.createIdentifier("status")
+                                                ),
+                                                ts.createIdentifier("catch")
+                                            ),
+                                            undefined,
+                                            [ts.createIdentifier("onErr")]
+                                        )),
+                                        ts.createExpressionStatement(ts.createCall(
+                                            ts.createPropertyAccess(
+                                                ts.createPropertyAccess(
+                                                    ts.createIdentifier("call"),
+                                                    ts.createIdentifier("trailers")
+                                                ),
+                                                ts.createIdentifier("catch")
+                                            ),
+                                            undefined,
+                                            [ts.createIdentifier("onErr")]
+                                        ))
+                                    ],
+                                    true
+                                )
+                            )]
+                        )),
+                        ts.SyntaxKind.SingleLineCommentTrivia, "return an observable that completes when the server closes the request", false
+                    ),
+
+
                 ],
                 true
             )
