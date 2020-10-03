@@ -1372,7 +1372,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                     ),
 
                     // setup own abort signal because we want to abort on unsubscribe()
-                    ts.addSyntheticTrailingComment(
+                    ts.addSyntheticLeadingComment(
                         ts.createVariableStatement(
                             undefined,
                             ts.createVariableDeclarationList(
