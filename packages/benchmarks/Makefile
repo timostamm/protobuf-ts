@@ -17,6 +17,7 @@ code-size: generate
 
 
 generate: $(PROTOS)
+	@npx pbf $(PROTOS) > testees/pbf-out/descriptor.js
 	@protoc \
 		--ts_proto_out ./testees/ts-proto-out/ \
 		--ts_proto_opt forceLong=long \

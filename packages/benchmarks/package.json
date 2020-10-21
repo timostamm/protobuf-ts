@@ -17,6 +17,7 @@
     "@types/google-protobuf": "^3.7.2",
     "@types/node": "^14.0.13",
     "google-protobuf": "^3.12.2",
+    "pbf": "^3.2.1",
     "ts-node": "^8.10.2",
     "ts-proto": "^1.25.0",
     "tslib": "^2.0.0",

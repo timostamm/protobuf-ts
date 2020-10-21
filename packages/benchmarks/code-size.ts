@@ -18,13 +18,16 @@ type Stat = {
 
 
 let testees: Testee[] = readdirSync("./testees")
-    .filter(file => file.endsWith(".code-size.ts") || file.endsWith("code-size-wkt.ts"))
+    .filter(file => file.endsWith(".code-size.ts") || file.endsWith("code-size-wkt.ts") || file.endsWith("code-size.js"))
     .map(file => {
         let id = file.substring(0, file.indexOf('.code-size'));
         let version: string;
         let options = [];
         let name = id;
         switch (id) {
+            case "pbf":
+                version = require('pbf/package.json').version;
+                break;
             case "google-protobuf":
                 version = require('google-protobuf/package.json').version;
                 break;
@@ -47,6 +50,7 @@ let testees: Testee[] = readdirSync("./testees")
 let stats: Array<Stat> = [];
 
 for (let testee of testees) {
+    if (!testee.file.endsWith('.ts')) continue;
     let command = `npx tsc --rootDir ./ --baseUrl ./ --strict --module ES2015 --target ES2015 --moduleResolution node \
     testees/${testee.file} --outDir ./.code-size/tsc-out`;
     try {
@@ -57,7 +61,11 @@ for (let testee of testees) {
 }
 
 for (let testee of testees) {
-    let min = `.code-size/webpack-out/${testee.file.substring(0, testee.file.length - 3)}.min.js`;
+    let wpOutput = `.code-size/webpack-out/${testee.file.substring(0, testee.file.length - 3)}.min.js`;
+    let wpInput = `./testees/${testee.file}`;
+    if (testee.file.endsWith('ts')) {
+        wpInput = `.code-size/tsc-out/testees/${testee.file.substring(0, testee.file.length - 3)}.js`;
+    }
     let command = `npx webpack --mode=production \
     --display-used-exports=true \\
     --display-provided-exports=true \\
@@ -67,10 +75,10 @@ for (let testee of testees) {
     --display-modules=true --display-max-modules 999 \\
     --display-reasons=false \\
     --config webpack.config.js \\
-    --output ${min} \\
-    .code-size/tsc-out/testees/${testee.file.substring(0, testee.file.length - 3)}.js`;
+    --output ${wpOutput} \\
+    ${wpInput}`;
     let webpackLog = execSync(command, {encoding: "utf8"});
-    let byteSize = statSync(min).size;
+    let byteSize = statSync(wpOutput).size;
     stats.push({testee, webpackLog, byteSize});
 }
 
