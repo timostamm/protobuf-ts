@@ -23,6 +23,7 @@ protobuf-ts manual
 - [Reflection](#reflection)
   - [Field information](#field-information)
   - [Custom options](#custom-options)
+  - [Excluding custom options](#excluding-custom-options)
 - [Binary format](#binary-format)
   - [Conformance](#conformance)
   - [Unknown field handling](#unknown-field-handling)
@@ -30,6 +31,7 @@ protobuf-ts manual
 - [Running in the Web Browser](#running-in-the-web-browser)
 - [Running in Node.js](#running-in-nodejs)
 - [RPC support](#rpc-support)
+  - [RPC client styles](#rpc-client-styles)
   - [RPC options](#rpc-options)
   - [RPC method types](#rpc-method-types)
   - [gRPC web transport](#grpc-web-transport)
@@ -100,17 +102,35 @@ npx protoc \
 Available plugin parameters:
 
 - "long_type_string"  
-  Sets jstype = JS_STRING for all fields where no option `jstype` was 
-  specified. The default behaviour is to use native `bigint`.
-
-- "disable_service_client"  
-  Disables generation of service clients. By default, we generate a client 
-  (an interface and an implementation class) for each service.
+  Sets jstype = JS_STRING for message fields with 64 bit integral values. 
+  The default behaviour is to use native `bigint`.  
+  Only applies to fields that do *not* use the option `jstype`.
 
 - "generate_dependencies"  
   By default, only the PROTO_FILES passed as input to protoc are generated, 
   not the files they import. Set this option to generate code for dependencies 
   too.
+
+- "client_none"  
+  Do not generate service clients.  
+  Only applies to services that do *not* use the option `ts.client`. 
+  If you do not want service clients at all, use `force_client_none`.
+
+- "client_call"  
+  Use *Call return types for service clients.  
+  Only applies to services that do *not* use the option `ts.client`. 
+  Since CALL is the default, this option has no effect.
+
+- "client_promise"  
+  Use Promise return types for service clients.  
+  Only applies to services that do *not* use the option `ts.client`.
+
+- "client_rx"  
+  Use Observable return types from the `rxjs` package for service clients. 
+  Only applies to services that do *not* use the option `ts.client`.
+
+- "force_client_none"  
+  Do not generate service clients, ignore service options.
 
 - "enable_angular_annotations"  
   If set, the generated service client will have an angular @Injectable() 
@@ -922,6 +942,20 @@ Field options work the same way. In .proto, you create an extension for
 `readFieldOptions()` from `@protobuf-ts/runtime`. 
 
 
+#### Excluding custom options
+
+If you need custom options for some protobuf implementation, but do not 
+want to have them included in the TypeScript generated code, use the file 
+option `ts.exclude_options`:
+
+```proto
+option (ts.exclude_options) = "google.*";
+option (ts.exclude_options) = "*.private.*";
+```
+
+The example above will exclude field, service and method options that 
+match the given wildcard.
+
 
 
 ## Binary format
@@ -1182,8 +1216,8 @@ for more information.
 
 ## RPC support
 
-`protobuf-ts` generates generic client implementations for the services 
-defined in your `.proto` files. It does not generate code for RPC servers. 
+`protobuf-ts` can generate clients for your rpc services. It supports Promises
+and rxjs Observables for async operations. 
 
 The generated clients are not hard-wired to a specific format. They 
 delegate to a transport layer that can implement gRPC, gRPC-web, twirp or 
@@ -1213,8 +1247,6 @@ let call = await client.makeHat({ inches: 23 });
 let response: Hat = call.response; 
 ```
 
-To learn what is going on, please continue reading.
-
 First, `protobuf-ts` generates the following interface:
 ```typescript
 export interface IHaberdasherClient {
@@ -1231,41 +1263,73 @@ two arguments:
 
 The methods returns a `UnaryCall`. An "unary" call takes exactly one input 
 messsage and returns exactly one output message. It is one of the four 
-[RPC method types](#rpc-method-types) available in protocol buffers.
+[RPC method types](#rpc-method-types) available in protocol buffers. If you 
+want to use rxjs Observables or plain Promises, you can change the 
+[method style](#rpc-client-styles) for the service. 
 
 
-`protobuf-ts` also generates an implementation of this interface:
-```typescript
-export class HaberdasherClient implements IHaberdasherClient {
-    readonly typeName = ".twitch.twirp.example.Haberdasher";
-    readonly methods: MethodInfo[] = [
-        { service: this, name: "MakeHat", localName: "makeHat", I: Size, O: Hat }
-    ];
-    constructor(private readonly _transport: RpcTransport) {
-    }
-    makeHat(input: Size, options?: RpcOptions): UnaryCall<Size, Hat> {
-        const method = this.methods[0], i = method.I.create(input);
-        const opt = this._transport.mergeOptions(options);
-        return stackUnaryInterceptors(this._transport, method, i, opt);
-    }
-}
-```
+`protobuf-ts` also generates an implementation for this interface, the class 
+`HaberdasherClient`. It takes a `RpcTransport` argument. The actual work of 
+transferring messages is delegated to the `RpcTransport`.
 
-As you can see, the code is very short and independent of the transport layer. 
-The actual work of transferring messages is delegated to a `RpcTransport`.
-`@protobuf-ts` comes with two implementations: 
+
+`@protobuf-ts` comes with two RPC transports: 
 - `TwirpFetchTransport` from `@protobuf-ts/twirp-transport` - see [Twirp transport](#twirp-transport)
 - `GrpcWebFetchTransport` from `@protobuf-ts/grpcweb-transport` - see [gRPC web transport](#grpc-web-transport)
 
-The `RpcTransport` should also take `RpcOptions` in its constructor, so that 
-you can set default options for all RPC calls.  
-
-If you set the `enable_angular_annotations` options, `protobuf-ts` adds 
-annotations to the client class that enable dependency injection. 
+If you set the `enable_angular_annotations` option, `protobuf-ts` adds 
+annotations to the client that enable Angular dependency injection. 
 See [Angular support](#angular-support) to learn more.
 
 To learn about `RpcOptions` and the `RpcTransport` implementations, please 
 continue reading.
+
+
+#### RPC client styles
+
+If you do not want to use the built-in call types, and prefer to use plain 
+promises or rxjs Observable, you can change the behaviour with global plugin 
+options or a service option in your .proto file: 
+
+```proto
+import "protobuf-ts.proto";
+
+service Haberdasher {
+  option (ts.client) = RX;
+  rpc MakeHat(Size) returns (Hat);
+}
+```
+
+This will generate the following method:
+
+```typescript
+export interface IHaberdasherClient {
+    makeHat(input: Size, options?: RpcOptions): Observable<Hat>;
+}
+```
+
+Setting `option (ts.client) = PROMISE` generates:
+
+```typescript
+export interface IHaberdasherClient {
+    makeHat(input: Size, options?: RpcOptions): Promise<Hat>;
+}
+```
+
+If you want to generate multiple client styles, simply set the option multiple times:
+
+```proto
+import "protobuf-ts.proto";
+
+service Haberdasher {
+  option (ts.client) = RX;
+  option (ts.client) = PROMISE;
+  rpc MakeHat(Size) returns (Hat);
+}
+```
+
+This generates both client styles, with the names `HaberdasherRxClient` and `HaberdasherPromiseClient`.
+
 
 
 #### RPC options
@@ -1305,10 +1369,14 @@ The options:
   provide `jsonOptions.typeRegistry` so that the runtime can discriminate
   the packed type.
 
-
 - `binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions>`
   
   Options for the [binary wire format](#binary-format).
+
+- `abort: AbortSignal`
+  
+   A signal to cancel a call. Can be created with an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).  
+   The npm package `abort-controller` provides a polyfill for Node.js.
 
 
 > **Note:** A `RpcTransport` implementation may provide 
