@@ -12,6 +12,8 @@ Breaking changes:
 - the `cancel` method of RPC was removed  
   As a replacement, you can pass an `AbortSignal` in the call options instead.
 
+- plugin option "disable_service_client" was renamed to "force_client_none"
+
 
 Deprecations:
 
