@@ -38,49 +38,33 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             description: "Do not generate service clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "If you do not want service clients at all, use `force_client_none`.",
-            excludes: ['client_call', 'client_promise', 'client_rx', 'force_client_call', 'force_client_promise', 'force_client_rx'],
+            excludes: ['client_call', 'client_promise', 'client_rx'],
         },
         client_call: {
             description: "Use *Call return types for service clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "Since CALL is the default, this option has no effect.",
-            excludes: ['client_none', 'client_promise', 'client_rx', 'force_client_none', 'force_client_call', 'force_client_promise', 'force_client_rx'],
+            excludes: ['client_none', 'client_promise', 'client_rx', 'force_client_none'],
         },
         client_promise: {
             description: "Use Promise return types for service clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`.",
-            excludes: ['client_none', 'client_call', 'client_rx', 'force_client_none', 'force_client_call', 'force_client_promise', 'force_client_rx'],
+            excludes: ['client_none', 'client_call', 'client_rx', 'force_client_none'],
         },
         client_rx: {
             description: "Use Observable return types from the `rxjs` package for service clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`." ,
-            excludes: ['client_none', 'client_call', 'client_promise', 'force_client_none', 'force_client_call', 'force_client_promise', 'force_client_rx'],
-        },
-        disable_service_client: {
-            description: "Alias for `force_client_none`.",
+            excludes: ['client_none', 'client_call', 'client_promise', 'force_client_none'],
         },
         force_client_none: {
             description: "Do not generate service clients, ignore service options.",
-            excludes: ['client_call', 'client_promise', 'client_rx'],
-        },
-        force_client_call: {
-            description: "Force ts.client = CALL for all services, ignore service options.",
-            excludes: ['force_client_none', 'client_call', 'client_promise', 'client_rx'],
-        },
-        force_client_promise: {
-            description: "Force ts.client = PROMISE for all services, ignore service options.",
-            excludes: ['force_client_none', 'client_call', 'client_promise', 'client_rx'],
-        },
-        force_client_rx: {
-            description: "Force ts.client = RX for all services, ignore service options.",
-            excludes: ['force_client_none', 'client_call', 'client_promise', 'client_rx'],
         },
         enable_angular_annotations: {
             description: "If set, the generated service client will have an angular @Injectable() \n" +
                          "annotation and the `RpcTransport` constructor argument is annotated with a \n" +
                          "@Inject annotation. For this feature, you will need the npm package \n" +
                          "'@protobuf-ts/runtime-angular'.",
-            excludes: ['disable_service_client'],
+            excludes: ['force_client_none'],
         },
         optimize_speed: {
             description: "Sets optimize_for = SPEED for proto files that have no file option \n" +
@@ -219,14 +203,10 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
     private static makeClientStyleGetter(
         params: {
-            disable_service_client: boolean,
+            force_client_none: boolean,
             client_none: boolean,
             client_rx: boolean,
-            client_promise: boolean,
-            force_client_none: boolean,
-            force_client_call: boolean,
-            force_client_rx: boolean,
-            force_client_promise: boolean
+            client_promise: boolean
         },
         interpreter: Interpreter,
         stringFormat: IStringFormat
@@ -242,23 +222,11 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             }
 
             // clients disabled altogether?
-            if (params.disable_service_client || params.force_client_none) {
+            if (params.force_client_none) {
                 return [];
             }
 
-            // forced has priority
-            const forced: rpc.ClientStyle[] = [];
-            if (params.force_client_call)
-                forced.push(rpc.ClientStyle.CALL);
-            if (params.force_client_rx)
-                forced.push(rpc.ClientStyle.RX);
-            if (params.force_client_promise)
-                forced.push(rpc.ClientStyle.PROMISE);
-            if (forced.length) {
-                return forced;
-            }
-
-            // service options have next best priority
+            // look for service options
             if (service.length) {
                 return service
                     .filter(s => s !== rpc.ClientStyle.NONE)
