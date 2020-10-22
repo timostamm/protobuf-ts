@@ -10,11 +10,24 @@ import {
     RpcStatus,
     RpcTransport,
     ServerStreamingCall,
-    ServiceInfo,
+    ServiceType,
     stackIntercept,
     UnaryCall
 } from "../src";
 import {IMessageType} from "@protobuf-ts/runtime";
+
+
+const TestService = new ServiceType("TestService", [
+    {name: "test", I: null as unknown as IMessageType<RequestMsg>, O: null as unknown as IMessageType<ResponseMsg>}
+]);
+
+interface RequestMsg {
+    foo: string;
+}
+
+interface ResponseMsg {
+    bar: string;
+}
 
 
 describe('stackIntercept("unary")', () => {
@@ -29,7 +42,7 @@ describe('stackIntercept("unary")', () => {
         let request: RequestMsg = {
             foo: "hello"
         };
-        let call = stackIntercept<RequestMsg, ResponseMsg>("unary", transport, xMethod, options, request);
+        let call = stackIntercept<RequestMsg, ResponseMsg>("unary", transport, TestService.methods[0], options, request);
         transport.resolveUnary(
             {i_am: "response header"},
             {bar: "world"},
@@ -73,7 +86,7 @@ describe('stackIntercept("unary")', () => {
         let request: RequestMsg = {
             foo: "hello"
         };
-        let call = stackIntercept<RequestMsg, ResponseMsg>("unary", transport, xMethod, options, request);
+        let call = stackIntercept<RequestMsg, ResponseMsg>("unary", transport, TestService.methods[0], options, request);
         transport.resolveUnary({}, {bar: "world"}, {code: "OK", detail: ""}, {});
         await call;
         expect(calledIc).toEqual(["a", "b"]);
@@ -83,6 +96,9 @@ describe('stackIntercept("unary")', () => {
 });
 
 
+/**
+ * @deprecated switch to TestTransport
+ */
 class MockTransport implements RpcTransport {
 
     constructor() {
@@ -122,25 +138,3 @@ class MockTransport implements RpcTransport {
 
 }
 
-
-interface RequestMsg {
-    foo: string;
-}
-
-interface ResponseMsg {
-    bar: string;
-}
-
-const xService: ServiceInfo = {
-    typeName: "TestService",
-    methods: [],
-}
-
-const xMethod: MethodInfo = {
-    service: xService,
-    name: "test",
-    I: null as unknown as IMessageType<RequestMsg>,
-    O: null as unknown as IMessageType<ResponseMsg>,
-}
-
-xService.methods.push(xMethod);

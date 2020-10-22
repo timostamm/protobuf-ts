@@ -2,12 +2,11 @@ import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {
     addCommentBlockAsJsDoc,
-    AnyTypeDescriptorProto,
     DescriptorProto,
     DescriptorRegistry,
     FileOptions_OptimizeMode,
-    TypescriptImportManager,
-    TypescriptFile
+    TypescriptFile,
+    TypescriptImportManager
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {WellKnownTypes} from "../message-type-extensions/well-known-types";
@@ -134,23 +133,16 @@ export class MessageTypeGenerator {
         source.addStatement(classDec);
         source.addStatement(exportConst);
 
-        this.addCommentsForHandler(classDec, descriptor);
+
+        // add comments
+        ts.addSyntheticLeadingComment(classDec, ts.SyntaxKind.SingleLineCommentTrivia,
+            " @generated message type with reflection information, may provide speed optimized methods",
+            false);
+        let comment = this.commentGenerator.makeDeprecatedTag(descriptor);
+        comment += this.commentGenerator.makeGeneratedTag(descriptor).replace("@generated from ", "@generated MessageType for ");
+        addCommentBlockAsJsDoc(exportConst, comment);
 
         return;
-    }
-
-
-    /**
-     * Four our handler declaration, we also add a comment
-     * with the protobuf identifier and a `@deprecated` tag
-     * if necessary.
-     */
-    protected addCommentsForHandler(node: ts.Node, descriptor: AnyTypeDescriptorProto): void {
-        let comment = `Type for protobuf ${this.registry.formatQualifiedName(descriptor)}`;
-        if (this.registry.isExplicitlyDeclaredDeprecated(descriptor) || this.registry.isExplicitlyDeclaredDeprecated(this.registry.fileOf(descriptor))) {
-            comment += '\n@deprecated';
-        }
-        addCommentBlockAsJsDoc(node, comment);
     }
 
 

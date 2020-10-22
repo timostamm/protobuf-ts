@@ -3,17 +3,19 @@
 // webpack verbose output hints that this should be useful
 
 
-export {ClientStreamingCall} from './client-streaming-call';
-export {Deferred, DeferredState} from './deferred';
-export {DuplexStreamingCall} from './duplex-streaming-call';
-export {MethodInfo, ServiceInfo, readMethodOptions} from './reflection-info';
-export {RpcTransport} from './rpc-transport';
+export {ServiceType} from './service-type';
+export {MethodInfo, PartialMethodInfo, ServiceInfo, ClientStyle, readMethodOptions} from './reflection-info';
 export {RpcError} from './rpc-error';
-export {RpcInputStream} from './rpc-input-stream';
 export {RpcMetadata} from './rpc-metadata';
 export {RpcOptions, mergeExtendedRpcOptions} from './rpc-options';
+export {RpcInputStream} from './rpc-input-stream';
 export {RpcOutputStream, RpcOutputStreamController} from './rpc-output-stream';
 export {RpcStatus} from './rpc-status';
+export {RpcTransport} from './rpc-transport';
+export {TestTransport} from './test-transport';
+export {Deferred, DeferredState} from './deferred';
+export {DuplexStreamingCall} from './duplex-streaming-call';
+export {ClientStreamingCall} from './client-streaming-call';
 export {ServerStreamingCall, FinishedServerStreamingCall} from './server-streaming-call';
 export {UnaryCall, FinishedUnaryCall} from './unary-call';
 export {

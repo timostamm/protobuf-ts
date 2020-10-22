@@ -11,13 +11,19 @@ import {
     TypescriptImportManager,
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
+import * as rpc from "@protobuf-ts/runtime-rpc";
 import {Interpreter} from "./interpreter";
 import {CommentGenerator} from "./code-gen/comment-generator";
-import {ServiceClientGenerator} from "./code-gen/service-client-generator";
+import {ServiceClientGeneratorBase} from "./code-gen/service-client-generator-base";
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
 import {MessageTypeGenerator} from "./code-gen/message-type-generator";
 import {EnumGenerator} from "./code-gen/enum-generator";
 import {InternalOptions} from "./our-options";
+import {ServiceTypeGenerator} from "./code-gen/service-type-generator";
+import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-call";
+import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
+import {ServiceClientGeneratorRxjs} from "./code-gen/service-client-generator-rxjs";
+import {assert} from "@protobuf-ts/runtime";
 
 
 /**
@@ -34,23 +40,30 @@ import {InternalOptions} from "./our-options";
 export class OutFile extends TypescriptFile implements GeneratedFile {
 
 
-    private readonly serviceClientGenerator: ServiceClientGenerator;
+    private readonly serviceTypeGenerator: ServiceTypeGenerator;
+    private readonly serviceClientGenerators: ServiceClientGeneratorBase[];
     private readonly messageInterfaceGenerator: MessageInterfaceGenerator;
     private readonly messageTypeGenerator: MessageTypeGenerator;
     private readonly enumGenerator: EnumGenerator;
 
 
     constructor(
+        name: string,
         public readonly fileDescriptor: FileDescriptorProto,
         private readonly registry: DescriptorRegistry,
         symbolTable: SymbolTable,
         private readonly interpreter: Interpreter,
         private readonly options: InternalOptions,
     ) {
-        super(fileDescriptor.name!.replace('.proto', '.ts'));
+        super(name);
         let imports = new TypescriptImportManager(this, symbolTable, this);
         let commentGenerator = new CommentGenerator(this.registry);
-        this.serviceClientGenerator = new ServiceClientGenerator(this.registry, imports, this.interpreter, this.options);
+        this.serviceTypeGenerator = new ServiceTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, this.options);
+        this.serviceClientGenerators = [
+            new ServiceClientGeneratorCall(this.registry, imports, this.interpreter, this.options),
+            new ServiceClientGeneratorPromise(this.registry, imports, this.interpreter, this.options),
+            new ServiceClientGeneratorRxjs(this.registry, imports, this.interpreter, this.options),
+        ];
         this.messageInterfaceGenerator = new MessageInterfaceGenerator(this.registry, imports, this.interpreter, commentGenerator, options);
         this.messageTypeGenerator = new MessageTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, options)
         this.enumGenerator = new EnumGenerator(this.registry, imports, this.interpreter, commentGenerator);
@@ -101,13 +114,23 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
     }
 
 
-    generateServiceClientInterface(descriptor: ServiceDescriptorProto): void {
-        this.serviceClientGenerator.generateInterface(descriptor, this);
+    generateServiceType(descriptor: ServiceDescriptorProto): void {
+        this.serviceTypeGenerator.generateServiceType(descriptor, this);
     }
 
 
-    generateServiceClientImplementation(descriptor: ServiceDescriptorProto): void {
-        this.serviceClientGenerator.generateImplementationClass(descriptor, this);
+    generateServiceClientInterface(descriptor: ServiceDescriptorProto, style: rpc.ClientStyle): void {
+        const gen = this.serviceClientGenerators.find(g => g.style === style);
+        assert(gen);
+        gen.generateInterface(descriptor, this);
     }
+
+
+    generateServiceClientImplementation(descriptor: ServiceDescriptorProto, style: rpc.ClientStyle): void {
+        const gen = this.serviceClientGenerators.find(g => g.style === style);
+        assert(gen);
+        gen.generateImplementationClass(descriptor, this);
+    }
+
 
 }

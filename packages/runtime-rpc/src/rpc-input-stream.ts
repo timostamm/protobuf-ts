@@ -1,18 +1,20 @@
 /**
  * A stream of input messages.
- *
- * Heads up! At the moment, client streaming and duplex RPC are not
- * implemented and this class is nothing more than a placeholder for now.
  */
-export abstract class RpcInputStream<T> {
+export interface RpcInputStream<T> {
 
-    completed: boolean = false;
+    /**
+     * Send a message down the stream.
+     * Only one message can be send at a time.
+     */
+    send(message: T): Promise<void>;
 
-    send(message: T): Promise<void> {
-        throw new Error('not implemented');
-    }
+    /**
+     * Complete / close the stream.
+     * Can only be called if there is no pending send().
+     * No send() should follow this call.
+     */
+    complete(): Promise<void>;
 
-    complete(): Promise<void> {
-        throw new Error('not implemented');
-    }
 }
+

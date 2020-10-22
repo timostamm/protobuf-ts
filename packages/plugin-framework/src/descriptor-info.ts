@@ -287,6 +287,25 @@ export interface IDescriptorInfo {
      */
     findEnumSharedPrefix(enumDescriptor: EnumDescriptorProto, enumLocalName?: string): string | undefined;
 
+
+    /**
+     * Is a top-level type declared in the given file used anywhere the given
+     * "inFiles"?
+     *
+     * Returns true if a type from the file is used in a message field or
+     * method input or output.
+     */
+    isFileUsed(file: FileDescriptorProto, inFiles: FileDescriptorProto[]): boolean;
+
+
+    /**
+     * Is the given type used anywhere in the given "inFiles"?
+     *
+     * Returns true if the type is used in a message field or method input or
+     * output.
+     */
+    isTypeUsed(type: AnyTypeDescriptorProto, inFiles: FileDescriptorProto[]): boolean;
+
 }
 
 
@@ -313,7 +332,10 @@ export class DescriptorInfo implements IDescriptorInfo {
 
 
     isExtension(fieldDescriptor: FieldDescriptorProto): boolean {
-        let parent = this.tree.parentOf(fieldDescriptor);
+        if (fieldDescriptor.extendee === undefined) {
+            return false;
+        }
+        const parent = this.tree.parentOf(fieldDescriptor);
         return parent.extension.includes(fieldDescriptor);
     }
 
@@ -473,6 +495,9 @@ export class DescriptorInfo implements IDescriptorInfo {
 
 
     isExplicitlyDeclaredDeprecated(descriptor: AnyDescriptorProto): boolean {
+        if (FileDescriptorProto.is(descriptor)) {
+            return descriptor.options?.deprecated ?? false;
+        }
         if (DescriptorProto.is(descriptor)) {
             return descriptor.options?.deprecated ?? false;
         }
@@ -590,6 +615,41 @@ export class DescriptorInfo implements IDescriptorInfo {
         let strippedNamesAreValid = strippedNames.every(name => name.length > 0 && /^[A-Z].+/.test(name));
 
         return (allNamesSharePrefix && strippedNamesAreValid) ? enumPrefix : undefined;
+    }
+
+
+    isFileUsed(file: FileDescriptorProto, inFiles: FileDescriptorProto[]): boolean {
+        let used = false;
+        this.tree.visitTypes(file, typeDescriptor => {
+            if (used) return;
+            if (this.isTypeUsed(typeDescriptor, inFiles)) {
+                used = true;
+            }
+        });
+        return used;
+    }
+
+
+    isTypeUsed(type: AnyTypeDescriptorProto, inFiles: FileDescriptorProto[]): boolean {
+        let used = false;
+        for (let fd of inFiles) {
+            this.tree.visitTypes(fd, typeDescriptor => {
+                if (used) return;
+                if (DescriptorProto.is(typeDescriptor)) {
+                    const usedInField = typeDescriptor.field.includes(type);
+                    if (usedInField) {
+                        used = true;
+                    }
+                } else if (ServiceDescriptorProto.is(typeDescriptor)) {
+                    const usedInMethodInput = typeDescriptor.method.some(md => this.nameLookup.resolveTypeName(md.inputType!) === type);
+                    const usedInMethodOutput = typeDescriptor.method.some(md => this.nameLookup.resolveTypeName(md.outputType!) === type);
+                    if (usedInMethodInput || usedInMethodOutput) {
+                        return true;
+                    }
+                }
+            })
+        }
+        return used;
     }
 
 }

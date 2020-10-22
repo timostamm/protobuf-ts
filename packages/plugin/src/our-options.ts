@@ -2,11 +2,13 @@
  * Custom file options interpreted by @protobuf-ts/plugin
  */
 import * as rt from "@protobuf-ts/runtime";
+import * as rpc from "@protobuf-ts/runtime-rpc";
 import {
     FileDescriptorProto,
     FileOptions,
     FileOptions_OptimizeMode,
     MethodOptions,
+    ServiceDescriptorProto,
     ServiceOptions
 } from "@protobuf-ts/plugin-framework";
 
@@ -36,12 +38,31 @@ export interface OurFileOptions {
 
 
 /**
+ * Custom service options interpreted by @protobuf-ts/plugin
+ */
+export interface OurServiceOptions {
+
+    /**
+     * Generate a client for this service with this style.
+     * Can be set multiple times to generate several styles.
+     */
+    readonly ["ts.client"]: rpc.ClientStyle[];
+}
+
+
+/**
  * Read the custom file options declared in protobuf-ts.proto
  */
 export function readOurFileOptions(file: FileDescriptorProto): OurFileOptions {
     return read<OurFileOptions>(file.options, emptyFileOptions, OurFileOptions);
 }
 
+/**
+ * Read the custom service options declared in protobuf-ts.proto
+ */
+export function readOurServiceOptions(service: ServiceDescriptorProto): OurServiceOptions {
+    return read<OurServiceOptions>(service.options, emptyServiceOptions, OurServiceOptions);
+}
 
 
 function read<T extends object>(options: FileOptions | MethodOptions | ServiceOptions | undefined, defaults: T, type: rt.IMessageType<T>): T {
@@ -72,7 +93,18 @@ const OurFileOptions = new rt.MessageType<OurFileOptions>("$synthetic.OurFileOpt
 ]);
 
 
+const OurServiceOptions = new rt.MessageType<OurServiceOptions>("$synthetic.OurServiceOptions", [
+    {
+        no: 777701,
+        name: "ts.client", localName: "ts.client", jsonName: "ts.client",
+        kind: "enum",
+        T: () => ["ts.ClientStyle", rpc.ClientStyle],
+        repeat: rt.RepeatType.UNPACKED,
+    }
+]);
+
 const emptyFileOptions = OurFileOptions.create();
+const emptyServiceOptions = OurServiceOptions.create();
 
 
 /**

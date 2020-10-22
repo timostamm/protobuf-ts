@@ -10,13 +10,10 @@ import {
 import {TwirpFetchTransport, TwirpOptions} from "../";
 import {FinishedUnaryCall, RpcError} from "@protobuf-ts/runtime-rpc";
 import {default as fetch, Headers} from "node-fetch";
-import {AbortController} from "abort-controller";
 
 // fetch polyfill via https://github.com/node-fetch/node-fetch
-// AbortController polyfill via https://github.com/mysticatea/abort-controller
 globalThis.fetch = fetch;
 globalThis.Headers = Headers;
-globalThis.AbortController = AbortController;
 
 let options: TwirpOptions = {
     baseUrl: "coming soon",

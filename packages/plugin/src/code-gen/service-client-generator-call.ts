@@ -1,34 +1,30 @@
-import {DescriptorProto, MethodDescriptorProto, TypescriptImportManager} from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
-import {Interpreter} from "../interpreter";
-import {ClientMethodGenerator} from "./service-client-generator";
+import {ServiceClientGeneratorBase} from "./service-client-generator-base";
+import * as rpc from "@protobuf-ts/runtime-rpc";
+import {assert} from "@protobuf-ts/runtime";
 
 
-export class ServiceClientGeneratorCall implements ClientMethodGenerator {
+export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
 
 
-    constructor(
-        private readonly imports: TypescriptImportManager,
-        private readonly interpreter: Interpreter,
-        private readonly options: {
-            runtimeRpcImportPath: string;
-        },
-    ) {
-    }
+    readonly style = rpc.ClientStyle.CALL;
 
 
-    createUnary(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration {
+    createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
         let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
         let UnaryCall = this.imports.name('UnaryCall', this.options.runtimeRpcImportPath);
+        let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
+        assert(methodIndex >= 0);
+
 
         return ts.createMethod(
             undefined, undefined, undefined,
-            ts.createIdentifier(localName),
+            ts.createIdentifier(methodInfo.localName),
             undefined, undefined,
             [
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(inputTypeDesc)), undefined)
+                    this.makeI(methodInfo)
                 ),
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
@@ -38,13 +34,13 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
             ts.createTypeReferenceNode(
                 UnaryCall,
                 [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined),
+                    this.makeI(methodInfo),
+                    this.makeO(methodInfo),
                 ]
             ),
             ts.createBlock(
                 [
-                    // const method = this.methods[0], opt = this._transport.mergeOptions(options), i = method.I.create(input);
+                    // const method = this.methods[0], opt = this._transport.mergeOptions(options);
                     ts.createVariableStatement(
                         undefined,
                         ts.createVariableDeclarationList(
@@ -72,29 +68,17 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
                                         [ts.createIdentifier("options")]
                                     )
                                 ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("i"),
-                                    undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(ts.createIdentifier("method"), ts.createIdentifier("I")),
-                                            ts.createIdentifier("create")
-                                        ),
-                                        undefined,
-                                        [ts.createIdentifier("input")]
-                                    )
-                                )
                             ],
                             ts.NodeFlags.Const
                         )
                     ),
 
-                    // return stackIntercept("unary", this._transport, method, opt, i);
+                    // return stackIntercept("unary", this._transport, method, opt, input);
                     ts.createReturn(ts.createCall(
                         ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
                         [
-                            ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                            ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined)
+                            this.makeI(methodInfo),
+                            this.makeO(methodInfo)
                         ],
                         [
                             ts.createStringLiteral("unary"),
@@ -104,7 +88,7 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
                             ),
                             ts.createIdentifier("method"),
                             ts.createIdentifier("opt"),
-                            ts.createIdentifier("i"),
+                            ts.createIdentifier("input"),
                         ]
                     )),
                 ],
@@ -114,18 +98,20 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
     }
 
 
-    createServerStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration {
+    createServerStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
         let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
         let ServerStreamingCall = this.imports.name('ServerStreamingCall', this.options.runtimeRpcImportPath);
+        let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
+        assert(methodIndex >= 0);
 
         return ts.createMethod(
             undefined, undefined, undefined,
-            ts.createIdentifier(localName),
+            ts.createIdentifier(methodInfo.localName),
             undefined, undefined,
             [
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(inputTypeDesc)), undefined)
+                    this.makeI(methodInfo)
                 ),
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
@@ -135,13 +121,13 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
             ts.createTypeReferenceNode(
                 ServerStreamingCall,
                 [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined),
+                    this.makeI(methodInfo),
+                    this.makeO(methodInfo),
                 ]
             ),
             ts.createBlock(
                 [
-                    // const method = this.methods[0], opt = this._transport.mergeOptions(options), i = method.I.create(input);
+                    // const method = this.methods[0], opt = this._transport.mergeOptions(options);
                     ts.createVariableStatement(
                         undefined,
                         ts.createVariableDeclarationList(
@@ -169,18 +155,6 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
                                         [ts.createIdentifier("options")]
                                     )
                                 ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("i"),
-                                    undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(ts.createIdentifier("method"), ts.createIdentifier("I")),
-                                            ts.createIdentifier("create")
-                                        ),
-                                        undefined,
-                                        [ts.createIdentifier("input")]
-                                    )
-                                )
                             ],
                             ts.NodeFlags.Const
                         )
@@ -190,15 +164,15 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
                     ts.createReturn(ts.createCall(
                         ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
                         [
-                            ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                            ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined)
+                            this.makeI(methodInfo),
+                            this.makeO(methodInfo)
                         ],
                         [
                             ts.createStringLiteral("serverStreaming"),
                             ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
                             ts.createIdentifier("method"),
                             ts.createIdentifier("opt"),
-                            ts.createIdentifier("i"),
+                            ts.createIdentifier("input"),
                         ]
                     )),
                 ],
@@ -208,13 +182,15 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
     }
 
 
-    createClientStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration {
+    createClientStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
         let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
         let ClientStreamingCall = this.imports.name('ClientStreamingCall', this.options.runtimeRpcImportPath);
+        let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
+        assert(methodIndex >= 0);
 
         return ts.createMethod(
             undefined, undefined, undefined,
-            ts.createIdentifier(localName),
+            ts.createIdentifier(methodInfo.localName),
             undefined, undefined,
             [
                 ts.createParameter(
@@ -225,8 +201,8 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
             ts.createTypeReferenceNode(
                 ClientStreamingCall,
                 [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined),
+                    this.makeI(methodInfo),
+                    this.makeO(methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -267,8 +243,8 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
                     ts.createReturn(ts.createCall(
                         ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
                         [
-                            ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                            ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined)
+                            this.makeI(methodInfo),
+                            this.makeO(methodInfo)
                         ],
                         [
                             ts.createStringLiteral("clientStreaming"),
@@ -284,13 +260,15 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
     }
 
 
-    createDuplexStreaming(methodDesc: MethodDescriptorProto, localName: string, methodIndex: number, inputTypeDesc: DescriptorProto, outputTypeDesc: DescriptorProto): ts.MethodDeclaration {
+    createDuplexStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
         let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
         let DuplexStreamingCall = this.imports.name('DuplexStreamingCall', this.options.runtimeRpcImportPath);
+        let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
+        assert(methodIndex >= 0);
 
         return ts.createMethod(
             undefined, undefined, undefined,
-            ts.createIdentifier(localName),
+            ts.createIdentifier(methodInfo.localName),
             undefined, undefined,
             [
                 ts.createParameter(
@@ -301,8 +279,8 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
             ts.createTypeReferenceNode(
                 DuplexStreamingCall,
                 [
-                    ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                    ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined),
+                    this.makeI(methodInfo),
+                    this.makeO(methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -343,8 +321,8 @@ export class ServiceClientGeneratorCall implements ClientMethodGenerator {
                     ts.createReturn(ts.createCall(
                         ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
                         [
-                            ts.createTypeReferenceNode(this.imports.type(inputTypeDesc), undefined),
-                            ts.createTypeReferenceNode(this.imports.type(outputTypeDesc), undefined)
+                            this.makeI(methodInfo),
+                            this.makeO(methodInfo)
                         ],
                         [
                             ts.createStringLiteral("duplex"),

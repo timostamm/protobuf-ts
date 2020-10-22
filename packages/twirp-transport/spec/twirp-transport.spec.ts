@@ -1,6 +1,7 @@
-import {MethodInfo, RpcInterceptor, ServiceInfo} from "@protobuf-ts/runtime-rpc";
+import {MethodInfo, RpcInterceptor, ServiceType} from "@protobuf-ts/runtime-rpc";
 import {IMessageType} from "@protobuf-ts/runtime";
 import {TwirpFetchTransport, TwirpOptions} from "../src";
+import {GrpcWebOptions} from "../../grpcweb-transport/src";
 
 describe('TwirpFetchTransport', () => {
 
@@ -50,22 +51,20 @@ describe('TwirpFetchTransport', () => {
 
     });
 
+
     function makeUrl(options: TwirpOptions, serviceTypeName: string, methodLocalName: string, methodOriginalName: string): string {
-        let service: ServiceInfo = {
-            typeName: serviceTypeName,
-            methods: []
-        };
-        let method: MethodInfo = {
-            service: service,
-            name: methodOriginalName,
-            localName: methodLocalName,
-            O: null as unknown as IMessageType<any>,
-            I: null as unknown as IMessageType<any>,
-        };
-        service.methods.push(method);
-        let transport = new TwirpFetchTransport(options);
-        // @ts-ignore
-        return transport.makeUrl(method, options);
+        let service = new ServiceType(serviceTypeName, [
+            {
+                name: methodOriginalName, localName: methodLocalName, O: null as unknown as IMessageType<any>,
+                I: null as unknown as IMessageType<any>,
+            }
+        ]);
+        let transport = new class X extends TwirpFetchTransport {
+            public makeUrl(method: MethodInfo, options: GrpcWebOptions): string {
+                return super.makeUrl(method, options);
+            }
+        }(options);
+        return transport.makeUrl(service.methods[0], options);
     }
 
 

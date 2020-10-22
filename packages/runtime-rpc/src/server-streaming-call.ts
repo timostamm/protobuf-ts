@@ -87,7 +87,7 @@ export class ServerStreamingCall<I extends object = object, O extends object = o
 
     /**
      * Instead of awaiting the response status and trailers, you can
-     * just as well await this call itself to receive the final outcome.
+     * just as well await this call itself to receive the server outcome.
      * You should first setup some listeners to the `request` to
      * see the actual messages the server replied with.
      */
