@@ -24,11 +24,23 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     parameters = {
         // @formatter:off
         long_type_string: {
-            description: "Sets jstype = JS_STRING for message fields with 64 bit integral values. \n"+
+            description: "Sets jstype = JS_STRING for message fields with 64 bit integral values. \n" +
                          "The default behaviour is to use native `bigint`. \n" +
                          "Only applies to fields that do *not* use the option `jstype`.",
-            excludes: [],
+            excludes: ["long_type_number", "long_type_bigint"],
         },
+        long_type_number: {
+            description: "Sets jstype = JS_NUMBER for message fields with 64 bit integral values. \n" +
+                         "The default behaviour is to use native `bigint`. \n" +
+                         "Only applies to fields that do *not* use the option `jstype`.",
+            excludes: ["long_type_string", "long_type_bigint"],
+        },
+        long_type_bigint: {
+            description: "Sets jstype = JS_NORMAL for message fields with 64 bit integral values. \n" +
+                         "This is the default behavior. \n" +
+                         "Only applies to fields that do *not* use the option `jstype`.",
+            excludes: ["long_type_string", "long_type_number"],
+        },                 
         generate_dependencies: {
             description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
                          "not the files they import. Set this option to generate code for dependencies \n" +
@@ -95,12 +107,19 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
 
     generate(request: CodeGeneratorRequest): OutFile[] {
-        const
-            params = this.parseParameters(this.parameters, request.parameter),
-            options = {
+        const params = this.parseParameters(this.parameters, request.parameter);
+
+        let normalLongType = rt.LongType.BIGINT;
+        if (params.long_type_string) {
+            normalLongType = rt.LongType.STRING;
+        } else if (params.long_type_number) {
+            normalLongType = rt.LongType.NUMBER;
+        }
+
+        const options = {
                 pluginCredit: `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameters ${request.parameter}` : ''),
                 emitAngularAnnotations: params.enable_angular_annotations,
-                normalLongType: params.long_type_string ? rt.LongType.STRING : rt.LongType.BIGINT
+                normalLongType,
             },
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
