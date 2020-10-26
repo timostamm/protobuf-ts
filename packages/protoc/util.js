@@ -7,6 +7,31 @@ module.exports.standardInstallDirectory = standardInstallDirectory;
 
 
 /**
+ * Make directory, creating missing parent directories as well.
+ * Equivalent to fs.mkdirSync(p, {recursive: true});
+ * @param {string} dirname
+ */
+module.exports.mkDirRecursive = function mkDirRecursive (dirname) {
+    if (!path.isAbsolute(dirname)) {
+        dirname = path.join(process.cwd(), dirname);
+    }
+    dirname = path.normalize(dirname);
+    let parts = dirname.split(path.sep);
+    for (let i = 2; i <= parts.length; i++) {
+        let p = parts.slice(0, i).join(path.sep);
+        if (fs.existsSync(p)) {
+            let i = fs.lstatSync(p);
+            if (!i.isDirectory()) {
+                throw new Error("cannot mkdir '"+dirname+"'. '"+p+"' is not a directory.");
+            }
+        } else {
+            fs.mkdirSync(p);
+        }
+    }
+};
+
+
+/**
  * @typedef {Object} DistEntry
  * @property {string} name
  * @property {string} version
@@ -187,7 +212,7 @@ module.exports.makeReleaseName = function makeReleaseName(params) {
 module.exports.findProtocVersionConfig = function findProtocVersionConfig(pkgPath) {
     let version = undefined;
     if (fs.existsSync(pkgPath)) {
-        let json = fs.readFileSync(pkgPath, {encoding: "UTF-8"});
+        let json = fs.readFileSync(pkgPath, "utf8");
         let pkg = JSON.parse(json);
         let isLinkedOrOtherInternal = typeof pkg.name == "string" && pkg.name.startsWith("@protobuf-ts/");
         if (!isLinkedOrOtherInternal) {

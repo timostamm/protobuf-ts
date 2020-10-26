@@ -11,7 +11,7 @@
 const os = require("os");
 const path = require("path");
 const fs = require("fs");
-const {httpDownload, httpGetRedirect, makeReleaseName, findProtocVersionConfig, listInstalled, standardInstallDirectory, unzip} = require("./util");
+const {httpDownload, httpGetRedirect, makeReleaseName, findProtocVersionConfig, listInstalled, standardInstallDirectory, unzip, mkDirRecursive} = require("./util");
 
 
 main().then(release => {
@@ -60,7 +60,7 @@ async function main() {
     let archivePath = path.join(standardInstallDirectory, releaseName);
     unzip(archive, (data, header) => {
         let filename = path.join(archivePath, header.filename);
-        fs.mkdirSync(path.dirname(filename), {recursive: true});
+        fs.mkDirRecursive(path.dirname(filename));
         fs.writeFileSync(filename, data, {
             mode: header.filename.includes("bin/") ? 0o755 : 0o666
         });
