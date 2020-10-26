@@ -19,9 +19,6 @@
   "bin": {
     "protoc": "./protoc.js"
   },
-  "scripts": {
-    "postinstall": "node install.js"
-  },
   "publishConfig": {
     "access": "public"
   }
