@@ -7,6 +7,31 @@ module.exports.standardInstallDirectory = standardInstallDirectory;
 
 
 /**
+ * Make directory, creating missing parent directories as well.
+ * Equivalent to fs.mkdirSync(p, {recursive: true});
+ * @param {string} dirname
+ */
+module.exports.mkDirRecursive = function mkDirRecursive(dirname) {
+    if (!path.isAbsolute(dirname)) {
+        dirname = path.join(process.cwd(), dirname);
+    }
+    dirname = path.normalize(dirname);
+    let parts = dirname.split(path.sep);
+    for (let i = 2; i <= parts.length; i++) {
+        let p = parts.slice(0, i).join(path.sep);
+        if (fs.existsSync(p)) {
+            let i = fs.lstatSync(p);
+            if (!i.isDirectory()) {
+                throw new Error("cannot mkdir '" + dirname + "'. '" + p + "' is not a directory.");
+            }
+        } else {
+            fs.mkdirSync(p);
+        }
+    }
+};
+
+
+/**
  * @typedef {Object} DistEntry
  * @property {string} name
  * @property {string} version
@@ -70,7 +95,7 @@ module.exports.httpDownload = function download(url) {
  * @param {string} url
  * @return {Promise<string>}
  */
-module.exports.httpGetRedirect = function getRedirect(url) {
+module.exports.httpGetRedirect = function httpGetRedirect(url) {
     assert(typeof url === "string" && url.length > 0);
     assert(url.startsWith("https://") || url.startsWith("http://"));
     const client = url.startsWith("https") ? require("https") : require("http");
@@ -176,34 +201,53 @@ module.exports.makeReleaseName = function makeReleaseName(params) {
  * Reads the package json from the given path if it exists and
  * looks for config.protocVersion.
  *
- * If the package json did *not* specify a version, search for
- * a global config value using process.env.
+ * If the package.json does not exist or does not specify a
+ * config.protocVersion value, walk the file system up until
+ * a package.json with a config.protocVersion is found.
  *
  * If nothing was found, return undefined.
  *
- * @param {string} pkgPath
+ * @param {string} cwd
  * @returns {string | undefined}
  */
-module.exports.findProtocVersionConfig = function findProtocVersionConfig(pkgPath) {
+module.exports.findProtocVersionConfig = function findProtocVersionConfig(cwd) {
     let version = undefined;
-    if (fs.existsSync(pkgPath)) {
-        let json = fs.readFileSync(pkgPath, {encoding: "UTF-8"});
-        let pkg = JSON.parse(json);
-        let isLinkedOrOtherInternal = typeof pkg.name == "string" && pkg.name.startsWith("@protobuf-ts/");
-        if (!isLinkedOrOtherInternal) {
-            if (typeof pkg.config === "object" && pkg.config !== null) {
-                if (pkg.config.hasOwnProperty("protocVersion") && typeof pkg.config.protocVersion == "string") {
-                    version = pkg.config.protocVersion;
-                }
-            }
+    let dirname = cwd;
+    while (true) {
+        version = tryReadProtocVersion(path.join(dirname, "package.json"));
+        if (version !== undefined) {
+            break;
         }
-    }
-    let configValue = process.env.npm_package_config_protocVersion;
-    if (!version && typeof configValue == "string") {
-        version = configValue;
+        let parent = path.dirname(dirname);
+        if (parent === dirname) {
+            break;
+        }
+        dirname = parent;
     }
     return version;
 };
+
+function tryReadProtocVersion(pkgPath) {
+    if (!fs.existsSync(pkgPath)) {
+        return undefined;
+    }
+    let json = fs.readFileSync(pkgPath, "utf8");
+    let pkg;
+    try {
+        pkg = JSON.parse(json);
+    } catch (e) {
+        return undefined;
+    }
+    if (typeof pkg === "object" && typeof pkg.config === "object" && pkg.config !== null) {
+        if (pkg.config.hasOwnProperty("protocVersion") && typeof pkg.config.protocVersion == "string") {
+            let version = pkg.config.protocVersion;
+            if (typeof version === "string") {
+                return version;
+            }
+        }
+    }
+    return undefined;
+}
 
 
 /**
