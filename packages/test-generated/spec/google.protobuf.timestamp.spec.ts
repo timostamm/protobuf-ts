@@ -28,6 +28,14 @@ describe('google.protobuf.Timestamp', function () {
             expect(ts).toEqual(makeTimestamp(1484443815));
         });
 
+        it('creates expected Timestamp with milliseconds', function () {
+            let date = new Date();
+            date.setUTCFullYear(2017, 0, 15);
+            date.setUTCHours(1, 30, 15, 600);
+            let ts = Timestamp.fromDate(date);
+            expect(ts).toEqual(makeTimestamp(1484443815, 600000000));
+        });
+
     });
 
 
@@ -39,6 +47,16 @@ describe('google.protobuf.Timestamp', function () {
             let date = new Date();
             date.setUTCFullYear(2017, 0, 15);
             date.setUTCHours(1, 30, 15, 0);
+
+            expect(Timestamp.toDate(ts)).toEqual(date);
+        });
+
+        it('creates expected Date with milliseconds', function () {
+            let ts = makeTimestamp(1484443815, 600000000);
+
+            let date = new Date();
+            date.setUTCFullYear(2017, 0, 15);
+            date.setUTCHours(1, 30, 15, 600);
 
             expect(Timestamp.toDate(ts)).toEqual(date);
         });
@@ -55,14 +73,26 @@ describe('google.protobuf.Timestamp', function () {
             expect(json).toEqual("2017-01-15T01:30:15Z");
         });
 
+        it('creates specialized JSON with milliseconds', function () {
+            let json = Timestamp.toJson(
+                makeTimestamp(1484443815, 600000000)
+            );
+            expect(json).toEqual("2017-01-15T01:30:15.600Z");
+        });
+
     });
 
 
     describe('fromJson()', function () {
 
         it('can read specialized JSON', function () {
-            let ts = Timestamp.fromJson("2017-01-15T01:30:15.000Z");
+            let ts = Timestamp.fromJson("2017-01-15T01:30:15Z");
             expect(ts).toEqual(makeTimestamp(1484443815));
+        });
+
+        it('can read specialized JSON with milliseconds', function () {
+            let ts = Timestamp.fromJson("2017-01-15T01:30:15.600Z");
+            expect(ts).toEqual(makeTimestamp(1484443815, 600000000));
         });
 
     });
