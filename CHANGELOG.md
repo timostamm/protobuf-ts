@@ -23,10 +23,17 @@ Deprecations:
 
 
 
-### v1.0.6 Bugfix for RangeError in google.protobuf.Timestamp.fromDate()
+### v1.0.7 Bugfix for RangeError in google.protobuf.Timestamp.fromDate()
 
 This patch fixes a bug in the method google.protobuf.Timestamp.fromDate(). 
 See issue #22
+
+
+### v1.0.6 Support protoc install on older node versions
+
+This patch fixes issue #16.
+
+Thanks to @Caffeinix for bringing the issue up.
 
 
 ### v1.0.5 Bugfix for name clash with global Error object
