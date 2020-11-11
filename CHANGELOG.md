@@ -23,6 +23,12 @@ Deprecations:
 
 
 
+### v1.0.6 Bugfix for RangeError in google.protobuf.Timestamp.fromDate()
+
+This patch fixes a bug in the method google.protobuf.Timestamp.fromDate(). 
+See issue #22
+
+
 ### v1.0.5 Bugfix for name clash with global Error object
 
 This patch fixes a bug in the speed-optimized generated code.
