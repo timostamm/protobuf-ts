@@ -201,7 +201,7 @@ export class WellKnownTypes implements CustomMethodGenerator {
             function fromDate(date: Date): ${Timestamp} {
                 const msg = this.create();
                 const ms = date.getTime();
-                msg.seconds = PbLong.from(ms / 1000).${longConvertMethod}();
+                msg.seconds = PbLong.from(Math.floor(ms / 1000)).${longConvertMethod}();
                 msg.nanos = (ms % 1000) * 1000000;
                 return msg;
             }

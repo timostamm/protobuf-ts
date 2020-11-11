@@ -46,7 +46,7 @@ export function makeDuration(seconds: number): Duration {
 }
 
 
-export function makeTimestamp(unixEpoch: number): Timestamp {
+export function makeTimestamp(unixEpoch: number, nanos = 0): Timestamp {
     let secondsField = Timestamp.fields.find(f => f.name === "seconds");
     assert(secondsField);
     assert(secondsField.kind === "scalar");
@@ -56,7 +56,7 @@ export function makeTimestamp(unixEpoch: number): Timestamp {
 
     return Timestamp.create({
         seconds: secondsValue,
-        nanos: 0,
+        nanos: nanos,
     })
 }
 
