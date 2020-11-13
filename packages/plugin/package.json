@@ -42,6 +42,7 @@
     "@protobuf-ts/plugin-framework": "^1.0.5",
     "@protobuf-ts/protoc": "^1.0.5",
     "@protobuf-ts/runtime": "^1.0.5",
+    "@protobuf-ts/runtime-rpc": "^1.0.5",
     "typescript": ">=3.8.3 <4"
   },
   "gitHead": "2742e3995c14cab17e74be919b59b878c8383ad9"
