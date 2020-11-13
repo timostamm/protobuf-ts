@@ -543,28 +543,35 @@ if (message.oneofKind === "value") {
 
 ## BigInt support
 
-Protocol buffers have signed and unsigned 64 bit integral types, which cannot 
-be represented reliably by the JavaScript `number` primitive. `protobuf-ts` 
+Protocol buffers have signed and unsigned 64 bit integral types. `protobuf-ts` 
 gives you the following options to represent those `.proto` types in TypeScript:
 
 1. `bigint`  
-   Enabled by default. Lets you use the standard JavaScript operators. 
-   
-   > **Note:** bigint is not available in Safari / WebKit as of August 2020.  
-   
-   > **Note:** Your tsconfig.json has to target ES2020 and you need Node.js 
-   > 14.5.0 or higher. 
-
+   Enabled by default. Lets you use the standard JavaScript operators.  
  
 2. `string`  
    Enabled by setting the option `[jstype = JS_STRING]` on a field , or 
    by setting the [plugin parameter](#the-protoc-plugin) "long_type_string".  
-   Works in all Web Browsers. 
 
 3. `number`  
    Enabled by setting the field option `[jstype = JS_NUMBER]`.   
-   Not recommended. `protobuf-ts` will try to detect overflows when 
-   converting to/from `number` and raise an error.
+
+
+> **Note:** Use the `string` representation if you target browsers.  
+> BigInt is still not fully supported in Safari as of November 2020. 
+> Safari 14 adds BigInt support, but its DataView implementation is missing 
+> the necessary BigInt methods.
+
+> **Note:** Using `number` is not recommended.  
+> JavaScript numbers do not cover the range of all possible 64 bit integral 
+> values. 
+
+> **Note:** `bigint` requires target ES2020 in your tsconfig.json and you 
+> need Node.js 14.5.0 or higher. 
+
+
+
+#### Changing the long representation
 
 For example, the following .proto:
 
@@ -580,17 +587,48 @@ Generates the following TypeScript:
 
 ```typescript
 interface LongTypes {
-    normal: bigint; // will be `string` with `--ts_opt long_type_string`
+    normal: bigint; // `bigint` is the "normal" representation
     string: string;
     number: number;
 }
-``` 
+```
 
-Internally, `protobuf-ts` uses the two classes `PbLong` and `PbUlong` to 
-convert between the different representations and the wire format. 
+If you set the plugin option "long_type_string", the following TypeScript is generated:
 
-For arithmetic, you need a third party library like the excellent 
-[long.js](https://github.com/dcodeIO/Long.js/) if you cannot use `bigint`. 
+```typescript
+interface LongTypes {
+    normal: string; // changed from `bigint` to `string` by --ts_opt long_type_string
+    string: string; 
+    number: number; // not affected by --ts_opt long_type_string
+}
+```
+
+
+#### Arithmetics
+
+For arithmetic across browsers, you need a third party library like the 
+excellent [long.js](https://github.com/dcodeIO/Long.js/) or [JSBI](https://github.com/GoogleChromeLabs/jsbi). 
+
+You should use the `string` representation, for example with the plugin 
+option "long_type_string". You can then read the string values, make your 
+operations and set a string value back on the field: 
+
+```typescript
+const myMessage = LongTypes.create({
+    string: "9223372036854770000"
+});
+
+// using long.js:
+let a = Long.fromString(myMessage.string)
+let b = a.add(123);
+myMessage.string = b.toString();
+
+// using JSBI:
+let c = JSBI.BigInt(myMessage.value)
+let d = c.add(123);
+myMessage.string = d.toString();
+```
+ 
 
 
 
@@ -1163,10 +1201,11 @@ several code generators:
 
 | generator               | version         | optimize for      | webpack output size |
 |-------------------------|----------------:|-------------------|--------------------:|
-| protobuf-ts | 1.0.4 | size | 42,353 b |
-| protobuf-ts | 1.0.4 | speed | 72,558 b |
-| ts-proto | 1.26.0 |  | 111.825 b |
-| google-protobuf | 3.12.2 |  | 396.934 b |
+| pbf | 3.2.1 |  | 22,132 b |
+| protobuf-ts | 1.0.7 | size | 42,728 b |
+| protobuf-ts | 1.0.7 | speed | 73,230 b |
+| ts-proto | 1.26.0 |  | 111,825 b |
+| google-protobuf | 3.12.2 |  | 396,934 b |
 
 
 The file sizes are calculated by compiling `google/protobuf/descriptor.proto`, 
