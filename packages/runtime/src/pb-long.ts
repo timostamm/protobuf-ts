@@ -1,16 +1,68 @@
-// factory for BigInt, is `undefined` when unavailable
 import {int64fromString, int64toString} from "./goog-varint";
 
-const biCtor: undefined | ((v: number | string | bigint) => bigint) = globalThis.BigInt;
 
-// min / max values in bigint format
-const LONG_MIN = biCtor ? biCtor("-9223372036854775808") : undefined;
-const LONG_MAX = biCtor ? biCtor("9223372036854775807") : undefined;
-const ULONG_MIN = biCtor ? biCtor("0") : undefined;
-const ULONG_MAX = biCtor ? biCtor("18446744073709551615") : undefined;
+/**
+ * API for supported BigInt on current platform.
+ */
+interface BiSupport {
 
-// used to convert bigint from / to bits
-const VIEW64 = new DataView(new ArrayBuffer(8));
+    /**
+     * Minimum signed value.
+     */
+    MIN: bigint;
+
+    /**
+     * Maximum signed value.
+     */
+    MAX: bigint;
+
+    /**
+     * Minimum unsigned value.
+     */
+    UMIN: bigint;
+
+    /**
+     * Maximum unsigned value.
+     */
+    UMAX: bigint;
+
+    /**
+     * A data view that is guaranteed to have the methods
+     * - getBigInt64
+     * - getBigUint64
+     * - setBigInt64
+     * - setBigUint64
+     */
+    V: DataView;
+
+    /**
+     * The BigInt constructor function.
+     */
+    C(v: number | string | bigint): bigint;
+}
+
+function detectBi(): BiSupport | undefined {
+    const dv = new DataView(new ArrayBuffer(8));
+    const ok = globalThis.BigInt !== undefined
+        && typeof dv.getBigInt64 === "function"
+        && typeof dv.getBigUint64 === "function"
+        && typeof dv.setBigInt64 === "function"
+        && typeof dv.setBigUint64 === "function";
+    return ok ? {
+        MIN: BigInt("-9223372036854775808"),
+        MAX: BigInt("9223372036854775807"),
+        UMIN: BigInt("0"),
+        UMAX: BigInt("18446744073709551615"),
+        C: BigInt,
+        V: dv,
+    } : undefined;
+}
+
+const BI = detectBi();
+
+function assertBi(bi: BiSupport | undefined): asserts bi is BiSupport {
+    if (!bi) throw new Error("BigInt unavailable, see https://github.com/timostamm/protobuf-ts/blob/v1.0.8/MANUAL.md#bigint-support");
+}
 
 // used to validate from(string) input (when bigint is unavailable)
 const RE_DECIMAL_STR = /^-?[0-9]+$/;
@@ -84,7 +136,7 @@ export class PbULong extends SharedPbLong {
      * Create instance from a `string`, `number` or `bigint`.
      */
     static from(value: string | number | bigint): PbULong {
-        if (biCtor)
+        if (BI)
             // noinspection FallThroughInSwitchStatementJS
             switch (typeof value) {
 
@@ -93,24 +145,24 @@ export class PbULong extends SharedPbLong {
                         return this.ZERO;
                     if (value == "")
                         throw new Error('string is no integer');
-                    value = biCtor(value);
+                    value = BI.C(value);
 
                 case "number":
                     if (value === 0)
                         return this.ZERO;
-                    value = biCtor(value);
+                    value = BI.C(value);
 
                 case "bigint":
                     if (!value)
                         return this.ZERO;
-                    if (value < ULONG_MIN!)
+                    if (value < BI.UMIN)
                         throw new Error('signed value for ulong');
-                    if (value > ULONG_MAX!)
+                    if (value > BI.UMAX)
                         throw new Error('ulong too large');
-                    VIEW64.setBigUint64(0, value, true);
+                    BI.V.setBigUint64(0, value, true);
                     return new PbULong(
-                        VIEW64.getInt32(0, true),
-                        VIEW64.getInt32(4, true),
+                        BI.V.getInt32(0, true),
+                        BI.V.getInt32(4, true),
                     );
 
             }
@@ -145,18 +197,17 @@ export class PbULong extends SharedPbLong {
      * Convert to decimal string.
      */
     toString() {
-        if (biCtor)
-            return this.toBigInt().toString()
-        return int64toString(this.lo, this.hi);
+        return BI ? this.toBigInt().toString() : int64toString(this.lo, this.hi);
     }
 
     /**
      * Convert to native bigint.
      */
     toBigInt(): bigint {
-        VIEW64.setInt32(0, this.lo, true);
-        VIEW64.setInt32(4, this.hi, true);
-        return VIEW64.getBigUint64(0, true);
+        assertBi(BI);
+        BI.V.setInt32(0, this.lo, true);
+        BI.V.setInt32(4, this.hi, true);
+        return BI.V.getBigUint64(0, true);
     }
 
 }
@@ -177,7 +228,7 @@ export class PbLong extends SharedPbLong {
      * Create instance from a `string`, `number` or `bigint`.
      */
     static from(value: string | number | bigint): PbLong {
-        if (biCtor)
+        if (BI)
             // noinspection FallThroughInSwitchStatementJS
             switch (typeof value) {
                 case "string":
@@ -185,24 +236,24 @@ export class PbLong extends SharedPbLong {
                         return this.ZERO;
                     if (value == "")
                         throw new Error('string is no integer');
-                    value = biCtor(value);
+                    value = BI.C(value);
 
                 case "number":
                     if (value === 0)
                         return this.ZERO;
-                    value = biCtor(value);
+                    value = BI.C(value);
 
                 case "bigint":
                     if (!value)
                         return this.ZERO;
-                    if (value < LONG_MIN!)
+                    if (value < BI.MIN)
                         throw new Error('ulong too small');
-                    if (value > LONG_MAX!)
+                    if (value > BI.MAX)
                         throw new Error('ulong too large');
-                    VIEW64.setBigInt64(0, value, true);
+                    BI.V.setBigInt64(0, value, true);
                     return new PbLong(
-                        VIEW64.getInt32(0, true),
-                        VIEW64.getInt32(4, true),
+                        BI.V.getInt32(0, true),
+                        BI.V.getInt32(4, true),
                     );
             }
         else
@@ -254,8 +305,8 @@ export class PbLong extends SharedPbLong {
      * Convert to decimal string.
      */
     toString() {
-        if (biCtor)
-            return this.toBigInt().toString()
+        if (BI)
+            return this.toBigInt().toString();
         if (this.isNegative()) {
             let n = this.negate();
             return '-' + int64toString(n.lo, n.hi);
@@ -267,9 +318,10 @@ export class PbLong extends SharedPbLong {
      * Convert to native bigint.
      */
     toBigInt(): bigint {
-        VIEW64.setInt32(0, this.lo, true);
-        VIEW64.setInt32(4, this.hi, true);
-        return VIEW64.getBigInt64(0, true);
+        assertBi(BI);
+        BI.V.setInt32(0, this.lo, true);
+        BI.V.setInt32(4, this.hi, true);
+        return BI.V.getBigInt64(0, true);
     }
 
 }
