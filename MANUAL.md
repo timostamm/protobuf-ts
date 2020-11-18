@@ -100,11 +100,19 @@ npx protoc \
 
 
 Available plugin parameters:
+- "long_type_bigint" (default)
+  Sets jstype = JS_NORMAL for message fields with 64 bit integral values. 
+  Only applies to fields that do *not* use the option `jstype`.
 
 - "long_type_string"  
   Sets jstype = JS_STRING for message fields with 64 bit integral values. 
   The default behaviour is to use native `bigint`.  
   Only applies to fields that do *not* use the option `jstype`.
+
+- "long_type_number"  
+  Sets jstype = JS_NUMBER for message fields with 64 bit integral values. 
+  The default behaviour is to use native `bigint`.  
+  Only applies to fields that do *not* use the option `jstype`.  
 
 - "generate_dependencies"  
   By default, only the PROTO_FILES passed as input to protoc are generated, 
