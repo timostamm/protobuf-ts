@@ -4,11 +4,11 @@ package spec;
 
 message LongsMessage {
 
-    fixed64 fixed64_field_min = 1;
-    fixed64 fixed64_field_max = 2;
+    fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL];
+    fixed64 fixed64_field_max = 2 [jstype = JS_NORMAL];
 
-    int64 int64_field_min = 3;
-    int64 int64_field_max = 4;
+    int64 int64_field_min = 3 [jstype = JS_NORMAL];
+    int64 int64_field_max = 4 [jstype = JS_NORMAL];
 
     sfixed64 sfixed64_field_min = 5;
     sfixed64 sfixed64_field_max = 6;
