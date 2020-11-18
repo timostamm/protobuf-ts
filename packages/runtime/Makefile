@@ -32,12 +32,3 @@ test-browser:
 
 watch-test-node:
 	fswatch -o src | xargs -n1 -I{} make test-node
-
-bootstrap:
-	protoc \
-		--ts_out=src \
-		--plugin=../bin/protoc-gen-ts \
-		--proto_path=src/ \
-		--experimental_allow_proto3_optional \
-		src/google/protobuf/descriptor.proto \
-		src/google/protobuf/compiler/plugin.proto
