@@ -23,6 +23,16 @@ Deprecations:
 
 
 
+### v1.0.10 Bugfix for jstype = JS_STRING field option for speed optimized code
+
+This patch fixes a bug in the plugin: The field option jstype = JS_STRING 
+would generate invalid code for optimized speed. 
+
+The problem only surfaces if the plugin parameter long_type_string
+is *not* set and code is optimized for speed (instead of for code size).
+See PR #29
+
+
 ### v1.0.9 Bugfix for jstype = JS_STRING field option
 
 This patch fixes a bug in the plugin: The field option jstype = JS_STRING 

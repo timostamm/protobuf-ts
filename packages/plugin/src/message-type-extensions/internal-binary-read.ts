@@ -949,11 +949,8 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         if (!Interpreter.isLongValueType(type)) {
             return readerMethodCall;
         }
-        if (longType === undefined) {
-            longType = this.options.normalLongType;
-        }
         let convertMethodProp;
-        switch (longType) {
+        switch (longType ?? rt.LongType.STRING) {
             case rt.LongType.STRING:
                 convertMethodProp = ts.createPropertyAccess(readerMethodCall, ts.createIdentifier('toString'));
                 break;
