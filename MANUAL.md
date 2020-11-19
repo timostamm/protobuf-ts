@@ -256,6 +256,9 @@ Some things to note:
   `string` or `number`. This is the [BigInt support](#bigint-support) of 
   `protobuf-ts`. 
 
+- The generated code compiles with TypeScript compiler target ES2015 or later. 
+  But if you use `bigint`, you need ES2020.  
+
 - The file option `optimize_for = CODE_SIZE` was set. `protobuf-ts` 
   understands this option and uses reflection for all operations, reducing  
   the code size.   
