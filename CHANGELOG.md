@@ -23,6 +23,14 @@ Deprecations:
 
 
 
+### v1.0.9 Bugfix for jstype = JS_STRING field option
+
+This patch fixes a bug in the plugin: The field option jstype = JS_STRING 
+would still generate an interface with a bigint property. The problem only 
+surfaces if the plugin parameter long_type_string is *not* set.  
+See PR #28
+
+
 ### v1.0.7 Bugfix for RangeError in google.protobuf.Timestamp.fromDate()
 
 This patch fixes a bug in the method google.protobuf.Timestamp.fromDate(). 
