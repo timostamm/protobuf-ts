@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/protoc",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Installs the protocol buffer compiler \"protoc\" for you.",
   "license": "Apache-2.0",
   "author": "Timo Stamm <ts@timostamm.com>",
