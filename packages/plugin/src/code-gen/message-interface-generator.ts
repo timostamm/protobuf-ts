@@ -287,7 +287,7 @@ export class MessageInterfaceGenerator {
             case rt.ScalarType.UINT64:
             case rt.ScalarType.FIXED64:
             case rt.ScalarType.SINT64:
-                switch (longType || this.options.normalLongType) {
+                switch (longType ?? rt.LongType.STRING) {
                     case rt.LongType.STRING:
                         return ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword);
                     case rt.LongType.NUMBER:
