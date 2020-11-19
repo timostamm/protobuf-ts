@@ -31,6 +31,13 @@ surfaces if the plugin parameter long_type_string is *not* set.
 See PR #28
 
 
+### v1.0.8 Bugfix for Safari 14 bigint detection
+
+This patch fixes issue #24
+
+Thanks to @pedelman and @pzeinlinger for the bug reports!
+
+
 ### v1.0.7 Bugfix for RangeError in google.protobuf.Timestamp.fromDate()
 
 This patch fixes a bug in the method google.protobuf.Timestamp.fromDate(). 
