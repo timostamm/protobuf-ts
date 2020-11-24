@@ -14,3 +14,7 @@ It shows the usage of:
 To get started, run `make generate` to generate some typescript code from .proto files.  
 Then start the development server by running `ng serve` and navigate to `http://localhost:4200/`.  
 To test the gRPC-web services, run the server `example-dotnet-grpcweb-server`.
+
+If the page stays empty and you get `Uncaught TypeError: Cannot read property 'id' of undefined`
+in your browser console, run `ng serve` again. This issue is caused by the lerna linked 
+packages and ivy compilation.  
