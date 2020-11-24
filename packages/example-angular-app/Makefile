@@ -9,6 +9,7 @@ generate: $(PROTOS)
 		--ts_opt enable_angular_annotations \
 		--ts_opt long_type_string \
 		--proto_path $(PROTO_PATH) \
+		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"
