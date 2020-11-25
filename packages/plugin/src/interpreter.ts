@@ -524,6 +524,8 @@ export class Interpreter {
                 case FieldOptions_JSType.JS_STRING:
                     // omitting L equals to STRING
                     return undefined;
+                case FieldOptions_JSType.JS_NORMAL:
+                    return rt.LongType.BIGINT;                    
                 case FieldOptions_JSType.JS_NUMBER:
                     return rt.LongType.NUMBER;
             }
