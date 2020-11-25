@@ -5,8 +5,6 @@ import {setupCompiler} from "@protobuf-ts/plugin-framework";
 
 
 describe('protobuftsPlugin', function () {
-
-
     let plugin = new ProtobuftsPlugin('test');
     let request = getFixtureCodeGeneratorRequest({
         parameter: 'long_type_string',
@@ -72,7 +70,8 @@ describe('protobuftsPlugin', function () {
                     "ES2018.AsyncIterable" // for runtime-rpc
                 ],
                 module: ts.ModuleKind.CommonJS,
-                target: ts.ScriptTarget.ES2015,
+                // ES2020 is required for bigint support
+                target: ts.ScriptTarget.ES2020,
                 paths: {
                     "@protobuf-ts/runtime": [
                         '../runtime/src/index'

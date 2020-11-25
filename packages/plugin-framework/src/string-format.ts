@@ -282,8 +282,11 @@ export class StringFormat implements IStringFormat {
             options.push(`jstype = JS_STRING`);
         }
         if (descriptor.options?.jstype == FieldOptions_JSType.JS_NUMBER) {
-            options.push(`jstype = JS_STRING`);
+            options.push(`jstype = JS_NUMBER`);
         }
+        if (descriptor.options?.jstype == FieldOptions_JSType.JS_NORMAL) {
+            options.push(`jstype = JS_NORMAL`);
+        }        
         if (descriptor.options?.packed === true) {
             options.push(`packed = true`);
         }
