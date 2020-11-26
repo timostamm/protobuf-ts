@@ -7,7 +7,7 @@
     "target": "ES2015",
     "moduleResolution": "node",
     "declaration": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "strict": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
