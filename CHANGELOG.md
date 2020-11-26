@@ -23,6 +23,8 @@ Breaking changes:
 
 - plugin option "disable_service_client" was renamed to "force_client_none"
 
+- RpcOutputStream callback `onNext` is now called with `complete = false` on error.
+
 
 Deprecations:
 
