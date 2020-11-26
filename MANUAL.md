@@ -1694,19 +1694,11 @@ Twirp supports only unary method types and no response trailers, but on the othe
 hand it is very easy to implement on the server side and still benefits a lot from 
 the very reliable protocol buffer serialization mechanism.    
 
-This transport requires the fetch API. `globalThis.fetch`, `globalThis.Headers` and 
-`globalThis.AbortController` are expected. The transport is tested with 
-the polyfill packages [node-fetch](https://github.com/node-fetch/node-fetch) 
-and [`abort-controller`](https://github.com/mysticatea/abort-controller).
-
 To use the Twirp transport, install the package `@protobuf-ts/twirp-transport`.
 
-> **Note:** This transport requires the fetch API (`globalThis.fetch` and 
-`globalThis.Headers`).  
-> For Node.js, use the polyfill [node-fetch](https://github.com/node-fetch/node-fetch).  
-
-> **Note:** To cancel calls, you need an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
-> For Node.js, use the polyfill [abort-controller](https://github.com/mysticatea/abort-controller).
+> **Note:** This transport requires the fetch API and the AbortController API.  
+> `globalThis.fetch`, `globalThis.Headers` and `globalThis.AbortController` are expected.    
+> For Node.js, use the polyfills [node-fetch](https://github.com/node-fetch/node-fetch) and [abort-controller](https://github.com/mysticatea/abort-controller).
 
 > **Note:** If you use Angular, consider using the Twirp transport based on 
 > Angular's HttpClient. See [Angular support](#angular-support).
