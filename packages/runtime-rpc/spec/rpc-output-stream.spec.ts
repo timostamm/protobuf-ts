@@ -45,6 +45,25 @@ describe('RpcOutputStreamController', function () {
         }
     });
 
+    it('notifyError() should callback onNext without complete', function () {
+        let calledBack: {message: TestItem|undefined, error: Error|undefined, complete: boolean} | undefined = undefined;
+        ctrl.onNext((message, error, complete) => calledBack = {message, error, complete});
+        ctrl.notifyError(new Error());
+        expect(calledBack).toBeDefined();
+        if (calledBack) {
+            expect(calledBack!.message).toBeUndefined();
+            expect(calledBack!.error).toBeDefined();
+            expect(calledBack!.complete).toBeFalse();
+        }
+    });
+
+    it('should throw when notifyNext() not one at a time', function () {
+        expect(() => ctrl.notifyNext({id: "foo"}, new Error(), true)).toThrowError('only one emission at a time');
+        expect(() => ctrl.notifyNext({id: "foo"}, new Error(), false)).toThrowError('only one emission at a time');
+        expect(() => ctrl.notifyNext({id: "foo"}, undefined, true)).toThrowError('only one emission at a time');
+        expect(() => ctrl.notifyNext(undefined, new Error(), true)).toThrowError('only one emission at a time');
+    });
+
 });
 
 
@@ -93,8 +112,8 @@ describe('RpcOutputStream', function () {
             let bComplete = 0;
             stream.onComplete(() => aComplete++);
             stream.onComplete(() => bComplete++);
-            stream.onNext((message, error, done) => {
-                if (done) {
+            stream.onNext((message, error, complete) => {
+                if (complete) {
                     expect(aMsg).toBe(3);
                     expect(bMsg).toBe(3);
                     expect(aNext).toBe(4);
@@ -171,7 +190,7 @@ describe('RpcOutputStream', function () {
 
         it('should invoke onNext with defined "message" 3 times', function (doneFn) {
             let count = 0;
-            stream.onNext((message, error, done) => {
+            stream.onNext((message, error, complete) => {
                 if (message)
                     count++;
             });

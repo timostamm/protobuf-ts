@@ -25,7 +25,8 @@ export interface RpcOutputStream<T extends object = object> extends AsyncIterabl
      * Add a callback for every new datum.
      * If a new message arrived, the "message" argument is set.
      * If an error occurred, the "error" argument is set.
-     * If no more messages will be arriving, the "done" argument is true.
+     * If the stream is complete, the "complete" argument is `true`.
+     * Only one of the arguments is used at a time.
      */
     onNext(callback: NextCallback<T>): RemoveListenerFn;
 
@@ -36,21 +37,21 @@ export interface RpcOutputStream<T extends object = object> extends AsyncIterabl
 
     /**
      * Add a callback for stream completion.
-     * Called when all messages have been read without error.
+     * Called only when all messages have been read without error.
+     * The stream is closed when this callback is called.
      */
     onComplete(callback: CompleteCallback): RemoveListenerFn;
 
     /**
      * Add a callback for errors.
-     * After an error occurred, the stream will no longer receive messages or
-     * anything else.
+     * The stream is closed when this callback is called.
      */
     onError(callback: ErrorCallback): RemoveListenerFn;
 
 }
 
 
-type NextCallback<T extends object> = (message: T | undefined, error: Error | undefined, done: boolean) => void;
+type NextCallback<T extends object> = (message: T | undefined, error: Error | undefined, complete: boolean) => void;
 type MessageCallback<T extends object> = (message: T) => void;
 type CompleteCallback = () => void;
 type ErrorCallback = (reason: Error) => void;
@@ -119,20 +120,23 @@ export class RpcOutputStreamController<T extends object = object> {
 
     /**
      * Emit message, close with error, or close successfully, but only one
-     * at the time.
+     * at a time.
      * Can be used to wrap a stream by using the other stream's `onNext`.
      */
-    notifyNext(message: T | undefined, error: Error | undefined, done: boolean): void {
+    notifyNext(message: T | undefined, error: Error | undefined, complete: boolean): void {
+        assert((message ? 1 : 0) + (error ? 1 : 0) + (complete ? 1 : 0) <= 1, 'only one emission at a time');
         if (message)
             this.notifyMessage(message);
         if (error)
             this.notifyError(error);
-        if (done)
+        if (complete)
             this.notifyComplete();
     }
 
     /**
      * Emits a new message. Throws if stream is closed.
+     *
+     * Triggers onNext and onMessage callbacks.
      */
     notifyMessage(message: T): void {
         assert(!this.closed, 'stream is closed');
@@ -143,18 +147,22 @@ export class RpcOutputStreamController<T extends object = object> {
 
     /**
      * Closes the stream with an error. Throws if stream is closed.
+     *
+     * Triggers onNext and onError callbacks.
      */
     notifyError(error: Error): void {
         assert(!this.closed, 'stream is closed');
         this._closed = error;
         this.pushIt(error);
         this._lis.err.forEach(l => l(error));
-        this._lis.nxt.forEach(l => l(undefined, error, true));
+        this._lis.nxt.forEach(l => l(undefined, error, false));
         this.clearLis();
     }
 
     /**
      * Closes the stream successfully. Throws if stream is closed.
+     *
+     * Triggers onNext and onComplete callbacks.
      */
     notifyComplete(): void {
         assert(!this.closed, 'stream is closed');
