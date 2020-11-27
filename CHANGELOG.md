@@ -1,4 +1,10 @@
 
+### v1.0.11 Bugfix for windows import path
+
+This patch fixes generated import path on windows platform.  
+Thanks to @SyedAsimAliSE for bringing this issue up.
+
+
 ### v2.0.0-alpha.2
 
 - Do not output source mappings and declaration mappings #40
