@@ -1,28 +1,25 @@
 
 
-### UPCOMING
+### v2.0.0-alpha-0
 
 New features:
 
 - RPC client styles (see #10)
 - Option to exclude custom options (see #7)
-- Add long_type_number and long_type_bigint parameters (see #13)
+- Add long_type_number and long_type_bigint parameters (see #13, thanks @vicb)
 
 
 Bug Fixes:
 
 - Proto fields with `[jstype = JS_NUMBER]` were documented as `* @generated from protobuf field: [...] [jstype = JS_STRING];`. (See #27)
-
 - Proto fields with `[jstype = JS_NORMAL]` were generated as `string` when the `long_type_string` plugin parameter was used. (See #27)
 
 
 Breaking changes:
 
-- the `cancel` method of RPC was removed, see #9  
+- The `cancel` method of RPC was removed, see #9  
   As a replacement, you can pass an `AbortSignal` in the call options instead.  
-
 - plugin option "disable_service_client" was renamed to "force_client_none"
-
 - RpcOutputStream callback `onNext` is now called with `complete = false` on error.
 
 
