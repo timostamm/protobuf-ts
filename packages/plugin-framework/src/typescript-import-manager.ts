@@ -281,10 +281,16 @@ function createRelativeImportPath(currentPath: string, pathToImportFrom: string)
     // create relative path to the file to import
     let fromPath = path.relative(path.dirname(currentPath), pathToImportFrom);
 
-    // and drop file extension
+    // on windows, this may add backslash directory separators.
+    // we replace them with forward slash.
+    if (path.sep !== "/") {
+        fromPath = fromPath.split(path.sep).join("/");
+    }
+
+    // drop file extension
     fromPath = fromPath.replace(/\.[a-z]+$/, '');
 
-    // and make sure to start with './' to signal relative path to module resolution
+    // make sure to start with './' to signal relative path to module resolution
     if (!fromPath.startsWith('../') && !fromPath.startsWith('./')) {
         fromPath = './' + fromPath;
     }
