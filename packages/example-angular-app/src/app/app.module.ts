@@ -10,7 +10,6 @@ import {AllMethodsServiceClient} from '../protoc-gen-ts-out/service-all-methods'
 import {TwirpAngularComponent} from './twirp-angular/twirp-angular.component';
 import {PbDatePipeComponent} from './pb-date-pipe/pb-date-pipe.component';
 import {HaberdasherClient} from '../protoc-gen-ts-out/service-twirp-example';
-import {UnaryCall} from '@protobuf-ts/runtime-rpc';
 
 
 @NgModule({
@@ -32,18 +31,8 @@ import {UnaryCall} from '@protobuf-ts/runtime-rpc';
 
       // You probably want to use Angular interceptors, but RPC
       // interceptors still work with the `TwirpTransport`.
-      interceptors: [
-        {
-          interceptUnary(next, method, input, options): UnaryCall {
-            if (!options.meta) {
-              options.meta = {};
-            }
-            options.meta.Authorization = 'xxx';
-            console.log('unary interceptor added authorization header (Angular Twirp transport)');
-            return next(method, input, options);
-          }
-        }
-      ],
+      // See interceptor-examples/ for some examples.
+      interceptors: [],
 
     })
   ],
