@@ -1,6 +1,14 @@
 
 
-### v2.0.0-alpha-0
+### v2.0.0-alpha.1
+
+- [Security] Bump lodash from 4.17.15 to 4.17.20 #20
+- [Security] Bump node-fetch from 2.6.0 to 2.6.1 #19
+- [Security] Bump elliptic from 6.5.2 to 6.5.3 #18
+
+
+
+### v2.0.0-alpha.0
 
 New features:
 
