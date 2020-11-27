@@ -23,6 +23,12 @@ lerna-make:
 	--ignore @protobuf-ts/protoc \
 	-- make
 
-# release a new version. must run lerna-make first.
-lerna-publish:
-	./node_modules/.bin/lerna publish --force-publish --loglevel debug
+# release a new version in the "latest" channel
+# when lerna asks for version number, you must not select a prerelease identifier
+lerna-publish-latest: lerna-bootstrap lerna-make
+	./node_modules/.bin/lerna publish --force-publish
+
+# release a new version in the "next" channel
+# when lerna asks for version number, you must select a prerelease identifier
+lerna-publish-next: lerna-bootstrap lerna-make
+	./node_modules/.bin/lerna publish --force-publish --dist-tag next
