@@ -10,7 +10,7 @@ build:
 	@./node_modules/.bin/tsc --project tsconfig.json --module es2015 --outDir build/es2015;
 	@echo "es6 done"
 	@./node_modules/.bin/tsc --project tsconfig.json --module commonjs --outDir build/commonjs \
-		--declaration --declarationMap --declarationDir build/types;
+		--declaration --declarationDir build/types;
 	@echo "cjs done"
 
 clean:
