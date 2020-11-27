@@ -1,4 +1,9 @@
 
+### v2.0.0-alpha.3
+
+- Fix windows import path #41
+
+
 ### v1.0.11 Bugfix for windows import path
 
 This patch fixes generated import path on windows platform.  
