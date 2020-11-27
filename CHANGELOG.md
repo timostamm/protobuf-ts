@@ -1,4 +1,8 @@
 
+### v2.0.0-alpha.2
+
+- Do not output source mappings and declaration mappings #40
+
 
 ### v2.0.0-alpha.1
 
