@@ -8,7 +8,7 @@ import {
     ClientStreamingCall,
     Deferred,
     DuplexStreamingCall,
-    mergeExtendedRpcOptions,
+    mergeRpcOptions,
     MethodInfo,
     NextUnaryFn,
     RpcError,
@@ -142,7 +142,7 @@ class MockTransport implements RpcTransport {
     }
 
     mergeOptions(options?: Partial<RpcOptions>): RpcOptions {
-        return mergeExtendedRpcOptions(this.defaults, options);
+        return mergeRpcOptions(this.defaults, options);
     }
 
     resolveUnary(headers: RpcMetadata, response: any, status: RpcStatus, trailer: RpcMetadata): void {

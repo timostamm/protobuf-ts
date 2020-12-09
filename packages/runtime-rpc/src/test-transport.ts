@@ -5,7 +5,7 @@ import {RpcTransport} from "./rpc-transport";
 import {MethodInfo} from "./reflection-info";
 import {assert} from "@protobuf-ts/runtime";
 import {RpcOutputStreamController} from "./rpc-output-stream";
-import {mergeExtendedRpcOptions, RpcOptions} from "./rpc-options";
+import {mergeRpcOptions, RpcOptions} from "./rpc-options";
 import {UnaryCall} from "./unary-call";
 import {ServerStreamingCall} from "./server-streaming-call";
 import {ClientStreamingCall} from "./client-streaming-call";
@@ -251,7 +251,7 @@ export class TestTransport implements RpcTransport {
 
 
     mergeOptions(options?: Partial<RpcOptions>): RpcOptions {
-        return mergeExtendedRpcOptions({}, options);
+        return mergeRpcOptions({}, options);
     }
 
 

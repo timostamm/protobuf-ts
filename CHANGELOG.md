@@ -1,4 +1,11 @@
 
+### Master
+
+Breaking changes:
+
+- The function `mergeExtendedRpcOptions` was renamed to `mergeRpcOptions`.  
+
+
 ### v2.0.0-alpha.3
 
 - Fix windows import path #41

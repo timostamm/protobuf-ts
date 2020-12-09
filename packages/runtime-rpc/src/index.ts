@@ -7,7 +7,7 @@ export {ServiceType} from './service-type';
 export {MethodInfo, PartialMethodInfo, ServiceInfo, ClientStyle, readMethodOptions} from './reflection-info';
 export {RpcError} from './rpc-error';
 export {RpcMetadata} from './rpc-metadata';
-export {RpcOptions, mergeExtendedRpcOptions} from './rpc-options';
+export {RpcOptions, mergeRpcOptions} from './rpc-options';
 export {RpcInputStream} from './rpc-input-stream';
 export {RpcOutputStream, RpcOutputStreamController} from './rpc-output-stream';
 export {RpcStatus} from './rpc-status';

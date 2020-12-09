@@ -4,7 +4,7 @@ import {
     ClientStreamingCall,
     Deferred,
     DuplexStreamingCall,
-    mergeExtendedRpcOptions,
+    mergeRpcOptions,
     MethodInfo,
     RpcError,
     RpcMetadata,
@@ -32,7 +32,7 @@ export class TwirpFetchTransport implements RpcTransport {
     }
 
     mergeOptions(options?: Partial<RpcOptions>): RpcOptions {
-        return mergeExtendedRpcOptions(this.defaultOptions, options);
+        return mergeRpcOptions(this.defaultOptions, options);
     }
 
     unary<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: RpcOptions): UnaryCall<I, O> {

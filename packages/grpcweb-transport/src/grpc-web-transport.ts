@@ -11,7 +11,7 @@ import {
     Deferred,
     DeferredState,
     DuplexStreamingCall,
-    mergeExtendedRpcOptions,
+    mergeRpcOptions,
     MethodInfo,
     RpcError,
     RpcMetadata,
@@ -43,7 +43,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
     }
 
     mergeOptions(options?: Partial<RpcOptions>): RpcOptions {
-        return mergeExtendedRpcOptions(this.defaultOptions, options);
+        return mergeRpcOptions(this.defaultOptions, options);
     }
 
 

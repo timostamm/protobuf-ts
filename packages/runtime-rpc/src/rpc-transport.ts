@@ -23,7 +23,7 @@ import {RpcOptions} from "./rpc-options";
  *
  * b) An implementation **must** merge the options given to `mergeOptions()`
  * with its default options. If no extra options are implemented, or only
- * primitive option values are used, using `mergeExtendedRpcOptions()` will
+ * primitive option values are used, using `mergeRpcOptions()` will
  * produce the required behaviour.
  *
  * c) An implementation **must** pass `RpcOptions.jsonOptions` and

@@ -89,7 +89,7 @@ export interface RpcOptions {
  * of primitives. If you have other property types, you have to merge them
  * yourself.
  */
-export function mergeExtendedRpcOptions<T extends RpcOptions>(defaults: T, options?: Partial<T>): T {
+export function mergeRpcOptions<T extends RpcOptions>(defaults: T, options?: Partial<T>): T {
     if (!options)
         return defaults;
     let o = {} as any;
