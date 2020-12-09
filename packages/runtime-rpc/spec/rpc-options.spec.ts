@@ -1,23 +1,23 @@
-import {mergeExtendedRpcOptions, RpcOptions} from "../src";
+import {mergeRpcOptions, RpcOptions} from "../src";
 import {IMessageType} from "@protobuf-ts/runtime";
 
 
-describe('mergeExtendedRpcOptions()', () => {
+describe('mergeRpcOptions()', () => {
 
     it('does not require seconds argument', function () {
-        let opt = mergeExtendedRpcOptions({deadline: 123}, undefined);
+        let opt = mergeRpcOptions({deadline: 123}, undefined);
         expect(opt).toEqual({deadline: 123});
     });
 
     it('merges interceptors', function () {
-        let opt = mergeExtendedRpcOptions({interceptors: [{}]}, {interceptors: [{}]});
+        let opt = mergeRpcOptions({interceptors: [{}]}, {interceptors: [{}]});
         expect(opt.interceptors.length).toBe(2);
     });
 
     it('adds default interceptors first', function () {
         let first = {};
         let second = {};
-        let opt = mergeExtendedRpcOptions({interceptors: [first]}, {interceptors: [second]});
+        let opt = mergeRpcOptions({interceptors: [first]}, {interceptors: [second]});
         expect(opt.interceptors[0]).toBe(first);
     });
 
@@ -40,7 +40,7 @@ describe('mergeExtendedRpcOptions()', () => {
                 typeRegistry: [2 as unknown as IMessageType<any>],
             }
         };
-        let act = mergeExtendedRpcOptions(def, opt);
+        let act = mergeRpcOptions(def, opt);
         let exp: RpcOptions = {
             jsonOptions: {
                 ignoreUnknownFields: false,
@@ -66,7 +66,7 @@ describe('mergeExtendedRpcOptions()', () => {
                 b: "b",
             }
         };
-        let c = mergeExtendedRpcOptions(a, b);
+        let c = mergeRpcOptions(a, b);
         expect(c.meta).toEqual({
             overwrite: "b",
             a: "a",
