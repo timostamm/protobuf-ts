@@ -284,6 +284,9 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         return [statement];
     }
 
+    private createAsAny(expression: ts.Expression): ts.Expression {
+        return ts.createAsExpression(expression, ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword));
+    }
 
     scalarOneof(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }, fieldDeclarationComment: string): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
@@ -309,7 +312,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                     this.makeWriterTagCall('writer', field.no, this.wireTypeForSingleScalar(type)),
                     type,
                     ts.createPropertyAccess(
-                        groupPropertyAccess,
+                        this.createAsAny(groupPropertyAccess),
                         field.localName
                     )
                 )
@@ -432,7 +435,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             undefined,
             [
                 ts.createPropertyAccess(
-                    groupPropertyAccess,
+                    this.createAsAny(groupPropertyAccess),
                     field.localName
                 ),
                 writeTagAndFork,
