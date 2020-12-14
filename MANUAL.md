@@ -1213,10 +1213,12 @@ several code generators:
 | generator               | version         | optimize for      | webpack output size |
 |-------------------------|----------------:|-------------------|--------------------:|
 | pbf | 3.2.1 |  | 22,132 b |
-| protobuf-ts | 1.0.7 | size | 42,728 b |
-| protobuf-ts | 1.0.7 | speed | 73,230 b |
-| ts-proto | 1.26.0 |  | 111,825 b |
+| protobuf-ts | 2.0.0-alpha.3 | size | 42,734 b |
+| protobuf-ts | 2.0.0-alpha.3 | speed | 73,236 b |
+| ts-proto | 1.26.0 |  | 111,762 b |
+| protobufjs | 6.10.2 |  | 139,360 b |
 | google-protobuf | 3.12.2 |  | 396,934 b |
+
 
 
 The file sizes are calculated by compiling `google/protobuf/descriptor.proto`, 

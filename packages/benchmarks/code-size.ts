@@ -28,6 +28,9 @@ let testees: Testee[] = readdirSync("./testees")
             case "pbf":
                 version = require('pbf/package.json').version;
                 break;
+            case "protobufjs":
+                version = require('protobufjs/package.json').version;
+                break;
             case "google-protobuf":
                 version = require('google-protobuf/package.json').version;
                 break;

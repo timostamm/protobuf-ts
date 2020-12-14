@@ -15,8 +15,8 @@ perf: ${PROTO_PATH}/all.descriptorset generate
 code-size: generate
 	@npx ts-node code-size.ts
 
-
 generate: $(PROTOS)
+	npx pbjs -t static-module -w commonjs -o ./testees/protobufjs-out/descriptor.js $(PROTOS)
 	@npx pbf $(PROTOS) > testees/pbf-out/descriptor.js
 	@protoc \
 		--ts_proto_out ./testees/ts-proto-out/ \
