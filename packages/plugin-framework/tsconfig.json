@@ -5,7 +5,7 @@
   "compilerOptions": {
     "target": "ES2015",
     "declaration": false,
-    "sourceMap": true,
+    "sourceMap": false,
     "baseUrl": "./",
     "strict": true,
     "moduleResolution": "node",
