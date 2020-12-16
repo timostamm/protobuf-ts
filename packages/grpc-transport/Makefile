@@ -1,4 +1,4 @@
-.PHONY: default build clean test
+.PHONY: default build clean test example-client
 SPECS := $(shell find spec -name '*.spec.ts')
 
 
@@ -23,3 +23,6 @@ test: $(SPECS)
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$^
 
+example-client:
+	npx protoc -I example-client --ts_out example-client/ --ts_opt generate_dependencies,force_client_none example-client/service-all-methods.proto
+	npx ts-node example-client/index.ts

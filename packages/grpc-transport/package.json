@@ -24,6 +24,7 @@
   "typings": "./build/types/index.d.ts",
   "sideEffects": false,
   "devDependencies": {
+    "@protobuf-ts/plugin": "2.0.0-alpha.3",
     "@types/jasmine": "^3.5.10",
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^5.0.2",
