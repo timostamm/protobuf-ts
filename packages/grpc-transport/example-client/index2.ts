@@ -3,20 +3,18 @@ import {AllMethodsRequest, AllMethodsResponse, AllMethodsService} from "./servic
 import {MethodInfo} from "@protobuf-ts/runtime-rpc";
 import {CallOptions} from "@grpc/grpc-js/";
 import {UnaryCallback} from "@grpc/grpc-js/build/src/client";
+import {GrpcOptions} from "../src/grpc-options";
 
 
-const target = "localhost:5000";
-const creds = ChannelCredentials.createInsecure();
-const channelOptions: ChannelOptions = {};
-const channel = new Channel(
-    target,
-    creds,
-    channelOptions
-);
+const grpcOptions: GrpcOptions = {
+    host: "localhost:5000",
+    channelCredentials: ChannelCredentials.createInsecure(),
+};
 
 
-const methodInfo: MethodInfo<AllMethodsRequest, AllMethodsResponse> = AllMethodsService.methods.find(m => m.name === 'Unary')!;
-const callRequest = AllMethodsRequest.create({
+
+const method: MethodInfo<AllMethodsRequest, AllMethodsResponse> = AllMethodsService.methods.find(m => m.name === 'Unary')!;
+const input = AllMethodsRequest.create({
     question: "what's up?"
 });
 
@@ -28,20 +26,20 @@ const callback: UnaryCallback<AllMethodsResponse> = (err, value) => {
     console.log("val:", value);
 }
 
-const client = new Client(target, creds, clientOpts);
+const client = new Client(grpcOptions.host, grpcOptions.channelCredentials, clientOpts);
 
 const call = client.makeUnaryRequest(
-    `/${methodInfo.service.typeName}/${methodInfo.name}`,
+    `/${method.service.typeName}/${method.name}`,
     (value: AllMethodsRequest): Buffer => {
         const writeOpts = {};
-        const bytes = methodInfo.I.toBinary(value, writeOpts);
+        const bytes = method.I.toBinary(value, writeOpts);
         return Buffer.from(bytes);
     },
     (value: Buffer): AllMethodsResponse => {
         const readOpts = {};
-        return methodInfo.O.fromBinary(value, readOpts);
+        return method.O.fromBinary(value, readOpts);
     },
-    callRequest,
+    input,
     callMeta,
     callOpts,
     callback
