@@ -1,5 +1,18 @@
 
-### Master
+### v1.0.12 
+
+This patch removes source mappings and declaration mappings from 
+the npm packages. See #40. 
+
+Thanks to @johnsoncodehk and @tlstyer for the reports.
+
+
+### v2.0.0-alpha.4
+
+New features:
+
+- Experimental gRPC transport (see #45)
+
 
 Breaking changes:
 
