@@ -79,6 +79,7 @@ Read the [MANUAL](MANUAL.md) to learn more.
 - The [gRPC status codes](./packages/grpcweb-transport/src/goog-grpc-status-code.ts) are Copyright 2016 gRPC authors, licensed under Apache-2.0.
 - The [Twirp error codes](./packages/twirp-transport/src/twitch-twirp-error-code.ts) are Copyright 2018 Twitch Interactive, Inc., licensed under Apache-2.0.
 - The proto files in [test-fixtures/google](./packages/test-fixtures/google) and [test-fixtures/conformance](./packages/test-fixtures/conformance) are Copyright Google Inc. / Google LLC, licensed under Apache-2.0 / BSD-3-Clause.
+- The proto files in [test-fixtures/validate](./packages/test-fixtures/validate) are Copyright 2019 Envoy Project Authors, licensed under Apache License 2.0.
 - All other files are licensed under Apache-2.0, see [LICENSE](./LICENSE). 
 
 
