@@ -1,5 +1,5 @@
 
-### v1.0.12 Do not output source mappings and declaration mappings
+### v1.0.12 
 
 This patch removes source mappings and declaration mappings from 
 the npm packages. See #40. 
