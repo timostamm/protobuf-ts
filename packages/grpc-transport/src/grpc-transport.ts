@@ -5,6 +5,7 @@ import {
     mergeRpcOptions,
     MethodInfo,
     RpcError,
+    RpcInputStream,
     RpcMetadata,
     RpcOptions,
     RpcOutputStreamController,
@@ -16,6 +17,7 @@ import {
 import {GrpcOptions} from "./grpc-options";
 import {Client, Metadata, ServiceError, status as GrpcStatus} from "@grpc/grpc-js";
 import {assert} from "@protobuf-ts/runtime";
+import {ObjectWritable} from "@grpc/grpc-js/build/src/object-stream";
 
 
 /**
@@ -213,11 +215,85 @@ export class GrpcTransport implements RpcTransport {
 
 
     clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>, options: RpcOptions): ClientStreamingCall<I, O> {
-        throw new Error("NOT IMPLEMENTED");
+
+        const opt = options as GrpcOptions,
+            meta = opt.meta ?? {},
+            gMeta = rpcMetaToGrpc(meta, new Metadata({
+                idempotentRequest: method.idempotency === "IDEMPOTENT"
+            })),
+            client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
+            defHeader = new Deferred<RpcMetadata>(),
+            defMessage = new Deferred<O>(),
+            defStatus = new Deferred<RpcStatus>(),
+            defTrailer = new Deferred<RpcMetadata>(),
+            gCall = client.makeClientStreamRequest<I, O>(
+                `/${method.service.typeName}/${method.name}`,
+                (value: I): Buffer => Buffer.from(method.I.toBinary(value, opt.binaryOptions)),
+                (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
+                gMeta,
+                // callOpts,
+                (err, value) => {
+                    if (value) {
+                        defMessage.resolve(value);
+                    }
+                    if (err) {
+                        const e = new RpcError(err.message, GrpcStatus[err.code], grpcMetaToRpc(err.metadata));
+                        defHeader.rejectPending(e);
+                        defMessage.rejectPending(e);
+                        defStatus.rejectPending(e);
+                        defTrailer.rejectPending(e);
+                    }
+                }
+            ),
+            inStream = new GrpcInputStreamWrapper(gCall),
+            call = new ClientStreamingCall<I, O>(method, meta, inStream, defHeader.promise, defMessage.promise, defStatus.promise, defTrailer.promise)
+        ;
+
+        if (opt.abort) {
+            opt.abort.addEventListener('abort', ev => {
+                gCall.cancel();
+            });
+        }
+
+        gCall.addListener('metadata', val => {
+            defHeader.resolve(grpcMetaToRpc(val));
+        });
+
+        gCall.addListener('status', val => {
+            defStatus.resolve({
+                code: GrpcStatus[val.code],
+                detail: val.details
+            });
+            defTrailer.resolve(grpcMetaToRpc(val.metadata));
+        });
+
+        return call;
     }
+
 
     duplex<I extends object, O extends object>(method: MethodInfo<I, O>, options: RpcOptions): DuplexStreamingCall<I, O> {
         throw new Error("NOT IMPLEMENTED");
+    }
+
+}
+
+
+class GrpcInputStreamWrapper<T> implements RpcInputStream<T> {
+
+    constructor(private readonly inner: ObjectWritable<T>) {
+
+    }
+
+    send(message: T): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.inner.write(message, resolve);
+            // this.inner.end(message, resolve);
+        });
+    }
+
+    complete(): Promise<void> {
+        this.inner.end();
+        return Promise.resolve(undefined);
     }
 
 

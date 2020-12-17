@@ -24,5 +24,5 @@ test: $(SPECS)
 		$^
 
 example-client:
-	npx protoc -I example-client --ts_out example-client/ --ts_opt generate_dependencies example-client/service-all-methods.proto
+	npx protoc -I example-client --ts_out example-client/ --ts_opt generate_dependencies,optimize_code_size example-client/service-all-methods.proto
 	npx ts-node example-client/index.ts

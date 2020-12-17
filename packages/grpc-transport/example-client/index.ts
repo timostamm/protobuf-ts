@@ -3,7 +3,6 @@ import {AllMethodsServiceClient, FailRequest, IAllMethodsServiceClient} from "./
 import {GrpcTransport} from "../src";
 
 
-
 const transport = new GrpcTransport({
     host: "localhost:5000",
     channelCredentials: ChannelCredentials.createInsecure(),
@@ -16,6 +15,8 @@ async function main() {
     await callUnary(client);
 
     await callServerStream(client);
+
+    await callClientStream(client);
 
 }
 
@@ -74,6 +75,54 @@ async function callServerStream(client: IAllMethodsServiceClient) {
     console.log();
 }
 
+
+async function callClientStream(client: IAllMethodsServiceClient) {
+
+    const call = client.clientStream({});
+
+    console.log(`### calling method "${call.method.name}"...`)
+
+    console.log("sending message...");
+    await call.request.send({
+        question: 'whats up? #1',
+        pleaseDelayResponseMs: 50,
+        pleaseFail: FailRequest.FAIL_REQUEST_NONE,
+        disableSendingExampleResponseHeaders: false,
+    });
+
+    console.log("sending message...");
+    await call.request.send({
+        question: 'whats up? #2',
+        pleaseDelayResponseMs: 50,
+        pleaseFail: FailRequest.FAIL_REQUEST_NONE,
+        disableSendingExampleResponseHeaders: false,
+    });
+
+    console.log("sending message...");
+    await call.request.send({
+        question: 'whats up? #3',
+        pleaseDelayResponseMs: 50,
+        pleaseFail: FailRequest.FAIL_REQUEST_NONE,
+        disableSendingExampleResponseHeaders: false,
+    });
+
+    console.log("done sending");
+    await call.request.complete();
+
+    const headers = await call.headers;
+    console.log("got response headers: ", headers)
+
+    const response = await call.response;
+    console.log("got response message: ", response)
+
+    const status = await call.status;
+    console.log("got status: ", status)
+
+    const trailers = await call.trailers;
+    console.log("got trailers: ", trailers)
+
+    console.log();
+}
 
 
 main().catch(e => console.error(e)).finally(() => process.exit());
