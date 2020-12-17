@@ -1,4 +1,11 @@
 
+### v2.0.0-alpha.5
+
+New features:
+
+- server streaming and client streaming added to experimental gRPC transport (see #45)
+
+
 ### v1.0.12 
 
 This patch removes source mappings and declaration mappings from 
