@@ -1,56 +1,80 @@
-import {Channel, ChannelCredentials, ChannelOptions, Client, ClientOptions, Metadata} from "@grpc/grpc-js";
-import {AllMethodsRequest, AllMethodsResponse, AllMethodsService} from "./service-all-methods";
-import {MethodInfo} from "@protobuf-ts/runtime-rpc";
-import {CallOptions} from "@grpc/grpc-js/";
-import {UnaryCallback} from "@grpc/grpc-js/build/src/client";
+import {ChannelCredentials} from "@grpc/grpc-js";
+import {AllMethodsServiceClient, FailRequest, IAllMethodsServiceClient} from "./service-all-methods";
+import {GrpcTransport} from "../src";
 
 
-const target = "localhost:5000";
-const creds = ChannelCredentials.createInsecure();
-const channelOptions: ChannelOptions = {};
-const channel = new Channel(
-    target,
-    creds,
-    channelOptions
-);
 
-
-const methodInfo: MethodInfo<AllMethodsRequest, AllMethodsResponse> = AllMethodsService.methods.find(m => m.name === 'Unary')!;
-const callRequest = AllMethodsRequest.create({
-    question: "what's up?"
+const transport = new GrpcTransport({
+    host: "localhost:5000",
+    channelCredentials: ChannelCredentials.createInsecure(),
 });
 
-const clientOpts: ClientOptions = {};
-const callOpts: CallOptions = {};
-const callMeta = new Metadata();
-const callback: UnaryCallback<AllMethodsResponse> = (err, value) => {
-    console.log("err:", err);
-    console.log("val:", value);
+const client = new AllMethodsServiceClient(transport);
+
+async function main() {
+
+    await callUnary(client);
+
+    await callServerStream(client);
+
 }
 
-const client = new Client(target, creds, clientOpts);
 
-const call = client.makeUnaryRequest(
-    `/${methodInfo.service.typeName}/${methodInfo.name}`,
-    (value: AllMethodsRequest): Buffer => {
-        const writeOpts = {};
-        const bytes = methodInfo.I.toBinary(value, writeOpts);
-        return Buffer.from(bytes);
-    },
-    (value: Buffer): AllMethodsResponse => {
-        const readOpts = {};
-        return methodInfo.O.fromBinary(value, readOpts);
-    },
-    callRequest,
-    callMeta,
-    callOpts,
-    callback
-);
+async function callUnary(client: IAllMethodsServiceClient) {
 
-// call.cancel();
+    const call = client.unary({
+        question: 'whats up?',
+        pleaseDelayResponseMs: 50,
+        pleaseFail: FailRequest.FAIL_REQUEST_NONE,
+        disableSendingExampleResponseHeaders: false,
+    });
+
+    console.log(`### calling method "${call.method.name}"...`)
+
+    const headers = await call.headers;
+    console.log("got response headers: ", headers)
+
+    const response = await call.response;
+    console.log("got response message: ", response)
+
+    const status = await call.status;
+    console.log("got status: ", status)
+
+    const trailers = await call.trailers;
+    console.log("got trailers: ", trailers)
+
+    console.log();
+}
 
 
-// client.close();
-// client.getChannel().getConnectivityState(true)
-// client.getChannel().close()
+async function callServerStream(client: IAllMethodsServiceClient) {
+
+    const call = client.serverStream({
+        question: 'whats up?',
+        pleaseDelayResponseMs: 50,
+        pleaseFail: FailRequest.FAIL_REQUEST_NONE,
+        disableSendingExampleResponseHeaders: false,
+    });
+
+    console.log(`### calling method "${call.method.name}"...`)
+
+    const headers = await call.headers;
+    console.log("got response headers: ", headers)
+
+    for await (let response of call.response) {
+        console.log("got response message: ", response)
+    }
+
+    const status = await call.status;
+    console.log("got status: ", status)
+
+    const trailers = await call.trailers;
+    console.log("got trailers: ", trailers)
+
+    console.log();
+}
+
+
+
+main().catch(e => console.error(e)).finally(() => process.exit());
 
