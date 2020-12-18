@@ -10,6 +10,8 @@
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/runtime?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/runtime)  
 - [@protobuf-ts/twirp-transport](./twirp-transport) - the [Twirp](https://github.com/twitchtv/twirp) protocol for RPC clients  
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/twirp-transport?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/twirp-transport)  
+- [@protobuf-ts/grpc-transport](./grpc-transport) - the [gRPC](https://grpc.io/) protocol for RPC clients  
+  [![npm](https://img.shields.io/npm/v/@protobuf-ts/grpc-transport?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/grpc-transport)
 - [@protobuf-ts/grpcweb-transport](./grpcweb-transport) - the [gRPC web](https://github.com/grpc/grpc-web) protocol for RPC clients  
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/grpcweb-transport?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/grpcweb-transport)
 - [@protobuf-ts/runtime-angular](./runtime-angular) - [Angular](https://angular.io/) support  
