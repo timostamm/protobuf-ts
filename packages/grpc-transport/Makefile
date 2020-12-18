@@ -1,4 +1,4 @@
-.PHONY: default build clean test example-client
+.PHONY: default build clean test example-client example-server
 SPECS := $(shell find spec -name '*.spec.ts')
 
 
@@ -26,3 +26,7 @@ test: $(SPECS)
 example-client:
 	npx protoc -I example-client --ts_out example-client/ --ts_opt generate_dependencies,optimize_code_size example-client/service-example.proto
 	npx ts-node example-client/index.ts
+
+example-server:
+	npx protoc -I example-server --ts_out example-server/ --ts_opt generate_dependencies,optimize_code_size,client_none example-server/service-example.proto
+	npx ts-node example-server/index.ts
