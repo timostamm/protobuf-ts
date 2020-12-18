@@ -136,11 +136,11 @@ export class GrpcTransport implements RpcTransport {
         });
 
         gCall.addListener('status', val => {
-            defStatus.resolve({
+            defStatus.resolvePending({
                 code: GrpcStatus[val.code],
                 detail: val.details
             });
-            defTrailer.resolve(grpcMetaToRpc(val.metadata));
+            defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
         });
 
         return call;
@@ -260,11 +260,11 @@ export class GrpcTransport implements RpcTransport {
         });
 
         gCall.addListener('status', val => {
-            defStatus.resolve({
+            defStatus.resolvePending({
                 code: GrpcStatus[val.code],
                 detail: val.details
             });
-            defTrailer.resolve(grpcMetaToRpc(val.metadata));
+            defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
         });
 
         return call;
