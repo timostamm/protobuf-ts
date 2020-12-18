@@ -10,6 +10,9 @@ const host = '0.0.0.0:5000';
 const exampleService: IExampleService = {
 
 
+    // how can you:
+    // - send a OK status with custom details?
+    // - send a message, then an error status?
     unary(call: grpc.ServerUnaryCall<ExampleRequest, ExampleResponse>, callback: grpc.sendUnaryData<ExampleResponse>): void {
 
         const responseHeaders = new grpc.Metadata();
@@ -33,6 +36,7 @@ const exampleService: IExampleService = {
         setTimeout(function () {
             switch (call.request.pleaseFail) {
                 case FailRequest.MESSAGE_THEN_ERROR_STATUS:
+                    // does not work, client only receives error
                     callback(
                         {
                             code: grpc.status.RESOURCE_EXHAUSTED,
@@ -76,6 +80,8 @@ const exampleService: IExampleService = {
     },
 
 
+    // how can you:
+    // - send no messages, just an error status *with trailer metadata*
     serverStream(call: grpc.ServerWritableStream<ExampleRequest, ExampleResponse>): void {
 
         const responseHeaders = new grpc.Metadata();
@@ -94,7 +100,6 @@ const exampleService: IExampleService = {
         trailers.add("server-trailer", "server trailer value");
         trailers.add("server-trailer", "server trailer value duplicate");
         trailers.add("server-trailer-bin", Buffer.from('server trailer binary value'));
-
 
         if (call.request.pleaseFail === FailRequest.ERROR_STATUS_ONLY) {
 
