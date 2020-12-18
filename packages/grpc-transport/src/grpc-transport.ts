@@ -1,6 +1,7 @@
 import {
     ClientStreamingCall,
     Deferred,
+    DeferredState,
     DuplexStreamingCall,
     mergeRpcOptions,
     MethodInfo,
@@ -15,9 +16,8 @@ import {
     UnaryCall
 } from "@protobuf-ts/runtime-rpc";
 import {GrpcOptions} from "./grpc-options";
-import {Client, Metadata, ServiceError, status as GrpcStatus} from "@grpc/grpc-js";
+import {Client, ClientWritableStream, Metadata, ServiceError, status as GrpcStatus} from "@grpc/grpc-js";
 import {assert} from "@protobuf-ts/runtime";
-import {ObjectWritable} from "@grpc/grpc-js/build/src/object-stream";
 
 
 /**
@@ -136,11 +136,21 @@ export class GrpcTransport implements RpcTransport {
         });
 
         gCall.addListener('status', val => {
-            defStatus.resolvePending({
-                code: GrpcStatus[val.code],
-                detail: val.details
-            });
-            defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
+
+            // if we get a status (via trailer), but did not get a message,
+            // we require that the status is an error status.
+            if (defMessage.state === DeferredState.PENDING && val.code === GrpcStatus.OK) {
+                const e = new RpcError('expected error status', GrpcStatus[GrpcStatus.DATA_LOSS]);
+                defMessage.rejectPending(e);
+                defStatus.rejectPending(e);
+                defTrailer.rejectPending(e);
+            } else {
+                defStatus.resolvePending({
+                    code: GrpcStatus[val.code],
+                    detail: val.details
+                });
+                defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
+            }
         });
 
         return call;
@@ -280,7 +290,7 @@ export class GrpcTransport implements RpcTransport {
 
 class GrpcInputStreamWrapper<T> implements RpcInputStream<T> {
 
-    constructor(private readonly inner: ObjectWritable<T>) {
+    constructor(private readonly inner: ClientWritableStream<T>) {
 
     }
 
