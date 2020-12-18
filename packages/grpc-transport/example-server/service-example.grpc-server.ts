@@ -4,7 +4,20 @@ import {ExampleRequest, ExampleResponse, ExampleService} from "./service-example
 
 // TODO #52 this should be generated
 
+/*
+ * plugin options:
+ * --ts_opt server_grpc
+ * --ts_opt force_server_none
+ *
+ * service options:
+ *   option (ts.server) = GRPC
+ */
 
+
+/**
+ * @generated interface for gRPC servers with @grpc/grpc-js
+ * @generated from protobuf service spec.ExampleService
+ */
 export interface IExampleService extends grpc.UntypedServiceImplementation {
     unary: grpc.handleUnaryCall<ExampleRequest, ExampleResponse>;
     serverStream: grpc.handleServerStreamingCall<ExampleRequest, ExampleResponse>;
@@ -12,7 +25,10 @@ export interface IExampleService extends grpc.UntypedServiceImplementation {
     bidi: grpc.handleBidiStreamingCall<ExampleRequest, ExampleResponse>;
 }
 
-
+/**
+ * @generated ServiceDefinition for gRPC servers with @grpc/grpc-js
+ * @generated from protobuf service spec.ExampleService
+ */
 export const exampleServiceDefinition: grpc.ServiceDefinition<IExampleService> = {
     unary: {
         path: `/${ExampleService.typeName}/${ExampleService.methods[0].name}`,
