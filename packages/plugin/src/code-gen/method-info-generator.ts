@@ -75,10 +75,10 @@ export class MethodInfoGenerator {
         if (info.localName === rt.lowerCamelCase(info.name)) {
             delete partial.localName;
         }
-        if (info.serverStreaming) {
+        if (!info.serverStreaming) {
             delete partial.serverStreaming;
         }
-        if (info.clientStreaming) {
+        if (!info.clientStreaming) {
             delete partial.clientStreaming;
         }
         if (info.options && Object.keys(info.options).length) {
