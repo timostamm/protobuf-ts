@@ -1,3 +1,9 @@
+### unreleased changes
+
+Bug Fixes:
+
+- fix missing true values for clientStreaming and serverStreaming properties of generated service info
+
 
 ### v2.0.0-alpha.5
 
