@@ -608,7 +608,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     }
 
 
-    // binaryReadMapEntry<field no>(map: AllMethodsResponse["<field local name>"], reader: IBinaryReader, options: BinaryReadOptions): void
+    // binaryReadMapEntry<field no>(map: ExampleResponse["<field local name>"], reader: IBinaryReader, options: BinaryReadOptions): void
     makeMapEntryReadMethod(messageDescriptor: DescriptorProto, field: rt.FieldInfo & { kind: "map" }): ts.MethodDeclaration {
         let
             methodName = this.binaryReadMapEntryMethodName + field.no,
@@ -834,7 +834,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         );
 
 
-        // private binaryReadMapEntry<field no>(map: AllMethodsResponse["<field local name>"], reader: IBinaryReader, options: BinaryReadOptions): void
+        // private binaryReadMapEntry<field no>(map: ExampleResponse["<field local name>"], reader: IBinaryReader, options: BinaryReadOptions): void
         return ts.createMethod(
             undefined,
             [ts.createModifier(ts.SyntaxKind.PrivateKeyword)],

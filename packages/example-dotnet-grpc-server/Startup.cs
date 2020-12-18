@@ -35,7 +35,7 @@ namespace asp_net_core_server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<AllMethodsService>();
+                endpoints.MapGrpcService<ExampleService>();
 
                 endpoints.MapGet("/",
                     async context =>

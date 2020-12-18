@@ -10,9 +10,9 @@ using Spec;
 namespace asp_net_core_server
 {
     [EnableGrpcWeb]
-    public class AllMethodsService : Spec.AllMethodsService.AllMethodsServiceBase
+    public class ExampleService : Spec.ExampleService.ExampleServiceBase
     {
-        public override async Task<AllMethodsResponse> Unary(AllMethodsRequest request, ServerCallContext context)
+        public override async Task<ExampleResponse> Unary(ExampleRequest request, ServerCallContext context)
         {
             
             // by default, the server always writes some custom response headers
@@ -53,7 +53,7 @@ namespace asp_net_core_server
                     break;
             }
 
-            return new AllMethodsResponse
+            return new ExampleResponse
             {
                 Answer = $"You asked: {request.Question}",
                 YourDeadline = context.Deadline.ToString(CultureInfo.InvariantCulture),
@@ -62,8 +62,8 @@ namespace asp_net_core_server
             };
         }
 
-        public override async Task ServerStream(AllMethodsRequest request,
-            IServerStreamWriter<AllMethodsResponse> responseStream, ServerCallContext context)
+        public override async Task ServerStream(ExampleRequest request,
+            IServerStreamWriter<ExampleResponse> responseStream, ServerCallContext context)
         {
 
             // by default, the server always writes some custom response headers
@@ -107,13 +107,13 @@ namespace asp_net_core_server
                 // wait for the requested amount of milliseconds
                 await Task.Delay(request.PleaseDelayResponseMs);
 
-                await responseStream.WriteAsync(new AllMethodsResponse
+                await responseStream.WriteAsync(new ExampleResponse
                 {
                     Answer = $"#{(++counter).ToString()}"
                 });
             }
 
-            await responseStream.WriteAsync(new AllMethodsResponse
+            await responseStream.WriteAsync(new ExampleResponse
             {
                 Answer = $"You asked: {request.Question}. I sent {counter} messages.",
                 YourDeadline = context.Deadline.ToString(CultureInfo.InvariantCulture),
@@ -122,7 +122,7 @@ namespace asp_net_core_server
             });
         }
 
-        public override async Task<AllMethodsResponse> ClientStream(IAsyncStreamReader<AllMethodsRequest> requestStream,
+        public override async Task<ExampleResponse> ClientStream(IAsyncStreamReader<ExampleRequest> requestStream,
             ServerCallContext context)
         {
             // always write some response headers
@@ -144,7 +144,7 @@ namespace asp_net_core_server
                 questionCount++;
             }
 
-            return new AllMethodsResponse
+            return new ExampleResponse
             {
                 Answer = $"You asked ${questionCount} questions.",
                 YourDeadline = context.Deadline.ToString(CultureInfo.InvariantCulture),
@@ -152,8 +152,8 @@ namespace asp_net_core_server
             };
         }
 
-        public override Task Bidi(IAsyncStreamReader<AllMethodsRequest> requestStream,
-            IServerStreamWriter<AllMethodsResponse> responseStream, ServerCallContext context)
+        public override Task Bidi(IAsyncStreamReader<ExampleRequest> requestStream,
+            IServerStreamWriter<ExampleResponse> responseStream, ServerCallContext context)
         {
             // context.
 

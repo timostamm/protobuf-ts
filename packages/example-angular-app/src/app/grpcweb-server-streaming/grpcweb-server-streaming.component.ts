@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {GrpcWebFetchTransport, GrpcWebOptions} from '@protobuf-ts/grpcweb-transport';
-import {AllMethodsRequest, AllMethodsServiceClient, FailRequest} from '../../protoc-gen-ts-out/service-all-methods';
+import {ExampleRequest, ExampleServiceClient, FailRequest} from '../../protoc-gen-ts-out/service-example';
 import {EnumObjectValue, listEnumValues} from '@protobuf-ts/runtime';
 import {BehaviorSubject} from 'rxjs';
 import {RpcError, RpcOptions, ServerStreamingCall, UnaryCall} from '@protobuf-ts/runtime-rpc';
@@ -55,7 +55,7 @@ export class GrpcwebServerStreamingComponent {
 
   };
 
-  readonly request: AllMethodsRequest = {
+  readonly request: ExampleRequest = {
     question: 'what\'s up?',
     pleaseFail: FailRequest.FAIL_REQUEST_NONE,
     disableSendingExampleResponseHeaders: false,
@@ -74,7 +74,7 @@ export class GrpcwebServerStreamingComponent {
     try {
 
       const transport = new GrpcWebFetchTransport(this.options);
-      const client = new AllMethodsServiceClient(transport);
+      const client = new ExampleServiceClient(transport);
 
       // call-specific option, will be merged with the GrpcWebOptions above
       const options: RpcOptions = {

@@ -13,11 +13,11 @@ namespace example_dotnet_grpc_client
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             var channel = GrpcChannel.ForAddress("http://localhost:5000", new GrpcChannelOptions());
-            var client = new AllMethodsService.AllMethodsServiceClient(channel);
+            var client = new ExampleService.ExampleServiceClient(channel);
             try
             {
                 var deadline = DateTime.UtcNow.Add(TimeSpan.FromMinutes(1));
-                var request = new AllMethodsRequest
+                var request = new ExampleRequest
                 {
                     PleaseFail = FailRequest.None
                 };
@@ -33,7 +33,7 @@ namespace example_dotnet_grpc_client
         }
 
 
-        private static async Task MakeServerStreamingCall(AllMethodsService.AllMethodsServiceClient client, DateTime deadline, AllMethodsRequest request)
+        private static async Task MakeServerStreamingCall(ExampleService.ExampleServiceClient client, DateTime deadline, ExampleRequest request)
         {
 
             Console.WriteLine("starting call...");
@@ -57,7 +57,7 @@ namespace example_dotnet_grpc_client
 
 
 
-        private static async Task MakeUnaryCall(AllMethodsService.AllMethodsServiceClient client, DateTime deadline, AllMethodsRequest request)
+        private static async Task MakeUnaryCall(ExampleService.ExampleServiceClient client, DateTime deadline, ExampleRequest request)
         {
             Console.WriteLine("starting call...");
             var call = client.UnaryAsync(request, Metadata.Empty, deadline, CancellationToken.None);
@@ -79,7 +79,7 @@ namespace example_dotnet_grpc_client
 
         private async void TestingTheCsharpClientApi()
         {
-            var client = new AllMethodsService.AllMethodsServiceClient((ChannelBase) null);
+            var client = new ExampleService.ExampleServiceClient((ChannelBase) null);
 
             var deadline = DateTime.Now.Add(TimeSpan.FromMinutes(1));
 
@@ -88,7 +88,7 @@ namespace example_dotnet_grpc_client
             // unary
 
             var unaryCall =
-                client.UnaryAsync(new AllMethodsRequest(), Metadata.Empty, deadline, CancellationToken.None);
+                client.UnaryAsync(new ExampleRequest(), Metadata.Empty, deadline, CancellationToken.None);
             var unaryResponseHeaders = await unaryCall.ResponseHeadersAsync;
             var unaryResponse = await unaryCall.ResponseAsync;
             unaryCall.GetStatus();
@@ -98,7 +98,7 @@ namespace example_dotnet_grpc_client
             // server streaming
 
             var serverStreamingCall =
-                client.ServerStream(new AllMethodsRequest(), Metadata.Empty, deadline, CancellationToken.None);
+                client.ServerStream(new ExampleRequest(), Metadata.Empty, deadline, CancellationToken.None);
             var serverStreamHeaders = serverStreamingCall.ResponseHeadersAsync;
             await foreach (var m in serverStreamingCall.ResponseStream.ReadAllAsync())
             {
@@ -111,7 +111,7 @@ namespace example_dotnet_grpc_client
             // client streaming
 
             var clientStreamingCall = client.ClientStream(Metadata.Empty, deadline, CancellationToken.None);
-            await clientStreamingCall.RequestStream.WriteAsync(new AllMethodsRequest());
+            await clientStreamingCall.RequestStream.WriteAsync(new ExampleRequest());
             await clientStreamingCall.RequestStream.CompleteAsync();
             var clientStreamResponseHeaders = await clientStreamingCall.ResponseHeadersAsync;
             var clientStreamResponse = await clientStreamingCall.ResponseAsync;
@@ -123,7 +123,7 @@ namespace example_dotnet_grpc_client
 
             var duplexCall = client.Bidi(Metadata.Empty, deadline, CancellationToken.None);
             var duplexResponseHeaders = await duplexCall.ResponseHeadersAsync;
-            await duplexCall.RequestStream.WriteAsync(new AllMethodsRequest());
+            await duplexCall.RequestStream.WriteAsync(new ExampleRequest());
             await duplexCall.RequestStream.CompleteAsync();
             await foreach (var m in duplexCall.ResponseStream.ReadAllAsync())
             {

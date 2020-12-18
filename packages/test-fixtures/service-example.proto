@@ -2,14 +2,14 @@ syntax = "proto3";
 package spec;
 
 
-service AllMethodsService {
-    rpc Unary (AllMethodsRequest) returns (AllMethodsResponse);
-    rpc ServerStream (AllMethodsRequest) returns (stream AllMethodsResponse);
-    rpc ClientStream (stream AllMethodsRequest) returns (AllMethodsResponse);
-    rpc Bidi (stream AllMethodsRequest) returns (stream AllMethodsResponse);
+service ExampleService {
+    rpc Unary (ExampleRequest) returns (ExampleResponse);
+    rpc ServerStream (ExampleRequest) returns (stream ExampleResponse);
+    rpc ClientStream (stream ExampleRequest) returns (ExampleResponse);
+    rpc Bidi (stream ExampleRequest) returns (stream ExampleResponse);
 }
 
-message AllMethodsRequest {
+message ExampleRequest {
 
     // any text
     string question = 1;
@@ -24,7 +24,7 @@ message AllMethodsRequest {
     bool disable_sending_example_response_headers = 4;
 }
 
-message AllMethodsResponse {
+message ExampleResponse {
     // any text
     string answer = 1;
 

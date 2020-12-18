@@ -1,9 +1,9 @@
 import {
-    AllMethodsRequest,
-    AllMethodsResponse,
-    AllMethodsServiceClient,
-    IAllMethodsServiceClient
-} from "../ts-out/service-all-methods";
+    ExampleRequest,
+    ExampleResponse,
+    ExampleServiceClient,
+    IExampleServiceClient
+} from "../ts-out/service-example";
 import {
     ClientStreamingCall,
     Deferred,
@@ -21,18 +21,18 @@ import {
 } from "@protobuf-ts/runtime-rpc";
 
 
-describe('AllMethodsServiceClient', function () {
+describe('ExampleServiceClient', function () {
 
     describe('unary()', function () {
 
 
         it('should invoke transport', async () => {
             let transport = new MockTransport({});
-            let client: IAllMethodsServiceClient = new AllMethodsServiceClient(transport);
-            let response = AllMethodsResponse.create({
+            let client: IExampleServiceClient = new ExampleServiceClient(transport);
+            let response = ExampleResponse.create({
                 answer: "world"
             });
-            let call = client.unary(AllMethodsRequest.create());
+            let call = client.unary(ExampleRequest.create());
             transport.resolveUnary(
                 {},
                 response,
@@ -46,11 +46,11 @@ describe('AllMethodsServiceClient', function () {
 
         it('should return transport response data', async () => {
             let transport = new MockTransport({});
-            let client: IAllMethodsServiceClient = new AllMethodsServiceClient(transport);
-            let call = client.unary(AllMethodsRequest.create());
+            let client: IExampleServiceClient = new ExampleServiceClient(transport);
+            let call = client.unary(ExampleRequest.create());
             transport.resolveUnary(
                 {i_am: "response header"},
-                AllMethodsResponse.create(),
+                ExampleResponse.create(),
                 {code: "foo", detail: "bar"},
                 {i_am: "response trailer"},
             );
@@ -75,8 +75,8 @@ describe('AllMethodsServiceClient', function () {
                     overridden_header: "no"
                 },
             });
-            let client: IAllMethodsServiceClient = new AllMethodsServiceClient(transport);
-            let call = client.unary(AllMethodsRequest.create(), {
+            let client: IExampleServiceClient = new ExampleServiceClient(transport);
+            let call = client.unary(ExampleRequest.create(), {
                 meta: {
                     call_req_header: "yes",
                     overridden_header: "yes"
@@ -84,7 +84,7 @@ describe('AllMethodsServiceClient', function () {
             });
             transport.resolveUnary(
                 {i_am: "response header"},
-                AllMethodsResponse.create(),
+                ExampleResponse.create(),
                 {code: "OK", detail: ""},
                 {i_am: "response trailer"},
             );
@@ -109,8 +109,8 @@ describe('AllMethodsServiceClient', function () {
                     }
                 ],
             });
-            let client: IAllMethodsServiceClient = new AllMethodsServiceClient(transport);
-            let call = client.unary(AllMethodsRequest.create(), {
+            let client: IExampleServiceClient = new ExampleServiceClient(transport);
+            let call = client.unary(ExampleRequest.create(), {
                 interceptors: [
                     {
                         interceptUnary(next: NextUnaryFn, method: MethodInfo, input: object, options: RpcOptions): UnaryCall {
@@ -122,7 +122,7 @@ describe('AllMethodsServiceClient', function () {
             });
             transport.resolveUnary(
                 {},
-                AllMethodsResponse.create(),
+                ExampleResponse.create(),
                 {code: "OK", detail: ""},
                 {},
             );

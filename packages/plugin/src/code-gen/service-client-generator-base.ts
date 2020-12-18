@@ -45,7 +45,7 @@ export abstract class ServiceClientGeneratorBase {
      * We generate the following interface:
      *
      *   interface ISimpleServiceClient {
-     *     get(request: GetRequest, options?: RpcOptions): UnaryCall<AllMethodsRequest, AllMethodsResponse>;
+     *     get(request: GetRequest, options?: RpcOptions): UnaryCall<ExampleRequest, ExampleResponse>;
      *   }
      *
      */

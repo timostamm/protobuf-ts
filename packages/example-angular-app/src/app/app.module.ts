@@ -6,7 +6,7 @@ import {GrpcwebUnaryComponent} from './grpcweb-unary/grpcweb-unary.component';
 import {FormsModule} from '@angular/forms';
 import {GrpcwebServerStreamingComponent} from './grpcweb-server-streaming/grpcweb-server-streaming.component';
 import {TwirpFetchComponent} from './twirp-fetch/twirp-fetch.component';
-import {AllMethodsServiceClient} from '../protoc-gen-ts-out/service-all-methods';
+import {ExampleServiceClient} from '../protoc-gen-ts-out/service-example';
 import {TwirpAngularComponent} from './twirp-angular/twirp-angular.component';
 import {PbDatePipeComponent} from './pb-date-pipe/pb-date-pipe.component';
 import {HaberdasherClient} from '../protoc-gen-ts-out/service-twirp-example';
@@ -40,7 +40,7 @@ import {HaberdasherClient} from '../protoc-gen-ts-out/service-twirp-example';
 
     // Make this service available for dependency injection.
     // Now you can use it as a constructor argument of your component.
-    AllMethodsServiceClient,
+    ExampleServiceClient,
     HaberdasherClient,
 
   ],

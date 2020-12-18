@@ -1,10 +1,10 @@
-import {AllMethodsRequest} from './service-all-methods_pb';
-import {AllMethodsServiceClient} from './service-all-methods_grpc_web_pb';
+import {ExampleRequest} from './service-example_pb';
+import {ExampleServiceClient} from './service-example_grpc_web_pb';
 
 
-const client = new AllMethodsServiceClient('http://localhost:5000', null, null);
+const client = new ExampleServiceClient('http://localhost:5000', null, null);
 
-const request = new AllMethodsRequest();
+const request = new ExampleRequest();
 request.setQuestion('How are you?');
 
 const deadline = new Date();

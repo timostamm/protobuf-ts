@@ -1470,7 +1470,7 @@ Protocol buffers allow four distinct RPC method types:
 In `.proto`, the four types look like this:
 
 ```proto
-service AllMethodsService {
+service ExampleService {
     rpc Unary (Req) returns (Res);
     rpc ServerStream (Req) returns (stream Res);
     rpc ClientStream (stream Req) returns (Res);

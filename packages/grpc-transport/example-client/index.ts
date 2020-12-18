@@ -1,5 +1,5 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
-import {AllMethodsServiceClient, FailRequest, IAllMethodsServiceClient} from "./service-all-methods";
+import {ExampleServiceClient, FailRequest, IExampleServiceClient} from "./service-example";
 import {GrpcTransport} from "../src";
 
 
@@ -8,7 +8,7 @@ const transport = new GrpcTransport({
     channelCredentials: ChannelCredentials.createInsecure(),
 });
 
-const client = new AllMethodsServiceClient(transport);
+const client = new ExampleServiceClient(transport);
 
 async function main() {
 
@@ -21,7 +21,7 @@ async function main() {
 }
 
 
-async function callUnary(client: IAllMethodsServiceClient) {
+async function callUnary(client: IExampleServiceClient) {
 
     const call = client.unary({
         question: 'whats up?',
@@ -48,7 +48,7 @@ async function callUnary(client: IAllMethodsServiceClient) {
 }
 
 
-async function callServerStream(client: IAllMethodsServiceClient) {
+async function callServerStream(client: IExampleServiceClient) {
 
     const call = client.serverStream({
         question: 'whats up?',
@@ -76,7 +76,7 @@ async function callServerStream(client: IAllMethodsServiceClient) {
 }
 
 
-async function callClientStream(client: IAllMethodsServiceClient) {
+async function callClientStream(client: IExampleServiceClient) {
 
     const call = client.clientStream({});
 
