@@ -36,6 +36,7 @@ protobuf-ts manual
   - [RPC method types](#rpc-method-types)
   - [gRPC web transport](#grpc-web-transport)
   - [Twirp transport](#twirp-transport)
+  - [gRPC transport](#grpc-transport)
 - [Angular support](#angular-support)
 
 
