@@ -78,8 +78,6 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
                 // see https://developer.mozilla.org/en-US/docs/Web/API/Response/type
                 throw new RpcError(`fetch response type ${fetchResponse.type}`, GrpcStatusCode[GrpcStatusCode.UNKNOWN]);
         }
-        if (!fetchResponse.body)
-            throw new RpcError('missing response body', GrpcStatusCode[GrpcStatusCode.INTERNAL]);
         return readGrpcWebResponseHeader(
             fetchHeadersToHttp(fetchResponse.headers),
             fetchResponse.status,
