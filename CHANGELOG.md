@@ -1,6 +1,14 @@
 ### unreleased changes
 
 
+### v2.0.0-alpha.7
+
+Bug Fixes:
+
+- Support grpc-web-text format with envoy (see #54)  
+  Thanks to @DiogoMaMartins for the bug report.
+
+
 ### v2.0.0-alpha.6
 
 Bug Fixes:
