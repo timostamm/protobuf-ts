@@ -28,7 +28,7 @@
 - [example-angular-app](./example-angular-app) - shows how to use the Angular support and other features
 - [example-dotnet-grpcweb-server](./example-dotnet-grpcweb-server) - gRPC-web server in dotnet, works with the example Angular app
 - [example-google-grpcweb-client](./example-google-grpcweb-client) - gRPC-web client in JavaScript, using google-protobuf and @grpc/grpc-js
-- [example-twirp-server](./example-twirp-server) - a Twirp server in go, works with the example Angular app
+- [example-go-twirp-server](example-go-twirp-server) - a Twirp server in go, works with the example Angular app
 - [example-dotnet-grpc-client](./example-dotnet-grpc-client) - a gRPC client in dotnet
 - [test-fixtures](./test-fixtures) - example .proto files and test fixtures
 - [benchmarks](./benchmarks) - code size and performance benchmarks
