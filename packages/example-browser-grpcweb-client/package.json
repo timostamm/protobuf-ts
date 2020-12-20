@@ -1,5 +1,5 @@
 {
-  "name": "@protobuf-ts/example-node-grpc-client",
+  "name": "@protobuf-ts/example-browser-grpcweb-client",
   "version": "2.0.0-alpha.7",
   "description": "",
   "private": true,
@@ -10,13 +10,16 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
-    "@grpc/grpc-js": "^1.2.2",
-    "@protobuf-ts/grpc-transport": "^2.0.0-alpha.7",
-    "@protobuf-ts/plugin": "^2.0.0-alpha.7",
-    "@protobuf-ts/protoc": "^2.0.0-alpha.7",
+    "@protobuf-ts/grpcweb-transport": "^2.0.0-alpha.7",
     "@protobuf-ts/runtime": "^2.0.0-alpha.7",
-    "@protobuf-ts/runtime-rpc": "^2.0.0-alpha.7",
+    "@protobuf-ts/runtime-rpc": "^2.0.0-alpha.7"
+  },
+  "devDependencies": {
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "@protobuf-ts/plugin": "^2.0.0-alpha.7",
+    "@protobuf-ts/protoc": "^2.0.0-alpha.7"
   }
 }

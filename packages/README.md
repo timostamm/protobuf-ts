@@ -31,5 +31,6 @@
 - [example-go-twirp-server](example-go-twirp-server) - a Twirp server in go, works with the example Angular app
 - [example-dotnet-grpc-client](./example-dotnet-grpc-client) - a gRPC client in dotnet
 - [example-node-grpc-client](./example-node-grpc-client) - a gRPC client using @protobuf-ts/grpc-transport, running in Node.JS
+- [example-browser-grpcweb-client](./example-browser-grpcweb-client) - a gRPC-web client using @protobuf-ts/grpcweb-transport, running in the web browser
 - [test-fixtures](./test-fixtures) - example .proto files and test fixtures
 - [benchmarks](./benchmarks) - code size and performance benchmarks
