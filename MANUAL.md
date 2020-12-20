@@ -1794,6 +1794,8 @@ for await (let hat of streamingCall.response) {
 ```
 
 
+For more information, have a look at the example client in [packages/example-node-grpc-client](https://github.com/timostamm/protobuf-ts/tree/master/packages/example-node-grpc-client).
+
 
 
 ## Angular support
