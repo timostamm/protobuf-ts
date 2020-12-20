@@ -19,6 +19,12 @@ export function createGrpcWebRequestHeader(headers: Headers, format: GrpcWebForm
     }
     // set standard headers (possibly overwriting meta)
     headers.set('Content-Type', format === "text" ? "application/grpc-web-text" : "application/grpc-web+proto");
+    if (format == "text") {
+        // The client library should indicate to the server via the "Accept" header that
+        // the response stream needs to be text encoded e.g. when XHR is used or due to
+        // security policies with XHR
+        headers.set("Accept", "application/grpc-web-text");
+    }
     headers.set('X-Grpc-Web', "1");
     if (userAgent)
         headers.set("X-User-Agent", userAgent);
@@ -60,9 +66,9 @@ export function createGrpcWebRequestBody(message: Uint8Array, format: GrpcWebFor
  * If given a fetch response, checks for fetch-specific error information
  * ("type" property) and whether the "body" is null and throws a RpcError.
  */
-export function readGrpcWebResponseHeader(fetchResponse: Response): [GrpcStatusCode, string | undefined, RpcMetadata];
-export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: number, httpStatusText: string): [GrpcStatusCode, string | undefined, RpcMetadata];
-export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatus?: number, httpStatusText?: string): [GrpcStatusCode, string | undefined, RpcMetadata] {
+export function readGrpcWebResponseHeader(fetchResponse: Response): [GrpcStatusCode, string | undefined, RpcMetadata, GrpcWebFormat];
+export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: number, httpStatusText: string): [GrpcStatusCode, string | undefined, RpcMetadata, GrpcWebFormat];
+export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatus?: number, httpStatusText?: string): [GrpcStatusCode, string | undefined, RpcMetadata, GrpcWebFormat] {
     if (arguments.length === 1) {
         let fetchResponse = headersOrFetchResponse as Response;
         switch (fetchResponse.type) {
@@ -73,7 +79,7 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
                 throw new RpcError(`fetch response type ${fetchResponse.type}`, GrpcStatusCode[GrpcStatusCode.UNKNOWN]);
         }
         if (!fetchResponse.body)
-            throw new RpcError('premature end of response', GrpcStatusCode[GrpcStatusCode.DATA_LOSS]);
+            throw new RpcError('missing response body', GrpcStatusCode[GrpcStatusCode.INTERNAL]);
         return readGrpcWebResponseHeader(
             fetchHeadersToHttp(fetchResponse.headers),
             fetchResponse.status,
@@ -83,14 +89,14 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
     let
         headers = headersOrFetchResponse as HttpHeaders,
         httpOk = httpStatus! >= 200 && httpStatus! < 300,
-        responseMeta = parseMetadataFromHttpHeaders(headers),
-        [statusCode, statusDetail] = parseStatusFromHttpHeaders(headers);
+        responseMeta = parseMetadata(headers),
+        [statusCode, statusDetail] = parseStatus(headers);
 
     if (statusCode === GrpcStatusCode.OK && !httpOk) {
-        statusCode = grpcStatusCodeFromHttp(httpStatus!);
+        statusCode = httpStatusToGrpc(httpStatus!);
         statusDetail = httpStatusText;
     }
-    return [statusCode, statusDetail, responseMeta];
+    return [statusCode, statusDetail, responseMeta, parseFormat(headers)];
 }
 
 
@@ -104,9 +110,9 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
  */
 export function readGrpcWebResponseTrailer(data: Uint8Array): [GrpcStatusCode, string | undefined, RpcMetadata] {
     let
-        headers = parseTrailerToHttpHeaders(data),
-        [code, detail] = parseStatusFromHttpHeaders(headers),
-        meta = parseMetadataFromHttpHeaders(headers);
+        headers = parseTrailer(data),
+        [code, detail] = parseStatus(headers),
+        meta = parseMetadata(headers);
     return [code, detail, meta];
 }
 
@@ -207,8 +213,26 @@ function concatBytes(a: Uint8Array, b: Uint8Array): Uint8Array {
 }
 
 
+// returns format from response header, throws if unknown
+function parseFormat(headers: HttpHeaders): GrpcWebFormat {
+    let ct = headers['content-type'];
+    switch (ct) {
+        case "application/grpc-web-text":
+            return "text";
+        case "application/grpc-web":
+            // the receiver should assume the default is "+proto" when the message format is missing in Content-Type (as "application/grpc-web")
+        case "application/grpc-web+proto":
+            return "binary";
+        case undefined:
+            throw new RpcError("missing response content type", GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+        default:
+            throw new RpcError("unexpected response content type: " + ct, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+    }
+}
+
+
 // returns error code on parse failure, uses OK as default code
-function parseStatusFromHttpHeaders(headers: HttpHeaders): [GrpcStatusCode, string | undefined] {
+function parseStatus(headers: HttpHeaders): [GrpcStatusCode, string | undefined] {
     let code = GrpcStatusCode.OK,
         message: string | undefined;
     let m = headers['grpc-message'];
@@ -228,7 +252,7 @@ function parseStatusFromHttpHeaders(headers: HttpHeaders): [GrpcStatusCode, stri
 
 
 // skips grpc-web headers
-function parseMetadataFromHttpHeaders(headers: HttpHeaders): RpcMetadata {
+function parseMetadata(headers: HttpHeaders): RpcMetadata {
     let meta: RpcMetadata = {};
     for (let [k, v] of Object.entries(headers))
         switch (k) {
@@ -244,7 +268,7 @@ function parseMetadataFromHttpHeaders(headers: HttpHeaders): RpcMetadata {
 
 
 // parse trailer data (ASCII) to our headers rep
-function parseTrailerToHttpHeaders(trailerData: Uint8Array): HttpHeaders {
+function parseTrailer(trailerData: Uint8Array): HttpHeaders {
     let headers: HttpHeaders = {};
     for (let chunk of String.fromCharCode.apply(String, trailerData as unknown as number[]).trim().split("\r\n")) {
         let [key, value] = chunk.split(":", 2);
@@ -278,7 +302,7 @@ function fetchHeadersToHttp(fetchHeaders: Headers): HttpHeaders {
 
 
 // internal
-function grpcStatusCodeFromHttp(httpStatus: number): GrpcStatusCode {
+function httpStatusToGrpc(httpStatus: number): GrpcStatusCode {
     switch (httpStatus) {
         case 200:
             return GrpcStatusCode.OK;

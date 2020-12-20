@@ -100,21 +100,28 @@ export class GrpcWebFetchTransport implements RpcTransport {
             signal: options.abort
         })
             .then(fetchResponse => {
-                let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse);
+                let [code, detail, meta, ] = readGrpcWebResponseHeader(fetchResponse);
                 defHeader.resolve(meta);
                 if (code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
-                return fetchResponse.body!;
+                return fetchResponse;
 
             }, reason => {
-                // failed to fetch, aborted, wrong url or network problem
+                // failed to parse header
+                if (reason instanceof RpcError)
+                    return Promise.reject(reason);
+                // aborted
                 if (reason instanceof Error && reason.name === 'AbortError')
                     throw new RpcError(reason.message, GrpcStatusCode[GrpcStatusCode.CANCELLED]);
+                // failed to fetch, wrong url or network problem
                 throw new RpcError(reason instanceof Error ? reason.message : reason);
             })
 
-            .then(responseBody => {
-                return readGrpcWebResponseBody(responseBody, format, (type, data) => {
+            .then(fetchResponse => {
+                if (!fetchResponse.body)
+                    throw new RpcError('missing response body', GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+                let [, , , responseFormat] = readGrpcWebResponseHeader(fetchResponse);
+                return readGrpcWebResponseBody(fetchResponse.body!, responseFormat, (type, data) => {
                     switch (type) {
                         case GrpcWebFrame.DATA:
                             responseStream.notifyMessage(
@@ -196,21 +203,28 @@ export class GrpcWebFetchTransport implements RpcTransport {
             signal: options.abort
         })
             .then(fetchResponse => {
-                let [statusCode, statusDetail, responseMeta] = readGrpcWebResponseHeader(fetchResponse);
-                defHeader.resolve(responseMeta);
-                if (statusCode !== GrpcStatusCode.OK)
-                    throw new RpcError(statusDetail ?? GrpcStatusCode[statusCode], GrpcStatusCode[statusCode], responseMeta);
-                return fetchResponse.body!;
+                let [code, detail, meta, ] = readGrpcWebResponseHeader(fetchResponse);
+                defHeader.resolve(meta);
+                if (code !== GrpcStatusCode.OK)
+                    throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
+                return fetchResponse;
 
             }, reason => {
-                // failed to fetch, aborted, wrong url or network problem
+                // failed to parse header
+                if (reason instanceof RpcError)
+                    return Promise.reject(reason);
+                // aborted
                 if (reason instanceof Error && reason.name === 'AbortError')
                     throw new RpcError(reason.message, GrpcStatusCode[GrpcStatusCode.CANCELLED]);
+                // failed to fetch, wrong url or network problem
                 throw new RpcError(reason instanceof Error ? reason.message : reason);
             })
 
-            .then(responseBody => {
-                return readGrpcWebResponseBody(responseBody, format, (type, data) => {
+            .then(fetchResponse => {
+                if (!fetchResponse.body)
+                    throw new RpcError('missing response body', GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+                let [, , , responseFormat] = readGrpcWebResponseHeader(fetchResponse);
+                return readGrpcWebResponseBody(fetchResponse.body!, responseFormat, (type, data) => {
                     switch (type) {
                         case GrpcWebFrame.DATA:
                             if (defMessage.state === DeferredState.RESOLVED)
