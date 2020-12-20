@@ -1317,7 +1317,7 @@ The methods returns a `UnaryCall`. An "unary" call takes exactly one input
 messsage and returns exactly one output message. It is one of the four 
 [RPC method types](#rpc-method-types) available in protocol buffers. If you 
 want to use rxjs Observables or plain Promises, you can change the 
-[method style](#rpc-client-styles) for the service. 
+[client style](#rpc-client-styles) for the service. 
 
 
 `protobuf-ts` also generates an implementation for this interface, the class 
@@ -1766,6 +1766,32 @@ as a single constructor argument. It extends the standard `RpcOptions`
 To learn more about the inner workings of the transport, make sure 
 to read the introduction to [RPC support](#rpc-support). To learn about the features 
 provided by the `UnaryCall`, see [RPC method types](#rpc-method-types).
+
+
+
+### gRPC transport
+
+The gRPC transport supports all [method types](#rpc-method-types). It uses the 
+package `@grpc/grpc-js` to make gRPC requests and can only be used in Node.js.
+
+Example usage:
+
+```typescript
+const transport = new GrpcTransport({
+    host: "localhost:5000",
+    channelCredentials: ChannelCredentials.createInsecure(),
+});
+
+let client = new HaberdasheryClient(transport);
+
+let {response} = await client.makeHat({ inches: 11 });
+console.log("got a small hat! " + response)
+
+let streamingCall = client.makeRowOfHats({ inches: 23 });
+for await (let hat of streamingCall.response) {
+    console.log("got another hat! " + hat)
+}
+```
 
 
 

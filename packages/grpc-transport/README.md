@@ -27,11 +27,23 @@ yarn add --dev @protobuf-ts/plugin
 
 Usage:
 ```typescript
-TODO
+const transport = new GrpcTransport({
+    host: "localhost:5000",
+    channelCredentials: ChannelCredentials.createInsecure(),
+});
+
+let client = new HaberdasheryClient(transport);
+
+let {response} = await client.makeHat({ inches: 11 });
+console.log("got a small hat! " + response)
+
+let streamingCall = client.makeRowOfHats({ inches: 23 });
+for await (let hat of streamingCall.response) {
+    console.log("got another hat! " + hat)
+}
 ```
 
 
-TODO
-To learn more, please read the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#grpc-web-transport).   
+To learn more, please read the [MANUAL](https://github.com/timostamm/protobuf-ts/blob/master/MANUAL.md#grpc-transport).   
 
 
