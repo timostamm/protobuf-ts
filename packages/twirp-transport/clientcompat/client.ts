@@ -1,15 +1,9 @@
 import {ReadStream} from "tty";
-import {
-    ClientCompatMessage,
-    ClientCompatMessage_CompatServiceMethod,
-    CompatServiceClient,
-    Empty,
-    Req,
-    Resp
-} from "./clientcompat";
+import {ClientCompatMessage, ClientCompatMessage_CompatServiceMethod, Empty, Req, Resp} from "./clientcompat";
 import {TwirpFetchTransport, TwirpOptions} from "../";
 import {FinishedUnaryCall, RpcError} from "@protobuf-ts/runtime-rpc";
 import {default as fetch, Headers} from "node-fetch";
+import {CompatServiceClient} from "./clientcompat.client";
 
 // fetch polyfill via https://github.com/node-fetch/node-fetch
 globalThis.fetch = fetch;

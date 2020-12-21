@@ -54,19 +54,19 @@ extend google.protobuf.ServiceOptions {
 enum ClientStyle {
 
     // Do not emit a client for this service.
-    NONE = 0;
+    NO_CLIENT = 0;
 
     // Use the call implementations of @protobuf-ts/runtime-rpc.
     // This is the default behaviour.
-    CALL = 1;
+    CALL_CLIENT = 1;
 
     // Use promises as return type.
     // This style can only be used for unary methods (no server or client
     // streaming).
-    PROMISE = 2;
+    PROMISE_CLIENT = 2;
 
     // Use Observables from the "rxjs" package for requests and responses.
-    RX = 3;
+    RX_CLIENT = 3;
 }
 
 
@@ -75,9 +75,9 @@ enum ServerStyle {
 
     // Do not emit a server for this service.
     // This is the default behaviour.
-    SERVER_STYLE_NONE = 0;
+    NO_SERVER = 0;
 
     // Generate a server for @grpc/grpc-js
-    SERVER_STYLE_GRPC = 1;
+    GRPC_SERVER = 1;
 
 }

@@ -1,7 +1,7 @@
 import {RpcError, ServerStreamingCall, TestTransport, UnaryCall} from "@protobuf-ts/runtime-rpc";
-import {CallStyleServiceClient} from "../ts-out/service-style-call";
 import {AbortController} from "abort-controller";
 import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
+import {CallStyleServiceClient} from "../ts-out/service-style-call.client";
 
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
 

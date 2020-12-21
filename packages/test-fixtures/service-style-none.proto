@@ -8,7 +8,8 @@ import "google/protobuf/wrappers.proto";
 
 service NoneStyleService {
 
-    option (ts.client) = NONE;
+    option (ts.client) = NO_CLIENT;
+    option (ts.server) = NO_SERVER;
 
     rpc Unary (google.protobuf.StringValue) returns (google.protobuf.Int32Value);
 

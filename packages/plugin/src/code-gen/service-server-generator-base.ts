@@ -1,13 +1,13 @@
-import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
 import {DescriptorRegistry, TypescriptImportManager} from "@protobuf-ts/plugin-framework";
 import {Interpreter} from "../interpreter";
+import {ServerStyle} from "../our-options";
 
 
 export abstract class ServiceServerGeneratorBase {
 
 
-    abstract readonly style: rpc.ServerStyle;
+    abstract readonly style: ServerStyle;
     protected readonly commentGenerator: CommentGenerator;
 
 

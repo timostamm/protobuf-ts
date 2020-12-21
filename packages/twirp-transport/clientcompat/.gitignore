@@ -1,3 +1,5 @@
 /client.js
 /clientcompat.ts
 /clientcompat.js
+/clientcompat.client.ts
+/clientcompat.client.js

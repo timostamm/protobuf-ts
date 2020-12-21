@@ -1,6 +1,10 @@
 ### unreleased changes
 
-none
+Breaking changes:
+
+- clients are generated into separate files (see #55)
+- option values for (ts.client) have changed (see #55)
+- ClientStyle enum is no longer exported from @protobuf-ts/runtime-rpc (see #55)
 
 
 ### v2.0.0-alpha.8

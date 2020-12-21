@@ -2,8 +2,8 @@ import {RpcError, TestTransport} from "@protobuf-ts/runtime-rpc";
 import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
 import {catchError, tap} from "rxjs/operators";
 import {AbortController} from "abort-controller";
-import {RxjsStyleServiceClient} from "../ts-out/service-style-rx";
 import {EMPTY, Observable, of} from "rxjs";
+import {RxjsStyleServiceClient} from "../ts-out/service-style-rx.rx-client";
 
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
 
@@ -232,7 +232,7 @@ describe('generated client style rx', () => {
             });
             const client = new RxjsStyleServiceClient(transport);
             const input = new Observable<StringValue>(subscriber => {
-                setTimeout(() => subscriber.next( {value: "a"} ), 10);
+                setTimeout(() => subscriber.next({value: "a"}), 10);
                 setTimeout(() => subscriber.next({value: "b"}), 20);
                 setTimeout(() => subscriber.next({value: "c"}), 30);
                 setTimeout(() => subscriber.complete(), 60);
@@ -338,7 +338,7 @@ describe('generated client style rx', () => {
             });
             const client = new RxjsStyleServiceClient(transport);
             const input = new Observable<StringValue>(subscriber => {
-                setTimeout(() => subscriber.next( {value: "a"} ), 10);
+                setTimeout(() => subscriber.next({value: "a"}), 10);
                 setTimeout(() => subscriber.next({value: "b"}), 20);
                 setTimeout(() => subscriber.next({value: "c"}), 30);
                 setTimeout(() => subscriber.complete(), 60);

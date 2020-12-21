@@ -117,55 +117,6 @@ export type PartialMethodInfo<I extends object = any, O extends object = any> =
 type PartialPartial<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
 
 
-/**
- * The available client styles from @protobuf-ts/plugin
- * The extensions are declared in protobuf-ts.proto
- */
-export enum ClientStyle {
-
-    /**
-     * Do not emit a client for this service.
-     */
-    NONE = 0,
-
-    /**
-     * Use the call implementations of @protobuf-ts/runtime-rpc.
-     * This is the default behaviour.
-     */
-    CALL = 1,
-
-    /**
-     * Use promises as return type.
-     * This style can only be used for unary methods (no server or client
-     * streaming).
-     */
-    PROMISE = 2,
-
-    /**
-     * Use Observables from the "rxjs" package for requests and responses.
-     */
-    RX = 3
-}
-
-
-/**
- * The available server styles from @protobuf-ts/plugin
- * The extensions are declared in protobuf-ts.proto
- */
-export enum ServerStyle {
-
-    /**
-     * Do not emit a server for this service.
-     * This is the default behaviour.
-     */
-    NONE = 0,
-
-    /**
-     * Generate a server for @grpc/grpc-js
-     */
-    GRPC = 1,
-}
-
 
 /**
  * Turns PartialMethodInfo into MethodInfo.

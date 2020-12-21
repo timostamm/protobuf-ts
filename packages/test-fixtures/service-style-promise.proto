@@ -8,7 +8,7 @@ import "google/protobuf/wrappers.proto";
 
 service PromiseStyleService {
 
-    option (ts.client) = PROMISE;
+    option (ts.client) = PROMISE_CLIENT;
 
     rpc Unary (google.protobuf.StringValue) returns (google.protobuf.Int32Value);
     rpc ServerStream (google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);

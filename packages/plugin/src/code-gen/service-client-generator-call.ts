@@ -2,12 +2,13 @@ import * as ts from "typescript";
 import {ServiceClientGeneratorBase} from "./service-client-generator-base";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {assert} from "@protobuf-ts/runtime";
+import {ClientStyle} from "../our-options";
 
 
 export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
 
 
-    readonly style = rpc.ClientStyle.CALL;
+    readonly style = ClientStyle.CALL_CLIENT;
 
 
     createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {

@@ -46,13 +46,13 @@ export interface OurServiceOptions {
      * Generate a client for this service with this style.
      * Can be set multiple times to generate several styles.
      */
-    readonly ["ts.client"]: rpc.ClientStyle[];
+    readonly ["ts.client"]: ClientStyle[];
 
     /**
      * Generate a server for this service with this style.
      * Can be set multiple times to generate several styles.
      */
-    readonly ["ts.server"]: rpc.ServerStyle[];
+    readonly ["ts.server"]: ServerStyle[];
 }
 
 
@@ -104,18 +104,69 @@ const OurServiceOptions = new rt.MessageType<OurServiceOptions>("$synthetic.OurS
         no: 777701,
         name: "ts.client", localName: "ts.client", jsonName: "ts.client",
         kind: "enum",
-        T: () => ["ts.ClientStyle", rpc.ClientStyle],
+        T: () => ["ts.ClientStyle", ClientStyle],
         repeat: rt.RepeatType.UNPACKED,
     },
     {
         no: 777702,
         name: "ts.server", localName: "ts.server", jsonName: "ts.server",
         kind: "enum",
-        T: () => ["ts.ServerStyle", rpc.ServerStyle],
+        T: () => ["ts.ServerStyle", ServerStyle],
         repeat: rt.RepeatType.UNPACKED,
     }
 
 ]);
+
+
+/**
+ * The available client styles from @protobuf-ts/plugin
+ * The extensions are declared in protobuf-ts.proto
+ */
+export enum ClientStyle {
+
+    /**
+     * Do not emit a client for this service.
+     */
+    NO_CLIENT = 0,
+
+    /**
+     * Use the call implementations of @protobuf-ts/runtime-rpc.
+     * This is the default behaviour.
+     */
+    CALL_CLIENT = 1,
+
+    /**
+     * Use promises as return type.
+     * This style can only be used for unary methods (no server or client
+     * streaming).
+     */
+    PROMISE_CLIENT = 2,
+
+    /**
+     * Use Observables from the "rxjs" package for requests and responses.
+     */
+    RX_CLIENT = 3
+}
+
+
+/**
+ * The available server styles from @protobuf-ts/plugin
+ * The extensions are declared in protobuf-ts.proto
+ */
+export enum ServerStyle {
+
+    /**
+     * Do not emit a server for this service.
+     * This is the default behaviour.
+     */
+    NO_SERVER = 0,
+
+    /**
+     * Generate a server for @grpc/grpc-js
+     */
+    GRPC_SERVER = 1,
+}
+
 
 const emptyFileOptions = OurFileOptions.create();
 const emptyServiceOptions = OurServiceOptions.create();

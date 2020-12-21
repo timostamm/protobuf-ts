@@ -16,8 +16,8 @@ describe('protobuftsPlugin', function () {
         //
         //     // 'google/protobuf/wrappers.proto',
         //
-        //     'msg-scalar.proto',
-        //     'msg-proto3-optionals.proto',
+        //     // 'msg-scalar.proto',
+        //     // 'msg-proto3-optionals.proto',
         //     // 'google/protobuf/any.proto',
         //     // 'google/protobuf/wrappers.proto',
         //     // 'google/protobuf/struct.proto',
@@ -30,6 +30,7 @@ describe('protobuftsPlugin', function () {
         //     // 'google/protobuf/unittest_lazy_dependencies_enum.proto',
         //     //  'service-simple.proto',
         //     //  'service-example.proto',
+        //      'service-style-all.proto',
         //     // 'msg-proto3-optionals.proto',
         //     // 'google/rpc/status.proto',
         // ]

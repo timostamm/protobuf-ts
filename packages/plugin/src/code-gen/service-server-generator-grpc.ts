@@ -11,12 +11,13 @@ import {
 import {Interpreter} from "../interpreter";
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
+import {ServerStyle} from "../our-options";
 
 
 export class ServiceServerGeneratorGrpc extends ServiceServerGeneratorBase {
 
 
-    readonly style = rpc.ServerStyle.GRPC;
+    readonly style = ServerStyle.GRPC_SERVER;
 
 
     constructor(registry: DescriptorRegistry, imports: TypescriptImportManager, interpreter: Interpreter, options: { runtimeRpcImportPath: string; angularCoreImportPath: string; emitAngularAnnotations: boolean; runtimeAngularImportPath: string }) {

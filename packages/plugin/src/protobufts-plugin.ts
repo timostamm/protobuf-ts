@@ -14,9 +14,8 @@ import {
 import {OutFile} from "./out-file";
 import {createLocalTypeName} from "./code-gen/local-type-name";
 import * as rt from "@protobuf-ts/runtime";
-import * as rpc from "@protobuf-ts/runtime-rpc";
 import {Interpreter} from "./interpreter";
-import {makeInternalOptions} from "./our-options";
+import {ClientStyle, makeInternalOptions, ServerStyle} from "./our-options";
 
 
 export class ProtobuftsPlugin extends PluginBase<OutFile> {
@@ -152,12 +151,16 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             const
                 outBasename = fileDescriptor.name!.replace('.proto', ''),
                 outOptions = makeInternalOptions({...options, optimizeFor: getFileOptimizeMode(fileDescriptor)}),
+
+                // TODO #55 prevent file name clashes
                 outMain = new OutFile(outBasename + '.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
-                outGrpcServer = new OutFile(outBasename + '.grpc-server.ts', fileDescriptor, registry, symbols, interpreter, outOptions)
+                outServerGrpc = new OutFile(outBasename + '.grpc-server.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
+                outClientCall = new OutFile(outBasename + '.client.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
+                outClientRx = new OutFile(outBasename + '.rx-client.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
+                outClientPromise = new OutFile(outBasename + '.promise-client.ts', fileDescriptor, registry, symbols, interpreter, outOptions)
             ;
 
-            outFiles.push(outMain);
-            outFiles.push(outGrpcServer);
+            outFiles.push(outMain, outServerGrpc, outClientCall, outClientRx, outClientPromise);
 
             registry.visitTypes(fileDescriptor, descriptor => {
                 // we are not interested in synthetic types like map entry messages
@@ -173,21 +176,24 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                     symbols.register(name, descriptor, outMain);
 
                     // client symbols
-                    const styles = getClientStyles(descriptor);
-                    for (let style of styles) {
-                        const styleNameLc = rpc.ClientStyle[style].toLowerCase(),
-                            styleNameUcFirst = styleNameLc[0].toUpperCase() + styleNameLc.substring(1),
-                            localTypeName = createLocalTypeName(descriptor, registry),
-                            clientName = styles.length > 1 ? `${localTypeName}${styleNameUcFirst}Client` : `${localTypeName}Client`,
-                            clientInterfaceName = styles.length > 1 ? `I${localTypeName}${styleNameUcFirst}Client` : `I${localTypeName}Client`;
-                        symbols.register(clientName, descriptor, outMain, `${styleNameLc}-client`);
-                        symbols.register(clientInterfaceName, descriptor, outMain, `${styleNameLc}-client-interface`);
+                    const clientStyles = getClientStyles(descriptor);
+                    if (clientStyles.includes(ClientStyle.CALL_CLIENT)) {
+                        symbols.register(`${name}Client`, descriptor, outClientCall, `call-client`);
+                        symbols.register(`I${name}Client`, descriptor, outClientCall, `call-client-interface`);
+                    }
+                    if (clientStyles.includes(ClientStyle.RX_CLIENT)) {
+                        symbols.register(`${name}Client`, descriptor, outClientRx, `rx-client`);
+                        symbols.register(`I${name}Client`, descriptor, outClientRx, `rx-client-interface`);
+                    }
+                    if (clientStyles.includes(ClientStyle.PROMISE_CLIENT)) {
+                        symbols.register(`${name}Client`, descriptor, outClientPromise, `promise-client`);
+                        symbols.register(`I${name}Client`, descriptor, outClientPromise, `promise-client-interface`);
                     }
 
                     // server symbols
-                    if (getServerStyles(descriptor).includes(rpc.ServerStyle.GRPC)) {
-                        symbols.register(`I${name}`, descriptor, outGrpcServer, `grpc-server-interface`);
-                        symbols.register(`${name[0].toLowerCase()}${name.substring(1)}Definition`, descriptor, outGrpcServer, `grpc-server-definition`);
+                    if (getServerStyles(descriptor).includes(ServerStyle.GRPC_SERVER)) {
+                        symbols.register(`I${name}`, descriptor, outServerGrpc, `grpc-server-interface`);
+                        symbols.register(`${name[0].toLowerCase()}${name.substring(1)}Definition`, descriptor, outServerGrpc, `grpc-server-definition`);
                     }
 
                 } else {
@@ -220,15 +226,24 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                     outMain.generateServiceType(descriptor);
 
                     // clients
-                    for (let style of getClientStyles(descriptor)) {
-                        outMain.generateServiceClientInterface(descriptor, style);
-                        outMain.generateServiceClientImplementation(descriptor, style);
+                    const clientStyles = getClientStyles(descriptor);
+                    if (clientStyles.includes(ClientStyle.CALL_CLIENT)) {
+                        outClientCall.generateServiceClientInterface(descriptor, ClientStyle.CALL_CLIENT);
+                        outClientCall.generateServiceClientImplementation(descriptor, ClientStyle.CALL_CLIENT);
+                    }
+                    if (clientStyles.includes(ClientStyle.RX_CLIENT)) {
+                        outClientRx.generateServiceClientInterface(descriptor, ClientStyle.RX_CLIENT);
+                        outClientRx.generateServiceClientImplementation(descriptor, ClientStyle.RX_CLIENT);
+                    }
+                    if (clientStyles.includes(ClientStyle.PROMISE_CLIENT)) {
+                        outClientPromise.generateServiceClientInterface(descriptor, ClientStyle.PROMISE_CLIENT);
+                        outClientPromise.generateServiceClientImplementation(descriptor, ClientStyle.PROMISE_CLIENT);
                     }
 
                     // grpc server
-                    if (getServerStyles(descriptor).includes(rpc.ServerStyle.GRPC)) {
-                        outGrpcServer.generateServerGrpcInterface(descriptor);
-                        outGrpcServer.generateServerGrpcDefinition(descriptor);
+                    if (getServerStyles(descriptor).includes(ServerStyle.GRPC_SERVER)) {
+                        outServerGrpc.generateServerGrpcInterface(descriptor);
+                        outServerGrpc.generateServerGrpcDefinition(descriptor);
                     }
                 }
             });
@@ -267,13 +282,13 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         },
         interpreter: Interpreter,
         stringFormat: IStringFormat
-    ): (descriptor: ServiceDescriptorProto) => rpc.ClientStyle[] {
+    ): (descriptor: ServiceDescriptorProto) => ClientStyle[] {
         return (descriptor: ServiceDescriptorProto) => {
 
             const opt = interpreter.readOurServiceOptions(descriptor)["ts.client"];
 
             // always check service options valid
-            if (opt.includes(rpc.ClientStyle.NONE) && opt.some(s => s !== rpc.ClientStyle.NONE)) {
+            if (opt.includes(ClientStyle.NO_CLIENT) && opt.some(s => s !== ClientStyle.NO_CLIENT)) {
                 let err = new Error(`You provided invalid options for ${stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NONE, you cannot set additional client styles.`);
                 err.name = `PluginMessageError`;
                 throw err;
@@ -287,7 +302,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             // look for service options
             if (opt.length) {
                 return opt
-                    .filter(s => s !== rpc.ClientStyle.NONE)
+                    .filter(s => s !== ClientStyle.NO_CLIENT)
                     .filter((value, index, array) => array.indexOf(value) === index);
             }
 
@@ -295,11 +310,11 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             if (params.client_none)
                 return [];
             else if (params.client_rx)
-                return [rpc.ClientStyle.RX];
+                return [ClientStyle.RX_CLIENT];
             else if (params.client_promise)
-                return [rpc.ClientStyle.PROMISE];
+                return [ClientStyle.PROMISE_CLIENT];
             else
-                return [rpc.ClientStyle.CALL];
+                return [ClientStyle.CALL_CLIENT];
         };
     }
 
@@ -312,13 +327,13 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         },
         interpreter: Interpreter,
         stringFormat: IStringFormat
-    ): (descriptor: ServiceDescriptorProto) => rpc.ServerStyle[] {
+    ): (descriptor: ServiceDescriptorProto) => ServerStyle[] {
         return (descriptor: ServiceDescriptorProto) => {
 
             const opt = interpreter.readOurServiceOptions(descriptor)["ts.server"];
 
             // always check service options valid
-            if (opt.includes(rpc.ServerStyle.NONE) && opt.some(s => s !== rpc.ServerStyle.NONE)) {
+            if (opt.includes(ServerStyle.NO_SERVER) && opt.some(s => s !== ServerStyle.NO_SERVER)) {
                 let err = new Error(`You provided invalid options for ${stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.server) = NONE, you cannot set additional server styles.`);
                 err.name = `PluginMessageError`;
                 throw err;
@@ -332,13 +347,13 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             // look for service options
             if (opt.length) {
                 return opt
-                    .filter(s => s !== rpc.ServerStyle.NONE)
+                    .filter(s => s !== ServerStyle.NO_SERVER)
                     .filter((value, index, array) => array.indexOf(value) === index);
             }
 
             // fall back to normal style set by parameter
             if (params.server_grpc) {
-                return [rpc.ServerStyle.GRPC];
+                return [ServerStyle.GRPC_SERVER];
             }
             return [];
         };

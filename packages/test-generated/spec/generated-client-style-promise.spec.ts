@@ -1,7 +1,7 @@
 import {RpcError, TestTransport} from "@protobuf-ts/runtime-rpc";
 import {AbortController} from "abort-controller";
 import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
-import {PromiseStyleServiceClient} from "../ts-out/service-style-promise";
+import {PromiseStyleServiceClient} from "../ts-out/service-style-promise.promise-client";
 
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
 

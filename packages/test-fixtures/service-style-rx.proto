@@ -8,7 +8,7 @@ import "google/protobuf/wrappers.proto";
 
 service RxjsStyleService {
 
-    option (ts.client) = RX;
+    option (ts.client) = RX_CLIENT;
 
     rpc Unary (google.protobuf.StringValue) returns (google.protobuf.Int32Value);
     rpc ServerStream (google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);

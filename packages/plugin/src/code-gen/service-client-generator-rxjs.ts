@@ -3,12 +3,13 @@ import {SyntaxKind} from "typescript";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {ServiceClientGeneratorBase} from "./service-client-generator-base";
 import {assert} from "@protobuf-ts/runtime";
+import {ClientStyle} from "../our-options";
 
 
 export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
 
 
-    readonly style = rpc.ClientStyle.RX;
+    readonly style = ClientStyle.RX_CLIENT;
 
 
     createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {

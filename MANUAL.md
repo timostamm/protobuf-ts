@@ -1342,9 +1342,10 @@ want to use rxjs Observables or plain Promises, you can change the
 transferring messages is delegated to the `RpcTransport`.
 
 
-`@protobuf-ts` comes with two RPC transports: 
+`@protobuf-ts` comes with several RPC transports: 
 - `TwirpFetchTransport` from `@protobuf-ts/twirp-transport` - see [Twirp transport](#twirp-transport)
 - `GrpcWebFetchTransport` from `@protobuf-ts/grpcweb-transport` - see [gRPC web transport](#grpc-web-transport)
+- `GrpcTransport` from `@protobuf-ts/grpc-transport` - see [gRPC transport](#grpc-transport)
 
 If you set the `enable_angular_annotations` option, `protobuf-ts` adds 
 annotations to the client that enable Angular dependency injection. 
@@ -1364,7 +1365,7 @@ options or a service option in your .proto file:
 import "protobuf-ts.proto";
 
 service Haberdasher {
-  option (ts.client) = RX;
+  option (ts.client) = RX_CLIENT;
   rpc MakeHat(Size) returns (Hat);
 }
 ```
@@ -1377,7 +1378,7 @@ export interface IHaberdasherClient {
 }
 ```
 
-Setting `option (ts.client) = PROMISE` generates:
+Setting `option (ts.client) = PROMISE_CLIENT` generates:
 
 ```typescript
 export interface IHaberdasherClient {
@@ -1391,8 +1392,8 @@ If you want to generate multiple client styles, simply set the option multiple t
 import "protobuf-ts.proto";
 
 service Haberdasher {
-  option (ts.client) = RX;
-  option (ts.client) = PROMISE;
+  option (ts.client) = RX_CLIENT;
+  option (ts.client) = PROMISE_CLIENT;
   rpc MakeHat(Size) returns (Hat);
 }
 ```
@@ -1840,7 +1841,7 @@ package spec;
 import "protobuf-ts.proto";
 
 service ExampleService {
-  option (ts.server) = GRPC;
+  option (ts.server) = GRPC_SERVER;
   rpc method (RequestMessage) returns (ResponseMessage);
 }
 ```

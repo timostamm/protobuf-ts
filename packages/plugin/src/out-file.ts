@@ -18,7 +18,7 @@ import {ServiceClientGeneratorBase} from "./code-gen/service-client-generator-ba
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
 import {MessageTypeGenerator} from "./code-gen/message-type-generator";
 import {EnumGenerator} from "./code-gen/enum-generator";
-import {InternalOptions} from "./our-options";
+import {ClientStyle, InternalOptions} from "./our-options";
 import {ServiceTypeGenerator} from "./code-gen/service-type-generator";
 import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-call";
 import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
@@ -122,14 +122,14 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
     }
 
 
-    generateServiceClientInterface(descriptor: ServiceDescriptorProto, style: rpc.ClientStyle): void {
+    generateServiceClientInterface(descriptor: ServiceDescriptorProto, style: ClientStyle): void {
         const gen = this.serviceClientGenerators.find(g => g.style === style);
         assert(gen);
         gen.generateInterface(descriptor, this);
     }
 
 
-    generateServiceClientImplementation(descriptor: ServiceDescriptorProto, style: rpc.ClientStyle): void {
+    generateServiceClientImplementation(descriptor: ServiceDescriptorProto, style: ClientStyle): void {
         const gen = this.serviceClientGenerators.find(g => g.style === style);
         assert(gen);
         gen.generateImplementationClass(descriptor, this);
