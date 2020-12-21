@@ -23,6 +23,8 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
     parameters = {
         // @formatter:off
+
+        // long type
         long_type_string: {
             description: "Sets jstype = JS_STRING for message fields with 64 bit integral values. \n" +
                          "The default behaviour is to use native `bigint`. \n" +
@@ -40,44 +42,67 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                          "This is the default behavior. \n" +
                          "Only applies to fields that do *not* use the option `jstype`.",
             excludes: ["long_type_string", "long_type_number"],
-        },                 
+        },
+
+        // misc
         generate_dependencies: {
             description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
                          "not the files they import. Set this option to generate code for dependencies \n" +
                          "too.",
         },
+
+        // client
         client_none: {
-            description: "Do not generate service clients. \n" +
+            description: "Do not generate rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`. \n" +
-                         "If you do not want service clients at all, use `force_client_none`.",
+                         "If you do not want rpc clients at all, use `force_client_none`.",
             excludes: ['client_call', 'client_promise', 'client_rx'],
         },
         client_call: {
-            description: "Use *Call return types for service clients. \n" +
+            description: "Use *Call return types for rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "Since CALL is the default, this option has no effect.",
             excludes: ['client_none', 'client_promise', 'client_rx', 'force_client_none'],
         },
         client_promise: {
-            description: "Use Promise return types for service clients. \n" +
+            description: "Use Promise return types for rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`.",
             excludes: ['client_none', 'client_call', 'client_rx', 'force_client_none'],
         },
         client_rx: {
-            description: "Use Observable return types from the `rxjs` package for service clients. \n" +
+            description: "Use Observable return types from the `rxjs` package for rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`." ,
             excludes: ['client_none', 'client_call', 'client_promise', 'force_client_none'],
         },
         force_client_none: {
-            description: "Do not generate service clients, ignore service options.",
+            description: "Do not generate rpc clients, ignore options in proto files.",
         },
         enable_angular_annotations: {
-            description: "If set, the generated service client will have an angular @Injectable() \n" +
+            description: "If set, the generated rpc client will have an angular @Injectable() \n" +
                          "annotation and the `RpcTransport` constructor argument is annotated with a \n" +
                          "@Inject annotation. For this feature, you will need the npm package \n" +
                          "'@protobuf-ts/runtime-angular'.",
             excludes: ['force_client_none'],
         },
+
+        // server
+        server_none: {
+            description: "Do not generate rpc servers. \n" +
+                         "This is the default behaviour, but only applies to services that do . \n" +
+                         "*not* use the option `ts.server`. \n" +
+                         "If you do not want servers at all, use `force_server_none`.",
+            excludes: ['server_grpc'],
+        },
+        server_grpc: {
+            description: "Generate a server interface and definition for use with @grpc/grpc-js. \n" +
+                "Only applies to services that do *not* use the option `ts.server`.",
+            excludes: ['server_none', 'force_server_none'],
+        },
+        force_server_none: {
+            description: "Do not generate rpc servers, ignore options in proto files.",
+        },
+
+        // optimization
         optimize_speed: {
             description: "Sets optimize_for = SPEED for proto files that have no file option \n" +
                          "'option optimize_for'. Since SPEED is the default, this option has no effect.",
@@ -107,34 +132,32 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
 
     generate(request: CodeGeneratorRequest): OutFile[] {
-        const params = this.parseParameters(this.parameters, request.parameter);
-
-        let normalLongType = rt.LongType.BIGINT;
-        if (params.long_type_string) {
-            normalLongType = rt.LongType.STRING;
-        } else if (params.long_type_number) {
-            normalLongType = rt.LongType.NUMBER;
-        }
-
-        const options = {
+        const
+            params = this.parseParameters(this.parameters, request.parameter),
+            options = {
                 pluginCredit: `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameters ${request.parameter}` : ''),
                 emitAngularAnnotations: params.enable_angular_annotations,
-                normalLongType,
+                normalLongType: ProtobuftsPlugin.determineNormalLongType(params),
             },
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
             interpreter = new Interpreter(registry, makeInternalOptions(options)),
             getClientStyles = ProtobuftsPlugin.makeClientStyleGetter(params, interpreter, registry),
+            getServerStyles = ProtobuftsPlugin.makeServerStyleGetter(params, interpreter, registry),
             getFileOptimizeMode = ProtobuftsPlugin.makeFileOptimizeGetter(params);
 
+        let outFiles: OutFile[] = [];
 
-        let outFiles = registry.allFiles().map(fileDescriptor => {
-
+        for (let fileDescriptor of registry.allFiles()) {
             const
-                fileName = fileDescriptor.name!.replace('.proto', '.ts'),
-                fileOptimizeMode = getFileOptimizeMode(fileDescriptor),
-                fileOptions = makeInternalOptions({...options, optimizeFor: fileOptimizeMode}),
-                file = new OutFile(fileName, fileDescriptor, registry, symbols, interpreter, fileOptions);
+                outBasename = fileDescriptor.name!.replace('.proto', ''),
+                outOptions = makeInternalOptions({...options, optimizeFor: getFileOptimizeMode(fileDescriptor)}),
+                outMain = new OutFile(outBasename + '.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
+                outGrpcServer = new OutFile(outBasename + '.grpc-server.ts', fileDescriptor, registry, symbols, interpreter, outOptions)
+            ;
+
+            outFiles.push(outMain);
+            outFiles.push(outGrpcServer);
 
             registry.visitTypes(fileDescriptor, descriptor => {
                 // we are not interested in synthetic types like map entry messages
@@ -147,7 +170,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 if (ServiceDescriptorProto.is(descriptor)) {
 
                     // service type
-                    symbols.register(name, descriptor, file);
+                    symbols.register(name, descriptor, outMain);
 
                     // client symbols
                     const styles = getClientStyles(descriptor);
@@ -157,12 +180,18 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                             localTypeName = createLocalTypeName(descriptor, registry),
                             clientName = styles.length > 1 ? `${localTypeName}${styleNameUcFirst}Client` : `${localTypeName}Client`,
                             clientInterfaceName = styles.length > 1 ? `I${localTypeName}${styleNameUcFirst}Client` : `I${localTypeName}Client`;
-                        symbols.register(clientName, descriptor, file, `${styleNameLc}-client`);
-                        symbols.register(clientInterfaceName, descriptor, file, `${styleNameLc}-client-interface`);
+                        symbols.register(clientName, descriptor, outMain, `${styleNameLc}-client`);
+                        symbols.register(clientInterfaceName, descriptor, outMain, `${styleNameLc}-client-interface`);
+                    }
+
+                    // server symbols
+                    if (getServerStyles(descriptor).includes(rpc.ServerStyle.GRPC)) {
+                        symbols.register(`I${name}`, descriptor, outGrpcServer, `grpc-server-interface`);
+                        symbols.register(`${name[0].toLowerCase()}${name.substring(1)}Definition`, descriptor, outGrpcServer, `grpc-server-definition`);
                     }
 
                 } else {
-                    symbols.register(name, descriptor, file);
+                    symbols.register(name, descriptor, outMain);
                 }
             });
 
@@ -171,10 +200,10 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 if (registry.isSyntheticElement(descriptor)) return;
 
                 if (DescriptorProto.is(descriptor)) {
-                    file.generateMessageInterface(descriptor);
+                    outMain.generateMessageInterface(descriptor);
                 }
                 if (EnumDescriptorProto.is(descriptor)) {
-                    file.generateEnum(descriptor);
+                    outMain.generateEnum(descriptor);
                 }
             });
 
@@ -183,20 +212,29 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 if (registry.isSyntheticElement(descriptor)) return;
 
                 if (DescriptorProto.is(descriptor)) {
-                    file.generateMessageType(descriptor);
+                    outMain.generateMessageType(descriptor);
                 }
                 if (ServiceDescriptorProto.is(descriptor)) {
-                    file.generateServiceType(descriptor);
+
+                    // service type
+                    outMain.generateServiceType(descriptor);
+
+                    // clients
                     for (let style of getClientStyles(descriptor)) {
-                        file.generateServiceClientInterface(descriptor, style);
-                        file.generateServiceClientImplementation(descriptor, style);
+                        outMain.generateServiceClientInterface(descriptor, style);
+                        outMain.generateServiceClientImplementation(descriptor, style);
+                    }
+
+                    // grpc server
+                    if (getServerStyles(descriptor).includes(rpc.ServerStyle.GRPC)) {
+                        outGrpcServer.generateServerGrpcInterface(descriptor);
+                        outGrpcServer.generateServerGrpcDefinition(descriptor);
                     }
                 }
             });
 
+        }
 
-            return file;
-        });
 
         // plugins should only return files requested to generate
         // unless our option "generate_dependencies" is set
@@ -232,9 +270,10 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     ): (descriptor: ServiceDescriptorProto) => rpc.ClientStyle[] {
         return (descriptor: ServiceDescriptorProto) => {
 
+            const opt = interpreter.readOurServiceOptions(descriptor)["ts.client"];
+
             // always check service options valid
-            const service = interpreter.readOurServiceOptions(descriptor)["ts.client"];
-            if (service.includes(rpc.ClientStyle.NONE) && service.some(s => s !== rpc.ClientStyle.NONE)) {
+            if (opt.includes(rpc.ClientStyle.NONE) && opt.some(s => s !== rpc.ClientStyle.NONE)) {
                 let err = new Error(`You provided invalid options for ${stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NONE, you cannot set additional client styles.`);
                 err.name = `PluginMessageError`;
                 throw err;
@@ -246,23 +285,65 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             }
 
             // look for service options
-            if (service.length) {
-                return service
+            if (opt.length) {
+                return opt
                     .filter(s => s !== rpc.ClientStyle.NONE)
                     .filter((value, index, array) => array.indexOf(value) === index);
             }
 
-            // fall back to normal style
+            // fall back to normal style set by parameter
             if (params.client_none)
                 return [];
             else if (params.client_rx)
                 return [rpc.ClientStyle.RX];
-             else if (params.client_promise)
+            else if (params.client_promise)
                 return [rpc.ClientStyle.PROMISE];
-             else
+            else
                 return [rpc.ClientStyle.CALL];
         };
     }
+
+
+    private static makeServerStyleGetter(
+        params: {
+            force_server_none: boolean,
+            server_none: boolean,
+            server_grpc: boolean
+        },
+        interpreter: Interpreter,
+        stringFormat: IStringFormat
+    ): (descriptor: ServiceDescriptorProto) => rpc.ServerStyle[] {
+        return (descriptor: ServiceDescriptorProto) => {
+
+            const opt = interpreter.readOurServiceOptions(descriptor)["ts.server"];
+
+            // always check service options valid
+            if (opt.includes(rpc.ServerStyle.NONE) && opt.some(s => s !== rpc.ServerStyle.NONE)) {
+                let err = new Error(`You provided invalid options for ${stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.server) = NONE, you cannot set additional server styles.`);
+                err.name = `PluginMessageError`;
+                throw err;
+            }
+
+            // clients disabled altogether?
+            if (params.force_server_none) {
+                return [];
+            }
+
+            // look for service options
+            if (opt.length) {
+                return opt
+                    .filter(s => s !== rpc.ServerStyle.NONE)
+                    .filter((value, index, array) => array.indexOf(value) === index);
+            }
+
+            // fall back to normal style set by parameter
+            if (params.server_grpc) {
+                return [rpc.ServerStyle.GRPC];
+            }
+            return [];
+        };
+    }
+
 
     private static makeFileOptimizeGetter(
         params: {
@@ -282,6 +363,22 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 return OptimizeMode.CODE_SIZE;
             return OptimizeMode.SPEED;
         };
+    }
+
+    private static determineNormalLongType(
+        params: {
+            long_type_string: boolean,
+            long_type_number: boolean,
+            long_type_bigint: boolean,
+        }
+    ): rt.LongType {
+        if (params.long_type_string) {
+            return rt.LongType.STRING;
+        }
+        if (params.long_type_number) {
+            return rt.LongType.NUMBER;
+        }
+        return rt.LongType.BIGINT;
     }
 
 

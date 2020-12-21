@@ -3,9 +3,16 @@ package spec;
 
 
 service ExampleService {
+    // An example unary call.
     rpc Unary (ExampleRequest) returns (ExampleResponse);
+
+    // An example server-streaming call.
     rpc ServerStream (ExampleRequest) returns (stream ExampleResponse);
+
+    // An example client-streaming call.
     rpc ClientStream (stream ExampleRequest) returns (ExampleResponse);
+
+    // An example bidi-streaming call.
     rpc Bidi (stream ExampleRequest) returns (stream ExampleResponse);
 }
 

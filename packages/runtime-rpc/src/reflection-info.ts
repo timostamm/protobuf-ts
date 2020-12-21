@@ -149,6 +149,25 @@ export enum ClientStyle {
 
 
 /**
+ * The available server styles from @protobuf-ts/plugin
+ * The extensions are declared in protobuf-ts.proto
+ */
+export enum ServerStyle {
+
+    /**
+     * Do not emit a server for this service.
+     * This is the default behaviour.
+     */
+    NONE = 0,
+
+    /**
+     * Generate a server for @grpc/grpc-js
+     */
+    GRPC = 1,
+}
+
+
+/**
  * Turns PartialMethodInfo into MethodInfo.
  */
 export function normalizeMethodInfo<I extends object = any, O extends object = any>(method: PartialMethodInfo<I, O>, service: ServiceInfo): MethodInfo<I, O> {

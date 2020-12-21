@@ -1,6 +1,6 @@
 import {getFixtureCodeGeneratorRequest} from "./support/helpers";
 import {ProtobuftsPlugin} from "../src/protobufts-plugin";
-import { OutFile } from "src/out-file";
+import {OutFile} from "src/out-file";
 
 const stringSnippets = [
     // Message
@@ -144,9 +144,9 @@ function generateTypescript(parameter: string): OutFile {
         parameter,
         includeFiles: [ 'msg-longs.proto' ]
     });
-    const outFiles = plugin.generate(request);
-    expect(outFiles.length).toEqual(1);
-    return outFiles[0];
+    const outFile = plugin.generate(request).find(f => f.getFilename() === 'msg-longs.ts');
+    expect(outFile).toBeDefined();
+    return outFile!;
 }
 
 function expectContainAll(content: string, snippets: string[]) {

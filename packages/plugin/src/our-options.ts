@@ -47,6 +47,12 @@ export interface OurServiceOptions {
      * Can be set multiple times to generate several styles.
      */
     readonly ["ts.client"]: rpc.ClientStyle[];
+
+    /**
+     * Generate a server for this service with this style.
+     * Can be set multiple times to generate several styles.
+     */
+    readonly ["ts.server"]: rpc.ServerStyle[];
 }
 
 
@@ -100,7 +106,15 @@ const OurServiceOptions = new rt.MessageType<OurServiceOptions>("$synthetic.OurS
         kind: "enum",
         T: () => ["ts.ClientStyle", rpc.ClientStyle],
         repeat: rt.RepeatType.UNPACKED,
+    },
+    {
+        no: 777702,
+        name: "ts.server", localName: "ts.server", jsonName: "ts.server",
+        kind: "enum",
+        T: () => ["ts.ServerStyle", rpc.ServerStyle],
+        repeat: rt.RepeatType.UNPACKED,
     }
+
 ]);
 
 const emptyFileOptions = OurFileOptions.create();

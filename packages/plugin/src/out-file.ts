@@ -24,6 +24,7 @@ import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-ca
 import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
 import {ServiceClientGeneratorRxjs} from "./code-gen/service-client-generator-rxjs";
 import {assert} from "@protobuf-ts/runtime";
+import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 
 
 /**
@@ -42,6 +43,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
 
     private readonly serviceTypeGenerator: ServiceTypeGenerator;
     private readonly serviceClientGenerators: ServiceClientGeneratorBase[];
+    private readonly serviceServerGeneratorGrpc: ServiceServerGeneratorGrpc;
     private readonly messageInterfaceGenerator: MessageInterfaceGenerator;
     private readonly messageTypeGenerator: MessageTypeGenerator;
     private readonly enumGenerator: EnumGenerator;
@@ -64,6 +66,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
             new ServiceClientGeneratorPromise(this.registry, imports, this.interpreter, this.options),
             new ServiceClientGeneratorRxjs(this.registry, imports, this.interpreter, this.options),
         ];
+        this.serviceServerGeneratorGrpc = new ServiceServerGeneratorGrpc(this.registry, imports, this.interpreter, this.options);
         this.messageInterfaceGenerator = new MessageInterfaceGenerator(this.registry, imports, this.interpreter, commentGenerator, options);
         this.messageTypeGenerator = new MessageTypeGenerator(this.registry, imports, this.interpreter, commentGenerator, options)
         this.enumGenerator = new EnumGenerator(this.registry, imports, this.interpreter, commentGenerator);
@@ -130,6 +133,16 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         const gen = this.serviceClientGenerators.find(g => g.style === style);
         assert(gen);
         gen.generateImplementationClass(descriptor, this);
+    }
+
+
+    generateServerGrpcInterface(descriptor: ServiceDescriptorProto): void {
+        this.serviceServerGeneratorGrpc.generateInterface(descriptor, this);
+    }
+
+
+    generateServerGrpcDefinition(descriptor: ServiceDescriptorProto): void {
+        this.serviceServerGeneratorGrpc.generateDefinition(descriptor, this);
     }
 
 

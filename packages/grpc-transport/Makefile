@@ -24,5 +24,5 @@ test: $(SPECS)
 		$^
 
 example-server:
-	npx protoc -I example-server --ts_out example-server/ --ts_opt generate_dependencies,optimize_code_size,client_none example-server/service-example.proto
+	npx protoc -I example-server --ts_out example-server/ --ts_opt server_grpc,generate_dependencies,optimize_code_size,client_none example-server/service-example.proto
 	npx ts-node example-server/index.ts
