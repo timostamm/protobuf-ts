@@ -1,6 +1,13 @@
 ### unreleased changes
 
 
+### v2.0.0-alpha.8
+
+New features:
+
+- gRPC server support for @grpc/grpc-js (see #52)
+
+
 ### v2.0.0-alpha.7
 
 Bug Fixes:
