@@ -3,7 +3,7 @@ import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
 import {catchError, tap} from "rxjs/operators";
 import {AbortController} from "abort-controller";
 import {EMPTY, Observable, of} from "rxjs";
-import {RxjsStyleServiceClient} from "../ts-out/service-style-rx.rx-client";
+import {AllStyleServiceClient} from "../ts-out/service-style-all.rx-client";
 
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
 
@@ -14,7 +14,7 @@ describe('generated client style rx', () => {
     describe("unary", function () {
 
         it('should return message observable', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: {value: 123}
             }));
             const msg: Int32Value[] = [];
@@ -27,7 +27,7 @@ describe('generated client style rx', () => {
         });
 
         it('should error on response error', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("response err", "ERR"),
             }));
             await expectAsync(
@@ -36,7 +36,7 @@ describe('generated client style rx', () => {
         });
 
         it('should error on status error', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status err", "ERR"),
             }));
             await expectAsync(
@@ -45,7 +45,7 @@ describe('generated client style rx', () => {
         });
 
         it('should complete empty if aborted', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const abort = new AbortController();
             setTimeout(() => {
                 abort.abort();
@@ -60,7 +60,7 @@ describe('generated client style rx', () => {
         });
 
         it('should cancel on unsubscribe', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const msg: Int32Value[] = [];
             let err: any = undefined;
             const sub = client.unary(StringValue.create())
@@ -81,7 +81,7 @@ describe('generated client style rx', () => {
     describe("server-streaming", function () {
 
         it('should return message observable', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     {value: 1},
                     {value: 2},
@@ -102,7 +102,7 @@ describe('generated client style rx', () => {
         });
 
         it('should error on response error', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("response err", "ERR"),
             }));
             const msg: Int32Value[] = [];
@@ -119,7 +119,7 @@ describe('generated client style rx', () => {
         });
 
         it('should error on status error', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status err", "ERR"),
                 response: [
                     {value: 1},
@@ -141,7 +141,7 @@ describe('generated client style rx', () => {
         });
 
         it('should complete empty if aborted', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     {value: 1},
                     {value: 2},
@@ -165,7 +165,7 @@ describe('generated client style rx', () => {
         });
 
         it('should cancel on unsubscribe', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     {value: 1},
                     {value: 2},
@@ -192,7 +192,7 @@ describe('generated client style rx', () => {
     describe("client-streaming", function () {
 
         it('should return message observable', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: {value: 123}
             }));
             const msg: Int32Value[] = [];
@@ -205,7 +205,7 @@ describe('generated client style rx', () => {
         });
 
         it('should error on response error', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("response err", "ERR"),
             }));
             await expectAsync(
@@ -216,7 +216,7 @@ describe('generated client style rx', () => {
         });
 
         it('should error on status error', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status err", "ERR"),
             }));
             await expectAsync(
@@ -230,7 +230,7 @@ describe('generated client style rx', () => {
             const transport = new TestTransport({
                 response: Int32Value.create({value: 123})
             });
-            const client = new RxjsStyleServiceClient(transport);
+            const client = new AllStyleServiceClient(transport);
             const input = new Observable<StringValue>(subscriber => {
                 setTimeout(() => subscriber.next({value: "a"}), 10);
                 setTimeout(() => subscriber.next({value: "b"}), 20);
@@ -249,7 +249,7 @@ describe('generated client style rx', () => {
         });
 
         it('should complete empty if aborted', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const abort = new AbortController();
             setTimeout(() => {
                 abort.abort();
@@ -267,7 +267,7 @@ describe('generated client style rx', () => {
         });
 
         it('should cancel on unsubscribe', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const msg: Int32Value[] = [];
             let err: any = undefined;
             const sub = client.clientStream(
@@ -290,7 +290,7 @@ describe('generated client style rx', () => {
     describe("duplex-streaming", function () {
 
         it('should return message observable', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     {value: 1},
                     {value: 2},
@@ -311,7 +311,7 @@ describe('generated client style rx', () => {
         });
 
         it('should error on response error', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("response err", "ERR"),
             }));
             await expectAsync(
@@ -322,7 +322,7 @@ describe('generated client style rx', () => {
         });
 
         it('should error on status error', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status err", "ERR"),
             }));
             await expectAsync(
@@ -336,7 +336,7 @@ describe('generated client style rx', () => {
             const transport = new TestTransport({
                 response: Int32Value.create({value: 123})
             });
-            const client = new RxjsStyleServiceClient(transport);
+            const client = new AllStyleServiceClient(transport);
             const input = new Observable<StringValue>(subscriber => {
                 setTimeout(() => subscriber.next({value: "a"}), 10);
                 setTimeout(() => subscriber.next({value: "b"}), 20);
@@ -355,7 +355,7 @@ describe('generated client style rx', () => {
         });
 
         it('should complete empty if aborted', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const abort = new AbortController();
             setTimeout(() => {
                 abort.abort();
@@ -373,7 +373,7 @@ describe('generated client style rx', () => {
         });
 
         it('should cancel on unsubscribe', async function () {
-            const client = new RxjsStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const msg: Int32Value[] = [];
             let err: any = undefined;
             const sub = client.clientStream(

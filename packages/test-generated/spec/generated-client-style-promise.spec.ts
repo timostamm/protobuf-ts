@@ -1,7 +1,7 @@
 import {RpcError, TestTransport} from "@protobuf-ts/runtime-rpc";
 import {AbortController} from "abort-controller";
 import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
-import {PromiseStyleServiceClient} from "../ts-out/service-style-promise.promise-client";
+import {AllStyleServiceClient} from "../ts-out/service-style-all.promise-client";
 
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
 
@@ -12,7 +12,7 @@ describe('generated client style promise', () => {
     describe("server-streaming", function () {
 
         it('should return async iterable', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     Int32Value.create({value: 1}),
                     Int32Value.create({value: 2}),
@@ -27,7 +27,7 @@ describe('generated client style promise', () => {
         });
 
         it('should reject iterator on message error', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("sorry...")
             }));
             try {
@@ -40,7 +40,7 @@ describe('generated client style promise', () => {
         });
 
         it('should reject iterator on status error', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status err"),
                 response: [
                     {value: 1},
@@ -66,7 +66,7 @@ describe('generated client style promise', () => {
     describe("unary", function () {
 
         it('should return message promise', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: {value: 123}
             }));
             let response = await client.unary({value: "abc"});
@@ -74,7 +74,7 @@ describe('generated client style promise', () => {
         });
 
         it('should reject on response error', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("response error", "ERR"),
             }));
             await expectAsync(
@@ -83,7 +83,7 @@ describe('generated client style promise', () => {
         });
 
         it('should reject on status error', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status error", "ERR"),
             }));
             await expectAsync(
@@ -92,7 +92,7 @@ describe('generated client style promise', () => {
         });
 
         it('should cancel if signaled', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const abort = new AbortController();
             setTimeout(() => {
                 abort.abort();
@@ -104,7 +104,7 @@ describe('generated client style promise', () => {
         });
 
         it('should cancel if signal already aborted', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const abort = new AbortController();
             abort.abort();
             const promise = client.unary({value: "abc"}, {
@@ -125,7 +125,7 @@ describe('generated client style promise', () => {
         }
 
         it('should return message promise', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: {value: 123}
             }));
             let response = await client.clientStream(produceInput());
@@ -133,7 +133,7 @@ describe('generated client style promise', () => {
         });
 
         it('should reject on response error', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("response error", "ERR"),
             }));
             await expectAsync(
@@ -142,7 +142,7 @@ describe('generated client style promise', () => {
         });
 
         it('should reject on status error', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status error", "ERR"),
             }));
             await expectAsync(
@@ -151,7 +151,7 @@ describe('generated client style promise', () => {
         });
 
         it('should cancel if signaled', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const abort = new AbortController();
             setTimeout(() => {
                 abort.abort();
@@ -178,7 +178,7 @@ describe('generated client style promise', () => {
         });
 
         it('should cancel if signal already aborted', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const abort = new AbortController();
             abort.abort();
             const promise = client.clientStream(produceInput(), {
@@ -191,7 +191,7 @@ describe('generated client style promise', () => {
             const transport = new TestTransport({
                 response: Int32Value.create({value: 123})
             });
-            const client = new PromiseStyleServiceClient(transport);
+            const client = new AllStyleServiceClient(transport);
 
             const call = client.clientStream(produceInput());
             expect(transport.sendComplete).toBeFalse();
@@ -215,7 +215,7 @@ describe('generated client style promise', () => {
         }
 
         it('should return async iterable', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     Int32Value.create({value: 1}),
                     Int32Value.create({value: 2}),
@@ -230,7 +230,7 @@ describe('generated client style promise', () => {
         });
 
         it('should reject iterator on message error', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("sorry...")
             }));
             try {
@@ -243,7 +243,7 @@ describe('generated client style promise', () => {
         });
 
         it('should reject iterator on status error', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status err"),
                 response: [
                     {value: 1},
@@ -267,7 +267,7 @@ describe('generated client style promise', () => {
             const transport = new TestTransport({
                 response: Int32Value.create({value: 123})
             });
-            const client = new PromiseStyleServiceClient(transport);
+            const client = new AllStyleServiceClient(transport);
             const output = client.bidi(produceInput());
             expect(transport.sendComplete).toBeFalse();
             expect(transport.sentMessages.length).toBe(0);
@@ -279,7 +279,7 @@ describe('generated client style promise', () => {
 
 
         it('should cancel if signaled', async function () {
-            const client = new PromiseStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     {value: 1},
                     {value: 2},

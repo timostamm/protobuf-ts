@@ -1,7 +1,7 @@
 import {RpcError, ServerStreamingCall, TestTransport, UnaryCall} from "@protobuf-ts/runtime-rpc";
 import {AbortController} from "abort-controller";
 import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
-import {CallStyleServiceClient} from "../ts-out/service-style-call.client";
+import {AllStyleServiceClient} from "../ts-out/service-style-all.client";
 
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
 
@@ -12,13 +12,13 @@ describe('generated client style call', () => {
     describe("unary", function () {
 
         it('should return unary call', async function () {
-            const client = new CallStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const call = client.unary(StringValue.create());
             expect(call).toBeInstanceOf(UnaryCall);
         });
 
         it('should promise results', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 headers: {
                     responseHeader: "hello",
                 },
@@ -37,7 +37,7 @@ describe('generated client style call', () => {
         });
 
         it('should be awaitable finished call', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 headers: {
                     responseHeader: "hello",
                 },
@@ -57,7 +57,7 @@ describe('generated client style call', () => {
         });
 
         it('should reject finished call on response error', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("response error", "ERR"),
             }));
             const call = client.unary({value: "abc"});
@@ -65,7 +65,7 @@ describe('generated client style call', () => {
         });
 
         it('should reject finished call on status error', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 status: new RpcError("status error", "ERR"),
             }));
             const call = client.unary({value: "abc"});
@@ -73,7 +73,7 @@ describe('generated client style call', () => {
         });
 
         it('should reject finished call on abort', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: {value: 123}
             }));
             const abort = new AbortController();
@@ -85,7 +85,7 @@ describe('generated client style call', () => {
         });
 
         it('should reject results on abort', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: {value: 123}
             }));
             const abort = new AbortController();
@@ -105,13 +105,13 @@ describe('generated client style call', () => {
     describe("server-streaming", function () {
 
         it('should return server streaming call', async function () {
-            const client = new CallStyleServiceClient(new TestTransport());
+            const client = new AllStyleServiceClient(new TestTransport());
             const call = client.serverStream(StringValue.create());
             expect(call).toBeInstanceOf(ServerStreamingCall);
         });
 
         it('should stream all response messages', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     Int32Value.create({value: 1}),
                     Int32Value.create({value: 2}),
@@ -127,7 +127,7 @@ describe('generated client style call', () => {
         });
 
         it('should reject stream on message error', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: new RpcError("response err")
             }));
             const call = client.serverStream(StringValue.create());
@@ -141,7 +141,7 @@ describe('generated client style call', () => {
         });
 
         it('should reject finished call on abort', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     {value: 1},
                     {value: 2},
@@ -157,7 +157,7 @@ describe('generated client style call', () => {
         });
 
         it('should reject response stream on abort', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     {value: 1},
                     {value: 2},
@@ -179,7 +179,7 @@ describe('generated client style call', () => {
         });
 
         it('should reject results on abort', async function () {
-            const client = new CallStyleServiceClient(new TestTransport({
+            const client = new AllStyleServiceClient(new TestTransport({
                 response: [
                     {value: 1},
                     {value: 2},
