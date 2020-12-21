@@ -17,6 +17,7 @@
     "bigint",
     "Angular",
     "gRPC-web",
+    "gRPC",
     "Twirp",
     "Reflection"
   ],
