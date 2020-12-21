@@ -1,5 +1,7 @@
-import {ExampleRequest, ExampleResponse} from "./service-example";
+import {ExampleRequest, ExampleResponse, ExampleService} from "./service-example";
 import {MethodInfo, RpcError, RpcInputStream, RpcMetadata, RpcOutputStream, RpcStatus} from "@protobuf-ts/runtime-rpc";
+import * as grpc from "@grpc/grpc-js";
+import {ServiceInfo} from "../runtime-rpc";
 
 
 /*
@@ -21,6 +23,7 @@ import {MethodInfo, RpcError, RpcInputStream, RpcMetadata, RpcOutputStream, RpcS
  */
 
 
+// TODO generate this interface if (ts.server) = GENERIC or --ts_opt server_generic
 interface IExampleService {
 
     unary(request: ExampleRequest, context: ServerCallContext):
@@ -38,6 +41,7 @@ interface IExampleService {
 }
 
 
+// TODO provide in runtime-rpc
 interface ServerCallContext {
 
     /**
@@ -63,6 +67,7 @@ interface ServerCallContext {
 }
 
 
+// user implements:
 const imp: IExampleService = {
 
 
@@ -75,7 +80,7 @@ const imp: IExampleService = {
 
         context.responseTrailers["foo"] = "bar";
         context.status = {
-            code : "x",
+            code: "x",
             detail: ""
         };
 
@@ -108,3 +113,43 @@ const imp: IExampleService = {
 
 
 };
+
+
+// TODO provide in @protobuf-ts/grpc-backend
+function createAdapter(serviceInfo: ServiceInfo, serviceImplementation: any): [grpc.ServiceDefinition, grpc.UntypedServiceImplementation] {
+
+    // create a grpc.ServiceDefinition from our serviceInfo
+    const grpcDefinition = createGrpcDefinition(serviceInfo);
+
+    // TODO create a wrapper that translates from grpc requests to our service
+    const grpcImplementation: grpc.UntypedServiceImplementation = null as unknown as grpc.UntypedServiceImplementation;
+
+    return [grpcDefinition, grpcImplementation];
+}
+
+
+/**
+ * Create a service definition for @grpc/grpc-js from service info.
+ */
+function createGrpcDefinition(serviceInfo: ServiceInfo): grpc.ServiceDefinition {
+    const grpcMethods: { [k: string]: grpc.MethodDefinition<any, any> } = {};
+    for (let mi of serviceInfo.methods) {
+        grpcMethods[mi.localName] = {
+            path: `/${serviceInfo.typeName}/${mi.name}`,
+            originalName: mi.name,
+            requestStream: mi.clientStreaming,
+            responseStream: mi.serverStreaming,
+            responseDeserialize: bytes => mi.O.fromBinary(bytes),
+            requestDeserialize: bytes => mi.I.fromBinary(bytes),
+            responseSerialize: value => Buffer.from(mi.O.toBinary(value)),
+            requestSerialize: value => Buffer.from(mi.I.toBinary(value)),
+        };
+    }
+    return grpcMethods;
+}
+
+
+// usage:
+const server = new grpc.Server();
+const [definition, implementation] = createAdapter(ExampleService, imp);
+server.addService(definition, implementation);

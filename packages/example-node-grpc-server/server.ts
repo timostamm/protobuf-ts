@@ -101,6 +101,25 @@ const exampleService: IExampleService = {
         trailers.add("server-trailer", "server trailer value duplicate");
         trailers.add("server-trailer-bin", Buffer.from('server trailer binary value'));
 
+        let sent = 0;
+
+        function sendBunch(done: Function) {
+            setTimeout(function () {
+
+                call.write(ExampleResponse.create({
+                    answer: `#${sent + 1}`
+                }), function () {
+                    sent++;
+                    if (sent < 5) {
+                        sendBunch(done);
+                    } else {
+                        done();
+                    }
+                });
+
+            }, call.request.pleaseDelayResponseMs);
+        }
+
         if (call.request.pleaseFail === FailRequest.ERROR_STATUS_ONLY) {
 
             let e: any = new Error("not implemented");
@@ -115,25 +134,6 @@ const exampleService: IExampleService = {
             call.destroy(e);
 
         } else {
-
-            let sent = 0;
-
-            function sendBunch(done: Function) {
-                setTimeout(function () {
-
-                    call.write(ExampleResponse.create({
-                        answer: `#${sent + 1}`
-                    }), function () {
-                        sent++;
-                        if (sent < 5) {
-                            sendBunch(done);
-                        } else {
-                            done();
-                        }
-                    });
-
-                }, call.request.pleaseDelayResponseMs);
-            }
 
             sendBunch(function () {
 
