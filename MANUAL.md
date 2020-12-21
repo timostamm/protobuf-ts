@@ -37,6 +37,7 @@ protobuf-ts manual
   - [gRPC web transport](#grpc-web-transport)
   - [Twirp transport](#twirp-transport)
   - [gRPC transport](#grpc-transport)
+  - [gRPC server](#grpc-server)
 - [Angular support](#angular-support)
 
 
@@ -101,58 +102,73 @@ npx protoc \
 
 
 Available plugin parameters:
-- "long_type_bigint" (default)
-  Sets jstype = JS_NORMAL for message fields with 64 bit integral values. 
-  Only applies to fields that do *not* use the option `jstype`.
 
 - "long_type_string"  
-  Sets jstype = JS_STRING for message fields with 64 bit integral values. 
+  Sets jstype = JS_STRING for message fields with 64 bit integral values.  
   The default behaviour is to use native `bigint`.  
   Only applies to fields that do *not* use the option `jstype`.
 
 - "long_type_number"  
-  Sets jstype = JS_NUMBER for message fields with 64 bit integral values. 
+  Sets jstype = JS_NUMBER for message fields with 64 bit integral values.  
   The default behaviour is to use native `bigint`.  
-  Only applies to fields that do *not* use the option `jstype`.  
+  Only applies to fields that do *not* use the option `jstype`.
+
+- "long_type_bigint"  
+  Sets jstype = JS_NORMAL for message fields with 64 bit integral values.  
+  This is the default behavior.  
+  Only applies to fields that do *not* use the option `jstype`.
 
 - "generate_dependencies"  
-  By default, only the PROTO_FILES passed as input to protoc are generated, 
-  not the files they import. Set this option to generate code for dependencies 
+  By default, only the PROTO_FILES passed as input to protoc are generated,  
+  not the files they import. Set this option to generate code for dependencies  
   too.
 
 - "client_none"  
-  Do not generate service clients.  
-  Only applies to services that do *not* use the option `ts.client`. 
-  If you do not want service clients at all, use `force_client_none`.
+  Do not generate rpc clients.  
+  Only applies to services that do *not* use the option `ts.client`.  
+  If you do not want rpc clients at all, use `force_client_none`.
 
 - "client_call"  
-  Use *Call return types for service clients.  
-  Only applies to services that do *not* use the option `ts.client`. 
+  Use *Call return types for rpc clients.  
+  Only applies to services that do *not* use the option `ts.client`.  
   Since CALL is the default, this option has no effect.
 
 - "client_promise"  
-  Use Promise return types for service clients.  
-  Only applies to services that do *not* use the option `ts.client`.
+  Use Promise return types for rpc clients.  
+  Only applies to services that do *not* use the option `ts.client`.  
 
 - "client_rx"  
-  Use Observable return types from the `rxjs` package for service clients. 
+  Use Observable return types from the `rxjs` package for rpc clients.  
   Only applies to services that do *not* use the option `ts.client`.
 
 - "force_client_none"  
-  Do not generate service clients, ignore service options.
+  Do not generate rpc clients, ignore options in proto files.
 
 - "enable_angular_annotations"  
-  If set, the generated service client will have an angular @Injectable() 
-  annotation and the `RpcTransport` constructor argument is annotated with a 
-  @Inject annotation. For this feature, you will need the npm package 
+  If set, the generated rpc client will have an angular @Injectable()  
+  annotation and the `RpcTransport` constructor argument is annotated with a  
+  @Inject annotation. For this feature, you will need the npm package  
   '@protobuf-ts/runtime-angular'.
 
+- "server_none"  
+  Do not generate rpc servers.  
+  This is the default behaviour, but only applies to services that do   
+  *not* use the option `ts.server`.  
+  If you do not want servers at all, use `force_server_none`.
+
+- "server_grpc"  
+  Generate a server interface and definition for use with @grpc/grpc-js.  
+  Only applies to services that do *not* use the option `ts.server`.
+
+- "force_server_none"  
+  Do not generate rpc servers, ignore options in proto files.
+
 - "optimize_speed"  
-  Sets optimize_for = SPEED for proto files that have no file option 
+  Sets optimize_for = SPEED for proto files that have no file option  
   'option optimize_for'. Since SPEED is the default, this option has no effect.
 
 - "optimize_code_size"  
-  Sets optimize_for = CODE_SIZE for proto files that have no file option 
+  Sets optimize_for = CODE_SIZE for proto files that have no file option  
   'option optimize_for'.
 
 - "force_optimize_code_size"  
@@ -1775,6 +1791,8 @@ provided by the `UnaryCall`, see [RPC method types](#rpc-method-types).
 The gRPC transport supports all [method types](#rpc-method-types). It uses the 
 package `@grpc/grpc-js` to make gRPC requests and can only be used in Node.js.
 
+To use the gRPC transport, install the package `@protobuf-ts/grpc-transport`.
+
 Example usage:
 
 ```typescript
@@ -1796,6 +1814,80 @@ for await (let hat of streamingCall.response) {
 
 
 For more information, have a look at the example client in [packages/example-node-grpc-client](https://github.com/timostamm/protobuf-ts/tree/master/packages/example-node-grpc-client).
+
+
+### gRPC server
+
+'protobuf-ts' can generate code for gRPC servers that run in Node.JS. 
+
+> **Note:** The generated code requires the package @grpc/grpc-js. Install it with:
+> ```shell script
+> # with npm:
+> npm install @grpc/grpc-js
+> 
+> # with yarn:
+> yarn add @grpc/grpc-js
+> ```
+
+To generate a gRPC server, set the plugin parameter `server_grpc` or 
+set the service option `(ts_server) = GRPC`. Example:
+
+```proto
+// example-service.proto
+syntax = "proto3";
+package spec;
+
+import "protobuf-ts.proto";
+
+service ExampleService {
+  option (ts.server) = GRPC;
+  rpc method (RequestMessage) returns (ResponseMessage);
+}
+```
+
+This will generate the following TypeScript:
+
+```typescript
+// example-service.grpc-server.ts
+import * as grpc from "@grpc/grpc-js";
+
+// implement this interface
+export interface IExampleService extends grpc.UntypedServiceImplementation {
+  unary: grpc.handleUnaryCall<RequestMessage, ResponseMessage>;
+}
+
+// a service definition 
+export const exampleServiceDefinition: grpc.ServiceDefinition<IExampleService> = {
+    // ...
+}
+```
+
+After implementing your service using the generated interface, you can 
+start a server with `@grpc/grpc-js`: 
+
+```typescript
+const exampleService: IExampleService = {
+  // implement your service here
+};
+
+const server = new grpc.Server();
+server.addService(exampleServiceDefinition, exampleService);
+server.bindAsync(
+  '0.0.0.0:5000',
+  grpc.ServerCredentials.createInsecure(),
+  (err: Error | null, port: number) => {
+    if (err) {
+      console.error(`Server error: ${err.message}`);
+    } else {
+      console.log(`Server bound on port: ${port}`);
+      server.start();
+    }
+  }
+);
+```
+
+For a working example, have a look at  [packages/example-node-grpc-server](https://github.com/timostamm/protobuf-ts/tree/master/packages/example-node-grpc-server).
+
 
 
 

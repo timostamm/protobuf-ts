@@ -88,7 +88,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         // server
         server_none: {
             description: "Do not generate rpc servers. \n" +
-                         "This is the default behaviour, but only applies to services that do . \n" +
+                         "This is the default behaviour, but only applies to services that do \n" +
                          "*not* use the option `ts.server`. \n" +
                          "If you do not want servers at all, use `force_server_none`.",
             excludes: ['server_grpc'],
