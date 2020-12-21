@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+// This file should generate to service-clash.ts *and* service-clash.client.ts.
+// Because the latter is already taken by a proto file, the client file should
+// be written under a different name.
+
+package spec;
+
+service ClashService {
+}

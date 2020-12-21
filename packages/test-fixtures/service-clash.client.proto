@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+// This file generates to service-clash.client.ts.
+// It blocks the client file for service.clash.proto.
+
+package spec;
+
+
+message ClashWithExampleServiceClient {}

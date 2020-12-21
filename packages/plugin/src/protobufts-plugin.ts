@@ -23,6 +23,7 @@ import {ServiceTypeGenerator} from "./code-gen/service-type-generator";
 import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-call";
 import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
 import {ServiceClientGeneratorRxjs} from "./code-gen/service-client-generator-rxjs";
+import {FileTable} from "./file-table";
 
 
 export class ProtobuftsPlugin extends PluginBase<OutFile> {
@@ -147,6 +148,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             }),
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
+            fileTable = new FileTable(),
             imports = new TypeScriptImports(symbols),
             comments = new CommentGenerator(registry),
             interpreter = new Interpreter(registry, options),
@@ -161,50 +163,44 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             genClientRx = new ServiceClientGeneratorRxjs(symbols, registry, imports, comments, interpreter, options)
         ;
 
+
         let outFiles: OutFile[] = [];
+
+
+        // ensure unique file names
+        for (let fileDescriptor of registry.allFiles()) {
+            const base = fileDescriptor.name!.replace('.proto', '');
+            fileTable.register(base + '.ts', fileDescriptor);
+        }
+        for (let fileDescriptor of registry.allFiles()) {
+            const base = fileDescriptor.name!.replace('.proto', '');
+            fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc-server');
+            fileTable.register(base + '.client.ts', fileDescriptor, 'client');
+            fileTable.register(base + '.rx-client.ts', fileDescriptor, 'rx-client');
+            fileTable.register(base + '.promise-client.ts', fileDescriptor, 'promise-client');
+        }
+
 
         for (let fileDescriptor of registry.allFiles()) {
             const
-                outBasename = fileDescriptor.name!.replace('.proto', ''),
-
-                // TODO #55 prevent file name clashes
-                outMain = new OutFile(outBasename + '.ts', fileDescriptor, registry, options),
-                outServerGrpc = new OutFile(outBasename + '.grpc-server.ts', fileDescriptor, registry, options),
-                outClientCall = new OutFile(outBasename + '.client.ts', fileDescriptor, registry, options),
-                outClientRx = new OutFile(outBasename + '.rx-client.ts', fileDescriptor, registry, options),
-                outClientPromise = new OutFile(outBasename + '.promise-client.ts', fileDescriptor, registry, options)
-            ;
-
+                outMain = new OutFile(fileTable.get(fileDescriptor).name, fileDescriptor, registry, options),
+                outServerGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc-server').name, fileDescriptor, registry, options),
+                outClientCall = new OutFile(fileTable.get(fileDescriptor, 'client').name, fileDescriptor, registry, options),
+                outClientRx = new OutFile(fileTable.get(fileDescriptor, 'rx-client').name, fileDescriptor, registry, options),
+                outClientPromise = new OutFile(fileTable.get(fileDescriptor, 'promise-client').name, fileDescriptor, registry, options);
             outFiles.push(outMain, outServerGrpc, outClientCall, outClientRx, outClientPromise);
 
             registry.visitTypes(fileDescriptor, descriptor => {
                 // we are not interested in synthetic types like map entry messages
                 if (registry.isSyntheticElement(descriptor)) return;
 
-                // create the symbol name for the type and register
+                // register all symbols, regardless whether they are going to be used - we want stable behaviour
                 symbols.register(createLocalTypeName(descriptor, registry), descriptor, outMain);
-
-                // we need some special handling for services
                 if (ServiceDescriptorProto.is(descriptor)) {
-
-                    // client symbols
-                    const clientStyles = optionResolver.getClientStyles(descriptor);
-                    if (clientStyles.includes(ClientStyle.CALL_CLIENT)) {
-                        genClientCall.registerSymbols(outClientCall, descriptor);
-                    }
-                    if (clientStyles.includes(ClientStyle.RX_CLIENT)) {
-                        genClientRx.registerSymbols(outClientRx, descriptor);
-                    }
-                    if (clientStyles.includes(ClientStyle.PROMISE_CLIENT)) {
-                        genClientPromise.registerSymbols(outClientPromise, descriptor);
-                    }
-
-                    // server symbols
-                    const serverStyles = optionResolver.getServerStyles(descriptor);
-                    if (serverStyles.includes(ServerStyle.GRPC_SERVER)) {
-                        genServerGrpc.registerSymbols(outServerGrpc, descriptor);
-                    }
-
+                    genClientCall.registerSymbols(outClientCall, descriptor);
+                    genClientRx.registerSymbols(outClientRx, descriptor);
+                    genClientPromise.registerSymbols(outClientPromise, descriptor);
+                    genServerGrpc.registerSymbols(outServerGrpc, descriptor);
                 }
             });
 
