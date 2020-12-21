@@ -2,15 +2,16 @@
  * Custom file options interpreted by @protobuf-ts/plugin
  */
 import * as rt from "@protobuf-ts/runtime";
-import * as rpc from "@protobuf-ts/runtime-rpc";
 import {
     FileDescriptorProto,
     FileOptions,
-    FileOptions_OptimizeMode,
+    FileOptions_OptimizeMode as OptimizeMode,
+    IStringFormat,
     MethodOptions,
     ServiceDescriptorProto,
     ServiceOptions
 } from "@protobuf-ts/plugin-framework";
+import {Interpreter} from "./interpreter";
 
 
 /**
@@ -177,7 +178,6 @@ const emptyServiceOptions = OurServiceOptions.create();
  */
 export interface InternalOptions {
     readonly pluginCredit?: string;
-    readonly optimizeFor: FileOptions_OptimizeMode;
     readonly normalLongType: rt.LongType,
     readonly emitAngularAnnotations: boolean;
     // create a "synthetic" enum value with this string as name if no 0 value is present
@@ -201,7 +201,6 @@ export function makeInternalOptions(options?: Partial<InternalOptions>): Interna
 }
 
 const defaultOptions: InternalOptions = {
-    optimizeFor: FileOptions_OptimizeMode.SPEED,
     normalLongType: rt.LongType.BIGINT,
     emitAngularAnnotations: false,
     synthesizeEnumZeroValue: 'UNSPECIFIED$',
@@ -211,3 +210,105 @@ const defaultOptions: InternalOptions = {
     angularCoreImportPath: '@angular/core',
     runtimeImportPath: '@protobuf-ts/runtime',
 } as const;
+
+
+export class OptionResolver {
+
+
+    constructor(
+        private readonly interpreter: Interpreter,
+        private readonly stringFormat: IStringFormat,
+        private readonly params: {
+            force_optimize_code_size: boolean,
+            force_optimize_speed: boolean,
+            optimize_code_size: boolean,
+            force_server_none: boolean,
+            server_none: boolean,
+            server_grpc: boolean
+            force_client_none: boolean,
+            client_none: boolean,
+            client_rx: boolean,
+            client_promise: boolean
+        }
+    ) {
+    }
+
+
+    getOptimizeMode(file: FileDescriptorProto): OptimizeMode {
+        if (this.params.force_optimize_code_size)
+            return OptimizeMode.CODE_SIZE;
+        if (this.params.force_optimize_speed)
+            return OptimizeMode.SPEED;
+        if (file.options?.optimizeFor)
+            return file.options.optimizeFor;
+        if (this.params.optimize_code_size)
+            return OptimizeMode.CODE_SIZE;
+        return OptimizeMode.SPEED;
+    }
+
+
+    getClientStyles(descriptor: ServiceDescriptorProto): ClientStyle[] {
+        const opt = this.interpreter.readOurServiceOptions(descriptor)["ts.client"];
+
+        // always check service options valid
+        if (opt.includes(ClientStyle.NO_CLIENT) && opt.some(s => s !== ClientStyle.NO_CLIENT)) {
+            let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NO_CLIENT, you cannot set additional client styles.`);
+            err.name = `PluginMessageError`;
+            throw err;
+        }
+
+        // clients disabled altogether?
+        if (this.params.force_client_none) {
+            return [];
+        }
+
+        // look for service options
+        if (opt.length) {
+            return opt
+                .filter(s => s !== ClientStyle.NO_CLIENT)
+                .filter((value, index, array) => array.indexOf(value) === index);
+        }
+
+        // fall back to normal style set by parameter
+        if (this.params.client_none)
+            return [];
+        else if (this.params.client_rx)
+            return [ClientStyle.RX_CLIENT];
+        else if (this.params.client_promise)
+            return [ClientStyle.PROMISE_CLIENT];
+        else
+            return [ClientStyle.CALL_CLIENT];
+    }
+
+
+    getServerStyles(descriptor: ServiceDescriptorProto): ServerStyle[] {
+        const opt = this.interpreter.readOurServiceOptions(descriptor)["ts.server"];
+
+        // always check service options valid
+        if (opt.includes(ServerStyle.NO_SERVER) && opt.some(s => s !== ServerStyle.NO_SERVER)) {
+            let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.server) = NO_SERVER, you cannot set additional server styles.`);
+            err.name = `PluginMessageError`;
+            throw err;
+        }
+
+        // clients disabled altogether?
+        if (this.params.force_server_none) {
+            return [];
+        }
+
+        // look for service options
+        if (opt.length) {
+            return opt
+                .filter(s => s !== ServerStyle.NO_SERVER)
+                .filter((value, index, array) => array.indexOf(value) === index);
+        }
+
+        // fall back to normal style set by parameter
+        if (this.params.server_grpc) {
+            return [ServerStyle.GRPC_SERVER];
+        }
+        return [];
+    }
+
+}
+

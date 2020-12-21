@@ -3,24 +3,25 @@ import * as rt from "@protobuf-ts/runtime";
 import {
     DescriptorRegistry,
     EnumDescriptorProto,
+    SymbolTable,
     TypescriptEnumBuilder,
-    TypescriptImportManager,
-    TypescriptFile
+    TypescriptFile,
+    TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
+import {GeneratorBase} from "./generator-base";
 
 
-export class EnumGenerator {
+export class EnumGenerator extends GeneratorBase {
 
 
-    constructor(
-        private readonly registry: DescriptorRegistry,
-        private readonly imports: TypescriptImportManager,
-        private readonly interpreter: Interpreter,
-        private readonly commentGenerator: CommentGenerator,
-    ) {
+    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+                private readonly options: {
+                }) {
+        super(symbols, registry, imports, comments, interpreter);
     }
+
 
     /**
      * For the following .proto:
@@ -62,23 +63,23 @@ export class EnumGenerator {
      * ```
      *
      */
-    generateEnum(descriptor: EnumDescriptorProto, source: TypescriptFile): ts.EnumDeclaration {
+    generateEnum(source: TypescriptFile, descriptor: EnumDescriptorProto): ts.EnumDeclaration {
         let enumObject = this.interpreter.getEnumInfo(descriptor)[1],
             builder = new TypescriptEnumBuilder();
         for (let ev of rt.listEnumValues(enumObject)) {
             let evDescriptor = descriptor.value.find(v => v.number === ev.number);
             let comments = evDescriptor
-                ? this.commentGenerator.getCommentBlock(evDescriptor, true)
+                ? this.comments.getCommentBlock(evDescriptor, true)
                 : "@generated synthetic value - protobuf-ts requires all enums to have a 0 value";
             builder.add(ev.name, ev.number, comments);
         }
         let statement = builder.build(
-            this.imports.type(descriptor),
+            this.imports.type(source,descriptor),
             [ts.createModifier(ts.SyntaxKind.ExportKeyword)]
         );
         // add to our file
         source.addStatement(statement);
-        this.commentGenerator.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         return statement;
     }
 

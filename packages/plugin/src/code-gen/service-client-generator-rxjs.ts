@@ -3,20 +3,21 @@ import {SyntaxKind} from "typescript";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {ServiceClientGeneratorBase} from "./service-client-generator-base";
 import {assert} from "@protobuf-ts/runtime";
-import {ClientStyle} from "../our-options";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 
 
 export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
 
 
-    readonly style = ClientStyle.RX_CLIENT;
+     readonly symbolKindInterface = 'rx-client-interface';
+     readonly symbolKindImplementation = 'rx-client';
 
 
-    createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let RpcError = this.imports.name("RpcError", this.options.runtimeRpcImportPath);
-        let stackIntercept = this.imports.name("stackIntercept", this.options.runtimeRpcImportPath);
-        let Observable = this.imports.name('Observable', "rxjs");
+    createUnary(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        let RpcOptions = this.imports.name(source, 'RpcOptions', this.options.runtimeRpcImportPath);
+        let RpcError = this.imports.name(source, "RpcError", this.options.runtimeRpcImportPath);
+        let stackIntercept = this.imports.name(source, "stackIntercept", this.options.runtimeRpcImportPath);
+        let Observable = this.imports.name(source, 'Observable', "rxjs");
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
@@ -28,7 +29,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             [
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    this.makeI(methodInfo)
+                    this.makeI(source, methodInfo)
                 ),
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
@@ -38,7 +39,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             ts.createTypeReferenceNode(
                 Observable,
                 [
-                    this.makeO(methodInfo),
+                    this.makeO(source, methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -147,7 +148,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
 
                     ts.createReturn(ts.createNew(
                         ts.createIdentifier(Observable),
-                        [this.makeO(methodInfo)],
+                        [this.makeO(source, methodInfo)],
                         [ts.createArrowFunction(
                             undefined,
                             undefined,
@@ -199,8 +200,8 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                                                 ts.createCall(
                                                     ts.createIdentifier(stackIntercept),
                                                     [
-                                                        this.makeI(methodInfo),
-                                                        this.makeO(methodInfo)
+                                                        this.makeI(source, methodInfo),
+                                                        this.makeO(source, methodInfo)
                                                     ],
                                                     [
                                                         ts.createStringLiteral("unary"),
@@ -342,11 +343,11 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
     }
 
 
-    createServerStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let RpcError = this.imports.name('RpcError', this.options.runtimeRpcImportPath);
-        let stackIntercept = this.imports.name('stackIntercept', this.options.runtimeRpcImportPath);
-        let Observable = this.imports.name("Observable", "rxjs");
+    createServerStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        let RpcOptions = this.imports.name(source, 'RpcOptions', this.options.runtimeRpcImportPath);
+        let RpcError = this.imports.name(source, 'RpcError', this.options.runtimeRpcImportPath);
+        let stackIntercept = this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath);
+        let Observable = this.imports.name(source, "Observable", "rxjs");
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
@@ -357,7 +358,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             [
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    this.makeI(methodInfo)
+                    this.makeI(source, methodInfo)
                 ),
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
@@ -367,7 +368,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             ts.createTypeReferenceNode(
                 Observable,
                 [
-                    this.makeO(methodInfo),
+                    this.makeO(source, methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -477,7 +478,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                     ts.createReturn(ts.createNew(
                         ts.createIdentifier(Observable),
                         [
-                            this.makeO(methodInfo)
+                            this.makeO(source, methodInfo)
                         ],
                         [ts.createArrowFunction(
                             undefined,
@@ -624,8 +625,8 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                                                 ts.createCall(
                                                     ts.createIdentifier(stackIntercept),
                                                     [
-                                                        this.makeI(methodInfo),
-                                                        this.makeO(methodInfo),
+                                                        this.makeI(source, methodInfo),
+                                                        this.makeO(source, methodInfo),
                                                     ],
                                                     [
                                                         ts.createStringLiteral("serverStreaming"),
@@ -776,14 +777,14 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
     }
 
 
-    createClientStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let RpcError = this.imports.name('RpcError', this.options.runtimeRpcImportPath);
-        let stackIntercept = this.imports.name("stackIntercept", this.options.runtimeRpcImportPath);
-        let Observable = this.imports.name('Observable', "rxjs");
-        let from = this.imports.name('from', "rxjs");
-        let switchMap = this.imports.name('switchMap', "rxjs/operators");
-        let concatMap = this.imports.name('concatMap', "rxjs/operators");
+    createClientStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        let RpcOptions = this.imports.name(source, 'RpcOptions', this.options.runtimeRpcImportPath);
+        let RpcError = this.imports.name(source, 'RpcError', this.options.runtimeRpcImportPath);
+        let stackIntercept = this.imports.name(source, "stackIntercept", this.options.runtimeRpcImportPath);
+        let Observable = this.imports.name(source, 'Observable', "rxjs");
+        let from = this.imports.name(source, 'from', "rxjs");
+        let switchMap = this.imports.name(source, 'switchMap', "rxjs/operators");
+        let concatMap = this.imports.name(source, 'concatMap', "rxjs/operators");
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
@@ -794,7 +795,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             [
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    ts.createTypeReferenceNode(ts.createIdentifier(Observable), [this.makeI(methodInfo),]), undefined
+                    ts.createTypeReferenceNode(ts.createIdentifier(Observable), [this.makeI(source, methodInfo),]), undefined
                 ),
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
@@ -804,7 +805,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             ts.createTypeReferenceNode(
                 Observable,
                 [
-                    this.makeO(methodInfo),
+                    this.makeO(source, methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -911,7 +912,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                         ts.createReturn(ts.createNew(
                             ts.createIdentifier(Observable),
                             [
-                                this.makeO(methodInfo)
+                                this.makeO(source, methodInfo)
                             ],
                             [ts.createArrowFunction(
                                 undefined,
@@ -968,8 +969,8 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                                                         ts.createCall(
                                                             ts.createIdentifier(stackIntercept),
                                                             [
-                                                                this.makeI(methodInfo),
-                                                                this.makeO(methodInfo),
+                                                                this.makeI(source, methodInfo),
+                                                                this.makeO(source, methodInfo),
                                                             ],
                                                             [
                                                                 ts.createStringLiteral("clientStreaming"),
@@ -1306,14 +1307,14 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
     }
 
 
-    createDuplexStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let RpcError = this.imports.name('RpcError', this.options.runtimeRpcImportPath);
-        let stackIntercept = this.imports.name("stackIntercept", this.options.runtimeRpcImportPath);
-        let Observable = this.imports.name('Observable', "rxjs");
-        let from = this.imports.name('from', "rxjs");
-        let switchMap = this.imports.name('switchMap', "rxjs/operators");
-        let concatMap = this.imports.name('concatMap', "rxjs/operators");
+    createDuplexStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        let RpcOptions = this.imports.name(source, 'RpcOptions', this.options.runtimeRpcImportPath);
+        let RpcError = this.imports.name(source, 'RpcError', this.options.runtimeRpcImportPath);
+        let stackIntercept = this.imports.name(source, "stackIntercept", this.options.runtimeRpcImportPath);
+        let Observable = this.imports.name(source, 'Observable', "rxjs");
+        let from = this.imports.name(source, 'from', "rxjs");
+        let switchMap = this.imports.name(source, 'switchMap', "rxjs/operators");
+        let concatMap = this.imports.name(source, 'concatMap', "rxjs/operators");
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
@@ -1325,7 +1326,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             [
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    ts.createTypeReferenceNode(ts.createIdentifier(Observable), [this.makeI(methodInfo),]), undefined
+                    ts.createTypeReferenceNode(ts.createIdentifier(Observable), [this.makeI(source, methodInfo),]), undefined
                 ),
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
@@ -1335,7 +1336,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
             ts.createTypeReferenceNode(
                 Observable,
                 [
-                    this.makeO(methodInfo),
+                    this.makeO(source, methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -1440,7 +1441,7 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                     ts.addSyntheticLeadingComment(
                         ts.createReturn(ts.createNew(
                             ts.createIdentifier(Observable),
-                            [this.makeO(methodInfo)],
+                            [this.makeO(source, methodInfo)],
                             [ts.createArrowFunction(
                                 undefined,
                                 undefined,
@@ -1495,8 +1496,8 @@ export class ServiceClientGeneratorRxjs extends ServiceClientGeneratorBase {
                                                         ts.createCall(
                                                             ts.createIdentifier(stackIntercept),
                                                             [
-                                                                this.makeI(methodInfo),
-                                                                this.makeO(methodInfo),
+                                                                this.makeI(source, methodInfo),
+                                                                this.makeO(source, methodInfo),
                                                             ],
                                                             [
                                                                 ts.createStringLiteral("duplex"),

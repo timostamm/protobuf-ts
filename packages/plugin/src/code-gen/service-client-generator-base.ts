@@ -1,36 +1,43 @@
 import {
     DescriptorRegistry,
     ServiceDescriptorProto,
+    SymbolTable,
     TypescriptFile,
-    TypescriptImportManager
+    TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
-import {ClientStyle} from "../our-options";
+import {GeneratorBase} from "./generator-base";
+import {createLocalTypeName} from "./local-type-name";
 import assert = require("assert");
 
 
-export abstract class ServiceClientGeneratorBase {
+export abstract class ServiceClientGeneratorBase extends GeneratorBase {
 
 
-    abstract readonly style: ClientStyle;
-    protected readonly commentGenerator: CommentGenerator;
+    abstract readonly symbolKindInterface: string;
+    abstract readonly symbolKindImplementation: string;
 
 
-    constructor(
-        protected readonly registry: DescriptorRegistry,
-        protected readonly imports: TypescriptImportManager,
-        protected readonly interpreter: Interpreter,
-        protected readonly options: {
-            runtimeRpcImportPath: string;
-            angularCoreImportPath: string;
-            emitAngularAnnotations: boolean;
-            runtimeAngularImportPath: string;
-        },
-    ) {
-        this.commentGenerator = new CommentGenerator(this.registry);
+    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+                protected readonly options: {
+                    runtimeRpcImportPath: string;
+                    angularCoreImportPath: string;
+                    emitAngularAnnotations: boolean;
+                    runtimeAngularImportPath: string;
+                }) {
+        super(symbols, registry, imports, comments, interpreter);
+    }
+
+
+    registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
+        const basename = createLocalTypeName(descriptor, this.registry);
+        const interfaceName = `I${basename}Client`;
+        const implementationName = `${basename}Client`;
+        this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);
+        this.symbols.register(implementationName, descriptor, source, this.symbolKindImplementation);
     }
 
 
@@ -48,14 +55,13 @@ export abstract class ServiceClientGeneratorBase {
      *   }
      *
      */
-    generateInterface(descriptor: ServiceDescriptorProto, source: TypescriptFile): ts.InterfaceDeclaration {
+    generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto): ts.InterfaceDeclaration {
         const
             interpreterType = this.interpreter.getServiceType(descriptor),
-            styleName = ClientStyle[this.style].toLowerCase().replace('_client', ''),
-            IServiceClient = this.imports.type(descriptor, `${styleName}-client-interface`);
+            IServiceClient = this.imports.type(source, descriptor, this.symbolKindInterface);
 
         const methods = interpreterType.methods.map(mi => {
-            const declaration = this.createMethod(mi);
+            const declaration = this.createMethod(source, mi);
             const signature = ts.createMethodSignature(
                 declaration.typeParameters,
                 declaration.parameters,
@@ -65,7 +71,7 @@ export abstract class ServiceClientGeneratorBase {
             );
             const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
             assert(methodDescriptor);
-            this.commentGenerator.addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
+            this.comments.addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
             return signature;
         });
 
@@ -76,7 +82,7 @@ export abstract class ServiceClientGeneratorBase {
         );
 
         // add to our file
-        this.commentGenerator.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         source.addStatement(statement);
         return statement;
     }
@@ -100,19 +106,18 @@ export abstract class ServiceClientGeneratorBase {
      *   }
      *
      */
-    generateImplementationClass(descriptor: ServiceDescriptorProto, source: TypescriptFile): ts.ClassDeclaration {
+    generateImplementationClass(source: TypescriptFile, descriptor: ServiceDescriptorProto): ts.ClassDeclaration {
         const
             interpreterType = this.interpreter.getServiceType(descriptor),
-            styleName = ClientStyle[this.style].toLowerCase().replace('_client', ''),
-            ServiceType = this.imports.type(descriptor),
-            ServiceClient = this.imports.type(descriptor, `${styleName}-client`),
-            IServiceClient = this.imports.type(descriptor, `${styleName}-client-interface`),
-            ServiceInfo = this.imports.name('ServiceInfo', this.options.runtimeRpcImportPath),
-            RpcTransport = this.imports.name('RpcTransport', this.options.runtimeRpcImportPath);
+            ServiceType = this.imports.type(source, descriptor),
+            ServiceClient = this.imports.type(source, descriptor, this.symbolKindImplementation),
+            IServiceClient = this.imports.type(source, descriptor, this.symbolKindInterface),
+            ServiceInfo = this.imports.name(source, 'ServiceInfo', this.options.runtimeRpcImportPath),
+            RpcTransport = this.imports.name(source, 'RpcTransport', this.options.runtimeRpcImportPath);
 
         const classDecorators: ts.Decorator[] = [];
         if (this.options.emitAngularAnnotations) {
-            let Injectable = this.imports.name('Injectable', this.options.angularCoreImportPath);
+            let Injectable = this.imports.name(source, 'Injectable', this.options.angularCoreImportPath);
             classDecorators.push(
                 ts.createDecorator(ts.createCall(
                     ts.createIdentifier(Injectable), undefined, []
@@ -122,8 +127,8 @@ export abstract class ServiceClientGeneratorBase {
 
         const constructorDecorators: ts.Decorator[] = [];
         if (this.options.emitAngularAnnotations) {
-            let RPC_TRANSPORT = this.imports.name('RPC_TRANSPORT', this.options.runtimeAngularImportPath);
-            let Inject = this.imports.name('Inject', this.options.angularCoreImportPath);
+            let RPC_TRANSPORT = this.imports.name(source, 'RPC_TRANSPORT', this.options.runtimeAngularImportPath);
+            let Inject = this.imports.name(source, 'Inject', this.options.angularCoreImportPath);
             constructorDecorators.push(
                 ts.createDecorator(ts.createCall(
                     ts.createIdentifier(Inject),
@@ -182,10 +187,10 @@ export abstract class ServiceClientGeneratorBase {
 
 
             ...interpreterType.methods.map(mi => {
-                const declaration = this.createMethod(mi);
+                const declaration = this.createMethod(source, mi);
                 const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
                 assert(methodDescriptor);
-                this.commentGenerator.addCommentsForDescriptor(declaration, methodDescriptor, 'appendToLeadingBlock');
+                this.comments.addCommentsForDescriptor(declaration, methodDescriptor, 'appendToLeadingBlock');
                 return declaration;
             })
 
@@ -207,7 +212,7 @@ export abstract class ServiceClientGeneratorBase {
         );
 
         source.addStatement(statement);
-        this.commentGenerator.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         return statement;
     }
 
@@ -215,38 +220,38 @@ export abstract class ServiceClientGeneratorBase {
     /**
      * Create any method type, switching to specific methods.
      */
-    protected createMethod(methodInfo: rpc.MethodInfo) {
+    protected createMethod(source: TypescriptFile, methodInfo: rpc.MethodInfo) {
         let declaration: ts.MethodDeclaration;
         if (methodInfo.serverStreaming && methodInfo.clientStreaming) {
-            declaration = this.createDuplexStreaming(methodInfo);
+            declaration = this.createDuplexStreaming(source, methodInfo);
         } else if (methodInfo.serverStreaming) {
-            declaration = this.createServerStreaming(methodInfo);
+            declaration = this.createServerStreaming(source, methodInfo);
         } else if (methodInfo.clientStreaming) {
-            declaration = this.createClientStreaming(methodInfo);
+            declaration = this.createClientStreaming(source, methodInfo);
         } else {
-            declaration = this.createUnary(methodInfo);
+            declaration = this.createUnary(source, methodInfo);
         }
         return declaration;
     }
 
 
-    protected abstract createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
+    protected abstract createUnary(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
 
-    protected abstract createServerStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
+    protected abstract createServerStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
 
-    protected abstract createClientStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
+    protected abstract createClientStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
 
-    protected abstract createDuplexStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
+    protected abstract createDuplexStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
 
 
-    protected makeI(methodInfo: rpc.MethodInfo): ts.TypeReferenceNode {
-        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+    protected makeI(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.TypeReferenceNode {
+        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
             this.registry.resolveTypeName(methodInfo.I.typeName)
         )), undefined);
     }
 
-    protected makeO(methodInfo: rpc.MethodInfo): ts.TypeReferenceNode {
-        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+    protected makeO(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.TypeReferenceNode {
+        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
             this.registry.resolveTypeName(methodInfo.O.typeName)
         )), undefined);
     }

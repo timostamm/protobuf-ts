@@ -5,7 +5,8 @@ import {
     FileOptions_OptimizeMode,
     ScalarValueType,
     StringFormat,
-    TypescriptImportManager,
+    TypescriptFile,
+    TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
@@ -27,22 +28,21 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
     constructor(
         private readonly registry: DescriptorRegistry,
-        private readonly imports: TypescriptImportManager,
+        private readonly imports: TypeScriptImports,
         private readonly interpreter: Interpreter,
-        private readonly options: { optimizeFor: FileOptions_OptimizeMode; oneofKindDiscriminator: string; runtimeImportPath: string },
+        private readonly options: { oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }
 
 
-    make(descriptor: DescriptorProto): ts.MethodDeclaration[] {
-        if (this.options.optimizeFor === FileOptions_OptimizeMode.CODE_SIZE) return [];
-
+    make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[] {
         // internalBinaryWrite(message: ScalarValuesMessage, writer: IBinaryWriter, options: BinaryWriteOptions): void {
         let internalBinaryWrite = this.makeMethod(
+            source,
             descriptor,
             [
-                ...this.makeStatementsForEveryField(descriptor),
-                ...this.makeUnknownFieldsHandler(),
+                ...this.makeStatementsForEveryField(source, descriptor),
+                ...this.makeUnknownFieldsHandler(source),
                 // return writer;
                 ts.createReturn(ts.createIdentifier("writer"))
             ],
@@ -51,11 +51,11 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    makeMethod(descriptor: DescriptorProto, bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+    makeMethod(source: TypescriptFile, descriptor: DescriptorProto, bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
-            MessageInterface = this.imports.type(descriptor),
-            IBinaryWriter = this.imports.name('IBinaryWriter', this.options.runtimeImportPath),
-            BinaryWriteOptions = this.imports.name('BinaryWriteOptions', this.options.runtimeImportPath);
+            MessageInterface = this.imports.type(source, descriptor),
+            IBinaryWriter = this.imports.name(source, 'IBinaryWriter', this.options.runtimeImportPath),
+            BinaryWriteOptions = this.imports.name(source, 'BinaryWriteOptions', this.options.runtimeImportPath);
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("internalBinaryWrite"), undefined, undefined,
             [
                 ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("message"), undefined, ts.createTypeReferenceNode(MessageInterface, undefined), undefined),
@@ -68,8 +68,8 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    makeUnknownFieldsHandler(): ts.Statement[] {
-        let UnknownFieldHandler = this.imports.name('UnknownFieldHandler', this.options.runtimeImportPath);
+    makeUnknownFieldsHandler(source: TypescriptFile,): ts.Statement[] {
+        let UnknownFieldHandler = this.imports.name(source, 'UnknownFieldHandler', this.options.runtimeImportPath);
         return [
             ts.createVariableStatement(
                 undefined,
@@ -120,7 +120,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    makeStatementsForEveryField(descriptor: DescriptorProto): ts.Statement[] {
+    makeStatementsForEveryField(source: TypescriptFile, descriptor: DescriptorProto): ts.Statement[] {
         const
             interpreterType = this.interpreter.getMessageType(descriptor),
             statements: ts.Statement[] = [];
@@ -137,26 +137,26 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                 case "scalar":
                 case "enum":
                     if (fieldInfo.repeat) {
-                        statements.push(...this.scalarRepeated(fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
+                        statements.push(...this.scalarRepeated(source, fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
                     } else if (fieldInfo.oneof !== undefined) {
-                        statements.push(...this.scalarOneof(fieldInfo, fieldDeclarationComment));
+                        statements.push(...this.scalarOneof(source, fieldInfo, fieldDeclarationComment));
                     } else {
-                        statements.push(...this.scalar(fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
+                        statements.push(...this.scalar(source, fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
                     }
                     break;
 
                 case "message":
                     if (fieldInfo.repeat) {
-                        statements.push(...this.messageRepeated(fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
+                        statements.push(...this.messageRepeated(source, fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
                     } else if (fieldInfo.oneof !== undefined) {
-                        statements.push(...this.messageOneof(fieldInfo, fieldDeclarationComment));
+                        statements.push(...this.messageOneof(source, fieldInfo, fieldDeclarationComment));
                     } else {
-                        statements.push(...this.message(fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
+                        statements.push(...this.message(source, fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
                     }
                     break;
 
                 case "map":
-                    statements.push(...this.map(fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
+                    statements.push(...this.map(source, fieldInfo, fieldPropertyAccess, fieldDeclarationComment));
                     break;
             }
         }
@@ -164,7 +164,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    scalar(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: undefined | rt.RepeatType.NO }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    scalar(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: undefined | rt.RepeatType.NO }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
         let type: rt.ScalarType = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
 
         // we only write scalar fields if they have a non-default value
@@ -201,7 +201,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             // writer.tag( <field no>, <wire type> ).string(message.stringField)
             ts.createExpressionStatement(
                 this.makeWriterCall(
-                    this.makeWriterTagCall('writer', field.no, this.wireTypeForSingleScalar(type)),
+                    this.makeWriterTagCall(source, 'writer', field.no, this.wireTypeForSingleScalar(type)),
                     type,
                     fieldPropertyAccess
                 )
@@ -216,7 +216,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    scalarRepeated(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    scalarRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
         let statement;
         let type: rt.ScalarType = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
 
@@ -229,7 +229,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                     // writer.tag(3, WireType.LengthDelimited).fork();
                     ts.createExpressionStatement(
                         this.makeWriterCall(
-                            this.makeWriterTagCall('writer', field.no, rt.WireType.LengthDelimited),
+                            this.makeWriterTagCall(source, 'writer', field.no, rt.WireType.LengthDelimited),
                             'fork'
                         )
                     ),
@@ -270,7 +270,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                 //   writer.tag( <field number>, <wire type> ).bytes( message.bytesField[i] )
                 ts.createExpressionStatement(
                     this.makeWriterCall(
-                        this.makeWriterTagCall("writer", field.no, this.wireTypeForSingleScalar(type)),
+                        this.makeWriterTagCall(source, "writer", field.no, this.wireTypeForSingleScalar(type)),
                         type,
                         ts.createElementAccess(fieldPropertyAccess, ts.createIdentifier("i"))
                     )
@@ -285,7 +285,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    scalarOneof(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }, fieldDeclarationComment: string): ts.Statement[] {
+    scalarOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }, fieldDeclarationComment: string): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
 
         let groupPropertyAccess = ts.createPropertyAccess(
@@ -306,7 +306,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             // writer.tag( <field no>, <wire type> ).string(message.stringField)
             ts.createExpressionStatement(
                 this.makeWriterCall(
-                    this.makeWriterTagCall('writer', field.no, this.wireTypeForSingleScalar(type)),
+                    this.makeWriterTagCall(source, 'writer', field.no, this.wireTypeForSingleScalar(type)),
                     type,
                     ts.createPropertyAccess(
                         groupPropertyAccess,
@@ -323,21 +323,21 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    message(field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    message(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
 
         let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
         assert(DescriptorProto.is(messageDescriptor));
 
         // writer.tag(<field no>, WireType.LengthDelimited).fork();
         let writeTagAndFork = this.makeWriterCall(
-            this.makeWriterTagCall('writer', field.no, rt.WireType.LengthDelimited),
+            this.makeWriterTagCall(source, 'writer', field.no, rt.WireType.LengthDelimited),
             'fork'
         );
 
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.messageField, <writeTagAndFork>, options);
         let binaryWrite = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(messageDescriptor)),
+                ts.createIdentifier(this.imports.type(source, messageDescriptor)),
                 ts.createIdentifier("internalBinaryWrite")
             ),
             undefined,
@@ -361,7 +361,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    messageRepeated(field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    messageRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
 
         let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
         assert(DescriptorProto.is(messageDescriptor));
@@ -371,14 +371,14 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
         // writer.tag(<field no>, WireType.LengthDelimited).fork();
         let writeTagAndFork = this.makeWriterCall(
-            this.makeWriterTagCall('writer', field.no, rt.WireType.LengthDelimited),
+            this.makeWriterTagCall(source, 'writer', field.no, rt.WireType.LengthDelimited),
             'fork'
         );
 
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.repeatedMessageField, <writeTagAndFork>, options);
         let binaryWrite = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(messageDescriptor)),
+                ts.createIdentifier(this.imports.type(source, messageDescriptor)),
                 ts.createIdentifier("internalBinaryWrite")
             ),
             undefined,
@@ -406,7 +406,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    messageOneof(field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }, fieldDeclarationComment: string): ts.Statement[] {
+    messageOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }, fieldDeclarationComment: string): ts.Statement[] {
 
         let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
         assert(DescriptorProto.is(messageDescriptor));
@@ -419,14 +419,14 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
         // writer.tag(<field no>, WireType.LengthDelimited).fork();
         let writeTagAndFork = this.makeWriterCall(
-            this.makeWriterTagCall('writer', field.no, rt.WireType.LengthDelimited),
+            this.makeWriterTagCall(source, 'writer', field.no, rt.WireType.LengthDelimited),
             'fork'
         );
 
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.<groupPropertyAccess>.<fieldLocalName>, <writeTagAndFork>, options);
         let binaryWrite = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(messageDescriptor)),
+                ts.createIdentifier(this.imports.type(source, messageDescriptor)),
                 ts.createIdentifier("internalBinaryWrite")
             ),
             undefined,
@@ -464,7 +464,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    map(field: rt.FieldInfo & { kind: "map" }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    map(source: TypescriptFile, field: rt.FieldInfo & { kind: "map" }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
 
         // all javascript property keys are strings, need to do some conversion for wire format
         let mapEntryKeyRead: ts.Expression;
@@ -510,8 +510,9 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                         this.makeWriterCall(
                             // this.makeWriterCall(
                             this.makeWriterTagCall(
+                                source,
                                 this.makeWriterCall(
-                                    this.makeWriterTagCall("writer", field.no, rt.WireType.LengthDelimited),
+                                    this.makeWriterTagCall(source, "writer", field.no, rt.WireType.LengthDelimited),
                                     // .fork // start length delimited for the MapEntry
                                     'fork'
                                 ),
@@ -527,6 +528,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                     ts.createExpressionStatement(
                         this.makeWriterCall(
                             this.makeWriterTagCall(
+                                source,
                                 'writer',
                                 2, rt.WireType.LengthDelimited
                             ),
@@ -538,7 +540,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                     // MessageMapMessage_MyItem.internalBinaryWrite(message.strMsgField[k], writer, options);
                     ts.createExpressionStatement(ts.createCall(
                         ts.createPropertyAccess(
-                            ts.createIdentifier(this.imports.type(messageDescriptor)),
+                            ts.createIdentifier(this.imports.type(source, messageDescriptor)),
                             ts.createIdentifier("internalBinaryWrite")
                         ),
                         undefined,
@@ -571,10 +573,13 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                 this.makeWriterCall(
                     this.makeWriterCall(
                         this.makeWriterTagCall(
+                            source,
                             this.makeWriterCall(
                                 this.makeWriterTagCall(
+                                    source,
                                     this.makeWriterCall(
                                         this.makeWriterTagCall(
+                                            source,
                                             'writer',
                                             // tag for our field
                                             field.no, rt.WireType.LengthDelimited
@@ -627,7 +632,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    protected makeWriterTagCall(writerExpressionOrName: string | ts.Expression, fieldNo: number, wireType: rt.WireType): ts.Expression {
+    protected makeWriterTagCall(source: TypescriptFile, writerExpressionOrName: string | ts.Expression, fieldNo: number, wireType: rt.WireType): ts.Expression {
         let writerExpression = typeof writerExpressionOrName == "string" ? ts.createIdentifier(writerExpressionOrName) : writerExpressionOrName;
         let methodProp = ts.createPropertyAccess(writerExpression, ts.createIdentifier("tag"));
         let wireTypeName: string;
@@ -652,7 +657,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                 break;
         }
         let wireTypeAccess = ts.createPropertyAccess(
-            ts.createIdentifier(this.imports.name('WireType', this.options.runtimeImportPath)),
+            ts.createIdentifier(this.imports.name(source, 'WireType', this.options.runtimeImportPath)),
             wireTypeName
         );
         return ts.createCall(methodProp, undefined, [

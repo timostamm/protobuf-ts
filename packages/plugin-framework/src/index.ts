@@ -16,3 +16,4 @@ export * from './typescript-method-from-text';
 export * from './typescript-literal-from-value';
 export * from './typescript-enum-builder';
 export * from "./typescript-file";
+export * from "./typescript-imports";

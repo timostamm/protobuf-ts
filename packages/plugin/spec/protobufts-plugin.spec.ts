@@ -10,12 +10,11 @@ describe('protobuftsPlugin', function () {
         parameter: 'long_type_string',
         // includeFiles: [
         //
+        //     'google/protobuf/unittest_enormous_descriptor.proto',
         //     // 'google/protobuf/unittest_proto3_lite.proto',
         //     // 'google/protobuf/unittest_import.proto',
         //     // 'google/protobuf/unittest_import_public.proto',
-        //
         //     // 'google/protobuf/wrappers.proto',
-        //
         //     // 'msg-scalar.proto',
         //     // 'msg-proto3-optionals.proto',
         //     // 'google/protobuf/any.proto',
@@ -30,19 +29,19 @@ describe('protobuftsPlugin', function () {
         //     // 'google/protobuf/unittest_lazy_dependencies_enum.proto',
         //     //  'service-simple.proto',
         //     //  'service-example.proto',
-        //      'service-style-all.proto',
+        //     //  'service-style-all.proto',
         //     // 'msg-proto3-optionals.proto',
         //     // 'google/rpc/status.proto',
         // ]
     });
     let generatedFiles = plugin.generate(request);
 
-    // for (let f of generatedFiles) {
-    //     console.log('-------------------------' + f.getFilename() + '-------------------------');
-    //     console.log(f.getContent());
-    //     console.log();
-    //     console.log();
-    // }
+    for (let f of generatedFiles) {
+        // console.log('-------------------------' + f.getFilename() + '-------------------------');
+        // console.log(f.getContent());
+        // console.log();
+        // console.log();
+    }
 
 
     describe('generates valid typescript for every fixture .proto', function () {

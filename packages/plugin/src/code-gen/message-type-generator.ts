@@ -4,9 +4,10 @@ import {
     addCommentBlockAsJsDoc,
     DescriptorProto,
     DescriptorRegistry,
-    FileOptions_OptimizeMode,
+    FileOptions_OptimizeMode as OptimizeMode,
+    SymbolTable,
     TypescriptFile,
-    TypescriptImportManager
+    TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {WellKnownTypes} from "../message-type-extensions/well-known-types";
@@ -16,14 +17,15 @@ import {InternalBinaryRead} from "../message-type-extensions/internal-binary-rea
 import {InternalBinaryWrite} from "../message-type-extensions/internal-binary-write";
 import {Interpreter} from "../interpreter";
 import {FieldInfoGenerator} from "./field-info-generator";
+import {GeneratorBase} from "./generator-base";
 
 
 export interface CustomMethodGenerator {
-    make(descriptor: DescriptorProto): ts.MethodDeclaration[];
+    make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[];
 }
 
 
-export class MessageTypeGenerator {
+export class MessageTypeGenerator extends GeneratorBase {
 
 
     private readonly wellKnown: WellKnownTypes;
@@ -34,18 +36,13 @@ export class MessageTypeGenerator {
     private readonly fieldInfoGenerator: FieldInfoGenerator;
 
 
-    constructor(
-        private readonly registry: DescriptorRegistry,
-        private readonly imports: TypescriptImportManager,
-        private readonly interpreter: Interpreter,
-        private readonly commentGenerator: CommentGenerator,
-        private readonly options: {
-            runtimeImportPath: string;
-            normalLongType: LongType;
-            optimizeFor: FileOptions_OptimizeMode,
-            oneofKindDiscriminator: string;
-        }
-    ) {
+    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+                private readonly options: {
+                    runtimeImportPath: string;
+                    normalLongType: LongType;
+                    oneofKindDiscriminator: string;
+                }) {
+        super(symbols, registry, imports, comments, interpreter);
         this.fieldInfoGenerator = new FieldInfoGenerator(this.registry, this.imports, this.options);
         this.wellKnown = new WellKnownTypes(this.registry, this.imports, this.options);
         this.googleTypes = new GoogleTypes(this.registry, this.imports, this.options);
@@ -79,25 +76,17 @@ export class MessageTypeGenerator {
      * Some field information is passed to the handler's
      * constructor.
      */
-    generateMessageType(descriptor: DescriptorProto, source: TypescriptFile): void {
+    generateMessageType(source: TypescriptFile, descriptor: DescriptorProto, optimizeFor: OptimizeMode): void {
         const
             // identifier for the message
-            MyMessage = this.imports.type(descriptor),
-            Message$Type = ts.createIdentifier(this.imports.type(descriptor) + '$Type'),
+            MyMessage = this.imports.type(source, descriptor),
+            Message$Type = ts.createIdentifier(this.imports.type(source, descriptor) + '$Type'),
             // import handler from runtime
-            MessageType = ts.createIdentifier(this.imports.name("MessageType", this.options.runtimeImportPath)),
+            MessageType = ts.createIdentifier(this.imports.name(source, "MessageType", this.options.runtimeImportPath)),
             // create field information for runtime
             interpreterType = this.interpreter.getMessageType(descriptor),
-            fieldInfo = this.fieldInfoGenerator.createFieldInfoLiterals(interpreterType.fields);
-
-        // class "MyMessage$Type" extends "MessageType"<"MyMessage"> {
-        const classDec = ts.createClassDeclaration(
-            undefined, undefined, Message$Type, undefined,
-            [ts.createHeritageClause(
-                ts.SyntaxKind.ExtendsKeyword,
-                [ts.createExpressionWithTypeArguments([ts.createTypeReferenceNode(MyMessage, undefined)], MessageType)]
-            )],
-            [
+            fieldInfo = this.fieldInfoGenerator.createFieldInfoLiterals(source, interpreterType.fields),
+            classMembers: ts.ClassElement[] = [
                 ts.createConstructor(
                     undefined, undefined, [],
                     ts.createBlock([ts.createExpressionStatement(
@@ -107,12 +96,25 @@ export class MessageTypeGenerator {
                         ])
                     )], true)
                 ),
-                ...this.wellKnown.make(descriptor),
-                ...this.googleTypes.make(descriptor),
-                ...this.typeMethodCreate.make(descriptor),
-                ...this.typeMethodInternalBinaryRead.make(descriptor),
-                ...this.typeMethodInternalBinaryWrite.make(descriptor),
-            ]
+                ...this.wellKnown.make(source, descriptor),
+                ...this.googleTypes.make(source, descriptor),
+            ];
+
+        if (optimizeFor === OptimizeMode.SPEED) {
+            classMembers.push(
+                ...this.typeMethodInternalBinaryRead.make(source, descriptor),
+                ...this.typeMethodInternalBinaryWrite.make(source, descriptor),
+            );
+        }
+
+        // class "MyMessage$Type" extends "MessageType"<"MyMessage"> {
+        const classDec = ts.createClassDeclaration(
+            undefined, undefined, Message$Type, undefined,
+            [ts.createHeritageClause(
+                ts.SyntaxKind.ExtendsKeyword,
+                [ts.createExpressionWithTypeArguments([ts.createTypeReferenceNode(MyMessage, undefined)], MessageType)]
+            )],
+            classMembers
         );
 
 
@@ -138,8 +140,8 @@ export class MessageTypeGenerator {
         ts.addSyntheticLeadingComment(classDec, ts.SyntaxKind.SingleLineCommentTrivia,
             " @generated message type with reflection information, may provide speed optimized methods",
             false);
-        let comment = this.commentGenerator.makeDeprecatedTag(descriptor);
-        comment += this.commentGenerator.makeGeneratedTag(descriptor).replace("@generated from ", "@generated MessageType for ");
+        let comment = this.comments.makeDeprecatedTag(descriptor);
+        comment += this.comments.makeGeneratedTag(descriptor).replace("@generated from ", "@generated MessageType for ");
         addCommentBlockAsJsDoc(exportConst, comment);
 
         return;

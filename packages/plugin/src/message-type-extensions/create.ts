@@ -2,7 +2,8 @@ import {
     DescriptorProto,
     DescriptorRegistry,
     FileOptions_OptimizeMode,
-    TypescriptImportManager,
+    TypescriptFile,
+    TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
@@ -19,27 +20,26 @@ export class Create implements CustomMethodGenerator {
 
     constructor(
         private readonly registry: DescriptorRegistry,
-        private readonly imports: TypescriptImportManager,
+        private readonly imports: TypeScriptImports,
         private readonly interpreter: Interpreter,
-        private readonly options: { optimizeFor: FileOptions_OptimizeMode; normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
+        private readonly options: { normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }
 
 
     // create(value?: PartialMessage<ScalarValuesMessage>): ScalarValuesMessage {
-    make(descriptor: DescriptorProto): ts.MethodDeclaration[] {
-        if (this.options.optimizeFor === FileOptions_OptimizeMode.CODE_SIZE) return [];
-
+    make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[] {
         // create(value?: PartialMessage<ScalarValuesMessage>): ScalarValuesMessage {
         let internalBinaryRead = this.makeMethod(
+            source,
             descriptor,
 
             // const message = { boolField: false, ... };
-            this.makeMessageVariable(descriptor),
+            this.makeMessageVariable(source, descriptor),
 
             // if (value !== undefined)
             //     reflectionMergePartial<ScalarValuesMessage>(message, value, this);
-            this.makeMergeIf(descriptor),
+            this.makeMergeIf(source, descriptor),
 
             // return message;
             ts.createReturn(ts.createIdentifier("message"))
@@ -48,10 +48,10 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMethod(descriptor: DescriptorProto, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+    makeMethod(source: TypescriptFile, descriptor: DescriptorProto, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
-            MessageInterface = this.imports.type(descriptor),
-            PartialMessage = this.imports.name('PartialMessage', this.options.runtimeImportPath)
+            MessageInterface = this.imports.type(source, descriptor),
+            PartialMessage = this.imports.name(source,'PartialMessage', this.options.runtimeImportPath)
         ;
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("create"), undefined, undefined,
             [
@@ -70,7 +70,7 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMessageVariable(descriptor: DescriptorProto) {
+    makeMessageVariable(source: TypescriptFile,descriptor: DescriptorProto) {
         let messageType = this.interpreter.getMessageType(descriptor);
         let defaultMessage = messageType.create();
         return ts.createVariableStatement(
@@ -87,8 +87,8 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMergeIf(descriptor: DescriptorProto) {
-        const MessageInterface = this.imports.type(descriptor);
+    makeMergeIf(source: TypescriptFile,descriptor: DescriptorProto) {
+        const MessageInterface = this.imports.type(source,descriptor);
         return ts.createIf(
             ts.createBinary(
                 ts.createIdentifier("value"),
@@ -96,7 +96,7 @@ export class Create implements CustomMethodGenerator {
                 ts.createIdentifier("undefined")
             ),
             ts.createExpressionStatement(ts.createCall(
-                ts.createIdentifier(this.imports.name('reflectionMergePartial', this.options.runtimeImportPath)),
+                ts.createIdentifier(this.imports.name(source,'reflectionMergePartial', this.options.runtimeImportPath)),
                 [ts.createTypeReferenceNode(
                     MessageInterface,
                     undefined

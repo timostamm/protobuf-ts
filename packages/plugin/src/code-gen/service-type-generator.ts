@@ -2,47 +2,46 @@ import {
     addCommentBlockAsJsDoc,
     DescriptorRegistry,
     ServiceDescriptorProto,
+    SymbolTable,
     TypescriptFile,
-    TypescriptImportManager,
+    TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import {Interpreter} from "../interpreter";
 import {CommentGenerator} from "./comment-generator";
 import * as ts from "typescript";
 import {MethodInfoGenerator} from "./method-info-generator";
+import {GeneratorBase} from "./generator-base";
 
 
-export class ServiceTypeGenerator {
+export class ServiceTypeGenerator extends GeneratorBase {
 
     private readonly methodInfoGenerator: MethodInfoGenerator;
 
-    constructor(
-        private readonly registry: DescriptorRegistry,
-        private readonly imports: TypescriptImportManager,
-        private readonly interpreter: Interpreter,
-        private readonly commentGenerator: CommentGenerator,
-        private readonly options: {
-            runtimeRpcImportPath: string;
-        }
-    ) {
-        this.methodInfoGenerator = new MethodInfoGenerator(this.registry, this.imports, this.options);
+
+    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+                private readonly options: {
+                    runtimeRpcImportPath: string;
+                }) {
+        super(symbols, registry, imports, comments, interpreter);
+        this.methodInfoGenerator = new MethodInfoGenerator(this.registry, this.imports)
     }
 
 
     // export const Haberdasher = new ServiceType("spec.haberdasher.Haberdasher", [
     //     { name: "MakeHat", localName: "makeHat", I: Size, O: Hat },
     // ], {});
-    generateServiceType(descriptor: ServiceDescriptorProto, source: TypescriptFile): void {
+    generateServiceType(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
 
         const
             // identifier for the service
-            MyService = this.imports.type(descriptor),
-            ServiceType = this.imports.name("ServiceType", this.options.runtimeRpcImportPath),
+            MyService = this.imports.type(source, descriptor),
+            ServiceType = this.imports.name(source, "ServiceType", this.options.runtimeRpcImportPath),
             interpreterType = this.interpreter.getServiceType(descriptor);
 
         const args: ts.Expression[] = [
             ts.createStringLiteral(interpreterType.typeName),
-            this.methodInfoGenerator.createMethodInfoLiterals(interpreterType.methods)
+            this.methodInfoGenerator.createMethodInfoLiterals(source, interpreterType.methods)
         ];
 
         if (Object.keys(interpreterType.options).length) {
@@ -71,8 +70,8 @@ export class ServiceTypeGenerator {
         source.addStatement(exportConst);
 
         // add comments
-        let comment = this.commentGenerator.makeDeprecatedTag(descriptor);
-        comment += this.commentGenerator.makeGeneratedTag(descriptor).replace("@generated from ", "@generated ServiceType for ");
+        let comment = this.comments.makeDeprecatedTag(descriptor);
+        comment += this.comments.makeGeneratedTag(descriptor).replace("@generated from ", "@generated ServiceType for ");
         addCommentBlockAsJsDoc(exportConst, comment);
 
         return;

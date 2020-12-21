@@ -1,6 +1,11 @@
 import * as rt from "@protobuf-ts/runtime";
 import * as ts from "typescript";
-import {DescriptorRegistry, TypescriptImportManager, typescriptLiteralFromValue} from "@protobuf-ts/plugin-framework";
+import {
+    DescriptorRegistry,
+    TypescriptFile,
+    TypeScriptImports,
+    typescriptLiteralFromValue
+} from "@protobuf-ts/plugin-framework";
 
 
 /**
@@ -12,19 +17,19 @@ export class FieldInfoGenerator {
 
     constructor(
         private readonly registry: DescriptorRegistry,
-        private readonly imports: TypescriptImportManager,
+        private readonly imports: TypeScriptImports,
         private readonly options: {},
     ) {
     }
 
 
-    createFieldInfoLiterals(fieldInfos: readonly rt.PartialFieldInfo[]): ts.ArrayLiteralExpression {
+    createFieldInfoLiterals(source: TypescriptFile, fieldInfos: readonly rt.PartialFieldInfo[]): ts.ArrayLiteralExpression {
         fieldInfos = fieldInfos.map(fi => FieldInfoGenerator.denormalizeFieldInfo(fi));
-        return ts.createArrayLiteral(fieldInfos.map(fi => this.createFieldInfoLiteral(fi)), true);
+        return ts.createArrayLiteral(fieldInfos.map(fi => this.createFieldInfoLiteral(source, fi)), true);
     }
 
 
-    createFieldInfoLiteral(fieldInfo: rt.PartialFieldInfo): ts.ObjectLiteralExpression {
+    createFieldInfoLiteral(source: TypescriptFile, fieldInfo: rt.PartialFieldInfo): ts.ObjectLiteralExpression {
         fieldInfo = FieldInfoGenerator.denormalizeFieldInfo(fieldInfo);
         let properties: ts.PropertyAssignment[] = [];
 
@@ -71,12 +76,12 @@ export class FieldInfoGenerator {
 
             case "enum":
                 // T: Return enum field type info.
-                properties.push(ts.createPropertyAssignment(ts.createIdentifier('T'), this.createEnumT(fieldInfo.T())));
+                properties.push(ts.createPropertyAssignment(ts.createIdentifier('T'), this.createEnumT(source, fieldInfo.T())));
                 break;
 
             case "message":
                 // T: Return message field type handler.
-                properties.push(ts.createPropertyAssignment(ts.createIdentifier('T'), this.createMessageT(fieldInfo.T())));
+                properties.push(ts.createPropertyAssignment(ts.createIdentifier('T'), this.createMessageT(source, fieldInfo.T())));
                 break;
 
 
@@ -85,7 +90,7 @@ export class FieldInfoGenerator {
                 properties.push(ts.createPropertyAssignment("K", this.createScalarType(fieldInfo.K)));
 
                 // V: Map field value type.
-                properties.push(ts.createPropertyAssignment("V", this.createMapV(fieldInfo.V)));
+                properties.push(ts.createPropertyAssignment("V", this.createMapV(source, fieldInfo.V)));
                 break;
         }
 
@@ -124,9 +129,9 @@ export class FieldInfoGenerator {
         return partial;
     }
 
-    private createMessageT(type: rt.IMessageType<rt.UnknownMessage>): ts.ArrowFunction {
+    private createMessageT(source: TypescriptFile, type: rt.IMessageType<rt.UnknownMessage>): ts.ArrowFunction {
         let descriptor = this.registry.resolveTypeName(type.typeName);
-        let generatedMessage = this.imports.type(descriptor);
+        let generatedMessage = this.imports.type(source, descriptor);
         return ts.createArrowFunction(
             undefined, undefined, [], undefined,
             ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
@@ -134,10 +139,10 @@ export class FieldInfoGenerator {
         );
     }
 
-    private createEnumT(ei: rt.EnumInfo): ts.ArrowFunction {
+    private createEnumT(source: TypescriptFile, ei: rt.EnumInfo): ts.ArrowFunction {
         let [pbTypeName, , sharedPrefix] = ei,
             descriptor = this.registry.resolveTypeName(pbTypeName),
-            generatedEnum = this.imports.type(descriptor),
+            generatedEnum = this.imports.type(source, descriptor),
             enumInfoLiteral: ts.Expression[] = [
                 ts.createStringLiteral(pbTypeName),
                 ts.createIdentifier(generatedEnum),
@@ -175,15 +180,15 @@ export class FieldInfoGenerator {
 
 
     // V: Map field value type.
-    private createMapV(mapV: (rt.PartialFieldInfo & { kind: "map" })["V"]): ts.ObjectLiteralExpression {
+    private createMapV(source: TypescriptFile, mapV: (rt.PartialFieldInfo & { kind: "map" })["V"]): ts.ObjectLiteralExpression {
         let T: ts.Expression;
         let L: ts.Expression | undefined = undefined;
         switch (mapV.kind) {
             case "message":
-                T = this.createMessageT(mapV.T());
+                T = this.createMessageT(source, mapV.T());
                 break;
             case "enum":
-                T = this.createEnumT(mapV.T());
+                T = this.createEnumT(source, mapV.T());
                 break;
             case "scalar":
                 T = this.createScalarType(mapV.T);

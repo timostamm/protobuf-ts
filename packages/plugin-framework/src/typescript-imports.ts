@@ -1,24 +1,20 @@
 import {assert} from "@protobuf-ts/runtime";
 import * as ts from "typescript";
 import * as path from "path";
-import {GeneratedFile} from "./generated-file";
 import {SymbolTable} from "./symbol-table";
 import {AnyTypeDescriptorProto} from "./descriptor-info";
 import {TypescriptFile} from "./typescript-file";
 
 
-/** @deprecated */
-export class TypescriptImportManager {
+export class TypeScriptImports {
 
-    private readonly file: GeneratedFile;
     private readonly symbols: SymbolTable;
-    private readonly source: TypescriptFile;
 
-    constructor(generatedFile: GeneratedFile, symbols: SymbolTable, source: TypescriptFile) {
-        this.file = generatedFile;
+
+    constructor(symbols: SymbolTable) {
         this.symbols = symbols;
-        this.source = source;
     }
+
 
     /**
      * Import {importName} from "importFrom";
@@ -29,14 +25,14 @@ export class TypescriptImportManager {
      *
      * Returns imported name.
      */
-    name(importName: string, importFrom: string): string {
-        const blackListedNames = this.symbols.list(this.file).map(e => e.name);
+    name(source: TypescriptFile, importName: string, importFrom: string): string {
+        const blackListedNames = this.symbols.list(source).map(e => e.name);
         return ensureNamedImportPresent(
-            this.source.getSourceFile(),
+            source.getSourceFile(),
             importName,
             importFrom,
             blackListedNames,
-            statementToAdd => this.source.addStatement(statementToAdd, true)
+            statementToAdd => source.addStatement(statementToAdd, true)
         );
     }
 
@@ -46,12 +42,12 @@ export class TypescriptImportManager {
      *
      * Returns name for `importAs`.
      */
-    namespace(importAs: string, importFrom: string): string {
+    namespace(source: TypescriptFile, importAs: string, importFrom: string): string {
         return ensureNamespaceImportPresent(
-            this.source.getSourceFile(),
+            source.getSourceFile(),
             importAs,
             importFrom,
-            statementToAdd => this.source.addStatement(statementToAdd, true)
+            statementToAdd => source.addStatement(statementToAdd, true)
         );
     }
 
@@ -67,27 +63,27 @@ export class TypescriptImportManager {
      * If you have multiple representations for a descriptor
      * in your generated code, use `kind` to discriminate.
      */
-    type(descriptor: AnyTypeDescriptorProto, kind = 'default'): string {
+    type(source: TypescriptFile, descriptor: AnyTypeDescriptorProto, kind = 'default'): string {
         const symbolReg = this.symbols.get(descriptor, kind);
 
         // symbol in this file?
-        if (symbolReg.file === this.file) {
+        if (symbolReg.file === source) {
             return symbolReg.name;
         }
 
         // symbol not in file
         // add an import statement
         const importPath = createRelativeImportPath(
-            this.source.getSourceFile().fileName,
+            source.getSourceFile().fileName,
             symbolReg.file.getFilename()
         );
-        const blackListedNames = this.symbols.list(this.file).map(e => e.name);
+        const blackListedNames = this.symbols.list(source).map(e => e.name);
         return ensureNamedImportPresent(
-            this.source.getSourceFile(),
+            source.getSourceFile(),
             symbolReg.name,
             importPath,
             blackListedNames,
-            statementToAdd => this.source.addStatement(statementToAdd, true)
+            statementToAdd => source.addStatement(statementToAdd, true)
         );
     }
 

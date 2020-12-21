@@ -4,18 +4,25 @@ import {
     DescriptorProto,
     DescriptorRegistry,
     EnumDescriptorProto,
-    FileDescriptorProto,
-    FileOptions_OptimizeMode as OptimizeMode,
-    IStringFormat,
     PluginBase,
     ServiceDescriptorProto,
-    SymbolTable
+    SymbolTable,
+    TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {OutFile} from "./out-file";
 import {createLocalTypeName} from "./code-gen/local-type-name";
 import * as rt from "@protobuf-ts/runtime";
 import {Interpreter} from "./interpreter";
-import {ClientStyle, makeInternalOptions, ServerStyle} from "./our-options";
+import {ClientStyle, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
+import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
+import {CommentGenerator} from "./code-gen/comment-generator";
+import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
+import {MessageTypeGenerator} from "./code-gen/message-type-generator";
+import {EnumGenerator} from "./code-gen/enum-generator";
+import {ServiceTypeGenerator} from "./code-gen/service-type-generator";
+import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-call";
+import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
+import {ServiceClientGeneratorRxjs} from "./code-gen/service-client-generator-rxjs";
 
 
 export class ProtobuftsPlugin extends PluginBase<OutFile> {
@@ -133,31 +140,39 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     generate(request: CodeGeneratorRequest): OutFile[] {
         const
             params = this.parseParameters(this.parameters, request.parameter),
-            options = {
+            options = makeInternalOptions({
                 pluginCredit: `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameters ${request.parameter}` : ''),
                 emitAngularAnnotations: params.enable_angular_annotations,
-                normalLongType: ProtobuftsPlugin.determineNormalLongType(params),
-            },
+                normalLongType: params.long_type_string ? rt.LongType.STRING : params.long_type_number ? rt.LongType.NUMBER : rt.LongType.BIGINT,
+            }),
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
-            interpreter = new Interpreter(registry, makeInternalOptions(options)),
-            getClientStyles = ProtobuftsPlugin.makeClientStyleGetter(params, interpreter, registry),
-            getServerStyles = ProtobuftsPlugin.makeServerStyleGetter(params, interpreter, registry),
-            getFileOptimizeMode = ProtobuftsPlugin.makeFileOptimizeGetter(params);
+            imports = new TypeScriptImports(symbols),
+            comments = new CommentGenerator(registry),
+            interpreter = new Interpreter(registry, options),
+            optionResolver = new OptionResolver(interpreter, registry, params),
+            genMessageInterface = new MessageInterfaceGenerator(symbols, registry, imports, comments, interpreter, options),
+            genEnum = new EnumGenerator(symbols, registry, imports, comments, interpreter, options),
+            genMessageType = new MessageTypeGenerator(symbols, registry, imports, comments, interpreter, options),
+            genServiceType = new ServiceTypeGenerator(symbols, registry, imports, comments, interpreter, options),
+            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, registry, imports, comments, interpreter, options),
+            genClientCall = new ServiceClientGeneratorCall(symbols, registry, imports, comments, interpreter, options),
+            genClientPromise = new ServiceClientGeneratorPromise(symbols, registry, imports, comments, interpreter, options),
+            genClientRx = new ServiceClientGeneratorRxjs(symbols, registry, imports, comments, interpreter, options)
+        ;
 
         let outFiles: OutFile[] = [];
 
         for (let fileDescriptor of registry.allFiles()) {
             const
                 outBasename = fileDescriptor.name!.replace('.proto', ''),
-                outOptions = makeInternalOptions({...options, optimizeFor: getFileOptimizeMode(fileDescriptor)}),
 
                 // TODO #55 prevent file name clashes
-                outMain = new OutFile(outBasename + '.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
-                outServerGrpc = new OutFile(outBasename + '.grpc-server.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
-                outClientCall = new OutFile(outBasename + '.client.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
-                outClientRx = new OutFile(outBasename + '.rx-client.ts', fileDescriptor, registry, symbols, interpreter, outOptions),
-                outClientPromise = new OutFile(outBasename + '.promise-client.ts', fileDescriptor, registry, symbols, interpreter, outOptions)
+                outMain = new OutFile(outBasename + '.ts', fileDescriptor, registry, options),
+                outServerGrpc = new OutFile(outBasename + '.grpc-server.ts', fileDescriptor, registry, options),
+                outClientCall = new OutFile(outBasename + '.client.ts', fileDescriptor, registry, options),
+                outClientRx = new OutFile(outBasename + '.rx-client.ts', fileDescriptor, registry, options),
+                outClientPromise = new OutFile(outBasename + '.promise-client.ts', fileDescriptor, registry, options)
             ;
 
             outFiles.push(outMain, outServerGrpc, outClientCall, outClientRx, outClientPromise);
@@ -166,38 +181,30 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 // we are not interested in synthetic types like map entry messages
                 if (registry.isSyntheticElement(descriptor)) return;
 
-                // create the symbol name for the type
-                let name = createLocalTypeName(descriptor, registry);
+                // create the symbol name for the type and register
+                symbols.register(createLocalTypeName(descriptor, registry), descriptor, outMain);
 
                 // we need some special handling for services
                 if (ServiceDescriptorProto.is(descriptor)) {
 
-                    // service type
-                    symbols.register(name, descriptor, outMain);
-
                     // client symbols
-                    const clientStyles = getClientStyles(descriptor);
+                    const clientStyles = optionResolver.getClientStyles(descriptor);
                     if (clientStyles.includes(ClientStyle.CALL_CLIENT)) {
-                        symbols.register(`${name}Client`, descriptor, outClientCall, `call-client`);
-                        symbols.register(`I${name}Client`, descriptor, outClientCall, `call-client-interface`);
+                        genClientCall.registerSymbols(outClientCall, descriptor);
                     }
                     if (clientStyles.includes(ClientStyle.RX_CLIENT)) {
-                        symbols.register(`${name}Client`, descriptor, outClientRx, `rx-client`);
-                        symbols.register(`I${name}Client`, descriptor, outClientRx, `rx-client-interface`);
+                        genClientRx.registerSymbols(outClientRx, descriptor);
                     }
                     if (clientStyles.includes(ClientStyle.PROMISE_CLIENT)) {
-                        symbols.register(`${name}Client`, descriptor, outClientPromise, `promise-client`);
-                        symbols.register(`I${name}Client`, descriptor, outClientPromise, `promise-client-interface`);
+                        genClientPromise.registerSymbols(outClientPromise, descriptor);
                     }
 
                     // server symbols
-                    if (getServerStyles(descriptor).includes(ServerStyle.GRPC_SERVER)) {
-                        symbols.register(`I${name}`, descriptor, outServerGrpc, `grpc-server-interface`);
-                        symbols.register(`${name[0].toLowerCase()}${name.substring(1)}Definition`, descriptor, outServerGrpc, `grpc-server-definition`);
+                    const serverStyles = optionResolver.getServerStyles(descriptor);
+                    if (serverStyles.includes(ServerStyle.GRPC_SERVER)) {
+                        genServerGrpc.registerSymbols(outServerGrpc, descriptor);
                     }
 
-                } else {
-                    symbols.register(name, descriptor, outMain);
                 }
             });
 
@@ -206,10 +213,10 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 if (registry.isSyntheticElement(descriptor)) return;
 
                 if (DescriptorProto.is(descriptor)) {
-                    outMain.generateMessageInterface(descriptor);
+                    genMessageInterface.generateMessageInterface(outMain, descriptor)
                 }
                 if (EnumDescriptorProto.is(descriptor)) {
-                    outMain.generateEnum(descriptor);
+                    genEnum.generateEnum(outMain, descriptor);
                 }
             });
 
@@ -218,32 +225,33 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 if (registry.isSyntheticElement(descriptor)) return;
 
                 if (DescriptorProto.is(descriptor)) {
-                    outMain.generateMessageType(descriptor);
+                    genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
                 }
                 if (ServiceDescriptorProto.is(descriptor)) {
 
                     // service type
-                    outMain.generateServiceType(descriptor);
+                    genServiceType.generateServiceType(outMain, descriptor)
 
                     // clients
-                    const clientStyles = getClientStyles(descriptor);
+                    const clientStyles = optionResolver.getClientStyles(descriptor);
                     if (clientStyles.includes(ClientStyle.CALL_CLIENT)) {
-                        outClientCall.generateServiceClientInterface(descriptor, ClientStyle.CALL_CLIENT);
-                        outClientCall.generateServiceClientImplementation(descriptor, ClientStyle.CALL_CLIENT);
+                        genClientCall.generateInterface(outClientCall, descriptor);
+                        genClientCall.generateImplementationClass(outClientCall, descriptor);
                     }
                     if (clientStyles.includes(ClientStyle.RX_CLIENT)) {
-                        outClientRx.generateServiceClientInterface(descriptor, ClientStyle.RX_CLIENT);
-                        outClientRx.generateServiceClientImplementation(descriptor, ClientStyle.RX_CLIENT);
+                        genClientRx.generateInterface(outClientRx, descriptor);
+                        genClientRx.generateImplementationClass(outClientRx, descriptor);
                     }
                     if (clientStyles.includes(ClientStyle.PROMISE_CLIENT)) {
-                        outClientPromise.generateServiceClientInterface(descriptor, ClientStyle.PROMISE_CLIENT);
-                        outClientPromise.generateServiceClientImplementation(descriptor, ClientStyle.PROMISE_CLIENT);
+                        genClientPromise.generateInterface(outClientPromise, descriptor);
+                        genClientPromise.generateImplementationClass(outClientPromise, descriptor);
                     }
 
                     // grpc server
-                    if (getServerStyles(descriptor).includes(ServerStyle.GRPC_SERVER)) {
-                        outServerGrpc.generateServerGrpcInterface(descriptor);
-                        outServerGrpc.generateServerGrpcDefinition(descriptor);
+                    const serverStyles = optionResolver.getServerStyles(descriptor);
+                    if (serverStyles.includes(ServerStyle.GRPC_SERVER)) {
+                        genServerGrpc.generateInterface(outServerGrpc, descriptor);
+                        genServerGrpc.generateDefinition(outServerGrpc, descriptor);
                     }
                 }
             });
@@ -271,130 +279,6 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
     // we support proto3-optionals, so we let protoc know
     protected getSupportedFeatures = () => [CodeGeneratorResponse_Feature.PROTO3_OPTIONAL];
-
-
-    private static makeClientStyleGetter(
-        params: {
-            force_client_none: boolean,
-            client_none: boolean,
-            client_rx: boolean,
-            client_promise: boolean
-        },
-        interpreter: Interpreter,
-        stringFormat: IStringFormat
-    ): (descriptor: ServiceDescriptorProto) => ClientStyle[] {
-        return (descriptor: ServiceDescriptorProto) => {
-
-            const opt = interpreter.readOurServiceOptions(descriptor)["ts.client"];
-
-            // always check service options valid
-            if (opt.includes(ClientStyle.NO_CLIENT) && opt.some(s => s !== ClientStyle.NO_CLIENT)) {
-                let err = new Error(`You provided invalid options for ${stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NONE, you cannot set additional client styles.`);
-                err.name = `PluginMessageError`;
-                throw err;
-            }
-
-            // clients disabled altogether?
-            if (params.force_client_none) {
-                return [];
-            }
-
-            // look for service options
-            if (opt.length) {
-                return opt
-                    .filter(s => s !== ClientStyle.NO_CLIENT)
-                    .filter((value, index, array) => array.indexOf(value) === index);
-            }
-
-            // fall back to normal style set by parameter
-            if (params.client_none)
-                return [];
-            else if (params.client_rx)
-                return [ClientStyle.RX_CLIENT];
-            else if (params.client_promise)
-                return [ClientStyle.PROMISE_CLIENT];
-            else
-                return [ClientStyle.CALL_CLIENT];
-        };
-    }
-
-
-    private static makeServerStyleGetter(
-        params: {
-            force_server_none: boolean,
-            server_none: boolean,
-            server_grpc: boolean
-        },
-        interpreter: Interpreter,
-        stringFormat: IStringFormat
-    ): (descriptor: ServiceDescriptorProto) => ServerStyle[] {
-        return (descriptor: ServiceDescriptorProto) => {
-
-            const opt = interpreter.readOurServiceOptions(descriptor)["ts.server"];
-
-            // always check service options valid
-            if (opt.includes(ServerStyle.NO_SERVER) && opt.some(s => s !== ServerStyle.NO_SERVER)) {
-                let err = new Error(`You provided invalid options for ${stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.server) = NONE, you cannot set additional server styles.`);
-                err.name = `PluginMessageError`;
-                throw err;
-            }
-
-            // clients disabled altogether?
-            if (params.force_server_none) {
-                return [];
-            }
-
-            // look for service options
-            if (opt.length) {
-                return opt
-                    .filter(s => s !== ServerStyle.NO_SERVER)
-                    .filter((value, index, array) => array.indexOf(value) === index);
-            }
-
-            // fall back to normal style set by parameter
-            if (params.server_grpc) {
-                return [ServerStyle.GRPC_SERVER];
-            }
-            return [];
-        };
-    }
-
-
-    private static makeFileOptimizeGetter(
-        params: {
-            force_optimize_code_size: boolean,
-            force_optimize_speed: boolean,
-            optimize_code_size: boolean,
-        }
-    ): (file: FileDescriptorProto) => OptimizeMode {
-        return (file: FileDescriptorProto) => {
-            if (params.force_optimize_code_size)
-                return OptimizeMode.CODE_SIZE;
-            if (params.force_optimize_speed)
-                return OptimizeMode.SPEED;
-            if (file.options?.optimizeFor)
-                return file.options.optimizeFor;
-            if (params.optimize_code_size)
-                return OptimizeMode.CODE_SIZE;
-            return OptimizeMode.SPEED;
-        };
-    }
-
-    private static determineNormalLongType(
-        params: {
-            long_type_string: boolean,
-            long_type_number: boolean,
-            long_type_bigint: boolean,
-        }
-    ): rt.LongType {
-        if (params.long_type_string) {
-            return rt.LongType.STRING;
-        }
-        if (params.long_type_number) {
-            return rt.LongType.NUMBER;
-        }
-        return rt.LongType.BIGINT;
-    }
 
 
 }

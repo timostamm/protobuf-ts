@@ -2,21 +2,21 @@ import * as ts from "typescript";
 import {ServiceClientGeneratorBase} from "./service-client-generator-base";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {assert} from "@protobuf-ts/runtime";
-import {ClientStyle} from "../our-options";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 
 
 export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
 
 
-    readonly style = ClientStyle.CALL_CLIENT;
+    readonly symbolKindInterface = 'call-client-interface';
+    readonly symbolKindImplementation = 'call-client';
 
 
-    createUnary(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let UnaryCall = this.imports.name('UnaryCall', this.options.runtimeRpcImportPath);
+    createUnary(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        let RpcOptions = this.imports.name(source, 'RpcOptions', this.options.runtimeRpcImportPath);
+        let UnaryCall = this.imports.name(source, 'UnaryCall', this.options.runtimeRpcImportPath);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
-
 
         return ts.createMethod(
             undefined, undefined, undefined,
@@ -25,7 +25,7 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
             [
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    this.makeI(methodInfo)
+                    this.makeI(source, methodInfo)
                 ),
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
@@ -35,8 +35,8 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
             ts.createTypeReferenceNode(
                 UnaryCall,
                 [
-                    this.makeI(methodInfo),
-                    this.makeO(methodInfo),
+                    this.makeI(source, methodInfo),
+                    this.makeO(source, methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -76,10 +76,10 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
 
                     // return stackIntercept("unary", this._transport, method, opt, input);
                     ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
+                        ts.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
                         [
-                            this.makeI(methodInfo),
-                            this.makeO(methodInfo)
+                            this.makeI(source, methodInfo),
+                            this.makeO(source, methodInfo)
                         ],
                         [
                             ts.createStringLiteral("unary"),
@@ -99,9 +99,9 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
     }
 
 
-    createServerStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let ServerStreamingCall = this.imports.name('ServerStreamingCall', this.options.runtimeRpcImportPath);
+    createServerStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        let RpcOptions = this.imports.name(source, 'RpcOptions', this.options.runtimeRpcImportPath);
+        let ServerStreamingCall = this.imports.name(source, 'ServerStreamingCall', this.options.runtimeRpcImportPath);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
@@ -112,7 +112,7 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
             [
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
-                    this.makeI(methodInfo)
+                    this.makeI(source, methodInfo)
                 ),
                 ts.createParameter(
                     undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
@@ -122,8 +122,8 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
             ts.createTypeReferenceNode(
                 ServerStreamingCall,
                 [
-                    this.makeI(methodInfo),
-                    this.makeO(methodInfo),
+                    this.makeI(source, methodInfo),
+                    this.makeO(source, methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -163,10 +163,10 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
 
                     // return stackIntercept("serverStreaming", this._transport, method, opt, i);
                     ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
+                        ts.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
                         [
-                            this.makeI(methodInfo),
-                            this.makeO(methodInfo)
+                            this.makeI(source, methodInfo),
+                            this.makeO(source, methodInfo)
                         ],
                         [
                             ts.createStringLiteral("serverStreaming"),
@@ -183,9 +183,9 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
     }
 
 
-    createClientStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let ClientStreamingCall = this.imports.name('ClientStreamingCall', this.options.runtimeRpcImportPath);
+    createClientStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        let RpcOptions = this.imports.name(source, 'RpcOptions', this.options.runtimeRpcImportPath);
+        let ClientStreamingCall = this.imports.name(source, 'ClientStreamingCall', this.options.runtimeRpcImportPath);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
@@ -202,8 +202,8 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
             ts.createTypeReferenceNode(
                 ClientStreamingCall,
                 [
-                    this.makeI(methodInfo),
-                    this.makeO(methodInfo),
+                    this.makeI(source, methodInfo),
+                    this.makeO(source, methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -242,10 +242,10 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
 
                     // return stackIntercept("clientStreaming", this._transport, methods, opt);
                     ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
+                        ts.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
                         [
-                            this.makeI(methodInfo),
-                            this.makeO(methodInfo)
+                            this.makeI(source, methodInfo),
+                            this.makeO(source, methodInfo)
                         ],
                         [
                             ts.createStringLiteral("clientStreaming"),
@@ -261,9 +261,9 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
     }
 
 
-    createDuplexStreaming(methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        let RpcOptions = this.imports.name('RpcOptions', this.options.runtimeRpcImportPath);
-        let DuplexStreamingCall = this.imports.name('DuplexStreamingCall', this.options.runtimeRpcImportPath);
+    createDuplexStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        let RpcOptions = this.imports.name(source, 'RpcOptions', this.options.runtimeRpcImportPath);
+        let DuplexStreamingCall = this.imports.name(source, 'DuplexStreamingCall', this.options.runtimeRpcImportPath);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
@@ -280,8 +280,8 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
             ts.createTypeReferenceNode(
                 DuplexStreamingCall,
                 [
-                    this.makeI(methodInfo),
-                    this.makeO(methodInfo),
+                    this.makeI(source, methodInfo),
+                    this.makeO(source, methodInfo),
                 ]
             ),
             ts.createBlock(
@@ -320,10 +320,10 @@ export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
 
                     // return stackIntercept("duplex", this._transport, this, methods, opt);
                     ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name('stackIntercept', this.options.runtimeRpcImportPath)),
+                        ts.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
                         [
-                            this.makeI(methodInfo),
-                            this.makeO(methodInfo)
+                            this.makeI(source, methodInfo),
+                            this.makeO(source, methodInfo)
                         ],
                         [
                             ts.createStringLiteral("duplex"),

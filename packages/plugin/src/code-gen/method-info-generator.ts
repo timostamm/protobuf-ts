@@ -1,7 +1,12 @@
 import * as rt from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import * as ts from "typescript";
-import {DescriptorRegistry, TypescriptImportManager, typescriptLiteralFromValue} from "@protobuf-ts/plugin-framework";
+import {
+    DescriptorRegistry,
+    TypescriptFile,
+    TypeScriptImports,
+    typescriptLiteralFromValue
+} from "@protobuf-ts/plugin-framework";
 
 
 /**
@@ -13,21 +18,20 @@ export class MethodInfoGenerator {
 
     constructor(
         private readonly registry: DescriptorRegistry,
-        private readonly imports: TypescriptImportManager,
-        private readonly options: {},
+        private readonly imports: TypeScriptImports,
     ) {
     }
 
 
-    createMethodInfoLiterals(methodInfos: readonly rpc.PartialMethodInfo[]): ts.ArrayLiteralExpression {
+    createMethodInfoLiterals(source: TypescriptFile, methodInfos: readonly rpc.PartialMethodInfo[]): ts.ArrayLiteralExpression {
         const mi = methodInfos
             .map(mi => MethodInfoGenerator.denormalizeMethodInfo(mi))
-            .map(mi => this.createMethodInfoLiteral(mi));
+            .map(mi => this.createMethodInfoLiteral(source, mi));
         return ts.createArrayLiteral(mi, true);
     }
 
 
-    createMethodInfoLiteral(methodInfo: rpc.PartialMethodInfo): ts.ObjectLiteralExpression {
+    createMethodInfoLiteral(source: TypescriptFile, methodInfo: rpc.PartialMethodInfo): ts.ObjectLiteralExpression {
         methodInfo = MethodInfoGenerator.denormalizeMethodInfo(methodInfo);
         const properties: ts.PropertyAssignment[] = [];
 
@@ -49,6 +53,7 @@ export class MethodInfoGenerator {
         properties.push(ts.createPropertyAssignment(
             ts.createIdentifier('I'),
             ts.createIdentifier(this.imports.type(
+                source,
                 this.registry.resolveTypeName(methodInfo.I.typeName)
             ))
         ));
@@ -57,6 +62,7 @@ export class MethodInfoGenerator {
         properties.push(ts.createPropertyAssignment(
             ts.createIdentifier('O'),
             ts.createIdentifier(this.imports.type(
+                source,
                 this.registry.resolveTypeName(methodInfo.O.typeName)
             ))
         ));
