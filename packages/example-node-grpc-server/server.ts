@@ -209,16 +209,51 @@ const exampleService: IExampleService = {
 
     bidi(call: grpc.ServerDuplexStream<ExampleRequest, ExampleResponse>): void {
 
-        let e: any = new Error("not implemented");
+        let sentWelcome = false;
+        let questionsReceived = 0;
+        let answersSent = 0;
 
-        // this is picked up
-        e.code = grpc.status.UNIMPLEMENTED;
+        call.write(ExampleResponse.create({
+            answer: "welcome. ask a question."
+        }), () => {
+            sentWelcome = true;
+        });
 
-        // but this isn't
-        e.metadata = new grpc.Metadata();
-        e.metadata.add('info', 'test');
+        call.on('data', args => {
 
-        call.destroy(e);
+            questionsReceived++;
+            assert(ExampleRequest.is(args));
+
+            if (sentWelcome) {
+                call.write(ExampleResponse.create({
+                    answer: "thanks for asking."
+                }), () => {
+                    answersSent++;
+                });
+            }
+        });
+
+        call.on('end', () => {
+
+            call.write(ExampleResponse.create({
+                answer: "you stopped asking, but I will send you one more message soon."
+            }), () => {
+                answersSent++;
+            });
+
+            setTimeout(function (){
+
+                call.write(ExampleResponse.create({
+                    answer: `ending this call now. you asked ${questionsReceived} questions.`
+                }), () => {
+                    const trailer = new grpc.Metadata();
+                    trailer.add('trailer', 'yes');
+                    call.end(trailer);
+                });
+
+            }, 250);
+
+        });
 
     },
 

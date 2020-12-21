@@ -1,5 +1,5 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
-import {ExampleServiceClient, FailRequest, IExampleServiceClient} from "./service-example";
+import {ExampleRequest, ExampleServiceClient, FailRequest, IExampleServiceClient} from "./service-example";
 import {GrpcTransport} from "@protobuf-ts/grpc-transport";
 
 
@@ -17,6 +17,8 @@ async function main() {
     await callServerStream(client);
 
     await callClientStream(client);
+
+    await callBidi(client);
 
 }
 
@@ -114,6 +116,40 @@ async function callClientStream(client: IExampleServiceClient) {
 
     const response = await call.response;
     console.log("got response message: ", response)
+
+    const status = await call.status;
+    console.log("got status: ", status)
+
+    const trailers = await call.trailers;
+    console.log("got trailers: ", trailers)
+
+    console.log();
+}
+
+
+async function callBidi(client: IExampleServiceClient) {
+
+    const call = client.bidi({});
+
+    console.log(`### calling method "${call.method.name}"...`)
+
+    const headers = await call.headers;
+    console.log("got response headers: ", headers)
+
+    call.response.onMessage(message => {
+        console.log("got answer: ", message.answer)
+    });
+
+    console.log("sending question...");
+    await call.request.send(ExampleRequest.create({
+        question: 'whats up?'
+    }));
+
+    console.log("sending another question, then complete...");
+    await call.request.send(ExampleRequest.create({
+        question: 'how are you?'
+    }));
+    await call.request.complete();
 
     const status = await call.status;
     console.log("got status: ", status)

@@ -282,7 +282,67 @@ export class GrpcTransport implements RpcTransport {
 
 
     duplex<I extends object, O extends object>(method: MethodInfo<I, O>, options: RpcOptions): DuplexStreamingCall<I, O> {
-        throw new Error("NOT IMPLEMENTED");
+
+        const opt = options as GrpcOptions,
+            meta = opt.meta ?? {},
+            gMeta = rpcMetaToGrpc(meta, new Metadata({
+                idempotentRequest: method.idempotency === "IDEMPOTENT"
+            })),
+            client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
+            defHeader = new Deferred<RpcMetadata>(),
+            outStream = new RpcOutputStreamController<O>(),
+            defStatus = new Deferred<RpcStatus>(),
+            defTrailer = new Deferred<RpcMetadata>(),
+            gCall = client.makeBidiStreamRequest<I, O>(
+                `/${method.service.typeName}/${method.name}`,
+                (value: I): Buffer => Buffer.from(method.I.toBinary(value, opt.binaryOptions)),
+                (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
+                gMeta,
+            ),
+            inStream = new GrpcInputStreamWrapper(gCall),
+            call = new DuplexStreamingCall<I, O>(method, meta, inStream, defHeader.promise, outStream, defStatus.promise, defTrailer.promise)
+        ;
+
+        if (opt.abort) {
+            opt.abort.addEventListener('abort', ev => {
+                gCall.cancel();
+            });
+        }
+
+        gCall.addListener('error', err => {
+            const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], grpcMetaToRpc(err.metadata)) : new RpcError(err.message);
+            defHeader.rejectPending(e);
+            if (!outStream.closed) {
+                outStream.notifyError(e);
+            }
+            defStatus.rejectPending(e);
+            defTrailer.rejectPending(e);
+        });
+
+        gCall.addListener('end', () => {
+            if (!outStream.closed) {
+                outStream.notifyComplete();
+            }
+        });
+
+        gCall.addListener('data', arg1 => {
+            assert(method.O.is(arg1));
+            outStream.notifyMessage(arg1);
+        });
+
+        gCall.addListener('metadata', val => {
+            defHeader.resolve(grpcMetaToRpc(val));
+        });
+
+        gCall.addListener('status', val => {
+            defStatus.resolvePending({
+                code: GrpcStatus[val.code],
+                detail: val.details
+            });
+            defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
+        });
+
+        return call;
     }
 
 }
