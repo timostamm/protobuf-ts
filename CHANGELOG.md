@@ -11,7 +11,8 @@ Breaking changes:
 
 New features:
 
-- gRPC server support for @grpc/grpc-js (see #52)
+- gRPC server support for @grpc/grpc-js (see #52)  
+  Thanks to @badsyntax for inspiration
 
 
 ### v2.0.0-alpha.7
