@@ -2,13 +2,14 @@ import {
     MethodInfo,
     RpcError,
     RpcInputStream,
-    RpcMetadata,
     RpcOutputStream,
-    ServerCallContext
+    RpcOutputStreamController,
+    ServerCallContext,
+    ServiceInfo
 } from "@protobuf-ts/runtime-rpc";
 import * as grpc from "@grpc/grpc-js";
-import {RpcOutputStreamController, ServiceInfo} from "@protobuf-ts/runtime-rpc";
-import {assert, listEnumValues} from "@protobuf-ts/runtime";
+import {assert} from "@protobuf-ts/runtime";
+import {metadataFromGrpc, rpcCodeToGrpc, metadataToGrpc} from "./util";
 
 
 /**
@@ -57,14 +58,15 @@ export function mapService(serviceInfo: ServiceInfo, service: any): grpc.Untyped
     const grpcImp: grpc.UntypedServiceImplementation = {};
     for (let mi of serviceInfo.methods) {
         assert(typeof service[mi.localName] == "function", `implementation is missing method ${mi.localName}()`);
+        const fn = service[mi.localName].bind(service);
         if (mi.serverStreaming && mi.clientStreaming) {
-            grpcImp[mi.localName] = mapBidi(mi, service[mi.localName] as BidiMethod<object, object>)
+            grpcImp[mi.localName] = mapBidi(mi, fn as BidiMethod<object, object>)
         } else if (mi.serverStreaming) {
-            grpcImp[mi.localName] = mapServerStreaming(mi, service[mi.localName] as ServerStreamingMethod<object, object>)
+            grpcImp[mi.localName] = mapServerStreaming(mi, fn as ServerStreamingMethod<object, object>)
         } else if (mi.clientStreaming) {
-            grpcImp[mi.localName] = mapClientStreaming(mi, service[mi.localName] as ClientStreamingMethod<object, object>)
+            grpcImp[mi.localName] = mapClientStreaming(mi, fn as ClientStreamingMethod<object, object>)
         } else {
-            grpcImp[mi.localName] = mapUnary(mi, service[mi.localName] as UnaryMethod<object, object>)
+            grpcImp[mi.localName] = mapUnary(mi, fn as UnaryMethod<object, object>)
         }
     }
     return grpcImp;
@@ -76,9 +78,9 @@ function createContext(methodInfo: MethodInfo, call: grpc.ServerUnaryCall<any, a
     const deadlineDate = typeof deadlineGrpc === 'number' ? new Date(deadlineGrpc) : deadlineGrpc;
     return {
         method: methodInfo,
-        headers: grpcMetaToRpc(call.metadata),
+        headers: metadataFromGrpc(call.metadata),
         sendResponseHeaders(data) {
-            call.sendMetadata(rpcMetaToGrpc(data));
+            call.sendMetadata(metadataToGrpc(data));
         },
         status: {
             code: grpc.status[grpc.status.OK],
@@ -108,14 +110,14 @@ function mapUnary<I extends object, O extends object>(methodInfo: MethodInfo, me
                         message: `invalid grpc status code ${e.code}`,
                         code: grpc.status.INTERNAL,
                         details: e.message,
-                        metadata: rpcMetaToGrpc(e.meta),
+                        metadata: metadataToGrpc(e.meta),
                     });
                 }
 
                 return callback({
                     code: grpcStatusCode,
                     details: e.message,
-                    metadata: rpcMetaToGrpc(e.meta),
+                    metadata: metadataToGrpc(e.meta),
                 });
             }
 
@@ -144,7 +146,7 @@ function mapUnary<I extends object, O extends object>(methodInfo: MethodInfo, me
             });
         }
 
-        callback(null, response, rpcMetaToGrpc(context.trailers));
+        callback(null, response, metadataToGrpc(context.trailers));
     };
 }
 
@@ -200,7 +202,7 @@ function mapServerStreaming<I extends object, O extends object>(methodInfo: Meth
             return call.destroy(d);
         }
 
-        call.end(rpcMetaToGrpc(context.trailers));
+        call.end(metadataToGrpc(context.trailers));
     };
 }
 
@@ -239,14 +241,14 @@ function mapClientStreaming<I extends object, O extends object>(methodInfo: Meth
                         message: `invalid grpc status code ${e.code}`,
                         code: grpc.status.INTERNAL,
                         details: e.message,
-                        metadata: rpcMetaToGrpc(e.meta),
+                        metadata: metadataToGrpc(e.meta),
                     });
                 }
 
                 return callback({
                     code: grpcStatusCode,
                     details: e.message,
-                    metadata: rpcMetaToGrpc(e.meta),
+                    metadata: metadataToGrpc(e.meta),
                 });
             }
 
@@ -275,7 +277,7 @@ function mapClientStreaming<I extends object, O extends object>(methodInfo: Meth
             });
         }
 
-        callback(null, response, rpcMetaToGrpc(context.trailers));
+        callback(null, response, metadataToGrpc(context.trailers));
     };
 }
 
@@ -354,47 +356,9 @@ function mapBidi<I extends object, O extends object>(methodInfo: MethodInfo, met
             return call.destroy(d);
         }
 
-        call.end(rpcMetaToGrpc(context.trailers));
+        call.end(metadataToGrpc(context.trailers));
 
     };
 }
 
-
-function rpcCodeToGrpc(from: string): grpc.status | undefined {
-    let v = listEnumValues(grpc.status).find(v => v.name === from);
-    return v ? v.number : undefined;
-}
-
-
-function rpcMetaToGrpc(from: RpcMetadata, base?: grpc.Metadata): grpc.Metadata {
-    const to = base ?? new grpc.Metadata();
-    for (let k of Object.keys(from)) {
-        let v = from[k];
-        if (typeof v == 'string') {
-            to.add(k, v);
-        } else {
-            for (let vv of v) {
-                to.add(k, vv);
-            }
-        }
-    }
-    return to;
-}
-
-
-function grpcMetaToRpc(from: grpc.Metadata): RpcMetadata {
-    const meta: RpcMetadata = {};
-    const h2 = from.toHttp2Headers();
-    for (let k of Object.keys(h2)) {
-        let v = h2[k];
-        if (v === undefined) {
-            continue;
-        }
-        if (typeof v === "number") {
-            v = v.toString();
-        }
-        meta[k] = v;
-    }
-    return meta;
-}
 

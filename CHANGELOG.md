@@ -1,6 +1,11 @@
 ### unreleased changes
 
-none
+
+Bug Fixes:
+
+- Fixed conversion of gRPC metadata to our metadata (grpc-transport, grpc-backend)
+- Fixed service binding to work with class instances (grpc-backend)
+- Fixed isServiceError failure (grpc-transport, grpc-backend)
 
 
 ### v2.0.0-alpha.9

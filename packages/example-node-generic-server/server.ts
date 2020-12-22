@@ -8,9 +8,7 @@ import {adaptService} from "@protobuf-ts/grpc-backend";
 const host = '0.0.0.0:5000';
 
 
-
-// user implements:
-const imp: IExampleService = {
+const exampleService: IExampleService = {
 
 
     async unary(request: ExampleRequest, context: ServerCallContext): Promise<ExampleResponse> {
@@ -104,7 +102,7 @@ const imp: IExampleService = {
 
 function getServer(): grpc.Server {
     const server = new grpc.Server();
-    server.addService(...adaptService(ExampleService, imp));
+    server.addService(...adaptService(ExampleService, exampleService));
     return server;
 }
 

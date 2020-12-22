@@ -16,64 +16,9 @@ import {
     UnaryCall
 } from "@protobuf-ts/runtime-rpc";
 import {GrpcOptions} from "./grpc-options";
-import {Client, ClientWritableStream, Metadata, ServiceError, status as GrpcStatus} from "@grpc/grpc-js";
+import {Client, ClientWritableStream, Metadata, status as GrpcStatus} from "@grpc/grpc-js";
 import {assert} from "@protobuf-ts/runtime";
-
-
-/**
- * Is the given argument a ServiceError as provided
- * by @grpc/grpc-js?
- *
- * A ServiceError is a specialized Error object, extended
- * with the properties "code", "details" and "metadata".
- */
-function isServiceError(arg: any): arg is ServiceError {
-    if (typeof arg != 'object' || !arg) {
-        return false;
-    }
-    const rp = ['code', 'details', 'metadata', 'name', 'message'];
-    if (!rp.every(p => arg.hasOwnProperty(p))) {
-        return false;
-    }
-    return typeof arg.code == 'number'
-        && typeof arg.details == 'string'
-        && typeof arg.metadata == 'object'
-        && typeof arg.name == 'string'
-        && typeof arg.message == 'string';
-}
-
-
-function rpcMetaToGrpc(from: RpcMetadata, base?: Metadata): Metadata {
-    const to = base ?? new Metadata();
-    for (let k of Object.keys(from)) {
-        let v = from[k];
-        if (typeof v == 'string') {
-            to.add(k, v);
-        } else {
-            for (let vv of v) {
-                to.add(k, vv);
-            }
-        }
-    }
-    return to;
-}
-
-
-function grpcMetaToRpc(from: Metadata): RpcMetadata {
-    const meta: RpcMetadata = {};
-    const h2 = from.toHttp2Headers();
-    for (let k of Object.keys(h2)) {
-        let v = h2[k];
-        if (v === undefined) {
-            continue;
-        }
-        if (typeof v === "number") {
-            v = v.toString();
-        }
-        meta[k] = v;
-    }
-    return meta;
-}
+import {metadataFromGrpc, isServiceError, metadataToGrpc} from "./util";
 
 
 export class GrpcTransport implements RpcTransport {
@@ -93,7 +38,7 @@ export class GrpcTransport implements RpcTransport {
 
         const opt = options as GrpcOptions,
             meta = opt.meta ?? {},
-            gMeta = rpcMetaToGrpc(meta, new Metadata({
+            gMeta = metadataToGrpc(meta, new Metadata({
                 idempotentRequest: method.idempotency === "IDEMPOTENT"
             })),
             client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
@@ -116,7 +61,7 @@ export class GrpcTransport implements RpcTransport {
                     defMessage.resolve(value);
                 }
                 if (err) {
-                    const e = new RpcError(err.message, GrpcStatus[err.code], grpcMetaToRpc(err.metadata));
+                    const e = new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata));
                     defHeader.rejectPending(e);
                     defMessage.rejectPending(e);
                     defStatus.rejectPending(e);
@@ -132,7 +77,7 @@ export class GrpcTransport implements RpcTransport {
         }
 
         gCall.addListener('metadata', val => {
-            defHeader.resolve(grpcMetaToRpc(val));
+            defHeader.resolve(metadataFromGrpc(val));
         });
 
         gCall.addListener('status', val => {
@@ -149,7 +94,7 @@ export class GrpcTransport implements RpcTransport {
                     code: GrpcStatus[val.code],
                     detail: val.details
                 });
-                defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
+                defTrailer.resolvePending(metadataFromGrpc(val.metadata));
             }
         });
 
@@ -161,7 +106,7 @@ export class GrpcTransport implements RpcTransport {
 
         const opt = options as GrpcOptions,
             meta = opt.meta ?? {},
-            gMeta = rpcMetaToGrpc(meta, new Metadata({
+            gMeta = metadataToGrpc(meta, new Metadata({
                 idempotentRequest: method.idempotency === "IDEMPOTENT"
             })),
             client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
@@ -188,7 +133,7 @@ export class GrpcTransport implements RpcTransport {
         }
 
         gCall.addListener('error', err => {
-            const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], grpcMetaToRpc(err.metadata)) : new RpcError(err.message);
+            const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata)) : new RpcError(err.message);
             defHeader.rejectPending(e);
             if (!outStream.closed) {
                 outStream.notifyError(e);
@@ -209,7 +154,7 @@ export class GrpcTransport implements RpcTransport {
         });
 
         gCall.addListener('metadata', val => {
-            defHeader.resolve(grpcMetaToRpc(val));
+            defHeader.resolve(metadataFromGrpc(val));
         });
 
         gCall.addListener('status', val => {
@@ -217,7 +162,7 @@ export class GrpcTransport implements RpcTransport {
                 code: GrpcStatus[val.code],
                 detail: val.details
             });
-            defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
+            defTrailer.resolvePending(metadataFromGrpc(val.metadata));
         });
 
         return call;
@@ -228,7 +173,7 @@ export class GrpcTransport implements RpcTransport {
 
         const opt = options as GrpcOptions,
             meta = opt.meta ?? {},
-            gMeta = rpcMetaToGrpc(meta, new Metadata({
+            gMeta = metadataToGrpc(meta, new Metadata({
                 idempotentRequest: method.idempotency === "IDEMPOTENT"
             })),
             client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
@@ -247,7 +192,7 @@ export class GrpcTransport implements RpcTransport {
                         defMessage.resolve(value);
                     }
                     if (err) {
-                        const e = new RpcError(err.message, GrpcStatus[err.code], grpcMetaToRpc(err.metadata));
+                        const e = new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata));
                         defHeader.rejectPending(e);
                         defMessage.rejectPending(e);
                         defStatus.rejectPending(e);
@@ -266,7 +211,7 @@ export class GrpcTransport implements RpcTransport {
         }
 
         gCall.addListener('metadata', val => {
-            defHeader.resolve(grpcMetaToRpc(val));
+            defHeader.resolve(metadataFromGrpc(val));
         });
 
         gCall.addListener('status', val => {
@@ -274,7 +219,7 @@ export class GrpcTransport implements RpcTransport {
                 code: GrpcStatus[val.code],
                 detail: val.details
             });
-            defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
+            defTrailer.resolvePending(metadataFromGrpc(val.metadata));
         });
 
         return call;
@@ -285,7 +230,7 @@ export class GrpcTransport implements RpcTransport {
 
         const opt = options as GrpcOptions,
             meta = opt.meta ?? {},
-            gMeta = rpcMetaToGrpc(meta, new Metadata({
+            gMeta = metadataToGrpc(meta, new Metadata({
                 idempotentRequest: method.idempotency === "IDEMPOTENT"
             })),
             client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
@@ -310,7 +255,7 @@ export class GrpcTransport implements RpcTransport {
         }
 
         gCall.addListener('error', err => {
-            const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], grpcMetaToRpc(err.metadata)) : new RpcError(err.message);
+            const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata)) : new RpcError(err.message);
             defHeader.rejectPending(e);
             if (!outStream.closed) {
                 outStream.notifyError(e);
@@ -331,7 +276,7 @@ export class GrpcTransport implements RpcTransport {
         });
 
         gCall.addListener('metadata', val => {
-            defHeader.resolve(grpcMetaToRpc(val));
+            defHeader.resolve(metadataFromGrpc(val));
         });
 
         gCall.addListener('status', val => {
@@ -339,7 +284,7 @@ export class GrpcTransport implements RpcTransport {
                 code: GrpcStatus[val.code],
                 detail: val.details
             });
-            defTrailer.resolvePending(grpcMetaToRpc(val.metadata));
+            defTrailer.resolvePending(metadataFromGrpc(val.metadata));
         });
 
         return call;
