@@ -1,6 +1,7 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
-import {ExampleRequest, ExampleServiceClient, FailRequest, IExampleServiceClient} from "./service-example";
+import {ExampleRequest, FailRequest} from "./service-example";
 import {GrpcTransport} from "@protobuf-ts/grpc-transport";
+import {ExampleServiceClient, IExampleServiceClient} from "./service-example.client";
 
 
 const transport = new GrpcTransport({
