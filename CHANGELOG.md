@@ -1,5 +1,15 @@
 ### unreleased changes
 
+none
+
+
+### v2.0.0-alpha.9
+
+New features:
+
+- Generic server support (see #56)
+
+
 Breaking changes:
 
 - clients are generated into separate files (see #55)
