@@ -10,6 +10,7 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
+    "@grpc/grpc-js": "^1.2.2",
     "@protobuf-ts/grpc-backend": "^2.0.0-alpha.8",
     "@protobuf-ts/plugin": "^2.0.0-alpha.8",
     "@protobuf-ts/protoc": "^2.0.0-alpha.8",
