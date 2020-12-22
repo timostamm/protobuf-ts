@@ -1,6 +1,8 @@
 ### unreleased changes
 
-none
+Bug Fixes:
+
+- grpcweb-transport: Recognize "application/grpc-web-text+proto".
 
 
 ### v2.0.0-alpha.10

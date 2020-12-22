@@ -214,11 +214,17 @@ function concatBytes(a: Uint8Array, b: Uint8Array): Uint8Array {
 // returns format from response header, throws if unknown
 function parseFormat(headers: HttpHeaders): GrpcWebFormat {
     let ct = headers['content-type'];
+    // > the sender *should* always specify the message format, e.g. +proto, +json
+    //
+    // > the receiver should assume the default is "+proto" when the message format is
+    // > missing in Content-Type (as "application/grpc-web")
+    //
+    // see https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-WEB.md
     switch (ct) {
         case "application/grpc-web-text":
+        case "application/grpc-web-text+proto":
             return "text";
         case "application/grpc-web":
-            // the receiver should assume the default is "+proto" when the message format is missing in Content-Type (as "application/grpc-web")
         case "application/grpc-web+proto":
             return "binary";
         case undefined:
