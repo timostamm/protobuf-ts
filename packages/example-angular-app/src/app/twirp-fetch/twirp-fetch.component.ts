@@ -2,8 +2,9 @@ import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {RpcError, RpcOptions} from '@protobuf-ts/runtime-rpc';
 import {TwirpFetchTransport, TwirpOptions} from '@protobuf-ts/twirp-transport';
-import {HaberdasherClient, Size} from '../../protoc-gen-ts-out/service-twirp-example';
+import { Size} from '../../protoc-gen-ts-out/service-twirp-example';
 import {TWIRP_TRANSPORT_OPTIONS} from '@protobuf-ts/runtime-angular';
+import {HaberdasherClient} from '../../protoc-gen-ts-out/service-twirp-example.client';
 
 
 type Info = {
