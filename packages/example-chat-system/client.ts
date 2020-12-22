@@ -6,6 +6,9 @@ import {ChatServiceClient} from "./service-chat.client";
 main().catch(e => console.error(e)).finally(() => process.exit());
 
 
+// TODO #56 UnhandledPromiseRejectionWarning
+// when server dies while client is running
+
 async function main() {
 
     const client = new ChatServiceClient(new GrpcTransport({

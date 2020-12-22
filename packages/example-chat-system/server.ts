@@ -19,7 +19,7 @@ class ChatService implements IChatService {
 
 
     async join(request: JoinRequest, responses: RpcInputStream<ChatEvent>, context: ServerCallContext): Promise<void> {
-        console.log("join() called")
+        console.log(`join() called. ${this.users.length} users so far.`);
 
         this.addUser(request.username, responses, context);
 
@@ -42,12 +42,12 @@ class ChatService implements IChatService {
             }
         });
 
-        console.log("join() ending")
+        console.log(`join() ending. ${this.users.length} users remaining.`)
     }
 
 
     async post(request: PostRequest, context: ServerCallContext): Promise<PostResponse> {
-        console.log("post() called")
+        // console.log(`post() called. will broadcast to ${this.users.length} users.`)
 
         const user = this.getUser(context.headers['x-token']);
 
