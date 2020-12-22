@@ -2,14 +2,16 @@ import {
     MethodInfo,
     RpcError,
     RpcInputStream,
+    RpcMetadata,
     RpcOutputStream,
     RpcOutputStreamController,
     ServerCallContext,
+    ServerCallContextController,
     ServiceInfo
 } from "@protobuf-ts/runtime-rpc";
 import * as grpc from "@grpc/grpc-js";
 import {assert} from "@protobuf-ts/runtime";
-import {metadataFromGrpc, rpcCodeToGrpc, metadataToGrpc} from "./util";
+import {metadataFromGrpc, metadataToGrpc, rpcCodeToGrpc} from "./util";
 
 
 /**
@@ -76,19 +78,19 @@ export function mapService(serviceInfo: ServiceInfo, service: any): grpc.Untyped
 function createContext(methodInfo: MethodInfo, call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any> | grpc.ServerWritableStream<any, any>): ServerCallContext {
     const deadlineGrpc = call.getDeadline();
     const deadlineDate = typeof deadlineGrpc === 'number' ? new Date(deadlineGrpc) : deadlineGrpc;
-    return {
-        method: methodInfo,
-        headers: metadataFromGrpc(call.metadata),
-        sendResponseHeaders(data) {
-            call.sendMetadata(metadataToGrpc(data));
-        },
-        status: {
-            code: grpc.status[grpc.status.OK],
-            detail: ''
-        },
-        trailers: {},
-        deadline: deadlineDate,
-    };
+
+    const sendHeaders = (data: RpcMetadata) => call.sendMetadata(metadataToGrpc(data));
+
+    const ctx = new ServerCallContextController(
+        methodInfo,
+        metadataFromGrpc(call.metadata),
+        deadlineDate,
+        sendHeaders
+    );
+
+    call.on('cancelled', () => ctx.notifyCancelled());
+
+    return ctx;
 }
 
 

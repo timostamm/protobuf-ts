@@ -1,5 +1,9 @@
 ### unreleased changes
 
+New features:
+
+- support client cancel in generic servers / grpc-backend (see #56)
+
 
 Bug Fixes:
 
