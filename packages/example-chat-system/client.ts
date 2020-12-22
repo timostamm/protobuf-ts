@@ -1,23 +1,31 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
 import {GrpcTransport} from "@protobuf-ts/grpc-transport";
-import {ChatServiceClient} from "./service-chat.client";
-
-
-main().catch(e => console.error(e)).finally(() => process.exit());
+import {ChatServiceClient, IChatServiceClient} from "./service-chat.client";
+import {TerminalIO} from "./terminal-io";
 
 
 // TODO #56 UnhandledPromiseRejectionWarning
 // when server dies while client is running
 
-async function main() {
 
-    const client = new ChatServiceClient(new GrpcTransport({
+main(
+    new TerminalIO(),
+    new ChatServiceClient(new GrpcTransport({
         host: "localhost:5000",
         channelCredentials: ChannelCredentials.createInsecure(),
-    }));
+    }))
+).catch(e => {
+    console.error(e)
+    process.exit();
+});
 
-    const call = client.join({username: randomUsername()});
-    console.log(`joining chat as ${call.request.username}.`);
+
+async function main(term: TerminalIO, client: IChatServiceClient) {
+
+    // ask for username and join the chat
+    const call = client.join({
+        username: await term.prompt('Enter your username: ')
+    });
 
     // the response headers contain the token we need to post messages
     const headers = await call.headers;
@@ -26,37 +34,28 @@ async function main() {
     call.response.onMessage(message => {
         switch (message.event.oneofKind) {
             case "joined":
-                console.log(`> * ${message.event.joined}`);
+                term.print(`* ${message.event.joined}`);
                 break;
             case "left":
-                console.log(`> * ${message.event.left}`);
+                term.print(`* ${message.event.left}`);
                 break;
             case "message":
-                console.log(`> ${message.username}: ${message.event.message}`);
+                term.print(`${message.username}: ${message.event.message}`);
                 break;
         }
     });
 
-    // send messages every few seconds
-    for (let count = 1; count <= 50; count++) {
-        await delay(2000);
+    // prompt the use for messages until ^C
+    while (!term.closed) {
+
+        // prompt the user for a message
+        const text = await term.prompt();
+
+        // then send it to the server
         await client.post({
-            message: `hello #${count}`
+            message: text
         }, {
             meta: {'x-token': headers['x-token']}
         })
     }
-
-    console.log('leaving chat.');
-}
-
-
-function randomUsername(): string {
-    const names = ['max', 'pete', 'charles', 'donald', 'mayfair', 'alex', 'bob'];
-    return names[Math.floor(Math.random() * names.length)];
-}
-
-
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
