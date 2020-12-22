@@ -34,14 +34,13 @@ export function rpcCodeToGrpc(from: string): grpc.status | undefined {
  * Convert our RPC Metadata to gRPC Metadata.
  */
 export function metadataToGrpc(from: RpcMetadata, base?: grpc.Metadata): grpc.Metadata {
-
     const to = base ?? new grpc.Metadata();
     const decode = (k: string, v: string) => k.endsWith('-bin') ? Buffer.from(v, 'base64') : v;
     for (let k of Object.keys(from)) {
         let v = from[k];
         if (typeof v == 'string') {
             to.add(k, decode(k, v));
-        } else {
+        } else if (Array.isArray(v)) {
             for (let vv of v) {
                 to.add(k, decode(k, vv));
             }
