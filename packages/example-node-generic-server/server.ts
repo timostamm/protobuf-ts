@@ -1,8 +1,7 @@
 import * as grpc from '@grpc/grpc-js';
-import {ExampleRequest, ExampleResponse} from "./service-example";
+import {ExampleRequest, ExampleResponse, ExampleService} from "./service-example";
 import {IExampleService} from "./service-example.server";
 import {RpcInputStream, RpcOutputStream, ServerCallContext} from "@protobuf-ts/runtime-rpc";
-import {ExampleService} from "../example-node-grpc-server/service-example";
 import {adaptService} from "@protobuf-ts/grpc-backend";
 
 

@@ -24,6 +24,7 @@ import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-ca
 import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
 import {ServiceClientGeneratorRxjs} from "./code-gen/service-client-generator-rxjs";
 import {FileTable} from "./file-table";
+import {ServiceServerGeneratorGeneric} from "./code-gen/service-server-generator-generic";
 
 
 export class ProtobuftsPlugin extends PluginBase<OutFile> {
@@ -100,9 +101,15 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                          "If you do not want servers at all, use `force_server_none`.",
             excludes: ['server_grpc'],
         },
+        server_generic: {
+            description: "Generate a generic server interface. Adapters be used to serve the service, \n" +
+                         "for example @protobuf-ts/grpc-backend for gRPC. \n" +
+                         "Only applies to services that do *not* use the option `ts.server`.",
+            excludes: ['server_none', 'force_server_none'],
+        },
         server_grpc: {
             description: "Generate a server interface and definition for use with @grpc/grpc-js. \n" +
-                "Only applies to services that do *not* use the option `ts.server`.",
+                         "Only applies to services that do *not* use the option `ts.server`.",
             excludes: ['server_none', 'force_server_none'],
         },
         force_server_none: {
@@ -157,6 +164,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             genEnum = new EnumGenerator(symbols, registry, imports, comments, interpreter, options),
             genMessageType = new MessageTypeGenerator(symbols, registry, imports, comments, interpreter, options),
             genServiceType = new ServiceTypeGenerator(symbols, registry, imports, comments, interpreter, options),
+            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
             genServerGrpc = new ServiceServerGeneratorGrpc(symbols, registry, imports, comments, interpreter, options),
             genClientCall = new ServiceClientGeneratorCall(symbols, registry, imports, comments, interpreter, options),
             genClientPromise = new ServiceClientGeneratorPromise(symbols, registry, imports, comments, interpreter, options),
@@ -174,6 +182,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         }
         for (let fileDescriptor of registry.allFiles()) {
             const base = fileDescriptor.name!.replace('.proto', '');
+            fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
             fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc-server');
             fileTable.register(base + '.client.ts', fileDescriptor, 'client');
             fileTable.register(base + '.rx-client.ts', fileDescriptor, 'rx-client');
@@ -184,11 +193,12 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         for (let fileDescriptor of registry.allFiles()) {
             const
                 outMain = new OutFile(fileTable.get(fileDescriptor).name, fileDescriptor, registry, options),
+                outServerGeneric = new OutFile(fileTable.get(fileDescriptor, 'generic-server').name, fileDescriptor, registry, options),
                 outServerGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc-server').name, fileDescriptor, registry, options),
                 outClientCall = new OutFile(fileTable.get(fileDescriptor, 'client').name, fileDescriptor, registry, options),
                 outClientRx = new OutFile(fileTable.get(fileDescriptor, 'rx-client').name, fileDescriptor, registry, options),
                 outClientPromise = new OutFile(fileTable.get(fileDescriptor, 'promise-client').name, fileDescriptor, registry, options);
-            outFiles.push(outMain, outServerGrpc, outClientCall, outClientRx, outClientPromise);
+            outFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientRx, outClientPromise);
 
             registry.visitTypes(fileDescriptor, descriptor => {
                 // we are not interested in synthetic types like map entry messages
@@ -200,6 +210,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                     genClientCall.registerSymbols(outClientCall, descriptor);
                     genClientRx.registerSymbols(outClientRx, descriptor);
                     genClientPromise.registerSymbols(outClientPromise, descriptor);
+                    genServerGeneric.registerSymbols(outServerGeneric, descriptor);
                     genServerGrpc.registerSymbols(outServerGrpc, descriptor);
                 }
             });
@@ -245,6 +256,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
                     // grpc server
                     const serverStyles = optionResolver.getServerStyles(descriptor);
+                    if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
+                        genServerGeneric.generateInterface(outServerGeneric, descriptor);
+                    }
                     if (serverStyles.includes(ServerStyle.GRPC_SERVER)) {
                         genServerGrpc.generateInterface(outServerGrpc, descriptor);
                         genServerGrpc.generateDefinition(outServerGrpc, descriptor);

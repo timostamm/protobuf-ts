@@ -163,9 +163,16 @@ export enum ServerStyle {
     NO_SERVER = 0,
 
     /**
-     * Generate a server for @grpc/grpc-js
+     * Generate a generic server interface.
+     * Adapters be used to serve the service, for example @protobuf-ts/grpc-backend
+     * for gRPC.
      */
-    GRPC_SERVER = 1,
+    GENERIC_SERVER = 1,
+
+    /**
+     * Generate a server for @grpc/grpc-js.
+     */
+    GRPC_SERVER = 2,
 }
 
 
@@ -224,6 +231,7 @@ export class OptionResolver {
             optimize_code_size: boolean,
             force_server_none: boolean,
             server_none: boolean,
+            server_generic: boolean
             server_grpc: boolean
             force_client_none: boolean,
             client_none: boolean,
@@ -304,6 +312,9 @@ export class OptionResolver {
         }
 
         // fall back to normal style set by parameter
+        if (this.params.server_generic) {
+            return [ServerStyle.GENERIC_SERVER];
+        }
         if (this.params.server_grpc) {
             return [ServerStyle.GRPC_SERVER];
         }
