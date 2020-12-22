@@ -1,6 +1,6 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
 import {GrpcTransport} from "@protobuf-ts/grpc-transport";
-import {ChatServiceClient} from "./service-chat.client";
+import {ChatServiceClient} from "./protos/service-chat.client";
 import AbortController from "abort-controller";
 
 

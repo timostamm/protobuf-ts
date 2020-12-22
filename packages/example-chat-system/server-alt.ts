@@ -1,6 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
-import {ChatEvent, JoinRequest, PostRequest, PostResponse} from "./service-chat";
-import {chatServiceDefinition, IChatService} from "./service-chat.grpc-server";
+import {ChatEvent, JoinRequest, PostRequest, PostResponse} from "./protos/service-chat";
+import {chatServiceDefinition, IChatService} from "./protos/service-chat.grpc-server";
 
 
 // TODO UnhandledPromiseRejectionWarning - see client-alt.ts

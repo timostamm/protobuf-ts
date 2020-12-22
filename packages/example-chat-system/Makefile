@@ -4,9 +4,9 @@
 default: generate run-server
 
 generate:
-	npx protoc -I . --ts_out . --ts_opt server_generic,client_call,optimize_code_size service-chat.proto
+	npx protoc -I protos --ts_out protos --ts_opt server_generic,client_call,optimize_code_size protos/service-chat.proto
 	# TODO just here for UnhandledPromiseRejectionWarning
-	npx protoc -I . --ts_out . --ts_opt server_grpc,optimize_code_size service-chat.proto
+	npx protoc -I protos --ts_out protos --ts_opt server_grpc,optimize_code_size protos/service-chat.proto
 
 run-server:
 	npx ts-node server.ts
