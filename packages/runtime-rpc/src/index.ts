@@ -30,4 +30,4 @@ export {
     stackServerStreamingInterceptors,
     stackUnaryInterceptors
 } from './rpc-interceptor';
-export {ServerCallContext} from './server-call-context';
+export {ServerCallContext, ServerCallContextController} from './server-call-context';

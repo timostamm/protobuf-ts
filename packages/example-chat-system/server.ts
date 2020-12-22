@@ -5,41 +5,25 @@ import {IChatService} from "./service-chat.server";
 import {ChatEvent, ChatService as ChatServiceType, JoinRequest, PostRequest, PostResponse} from "./service-chat";
 
 
-const host = '0.0.0.0:5000';
-
-
 class ChatService implements IChatService {
 
-    private readonly members: Array<{
+
+    /**
+     * The current members of this chat.
+     */
+    private readonly users: Array<{
         username: string;
         token: string;
         stream: RpcInputStream<ChatEvent>;
     }> = [];
 
 
-    private broadcast(event: ChatEvent) {
-        for (let member of this.members) {
-            member.stream.send(event).catch();
-        }
-    }
-
-
     async join(request: JoinRequest, responses: RpcInputStream<ChatEvent>, context: ServerCallContext): Promise<void> {
-        console.log("### join() called")
+        console.log("join() called")
 
-        console.log("username:", request.username)
+        this.addUser(request.username, responses, context);
 
-        const token = Date.now().toString();
-        console.log("sending token in response header:", token)
-        context.sendResponseHeaders({'x-token': token});
-
-        this.members.push({
-            token,
-            username: request.username,
-            stream: responses
-        });
-
-        this.broadcast({
+        await this.broadcast({
             username: request.username,
             event: {
                 oneofKind: "joined",
@@ -47,33 +31,84 @@ class ChatService implements IChatService {
             }
         });
 
-        // TODO should wait until client closes -> how?
+        // keep this call open until the client closes it
+        await new Promise(resolve => context.onCancel(resolve));
 
-        await new Promise(resolve => setTimeout(resolve, 30 * 1000));
-        this.members.splice(this.members.findIndex(m => m.token === token), 1);
+        await this.broadcast({
+            username: request.username,
+            event: {
+                oneofKind: "left",
+                left: `${request.username} left the chat`
+            }
+        });
+
+        console.log("join() ending")
     }
 
 
     async post(request: PostRequest, context: ServerCallContext): Promise<PostResponse> {
-        console.log("### post() called")
+        console.log("post() called")
 
-        const token = context.headers['x-token'];
+        const user = this.getUser(context.headers['x-token']);
 
-        console.log("token:", token)
-
-        const member = this.members.find(m => m.token === token)
-        if (!member) {
-            throw new RpcError('you must join first', grpc.status[grpc.status.PERMISSION_DENIED]);
-        }
         await this.broadcast({
-            username: member.username,
+            username: user.username,
             event: {
                 oneofKind: 'message',
                 message: request.message
             }
         });
+
         return {};
     }
+
+
+    /**
+     * Add a user, send him his token.
+     */
+    private addUser(username: string, stream: RpcInputStream<ChatEvent>, context: ServerCallContext): void {
+
+        // we generate a token to identify the user
+        const token = Date.now().toString();
+        context.sendResponseHeaders({'x-token': token});
+
+        // as soon as the user closes the call, we remove him from the chat
+        context.onCancel(() => {
+            const i = this.users.findIndex(m => m.token === token);
+            if (i >= 0) {
+                this.users.splice(i, 1);
+            }
+        });
+
+        this.users.push({
+            token,
+            username: username,
+            stream
+        });
+    }
+
+
+    /**
+     * Find user by token. Throw PERMISSION_DENIED if not found.
+     */
+    private getUser(token: unknown) {
+        const user = this.users.find(m => m.token === token)
+        if (!user) {
+            throw new RpcError('you must join first', grpc.status[grpc.status.PERMISSION_DENIED]);
+        }
+        return user;
+    }
+
+
+    /**
+     * Send a message to all users.
+     */
+    private broadcast(event: ChatEvent) {
+        return Promise.all(
+            this.users.map(u => u.stream.send(event))
+        );
+    }
+
 
 }
 
@@ -81,7 +116,7 @@ class ChatService implements IChatService {
 const server = new grpc.Server();
 server.addService(...adaptService(ChatServiceType, new ChatService()));
 server.bindAsync(
-    host,
+    '0.0.0.0:5000',
     grpc.ServerCredentials.createInsecure(),
     (err: Error | null, port: number) => {
         if (err) {

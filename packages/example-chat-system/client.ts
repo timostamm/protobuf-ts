@@ -3,64 +3,57 @@ import {GrpcTransport} from "@protobuf-ts/grpc-transport";
 import {ChatServiceClient} from "./service-chat.client";
 
 
+main().catch(e => console.error(e)).finally(() => process.exit());
+
+
 async function main() {
 
-    const transport = new GrpcTransport({
+    const client = new ChatServiceClient(new GrpcTransport({
         host: "localhost:5000",
         channelCredentials: ChannelCredentials.createInsecure(),
-    });
+    }));
 
-    const client = new ChatServiceClient(transport);
+    const call = client.join({username: randomUsername()});
+    console.log(`joining chat as ${call.request.username}.`);
 
-    const call = client.join({
-        username: Math.random() > 0.4 ? "max" : "pete"
-    });
+    // the response headers contain the token we need to post messages
+    const headers = await call.headers;
 
-    const responseHeaders = await call.headers;
-    console.log("responseHeaders:", responseHeaders)
-
-    const token = responseHeaders['x-token'];
-
-    console.log("token:", token)
-
+    // print all chat events
     call.response.onMessage(message => {
         switch (message.event.oneofKind) {
             case "joined":
-                console.log(message.event.joined);
+                console.log(`> * ${message.event.joined}`);
                 break;
-
             case "left":
-                console.log(message.event.left);
+                console.log(`> * ${message.event.left}`);
                 break;
-
             case "message":
-                console.log(message.username + ': ' + message.event.message);
+                console.log(`> ${message.username}: ${message.event.message}`);
                 break;
         }
     });
 
-    await new Promise(resolve => setTimeout(resolve, 3 * 1000));
+    // send messages every few seconds
+    for (let count = 1; count <= 50; count++) {
+        await delay(2000);
+        await client.post({
+            message: `hello #${count}`
+        }, {
+            meta: {'x-token': headers['x-token']}
+        })
+    }
 
-    await client.post({
-        message: 'hello'
-    }, {
-        meta: {
-            'x-token': token
-        }
-    })
-
-    await new Promise(resolve => setTimeout(resolve, 3 * 1000));
-
-    await client.post({
-        message: 'hello'
-    }, {
-        meta: {
-            'x-token': token
-        }
-    })
-
+    console.log('leaving chat.');
 }
 
 
-main().catch(e => console.error(e)).finally(() => process.exit());
+function randomUsername(): string {
+    const names = ['max', 'pete', 'charles', 'donald', 'mayfair', 'alex', 'bob'];
+    return names[Math.floor(Math.random() * names.length)];
+}
 
+
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
