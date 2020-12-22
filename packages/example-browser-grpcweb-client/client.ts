@@ -1,5 +1,6 @@
-import {ExampleServiceClient, FailRequest, IExampleServiceClient} from "./service-example";
+import {FailRequest} from "./service-example";
 import {GrpcWebFetchTransport} from "@protobuf-ts/grpcweb-transport";
+import {ExampleServiceClient, IExampleServiceClient} from "./service-example.client";
 
 
 const transport = new GrpcWebFetchTransport({
