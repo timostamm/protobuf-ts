@@ -24,7 +24,7 @@ export class GrpcwebServerStreamingComponent {
 
 
   readonly options: GrpcWebOptions = {
-    baseUrl: 'http://localhost:5000',
+    baseUrl: 'http://localhost:5080',
     deadline: 4000,
     format: 'binary',
 

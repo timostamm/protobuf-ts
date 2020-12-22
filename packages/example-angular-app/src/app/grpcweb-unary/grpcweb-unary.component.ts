@@ -24,7 +24,7 @@ export class GrpcwebUnaryComponent {
 
 
   readonly options: GrpcWebOptions = {
-    baseUrl: 'http://localhost:5000',
+    baseUrl: 'http://localhost:5080',
     deadline: 2000,
     format: 'binary',
 

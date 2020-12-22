@@ -4,7 +4,7 @@ import {ExampleServiceClient, IExampleServiceClient} from "./service-example.cli
 
 
 const transport = new GrpcWebFetchTransport({
-    baseUrl: "http://localhost:5000"
+    baseUrl: "http://localhost:5080"
 });
 
 
