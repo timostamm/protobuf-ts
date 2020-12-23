@@ -1,6 +1,8 @@
 {
   "include": [
-    "*.ts"
+    "*.ts",
+    "protos/**/*.ts",
+    "browser-client/**/*.ts"
   ],
   "compilerOptions": {
     "target": "ES2015",
