@@ -39,6 +39,9 @@ export class JoinPanel extends Panel {
 
 
     show() {
+        this.setError('');
+        this.input.disabled = false;
+        this.button.disabled = false;
         super.show();
         this.input.focus();
     }
@@ -68,11 +71,8 @@ export class JoinPanel extends Panel {
 
     setBusy() {
         this.setError('');
-    }
-
-
-    reset() {
-        this.setError('');
+        this.input.disabled = true;
+        this.button.disabled = true;
     }
 
 

@@ -6,7 +6,7 @@ import {RpcMetadata} from "@protobuf-ts/runtime-rpc";
 
 
 const
-    transport = new GrpcWebFetchTransport({baseUrl: 'http://localhost:5080'}),
+    transport = new GrpcWebFetchTransport({baseUrl: 'http://localhost:5080', format: "binary"}),
     client = new ChatServiceClient(transport),
     joinPanel = new JoinPanel('joinPanel'),
     chatPanel = new ChatPanel('chatPanel');
@@ -16,8 +16,9 @@ joinPanel.show();
 
 joinPanel.onStart(async (username) => {
 
-    // TODO
     joinPanel.setBusy();
+
+    await new Promise(resolve => setTimeout(resolve, 3000))
 
     const abortController = new AbortController();
 
@@ -41,7 +42,6 @@ joinPanel.onStart(async (username) => {
     }
 
     joinPanel.hide();
-
     chatPanel.show();
 
     chatPanel.onLeaveBtn(() => {
