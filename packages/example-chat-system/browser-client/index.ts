@@ -1,8 +1,7 @@
 import {GrpcWebFetchTransport} from "@protobuf-ts/grpcweb-transport";
 import {ChatServiceClient} from "../protos/service-chat.client";
-import {JoinPanel} from "./gui/join-panel";
-import {ChatPanel} from "./gui/chat-panel";
 import {RpcMetadata} from "@protobuf-ts/runtime-rpc";
+import {ChatPanel, JoinPanel} from "./panels";
 
 
 const
