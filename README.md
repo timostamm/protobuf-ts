@@ -2,7 +2,7 @@ protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?st
 ===========
 
 
-Protocol buffers and RPC for Node.js and the Web Browser. 
+Protocol buffers and RPC for Node.js and the Web Browser. Pure TypeScript.
 
 For the following `.proto` file:
 ```proto
