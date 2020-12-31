@@ -3,7 +3,8 @@ import {ChatEvent, JoinRequest, PostRequest, PostResponse} from "./protos/servic
 import {chatServiceDefinition, IChatService} from "./protos/service-chat.grpc-server";
 
 
-// TODO UnhandledPromiseRejectionWarning - see client-alt.ts
+// TODO fix UnhandledPromiseRejectionWarning - see client-alt.ts
+// TODO fix net::ERR_INCOMPLETE_CHUNKED_ENCODING
 
 
 const host = '0.0.0.0:5000';
@@ -12,6 +13,20 @@ const host = '0.0.0.0:5000';
 const service: IChatService = {
 
     join(call: grpc.ServerWritableStream<JoinRequest, ChatEvent>) {
+
+
+        // this is triggered when client-provided deadline is exceeded.
+        // client receives a 504 gateway timeout.
+        //
+        // with our grpc-backend however, we get a net::ERR_INCOMPLETE_CHUNKED_ENCODING in the browser.
+        // our grpc-backend does not handle timeout correctly. probably tries to write trailers where
+        // it shouldn't.
+        //
+        // call.on('cancelled', args => {
+        //     console.log("cancelled", args); // args is "deadline" if cancelled by deadline
+        // });
+
+
         let e: any = new Error();
         e.code = grpc.status.UNIMPLEMENTED;
         e.details = 'not implemented';
