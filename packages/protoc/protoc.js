@@ -1,18 +1,7 @@
 #!/usr/bin/env node
 
-// TODO #60 update docs
-
-// Automatically installs protoc, then runs it transiently.
-//
-// Downloads a protoc release for the current platform:
-// - checks for a 'config.protocVersion' setting - or defaults to 'latest'
-// - downloads the release archive and unzips it into this package
-//
-// Wraps calls to protoc and adds the following special behaviour:
-// 1. add a `--proto_path` argument that points to the `include/` directory of the
-//    downloaded release
-// 2. add a `--plugin` argument for all plugins found in `node_modules/.bin/`
-// 3. add a `--proto_path` argument for `node_modules/@protobuf-ts/plugin`
+// Automatically installs protoc if not found on $PATH, then
+// runs it transiently.
 
 const {spawnSync} = require('child_process');
 const path = require('path');

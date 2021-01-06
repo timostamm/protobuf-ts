@@ -1,8 +1,6 @@
 @protobuf-ts/protoc
 ===================
 
-// TODO #60 update docs
-
 
 Installs the protocol buffer compiler "protoc" for you. 
 
@@ -28,31 +26,9 @@ npx protoc --version
 yarn protoc --version 
 ``` 
 
-
-This will automatically download the latest release of protoc for your 
-platform from the github release page, then run the executable with your 
-arguments.
-
-
-
-#### How it works:
-
-After you have installed `@protobuf-ts/protoc`, a script `protoc` is installed in 
-your `node_modules/.bin` folder. When you run `npx protoc` or `yarn protoc`, the 
-package manager finds this script and executes it. 
-
-The script will download the latest protoc release for your platform and install 
-it in your `./node_modules/@protobuf-ts/protoc/dist` directory. 
-
-The script basically just launches the downloaded protoc, but it adds the 
-following behaviour: 
-
-1. add a `--proto_path` argument that points to the `include/` directory of the 
-   downloaded release
-2. add a `--plugin` argument for all plugins found in `node_modules/.bin/`
-3. add a `--proto_path` argument for `node_modules/@protobuf-ts/plugin` 
-
-The package has been tested on macos, linux and windows.
+If you do not already have protoc in your `$PATH`, this will automatically 
+download the latest release of protoc for your platform from the github 
+release page, then run the executable with your arguments.   
 
 
 #### Installing a specific version
@@ -64,3 +40,19 @@ Add the following to your package json:
    "protocVersion": "3.11.0"
 }
 ``` 
+
+#### Prevent using protoc from `$PATH`
+
+Add a `protocVersion` to your package json, see above.
+
+
+#### Added arguments
+
+The script passes all given arguments to protoc and adds the 
+following arguments:  
+
+1. `--proto_path` that points to the `include/` directory of the 
+   downloaded release (skipped when found on `$PATH`)
+2. --plugin` argument for all plugins found in `node_modules/.bin/`
+3. `--proto_path` argument for `node_modules/@protobuf-ts/plugin` 
+
