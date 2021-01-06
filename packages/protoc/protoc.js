@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+// TODO #60 update docs
 
 // Automatically installs protoc, then runs it transiently.
 //
@@ -17,47 +18,74 @@ const {spawnSync} = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const {findProtocVersionConfig, listInstalled, findProtocPlugins, findProtobufTs, unzip, makeReleaseName, httpGetRedirect, httpDownload, mkDirRecursive, standardInstallDirectory} = require('./util');
+const {findProtocVersionConfig, listInstalled, findProtocPlugins, findProtobufTs, unzip, makeReleaseName, httpGetRedirect, httpDownload, mkDirRecursive, findProtocInPath, standardInstallDirectory} = require('./util');
 
 
-ensureInstalled(findProtocVersionConfig(process.cwd()))
-    .then(release => {
-        let command = release.protocPath;
-        let args = [
-            // pass all arguments to the process
-            ...process.argv.slice(2),
-            // add the "include" directory of the installed protoc to the proto path
-            // do this last, otherwise it can shadow a user input
-            "--proto_path", release.includePath,
-        ];
+main().catch(err => {
+    console.error((err instanceof Error) ? err.message : err);
+    process.exit(1);
+});
 
-        // search for @protobuf-ts/plugin in node_modules and add --proto_path argument
-        let protobufTs = findProtobufTs(process.cwd());
-        if (protobufTs) {
-            args.push("--proto_path", protobufTs);
+
+async function main() {
+
+    // the full path to the protoc executable
+    let command;
+    // the full path to the include files of a protoc release (well-known-types)
+    let includePath;
+
+    // does the nearest package.json have a config.protocVersion?
+    const configuredVersion = findProtocVersionConfig(process.cwd());
+
+    if (configuredVersion) {
+        // we prefer the configured protoc version and install it
+        let release = await ensureInstalled(configuredVersion);
+        command = release.protocPath;
+        includePath = release.includePath;
+    } else {
+        // there is no configured protoc version. do we have protoc in the $PATH?
+        command = findProtocInPath(process.env.PATH)
+        if (!command) {
+            // no protoc in $PATH, install the latest version
+            let release = await ensureInstalled(configuredVersion);
+            command = release.protocPath;
+            includePath = release.includePath;
         }
+    }
 
-        // search for any protoc-gen-xxx plugins in .bin and add --plugin arguments for them
-        for (let plugin of findProtocPlugins(process.cwd())) {
-            args.unshift("--plugin", plugin);
-        }
+    let args = [
+        // pass all arguments to the process
+        ...process.argv.slice(2),
+    ];
 
-        let child = spawnSync(command, args, {
-            // protoc accepts stdin for some commands, pipe all IO
-            stdio: [process.stdin, process.stdout, process.stderr],
-            shell: false
-        });
+    if (includePath) {
+        // add the "include" directory of the installed protoc to the proto path
+        // do this last, otherwise it can shadow a user input
+        args.push("--proto_path", includePath);
+    }
 
-        if (child.error) {
-            throw new Error("@protobuf-ts/protoc was unable to spawn protoc. " + child.error);
-        }
-        process.exit(child.status);
+    // search for @protobuf-ts/plugin in node_modules and add --proto_path argument
+    let protobufTs = findProtobufTs(process.cwd());
+    if (protobufTs) {
+        args.push("--proto_path", protobufTs);
+    }
 
-    })
-    .catch(err => {
-        console.error((err instanceof Error) ? err.message : err);
-        process.exit(1);
+    // search for any protoc-gen-xxx plugins in .bin and add --plugin arguments for them
+    for (let plugin of findProtocPlugins(process.cwd())) {
+        args.unshift("--plugin", plugin);
+    }
+
+    let child = spawnSync(command, args, {
+        // protoc accepts stdin for some commands, pipe all IO
+        stdio: [process.stdin, process.stdout, process.stderr],
+        shell: false
     });
+
+    if (child.error) {
+        throw new Error("@protobuf-ts/protoc was unable to spawn protoc. " + child.error);
+    }
+    process.exit(child.status);
+}
 
 
 async function ensureInstalled(version) {
