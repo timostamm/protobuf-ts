@@ -4,6 +4,10 @@ Bug Fixes:
 
 - grpcweb-transport: Recognize "application/grpc-web-text+proto".
 
+New features:
+
+- protoc: prefer protoc from $PATH (see #60)
+
 
 ### v2.0.0-alpha.10
 
