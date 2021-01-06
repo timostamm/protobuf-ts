@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 const assert = require("assert");
 
 const standardInstallDirectory = path.join(__dirname, "installed");
@@ -281,6 +282,29 @@ module.exports.findProtocPlugins = function (cwd) {
         plugins.push(plugin);
     }
     return plugins;
+};
+
+
+/**
+ * @param {string|undefined} envPath from process.env.PATH
+ * @returns {string|undefined}
+ */
+module.exports.findProtocInPath = function (envPath) {
+    if (typeof envPath !== "string") {
+        return undefined;
+    }
+    const candidates = envPath.split(path.delimiter)
+        .filter(p => !p.endsWith(`node_modules${path.sep}.bin`)) // make sure to exlude ...
+        .filter(p => !p.endsWith(`.npm-global${path.sep}bin`)) // ...
+        .map(p => path.join(p, "protoc")) // we are looking for "protoc"
+        .map(p => p[0] === "~" ? path.join(os.homedir(), p.slice(1)) : p) // try expand "~"
+    ;
+    for (let c of candidates) {
+        if (fs.existsSync(c)) {
+            return c;
+        }
+    }
+    return undefined;
 };
 
 
