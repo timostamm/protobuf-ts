@@ -144,9 +144,10 @@ export enum ClientStyle {
     PROMISE_CLIENT = 2,
 
     /**
-     * Use Observables from the "rxjs" package for requests and responses.
+     * Use Observables from the "rxjs" package (major version 5) for
+     * requests and responses.
      */
-    RX_CLIENT = 3
+    RX5_CLIENT = 3
 }
 
 
@@ -170,9 +171,9 @@ export enum ServerStyle {
     GENERIC_SERVER = 1,
 
     /**
-     * Generate a server for @grpc/grpc-js.
+     * Generate a server for @grpc/grpc-js (major version 1).
      */
-    GRPC_SERVER = 2,
+    GRPC1_SERVER = 2,
 }
 
 
@@ -232,10 +233,10 @@ export class OptionResolver {
             force_server_none: boolean,
             server_none: boolean,
             server_generic: boolean
-            server_grpc: boolean
+            server_grpc1: boolean
             force_client_none: boolean,
             client_none: boolean,
-            client_rx: boolean,
+            client_rx5: boolean,
             client_promise: boolean
         }
     ) {
@@ -280,8 +281,8 @@ export class OptionResolver {
         // fall back to normal style set by parameter
         if (this.params.client_none)
             return [];
-        else if (this.params.client_rx)
-            return [ClientStyle.RX_CLIENT];
+        else if (this.params.client_rx5)
+            return [ClientStyle.RX5_CLIENT];
         else if (this.params.client_promise)
             return [ClientStyle.PROMISE_CLIENT];
         else
@@ -315,8 +316,8 @@ export class OptionResolver {
         if (this.params.server_generic) {
             return [ServerStyle.GENERIC_SERVER];
         }
-        if (this.params.server_grpc) {
-            return [ServerStyle.GRPC_SERVER];
+        if (this.params.server_grpc1) {
+            return [ServerStyle.GRPC1_SERVER];
         }
         return [];
     }

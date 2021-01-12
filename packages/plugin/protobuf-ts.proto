@@ -65,8 +65,9 @@ enum ClientStyle {
     // streaming).
     PROMISE_CLIENT = 2;
 
-    // Use Observables from the "rxjs" package for requests and responses.
-    RX_CLIENT = 3;
+    // Use Observables from the "rxjs" package (major version 5) for
+    // requests and responses.
+    RX5_CLIENT = 3;
 }
 
 
@@ -82,7 +83,7 @@ enum ServerStyle {
     // for gRPC.
     GENERIC_SERVER = 1;
 
-    // Generate a server for @grpc/grpc-js.
-    GRPC_SERVER = 2;
+    // Generate a server for @grpc/grpc-js (major version 1).
+    GRPC1_SERVER = 2;
 
 }
