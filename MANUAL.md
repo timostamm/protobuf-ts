@@ -137,8 +137,9 @@ Available plugin parameters:
   Use Promise return types for rpc clients.  
   Only applies to services that do *not* use the option `ts.client`.  
 
-- "client_rx"  
-  Use Observable return types from the `rxjs` package for rpc clients.  
+- "client_rx5"  
+  Use Observable return types from the `rxjs` package (major version 5) 
+  for rpc clients.  
   Only applies to services that do *not* use the option `ts.client`.
 
 - "force_client_none"  
@@ -156,8 +157,9 @@ Available plugin parameters:
   *not* use the option `ts.server`.  
   If you do not want servers at all, use `force_server_none`.
 
-- "server_grpc"  
-  Generate a server interface and definition for use with @grpc/grpc-js.  
+- "server_grpc1"  
+  Generate a server interface and definition for use with @grpc/grpc-js
+  (major version 1).  
   Only applies to services that do *not* use the option `ts.server`.
 
 - "force_server_none"  
@@ -1365,7 +1367,7 @@ options or a service option in your .proto file:
 import "protobuf-ts.proto";
 
 service Haberdasher {
-  option (ts.client) = RX_CLIENT;
+  option (ts.client) = RX5_CLIENT;
   rpc MakeHat(Size) returns (Hat);
 }
 ```
@@ -1392,7 +1394,7 @@ If you want to generate multiple client styles, simply set the option multiple t
 import "protobuf-ts.proto";
 
 service Haberdasher {
-  option (ts.client) = RX_CLIENT;
+  option (ts.client) = RX5_CLIENT;
   option (ts.client) = PROMISE_CLIENT;
   rpc MakeHat(Size) returns (Hat);
 }
@@ -1830,7 +1832,7 @@ For more information, have a look at the example client in [packages/example-nod
 > yarn add @grpc/grpc-js
 > ```
 
-To generate a gRPC server, set the plugin parameter `server_grpc` or 
+To generate a gRPC server, set the plugin parameter `server_grpc1` or 
 set the service option `(ts_server) = GRPC`. Example:
 
 ```proto
@@ -1841,7 +1843,7 @@ package spec;
 import "protobuf-ts.proto";
 
 service ExampleService {
-  option (ts.server) = GRPC_SERVER;
+  option (ts.server) = GRPC1_SERVER;
   rpc method (RequestMessage) returns (ResponseMessage);
 }
 ```

@@ -64,21 +64,22 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             description: "Do not generate rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "If you do not want rpc clients at all, use `force_client_none`.",
-            excludes: ['client_call', 'client_promise', 'client_rx'],
+            excludes: ['client_call', 'client_promise', 'client_rx5'],
         },
         client_call: {
             description: "Use *Call return types for rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "Since CALL is the default, this option has no effect.",
-            excludes: ['client_none', 'client_promise', 'client_rx', 'force_client_none'],
+            excludes: ['client_none', 'client_promise', 'client_rx5', 'force_client_none'],
         },
         client_promise: {
             description: "Use Promise return types for rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`.",
-            excludes: ['client_none', 'client_call', 'client_rx', 'force_client_none'],
+            excludes: ['client_none', 'client_call', 'client_rx5', 'force_client_none'],
         },
-        client_rx: {
-            description: "Use Observable return types from the `rxjs` package for rpc clients. \n" +
+        client_rx5: {
+            description: "Use Observable return types from the `rxjs` package (major version 5) \n" +
+                         "for rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`." ,
             excludes: ['client_none', 'client_call', 'client_promise', 'force_client_none'],
         },
@@ -99,7 +100,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                          "This is the default behaviour, but only applies to services that do \n" +
                          "*not* use the option `ts.server`. \n" +
                          "If you do not want servers at all, use `force_server_none`.",
-            excludes: ['server_grpc'],
+            excludes: ['server_grpc1'],
         },
         server_generic: {
             description: "Generate a generic server interface. Adapters be used to serve the service, \n" +
@@ -107,8 +108,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                          "Only applies to services that do *not* use the option `ts.server`.",
             excludes: ['server_none', 'force_server_none'],
         },
-        server_grpc: {
-            description: "Generate a server interface and definition for use with @grpc/grpc-js. \n" +
+        server_grpc1: {
+            description: "Generate a server interface and definition for use with @grpc/grpc-js \n" +
+                         "(major version 1). \n" +
                          "Only applies to services that do *not* use the option `ts.server`.",
             excludes: ['server_none', 'force_server_none'],
         },
@@ -245,7 +247,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                         genClientCall.generateInterface(outClientCall, descriptor);
                         genClientCall.generateImplementationClass(outClientCall, descriptor);
                     }
-                    if (clientStyles.includes(ClientStyle.RX_CLIENT)) {
+                    if (clientStyles.includes(ClientStyle.RX5_CLIENT)) {
                         genClientRx.generateInterface(outClientRx, descriptor);
                         genClientRx.generateImplementationClass(outClientRx, descriptor);
                     }
@@ -259,7 +261,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                     if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
                         genServerGeneric.generateInterface(outServerGeneric, descriptor);
                     }
-                    if (serverStyles.includes(ServerStyle.GRPC_SERVER)) {
+                    if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
                         genServerGrpc.generateInterface(outServerGrpc, descriptor);
                         genServerGrpc.generateDefinition(outServerGrpc, descriptor);
                     }

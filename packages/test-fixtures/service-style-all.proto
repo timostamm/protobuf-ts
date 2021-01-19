@@ -9,7 +9,7 @@ import "google/protobuf/wrappers.proto";
 service AllStyleService {
 
     option (ts.client) = CALL_CLIENT;
-    option (ts.client) = RX_CLIENT;
+    option (ts.client) = RX5_CLIENT;
     option (ts.client) = PROMISE_CLIENT;
 
     rpc Unary (google.protobuf.StringValue) returns (google.protobuf.Int32Value);
