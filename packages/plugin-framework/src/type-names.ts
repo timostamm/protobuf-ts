@@ -109,7 +109,7 @@ export class TypeNameLookup implements ITypeNameLookup {
 
     makeTypeName(descriptor: AnyTypeDescriptorProto): string {
         const n = this._reverse.get(descriptor)
-        assert(n !== undefined)
+        assert(n !== undefined);
         return n;
     }
 
