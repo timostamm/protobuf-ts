@@ -4,6 +4,11 @@ Breaking changes:
 
 - Use package version in GRPC_SERVER and RX_CLIENT (see #65)
 
+Bug Fixes:
+
+- The `generate_dependencies` parameter doesn't work (see #59)  
+  Thanks to @jcready for the report and fix.
+
 
 ### v2.0.0-alpha.11
 
