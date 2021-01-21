@@ -9,6 +9,12 @@ Bug Fixes:
 - The `generate_dependencies` parameter doesn't work (see #59)  
   Thanks to @jcready for the report and fix.
 
+Security Fixes:
+
+- Bump socket.io from 2.3.0 to 2.4.1 (see #68)  
+  Package is only used for development.
+
+
 
 ### v2.0.0-alpha.11
 
