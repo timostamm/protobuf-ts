@@ -1644,6 +1644,9 @@ To use the gRPC web transport, install the package `@protobuf-ts/grpcweb-transpo
 > **Note:** To cancel calls, you need an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 > For Node.js, use the polyfill [abort-controller](https://github.com/mysticatea/abort-controller).
 
+> **Note:** For React native, you have to use the react-native-polyfill-globals, 
+> see [#67](https://github.com/timostamm/protobuf-ts/issues/67#issuecomment-764522714).
+
 
 Example `.proto`:
 ```proto

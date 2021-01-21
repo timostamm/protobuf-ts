@@ -631,20 +631,21 @@ export class DescriptorInfo implements IDescriptorInfo {
 
 
     isTypeUsed(type: AnyTypeDescriptorProto, inFiles: FileDescriptorProto[]): boolean {
+        const needle = this.nameLookup.makeTypeName(type);
         let used = false;
         for (let fd of inFiles) {
             this.tree.visitTypes(fd, typeDescriptor => {
                 if (used) return;
                 if (DescriptorProto.is(typeDescriptor)) {
-                    const usedInField = typeDescriptor.field.includes(type);
+                    const usedInField = typeDescriptor.field.some(fd => fd.typeName !== undefined && this.nameLookup.normalizeTypeName(fd.typeName) === needle);
                     if (usedInField) {
                         used = true;
                     }
                 } else if (ServiceDescriptorProto.is(typeDescriptor)) {
-                    const usedInMethodInput = typeDescriptor.method.some(md => this.nameLookup.resolveTypeName(md.inputType!) === type);
-                    const usedInMethodOutput = typeDescriptor.method.some(md => this.nameLookup.resolveTypeName(md.outputType!) === type);
+                    const usedInMethodInput = typeDescriptor.method.some(md => md.inputType !== undefined && this.nameLookup.normalizeTypeName(md.inputType) === needle);
+                    const usedInMethodOutput = typeDescriptor.method.some(md => md.outputType !== undefined && this.nameLookup.normalizeTypeName(md.outputType) === needle);
                     if (usedInMethodInput || usedInMethodOutput) {
-                        return true;
+                        used = true;
                     }
                 }
             })
