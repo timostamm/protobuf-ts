@@ -14,6 +14,7 @@
     "@protobuf-ts/plugin": "^2.0.0-alpha.11",
     "@protobuf-ts/protoc": "^2.0.0-alpha.11",
     "@protobuf-ts/runtime": "^2.0.0-alpha.11",
+    "@protobuf-ts/runtime-rpc": "^2.0.0-alpha.11",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   }
