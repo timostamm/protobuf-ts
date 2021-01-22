@@ -5,6 +5,7 @@
   "private": true,
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.0.0-alpha.11",
+    "@protobuf-ts/protoc": "^2.0.0-alpha.11",
     "@protobuf-ts/runtime": "^2.0.0-alpha.11",
     "@protobuf-ts/runtime-rpc": "^2.0.0-alpha.11",
     "@types/jasmine": "^3.5.10",
