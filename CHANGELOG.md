@@ -9,6 +9,8 @@ Bug Fixes:
 - The `generate_dependencies` parameter doesn't work (see #59)  
   Thanks to @jcready for the report and fix.
 
+- grpc-transport does not pass along provided deadline option (see #77)
+
 Security Fixes:
 
 - Bump socket.io from 2.3.0 to 2.4.1 (see #68)  

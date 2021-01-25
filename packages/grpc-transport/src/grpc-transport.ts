@@ -16,7 +16,7 @@ import {
     UnaryCall
 } from "@protobuf-ts/runtime-rpc";
 import {GrpcOptions} from "./grpc-options";
-import {Client, ClientWritableStream, Metadata, status as GrpcStatus} from "@grpc/grpc-js";
+import {CallOptions, Client, ClientWritableStream, Metadata, status as GrpcStatus} from "@grpc/grpc-js";
 import {assert} from "@protobuf-ts/runtime";
 import {metadataFromGrpc, isServiceError, metadataToGrpc} from "./util";
 
@@ -32,6 +32,15 @@ export class GrpcTransport implements RpcTransport {
 
     mergeOptions(options?: Partial<RpcOptions>): RpcOptions {
         return mergeRpcOptions(this.defaultOptions, options);
+    }
+
+    private pickCallOptions(options: GrpcOptions): CallOptions {
+        if (options.callOptions) {
+            return options.callOptions;
+        }
+        return {
+            deadline: options.deadline
+        };
     }
 
     unary<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: RpcOptions): UnaryCall<I, O> {
@@ -55,7 +64,7 @@ export class GrpcTransport implements RpcTransport {
             (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
             input,
             gMeta,
-            // callOpts,
+            this.pickCallOptions(opt),
             (err, value) => {
                 if (value) {
                     defMessage.resolve(value);
@@ -123,7 +132,7 @@ export class GrpcTransport implements RpcTransport {
             (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
             input,
             gMeta,
-            // callOpts
+            this.pickCallOptions(opt),
         );
 
         if (opt.abort) {
@@ -186,7 +195,7 @@ export class GrpcTransport implements RpcTransport {
                 (value: I): Buffer => Buffer.from(method.I.toBinary(value, opt.binaryOptions)),
                 (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
                 gMeta,
-                // callOpts,
+                this.pickCallOptions(opt),
                 (err, value) => {
                     if (value) {
                         defMessage.resolve(value);
@@ -243,6 +252,7 @@ export class GrpcTransport implements RpcTransport {
                 (value: I): Buffer => Buffer.from(method.I.toBinary(value, opt.binaryOptions)),
                 (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
                 gMeta,
+                this.pickCallOptions(opt)
             ),
             inStream = new GrpcInputStreamWrapper(gCall),
             call = new DuplexStreamingCall<I, O>(method, meta, inStream, defHeader.promise, outStream, defStatus.promise, defTrailer.promise)
