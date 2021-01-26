@@ -1,5 +1,10 @@
 ### unreleased changes
 
+none
+
+
+### v2.0.0-alpha.12
+
 Breaking changes:
 
 - Use package version in GRPC_SERVER and RX_CLIENT (see #65)
