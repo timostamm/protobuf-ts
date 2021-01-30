@@ -1,4 +1,4 @@
-@protobuf-ts/example-node-generic-server
+@protobuf-ts/example-node-grpc-backend-server
 ========================================
 
 This is a simple gRPC server.

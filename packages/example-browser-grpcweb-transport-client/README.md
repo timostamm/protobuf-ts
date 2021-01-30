@@ -1,4 +1,4 @@
-@protobuf-ts/example-browser-grpcweb-client
+@protobuf-ts/example-browser-grpcweb-transport-client
 ===========================================
 
 This is a simple gRPC-web client using @protobuf-ts/grpcweb-transport.

@@ -1,4 +1,4 @@
-@protobuf-ts/example-node-generic-client
+@protobuf-ts/example-node-grpc-transport-client
 =====================================
 
 This is a simple grpc client using @protobuf-ts/grpc-transport.
