@@ -228,7 +228,14 @@ export class Interpreter {
 
     private static createTypescriptNameForMethod(descriptor: MethodDescriptorProto): string {
         let escapeCharacter = '$';
-        let reservedClassProperties = ["__proto__", "toString", "name", "constructor", "methods", "typeName", "options", "_transport"];
+        let reservedClassProperties = [
+            // js built in
+            "__proto__", "toString", "name", "constructor",
+            // generic clients
+            "methods", "typeName", "options", "_transport",
+            // @grpc/grpc-js clients
+            "close", "getChannel", "waitForReady", "makeUnaryRequest", "makeClientStreamRequest", "makeServerStreamRequest", "makeBidiStreamRequest"
+        ];
         let name = descriptor.name;
         assert(name !== undefined);
         name = rt.lowerCamelCase(name);
