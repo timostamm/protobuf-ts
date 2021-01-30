@@ -4,6 +4,9 @@ import {ChatServiceClient} from "./protos/service-chat.client";
 import AbortController from "abort-controller";
 
 
+// TODO #56 fix UnhandledPromiseRejectionWarning when cancelling client call
+
+
 main().catch(e => console.error(e)).finally(() => process.exit());
 
 
@@ -28,7 +31,7 @@ async function main() {
     // but we are not catching them, so we get an UnhandledPromiseRejectionWarning
     abortController.abort();
 
-    // TODO UnhandledPromiseRejectionWarning: RpcError: 1 CANCELLED: Cancelled on client
+    // UnhandledPromiseRejectionWarning: RpcError: 1 CANCELLED: Cancelled on client
     // DeprecationWarning: Unhandled promise rejections are deprecated. In the future,
     // promise rejections that are not handled will terminate the Node.js process with
     // a non-zero exit code.
