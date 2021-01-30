@@ -29,8 +29,8 @@ export interface RpcOptions {
     meta?: RpcMetadata;
 
     /**
-     * Deadline for the call. Can be a specific date or a
-     * timeout in milliseconds.
+     * Deadline for the call. Can be given as a Date object or a
+     * timestamp in milliseconds.
      */
     deadline?: Date | number;
 

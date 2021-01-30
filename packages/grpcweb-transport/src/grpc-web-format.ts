@@ -28,11 +28,15 @@ export function createGrpcWebRequestHeader(headers: Headers, format: GrpcWebForm
     headers.set('X-Grpc-Web', "1");
     if (userAgent)
         headers.set("X-User-Agent", userAgent);
-    // deadline
-    let timeout = typeof deadline == "number" ? deadline : deadline instanceof Date ? (deadline.getTime() - Date.now()) : 0;
-    if (timeout > 0) {
+    if (deadline) {
+        let ts = typeof deadline == "number" ? deadline : deadline.getTime();
+        let timeout = ts - Date.now();
         headers.set('grpc-timeout', timeout + 'm');
     }
+    // let timeout = typeof deadline == "number" ? deadline : deadline instanceof Date ? (deadline.getTime() - Date.now()) : 0;
+    // if (timeout > 0) {
+    //     headers.set('grpc-timeout', timeout + 'm');
+    // }
     return headers;
 }
 
