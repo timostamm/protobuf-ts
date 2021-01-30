@@ -1,6 +1,6 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
 import {FailRequest} from "./service-example";
-import {ExampleServiceClient} from "./todo-generate";
+import {ExampleServiceClient, IExampleServiceClient} from "./todo-generate.service-example.grpc-client";
 
 
 const client = new ExampleServiceClient(
@@ -24,7 +24,7 @@ async function main() {
 }
 
 
-async function callUnary(client: ExampleServiceClient) {
+async function callUnary(client: IExampleServiceClient) {
 
     console.log(`### calling method "unary"...`)
 

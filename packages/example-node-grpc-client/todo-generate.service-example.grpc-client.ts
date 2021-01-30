@@ -5,8 +5,6 @@ import {BinaryReadOptions, BinaryWriteOptions} from "../runtime";
 
 // TODO generate the client below for plugin parameter "client_grpc1"
 
-// TODO accept a callback for server streams? see what other generated clients accept
-
 // TODO reserved property names:
 // public close()
 // public getChannel()
@@ -18,7 +16,6 @@ import {BinaryReadOptions, BinaryWriteOptions} from "../runtime";
 // public makeBidiStreamRequest()
 
 
-
 interface UnaryCallback<ResponseType> {
     (err: grpc.ServiceError | null, value?: ResponseType): void;
 }
@@ -27,11 +24,56 @@ interface UnaryCallback<ResponseType> {
 /**
  * @generated from protobuf service spec.ExampleService
  */
-export class ExampleServiceClient extends grpc.Client {
+export interface IExampleServiceClient {
 
+    /**
+     * @generated from protobuf rpc: Unary(spec.ExampleRequest) returns (spec.ExampleResponse);
+     */
+    unary(input: ExampleRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall;
+
+    unary(input: ExampleRequest, metadata: grpc.Metadata, callback: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall;
+
+    unary(input: ExampleRequest, options: grpc.CallOptions, callback: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall;
+
+    unary(input: ExampleRequest, callback: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall;
+
+
+    /**
+     * @generated from protobuf rpc: ServerStream(spec.ExampleRequest) returns (stream spec.ExampleResponse);
+     */
+    serverStream(input: ExampleRequest, metadata?: grpc.Metadata, options?: grpc.CallOptions): grpc.ClientReadableStream<ExampleResponse>;
+
+    serverStream(input: ExampleRequest, options?: grpc.CallOptions): grpc.ClientReadableStream<ExampleResponse>;
+
+
+    /**
+     * @generated from protobuf rpc: ClientStream(stream spec.ExampleRequest) returns (spec.ExampleResponse);
+     */
+    clientStream(metadata: grpc.Metadata, options: grpc.CallOptions, callback: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest>;
+
+    clientStream(metadata: grpc.Metadata, callback: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest>;
+
+    clientStream(options: grpc.CallOptions, callback: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest>;
+
+    clientStream(callback: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest>;
+
+
+    /**
+     * @generated from protobuf rpc: Bidi(stream spec.ExampleRequest) returns (stream spec.ExampleResponse);
+     */
+    bidi(metadata: grpc.Metadata, options?: grpc.CallOptions): grpc.ClientDuplexStream<ExampleRequest, ExampleResponse>;
+
+    bidi(options?: grpc.CallOptions): grpc.ClientDuplexStream<ExampleRequest, ExampleResponse>;
+
+}
+
+
+/**
+ * @generated from protobuf service spec.ExampleService
+ */
+export class ExampleServiceClient extends grpc.Client implements IExampleServiceClient {
 
     private readonly _binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions>;
-
 
     constructor(
         address: string,
@@ -43,14 +85,6 @@ export class ExampleServiceClient extends grpc.Client {
         this._binaryOptions = binaryOptions;
     }
 
-
-    /**
-     * @generated from protobuf rpc: Unary(spec.ExampleRequest) returns (spec.ExampleResponse);
-     */
-    unary(input: ExampleRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall;
-    unary(input: ExampleRequest, metadata: grpc.Metadata, callback: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall;
-    unary(input: ExampleRequest, options: grpc.CallOptions, callback: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall;
-    unary(input: ExampleRequest, callback: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall;
     unary(input: ExampleRequest, metadata: grpc.Metadata | grpc.CallOptions | UnaryCallback<ExampleResponse>, options?: grpc.CallOptions | UnaryCallback<ExampleResponse>, callback?: UnaryCallback<ExampleResponse>): grpc.ClientUnaryCall {
         const method = ExampleService.methods[0];
         return this.makeUnaryRequest<ExampleRequest, ExampleResponse>(
@@ -64,12 +98,6 @@ export class ExampleServiceClient extends grpc.Client {
         );
     }
 
-
-    /**
-     * @generated from protobuf rpc: ServerStream(spec.ExampleRequest) returns (stream spec.ExampleResponse);
-     */
-    serverStream(input: ExampleRequest, metadata?: grpc.Metadata, options?: grpc.CallOptions): grpc.ClientReadableStream<ExampleResponse>;
-    serverStream(input: ExampleRequest, options?: grpc.CallOptions): grpc.ClientReadableStream<ExampleResponse>;
     serverStream(input: ExampleRequest, metadata?: grpc.Metadata | grpc.CallOptions, options?: grpc.CallOptions): grpc.ClientReadableStream<ExampleResponse> {
         const method = ExampleService.methods[1];
         return this.makeServerStreamRequest<ExampleRequest, ExampleResponse>(
@@ -82,14 +110,6 @@ export class ExampleServiceClient extends grpc.Client {
         );
     }
 
-
-    /**
-     * @generated from protobuf rpc: ClientStream(stream spec.ExampleRequest) returns (spec.ExampleResponse);
-     */
-    clientStream(metadata: grpc.Metadata, options: grpc.CallOptions, callback: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest>;
-    clientStream(metadata: grpc.Metadata, callback: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest>;
-    clientStream(options: grpc.CallOptions, callback: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest>;
-    clientStream(callback: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest>;
     clientStream(metadata: grpc.Metadata | grpc.CallOptions | UnaryCallback<ExampleResponse>, options?: grpc.CallOptions | UnaryCallback<ExampleResponse>, callback?: UnaryCallback<ExampleResponse>): grpc.ClientWritableStream<ExampleRequest> {
         const method = ExampleService.methods[2];
         return this.makeClientStreamRequest<ExampleRequest, ExampleResponse>(
@@ -102,12 +122,6 @@ export class ExampleServiceClient extends grpc.Client {
         );
     }
 
-
-    /**
-     * @generated from protobuf rpc: Bidi(stream spec.ExampleRequest) returns (stream spec.ExampleResponse);
-     */
-    bidi(metadata: grpc.Metadata, options?: grpc.CallOptions): grpc.ClientDuplexStream<ExampleRequest, ExampleResponse>;
-    bidi(options?: grpc.CallOptions): grpc.ClientDuplexStream<ExampleRequest, ExampleResponse>;
     bidi(metadata?: grpc.Metadata | grpc.CallOptions, options?: grpc.CallOptions): grpc.ClientDuplexStream<ExampleRequest, ExampleResponse> {
         const method = ExampleService.methods[3];
         return this.makeBidiStreamRequest<ExampleRequest, ExampleResponse>(
@@ -119,5 +133,8 @@ export class ExampleServiceClient extends grpc.Client {
         );
     }
 
-
 }
+
+
+
+
