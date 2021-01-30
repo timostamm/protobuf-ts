@@ -1,5 +1,5 @@
 {
-  "name": "@protobuf-ts/example-node-grpc-client",
+  "name": "@protobuf-ts/example-node-generic-client",
   "version": "2.0.0-alpha.12",
   "description": "",
   "private": true,

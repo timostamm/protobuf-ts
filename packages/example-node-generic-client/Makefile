@@ -21,6 +21,6 @@ fix-build:
 	# and link manually.
 	rm -rf ../grpc-backend/node_modules/@grpc/grpc-js
 	rm -rf ../grpc-transport/node_modules/@grpc/grpc-js
-	ln -s -f ../../../example-node-grpc-client/node_modules/@grpc/grpc-js ../grpc-backend/node_modules/@grpc/grpc-js
-	ln -s -f ../../../example-node-grpc-client/node_modules/@grpc/grpc-js ../grpc-transport/node_modules/@grpc/grpc-js
+	ln -s -f ../../../example-node-generic-client/node_modules/@grpc/grpc-js ../grpc-backend/node_modules/@grpc/grpc-js
+	ln -s -f ../../../example-node-generic-client/node_modules/@grpc/grpc-js ../grpc-transport/node_modules/@grpc/grpc-js
 
