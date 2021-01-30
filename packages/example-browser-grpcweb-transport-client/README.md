@@ -8,7 +8,7 @@ parameters. A GrpcWebFetchTransport from the package @protobuf-ts/grpcweb-transp
 is used to communicate over gRPC.
 
 The client can be run against the example gRPC-web server in the 
-directory "example-dotnet-grpc-server".
+directory "example-dotnet-grpcweb-server".
 
 To run the client, execute `make`. Then open client.html in your web 
 browser.
