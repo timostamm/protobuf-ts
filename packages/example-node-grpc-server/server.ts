@@ -15,6 +15,10 @@ const exampleService: IExampleService = {
     // - send a message, then an error status?
     unary(call: grpc.ServerUnaryCall<ExampleRequest, ExampleResponse>, callback: grpc.sendUnaryData<ExampleResponse>): void {
 
+        call.on('error', args => {
+            console.log("example-node-grpc-server unary() got error:", args)
+        })
+
         const responseHeaders = new grpc.Metadata();
 
         // by default, the server always writes some custom response headers
@@ -83,6 +87,10 @@ const exampleService: IExampleService = {
     // how can you:
     // - send no messages, just an error status *with trailer metadata*
     serverStream(call: grpc.ServerWritableStream<ExampleRequest, ExampleResponse>): void {
+
+        call.on('error', args => {
+            console.log("example-node-grpc-server serverStream() got error:", args)
+        })
 
         const responseHeaders = new grpc.Metadata();
 
@@ -162,6 +170,9 @@ const exampleService: IExampleService = {
 
     clientStream(call: grpc.ServerReadableStream<ExampleRequest, ExampleResponse>, callback: grpc.sendUnaryData<ExampleResponse>): void {
 
+        call.on('error', args => {
+            console.log("example-node-grpc-server clientStream() got error:", args)
+        })
         // callback({
         //     code: grpc.status.UNIMPLEMENTED,
         // });
@@ -212,6 +223,10 @@ const exampleService: IExampleService = {
         let sentWelcome = false;
         let questionsReceived = 0;
         let answersSent = 0;
+
+        call.on('error', args => {
+            console.log("example-node-grpc-server bidi() got error:", args)
+        })
 
         call.write(ExampleResponse.create({
             answer: "welcome. ask a question."
