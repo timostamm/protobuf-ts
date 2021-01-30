@@ -23,6 +23,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
 
     constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
                 protected readonly options: {
+                    runtimeImportPath: string;
                     runtimeRpcImportPath: string;
                     angularCoreImportPath: string;
                     emitAngularAnnotations: boolean;
@@ -58,33 +59,93 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
     generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto): ts.InterfaceDeclaration {
         const
             interpreterType = this.interpreter.getServiceType(descriptor),
-            IServiceClient = this.imports.type(source, descriptor, this.symbolKindInterface);
+            IServiceClient = this.imports.type(source, descriptor, this.symbolKindInterface),
+            signatures: ts.MethodSignature[] = [];
 
-        const methods = interpreterType.methods.map(mi => {
-            const declaration = this.createMethod(source, mi);
-            const signature = ts.createMethodSignature(
-                declaration.typeParameters,
-                declaration.parameters,
-                declaration.type,
-                declaration.name,
-                declaration.questionToken
-            );
-            const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
-            assert(methodDescriptor);
-            this.comments.addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
-            return signature;
-        });
+
+        for (let mi of interpreterType.methods) {
+            const sig = this.createMethodSignatures(source, mi);
+
+            // add comment to the first signature
+            if (sig.length > 0) {
+                const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
+                assert(methodDescriptor);
+                this.comments.addCommentsForDescriptor(sig[0], methodDescriptor, 'appendToLeadingBlock');
+            }
+
+            signatures.push(...sig);
+        }
 
         // export interface MyService {...
         let statement = ts.createInterfaceDeclaration(
             undefined, [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
-            IServiceClient, undefined, undefined, [...methods]
+            IServiceClient, undefined, undefined, [...signatures]
         );
 
         // add to our file
         this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         source.addStatement(statement);
+
         return statement;
+    }
+
+
+    protected createMethodSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[] {
+        let signatures: ts.MethodSignature[];
+        if (methodInfo.serverStreaming && methodInfo.clientStreaming) {
+            signatures = this.createDuplexStreamingSignatures(source, methodInfo);
+        } else if (methodInfo.serverStreaming) {
+            signatures = this.createServerStreamingSignatures(source, methodInfo);
+        } else if (methodInfo.clientStreaming) {
+            signatures = this.createClientStreamingSignatures(source, methodInfo);
+        } else {
+            signatures = this.createUnarySignatures(source, methodInfo);
+        }
+        return signatures;
+    }
+
+    protected createUnarySignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[] {
+        const method = this.createUnary(source, methodInfo);
+        return [ts.createMethodSignature(
+            method.typeParameters,
+            method.parameters,
+            method.type,
+            method.name,
+            method.questionToken
+        )];
+    }
+
+    protected createServerStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[]{
+        const method = this.createServerStreaming(source, methodInfo);
+        return [ts.createMethodSignature(
+            method.typeParameters,
+            method.parameters,
+            method.type,
+            method.name,
+            method.questionToken
+        )];
+    }
+
+    protected createClientStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[]{
+        const method = this.createClientStreaming(source, methodInfo);
+        return [ts.createMethodSignature(
+            method.typeParameters,
+            method.parameters,
+            method.type,
+            method.name,
+            method.questionToken
+        )];
+    }
+
+    protected createDuplexStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[]{
+        const method = this.createDuplexStreaming(source, methodInfo);
+        return [ts.createMethodSignature(
+            method.typeParameters,
+            method.parameters,
+            method.type,
+            method.name,
+            method.questionToken
+        )];
     }
 
 

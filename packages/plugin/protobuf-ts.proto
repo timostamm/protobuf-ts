@@ -68,6 +68,9 @@ enum ClientStyle {
     // Use Observables from the "rxjs" package (major version 5) for
     // requests and responses.
     RX5_CLIENT = 3;
+
+    // Generate a client using @grpc/grpc-js (major version 1).
+    GRPC1_CLIENT = 4;
 }
 
 

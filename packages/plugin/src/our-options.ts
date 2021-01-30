@@ -147,7 +147,12 @@ export enum ClientStyle {
      * Use Observables from the "rxjs" package (major version 5) for
      * requests and responses.
      */
-    RX5_CLIENT = 3
+    RX5_CLIENT = 3,
+
+    /**
+     * Generate a client using @grpc/grpc-js (major version 1).
+     */
+    GRPC1_CLIENT = 4
 }
 
 
@@ -236,8 +241,9 @@ export class OptionResolver {
             server_grpc1: boolean
             force_client_none: boolean,
             client_none: boolean,
+            client_promise: boolean,
             client_rx5: boolean,
-            client_promise: boolean
+            client_grpc1: boolean,
         }
     ) {
     }
@@ -281,10 +287,12 @@ export class OptionResolver {
         // fall back to normal style set by parameter
         if (this.params.client_none)
             return [];
-        else if (this.params.client_rx5)
-            return [ClientStyle.RX5_CLIENT];
         else if (this.params.client_promise)
             return [ClientStyle.PROMISE_CLIENT];
+        else if (this.params.client_rx5)
+            return [ClientStyle.RX5_CLIENT];
+        else if (this.params.client_grpc1)
+            return [ClientStyle.GRPC1_CLIENT];
         else
             return [ClientStyle.CALL_CLIENT];
     }
