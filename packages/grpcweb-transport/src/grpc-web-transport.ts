@@ -97,7 +97,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             method: 'POST',
             headers: createGrpcWebRequestHeader(new globalThis.Headers(), format, opt.deadline, opt.meta),
             body: createGrpcWebRequestBody(inputBytes, format),
-            signal: options.abort
+            signal: options.abort ?? null // node-fetch@3.0.0-beta.9 rejects `undefined`
         })
             .then(fetchResponse => {
                 let [code, detail, meta, ] = readGrpcWebResponseHeader(fetchResponse);
@@ -200,7 +200,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             method: 'POST',
             headers: createGrpcWebRequestHeader(new globalThis.Headers(), format, opt.deadline, opt.meta),
             body: createGrpcWebRequestBody(inputBytes, format),
-            signal: options.abort
+            signal: options.abort ?? null // node-fetch@3.0.0-beta.9 rejects `undefined`
         })
             .then(fetchResponse => {
                 let [code, detail, meta, ] = readGrpcWebResponseHeader(fetchResponse);

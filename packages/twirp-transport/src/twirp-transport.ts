@@ -50,7 +50,7 @@ export class TwirpFetchTransport implements RpcTransport {
             method: 'POST',
             headers: createTwirpRequestHeader(new globalThis.Headers(), !!opt.sendJson, opt.meta),
             body: requestBody,
-            signal: options.abort,
+            signal: options.abort ?? null // node-fetch@3.0.0-beta.9 rejects `undefined`
         })
             .then(fetchResponse => {
 
