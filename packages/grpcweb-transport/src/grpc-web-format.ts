@@ -136,12 +136,23 @@ export enum GrpcWebFrame { DATA = 0x00, TRAILER = 0x80 }
  */
 export async function readGrpcWebResponseBody(stream: ReadableStream<Uint8Array>, format: GrpcWebFormat, onFrame: (type: GrpcWebFrame, data: Uint8Array) => void): Promise<void> {
 
-    let streamReader = stream.getReader(),
+    let streamReader: { next(): Promise<ReadableStreamReadResult<Uint8Array>> },
         base64queue = "",
         byteQueue: Uint8Array = new Uint8Array(0);
 
+    // allows to read streams from the 'node-fetch' polyfill which uses
+    // node.js ReadableStream instead of the what-wg streams api ReadableStream
+    if (typeof stream.getReader == 'function') {
+        let whatWgReadableStream = stream.getReader();
+        streamReader = {
+            next: () => whatWgReadableStream.read()
+        };
+    } else {
+        streamReader = (stream as unknown as AsyncIterable<Uint8Array>)[Symbol.asyncIterator]() as any;
+    }
+
     while (true) {
-        let result = await streamReader.read();
+        let result = await streamReader.next();
 
         if (result.value !== undefined) {
 

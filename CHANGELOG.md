@@ -5,6 +5,10 @@ Breaking changes:
 
 - grpcweb-transport deadline option is used as a timeout, but should be used as a timestamp (see #80)
 
+Bug Fixes: 
+
+- Improve support for the `node-fetch` polyfill (see #81)
+
 
 
 ### v2.0.0-alpha.12
