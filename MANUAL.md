@@ -325,10 +325,14 @@ The `IMessageType` provides the following methods:
   
   For example, a protobuf `string name = 1;` has the default value `""`.
 
+
 - `create(value: PartialMessage<T>): T`
   
-  Create a new message from partial data. 
+  Create a new message from partial data.  
   Where a field is omitted, the default value is used.  
+    
+  Unknown fields are discarded.  
+    
   `PartialMessage<T>` is similar to `Partial<T>`,
   but it is recursive, and it keeps `oneof` groups
   intact.

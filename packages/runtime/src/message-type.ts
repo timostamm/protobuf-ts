@@ -81,6 +81,9 @@ export class MessageType<T extends object> implements IMessageType<T> {
     /**
      * Create a new message from partial data.
      * Where a field is omitted, the default value is used.
+     *
+     * Unknown fields are discarded.
+     *
      * `PartialMessage<T>` is similar to `Partial<T>`,
      * but it is recursive, and it keeps `oneof` groups
      * intact.

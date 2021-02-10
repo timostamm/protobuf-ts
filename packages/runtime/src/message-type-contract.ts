@@ -57,6 +57,8 @@ export interface IMessageType<T extends object> {
     /**
      * Create a new message from partial data.
      *
+     * Unknown fields are discarded.
+     *
      * `PartialMessage<T>` is similar to `Partial<T>`,
      * but it is recursive, and it keeps `oneof` groups
      * intact.
