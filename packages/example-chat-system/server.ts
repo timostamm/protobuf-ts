@@ -47,7 +47,7 @@ class ChatService implements IChatService {
 
 
     async post(request: PostRequest, context: ServerCallContext): Promise<PostResponse> {
-        // console.log(`post() called. will broadcast to ${this.users.length} users.`)
+        console.log(`post() called. will broadcast to ${this.users.length} users.`)
 
         const user = this.getUser(context.headers['x-token']);
 
