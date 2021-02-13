@@ -25,7 +25,7 @@ export class GrpcwebServerStreamingComponent {
 
   readonly options: GrpcWebOptions = {
     baseUrl: 'http://localhost:5080',
-    deadline: 4000,
+    deadline: Date.now() + 2000,
     format: 'binary',
 
     // simple example for how to add auth headers to each request

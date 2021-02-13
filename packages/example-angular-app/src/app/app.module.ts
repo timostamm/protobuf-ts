@@ -6,10 +6,10 @@ import {GrpcwebUnaryComponent} from './grpcweb-unary/grpcweb-unary.component';
 import {FormsModule} from '@angular/forms';
 import {GrpcwebServerStreamingComponent} from './grpcweb-server-streaming/grpcweb-server-streaming.component';
 import {TwirpFetchComponent} from './twirp-fetch/twirp-fetch.component';
-import {ExampleServiceClient} from '../protoc-gen-ts-out/service-example';
+import {ExampleServiceClient} from '../protoc-gen-ts-out/service-example.client';
 import {TwirpAngularComponent} from './twirp-angular/twirp-angular.component';
 import {PbDatePipeComponent} from './pb-date-pipe/pb-date-pipe.component';
-import {HaberdasherClient} from '../protoc-gen-ts-out/service-twirp-example';
+import {HaberdasherClient} from '../protoc-gen-ts-out/service-twirp-example.client';
 
 
 @NgModule({
