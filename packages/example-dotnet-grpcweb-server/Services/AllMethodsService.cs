@@ -32,7 +32,7 @@ namespace asp_net_core_server
             context.ResponseTrailers.Add("server-trailer-bin", Encoding.UTF8.GetBytes("server trailer binary value"));
 
             // wait for the requested amount of milliseconds
-            await Task.Delay(request.PleaseDelayResponseMs);
+            await Task.Delay(request.PleaseDelayResponseMs, context.CancellationToken);
 
             // are we requested to fail? set an error status or even throw
             switch (request.PleaseFail)
@@ -105,7 +105,7 @@ namespace asp_net_core_server
             while (counter < 5)
             {
                 // wait for the requested amount of milliseconds
-                await Task.Delay(request.PleaseDelayResponseMs);
+                await Task.Delay(request.PleaseDelayResponseMs, context.CancellationToken);
 
                 await responseStream.WriteAsync(new ExampleResponse
                 {
