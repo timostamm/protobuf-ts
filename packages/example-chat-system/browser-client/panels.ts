@@ -30,8 +30,8 @@ type LeaveBtnCallback = () => void;
 export class ChatPanel extends Panel {
 
 
-    private postCallback: PostCallback | undefined;
-    private leaveBtnCallback: LeaveBtnCallback | undefined;
+    postCallback: PostCallback | undefined;
+    leaveCallback: LeaveBtnCallback | undefined;
 
 
     private get input(): HTMLInputElement {
@@ -62,8 +62,8 @@ export class ChatPanel extends Panel {
         });
         this.list.innerHTML = '';
         this.leaveBtn.addEventListener('click', () => {
-            if (this.leaveBtnCallback) {
-                this.leaveBtnCallback();
+            if (this.leaveCallback) {
+                this.leaveCallback();
             }
         });
     }
@@ -83,16 +83,6 @@ export class ChatPanel extends Panel {
         this.input.value = '';
         super.show();
         this.input.focus();
-    }
-
-
-    onPost(callback: PostCallback): void {
-        this.postCallback = callback;
-    }
-
-
-    onLeaveBtn(callback: LeaveBtnCallback): void {
-        this.leaveBtnCallback = callback;
     }
 
 
@@ -130,7 +120,7 @@ export class ChatPanel extends Panel {
 export class JoinPanel extends Panel {
 
 
-    private startCallback: ((username: string) => void) | undefined;
+    startCallback: ((username: string) => void) | undefined;
 
 
     private get input(): HTMLInputElement {
@@ -169,11 +159,6 @@ export class JoinPanel extends Panel {
         this.button.disabled = false;
         super.show();
         this.input.focus();
-    }
-
-
-    onStart(callback: (username: string) => void): void {
-        this.startCallback = callback;
     }
 
 

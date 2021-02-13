@@ -1,12 +1,11 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
 import {GrpcTransport} from "@protobuf-ts/grpc-transport";
-import {ChatServiceClient, IChatServiceClient} from "./protos/service-chat.client";
+import {ChatServiceClient, IChatServiceClient} from "./service-chat.client";
 import {TerminalIO} from "./terminal-io";
 
 
 // TODO #56 fix UnhandledPromiseRejectionWarning when server dies while client is running
 // TODO #56 fix net::ERR_INCOMPLETE_CHUNKED_ENCODING in browser when using a deadline in browser (this seems like a server issue)
-
 
 
 main(
@@ -17,7 +16,7 @@ main(
     }))
 ).catch(e => {
     console.error(e)
-    process.exit();
+    process.exit(1);
 });
 
 
@@ -25,7 +24,7 @@ async function main(term: TerminalIO, client: IChatServiceClient) {
 
     // ask for username and join the chat
     const call = client.join({
-        username: await term.prompt('Enter your username: ')
+        username: await term.prompt("Enter your username: ")
     });
 
     // the response headers contain the token we need to post messages
@@ -46,17 +45,20 @@ async function main(term: TerminalIO, client: IChatServiceClient) {
         }
     });
 
-    // prompt the use for messages until ^C
+    // prompt the use for messages until ^C or the call ends
     while (!term.closed) {
+        let next = await Promise.race([call, term.prompt()]);
 
-        // prompt the user for a message
-        const text = await term.prompt();
-
-        // then send it to the server
-        await client.post({
-            message: text
-        }, {
-            meta: {'x-token': headers['x-token']}
-        })
+        if (typeof next == "string") {
+            await client.post({
+                message: next
+            }, {
+                meta: {'x-token': headers['x-token']}
+            })
+        } else {
+            term.close();
+            throw "server ended the chat";
+        }
     }
+
 }
