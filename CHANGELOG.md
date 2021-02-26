@@ -4,6 +4,13 @@
 none
 
 
+### v2.0.0-alpha.14
+
+Bug Fixes:
+
+- Added workaround for unhandled promise rejection (see #86)
+
+
 ### v2.0.0-alpha.13
 
 Breaking changes:
