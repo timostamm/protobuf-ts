@@ -36,11 +36,26 @@ export class Deferred<T> {
     private _reject: (reason?: any) => void;
 
 
-    constructor() {
+    /**
+     * @param preventUnhandledRejectionWarning - prevents the warning
+     * "Unhandled Promise rejection" by adding a noop rejection handler.
+     * Working with calls returned from the runtime-rpc package in an
+     * async function usually means awaiting one call property after
+     * the other. This means that the "status" is not being awaited when
+     * an earlier await for the "headers" is rejected. This causes the
+     * "unhandled promise reject" warning. A more correct behaviour for
+     * calls might be to become aware whether at least one of the
+     * promises is handled and swallow the rejection warning for the
+     * others.
+     */
+    constructor(preventUnhandledRejectionWarning = true) {
         this._promise = new Promise<T>((resolve, reject) => {
             this._resolve = resolve;
             this._reject = reject;
         });
+        if (preventUnhandledRejectionWarning) {
+            this._promise.catch(_ => {});
+        }
     }
 
 
