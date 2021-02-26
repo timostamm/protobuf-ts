@@ -105,16 +105,6 @@ export class GrpcWebFetchTransport implements RpcTransport {
                 if (code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
                 return fetchResponse;
-
-            }, reason => {
-                // failed to parse header
-                if (reason instanceof RpcError)
-                    return Promise.reject(reason);
-                // aborted
-                if (reason instanceof Error && reason.name === 'AbortError')
-                    throw new RpcError(reason.message, GrpcStatusCode[GrpcStatusCode.CANCELLED]);
-                // failed to fetch, wrong url or network problem
-                throw new RpcError(reason instanceof Error ? reason.message : reason);
             })
 
             .then(fetchResponse => {
@@ -158,9 +148,15 @@ export class GrpcWebFetchTransport implements RpcTransport {
             })
 
             .catch(reason => {
-                // RpcErrors are thrown by us, everything else is an internal error
-                let error = reason instanceof RpcError ? reason
-                    : new RpcError(reason instanceof Error ? reason.message : reason, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+                let error: RpcError;
+                if (reason instanceof RpcError)
+                    error = reason;
+                else if (reason instanceof Error && reason.name === 'AbortError')
+                    // aborted
+                    error = new RpcError(reason.message, GrpcStatusCode[GrpcStatusCode.CANCELLED]);
+                else
+                    // RpcErrors are thrown by us, everything else is an internal error
+                    error = new RpcError(reason instanceof Error ? reason.message : "" + reason, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
                 defHeader.rejectPending(error);
                 responseStream.notifyError(error)
                 defStatus.rejectPending(error);
@@ -208,16 +204,6 @@ export class GrpcWebFetchTransport implements RpcTransport {
                 if (code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
                 return fetchResponse;
-
-            }, reason => {
-                // failed to parse header
-                if (reason instanceof RpcError)
-                    return Promise.reject(reason);
-                // aborted
-                if (reason instanceof Error && reason.name === 'AbortError')
-                    throw new RpcError(reason.message, GrpcStatusCode[GrpcStatusCode.CANCELLED]);
-                // failed to fetch, wrong url or network problem
-                throw new RpcError(reason instanceof Error ? reason.message : reason);
             })
 
             .then(fetchResponse => {
@@ -266,9 +252,15 @@ export class GrpcWebFetchTransport implements RpcTransport {
             })
 
             .catch(reason => {
-                // RpcErrors are thrown by us, everything else is an internal error
-                let error = reason instanceof RpcError ? reason
-                    : new RpcError(reason instanceof Error ? reason.message : reason, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+                let error: RpcError;
+                if (reason instanceof RpcError)
+                    error = reason;
+                else if (reason instanceof Error && reason.name === 'AbortError')
+                    // aborted
+                    error = new RpcError(reason.message, GrpcStatusCode[GrpcStatusCode.CANCELLED]);
+                else
+                    // RpcErrors are thrown by us, everything else is an internal error
+                    error = new RpcError(reason instanceof Error ? reason.message : "" + reason, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
                 defHeader.rejectPending(error);
                 defMessage.rejectPending(error);
                 defStatus.rejectPending(error);
