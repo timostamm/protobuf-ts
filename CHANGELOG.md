@@ -4,6 +4,13 @@
 none
 
 
+### v2.0.0-alpha.15
+
+Bug Fixes:
+
+- fix wrong grpc status code INTERNAL for aborted server streaming method (see #86)
+
+
 ### v2.0.0-alpha.14
 
 Bug Fixes:
