@@ -101,6 +101,15 @@ npx protoc \
 > ```
 
 
+> **Note:** By default, the plugin only generates code for the .proto 
+> files you pass as arguments to protoc. If you want to generate code 
+> for imported files as well, use the plugin parameter "generate_dependencies".
+> 
+> ```shell script
+> --ts_opt generate_dependencies
+> ```
+
+
 Available plugin parameters:
 
 - "long_type_string"  
