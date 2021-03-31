@@ -1,7 +1,16 @@
 ### unreleased changes
 
 
-none
+### v2.0.0-alpha.16
+
+Breaking changes:
+
+- "client styles" have been removed to keep the plugin simple.
+
+- plugin parameter "client_call" has been renamed to "client_generic".
+
+- service option `(ts.client) = CALL_CLIENT` has been renamed `(ts.client) = GENERIC_CLIENT`.
+
 
 
 ### v2.0.0-alpha.15
