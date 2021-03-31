@@ -1,13 +1,13 @@
 {
   "name": "@protobuf-ts/test-generated",
-  "version": "2.0.0-alpha.16",
+  "version": "2.0.0-alpha.17",
   "license": "Apache-2.0",
   "private": true,
   "devDependencies": {
-    "@protobuf-ts/plugin": "^2.0.0-alpha.16",
-    "@protobuf-ts/protoc": "^2.0.0-alpha.16",
-    "@protobuf-ts/runtime": "^2.0.0-alpha.16",
-    "@protobuf-ts/runtime-rpc": "^2.0.0-alpha.16",
+    "@protobuf-ts/plugin": "^2.0.0-alpha.17",
+    "@protobuf-ts/protoc": "^2.0.0-alpha.17",
+    "@protobuf-ts/runtime": "^2.0.0-alpha.17",
+    "@protobuf-ts/runtime-rpc": "^2.0.0-alpha.17",
     "@types/jasmine": "^3.5.10",
     "@types/node": "^14.0.13",
     "abort-controller": "^3.0.0",
