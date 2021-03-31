@@ -5,7 +5,7 @@ import {assert} from "@protobuf-ts/runtime";
 import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 
 
-export class ServiceClientGeneratorCall extends ServiceClientGeneratorBase {
+export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
 
 
     readonly symbolKindInterface = 'call-client-interface';

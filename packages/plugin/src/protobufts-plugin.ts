@@ -20,9 +20,7 @@ import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator"
 import {MessageTypeGenerator} from "./code-gen/message-type-generator";
 import {EnumGenerator} from "./code-gen/enum-generator";
 import {ServiceTypeGenerator} from "./code-gen/service-type-generator";
-import {ServiceClientGeneratorCall} from "./code-gen/service-client-generator-call";
-import {ServiceClientGeneratorPromise} from "./code-gen/service-client-generator-promise";
-import {ServiceClientGeneratorRxjs} from "./code-gen/service-client-generator-rxjs";
+import {ServiceClientGeneratorGeneric} from "./code-gen/service-client-generator-generic";
 import {FileTable} from "./file-table";
 import {ServiceServerGeneratorGeneric} from "./code-gen/service-server-generator-generic";
 import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-grpc";
@@ -65,33 +63,22 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             description: "Do not generate rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "If you do not want rpc clients at all, use `force_client_none`.",
-            excludes: ['client_call', 'client_promise', 'client_rx5', 'client_grpc1'],
+            excludes: ['client_generic', 'client_grpc1'],
         },
-        client_call: {
+        client_generic: {
             description: "Use *Call return types for rpc clients. \n" +
                          "Only applies to services that do *not* use the option `ts.client`. \n" +
-                         "Since CALL is the default, this option has no effect.",
-            excludes: ['client_none', 'client_promise', 'client_rx5', 'client_grpc1', 'force_client_none'],
-        },
-        client_promise: {
-            description: "Use Promise return types for rpc clients. \n" +
-                         "Only applies to services that do *not* use the option `ts.client`.",
-            excludes: ['client_none', 'client_call', 'client_rx5', 'client_grpc1', 'force_client_none'],
-        },
-        client_rx5: {
-            description: "Use Observable return types from the `rxjs` package (major version 5) \n" +
-                "for rpc clients. \n" +
-                "Only applies to services that do *not* use the option `ts.client`." ,
-            excludes: ['client_none', 'client_call', 'client_promise', 'client_grpc1', 'force_client_none'],
+                         "Since GENERIC_CLIENT is the default, this option has no effect.",
+            excludes: ['client_none', 'client_grpc1', 'force_client_none'],
         },
         client_grpc1: {
             description: "Generate a client using @grpc/grpc-js (major version 1). \n" +
                 "Only applies to services that do *not* use the option `ts.client`." ,
-            excludes: ['client_none', 'client_call', 'client_promise', 'force_client_none'],
+            excludes: ['client_none', 'client_generic', 'force_client_none'],
         },
         force_client_none: {
             description: "Do not generate rpc clients, ignore options in proto files.",
-            excludes: ['client_none', 'client_call', 'client_promise', 'client_rx5', 'client_grpc1'],
+            excludes: ['client_none', 'client_generic', 'client_grpc1'],
         },
         enable_angular_annotations: {
             description: "If set, the generated rpc client will have an angular @Injectable() \n" +
@@ -175,9 +162,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             genServiceType = new ServiceTypeGenerator(symbols, registry, imports, comments, interpreter, options),
             genServerGeneric = new ServiceServerGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
             genServerGrpc = new ServiceServerGeneratorGrpc(symbols, registry, imports, comments, interpreter, options),
-            genClientCall = new ServiceClientGeneratorCall(symbols, registry, imports, comments, interpreter, options),
-            genClientPromise = new ServiceClientGeneratorPromise(symbols, registry, imports, comments, interpreter, options),
-            genClientRx = new ServiceClientGeneratorRxjs(symbols, registry, imports, comments, interpreter, options),
+            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
             genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registry, imports, comments, interpreter, options)
         ;
 
@@ -219,9 +204,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 // register all symbols, regardless whether they are going to be used - we want stable behaviour
                 symbols.register(createLocalTypeName(descriptor, registry), descriptor, outMain);
                 if (ServiceDescriptorProto.is(descriptor)) {
-                    genClientCall.registerSymbols(outClientCall, descriptor);
-                    genClientPromise.registerSymbols(outClientPromise, descriptor);
-                    genClientRx.registerSymbols(outClientRx, descriptor);
+                    genClientGeneric.registerSymbols(outClientCall, descriptor);
                     genClientGrpc.registerSymbols(outClientGrpc, descriptor);
                     genServerGeneric.registerSymbols(outServerGeneric, descriptor);
                     genServerGrpc.registerSymbols(outServerGrpc, descriptor);
@@ -254,17 +237,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
                     // clients
                     const clientStyles = optionResolver.getClientStyles(descriptor);
-                    if (clientStyles.includes(ClientStyle.CALL_CLIENT)) {
-                        genClientCall.generateInterface(outClientCall, descriptor);
-                        genClientCall.generateImplementationClass(outClientCall, descriptor);
-                    }
-                    if (clientStyles.includes(ClientStyle.PROMISE_CLIENT)) {
-                        genClientPromise.generateInterface(outClientPromise, descriptor);
-                        genClientPromise.generateImplementationClass(outClientPromise, descriptor);
-                    }
-                    if (clientStyles.includes(ClientStyle.RX5_CLIENT)) {
-                        genClientRx.generateInterface(outClientRx, descriptor);
-                        genClientRx.generateImplementationClass(outClientRx, descriptor);
+                    if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
+                        genClientGeneric.generateInterface(outClientCall, descriptor);
+                        genClientGeneric.generateImplementationClass(outClientCall, descriptor);
                     }
                     if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
                         genClientGrpc.generateInterface(outClientGrpc, descriptor);

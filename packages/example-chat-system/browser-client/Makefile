@@ -5,7 +5,7 @@ default: generate build serve
 
 
 generate:
-	npx protoc -I ../ --ts_out . --ts_opt client_call,optimize_code_size ../service-chat.proto
+	npx protoc -I ../ --ts_out . --ts_opt client_generic,optimize_code_size ../service-chat.proto
 
 build:
 	find .tsc-out -name '*.js' -delete;

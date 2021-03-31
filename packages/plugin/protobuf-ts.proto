@@ -56,18 +56,9 @@ enum ClientStyle {
     // Do not emit a client for this service.
     NO_CLIENT = 0;
 
-    // Use the call implementations of @protobuf-ts/runtime-rpc.
+    // Use the generic implementations of @protobuf-ts/runtime-rpc.
     // This is the default behaviour.
-    CALL_CLIENT = 1;
-
-    // Use promises as return type.
-    // This style can only be used for unary methods (no server or client
-    // streaming).
-    PROMISE_CLIENT = 2;
-
-    // Use Observables from the "rxjs" package (major version 5) for
-    // requests and responses.
-    RX5_CLIENT = 3;
+    GENERIC_CLIENT = 1;
 
     // Generate a client using @grpc/grpc-js (major version 1).
     GRPC1_CLIENT = 4;

@@ -137,18 +137,13 @@ Available plugin parameters:
   Only applies to services that do *not* use the option `ts.client`.  
   If you do not want rpc clients at all, use `force_client_none`.
 
-- "client_call"  
+- "client_generic"  
   Use *Call return types for rpc clients.  
   Only applies to services that do *not* use the option `ts.client`.  
-  Since CALL is the default, this option has no effect.
+  Since CLIENT_GENERIC is the default, this option has no effect.
 
-- "client_promise"  
-  Use Promise return types for rpc clients.  
-  Only applies to services that do *not* use the option `ts.client`.  
-
-- "client_rx5"  
-  Use Observable return types from the `rxjs` package (major version 5) 
-  for rpc clients.  
+- "client_grpc1"  
+  Generate a client using @grpc/grpc-js (major version 1).  
   Only applies to services that do *not* use the option `ts.client`.
 
 - "force_client_none"  
@@ -1368,53 +1363,6 @@ See [Angular support](#angular-support) to learn more.
 
 To learn about `RpcOptions` and the `RpcTransport` implementations, please 
 continue reading.
-
-
-#### RPC client styles
-
-If you do not want to use the built-in call types, and prefer to use plain 
-promises or rxjs Observable, you can change the behaviour with global plugin 
-options or a service option in your .proto file: 
-
-```proto
-import "protobuf-ts.proto";
-
-service Haberdasher {
-  option (ts.client) = RX5_CLIENT;
-  rpc MakeHat(Size) returns (Hat);
-}
-```
-
-This will generate the following method:
-
-```typescript
-export interface IHaberdasherClient {
-    makeHat(input: Size, options?: RpcOptions): Observable<Hat>;
-}
-```
-
-Setting `option (ts.client) = PROMISE_CLIENT` generates:
-
-```typescript
-export interface IHaberdasherClient {
-    makeHat(input: Size, options?: RpcOptions): Promise<Hat>;
-}
-```
-
-If you want to generate multiple client styles, simply set the option multiple times:
-
-```proto
-import "protobuf-ts.proto";
-
-service Haberdasher {
-  option (ts.client) = RX5_CLIENT;
-  option (ts.client) = PROMISE_CLIENT;
-  rpc MakeHat(Size) returns (Hat);
-}
-```
-
-This generates both client styles, with the names `HaberdasherRxClient` and `HaberdasherPromiseClient`.
-
 
 
 #### RPC options

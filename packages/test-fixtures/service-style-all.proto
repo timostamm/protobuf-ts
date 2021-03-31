@@ -8,9 +8,8 @@ import "google/protobuf/wrappers.proto";
 
 service AllStyleService {
 
-    option (ts.client) = CALL_CLIENT;
-    option (ts.client) = RX5_CLIENT;
-    option (ts.client) = PROMISE_CLIENT;
+    option (ts.client) = GENERIC_CLIENT;
+    option (ts.client) = GRPC1_CLIENT;
 
     rpc Unary (google.protobuf.StringValue) returns (google.protobuf.Int32Value);
     rpc ServerStream (google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);

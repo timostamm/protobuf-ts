@@ -134,20 +134,7 @@ export enum ClientStyle {
      * Use the call implementations of @protobuf-ts/runtime-rpc.
      * This is the default behaviour.
      */
-    CALL_CLIENT = 1,
-
-    /**
-     * Use promises as return type.
-     * This style can only be used for unary methods (no server or client
-     * streaming).
-     */
-    PROMISE_CLIENT = 2,
-
-    /**
-     * Use Observables from the "rxjs" package (major version 5) for
-     * requests and responses.
-     */
-    RX5_CLIENT = 3,
+    GENERIC_CLIENT = 1,
 
     /**
      * Generate a client using @grpc/grpc-js (major version 1).
@@ -241,8 +228,6 @@ export class OptionResolver {
             server_grpc1: boolean
             force_client_none: boolean,
             client_none: boolean,
-            client_promise: boolean,
-            client_rx5: boolean,
             client_grpc1: boolean,
         }
     ) {
@@ -287,14 +272,10 @@ export class OptionResolver {
         // fall back to normal style set by parameter
         if (this.params.client_none)
             return [];
-        else if (this.params.client_promise)
-            return [ClientStyle.PROMISE_CLIENT];
-        else if (this.params.client_rx5)
-            return [ClientStyle.RX5_CLIENT];
         else if (this.params.client_grpc1)
             return [ClientStyle.GRPC1_CLIENT];
         else
-            return [ClientStyle.CALL_CLIENT];
+            return [ClientStyle.GENERIC_CLIENT];
     }
 
 
