@@ -1,6 +1,17 @@
 ### unreleased changes
 
 
+
+### v2.0.0-alpha.17
+
+Breaking changes:
+
+- The "response" property of ServerStreamingCall and BidiStreamingCall has been renamed "responses".
+
+- The "request" property of ClientStreamingCall and BidiStreamingCall has been renamed "requests".
+
+
+
 ### v2.0.0-alpha.16
 
 Breaking changes:
