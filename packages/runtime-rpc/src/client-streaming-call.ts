@@ -28,7 +28,7 @@ export class ClientStreamingCall<I extends object = object, O extends object = o
     /**
      * Request messages from the client.
      */
-    readonly request: RpcInputStream<I>;
+    readonly requests: RpcInputStream<I>;
 
     /**
      * The response headers that the server sent.
@@ -77,7 +77,7 @@ export class ClientStreamingCall<I extends object = object, O extends object = o
     ) {
         this.method = method;
         this.requestHeaders = requestHeaders;
-        this.request = request;
+        this.requests = request;
         this.headers = headers;
         this.response = response;
         this.status = status;

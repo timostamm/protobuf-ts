@@ -29,7 +29,7 @@ export class DuplexStreamingCall<I extends object = object, O extends object = o
     /**
      * Request messages from the client.
      */
-    readonly request: RpcInputStream<I>;
+    readonly requests: RpcInputStream<I>;
 
     /**
      * The response headers that the server sent.
@@ -42,7 +42,7 @@ export class DuplexStreamingCall<I extends object = object, O extends object = o
     /**
      * Response messages from the server.
      */
-    readonly response: RpcOutputStream<O>;
+    readonly responses: RpcOutputStream<O>;
 
     /**
      * The response status the server replied with.
@@ -78,9 +78,9 @@ export class DuplexStreamingCall<I extends object = object, O extends object = o
     ) {
         this.method = method;
         this.requestHeaders = requestHeaders;
-        this.request = request;
+        this.requests = request;
         this.headers = headers;
-        this.response = response;
+        this.responses = response;
         this.status = status;
         this.trailers = trailers;
     }

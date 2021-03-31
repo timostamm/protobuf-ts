@@ -122,7 +122,7 @@ describe('TestTransport', () => {
             expect(await call.headers).toEqual(responseHeaders);
             let responseMessageCount = new Promise(resolve => {
                 let count = 0;
-                call.response.onNext((message, error, done) => {
+                call.responses.onNext((message, error, done) => {
                     if (message)
                         count++;
                     if (done)
@@ -155,7 +155,7 @@ describe('TestTransport', () => {
                 }),
                 call = transport.serverStreaming(methodInfo, RequestMessage.create(), transport.mergeOptions());
             expect(await call.headers.catch(e => e.message)).toBe("headers");
-            let responseErrorMessage = new Promise(resolve => call.response.onError(reason => resolve(reason.message)));
+            let responseErrorMessage = new Promise(resolve => call.responses.onError(reason => resolve(reason.message)));
             expect(await responseErrorMessage).toBe("response");
             expect(await call.status.catch(e => e.message)).toBe("status");
             expect(await call.trailers.catch(e => e.message)).toBe("trailers");
@@ -190,7 +190,7 @@ describe('TestTransport', () => {
                 }),
                 options = transport.mergeOptions({meta: requestHeaders}),
                 call = transport.clientStreaming(methodInfo, options);
-            expect(call.request).toBeDefined();
+            expect(call.requests).toBeDefined();
             expect(call.requestHeaders).toEqual(requestHeaders);
             expect(await call.headers).toEqual(responseHeaders);
             expect(await call.response).toEqual(response);
@@ -202,9 +202,9 @@ describe('TestTransport', () => {
             const
                 transport = new TestTransport(),
                 call = transport.clientStreaming(methodInfo, transport.mergeOptions());
-            await call.request.send({request: "a"});
-            await call.request.send({request: "b"});
-            await call.request.send({request: "c"});
+            await call.requests.send({request: "a"});
+            await call.requests.send({request: "b"});
+            await call.requests.send({request: "c"});
             expect(await call.status).toEqual(TestTransport.defaultStatus);
         });
 
@@ -214,7 +214,7 @@ describe('TestTransport', () => {
                     inputMessage: new RpcError("input message error")
                 }),
                 call = transport.clientStreaming(methodInfo, transport.mergeOptions());
-            await expectAsync(call.request.send({request: "a"})).toBeRejectedWithError("input message error");
+            await expectAsync(call.requests.send({request: "a"})).toBeRejectedWithError("input message error");
         });
 
         it('should reject input stream complete if mocked', async function () {
@@ -223,15 +223,15 @@ describe('TestTransport', () => {
                     inputComplete: new RpcError("input complete error")
                 }),
                 call = transport.clientStreaming(methodInfo, transport.mergeOptions());
-            await call.request.send({request: "a"});
-            await expectAsync(call.request.complete()).toBeRejectedWithError("input complete error");
+            await call.requests.send({request: "a"});
+            await expectAsync(call.requests.complete()).toBeRejectedWithError("input complete error");
         });
 
         it('should have default mock data', async function () {
             const
                 transport = new TestTransport(),
                 call = transport.clientStreaming(methodInfo, transport.mergeOptions());
-            expect(call.request).toBeDefined();
+            expect(call.requests).toBeDefined();
             expect(await call.headers).toEqual(TestTransport.defaultHeaders);
             expect(await call.response).toBeDefined();
             expect(await call.status).toEqual(TestTransport.defaultStatus);
@@ -286,12 +286,12 @@ describe('TestTransport', () => {
                 }),
                 options = transport.mergeOptions({meta: requestHeaders}),
                 call = transport.duplex(methodInfo, options);
-            expect(call.request).toBeDefined();
+            expect(call.requests).toBeDefined();
             expect(call.requestHeaders).toEqual(requestHeaders);
             expect(await call.headers).toEqual(responseHeaders);
             let responseMessageCount = new Promise(resolve => {
                 let count = 0;
-                call.response.onNext((message, error, done) => {
+                call.responses.onNext((message, error, done) => {
                     if (message)
                         count++;
                     if (done)
@@ -307,9 +307,9 @@ describe('TestTransport', () => {
             const
                 transport = new TestTransport(),
                 call = transport.clientStreaming(methodInfo, transport.mergeOptions());
-            await call.request.send({request: "a"});
-            await call.request.send({request: "b"});
-            await call.request.send({request: "c"});
+            await call.requests.send({request: "a"});
+            await call.requests.send({request: "b"});
+            await call.requests.send({request: "c"});
             expect(await call.status).toEqual(TestTransport.defaultStatus);
         });
 
@@ -319,7 +319,7 @@ describe('TestTransport', () => {
                     inputMessage: new RpcError("input message error")
                 }),
                 call = transport.clientStreaming(methodInfo, transport.mergeOptions());
-            await expectAsync(call.request.send({request: "a"})).toBeRejectedWithError("input message error");
+            await expectAsync(call.requests.send({request: "a"})).toBeRejectedWithError("input message error");
         });
 
         it('should reject input stream complete if mocked', async function () {
@@ -328,17 +328,17 @@ describe('TestTransport', () => {
                     inputComplete: new RpcError("input complete error")
                 }),
                 call = transport.clientStreaming(methodInfo, transport.mergeOptions());
-            await call.request.send({request: "a"});
-            await expectAsync(call.request.complete()).toBeRejectedWithError("input complete error");
+            await call.requests.send({request: "a"});
+            await expectAsync(call.requests.complete()).toBeRejectedWithError("input complete error");
         });
 
         it('should have default mock data', async function () {
             const
                 transport = new TestTransport(),
                 call = transport.duplex(methodInfo, transport.mergeOptions());
-            expect(call.request).toBeDefined();
+            expect(call.requests).toBeDefined();
             expect(await call.headers).toEqual(TestTransport.defaultHeaders);
-            expect(await call.response).toBeDefined();
+            expect(await call.responses).toBeDefined();
             expect(await call.status).toEqual(TestTransport.defaultStatus);
             expect(await call.trailers).toEqual(TestTransport.defaultTrailers);
         });
@@ -353,7 +353,7 @@ describe('TestTransport', () => {
                 }),
                 call = transport.duplex(methodInfo, transport.mergeOptions());
             expect(await call.headers.catch(e => e.message)).toBe("headers");
-            let responseErrorMessage = new Promise(resolve => call.response.onError(reason => resolve(reason.message)));
+            let responseErrorMessage = new Promise(resolve => call.responses.onError(reason => resolve(reason.message)));
             expect(await responseErrorMessage).toBe("response");
             expect(await call.status.catch(e => e.message)).toBe("status");
             expect(await call.trailers.catch(e => e.message)).toBe("trailers");

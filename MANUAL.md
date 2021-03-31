@@ -1526,8 +1526,8 @@ with a message and *then* sends an error status. If you do not check the
 
 Response trailers are a very useful feature, but for simple unary calls, 
 awaiting two promises is cumbersome. For this reason, the `UnaryCall` itself 
-is awaitable, and will reject if an error status is received. Instead of awaiting `call.response`, you can simple await the 
-call:
+is awaitable, and will reject if an error status is received. Instead of awaiting 
+`call.response`, you can simply await the call:
 
 ```typescript
 let {response} = await service.myMethod(foo);
@@ -1555,7 +1555,7 @@ So a simple way to read all response messages of a server streaming call would b
 
 ```typescript
 let call = service.myMethod(foo);
-for await (let message of call.response) {
+for await (let message of call.responses) {
     console.log("got a message", message)
 }
 let status = await call.status;
@@ -1571,7 +1571,7 @@ awaits for `status` and `trailers` to a single expression:
 
 ```typescript
 let call = service.myMethod(foo);
-for await (let message of call.response) {
+for await (let message of call.responses) {
     console.log("got a message", message)
 }
 let {status, trailers} = await call;
@@ -1640,7 +1640,7 @@ let {response} = await client.makeHat({ inches: 11 });
 console.log("got a small hat! " + response)
 
 let streamingCall = client.makeRowOfHats({ inches: 23 });
-for await (let hat of streamingCall.response) {
+for await (let hat of streamingCall.responses) {
     console.log("got another hat! " + hat)
 }
 ```
@@ -1774,7 +1774,7 @@ let {response} = await client.makeHat({ inches: 11 });
 console.log("got a small hat! " + response)
 
 let streamingCall = client.makeRowOfHats({ inches: 23 });
-for await (let hat of streamingCall.response) {
+for await (let hat of streamingCall.responses) {
     console.log("got another hat! " + hat)
 }
 ```

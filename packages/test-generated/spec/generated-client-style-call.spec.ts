@@ -120,7 +120,7 @@ describe('generated client style call', () => {
             }));
             const call = client.serverStream(StringValue.create());
             const received: Int32Value[] = [];
-            for await (let response of call.response) {
+            for await (let response of call.responses) {
                 received.push(response);
             }
             expect(received.length).toBe(3);
@@ -132,7 +132,7 @@ describe('generated client style call', () => {
             }));
             const call = client.serverStream(StringValue.create());
             try {
-                for await (let response of call.response) {
+                for await (let response of call.responses) {
                 }
             } catch (error) {
                 expect(error).toBeInstanceOf(RpcError);
@@ -170,7 +170,7 @@ describe('generated client style call', () => {
             }, 1)
             const call = client.serverStream({value: "abc"}, {abort: abort.signal});
             try {
-                for await (let msg of call.response) {
+                for await (let msg of call.responses) {
                 }
                 fail("missing error");
             } catch (e) {

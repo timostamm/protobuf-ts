@@ -37,7 +37,7 @@ let {response} = await client.makeHat({ inches: 11 });
 console.log("got a small hat! " + response)
 
 let streamingCall = client.makeRowOfHats({ inches: 23 });
-for await (let hat of streamingCall.response) {
+for await (let hat of streamingCall.responses) {
     console.log("got another hat! " + hat)
 }
 ```

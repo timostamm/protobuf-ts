@@ -110,7 +110,7 @@ export class GrpcwebServerStreamingComponent {
         title: 'Response headers', mode: 'secondary', content: headers
       });
 
-      for await (const message of call.response) {
+      for await (const message of call.responses) {
         this.print({
           title: 'Response message', mode: 'primary', content: message
         });
@@ -130,7 +130,7 @@ export class GrpcwebServerStreamingComponent {
       // above was a lot of code, here is a simple alternative:
       const justWantTheMessages = false;
       if (justWantTheMessages) {
-        for await (const message of client.serverStream(this.request, options).response) {
+        for await (const message of client.serverStream(this.request, options).responses) {
         }
       }
 

@@ -41,7 +41,7 @@ export class ServerStreamingCall<I extends object = object, O extends object = o
      * Response messages from the server.
      * This is an AsyncIterable that can be iterated with `await for .. of`.
      */
-    readonly response: RpcOutputStream<O>;
+    readonly responses: RpcOutputStream<O>;
 
     /**
      * The response status the server replied with.
@@ -79,7 +79,7 @@ export class ServerStreamingCall<I extends object = object, O extends object = o
         this.requestHeaders = requestHeaders;
         this.request = request;
         this.headers = headers;
-        this.response = response;
+        this.responses = response;
         this.status = status;
         this.trailers = trailers;
     }

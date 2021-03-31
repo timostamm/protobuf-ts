@@ -37,9 +37,9 @@ describe('ServerStreamingCall', () => {
     it('should provide correct data', async function () {
         expect(call.requestHeaders).toBe(requestHeaders);
         expect(call.request).toBe(request);
-        expect(call.response).toBe(stream);
+        expect(call.responses).toBe(stream);
         const ids = [];
-        for await (let x of call.response) {
+        for await (let x of call.responses) {
             ids.push(x.id);
         }
         expect(ids).toEqual(["one", "two", "three"]);
@@ -51,11 +51,11 @@ describe('ServerStreamingCall', () => {
     it('should run through with wrong order', async function () {
         expect(call.requestHeaders).toBe(requestHeaders);
         expect(call.request).toBe(request);
-        expect(call.response).toBe(stream);
+        expect(call.responses).toBe(stream);
         expect(await call.status).toBe(status);
         expect(await call.trailers).toBe(trailers);
         const ids = [];
-        for await (let x of call.response) {
+        for await (let x of call.responses) {
             ids.push(x.id);
         }
         expect(ids.length).toBe(0);
