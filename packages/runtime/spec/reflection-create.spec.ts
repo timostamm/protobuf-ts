@@ -1,7 +1,7 @@
 import {fixtures} from "../../test-fixtures";
 import {reflectionCreate} from "../src";
 import {normalizeFieldInfo, ScalarType} from "../src";
-import {IMessageType} from "../src";
+import type {IMessageType} from "../src";
 
 
 describe('reflectionCreate()', function () {

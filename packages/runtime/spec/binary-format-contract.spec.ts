@@ -1,17 +1,19 @@
+import type {
+    BinaryReadOptions,
+    BinaryWriteOptions,
+} from "../src";
 import {
     BinaryReader,
-    BinaryReadOptions,
-    binaryReadOptions,
-    BinaryWriteOptions,
-    binaryWriteOptions,
     BinaryWriter,
+    binaryReadOptions,
+    binaryWriteOptions,
     mergeBinaryOptions,
     MessageType,
     ScalarType,
     UnknownFieldHandler,
     WireType
 } from "../src";
-import {UnknownFieldContainer} from "../src/binary-format-contract";
+import type {UnknownFieldContainer} from "../src/binary-format-contract";
 
 
 describe('binaryReadOptions()', function () {
