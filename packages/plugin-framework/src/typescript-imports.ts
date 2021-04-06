@@ -25,12 +25,13 @@ export class TypeScriptImports {
      *
      * Returns imported name.
      */
-    name(source: TypescriptFile, importName: string, importFrom: string): string {
+    name(source: TypescriptFile, importName: string, importFrom: string, isTypeOnly = false): string {
         const blackListedNames = this.symbols.list(source).map(e => e.name);
         return ensureNamedImportPresent(
             source.getSourceFile(),
             importName,
             importFrom,
+            isTypeOnly,
             blackListedNames,
             statementToAdd => source.addStatement(statementToAdd, true)
         );
@@ -63,7 +64,7 @@ export class TypeScriptImports {
      * If you have multiple representations for a descriptor
      * in your generated code, use `kind` to discriminate.
      */
-    type(source: TypescriptFile, descriptor: AnyTypeDescriptorProto, kind = 'default'): string {
+    type(source: TypescriptFile, descriptor: AnyTypeDescriptorProto, kind = 'default', isTypeOnly = false): string {
         const symbolReg = this.symbols.get(descriptor, kind);
 
         // symbol in this file?
@@ -82,6 +83,7 @@ export class TypeScriptImports {
             source.getSourceFile(),
             symbolReg.name,
             importPath,
+            isTypeOnly,
             blackListedNames,
             statementToAdd => source.addStatement(statementToAdd, true)
         );
@@ -155,7 +157,8 @@ function findNamespaceImports(sourceFile: ts.SourceFile): { as: string, from: st
 }
 
 /**
- * Import {importName} from "importFrom";
+ * import {importName} from "importFrom";
+ * import type {importName} from "importFrom";
  *
  * If the import is already present, just return the
  * identifier.
@@ -171,10 +174,11 @@ function findNamespaceImports(sourceFile: ts.SourceFile): { as: string, from: st
  *
  * Returns the imported name or the alternative name.
  */
-function ensureNamedImportPresent(
+export function ensureNamedImportPresent(
     currentFile: ts.SourceFile,
     importName: string,
     importFrom: string,
+    isTypeOnly: boolean,
     blacklistedNames: string[],
     addStatementFn: (statementToAdd: ts.ImportDeclaration) => void,
     escapeCharacter = '$'
@@ -182,7 +186,7 @@ function ensureNamedImportPresent(
     const
         all = findNamedImports(currentFile),
         taken = all.map(ni => ni.as ?? ni.name).concat(blacklistedNames),
-        match = all.find(ni => ni.name === importName && ni.from === importFrom);
+        match = all.find(ni => ni.name === importName && ni.from === importFrom && ni.isTypeOnly === isTypeOnly);
     if (match) {
         return match.as ?? match.name;
     }
@@ -197,7 +201,7 @@ function ensureNamedImportPresent(
             }
         }
     }
-    const statementToAdd = createNamedImport(importName, importFrom, as);
+    const statementToAdd = createNamedImport(importName, importFrom, as, isTypeOnly);
     addStatementFn(statementToAdd);
     return as ?? importName;
 }
@@ -205,8 +209,10 @@ function ensureNamedImportPresent(
 /**
  * import {<name>} from '<from>';
  * import {<name> as <as>} from '<from>';
+ * import type {<name>} from '<from>';
+ * import type {<name> as <as>} from '<from>';
  */
-function createNamedImport(name: string, from: string, as?: string): ts.ImportDeclaration {
+export function createNamedImport(name: string, from: string, as?: string, isTypeOnly = false): ts.ImportDeclaration {
     if (as) {
         return ts.createImportDeclaration(
             undefined,
@@ -217,7 +223,7 @@ function createNamedImport(name: string, from: string, as?: string): ts.ImportDe
                     ts.createIdentifier(name),
                     ts.createIdentifier(as)
                 )]),
-                false
+                isTypeOnly
             ),
             ts.createStringLiteral(from)
         );
@@ -232,7 +238,8 @@ function createNamedImport(name: string, from: string, as?: string): ts.ImportDe
                     undefined,
                     ts.createIdentifier(name)
                 )
-            ])
+            ]),
+            isTypeOnly
         ),
         ts.createStringLiteral(from)
     );
@@ -241,9 +248,11 @@ function createNamedImport(name: string, from: string, as?: string): ts.ImportDe
 /**
  * import {<name>} from '<from>';
  * import {<name> as <as>} from '<from>';
+ * import type {<name>} from '<from>';
+ * import type {<name> as <as>} from '<from>';
  */
-function findNamedImports(sourceFile: ts.SourceFile): { name: string, as: string | undefined, from: string }[] {
-    let r: Array<{ name: string, as: string | undefined, from: string }> = [];
+export function findNamedImports(sourceFile: ts.SourceFile): { name: string, as: string | undefined, from: string, isTypeOnly: boolean }[] {
+    let r: Array<{ name: string, as: string | undefined, from: string, isTypeOnly: boolean }> = [];
     for (let s of sourceFile.statements) {
         if (ts.isImportDeclaration(s) && s.importClause) {
             let namedBindings = s.importClause.namedBindings;
@@ -254,13 +263,15 @@ function findNamedImports(sourceFile: ts.SourceFile): { name: string, as: string
                         r.push({
                             name: importSpecifier.propertyName.escapedText.toString(),
                             as: importSpecifier.name.escapedText.toString(),
-                            from: s.moduleSpecifier.text
+                            from: s.moduleSpecifier.text,
+                            isTypeOnly: s.importClause.isTypeOnly
                         })
                     } else {
                         r.push({
                             name: importSpecifier.name.escapedText.toString(),
                             as: undefined,
-                            from: s.moduleSpecifier.text
+                            from: s.moduleSpecifier.text,
+                            isTypeOnly: s.importClause.isTypeOnly
                         })
                     }
                 }
