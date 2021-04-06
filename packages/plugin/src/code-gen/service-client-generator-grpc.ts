@@ -203,7 +203,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         undefined,
                         ts.createIdentifier("input"),
                         undefined,
-                        this.makeI(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
                         undefined
                     ),
                     ts.createParameter(
@@ -269,7 +269,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -298,7 +298,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         undefined,
                         ts.createIdentifier("input"),
                         undefined,
-                        this.makeI(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
                         undefined
                     ),
                     ts.createParameter(
@@ -349,7 +349,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -378,7 +378,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         undefined,
                         ts.createIdentifier("input"),
                         undefined,
-                        this.makeI(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
                         undefined
                     ),
                     ts.createParameter(
@@ -429,7 +429,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -458,7 +458,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         undefined,
                         ts.createIdentifier("input"),
                         undefined,
-                        this.makeI(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
                         undefined
                     ),
                     ts.createParameter(
@@ -494,7 +494,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -531,7 +531,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         undefined,
                         ts.createIdentifier("input"),
                         undefined,
-                        this.makeI(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
                         undefined
                     ),
                     ts.createParameter(
@@ -570,7 +570,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         ts.createIdentifier(grpc),
                         ts.createIdentifier("ClientReadableStream")
                     ),
-                    [this.makeO(source, methodInfo)]
+                    [this.makeO(source, methodInfo, true)]
                 ),
                 ts.createIdentifier(methodInfo.localName),
                 undefined
@@ -584,7 +584,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         undefined,
                         ts.createIdentifier("input"),
                         undefined,
-                        this.makeI(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
                         undefined
                     ),
                     ts.createParameter(
@@ -608,7 +608,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         ts.createIdentifier(grpc),
                         ts.createIdentifier("ClientReadableStream")
                     ),
-                    [this.makeO(source, methodInfo)]
+                    [this.makeO(source, methodInfo, true)]
                 ),
                 ts.createIdentifier(methodInfo.localName),
                 undefined
@@ -685,7 +685,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -699,7 +699,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         ts.createIdentifier(grpc),
                         ts.createIdentifier("ClientWritableStream")
                     ),
-                    [this.makeI(source, methodInfo)]
+                    [this.makeI(source, methodInfo, true)]
                 ),
                 ts.createIdentifier(methodInfo.localName),
                 undefined
@@ -755,7 +755,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -769,7 +769,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         ts.createIdentifier(grpc),
                         ts.createIdentifier("ClientWritableStream")
                     ),
-                    [this.makeI(source, methodInfo)]
+                    [this.makeI(source, methodInfo, true)]
                 ),
                 ts.createIdentifier(methodInfo.localName),
                 undefined
@@ -825,7 +825,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -840,7 +840,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         ts.createIdentifier("ClientWritableStream")
                     ),
                     [
-                        this.makeI(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
                     ]
                 ),
                 ts.createIdentifier(methodInfo.localName),
@@ -881,7 +881,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                 undefined,
                                 ts.createIdentifier("value"),
                                 ts.createToken(ts.SyntaxKind.QuestionToken),
-                                this.makeO(source, methodInfo),
+                                this.makeO(source, methodInfo, true),
                                 undefined
                             )
                         ],
@@ -895,7 +895,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         ts.createIdentifier("ClientWritableStream")
                     ),
                     [
-                        this.makeI(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
                     ]
                 ),
                 ts.createIdentifier(methodInfo.localName),
@@ -947,8 +947,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         ts.createIdentifier("ClientDuplexStream")
                     ),
                     [
-                        this.makeI(source, methodInfo),
-                        this.makeO(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
+                        this.makeO(source, methodInfo, true),
                     ]
                 ),
                 ts.createIdentifier(methodInfo.localName),
@@ -977,8 +977,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                         ts.createIdentifier("ClientDuplexStream")
                     ),
                     [
-                        this.makeI(source, methodInfo),
-                        this.makeO(source, methodInfo),
+                        this.makeI(source, methodInfo, true),
+                        this.makeO(source, methodInfo, true),
                     ]
                 ),
                 ts.createIdentifier(methodInfo.localName),
@@ -1006,7 +1006,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                     undefined,
                     ts.createIdentifier("input"),
                     undefined,
-                    this.makeI(source, methodInfo),
+                    this.makeI(source, methodInfo, true),
                     undefined
                 ),
                 ts.createParameter(
@@ -1057,7 +1057,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -1107,7 +1107,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -1149,7 +1149,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                 undefined,
                                 ts.createIdentifier("value"),
                                 ts.createToken(ts.SyntaxKind.QuestionToken),
-                                this.makeO(source, methodInfo),
+                                this.makeO(source, methodInfo, true),
                                 undefined
                             )
                         ],
@@ -1190,8 +1190,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                             ts.createIdentifier("makeUnaryRequest")
                         ),
                         [
-                            this.makeI(source, methodInfo),
-                            this.makeO(source, methodInfo)
+                            this.makeI(source, methodInfo, true),
+                            this.makeO(source, methodInfo, true)
                         ],
                         [
                             ts.createTemplateExpression(
@@ -1231,7 +1231,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     undefined,
-                                    this.makeI(source, methodInfo),
+                                    this.makeI(source, methodInfo, true),
                                     undefined
                                 )],
                                 ts.createTypeReferenceNode(
@@ -1279,7 +1279,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     ),
                                     undefined
                                 )],
-                                this.makeO(source, methodInfo),
+                                this.makeO(source, methodInfo, true),
                                 ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
                                 ts.createCall(
                                     ts.createPropertyAccess(
@@ -1338,7 +1338,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                     undefined,
                     ts.createIdentifier("input"),
                     undefined,
-                    this.makeI(source, methodInfo),
+                    this.makeI(source, methodInfo, true),
                     undefined
                 ),
                 ts.createParameter(
@@ -1386,7 +1386,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                     ts.createIdentifier(grpc),
                     ts.createIdentifier("ClientReadableStream")
                 ),
-                [this.makeO(source, methodInfo)]
+                [this.makeO(source, methodInfo, true)]
             ),
             ts.createBlock(
                 [
@@ -1413,8 +1413,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                             ts.createIdentifier("makeServerStreamRequest")
                         ),
                         [
-                            this.makeI(source, methodInfo),
-                            this.makeO(source, methodInfo)
+                            this.makeI(source, methodInfo, true),
+                            this.makeO(source, methodInfo, true)
                         ],
                         [
                             ts.createTemplateExpression(
@@ -1454,7 +1454,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     undefined,
-                                    this.makeI(source, methodInfo),
+                                    this.makeI(source, methodInfo, true),
                                     undefined
                                 )],
                                 ts.createTypeReferenceNode(
@@ -1502,7 +1502,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     ),
                                     undefined
                                 )],
-                                this.makeO(source, methodInfo),
+                                this.makeO(source, methodInfo, true),
                                 ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
                                 ts.createCall(
                                     ts.createPropertyAccess(
@@ -1596,7 +1596,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -1646,7 +1646,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     ts.createToken(ts.SyntaxKind.QuestionToken),
-                                    this.makeO(source, methodInfo),
+                                    this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
@@ -1688,7 +1688,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                 undefined,
                                 ts.createIdentifier("value"),
                                 ts.createToken(ts.SyntaxKind.QuestionToken),
-                                this.makeO(source, methodInfo),
+                                this.makeO(source, methodInfo, true),
                                 undefined
                             )
                         ],
@@ -1702,7 +1702,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                     ts.createIdentifier(grpc),
                     ts.createIdentifier("ClientWritableStream")
                 ),
-                [this.makeI(source, methodInfo)]
+                [this.makeI(source, methodInfo, true)]
             ),
             ts.createBlock(
                 [
@@ -1729,8 +1729,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                             ts.createIdentifier("makeClientStreamRequest")
                         ),
                         [
-                            this.makeI(source, methodInfo),
-                            this.makeO(source, methodInfo)
+                            this.makeI(source, methodInfo, true),
+                            this.makeO(source, methodInfo, true)
                         ],
                         [
                             ts.createTemplateExpression(
@@ -1770,7 +1770,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     undefined,
-                                    this.makeI(source, methodInfo),
+                                    this.makeI(source, methodInfo, true),
                                     undefined
                                 )],
                                 ts.createTypeReferenceNode(
@@ -1818,7 +1818,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     ),
                                     undefined
                                 )],
-                                this.makeO(source, methodInfo),
+                                this.makeO(source, methodInfo, true),
                                 ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
                                 ts.createCall(
                                     ts.createPropertyAccess(
@@ -1915,8 +1915,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                     ts.createIdentifier("ClientDuplexStream")
                 ),
                 [
-                    this.makeI(source, methodInfo),
-                    this.makeO(source, methodInfo)
+                    this.makeI(source, methodInfo, true),
+                    this.makeO(source, methodInfo, true)
                 ]
             ),
             ts.createBlock(
@@ -1944,8 +1944,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                             ts.createIdentifier("makeBidiStreamRequest")
                         ),
                         [
-                            this.makeI(source, methodInfo),
-                            this.makeO(source, methodInfo)
+                            this.makeI(source, methodInfo, true),
+                            this.makeO(source, methodInfo, true)
                         ],
                         [
                             ts.createTemplateExpression(
@@ -1985,7 +1985,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     undefined,
                                     ts.createIdentifier("value"),
                                     undefined,
-                                    this.makeI(source, methodInfo),
+                                    this.makeI(source, methodInfo, true),
                                     undefined
                                 )],
                                 ts.createTypeReferenceNode(
@@ -2033,7 +2033,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                                     ),
                                     undefined
                                 )],
-                                this.makeO(source, methodInfo),
+                                this.makeO(source, methodInfo, true),
                                 ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
                                 ts.createCall(
                                     ts.createPropertyAccess(
