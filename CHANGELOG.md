@@ -3,6 +3,31 @@
 none
 
 
+### v1.0.13
+
+v2.0.0-alpha.18 was accidentally published in the "latest" channel. 
+This release is identical with v1.0.12, it just fixes the "latest" 
+NPM release. 
+
+
+
+### v2.0.0-alpha.19
+
+New features:
+
+- Compatibility with svelte (type imports), see #94  
+  Thanks to @frederikhors for the detailed reports.
+
+
+### v2.0.0-alpha.18
+
+This release was accidentally published in the "latest" channel as 
+v2.0.0-alpha.18
+
+Please disregard.
+
+
+
 ### v2.0.0-alpha.17
 
 Breaking changes:
