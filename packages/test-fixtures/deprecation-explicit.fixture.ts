@@ -1,5 +1,4 @@
-import {Fixture} from "./index";
-
+import type {Fixture} from "./index";
 
 const f: Fixture[] = [];
 export default f;

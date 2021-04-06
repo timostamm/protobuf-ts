@@ -1,4 +1,4 @@
-import {Fixture} from "./index";
+import type {Fixture} from "./index";
 import {MessageType} from "@protobuf-ts/runtime";
 
 const f: Fixture[] = [];

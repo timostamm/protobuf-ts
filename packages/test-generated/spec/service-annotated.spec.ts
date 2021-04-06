@@ -1,6 +1,6 @@
 import {assert} from "@protobuf-ts/runtime";
 import {AnnotatedService} from "../ts-out/service-annotated";
-import {RpcTransport} from "@protobuf-ts/runtime-rpc";
+import type {RpcTransport} from "@protobuf-ts/runtime-rpc";
 import {HttpRule} from "../ts-out/google/api/http";
 import {AnnotatedServiceClient} from "../ts-out/service-annotated.client";
 

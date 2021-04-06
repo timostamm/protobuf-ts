@@ -16,6 +16,11 @@
     "isolatedModules": true,
 
 
+    // activated for issue #94
+    // svelte requires this option
+    "importsNotUsedAsValues": "error",
+
+
     "strict": true,
     "lib": [
       "es2017",

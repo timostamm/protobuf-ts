@@ -1,6 +1,6 @@
 import {assert} from "@protobuf-ts/runtime";
 import {MessageWithExcludedOptions} from "../ts-out/exclude-options";
-import {RpcTransport} from "@protobuf-ts/runtime-rpc";
+import type {RpcTransport} from "@protobuf-ts/runtime-rpc";
 import {ServiceWithExcludedOptionsClient} from "../ts-out/exclude-options.client";
 
 

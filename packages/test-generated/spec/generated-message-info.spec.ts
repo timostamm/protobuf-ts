@@ -1,5 +1,5 @@
 import {fixtures} from "../../test-fixtures";
-import {IMessageType} from "@protobuf-ts/runtime";
+import type {IMessageType} from "@protobuf-ts/runtime";
 import {EnumFieldMessage} from "../ts-out/msg-enum";
 import {JsonNamesMessage} from "../ts-out/msg-json-names";
 import {MessageFieldMessage} from "../ts-out/msg-message";

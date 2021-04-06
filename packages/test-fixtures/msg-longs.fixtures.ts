@@ -1,4 +1,4 @@
-import {Fixture} from "./index";
+import type {Fixture} from "./index";
 
 /**
  * Bytes of the file `msg-longs.bin`

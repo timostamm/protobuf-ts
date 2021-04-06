@@ -12,7 +12,11 @@
     "experimentalDecorators": false,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": false,
+
+    // activated for issue #94
+    // svelte requires this option
     "importsNotUsedAsValues": "error",
+
     "lib": [
       "es2017",
       "dom",

@@ -12,6 +12,11 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+
+    // activated for issue #94
+    // svelte requires this option
+    "importsNotUsedAsValues": "error",
+
     "lib": [
       "es2017",
       "es2015.collection"
