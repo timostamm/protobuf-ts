@@ -1,4 +1,5 @@
-import {IBinaryReader, WireType} from "./binary-format-contract";
+import type {IBinaryReader} from "./binary-format-contract";
+import {WireType} from "./binary-format-contract";
 import {PbLong, PbULong} from "./pb-long";
 import {utf8read} from "./protobufjs-utf8";
 import {varint32read, varint64read} from "./goog-varint";
@@ -108,7 +109,7 @@ export class BinaryReader implements IBinaryReader {
      * Read a `int64` field, a signed 64-bit varint.
      */
     int64(): PbLong {
-        return new PbLong(... this.varint64());
+        return new PbLong(...this.varint64());
     }
 
 
@@ -116,7 +117,7 @@ export class BinaryReader implements IBinaryReader {
      * Read a `uint64` field, an unsigned 64-bit varint.
      */
     uint64(): PbULong {
-        return new PbULong(... this.varint64());
+        return new PbULong(...this.varint64());
     }
 
 

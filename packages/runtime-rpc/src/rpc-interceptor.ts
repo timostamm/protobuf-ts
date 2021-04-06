@@ -1,10 +1,10 @@
-import {ServerStreamingCall} from "./server-streaming-call";
-import {ClientStreamingCall} from "./client-streaming-call";
-import {DuplexStreamingCall} from "./duplex-streaming-call";
-import {RpcTransport} from "./rpc-transport";
-import {MethodInfo} from "./reflection-info";
-import {RpcOptions} from "./rpc-options";
-import {UnaryCall} from "./unary-call";
+import type {ServerStreamingCall} from "./server-streaming-call";
+import type {ClientStreamingCall} from "./client-streaming-call";
+import type {DuplexStreamingCall} from "./duplex-streaming-call";
+import type {RpcTransport} from "./rpc-transport";
+import type {MethodInfo} from "./reflection-info";
+import type {RpcOptions} from "./rpc-options";
+import type {UnaryCall} from "./unary-call";
 import {assertNever} from "@protobuf-ts/runtime";
 
 

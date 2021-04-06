@@ -1,4 +1,5 @@
-import {IBinaryWriter, WireType} from "./binary-format-contract";
+import type {IBinaryWriter} from "./binary-format-contract";
+import type {WireType} from "./binary-format-contract";
 import {PbLong, PbULong} from "./pb-long";
 import {varint32write, varint64write} from "./goog-varint";
 import {assertFloat32, assertInt32, assertUInt32} from "./assert";

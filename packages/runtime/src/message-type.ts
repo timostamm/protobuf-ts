@@ -1,5 +1,6 @@
-import {IMessageType, PartialMessage} from "./message-type-contract";
-import {FieldInfo, normalizeFieldInfo, PartialFieldInfo} from "./reflection-info";
+import type {IMessageType, PartialMessage} from "./message-type-contract";
+import type {FieldInfo, PartialFieldInfo} from "./reflection-info";
+import {normalizeFieldInfo} from "./reflection-info";
 import {ReflectionTypeCheck} from "./reflection-type-check";
 import {ReflectionJsonReader} from "./reflection-json-reader";
 import {ReflectionJsonWriter} from "./reflection-json-writer";
@@ -7,24 +8,14 @@ import {ReflectionBinaryReader} from "./reflection-binary-reader";
 import {ReflectionBinaryWriter} from "./reflection-binary-writer";
 import {reflectionCreate} from "./reflection-create";
 import {reflectionMergePartial} from "./reflection-merge-partial";
-import {JsonValue, typeofJsonValue} from "./json-typings";
-import {
-    JsonReadOptions,
-    jsonReadOptions,
-    JsonWriteOptions,
-    jsonWriteOptions,
-    JsonWriteStringOptions
-} from "./json-format-contract";
-import {
-    BinaryReadOptions,
-    binaryReadOptions,
-    BinaryWriteOptions,
-    binaryWriteOptions,
-    IBinaryReader,
-    IBinaryWriter
-} from "./binary-format-contract";
+import type {JsonValue} from "./json-typings";
+import {typeofJsonValue} from "./json-typings";
+import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
+import {jsonReadOptions, jsonWriteOptions,} from "./json-format-contract";
+import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
+import {binaryReadOptions, binaryWriteOptions} from "./binary-format-contract";
 import {reflectionEquals} from "./reflection-equals";
-import {UnknownMessage} from "./unknown-types";
+import type {UnknownMessage} from "./unknown-types";
 
 /**
  * This standard message type provides reflection-based

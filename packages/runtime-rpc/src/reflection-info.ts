@@ -1,4 +1,5 @@
-import {IMessageType, JsonValue, lowerCamelCase} from "@protobuf-ts/runtime";
+import type {IMessageType, JsonValue} from "@protobuf-ts/runtime";
+import {lowerCamelCase} from "@protobuf-ts/runtime";
 
 /**
  * Describes a protobuf service for runtime reflection.

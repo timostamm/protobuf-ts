@@ -1,6 +1,6 @@
-import {MessageInfo} from "./reflection-info";
+import type {MessageInfo} from "./reflection-info";
 import {reflectionScalarDefault} from "./reflection-scalar-default";
-import {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
+import type {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
 
 
 /**

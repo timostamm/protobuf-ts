@@ -1,6 +1,6 @@
-import {MethodInfo} from "./reflection-info";
-import {RpcStatus} from "./rpc-status";
-import {RpcMetadata} from "./rpc-metadata";
+import type {MethodInfo} from "./reflection-info";
+import type {RpcStatus} from "./rpc-status";
+import type {RpcMetadata} from "./rpc-metadata";
 
 
 export interface RpcCallShared<I extends object, O extends object> {

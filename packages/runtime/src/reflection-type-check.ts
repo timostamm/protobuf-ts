@@ -1,5 +1,6 @@
-import {FieldInfo, LongType, MessageInfo, ScalarType} from "./reflection-info";
-import {IMessageType} from "./message-type-contract";
+import type {FieldInfo, MessageInfo} from "./reflection-info";
+import {LongType, ScalarType} from "./reflection-info";
+import type {IMessageType} from "./message-type-contract";
 import {isOneofGroup} from "./is-oneof-group";
 
 // noinspection JSMethodCanBeStatic

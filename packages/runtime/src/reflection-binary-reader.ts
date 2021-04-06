@@ -1,10 +1,10 @@
-import {BinaryReadOptions, IBinaryReader, UnknownFieldHandler, WireType} from "./binary-format-contract";
-import {FieldInfo, LongType, MessageInfo, ScalarType} from "./reflection-info";
+import type {BinaryReadOptions, IBinaryReader} from "./binary-format-contract";
+import {UnknownFieldHandler, WireType} from "./binary-format-contract";
+import type {FieldInfo, MessageInfo} from "./reflection-info";
+import {LongType, ScalarType} from "./reflection-info";
 import {reflectionLongConvert} from "./reflection-long-convert";
 import {reflectionScalarDefault} from "./reflection-scalar-default";
-import {UnknownMap, UnknownMessage, UnknownOneofGroup, UnknownScalar} from "./unknown-types";
-
-
+import type {UnknownMap, UnknownMessage, UnknownOneofGroup, UnknownScalar} from "./unknown-types";
 
 
 /**

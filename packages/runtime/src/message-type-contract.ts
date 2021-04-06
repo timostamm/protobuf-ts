@@ -1,7 +1,7 @@
-import {FieldInfo} from "./reflection-info";
-import {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
-import {JsonValue} from "./json-typings";
-import {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
+import type {FieldInfo} from "./reflection-info";
+import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
+import type {JsonValue} from "./json-typings";
+import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
 
 /**
  * Similar to `Partial<T>`, but recursive, and keeps `oneof` groups

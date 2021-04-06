@@ -1,11 +1,13 @@
-import {isJsonObject, JsonObject, JsonValue, typeofJsonValue} from "./json-typings";
+import type {JsonObject, JsonValue} from "./json-typings";
+import {isJsonObject, typeofJsonValue} from "./json-typings";
 import {base64decode} from "./base64";
-import {JsonReadOptions} from "./json-format-contract";
-import {EnumInfo, FieldInfo, LongType, MessageInfo, ScalarType} from "./reflection-info";
+import type {JsonReadOptions} from "./json-format-contract";
+import type {EnumInfo, FieldInfo, MessageInfo} from "./reflection-info";
+import {LongType, ScalarType} from "./reflection-info";
 import {PbLong, PbULong} from "./pb-long";
 import {assert, assertFloat32, assertInt32, assertUInt32} from "./assert";
 import {reflectionLongConvert} from "./reflection-long-convert";
-import {UnknownEnum, UnknownMessage, UnknownOneofGroup, UnknownScalar} from "./unknown-types";
+import type {UnknownEnum, UnknownMessage, UnknownOneofGroup, UnknownScalar} from "./unknown-types";
 
 
 /**

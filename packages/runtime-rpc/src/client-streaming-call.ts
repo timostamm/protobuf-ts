@@ -1,8 +1,8 @@
-import {RpcCallShared} from "./rpc-call-shared";
-import {RpcInputStream} from "./rpc-input-stream";
-import {RpcStatus} from "./rpc-status";
-import {RpcMetadata} from "./rpc-metadata";
-import {MethodInfo} from "./reflection-info";
+import type {RpcCallShared} from "./rpc-call-shared";
+import type {RpcInputStream} from "./rpc-input-stream";
+import type {RpcStatus} from "./rpc-status";
+import type {RpcMetadata} from "./rpc-metadata";
+import type {MethodInfo} from "./reflection-info";
 
 
 /**

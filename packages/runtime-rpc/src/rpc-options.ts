@@ -1,13 +1,7 @@
-import {RpcMetadata} from "./rpc-metadata";
-import {
-    BinaryReadOptions,
-    BinaryWriteOptions,
-    JsonReadOptions,
-    JsonWriteOptions,
-    mergeBinaryOptions,
-    mergeJsonOptions
-} from "@protobuf-ts/runtime";
-import {RpcInterceptor} from "./rpc-interceptor";
+import type {RpcMetadata} from "./rpc-metadata";
+import type {BinaryReadOptions, BinaryWriteOptions, JsonReadOptions, JsonWriteOptions,} from "@protobuf-ts/runtime";
+import {mergeBinaryOptions, mergeJsonOptions} from "@protobuf-ts/runtime";
+import type {RpcInterceptor} from "./rpc-interceptor";
 
 /**
  * User-provided options for Remote Procedure Calls.

@@ -1,6 +1,6 @@
-import {MessageInfo} from "./reflection-info";
-import {PartialMessage} from "./message-type-contract";
-import {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
+import type {MessageInfo} from "./reflection-info";
+import type {PartialMessage} from "./message-type-contract";
+import type {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
 
 
 /**

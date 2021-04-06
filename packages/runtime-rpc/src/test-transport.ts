@@ -1,8 +1,8 @@
 import {RpcError} from "./rpc-error";
-import {RpcMetadata} from "./rpc-metadata";
-import {RpcStatus} from "./rpc-status";
-import {RpcTransport} from "./rpc-transport";
-import {MethodInfo} from "./reflection-info";
+import type {RpcMetadata} from "./rpc-metadata";
+import type {RpcStatus} from "./rpc-status";
+import type {RpcTransport} from "./rpc-transport";
+import type {MethodInfo} from "./reflection-info";
 import {assert} from "@protobuf-ts/runtime";
 import {RpcOutputStreamController} from "./rpc-output-stream";
 import {mergeRpcOptions, RpcOptions} from "./rpc-options";
@@ -10,7 +10,7 @@ import {UnaryCall} from "./unary-call";
 import {ServerStreamingCall} from "./server-streaming-call";
 import {ClientStreamingCall} from "./client-streaming-call";
 import {DuplexStreamingCall} from "./duplex-streaming-call";
-import {RpcInputStream} from "./rpc-input-stream";
+import type {RpcInputStream} from "./rpc-input-stream";
 
 
 /**

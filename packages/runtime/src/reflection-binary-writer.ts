@@ -1,9 +1,11 @@
-import {BinaryWriteOptions, IBinaryWriter, UnknownFieldHandler, WireType} from "./binary-format-contract";
-import {FieldInfo, MessageInfo, RepeatType, ScalarType} from "./reflection-info";
-import {IMessageType} from "./message-type-contract";
+import type {BinaryWriteOptions, IBinaryWriter} from "./binary-format-contract";
+import {UnknownFieldHandler, WireType} from "./binary-format-contract";
+import type {FieldInfo, MessageInfo} from "./reflection-info";
+import {RepeatType, ScalarType} from "./reflection-info";
+import type {IMessageType} from "./message-type-contract";
 import {assert} from "./assert";
 import {PbLong, PbULong} from "./pb-long";
-import {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
+import type {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
 
 
 /**

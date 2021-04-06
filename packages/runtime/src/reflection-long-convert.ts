@@ -1,4 +1,4 @@
-import {PbLong, PbULong} from "./pb-long";
+import type {PbLong, PbULong} from "./pb-long";
 import {LongType} from "./reflection-info";
 
 /**

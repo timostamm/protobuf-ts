@@ -1,6 +1,7 @@
-import {MessageInfo, ScalarType} from "./reflection-info";
-import {IMessageType} from "./message-type-contract";
-import {UnknownEnum, UnknownMap, UnknownMessage, UnknownOneofGroup, UnknownScalar} from "./unknown-types";
+import type {MessageInfo} from "./reflection-info";
+import {ScalarType} from "./reflection-info";
+import type {IMessageType} from "./message-type-contract";
+import type {UnknownEnum, UnknownMap, UnknownMessage, UnknownOneofGroup, UnknownScalar} from "./unknown-types";
 
 
 /**

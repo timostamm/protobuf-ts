@@ -1,4 +1,4 @@
-import {IMessageType} from "./message-type-contract";
+import type {IMessageType} from "./message-type-contract";
 
 /**
  * Options for parsing JSON data.

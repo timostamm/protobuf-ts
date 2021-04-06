@@ -1,6 +1,6 @@
 import {BinaryReader} from "./binary-reader";
 import {BinaryWriter} from "./binary-writer";
-import {PbLong, PbULong} from "./pb-long";
+import type {PbLong, PbULong} from "./pb-long";
 
 
 /**

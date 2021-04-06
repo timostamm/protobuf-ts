@@ -12,6 +12,7 @@
     "experimentalDecorators": false,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": false,
+    "importsNotUsedAsValues": "error",
     "lib": [
       "es2017",
       "dom",

@@ -1,4 +1,4 @@
-import {UnknownOneofGroup} from "./unknown-types";
+import type {UnknownOneofGroup} from "./unknown-types";
 
 
 /**

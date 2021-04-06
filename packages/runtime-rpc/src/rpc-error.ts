@@ -1,4 +1,4 @@
-import {RpcMetadata} from "./rpc-metadata";
+import type {RpcMetadata} from "./rpc-metadata";
 
 /**
  * An error that occurred while calling a RPC method.
