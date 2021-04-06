@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/example-google-grpcweb-client",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
