@@ -2,7 +2,6 @@ import * as ts from "typescript";
 import {
     DescriptorProto,
     DescriptorRegistry,
-    FileOptions_OptimizeMode,
     ScalarValueType,
     StringFormat,
     TypescriptFile,
@@ -86,8 +85,8 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     makeMethod(source:TypescriptFile, descriptor: DescriptorProto, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
             MessageInterface = this.imports.type(source, descriptor),
-            IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath),
-            BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath);
+            IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath, true),
+            BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath, true);
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("internalBinaryRead"), undefined, undefined,
             [
                 ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("reader"), undefined, ts.createTypeReferenceNode(IBinaryReader, undefined), undefined),
@@ -614,8 +613,8 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             methodName = this.binaryReadMapEntryMethodName + field.no,
             fieldDescriptor = messageDescriptor.field.find(fd => fd.number === field.no),
             MessageInterface = this.imports.type(source, messageDescriptor),
-            IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath),
-            BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath),
+            IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath, true),
+            BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath, true),
             methodStatements: ts.Statement[] = [];
 
         assert(fieldDescriptor !== undefined);

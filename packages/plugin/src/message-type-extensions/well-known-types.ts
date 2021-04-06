@@ -52,12 +52,12 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.Any'](source: TypescriptFile, descriptor: DescriptorProto) {
         const
             Any = this.imports.type(source, descriptor),
-            IMessageType = this.imports.name(source,'IMessageType', this.options.runtimeImportPath),
-            BinaryReadOptions = this.imports.name(source,'BinaryReadOptions', this.options.runtimeImportPath),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
+            IMessageType = this.imports.name(source,'IMessageType', this.options.runtimeImportPath, true),
+            BinaryReadOptions = this.imports.name(source,'BinaryReadOptions', this.options.runtimeImportPath, true),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             jsonWriteOptions = this.imports.name(source,'jsonWriteOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath),
             isJsonObject = this.imports.name(source,'isJsonObject', this.options.runtimeImportPath);
 
@@ -167,9 +167,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
         const
             Timestamp = this.imports.type(source,descriptor),
             PbLong = this.imports.name(source,'PbLong', this.options.runtimeImportPath),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath);
         let longConvertMethod = 'toBigInt';
         if (this.options.normalLongType === LongType.NUMBER)
@@ -264,9 +264,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
         const
             Duration = this.imports.type(source,descriptor),
             PbLong = this.imports.name(source,'PbLong', this.options.runtimeImportPath),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath);
         let longConvertMethod = 'toBigInt';
         if (this.options.normalLongType === LongType.NUMBER)
@@ -327,10 +327,10 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.FieldMask'](source: TypescriptFile, descriptor: DescriptorProto) {
         const
             FieldMask = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             lowerCamelCase = this.imports.name(source,'lowerCamelCase', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath);
         return [
             `
@@ -371,10 +371,10 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.Struct'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             Struct = this.imports.type(source,descriptor),
-            JsonObject = this.imports.name(source,'JsonObject', this.options.runtimeImportPath),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonObject = this.imports.name(source,'JsonObject', this.options.runtimeImportPath, true),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath),
             isJsonObject = this.imports.name(source,'isJsonObject', this.options.runtimeImportPath);
         return [
@@ -410,9 +410,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.Value'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             Value = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath);
         return [
             `
@@ -485,9 +485,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.ListValue'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             ListValue = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath);
         return [
             `
@@ -516,9 +516,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.BoolValue'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             BoolValue = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath);
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
         return [
             `
             /**
@@ -545,9 +545,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.StringValue'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             StringValue = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath);
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
         return [
             `
             /**
@@ -574,9 +574,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.DoubleValue'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             DoubleValue = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath);
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
         return [
             `
             /**
@@ -602,9 +602,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.FloatValue'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             FloatValue = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath);
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
         return [
             `
             /**
@@ -630,9 +630,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.Int32Value'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             Int32Value = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath);
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
         return [
             `
             /**
@@ -658,9 +658,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.UInt32Value'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             UInt32Value = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath);
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
         return [
             `
             /**
@@ -687,9 +687,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
         const
             Int64Value = this.imports.type(source,descriptor),
             iLongType = this.imports.name(source,'LongType', this.options.runtimeImportPath),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             ScalarType = this.imports.name(source,'ScalarType', this.options.runtimeImportPath);
         let longTypeEnumValue = 'BIGINT';
         if (this.options.normalLongType === LongType.NUMBER)
@@ -722,9 +722,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
         const
             UInt64Value = this.imports.type(source,descriptor),
             iLongType = this.imports.name(source,'LongType', this.options.runtimeImportPath),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath),
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             ScalarType = this.imports.name(source,'ScalarType', this.options.runtimeImportPath);
         let longTypeEnumValue = 'BIGINT';
         if (this.options.normalLongType === LongType.NUMBER)
@@ -756,9 +756,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
     ['google.protobuf.BytesValue'](source: TypescriptFile, descriptor: DescriptorProto): string[] {
         const
             BytesValue = this.imports.type(source,descriptor),
-            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath),
-            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath),
-            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath);
+            JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
+            JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
+            JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
         return [
             `
             /**

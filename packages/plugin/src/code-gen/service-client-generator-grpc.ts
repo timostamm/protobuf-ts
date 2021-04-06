@@ -17,8 +17,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
             interpreterType = this.interpreter.getServiceType(descriptor),
             ServiceClient = this.imports.type(source, descriptor, this.symbolKindImplementation),
             IServiceClient = this.imports.type(source, descriptor, this.symbolKindInterface),
-            BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath),
-            BinaryWriteOptions = this.imports.name(source, 'BinaryWriteOptions', this.options.runtimeImportPath),
+            BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath, true),
+            BinaryWriteOptions = this.imports.name(source, 'BinaryWriteOptions', this.options.runtimeImportPath, true),
             grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js');
 
 
@@ -1861,7 +1861,6 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     protected createDuplexStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
         let ServiceType = this.imports.type(source, this.registry.resolveTypeName(methodInfo.service.typeName));
-        let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         return ts.createMethod(
             undefined,
             undefined,

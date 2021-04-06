@@ -173,8 +173,8 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
             ServiceType = this.imports.type(source, descriptor),
             ServiceClient = this.imports.type(source, descriptor, this.symbolKindImplementation),
             IServiceClient = this.imports.type(source, descriptor, this.symbolKindInterface),
-            ServiceInfo = this.imports.name(source, 'ServiceInfo', this.options.runtimeRpcImportPath),
-            RpcTransport = this.imports.name(source, 'RpcTransport', this.options.runtimeRpcImportPath);
+            ServiceInfo = this.imports.name(source, 'ServiceInfo', this.options.runtimeRpcImportPath, true),
+            RpcTransport = this.imports.name(source, 'RpcTransport', this.options.runtimeRpcImportPath, true);
 
         const classDecorators: ts.Decorator[] = [];
         if (this.options.emitAngularAnnotations) {
@@ -305,15 +305,19 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
     protected abstract createDuplexStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration;
 
 
-    protected makeI(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.TypeReferenceNode {
+    protected makeI(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
         return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
-            this.registry.resolveTypeName(methodInfo.I.typeName)
+            this.registry.resolveTypeName(methodInfo.I.typeName),
+            'default',
+            isTypeOnly
         )), undefined);
     }
 
-    protected makeO(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.TypeReferenceNode {
+    protected makeO(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
         return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
-            this.registry.resolveTypeName(methodInfo.O.typeName)
+            this.registry.resolveTypeName(methodInfo.O.typeName),
+            'default',
+            isTypeOnly
         )), undefined);
     }
 

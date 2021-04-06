@@ -59,6 +59,11 @@ describe('protobuftsPlugin', function () {
                 strict: true,
                 skipLibCheck: false,
                 forceConsistentCasingInFileNames: true,
+
+                // activated for issue #94
+                // svelte requires this option
+                importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
+
                 baseUrl: './',
                 moduleResolution: ts.ModuleResolutionKind.NodeJs,
                 lib: [

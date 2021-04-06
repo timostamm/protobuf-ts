@@ -2,7 +2,6 @@ import * as ts from "typescript";
 import {
     DescriptorProto,
     DescriptorRegistry,
-    FileOptions_OptimizeMode,
     ScalarValueType,
     StringFormat,
     TypescriptFile,
@@ -54,8 +53,8 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     makeMethod(source: TypescriptFile, descriptor: DescriptorProto, bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
             MessageInterface = this.imports.type(source, descriptor),
-            IBinaryWriter = this.imports.name(source, 'IBinaryWriter', this.options.runtimeImportPath),
-            BinaryWriteOptions = this.imports.name(source, 'BinaryWriteOptions', this.options.runtimeImportPath);
+            IBinaryWriter = this.imports.name(source, 'IBinaryWriter', this.options.runtimeImportPath, true),
+            BinaryWriteOptions = this.imports.name(source, 'BinaryWriteOptions', this.options.runtimeImportPath, true);
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("internalBinaryWrite"), undefined, undefined,
             [
                 ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("message"), undefined, ts.createTypeReferenceNode(MessageInterface, undefined), undefined),
