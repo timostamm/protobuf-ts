@@ -1,7 +1,6 @@
 import {MethodInfo, RpcInterceptor, ServiceType} from "@protobuf-ts/runtime-rpc";
 import {IMessageType} from "@protobuf-ts/runtime";
 import {TwirpFetchTransport, TwirpOptions} from "../src";
-import {GrpcWebOptions} from "../../grpcweb-transport/src";
 
 describe('TwirpFetchTransport', () => {
 
@@ -60,7 +59,7 @@ describe('TwirpFetchTransport', () => {
             }
         ]);
         let transport = new class X extends TwirpFetchTransport {
-            public makeUrl(method: MethodInfo, options: GrpcWebOptions): string {
+            public makeUrl(method: MethodInfo, options: TwirpOptions): string {
                 return super.makeUrl(method, options);
             }
         }(options);
