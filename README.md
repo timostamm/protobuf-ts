@@ -35,10 +35,10 @@ pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 
 ### Quickstart
 
-- download the example file [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/test-fixtures/msg-readme.proto) 
-
 - `npm install @protobuf-ts/plugin`
   > installs the plugin and the compiler "protoc"
+
+- download the example file [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/test-fixtures/msg-readme.proto) and place it into a `protos/` directory
 
 - `npx protoc --ts_out . --proto_path protos protos/msg-readme.proto`
   > generates msg-readme.ts  
