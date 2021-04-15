@@ -3,6 +3,29 @@
 none
 
 
+### v2.0.0-alpha.20
+
+Bug Fixes:
+
+- Fixed grpcweb-transport to handle responses with HTTP error status 
+  and missing content-type header, see #102.  
+  Thanks to @frederikhors for the bug report.
+  
+- Fixed grpcweb-transport to handle responses without content-type header
+  but HTTP error code more leniently, see #102.  
+  Thanks to @frederikhors for the bug report.
+
+Breaking changes:
+
+- grpcweb-transport: The function `readGrpcWebResponseHeader()` no longer 
+  returns the format.
+  
+- grpcweb-transport: The function `readGrpcWebResponseBody()` no longer takes
+  the format as an argument. Instead, it now takes the content-type response 
+  header value and determines the format on its own.
+
+
+
 ### v1.0.13
 
 v2.0.0-alpha.18 was accidentally published in the "latest" channel. 
