@@ -100,7 +100,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             signal: options.abort ?? null // node-fetch@3.0.0-beta.9 rejects `undefined`
         })
             .then(fetchResponse => {
-                let [code, detail, meta, ] = readGrpcWebResponseHeader(fetchResponse);
+                let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse);
                 defHeader.resolve(meta);
                 if (code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
@@ -110,8 +110,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             .then(fetchResponse => {
                 if (!fetchResponse.body)
                     throw new RpcError('missing response body', GrpcStatusCode[GrpcStatusCode.INTERNAL]);
-                let [, , , responseFormat] = readGrpcWebResponseHeader(fetchResponse);
-                return readGrpcWebResponseBody(fetchResponse.body!, responseFormat, (type, data) => {
+                return readGrpcWebResponseBody(fetchResponse.body!, fetchResponse.headers.get('content-type'), (type, data) => {
                     switch (type) {
                         case GrpcWebFrame.DATA:
                             responseStream.notifyMessage(
@@ -199,7 +198,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             signal: options.abort ?? null // node-fetch@3.0.0-beta.9 rejects `undefined`
         })
             .then(fetchResponse => {
-                let [code, detail, meta, ] = readGrpcWebResponseHeader(fetchResponse);
+                let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse);
                 defHeader.resolve(meta);
                 if (code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
@@ -209,8 +208,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             .then(fetchResponse => {
                 if (!fetchResponse.body)
                     throw new RpcError('missing response body', GrpcStatusCode[GrpcStatusCode.INTERNAL]);
-                let [, , , responseFormat] = readGrpcWebResponseHeader(fetchResponse);
-                return readGrpcWebResponseBody(fetchResponse.body!, responseFormat, (type, data) => {
+                return readGrpcWebResponseBody(fetchResponse.body!, fetchResponse.headers.get('content-type'), (type, data) => {
                     switch (type) {
                         case GrpcWebFrame.DATA:
                             if (defMessage.state === DeferredState.RESOLVED)

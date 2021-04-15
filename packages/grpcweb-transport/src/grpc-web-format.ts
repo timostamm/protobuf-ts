@@ -70,9 +70,9 @@ export function createGrpcWebRequestBody(message: Uint8Array, format: GrpcWebFor
  * If given a fetch response, checks for fetch-specific error information
  * ("type" property) and whether the "body" is null and throws a RpcError.
  */
-export function readGrpcWebResponseHeader(fetchResponse: Response): [GrpcStatusCode, string | undefined, RpcMetadata, GrpcWebFormat];
-export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: number, httpStatusText: string): [GrpcStatusCode, string | undefined, RpcMetadata, GrpcWebFormat];
-export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatus?: number, httpStatusText?: string): [GrpcStatusCode, string | undefined, RpcMetadata, GrpcWebFormat] {
+export function readGrpcWebResponseHeader(fetchResponse: Response): [GrpcStatusCode, string | undefined, RpcMetadata];
+export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: number, httpStatusText: string): [GrpcStatusCode, string | undefined, RpcMetadata];
+export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatus?: number, httpStatusText?: string): [GrpcStatusCode, string | undefined, RpcMetadata] {
     if (arguments.length === 1) {
         let fetchResponse = headersOrFetchResponse as Response;
         switch (fetchResponse.type) {
@@ -98,7 +98,7 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
         statusCode = httpStatusToGrpc(httpStatus!);
         statusDetail = httpStatusText;
     }
-    return [statusCode, statusDetail, responseMeta, parseFormat(headers)];
+    return [statusCode, statusDetail, responseMeta];
 }
 
 
@@ -134,11 +134,12 @@ export enum GrpcWebFrame { DATA = 0x00, TRAILER = 0x80 }
  *
  * The returned promise resolves when the response is complete.
  */
-export async function readGrpcWebResponseBody(stream: ReadableStream<Uint8Array>, format: GrpcWebFormat, onFrame: (type: GrpcWebFrame, data: Uint8Array) => void): Promise<void> {
+export async function readGrpcWebResponseBody(stream: ReadableStream<Uint8Array>, contentType: string | undefined | null, onFrame: (type: GrpcWebFrame, data: Uint8Array) => void): Promise<void> {
 
     let streamReader: { next(): Promise<ReadableStreamReadResult<Uint8Array>> },
         base64queue = "",
-        byteQueue: Uint8Array = new Uint8Array(0);
+        byteQueue: Uint8Array = new Uint8Array(0),
+        format = parseFormat(contentType);
 
     // allows to read streams from the 'node-fetch' polyfill which uses
     // node.js ReadableStream instead of the what-wg streams api ReadableStream
@@ -226,16 +227,16 @@ function concatBytes(a: Uint8Array, b: Uint8Array): Uint8Array {
 }
 
 
-// returns format from response header, throws if unknown
-function parseFormat(headers: HttpHeaders): GrpcWebFormat {
-    let ct = headers['content-type'];
+// determines format from response "content-type" value.
+// throws if value is unknown or missing.
+function parseFormat(contentType: string | undefined | null): GrpcWebFormat {
     // > the sender *should* always specify the message format, e.g. +proto, +json
     //
     // > the receiver should assume the default is "+proto" when the message format is
     // > missing in Content-Type (as "application/grpc-web")
     //
     // see https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-WEB.md
-    switch (ct) {
+    switch (contentType) {
         case "application/grpc-web-text":
         case "application/grpc-web-text+proto":
             return "text";
@@ -243,9 +244,10 @@ function parseFormat(headers: HttpHeaders): GrpcWebFormat {
         case "application/grpc-web+proto":
             return "binary";
         case undefined:
+        case null:
             throw new RpcError("missing response content type", GrpcStatusCode[GrpcStatusCode.INTERNAL]);
         default:
-            throw new RpcError("unexpected response content type: " + ct, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+            throw new RpcError("unexpected response content type: " + contentType, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
     }
 }
 
