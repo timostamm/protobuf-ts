@@ -11,10 +11,6 @@ Bug Fixes:
   and missing content-type header, see #102.  
   Thanks to @frederikhors for the bug report.
   
-- Fixed grpcweb-transport to handle responses without content-type header
-  but HTTP error code more leniently, see #102.  
-  Thanks to @frederikhors for the bug report.
-
 Breaking changes:
 
 - grpcweb-transport: The function `readGrpcWebResponseHeader()` no longer 
