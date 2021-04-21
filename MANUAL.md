@@ -45,13 +45,11 @@ protobuf-ts manual
 
 ## What are protocol buffers
 
-Protocol buffers are a definition language for simple data structures 
-that can be efficiently serialized. 
-
-Using the protocol buffer compiler (`protoc`) you can "compile" a 
-`.proto` file to many languages. 
-
-To learn more about the protocol buffer language, please check the 
+Protocol buffers is an [interface definition language](https://en.wikipedia.org/wiki/Interface_description_language)
+and binary serialization format.  
+Data structures defined in `.proto` files are platform-independent and can
+be used in many languages.  
+To learn more about the capabilities, please check the
 official [language guide](https://developers.google.com/protocol-buffers/docs/overview).
 
 

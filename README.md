@@ -2,7 +2,10 @@ protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?st
 ===========
 
 
-Protocol buffers and RPC for Node.js and the Web Browser. Pure TypeScript.
+[Protocol buffers](https://developers.google.com/protocol-buffers) 
+and [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) 
+for Node.js and the Web Browser. 
+Pure TypeScript.
 
 For the following `.proto` file:
 ```proto
@@ -31,6 +34,15 @@ pete = Person.fromBinary(bytes);
 
 pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 ```
+
+### What are protocol buffers?
+
+Protocol buffers is an [interface definition language](https://en.wikipedia.org/wiki/Interface_description_language) 
+and binary serialization format.  
+Data structures defined in `.proto` files are platform-independent and can 
+be used in many languages.  
+To learn more about the capabilities, please check the
+official [language guide](https://developers.google.com/protocol-buffers/docs/overview).
 
 
 ### Quickstart
@@ -73,8 +85,8 @@ Read the [MANUAL](MANUAL.md) to learn more.
 
 ### Copyright
 
-- The [algorithm to decode UTF8](./packages/runtime/src/protobufjs-utf8.ts) is Copyright 2016 by Daniel Wirtz, licensed under BSD-3-Clause.
-- The [algorithm to encode and decode varint](./packages/runtime/src/goog-varint.ts) is Copyright 2008 Google Inc., licensed under BSD-3-Clause.
+- The [code to decode UTF8](./packages/runtime/src/protobufjs-utf8.ts) is Copyright 2016 by Daniel Wirtz, licensed under BSD-3-Clause.
+- The [code to encode and decode varint](./packages/runtime/src/goog-varint.ts) is Copyright 2008 Google Inc., licensed under BSD-3-Clause.
 - The files [plugin.ts](./packages/plugin-framework/src/google/protobuf/compiler/plugin.ts) and [descriptor.ts](./packages/plugin-framework/src/google/protobuf/descriptor.ts) are Copyright 2008 Google Inc., licensed under BSD-3-Clause
 - The [gRPC status codes](./packages/grpcweb-transport/src/goog-grpc-status-code.ts) are Copyright 2016 gRPC authors, licensed under Apache-2.0.
 - The [Twirp error codes](./packages/twirp-transport/src/twitch-twirp-error-code.ts) are Copyright 2018 Twitch Interactive, Inc., licensed under Apache-2.0.

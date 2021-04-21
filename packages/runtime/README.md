@@ -33,7 +33,7 @@ or check the repository [README](https://github.com/timostamm/protobuf-ts/README
 
 ### Copyright
 
-- The [algorithm to decode UTF8](https://github.com/timostamm/protobuf-ts/blob/master/packages/runtime/src/protobufjs-utf8.ts) is Copyright 2016 by Daniel Wirtz, licensed under BSD-3-Clause.
-- The [algorithm to encode and decode varint](https://github.com/timostamm/protobuf-ts/blob/master/packages/runtime/src/goog-varint.ts) is Copyright 2008 Google Inc., licensed under BSD-3-Clause.
+- The [code to decode UTF8](https://github.com/timostamm/protobuf-ts/blob/master/packages/runtime/src/protobufjs-utf8.ts) is Copyright 2016 by Daniel Wirtz, licensed under BSD-3-Clause.
+- The [code to encode and decode varint](https://github.com/timostamm/protobuf-ts/blob/master/packages/runtime/src/goog-varint.ts) is Copyright 2008 Google Inc., licensed under BSD-3-Clause.
 - All other files are licensed under Apache-2.0, see [LICENSE](https://github.com/timostamm/protobuf-ts/blob/master/packages/runtime/LICENSE). 
 
