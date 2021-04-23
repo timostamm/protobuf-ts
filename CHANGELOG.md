@@ -3,6 +3,14 @@
 none
 
 
+### v2.0.0-alpha.21
+
+New features:
+
+- Compatibility with Angular 11  
+  No code changes, just relaxed peer dependency constraints.
+
+
 ### v2.0.0-alpha.20
 
 Bug Fixes:
