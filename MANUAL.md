@@ -31,7 +31,6 @@ protobuf-ts manual
 - [Running in the Web Browser](#running-in-the-web-browser)
 - [Running in Node.js](#running-in-nodejs)
 - [RPC support](#rpc-support)
-  - [RPC client styles](#rpc-client-styles)
   - [RPC options](#rpc-options)
   - [RPC method types](#rpc-method-types)
   - [gRPC web transport](#grpc-web-transport)
@@ -1293,12 +1292,11 @@ for more information.
 
 ## RPC support
 
-`protobuf-ts` can generate clients for your rpc services. It supports Promises
-and rxjs Observables for async operations. 
-
-The generated clients are not hard-wired to a specific format. They 
-delegate to a transport layer that can implement gRPC, gRPC-web, twirp or 
-any custom protocol. `protobuf-ts` provides transports for [gRPC web](#grpc-web-transport) and 
+`protobuf-ts` can generate clients for your rpc services. The clients are 
+not hard-wired to a specific protocol. They take a `RpcTransport` as a 
+constructor argument and there are transports for 
+[gRPC web](#grpc-web-transport),
+[gRPC](#grpc-transport) and 
 [Twirp](#twirp-transport).
 
 Let's start with a real world example. For the following service definition:
