@@ -251,6 +251,12 @@ class Person$Type extends MessageType<Person> {
 export const Person = new Person$Type();
 ```
 
+> **TypeScript compatibility**  
+> The generated code requires TypeScript version 3.8.3 or above.  
+> The code is intended to be used with the strict compiler options turned on (`"strict": true`).  
+> `"strictNullChecks": true` is required for some features to work.
+
+
 Some things to note:
 
 - Protobuf messages are generated as TypeScript interfaces. This means that 
