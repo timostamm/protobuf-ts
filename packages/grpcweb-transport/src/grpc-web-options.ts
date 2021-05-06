@@ -24,4 +24,13 @@ export interface GrpcWebOptions extends RpcOptions {
      */
     baseUrl: string;
 
+    /**
+     * Extra options to pass through to the fetch when doing a request.
+     * 
+     * Example: `fetchInit: { credentials: 'include' }`
+     * 
+     * This will make requests include cookies for cross-origin calls.
+     */
+	fetchInit?: Omit<RequestInit, 'body' | 'headers' | 'method' | 'signal'>;
+
 }

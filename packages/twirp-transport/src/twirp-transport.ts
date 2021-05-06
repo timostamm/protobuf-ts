@@ -40,6 +40,7 @@ export class TwirpFetchTransport implements RpcTransport {
         let
             opt = options as TwirpOptions,
             url = this.makeUrl(method, opt),
+            fetchInit = opt.fetchInit ?? {},
             requestBody = opt.sendJson ? method.I.toJsonString(input, opt.jsonOptions) : method.I.toBinary(input, opt.binaryOptions),
             defHeader = new Deferred<RpcMetadata>(),
             defMessage = new Deferred<O>(),
@@ -47,6 +48,7 @@ export class TwirpFetchTransport implements RpcTransport {
             defTrailer = new Deferred<RpcMetadata>();
 
         globalThis.fetch(url, {
+            ...fetchInit,
             method: 'POST',
             headers: createTwirpRequestHeader(new globalThis.Headers(), !!opt.sendJson, opt.meta),
             body: requestBody,
