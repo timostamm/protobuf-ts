@@ -10,6 +10,16 @@ jobs:
           version: 1.16.4
 
       - run:
+          name: debug go
+          command: |
+            go version
+            go install -v github.com/twitchtv/twirp/clientcompat@v8.0.0
+            ls ~/
+            ls ~/go
+            ls ~/go/bin
+            echo "gopath: ${GOPATH}"
+
+      - run:
           name: Install protoc
           command: |
             version=3.12.0
