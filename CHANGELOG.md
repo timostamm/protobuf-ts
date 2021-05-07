@@ -2,6 +2,14 @@
 
 none
 
+### v2.0.0-alpha.22
+
+New features:
+
+- The Twirp and gRPC-web transports let you pass options to fetch() now.  
+  See #95, #105.  
+  Thanks to @jamesbirtles for the PR!
+
 
 ### v2.0.0-alpha.21
 
