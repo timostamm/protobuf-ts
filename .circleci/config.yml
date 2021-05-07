@@ -16,6 +16,15 @@ jobs:
             export PATH="$HOME/go/bin:$PATH"
 
       - run:
+          name: Test go
+          command: |
+            go version
+            echo "${PATH}"
+            echo "${GOPATH}"
+            go get github.com/twitchtv/twirp/clientcompat@v8.0.0
+            clientcompat
+
+      - run:
           name: Install protoc
           command: |
             version=3.12.0
