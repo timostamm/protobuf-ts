@@ -1664,6 +1664,12 @@ as a single constructor argument. It extends the standard `RpcOptions`
 
   This will make a `POST /my-api/my_package.MyService/Foo` to `example.com` via HTTPS.
 
+- fetchInit:   
+  Extra options to pass through to the fetch when doing a request.  
+  Example: `fetchInit: { credentials: 'include' }`  
+  This will make requests include cookies for cross-origin calls.
+
+
 `protobuf-ts` includes an example gRPC web server in `packages/example-dotnet-grpcweb-server` 
 and exemplary client usage in `packages/example-angular-app`. 
 
@@ -1747,6 +1753,11 @@ as a single constructor argument. It extends the standard `RpcOptions`
 - sendJson: `boolean`
   
   Send JSON? Defaults to false, which means binary format is sent.
+
+- fetchInit:   
+  Extra options to pass through to the fetch when doing a request.  
+  Example: `fetchInit: { credentials: 'include' }`  
+  This will make requests include cookies for cross-origin calls.
 
 
 To learn more about the inner workings of the transport, make sure 
