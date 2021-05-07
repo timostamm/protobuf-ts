@@ -18,6 +18,8 @@ jobs:
             ls ~/go
             ls ~/go/bin
             echo "gopath: ${GOPATH}"
+            export PATH="$HOME/go/bin:$PATH"
+            clientcompat
 
       - run:
           name: Install protoc
