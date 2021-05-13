@@ -704,28 +704,30 @@ interface Proto3Optionals {
 ## proto2 support
 
 `protobuf-ts` has partial support for the older proto2 syntax. The support 
-is sufficient to write protoc plugins. When a proto2 messages passes through 
-`protobuf-ts`, no data is lost, but there are several limitations in the 
-generated code:
+is just sufficient to write protoc plugins. 
 
-1. Extensions 
-   
-   Extensions (see [language guide](https://developers.google.com/protocol-buffers/docs/proto#extensions))
-   are basically ignored. No code will be generated.
+Note the following restrictions:
+
+1. Extensions (see [language guide](https://developers.google.com/protocol-buffers/docs/proto#extensions))
+   are ignored. No code will be generated.
   
    Extension fields can be read like unknown fields. See [unknown field handling](#unknown-field-handling). 
 
-2. Default field values are unsupported  
+2. Groups (see [language guide](https://developers.google.com/protocol-buffers/docs/proto#groups))
+   are ignored by the plugin.  
+   No code will be generated. Group fields are treated as unknown fields, 
+   see [unknown field handling](#unknown-field-handling).
 
+2. Default field values are not supported  
    A field with the `optional` label and a default option will have the type 
    `myField?: bool` and default value `undefined`.
    
-   If the field has the `required` label, the type will be `myField: bool` 
-   with the default value `false`. 
+3. `required` label is not supported  
+   If a field has the `required` label, the type will be `myField: bool`
+   with the default value `false`.
 
-3. Enums without a 0 value
-   
-   `protobuf-ts` will add the `UNSPECIFIED$ = 0` enum value if no 
+3. Enums without a `0` value  
+   The plugin will add the `UNSPECIFIED$ = 0` enum value if no 
    value for 0 is defined. 
   
 
