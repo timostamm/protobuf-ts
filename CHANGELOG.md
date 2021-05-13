@@ -3,6 +3,13 @@
 none
 
 
+### v2.0.0-alpha.24
+
+New feature:
+
+- More convenience method to read custom options, see #36
+
+
 ### v2.0.0-alpha.23
 
 New feature:
