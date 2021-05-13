@@ -22,8 +22,9 @@ protobuf-ts manual
   - [google.type.DateTime and google.type.Date](#googletypedatetime-and-googletypedate)
 - [Reflection](#reflection)
   - [Field information](#field-information)
-  - [Custom options](#custom-options)
-  - [Excluding custom options](#excluding-custom-options)
+- [Custom options](#custom-options)
+  - [Creating your own custom options](#creating-your-own-custom-options)
+  - [Excluding options from generated code](#excluding-options-from-generated-code)
 - [Binary format](#binary-format)
   - [Conformance](#conformance)
   - [Unknown field handling](#unknown-field-handling)
@@ -915,12 +916,13 @@ operations.
 > `runtime-rpc/src/reflection-info.ts`. 
 
 
-#### Custom options
+## Custom options
 
-`protobuf-ts` supports custom message, field, service and method options 
-and will add them to the reflection information. 
+`protobuf-ts` supports custom options for messages, fields, services 
+and methods and will add them to the reflection information. 
 
-For example, consider the following service definition in .proto:
+For example, consider the following service definition in 
+[service-annotated.proto](./packages/test-fixtures/service-annotated.proto):
 
 ```proto
 // import the proto that extends google.protobuf.MethodOptions
@@ -928,7 +930,7 @@ import "google/api/annotations.proto";
 
 service AnnotatedService {
     rpc Get (Request) returns (Reply) {
-        // now we can use the new options on the method
+        // add an option on the method
         option (google.api.http) = {
             get: "/v1/{name=messages/*}"
             additional_bindings {
@@ -942,34 +944,67 @@ service AnnotatedService {
 }
 ```
 
-In TypeScript generated code, those options look very similar:
+In TypeScript, the service options are available in the "options" 
+property as JSON:
 
 ```typescript
-/**
- * @generated from protobuf service spec.AnnotatedService
- */
-export class AnnotatedServiceClient implements IAnnotatedServiceClient {
-    readonly typeName = "spec.AnnotatedService";
-    readonly methods: MethodInfo[] = [{
-        service: this,
-        name: "Get",
-        localName: "get",
-        I: AnnoGetRequest,
-        O: AnnoGetResponse,
-        options: {
-            // here are the options, in JSON format
-            "google.api.http": {
-                additionalBindings: [{
-                    get: "xxx"
-                }, {
-                    get: "yyy"
-                }],
-                get: "/v1/{name=messages/*}"
-            }
-        }
-    }];
-    // ...
+import {AnnotatedService} from "./service-annotated";
+console.log(AnnotatedService.options);
 ```
+
+```json
+{
+  "google.api.http": {
+    additionalBindings: [{
+      get: "xxx"
+    }, {
+      get: "yyy"
+    }],
+    get: "/v1/{name=messages/*}"
+  }
+}
+```
+
+Because the option "google.api.http" is actually a message 
+(see [annotations.proto](./packages/test-fixtures/google/api/annotations.proto)), 
+you can parse the message with this convenience method: 
+
+
+```typescript
+import {AnnotatedService} from "./service-annotated";
+import {HttpRule} from "./google/api/annotations";
+import {readMethodOption} from "@protobuf-ts/runtime-rpc";
+
+let rule = readMethodOption(AnnotatedService, "get", "google.api.http", HttpRule);
+if (rule) {
+    let selector: string = rule.selector;
+    let bindings: HttpRule[] = rule.additionalBindings;
+}
+```
+
+If you omit the last parameter to the function, you get the JSON value. 
+This is a convenient way to get scalar option values.
+
+```typescript
+import {AnnotatedService} from "./service-annotated";
+import {readMethodOption} from "@protobuf-ts/runtime-rpc";
+import {JsonValue} from "@protobuf-ts/runtime";
+
+let rule: JsonValue | undefined = readMethodOption(AnnotatedService, "get", "google.api.http");
+```
+
+
+
+| Options for | stored in                             | access with                                         |
+|-------------|---------------------------------------|-----------------------------------------------------|
+| Messages    | `AnnotatedMessage.options`            | `readMessageOption()` from @protobuf-ts/runtime     |
+| Fields      | `AnnotatedMessage.field[0].options`   | `readFieldOption()` from @protobuf-ts/runtime       |
+| Services    | `AnnotatedService.options`            | `readServiceOption()` from @protobuf-ts/runtime-rpc |
+| Methods     | `AnnotatedService.methods[0].options` | `readMethodOption()` from @protobuf-ts/runtime-rpc  |
+
+
+
+#### Creating your own custom options
 
 It is very easy to create custom options. This is the source code for the 
 "google.api.http" option:
@@ -990,45 +1025,10 @@ As you can see, the option is a standard protobuf field. It can be a message
 field like in the example above, or it can be a scalar, enum or repeated field. 
 
 In .proto, you set options in [text format](https://stackoverflow.com/questions/18873924/what-does-the-protobuf-text-format-look-like/18877167), 
-and `protobuf-ts` provides them in the canonical JSON format. This means that 
-you can parse message option fields using the appropriate message type:
+and `protobuf-ts` provides them in the canonical JSON format. 
 
 
-```typescript
-let client: AnnotatedServiceClient = ...
-
-let opt = client.methods[0].options;
-
-if (opt && "google.api.http" in opt) {
-    let rule = HttpRule.fromJson(opt["google.api.http"]);
-    if (rule) {
-        // now we have successfully read a 
-        // google.api.HttpRule from the option
-        let selector: string = rule.selector;
-        let bindings: HttpRule[] = rule.additionalBindings;
-    }
-}
-``` 
-
-To save you some typing, there is a convenience method available:
-
-```typescript
-import {readMethodOptions} from "@protobuf-ts/runtime-rpc";
-
-let rule = readMethodOptions(client, "get", "google.api.http", HttpRule);
-if (rule) {
-    let selector: string = rule.selector;
-    let bindings: HttpRule[] = rule.additionalBindings;
-}
-``` 
-
-Field options work the same way. In .proto, you create an extension for 
-`google.protobuf.FieldOptions`, and in TypeScript, you can read 
-`IMessageType.fields[].options`. If it is a message field, use 
-`readFieldOptions()` from `@protobuf-ts/runtime`. 
-
-
-#### Excluding custom options
+#### Excluding options from generated code
 
 If you need custom options for some protobuf implementation, but do not 
 want to have them included in the TypeScript generated code, use the file 

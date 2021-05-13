@@ -1,11 +1,41 @@
 import {assert} from "@protobuf-ts/runtime";
 import {AnnotatedService} from "../ts-out/service-annotated";
 import type {RpcTransport} from "@protobuf-ts/runtime-rpc";
+import {readServiceOption} from "@protobuf-ts/runtime-rpc";
 import {HttpRule} from "../ts-out/google/api/http";
 import {AnnotatedServiceClient} from "../ts-out/service-annotated.client";
+import {readMethodOption} from "@protobuf-ts/runtime-rpc/";
 
+
+describe('readMethodOption', function () {
+    it('should read scalar opt', function () {
+        let act = readMethodOption(AnnotatedService, "get", "spec.rpc_bar");
+        expect(act).toBe('hello');
+    });
+});
+
+describe('readServiceOption', function () {
+    it('should read scalar opt', function () {
+        let act = readServiceOption(AnnotatedService, "spec.service_foo");
+        expect(act).toBe(true);
+    });
+});
 
 describe('spec.AnnotatedService', function () {
+
+
+    describe('example in MANUAL.md', function () {
+        it('should work for method option', function () {
+            let rule = readMethodOption(AnnotatedService, "get", "google.api.http", HttpRule);
+            expect(rule).toBeDefined();
+            if (rule) {
+                let selector: string = rule.selector;
+                let bindings: HttpRule[] = rule.additionalBindings;
+                expect(selector).toBeDefined();
+                expect(bindings).toBeDefined();
+            }
+        });
+    });
 
 
     describe('ServiceType', function () {

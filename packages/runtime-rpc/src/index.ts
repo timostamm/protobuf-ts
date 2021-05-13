@@ -4,7 +4,7 @@
 
 
 export {ServiceType} from './service-type';
-export {MethodInfo, PartialMethodInfo, ServiceInfo, readMethodOptions} from './reflection-info';
+export {MethodInfo, PartialMethodInfo, ServiceInfo, readMethodOptions, readMethodOption, readServiceOption} from './reflection-info';
 export {RpcError} from './rpc-error';
 export {RpcMetadata} from './rpc-metadata';
 export {RpcOptions, mergeRpcOptions} from './rpc-options';

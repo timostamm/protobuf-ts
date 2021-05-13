@@ -118,7 +118,6 @@ export type PartialMethodInfo<I extends object = any, O extends object = any> =
 type PartialPartial<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
 
 
-
 /**
  * Turns PartialMethodInfo into MethodInfo.
  */
@@ -138,10 +137,66 @@ export function normalizeMethodInfo<I extends object = any, O extends object = a
 
 /**
  * Read custom method options from a generated service client.
+ *
+ * @deprecated use readMethodOption()
  */
 export function readMethodOptions<T extends object>(service: ServiceInfo, methodName: string | number, extensionName: string, extensionType: IMessageType<T>): T | undefined {
-    let info = service.methods.find((m, i) => m.localName === methodName || i === methodName);
-    return info && info.options && info.options[extensionName]
-        ? extensionType.fromJson(info.options[extensionName])
-        : undefined;
+    const options = service.methods.find((m, i) => m.localName === methodName || i === methodName)?.options;
+    return options && options[extensionName] ? extensionType.fromJson(options[extensionName]) : undefined;
+}
+
+/**
+ * Read a custom method option.
+ *
+ * ```proto
+ * service MyService {
+ *   rpc Get (Req) returns (Res) {
+ *      option (acme.rpc_opt) = true;
+ *   };
+ * }
+ * ```
+ *
+ * ```typescript
+ * let val = readMethodOption(MyService, 'get', 'acme.rpc_opt')
+ * ```
+ */
+export function readMethodOption<T extends object>(service: ServiceInfo, methodName: string | number, extensionName: string): JsonValue | undefined;
+export function readMethodOption<T extends object>(service: ServiceInfo, methodName: string | number, extensionName: string, extensionType: IMessageType<T>): T | undefined;
+export function readMethodOption<T extends object>(service: ServiceInfo, methodName: string | number, extensionName: string, extensionType?: IMessageType<T>): T | JsonValue | undefined {
+    const options = service.methods.find((m, i) => m.localName === methodName || i === methodName)?.options;
+    if (!options) {
+        return undefined;
+    }
+    const optionVal = options[extensionName];
+    if (optionVal === undefined) {
+        return optionVal;
+    }
+    return extensionType ? extensionType.fromJson(optionVal) : optionVal;
+}
+
+/**
+ * Read a custom service option.
+ *
+ * ```proto
+ * service MyService {
+ *   option (acme.service_opt) = true;
+ * }
+ * ```
+ *
+ * ```typescript
+ * let val = readServiceOption(MyService, 'acme.service_opt')
+ * ```
+ */
+export function readServiceOption<T extends object>(service: ServiceInfo, extensionName: string): JsonValue | undefined;
+export function readServiceOption<T extends object>(service: ServiceInfo, extensionName: string, extensionType: IMessageType<T>): T | undefined;
+export function readServiceOption<T extends object>(service: ServiceInfo, extensionName: string, extensionType?: IMessageType<T>): T | JsonValue | undefined {
+    const options = service.options;
+    if (!options) {
+        return undefined;
+    }
+    const optionVal = options[extensionName];
+    if (optionVal === undefined) {
+        return optionVal;
+    }
+    return extensionType ? extensionType.fromJson(optionVal) : optionVal;
 }

@@ -1,11 +1,52 @@
 import {AnnotatedMessage, FieldUiBehaviour} from "../ts-out/msg-annotated";
-import {readFieldOptions} from "@protobuf-ts/runtime";
+import {readFieldOption, readMessageOption} from "@protobuf-ts/runtime";
 
+
+describe('readFieldOption', function () {
+    it('should read scalar opt', function () {
+        let act = readFieldOption(AnnotatedMessage, "annScalar", "spec.opt_string");
+        expect(act).toBe('my string');
+    });
+    it('should read message opt', function () {
+        let act = readFieldOption(AnnotatedMessage, "userName", "spec.field_ui");
+        expect(act).toEqual({
+            label: "User name",
+            required: true,
+            autocomplete: {
+                serviceName: "example.SomeService",
+                methodName: "autocompleteUsername",
+                requestFieldName: "entered_text"
+            }
+        });
+    });
+    it('should read message opt with type', function () {
+        let act = readFieldOption(AnnotatedMessage, "userName", "spec.field_ui", FieldUiBehaviour);
+        expect(act).toEqual({
+            label: "User name",
+            required: true,
+            autocomplete: {
+                serviceName: "example.SomeService",
+                methodName: "autocompleteUsername",
+                requestFieldName: "entered_text"
+            }
+        });
+    });
+});
+
+describe('readMessageOption', function () {
+    it('should read scalar opt', function () {
+        let act = readMessageOption(AnnotatedMessage, "spec.opt_example");
+        expect(act).toBe(true);
+    });
+});
 
 describe('spec.AnnotatedMessage', function () {
 
-    it ('should have message options', function() {
-        expect(AnnotatedMessage.options).toEqual({ "spec.opt_example": true });
+    it('should have message option "spec.opt_example"', function () {
+        expect(AnnotatedMessage.options).toBeDefined();
+        if (AnnotatedMessage.options) {
+            expect(AnnotatedMessage.options["spec.opt_example"]).toBeTrue();
+        }
     });
 
     it('field ann_scalar should have scalar options', function () {
@@ -88,7 +129,7 @@ describe('spec.AnnotatedMessage', function () {
                 requestFieldName: "entered_text"
             }
         };
-        let act = readFieldOptions(AnnotatedMessage, "userName", "spec.field_ui", FieldUiBehaviour);
+        let act = AnnotatedMessage.fields.find(fi => fi.name === 'user_name')?.options?.['spec.field_ui'];
         expect(act).toEqual(exp);
     });
 

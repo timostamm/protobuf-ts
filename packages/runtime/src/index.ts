@@ -54,7 +54,9 @@ export {
     FieldInfo,
     PartialFieldInfo,
     normalizeFieldInfo,
-    readFieldOptions
+    readFieldOptions,
+    readFieldOption,
+    readMessageOption
 } from './reflection-info';
 
 // Types for messsage objects type at runtime, when concrete type is unknown.

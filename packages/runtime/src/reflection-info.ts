@@ -435,10 +435,62 @@ export function normalizeFieldInfo(field: PartialFieldInfo): FieldInfo {
 
 /**
  * Read custom field options from a generated message type.
+ *
+ * @deprecated use readFieldOption()
  */
-export function readFieldOptions<T extends object>(messageType: MessageInfo | IMessageType<any>, fieldName: string | number, extensionName: string, extensionType: IMessageType<T>): T | undefined {
-    let info = messageType.fields.find((m, i) => m.localName == fieldName || i == fieldName);
-    return info && info.options && info.options[extensionName]
-        ? extensionType.fromJson(info.options[extensionName])
-        : undefined;
+export function readFieldOptions<T extends object>(messageType: MessageInfo, fieldName: string | number, extensionName: string, extensionType: IMessageType<T>): T | undefined {
+    const options = messageType.fields.find((m, i) => m.localName == fieldName || i == fieldName)?.options;
+    return options && options[extensionName] ? extensionType.fromJson(options[extensionName]) : undefined;
+}
+
+
+/**
+ * Read a custom field option.
+ *
+ * ```proto
+ * message MyMessage {
+ *   int32 my_field = 1 [(acme.field_opt) = true];
+ * }
+ * ```
+ *
+ * ```typescript
+ * let val = readFieldOption(MyMessage, 'myField', 'acme.field_opt')
+ * ```
+ */
+export function readFieldOption<T extends object>(messageType: MessageInfo, fieldName: string | number, extensionName: string): JsonValue | undefined;
+export function readFieldOption<T extends object>(messageType: MessageInfo, fieldName: string | number, extensionName: string, extensionType: IMessageType<T>): T | undefined;
+export function readFieldOption<T extends object>(messageType: MessageInfo, fieldName: string | number, extensionName: string, extensionType?: IMessageType<T>): T | JsonValue | undefined {
+    const options = messageType.fields.find((m, i) => m.localName == fieldName || i == fieldName)?.options;
+    if (!options) {
+        return undefined;
+    }
+    const optionVal = options[extensionName];
+    if (optionVal === undefined) {
+        return optionVal;
+    }
+    return extensionType ? extensionType.fromJson(optionVal) : optionVal;
+}
+
+/**
+ * Read a custom message option.
+ *
+ * ```proto
+ * message MyMessage {
+ *   option acme.message_opt = true;
+ * }
+ * ```
+ *
+ * ```typescript
+ * let val = readMessageOption(MyMessage, 'acme.message_opt')
+ * ```
+ */
+export function readMessageOption<T extends object>(messageType: MessageInfo, extensionName: string): JsonValue | undefined;
+export function readMessageOption<T extends object>(messageType: MessageInfo, extensionName: string, extensionType: IMessageType<T>): T | undefined
+export function readMessageOption<T extends object>(messageType: MessageInfo, extensionName: string, extensionType?: IMessageType<T>): T | JsonValue | undefined {
+    const options = messageType.options;
+    const optionVal = options[extensionName];
+    if (optionVal === undefined) {
+        return optionVal;
+    }
+    return extensionType ? extensionType.fromJson(optionVal) : optionVal;
 }
