@@ -79,8 +79,11 @@ export class Interpreter {
      * The blacklist can contain exact extension names, or use the wildcard
      * character `*` to match a namespace or even all options.
      *
+     * Note that options on options (google.protobuf.*Options) are not
+     * supported.
      */
-    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto | ServiceDescriptorProto /*| DescriptorProto */, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
+    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto | ServiceDescriptorProto | DescriptorProto, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
+
         // if options message not present, there cannot be any extension options
         if (!descriptor.options) {
             return undefined;
@@ -101,6 +104,8 @@ export class Interpreter {
             optionsTypeName = 'google.protobuf.FileOptions';
         } else if (ServiceDescriptorProto.is(descriptor)) {
             optionsTypeName = 'google.protobuf.ServiceOptions';
+        } else if (DescriptorProto.is(descriptor)) {
+            optionsTypeName = 'google.protobuf.MessageOptions';
         } else {
             throw new Error("interpreter expected field or method descriptor");
         }
@@ -109,14 +114,19 @@ export class Interpreter {
         const typeName = `$synthetic.${optionsTypeName}`;
         let type = this.messageTypes.get(typeName);
         if (!type) {
-            type = this.buildMessageType(typeName, this.registry.extensionsFor(optionsTypeName), []);
+            type = new rt.MessageType(
+                typeName,
+                this.buildFieldInfos(this.registry.extensionsFor(optionsTypeName), excludeOptions),
+                {}
+            );
             this.messageTypes.set(typeName, type);
         }
 
         // concat all unknown field data
         const unknownWriter = new rt.BinaryWriter();
-        for (let {no, wireType, data} of unknownFields)
+        for (let {no, wireType, data} of unknownFields) {
             unknownWriter.tag(no, wireType).raw(data);
+        }
         const unknownBytes = unknownWriter.finish();
 
         // read data, to json
@@ -326,14 +336,36 @@ export class Interpreter {
 
 
     private buildMessageType(typeName: string, fields: FieldDescriptorProto[], excludeOptions: readonly string[]): rt.IMessageType<rt.UnknownMessage> {
+        let desc = this.registry.resolveTypeName(typeName);
+        assert(DescriptorProto.is(desc));
         return new rt.MessageType(
             typeName,
-            fields.map(fd => this.buildFieldInfo(fd, excludeOptions))
+            this.buildFieldInfos(fields, excludeOptions),
+            this.readOptions(desc, excludeOptions)
         );
     }
 
 
-    private buildFieldInfo(fieldDescriptor: FieldDescriptorProto, excludeOptions: readonly string[]): rt.PartialFieldInfo {
+    // skips GROUP field type
+    private buildFieldInfos(fieldDescriptors: readonly FieldDescriptorProto[], excludeOptions: readonly string[]): rt.PartialFieldInfo[] {
+        const result: rt.PartialFieldInfo[] = [];
+        for (const fd of fieldDescriptors) {
+            if (this.registry.isGroupField(fd)) {
+                // We ignore groups.
+                // Note that groups are deprecated and not supported in proto3.
+                continue;
+            }
+            const fi = this.buildFieldInfo(fd, excludeOptions);
+            if (fi) {
+                result.push(fi);
+            }
+        }
+        return result;
+    }
+
+
+    // throws on unexpected field types, notably GROUP
+    private buildFieldInfo(fieldDescriptor: FieldDescriptorProto, excludeOptions: readonly string[]): undefined | rt.PartialFieldInfo {
         assert(fieldDescriptor.number);
         assert(fieldDescriptor.name);
         let info: { [k: string]: any } = {};
@@ -469,7 +501,7 @@ export class Interpreter {
             }
 
         } else {
-            throw new Error(`Unsupported field type for ${this.registry.formatQualifiedName(fieldDescriptor)}`);
+            throw new Error(`Unexpected field type for ${this.registry.formatQualifiedName(fieldDescriptor)}`);
         }
 
 
@@ -532,7 +564,7 @@ export class Interpreter {
                     // omitting L equals to STRING
                     return undefined;
                 case FieldOptions_JSType.JS_NORMAL:
-                    return rt.LongType.BIGINT;                    
+                    return rt.LongType.BIGINT;
                 case FieldOptions_JSType.JS_NUMBER:
                     return rt.LongType.NUMBER;
             }

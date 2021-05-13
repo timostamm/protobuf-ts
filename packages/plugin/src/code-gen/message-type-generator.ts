@@ -7,7 +7,7 @@ import {
     FileOptions_OptimizeMode as OptimizeMode,
     SymbolTable,
     TypescriptFile,
-    TypeScriptImports
+    TypeScriptImports, typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {WellKnownTypes} from "../message-type-extensions/well-known-types";
@@ -81,27 +81,40 @@ export class MessageTypeGenerator extends GeneratorBase {
             // identifier for the message
             MyMessage = this.imports.type(source, descriptor),
             Message$Type = ts.createIdentifier(this.imports.type(source, descriptor) + '$Type'),
-            // import handler from runtime
             MessageType = ts.createIdentifier(this.imports.name(source, "MessageType", this.options.runtimeImportPath)),
-            // create field information for runtime
             interpreterType = this.interpreter.getMessageType(descriptor),
-            fieldInfo = this.fieldInfoGenerator.createFieldInfoLiterals(source, interpreterType.fields),
-            classMembers: ts.ClassElement[] = [
-                ts.createConstructor(
-                    undefined, undefined, [],
-                    ts.createBlock([ts.createExpressionStatement(
-                        ts.createCall(ts.createSuper(), undefined, [
-                            ts.createStringLiteral(this.registry.makeTypeName(descriptor)),
-                            fieldInfo
-                        ])
-                    )], true)
-                ),
-                ...this.wellKnown.make(source, descriptor),
-                ...this.googleTypes.make(source, descriptor),
+            classDecMembers: ts.ClassElement[] = [],
+            classDecSuperArgs: ts.Expression[] = [ // arguments to the MessageType CTOR
+                // arg 0: type name
+                ts.createStringLiteral(this.registry.makeTypeName(descriptor)),
+                // arg 1: field infos
+                this.fieldInfoGenerator.createFieldInfoLiterals(source, interpreterType.fields)
             ];
 
+        // if present, add message options in json format to MessageType CTOR args
+        if (Object.keys(interpreterType.options).length) {
+            classDecSuperArgs.push(
+                typescriptLiteralFromValue(interpreterType.options)
+            );
+        }
+
+        // "MyMessage$Type" constructor() { super(...) }
+        classDecMembers.push(
+            ts.createConstructor(
+                undefined, undefined, [],
+                ts.createBlock([ts.createExpressionStatement(
+                    ts.createCall(ts.createSuper(), undefined, classDecSuperArgs)
+                )], true)
+            )
+        );
+
+        // "MyMessage$Type" members for supported standard types
+        classDecMembers.push(...this.wellKnown.make(source, descriptor));
+        classDecMembers.push(...this.googleTypes.make(source, descriptor));
+
+        // "MyMessage$Type" members for optimized binary format
         if (optimizeFor === OptimizeMode.SPEED) {
-            classMembers.push(
+            classDecMembers.push(
                 ...this.typeMethodInternalBinaryRead.make(source, descriptor),
                 ...this.typeMethodInternalBinaryWrite.make(source, descriptor),
             );
@@ -114,7 +127,7 @@ export class MessageTypeGenerator extends GeneratorBase {
                 ts.SyntaxKind.ExtendsKeyword,
                 [ts.createExpressionWithTypeArguments([ts.createTypeReferenceNode(MyMessage, undefined)], MessageType)]
             )],
-            classMembers
+            classDecMembers
         );
 
 
@@ -146,6 +159,7 @@ export class MessageTypeGenerator extends GeneratorBase {
 
         return;
     }
+
 
 
 }

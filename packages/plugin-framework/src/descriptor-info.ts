@@ -166,9 +166,17 @@ export interface IDescriptorInfo {
      * Is this a message field?
      *
      * Returns false if this is a map field, even though map fields have type MESSAGE.
-     * Returns true if this is a group field (type GROUP).
+     *
+     * Before v2.0.0-alpha.23, this method returned true for group fields (type GROUP).
      */
     isMessageField(fieldDescriptor: FieldDescriptorProto): boolean;
+
+    /**
+     * Is this a group field?
+     *
+     * Note that groups are deprecated and not supported in proto3.
+     */
+    isGroupField(fieldDescriptor: FieldDescriptorProto): boolean;
 
     /**
      * Get the message descriptor for a message field.
@@ -395,12 +403,21 @@ export class DescriptorInfo implements IDescriptorInfo {
     }
 
     isMessageField(fieldDescriptor: FieldDescriptorProto): boolean {
-        let group = fieldDescriptor.type === FieldDescriptorProto_Type.GROUP;
         let msg = fieldDescriptor.type === FieldDescriptorProto_Type.MESSAGE;
-        if (fieldDescriptor.typeName !== undefined && (group || msg)) {
-            return !this.isMapField(fieldDescriptor);
+        if (!msg) {
+            return false;
         }
-        return false;
+        if (fieldDescriptor.name === undefined) {
+            return false;
+        }
+        if (this.isMapField(fieldDescriptor)) {
+            return false;
+        }
+        return true;
+    }
+
+    isGroupField(fieldDescriptor: FieldDescriptorProto): boolean {
+        return fieldDescriptor.type === FieldDescriptorProto_Type.GROUP;
     }
 
     getMessageFieldMessage(fieldDescriptor: FieldDescriptorProto): DescriptorProto {

@@ -4,6 +4,10 @@ import {readFieldOptions} from "@protobuf-ts/runtime";
 
 describe('spec.AnnotatedMessage', function () {
 
+    it ('should have message options', function() {
+        expect(AnnotatedMessage.options).toEqual({ "spec.opt_example": true });
+    });
+
     it('field ann_scalar should have scalar options', function () {
         let fi = AnnotatedMessage.fields.find(fi => fi.name === "ann_scalar");
         expect(fi).toBeDefined();

@@ -151,6 +151,8 @@ export class MessageInterfaceGenerator extends GeneratorBase {
                     )
                 ]);
                 break;
+            default:
+                throw new Error("unkown kind " + fieldDescriptor.name);
         }
 
         // if repeated, wrap type into array type

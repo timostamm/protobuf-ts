@@ -2,12 +2,18 @@
 
 New feature:
 
-- Message options in reflection information, see #35.
+- runtime: Message options are now available in reflection 
+  information, see #35.
+- plugin: Groups (deprecated proto2 feature) are now completely 
+  ignored, but should still be treated properly as unknown fields. 
+- runtime: BinaryReader.skip() supports WireType.StartGroup now.
 
 Breaking changes:
 
-- The MessageInfo interface requires the new "options" property.  
-
+- runtime: The MessageInfo interface requires the new "options" 
+  property.  
+- plugin-framework: IDescriptorInfo.isMessageField() no longer 
+  returns true for GROUP field type.
 
 ### v2.0.0-alpha.22
 

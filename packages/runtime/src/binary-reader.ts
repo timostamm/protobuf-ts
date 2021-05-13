@@ -44,11 +44,17 @@ export class BinaryReader implements IBinaryReader {
 
     /**
      * Skip one element on the wire and return the skipped data.
+     * Supports WireType.StartGroup since v2.0.0-alpha.23.
      */
     skip(wireType: WireType): Uint8Array {
         let start = this.pos;
         // noinspection FallThroughInSwitchStatementJS
         switch (wireType) {
+            case WireType.Varint:
+                while (this.buf[this.pos++] & 0x80) {
+                    // ignore
+                }
+                break;
             case WireType.Bit64:
                 this.pos += 4;
             case WireType.Bit32:
@@ -58,11 +64,16 @@ export class BinaryReader implements IBinaryReader {
                 let len = this.uint32();
                 this.pos += len;
                 break;
-            case WireType.Varint:
-                while (this.buf[this.pos++] & 0x80) {
-                    // ignore
+            case WireType.StartGroup:
+                // From descriptor.proto: Group type is deprecated, not supported in proto3.
+                // But we must still be able to parse and treat as unknown.
+                let t: WireType
+                while ((t = this.tag()[1]) !== WireType.EndGroup) {
+                    this.skip(t);
                 }
                 break;
+            default:
+                throw new Error("cant skip wire type " + wireType);
         }
         this.assertBounds();
         return this.buf.slice(start, this.pos);

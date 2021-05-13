@@ -207,6 +207,10 @@ export class DescriptorRegistry implements IDescriptorTree, ITypeNameLookup, ISo
         return this.descriptorInfo.isMessageField(fieldDescriptor);
     }
 
+    isGroupField(fieldDescriptor: FieldDescriptorProto): boolean {
+        return this.descriptorInfo.isGroupField(fieldDescriptor);
+    }
+
     getMessageFieldMessage(fieldDescriptor: FieldDescriptorProto): DescriptorProto {
         return this.descriptorInfo.getMessageFieldMessage(fieldDescriptor);
     }
