@@ -910,7 +910,7 @@ operations.
 
 #### Custom options
 
-`protobuf-ts` support custom field and method options and will add them to 
+`protobuf-ts` supports custom field and method options and will add them to 
 the reflection information. 
 
 For example, consider the following service definition in .proto:
