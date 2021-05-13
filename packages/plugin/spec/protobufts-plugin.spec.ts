@@ -40,15 +40,15 @@ describe('protobuftsPlugin', function () {
     });
     let generatedFiles = plugin.generate(request);
 
-    for (let f of generatedFiles) {
-        const content = f.getContent();
-        if (content.length > 0) {
-            console.log('-------------------------' + f.getFilename() + '-------------------------');
-            console.log(content);
-            console.log();
-            console.log();
-        }
-    }
+    // for (let f of generatedFiles) {
+    //     const content = f.getContent();
+    //     if (content.length > 0) {
+    //         console.log('-------------------------' + f.getFilename() + '-------------------------');
+    //         console.log(content);
+    //         console.log();
+    //         console.log();
+    //     }
+    // }
 
 
     describe('generates valid typescript for every fixture .proto', function () {
