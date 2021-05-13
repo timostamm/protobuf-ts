@@ -8,9 +8,13 @@ describe('protobuftsPlugin', function () {
     let plugin = new ProtobuftsPlugin('test');
     let request = getFixtureCodeGeneratorRequest({
         parameter: 'long_type_string',
+        // fileToGenerate: [
+        //     'msg-annotated.proto',
+        // ],
         // includeFiles: [
-        //
-        //     'google/protobuf/unittest_enormous_descriptor.proto',
+        //     'msg-annotated.proto',
+        //     'google/protobuf/descriptor.proto',
+        //     // 'google/protobuf/unittest_enormous_descriptor.proto',
         //     // 'google/protobuf/unittest_proto3_lite.proto',
         //     // 'google/protobuf/unittest_import.proto',
         //     // 'google/protobuf/unittest_import_public.proto',
@@ -37,10 +41,13 @@ describe('protobuftsPlugin', function () {
     let generatedFiles = plugin.generate(request);
 
     for (let f of generatedFiles) {
-        // console.log('-------------------------' + f.getFilename() + '-------------------------');
-        // console.log(f.getContent());
-        // console.log();
-        // console.log();
+        const content = f.getContent();
+        if (content.length > 0) {
+            console.log('-------------------------' + f.getFilename() + '-------------------------');
+            console.log(content);
+            console.log();
+            console.log();
+        }
     }
 
 
