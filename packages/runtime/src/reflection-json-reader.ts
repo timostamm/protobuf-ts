@@ -2,8 +2,8 @@ import type {JsonObject, JsonValue} from "./json-typings";
 import {isJsonObject, typeofJsonValue} from "./json-typings";
 import {base64decode} from "./base64";
 import type {JsonReadOptions} from "./json-format-contract";
-import type {EnumInfo, FieldInfo, MessageInfo} from "./reflection-info";
-import {LongType, ScalarType} from "./reflection-info";
+import type {EnumInfo, FieldInfo} from "./reflection-info";
+import {LongType, PartialMessageInfo, ScalarType} from "./reflection-info";
 import {PbLong, PbULong} from "./pb-long";
 import {assert, assertFloat32, assertInt32, assertUInt32} from "./assert";
 import {reflectionLongConvert} from "./reflection-long-convert";
@@ -25,14 +25,15 @@ export class ReflectionJsonReader {
     private fMap?: { [k: string]: FieldInfo };
 
 
-    constructor(protected readonly info: MessageInfo) {
+    constructor(private readonly info: PartialMessageInfo) {
     }
 
 
     protected prepare() {
         if (this.fMap === undefined) {
             this.fMap = {};
-            for (const field of this.info.fields) {
+            const fieldsInput = this.info.fields ?? [];
+            for (const field of fieldsInput) {
                 this.fMap[field.name] = field;
                 this.fMap[field.jsonName] = field;
                 this.fMap[field.localName] = field;

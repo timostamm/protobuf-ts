@@ -57,6 +57,7 @@ export function stubMessageType(name = '.test.Message'): IMessageType<any> {
     return {
         typeName: name,
         fields: [],
+        options: {},
         create(value?: any): any {
             throw new Error('just a stub');
         },

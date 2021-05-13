@@ -1,6 +1,13 @@
 ### unreleased changes
 
-none
+New feature:
+
+- Message options in reflection information, see #35.
+
+Breaking changes:
+
+- The MessageInfo interface requires the new "options" property.  
+
 
 ### v2.0.0-alpha.22
 

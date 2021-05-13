@@ -1,7 +1,7 @@
 import type {BinaryWriteOptions, IBinaryWriter} from "./binary-format-contract";
 import {UnknownFieldHandler, WireType} from "./binary-format-contract";
-import type {FieldInfo, MessageInfo} from "./reflection-info";
-import {RepeatType, ScalarType} from "./reflection-info";
+import type {FieldInfo} from "./reflection-info";
+import {PartialMessageInfo, RepeatType, ScalarType} from "./reflection-info";
 import type {IMessageType} from "./message-type-contract";
 import {assert} from "./assert";
 import {PbLong, PbULong} from "./pb-long";
@@ -19,13 +19,14 @@ export class ReflectionBinaryWriter {
     protected fields?: readonly FieldInfo[];
 
 
-    constructor(protected readonly info: MessageInfo) {
+    constructor(private readonly info: PartialMessageInfo) {
     }
 
 
     protected prepare() {
         if (!this.fields) {
-            this.fields = this.info.fields.concat().sort((a, b) => a.no - b.no);
+            const fieldsInput = this.info.fields ? this.info.fields.concat() : [];
+            this.fields = fieldsInput.sort((a, b) => a.no - b.no);
         }
     }
 

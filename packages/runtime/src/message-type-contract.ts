@@ -1,4 +1,4 @@
-import type {FieldInfo} from "./reflection-info";
+import type {FieldInfo, MessageInfo} from "./reflection-info";
 import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
 import type {JsonValue} from "./json-typings";
 import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
@@ -26,7 +26,7 @@ export type PartialMessage<T extends object> = {
  * It also exposes reflection information that can be used to work with a
  * message of unknown type.
  */
-export interface IMessageType<T extends object> {
+export interface IMessageType<T extends object> extends MessageInfo {
 
     /**
      * The protobuf type name of the message, including package and
@@ -44,6 +44,11 @@ export interface IMessageType<T extends object> {
      * of declaration in the .proto.
      */
     readonly fields: readonly FieldInfo[];
+
+    /**
+     * Contains custom message options from the .proto source in JSON format.
+     */
+    readonly options: { [extensionName: string]: JsonValue };
 
 
     /**

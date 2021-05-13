@@ -2,7 +2,7 @@ import type {JsonObject, JsonValue} from "./json-typings";
 import {base64encode} from "./base64";
 import type {JsonWriteOptions} from "./json-format-contract";
 import {PbLong, PbULong} from "./pb-long";
-import type {EnumInfo, FieldInfo, MessageInfo} from "./reflection-info";
+import type {EnumInfo, FieldInfo, PartialMessageInfo} from "./reflection-info";
 import {ScalarType} from "./reflection-info";
 import type {IMessageType} from "./message-type-contract";
 import {assert, assertFloat32, assertInt32, assertUInt32} from "./assert";
@@ -18,7 +18,10 @@ import type {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
 export class ReflectionJsonWriter {
 
 
-    constructor(protected readonly info: MessageInfo) {
+    private readonly fields: readonly FieldInfo[];
+
+    constructor(info: PartialMessageInfo) {
+        this.fields = info.fields ?? [];
     }
 
 
@@ -28,14 +31,14 @@ export class ReflectionJsonWriter {
     write<T extends object>(message: T, options: JsonWriteOptions): JsonValue {
         const json: JsonObject = {}, source = message as UnknownMessage;
 
-        for (const field of this.info.fields.filter(f => !f.oneof)) {
+        for (const field of this.fields.filter(f => !f.oneof)) {
             let jsonValue = this.field(field, source[field.localName], options);
             if (jsonValue !== undefined)
                 json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
         }
 
         // flatten all oneof`s
-        for (const field of this.info.fields) {
+        for (const field of this.fields) {
             if (!field.oneof)
                 continue;
 

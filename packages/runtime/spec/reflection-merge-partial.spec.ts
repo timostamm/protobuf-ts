@@ -30,7 +30,7 @@ describe('reflectionMergePartial()', () => {
         });
 
         const messageInfo: MessageInfo = {
-            typeName: '.test.TestMessage', fields: [string_field, bool_field, repeated_string_field]
+            typeName: '.test.TestMessage', fields: [string_field, bool_field, repeated_string_field], options: {}
         };
 
 
@@ -86,7 +86,8 @@ describe('reflectionMergePartial()', () => {
             spyOn(childHandler, 'create').and.returnValue(handlerCreateReturn);
             messageInfo = {
                 typeName: 'Host',
-                fields: [normalizeFieldInfo({kind: "message", T: () => childHandler, no: 1, name: 'child'})]
+                fields: [normalizeFieldInfo({kind: "message", T: () => childHandler, no: 1, name: 'child'})],
+                options: {}
             };
         });
 

@@ -1,4 +1,4 @@
-import type {FieldInfo, MessageInfo} from "./reflection-info";
+import type {FieldInfo, PartialMessageInfo} from "./reflection-info";
 import {LongType, ScalarType} from "./reflection-info";
 import type {IMessageType} from "./message-type-contract";
 import {isOneofGroup} from "./is-oneof-group";
@@ -6,7 +6,8 @@ import {isOneofGroup} from "./is-oneof-group";
 // noinspection JSMethodCanBeStatic
 export class ReflectionTypeCheck {
 
-    private readonly info: MessageInfo;
+
+    private readonly fields: readonly FieldInfo[];
 
     private data: undefined | {
         req: readonly string[], // required field names
@@ -14,15 +15,15 @@ export class ReflectionTypeCheck {
         oneofs: readonly string[], // oneof names
     };
 
-    constructor(info: MessageInfo) {
-        this.info = info;
+    constructor(info: PartialMessageInfo) {
+        this.fields = info.fields ?? [];
     }
 
     private prepare(): void {
         if (this.data)
             return;
         const req: string[] = [], known: string[] = [], oneofs: string[] = [];
-        for (let field of this.info.fields) {
+        for (let field of this.fields) {
             if (field.oneof) {
                 if (!oneofs.includes(field.oneof)) {
                     oneofs.push(field.oneof)
@@ -106,7 +107,7 @@ export class ReflectionTypeCheck {
                 return false;
             if (group.oneofKind === undefined)
                 continue;
-            const field = this.info.fields.find(f => f.localName === group.oneofKind);
+            const field = this.fields.find(f => f.localName === group.oneofKind);
             if (!field)
                 return false; // we found no field, but have a kind, something is wrong
             if (!this.field(group[group.oneofKind], field, allowExcessProperties, depth))
@@ -114,7 +115,7 @@ export class ReflectionTypeCheck {
         }
 
         // check types
-        for (const field of this.info.fields) {
+        for (const field of this.fields) {
             if (field.oneof !== undefined)
                 continue;
             if (!this.field(message[field.localName], field, allowExcessProperties, depth))

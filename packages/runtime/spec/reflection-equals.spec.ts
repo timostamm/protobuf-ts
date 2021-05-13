@@ -20,17 +20,17 @@ describe('reflectionEquals()', function () {
 
 
     it('should return true for same instance', function () {
-        let eq = reflectionEquals({typeName: "test", fields: []}, {}, {});
+        let eq = reflectionEquals({typeName: "test", fields: [], options: {}}, {}, {});
         expect(eq).toBeTrue();
     });
 
     it('should return true for undefined, undefined', function () {
-        let eq = reflectionEquals({typeName: "test", fields: []}, undefined, undefined);
+        let eq = reflectionEquals({typeName: "test", fields: [], options: {}}, undefined, undefined);
         expect(eq).toBeTrue();
     });
 
     it('should return false for message, undefined', function () {
-        let eq = reflectionEquals({typeName: "test", fields: []}, {}, undefined);
+        let eq = reflectionEquals({typeName: "test", fields: [], options: {}}, {}, undefined);
         expect(eq).toBeFalse();
     });
 
@@ -39,7 +39,7 @@ describe('reflectionEquals()', function () {
             typeName: "test", fields: [
                 normalizeFieldInfo({no: 1, name: "value", kind: "scalar", T: ScalarType.INT32}),
                 normalizeFieldInfo({no: 2, name: "unit", kind: "enum", T: () => ["spec.TestEnum", TestEnum]})
-            ]
+            ], options: {}
         }, {
             unit: 1,
             value: 429,
@@ -51,7 +51,7 @@ describe('reflectionEquals()', function () {
     });
 
     it('should ignore excess properties', function () {
-        let info = {typeName: "test", fields: []};
+        let info = {typeName: "test", fields: [], options: {}};
         let eq = reflectionEquals(info, {x: 123}, {});
         expect(eq).toBeTrue();
     });
@@ -59,7 +59,8 @@ describe('reflectionEquals()', function () {
     it('should detect non-equal bytes fields', function () {
         let info = {
             typeName: "test",
-            fields: [normalizeFieldInfo({no: 1, name: "bytes", kind: "scalar", T: ScalarType.BYTES})]
+            fields: [normalizeFieldInfo({no: 1, name: "bytes", kind: "scalar", T: ScalarType.BYTES})],
+            options: {}
         };
         let a = {bytes: new Uint8Array([1, 2, 3])};
         let b = {bytes: new Uint8Array([4, 5, 6])};

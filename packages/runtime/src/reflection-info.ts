@@ -85,7 +85,25 @@ export interface MessageInfo {
      * of declaration in the source .proto.
      */
     readonly fields: readonly FieldInfo[];
+
+    /**
+     * Contains custom message options from the .proto source in JSON format.
+     */
+    readonly options: { [extensionName: string]: JsonValue };
+
 }
+
+
+/**
+ * Version of `MessageInfo` that allows the following properties
+ * to be omitted:
+ * - "fields": omitting means the message has no fields
+ * - "options": omitting means the message has no options
+ */
+export type PartialMessageInfo = PartialPartial<MessageInfo, "fields" | "options">;
+
+// Make all properties in T optional, except those whose keys are in the union K.
+type PartialPartial<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
 
 
 /**

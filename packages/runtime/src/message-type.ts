@@ -43,6 +43,12 @@ export class MessageType<T extends object> implements IMessageType<T> {
      */
     readonly fields: readonly FieldInfo[];
 
+    /**
+     * Contains custom service options from the .proto source in JSON format.
+     */
+    readonly options: JsonOptionsMap;
+
+
     protected readonly defaultCheckDepth = 16;
     protected readonly refTypeCheck: ReflectionTypeCheck;
     protected readonly refJsonReader: ReflectionJsonReader;
@@ -50,9 +56,10 @@ export class MessageType<T extends object> implements IMessageType<T> {
     protected readonly refBinReader: ReflectionBinaryReader;
     protected readonly refBinWriter: ReflectionBinaryWriter;
 
-    constructor(name: string, fields: readonly PartialFieldInfo[]) {
+    constructor(name: string, fields: readonly PartialFieldInfo[], options?: JsonOptionsMap) {
         this.typeName = name;
         this.fields = fields.map(normalizeFieldInfo);
+        this.options = options ?? {};
         this.refTypeCheck = new ReflectionTypeCheck(this);
         this.refJsonReader = new ReflectionJsonReader(this);
         this.refJsonWriter = new ReflectionJsonWriter(this);
@@ -252,3 +259,8 @@ export class MessageType<T extends object> implements IMessageType<T> {
     }
 
 }
+
+
+type JsonOptionsMap = {
+    [extensionName: string]: JsonValue;
+};

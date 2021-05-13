@@ -366,7 +366,8 @@ class FixtureRegistry {
         let fix = this.getFix(type);
         return {
             typeName: fix.typeName,
-            fields: this.getFieldsNormalized(type)
+            fields: this.getFieldsNormalized(type),
+            options: {}
         }
     }
 

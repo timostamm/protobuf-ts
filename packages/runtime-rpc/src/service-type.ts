@@ -18,7 +18,7 @@ export class ServiceType implements ServiceInfo {
     readonly methods: MethodInfo[];
 
     /**
-     * Contains custom method options from the .proto source in JSON format.
+     * Contains custom service options from the .proto source in JSON format.
      */
     readonly options: JsonOptionsMap;
 

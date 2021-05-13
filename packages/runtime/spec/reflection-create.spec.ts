@@ -28,7 +28,7 @@ describe('reflectionCreate()', function () {
             no: 1,
             name: 'map_field'
         });
-        const msg = reflectionCreate({typeName: '.test.TestMessage', fields: [fld]});
+        const msg = reflectionCreate({typeName: '.test.TestMessage', fields: [fld], options: {}});
         const val = msg[fld.localName];
         expect(val).toEqual({});
     });
@@ -41,7 +41,7 @@ describe('reflectionCreate()', function () {
             kind: 'message', T: () => true as unknown as IMessageType<any>,
             no: 1, name: 'msg_field', localName: 'msg_field', jsonName: 'msg_field',
         });
-        const msg = reflectionCreate({typeName: '.test.TestMessage', fields: [fld]});
+        const msg = reflectionCreate({typeName: '.test.TestMessage', fields: [fld], options: {}});
         const val = msg[fld.localName];
         expect(val).toBeUndefined()
     });

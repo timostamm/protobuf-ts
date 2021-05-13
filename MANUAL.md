@@ -411,7 +411,7 @@ The `IMessageType` provides the following methods:
 
 
 The `IMessageType` also provides [reflection information](#reflection) 
-with the properties `typeName` and `fields`.  
+with the properties `typeName`, `fields` and `options`.  
 
 
 #### Message type guards
@@ -860,6 +860,11 @@ readonly typeName: string;
  * of declaration in the source .proto.
  */
 readonly fields: readonly FieldInfo[];
+
+/**
+ * Contains custom message options from the .proto source in JSON format.
+ */
+readonly options: { [extensionName: string]: JsonValue };
 ``` 
 
 
@@ -910,8 +915,8 @@ operations.
 
 #### Custom options
 
-`protobuf-ts` supports custom field and method options and will add them to 
-the reflection information. 
+`protobuf-ts` supports custom message, field, service and method options 
+and will add them to the reflection information. 
 
 For example, consider the following service definition in .proto:
 

@@ -1,6 +1,6 @@
 import type {BinaryReadOptions, IBinaryReader} from "./binary-format-contract";
 import {UnknownFieldHandler, WireType} from "./binary-format-contract";
-import type {FieldInfo, MessageInfo} from "./reflection-info";
+import type {FieldInfo, PartialMessageInfo} from "./reflection-info";
 import {LongType, ScalarType} from "./reflection-info";
 import {reflectionLongConvert} from "./reflection-long-convert";
 import {reflectionScalarDefault} from "./reflection-scalar-default";
@@ -15,16 +15,18 @@ import type {UnknownMap, UnknownMessage, UnknownOneofGroup, UnknownScalar} from 
 export class ReflectionBinaryReader {
 
 
+    // protected readonly info: MessageInfo;
     protected fieldNoToField?: ReadonlyMap<number, FieldInfo>;
 
 
-    constructor(protected readonly info: MessageInfo) {
+    constructor(private readonly info: PartialMessageInfo) {
     }
 
 
     protected prepare() {
         if (!this.fieldNoToField) {
-            this.fieldNoToField = new Map<number, FieldInfo>(this.info.fields.map(field => [field.no, field]));
+            const fieldsInput = this.info.fields ?? [];
+            this.fieldNoToField = new Map<number, FieldInfo>(fieldsInput.map(field => [field.no, field]));
         }
     }
 
