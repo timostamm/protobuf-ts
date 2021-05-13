@@ -955,12 +955,12 @@ console.log(AnnotatedService.options);
 ```json
 {
   "google.api.http": {
-    additionalBindings: [{
-      get: "xxx"
+    "additionalBindings": [{
+      "get": "xxx"
     }, {
-      get: "yyy"
+      "get": "yyy"
     }],
-    get: "/v1/{name=messages/*}"
+    "get": "/v1/{name=messages/*}"
   }
 }
 ```
