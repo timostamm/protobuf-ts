@@ -175,9 +175,7 @@ module.exports.makeReleaseName = function makeReleaseName(params) {
     let build = `${params.platform}-${params.arch}`;
     switch (params.platform) {
         case "darwin":
-            if (params.arch === "x64") {
-                build = 'osx-x86_64'
-            }
+            build = 'osx-x86_64'
             break;
         case "linux":
             if (params.arch === "x64") {
@@ -189,7 +187,7 @@ module.exports.makeReleaseName = function makeReleaseName(params) {
         case "win32":
             if (params.arch === "x64") {
                 build = 'win64'
-            } else if (params.arch === "x64") {
+            } else if (params.arch === "x32") {
                 build = 'win32'
             }
             break;
