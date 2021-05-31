@@ -3,6 +3,14 @@
 none
 
 
+### v2.0.0-alpha.25
+
+Bug fixes:
+
+- Fix protoc arch detection on Apple Silicon #108  
+  Thanks to @lqs for the PR!
+
+
 ### v2.0.0-alpha.24
 
 New feature:
