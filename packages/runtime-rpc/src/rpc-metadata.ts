@@ -1,11 +1,16 @@
 /**
- * RPC metadata are very similar to HTTP headers, but they can be also be
- * provided at the end of response (they are called "trailers" in this case).
+ * RPC metadata provide optional additional information about a request or
+ * response.
  *
- * Keys are case-insensitive and you will usually get lower-case keys from
- * APIs.
+ * They can be transmitted at:
+ * - the start of a request (a.k.a. request headers)
+ * - the start of a response (a.k.a. response headers)
+ * - the end of a response (a.k.a. response trailers)
  *
- * If a key ends with `-bin`, it contains binary data in base64 encoding.
+ * Keys should only contain the characters a-z 0-9 _ . -
+ *
+ * Values can be US ASCII or binary. If a key ends with `-bin`, it contains
+ * binary data in base64 encoding.
  *
  * You can encode protobuf messages as binary metadata values, including
  * `google.protobuf.Any`.
