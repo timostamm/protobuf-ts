@@ -3,6 +3,14 @@
 none
 
 
+### v2.0.0-alpha.26
+
+Bug fixes:
+
+- twirp-transport is now a bit more compatible with polyfills for 
+  the fetch API that are incomplete.
+
+
 ### v2.0.0-alpha.25
 
 Bug fixes:

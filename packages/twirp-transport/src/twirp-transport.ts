@@ -58,9 +58,6 @@ export class TwirpFetchTransport implements RpcTransport {
 
                 defHeader.resolve(parseMetadataFromResponseHeaders(fetchResponse.headers));
 
-                if (!fetchResponse.body)
-                    throw new RpcError('premature end of response', TwirpErrorCode[TwirpErrorCode.dataloss]);
-
                 switch (fetchResponse.type) {
                     case "error":
                     case "opaque":
