@@ -65,7 +65,7 @@ async function callServerStream(client: IExampleServiceClient) {
     const headers = await call.headers;
     console.log("got response headers: ", headers)
 
-    for await (let response of call.response) {
+    for await (let response of call.responses) {
         console.log("got response message: ", response)
     }
 
@@ -86,7 +86,7 @@ async function callClientStream(client: IExampleServiceClient) {
     console.log(`### calling method "${call.method.name}"...`)
 
     console.log("sending message...");
-    await call.request.send({
+    await call.requests.send({
         question: 'whats up? #1',
         pleaseDelayResponseMs: 50,
         pleaseFail: FailRequest.FAIL_REQUEST_NONE,
@@ -94,7 +94,7 @@ async function callClientStream(client: IExampleServiceClient) {
     });
 
     console.log("sending message...");
-    await call.request.send({
+    await call.requests.send({
         question: 'whats up? #2',
         pleaseDelayResponseMs: 50,
         pleaseFail: FailRequest.FAIL_REQUEST_NONE,
@@ -102,7 +102,7 @@ async function callClientStream(client: IExampleServiceClient) {
     });
 
     console.log("sending message...");
-    await call.request.send({
+    await call.requests.send({
         question: 'whats up? #3',
         pleaseDelayResponseMs: 50,
         pleaseFail: FailRequest.FAIL_REQUEST_NONE,
@@ -110,7 +110,7 @@ async function callClientStream(client: IExampleServiceClient) {
     });
 
     console.log("done sending");
-    await call.request.complete();
+    await call.requests.complete();
 
     const headers = await call.headers;
     console.log("got response headers: ", headers)
@@ -137,20 +137,20 @@ async function callBidi(client: IExampleServiceClient) {
     const headers = await call.headers;
     console.log("got response headers: ", headers)
 
-    call.response.onMessage(message => {
+    call.responses.onMessage(message => {
         console.log("got answer: ", message.answer)
     });
 
     console.log("sending question...");
-    await call.request.send(ExampleRequest.create({
+    await call.requests.send(ExampleRequest.create({
         question: 'whats up?'
     }));
 
     console.log("sending another question, then complete...");
-    await call.request.send(ExampleRequest.create({
+    await call.requests.send(ExampleRequest.create({
         question: 'how are you?'
     }));
-    await call.request.complete();
+    await call.requests.complete();
 
     const status = await call.status;
     console.log("got status: ", status)
