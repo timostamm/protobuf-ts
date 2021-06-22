@@ -25,6 +25,10 @@ export interface GrpcOptions extends RpcOptions {
      */
     clientOptions?: ClientOptions;
 
+}
+
+export interface GrpcCallOptions extends RpcOptions {
+
     /**
      * This option can be provided when calling a client method.
      * The CallOptions are passed to request factory method of the

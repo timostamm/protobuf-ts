@@ -15,7 +15,7 @@ import {
     ServerStreamingCall,
     UnaryCall
 } from "@protobuf-ts/runtime-rpc";
-import {GrpcOptions} from "./grpc-options";
+import {GrpcCallOptions, GrpcOptions} from "./grpc-options";
 import {CallOptions, Client, ClientWritableStream, Metadata, status as GrpcStatus} from "@grpc/grpc-js";
 import {assert} from "@protobuf-ts/runtime";
 import {metadataFromGrpc, isServiceError, metadataToGrpc} from "./util";
@@ -25,16 +25,23 @@ export class GrpcTransport implements RpcTransport {
 
 
     private readonly defaultOptions: GrpcOptions;
+    private readonly client: Client;
 
     constructor(defaultOptions: GrpcOptions) {
         this.defaultOptions = defaultOptions;
+
+        this.client = new Client(
+          defaultOptions.host,
+          defaultOptions.channelCredentials,
+          defaultOptions.clientOptions
+        );
     }
 
     mergeOptions(options?: Partial<RpcOptions>): RpcOptions {
         return mergeRpcOptions(this.defaultOptions, options);
     }
 
-    private pickCallOptions(options: GrpcOptions): CallOptions {
+    private pickCallOptions(options: GrpcCallOptions): CallOptions {
         if (options.callOptions) {
             return options.callOptions;
         }
@@ -43,14 +50,13 @@ export class GrpcTransport implements RpcTransport {
         };
     }
 
-    unary<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: RpcOptions): UnaryCall<I, O> {
+    unary<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: GrpcCallOptions): UnaryCall<I, O> {
 
-        const opt = options as GrpcOptions,
+        const opt = options,
             meta = opt.meta ?? {},
             gMeta = metadataToGrpc(meta, new Metadata({
                 idempotentRequest: method.idempotency === "IDEMPOTENT"
             })),
-            client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
             defHeader = new Deferred<RpcMetadata>(),
             defMessage = new Deferred<O>(),
             defStatus = new Deferred<RpcStatus>(),
@@ -58,7 +64,7 @@ export class GrpcTransport implements RpcTransport {
             call = new UnaryCall<I, O>(method, meta, input, defHeader.promise, defMessage.promise, defStatus.promise, defTrailer.promise)
         ;
 
-        const gCall = client.makeUnaryRequest<I, O>(
+        const gCall = this.client.makeUnaryRequest<I, O>(
             `/${method.service.typeName}/${method.name}`,
             (value: I): Buffer => Buffer.from(method.I.toBinary(value, opt.binaryOptions)),
             (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
@@ -111,14 +117,13 @@ export class GrpcTransport implements RpcTransport {
     }
 
 
-    serverStreaming<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: RpcOptions): ServerStreamingCall<I, O> {
+    serverStreaming<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: GrpcCallOptions): ServerStreamingCall<I, O> {
 
-        const opt = options as GrpcOptions,
+        const opt = options,
             meta = opt.meta ?? {},
             gMeta = metadataToGrpc(meta, new Metadata({
                 idempotentRequest: method.idempotency === "IDEMPOTENT"
             })),
-            client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
             defHeader = new Deferred<RpcMetadata>(),
             outStream = new RpcOutputStreamController<O>(),
             defStatus = new Deferred<RpcStatus>(),
@@ -126,7 +131,7 @@ export class GrpcTransport implements RpcTransport {
             call = new ServerStreamingCall<I, O>(method, meta, input, defHeader.promise, outStream, defStatus.promise, defTrailer.promise)
         ;
 
-        const gCall = client.makeServerStreamRequest<I, O>(
+        const gCall = this.client.makeServerStreamRequest<I, O>(
             `/${method.service.typeName}/${method.name}`,
             (value: I): Buffer => Buffer.from(method.I.toBinary(value, opt.binaryOptions)),
             (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
@@ -178,19 +183,18 @@ export class GrpcTransport implements RpcTransport {
     }
 
 
-    clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>, options: RpcOptions): ClientStreamingCall<I, O> {
+    clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>, options: GrpcCallOptions): ClientStreamingCall<I, O> {
 
-        const opt = options as GrpcOptions,
+        const opt = options,
             meta = opt.meta ?? {},
             gMeta = metadataToGrpc(meta, new Metadata({
                 idempotentRequest: method.idempotency === "IDEMPOTENT"
             })),
-            client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
             defHeader = new Deferred<RpcMetadata>(),
             defMessage = new Deferred<O>(),
             defStatus = new Deferred<RpcStatus>(),
             defTrailer = new Deferred<RpcMetadata>(),
-            gCall = client.makeClientStreamRequest<I, O>(
+            gCall = this.client.makeClientStreamRequest<I, O>(
                 `/${method.service.typeName}/${method.name}`,
                 (value: I): Buffer => Buffer.from(method.I.toBinary(value, opt.binaryOptions)),
                 (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
@@ -235,19 +239,18 @@ export class GrpcTransport implements RpcTransport {
     }
 
 
-    duplex<I extends object, O extends object>(method: MethodInfo<I, O>, options: RpcOptions): DuplexStreamingCall<I, O> {
+    duplex<I extends object, O extends object>(method: MethodInfo<I, O>, options: GrpcCallOptions): DuplexStreamingCall<I, O> {
 
-        const opt = options as GrpcOptions,
+        const opt = options,
             meta = opt.meta ?? {},
             gMeta = metadataToGrpc(meta, new Metadata({
                 idempotentRequest: method.idempotency === "IDEMPOTENT"
             })),
-            client = new Client(opt.host, opt.channelCredentials, opt.clientOptions),
             defHeader = new Deferred<RpcMetadata>(),
             outStream = new RpcOutputStreamController<O>(),
             defStatus = new Deferred<RpcStatus>(),
             defTrailer = new Deferred<RpcMetadata>(),
-            gCall = client.makeBidiStreamRequest<I, O>(
+            gCall = this.client.makeBidiStreamRequest<I, O>(
                 `/${method.service.typeName}/${method.name}`,
                 (value: I): Buffer => Buffer.from(method.I.toBinary(value, opt.binaryOptions)),
                 (value: Buffer): O => method.O.fromBinary(value, opt.binaryOptions),
@@ -298,6 +301,11 @@ export class GrpcTransport implements RpcTransport {
         });
 
         return call;
+    }
+
+
+    close(): void {
+        this.client.close();
     }
 
 }
