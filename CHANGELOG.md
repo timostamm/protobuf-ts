@@ -3,11 +3,19 @@
 none
 
 
+### v2.0.0-alpha.27
+
+Bug fixes:
+
+- Fix memory leak in @protobuf-ts/grpc-transport, see #107  
+  Thanks to @dddenis for the PR!
+
+
 ### v2.0.0-alpha.26
 
 Bug fixes:
 
-- twirp-transport is now a bit more compatible with polyfills for 
+- twirp-transport is now a bit more compatible with polyfills for
   the fetch API that are incomplete.
 
 
