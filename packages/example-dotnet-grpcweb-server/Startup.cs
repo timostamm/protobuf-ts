@@ -29,13 +29,15 @@ namespace asp_net_core_server
                 p.AllowAnyHeader();
                 p.AllowAnyOrigin();
                 p.AllowAnyMethod();
+                p.WithExposedHeaders("grpc-encoding", "grpc-message", "grpc-status"); // required for the grpc-web-protocol over CORS
+                p.WithExposedHeaders("server-header", "server-header-bin"); // required for our custom response headers over CORS
             });
 
             app.UseRouting();
 
             // Add gRPC-Web middleware after routing and before endpoints
             app.UseGrpcWeb();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<ExampleService>();

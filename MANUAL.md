@@ -1597,13 +1597,13 @@ to the `RpcOutputStream`. See the source code of `RpcOutputStream` for further d
 ### gRPC web transport
 
 While gRPC requires HTTP 2 support on your server and client, gRPC web is a subset 
-that works with HTTP 1. 
+that works with HTTP 1. gRPC works with unary and server streaming methods. 
+Client streaming and duplex streaming is not supported.
 
-A gRPC service can be made available as gRPC web using the [envoy proxy](https://www.envoyproxy.io/), 
-or the nuget package `Grpc.AspNetCore.Web`, if you are using Grpc.AspNetCode. 
-
-gRPC works with unary and server streaming methods. Client streaming and duplex 
-streaming is not supported. 
+Any gRPC service can be made available via gRPC web using the 
+[envoy proxy](https://www.envoyproxy.io/). If you use the .NET Core gRPC 
+implementation `Grpc.AspNetCode`, you may want to usethe nuget package 
+`Grpc.AspNetCore.Web` to add gRPC web support. 
 
 To use the gRPC web transport, install the package `@protobuf-ts/grpcweb-transport`.
 
@@ -1614,8 +1614,15 @@ To use the gRPC web transport, install the package `@protobuf-ts/grpcweb-transpo
 > **Note:** To cancel calls, you need an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 > For Node.js, use the polyfill [abort-controller](https://github.com/mysticatea/abort-controller).
 
-> **Note:** For React native, you have to use the react-native-polyfill-globals, 
+> **Note:** For React native, you have to use the react-native-polyfill-globals,
 > see [#67](https://github.com/timostamm/protobuf-ts/issues/67#issuecomment-764522714).
+
+> **Note:** For requests across domains, your server must expose the headers 
+> "grpc-encoding", "grpc-message" and "grpc-status" and allow the headers 
+> "x-grpc-web" and "grpc-timeout" to function correctly. Any custom headers 
+> you want to use must be exposed / allowed as well. 
+> See [Access-Control-Expose-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers) 
+> and [Access-Control-Allow-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers).
 
 
 Example `.proto`:
@@ -1704,6 +1711,10 @@ To use the Twirp transport, install the package `@protobuf-ts/twirp-transport`.
 > **Note:** If you use Angular, consider using the Twirp transport based on 
 > Angular's HttpClient. See [Angular support](#angular-support).
 
+> **Note:** For requests across domains, your server must allow request
+> headers you intend to send and expose response headers you intend to read.
+> See [Access-Control-Expose-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers) 
+> and [Access-Control-Allow-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers).
 
 
 Example `.proto`:
