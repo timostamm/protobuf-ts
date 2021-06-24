@@ -1,0 +1,14 @@
+{
+  "include": [
+    "**/*.ts",
+    "**/*.js"
+  ],
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2015",
+    "baseUrl": "./",
+    "strict": true,
+    "moduleResolution": "node",
+    "strictNullChecks": true
+  }
+}
