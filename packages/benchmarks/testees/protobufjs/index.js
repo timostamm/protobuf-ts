@@ -1,4 +1,4 @@
-import {google} from "./protobufjs-out/descriptor";
+import {google} from "./.plugin-out/descriptor";
 
 let a = [
     google.protobuf.FileDescriptorSet

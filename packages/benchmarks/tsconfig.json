@@ -1,6 +1,6 @@
 {
-  "files": [
-    "perf.ts"
+  "include": [
+    "*.ts"
   ],
   "compilerOptions": {
     "module": "CommonJS",

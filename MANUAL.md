@@ -1243,25 +1243,25 @@ option optimize_for = CODE_SIZE;
 ``` 
 Alternatively, the default behaviour can be changed with [plugin parameters](#the-protoc-plugin).
 
-`protobuf-ts` compiles to rather small code sizes, even with 
-`optimize_for = SPEED`. The following table shows a comparison between 
+`protobuf-ts` compiles to rather small code sizes, even with `optimize_for = SPEED`, 
+while retaining all features. The following table shows a comparison between 
 several code generators: 
 
-| generator               | version         | optimize for      | webpack output size |
-|-------------------------|----------------:|-------------------|--------------------:|
+| generator               |                 version | parameters              |     webpack output size |
+|-------------------------|------------------------:|-------------------------|------------------------:|
 | pbf | 3.2.1 |  | 22,132 b |
-| protobuf-ts | 2.0.0-alpha.3 | size | 42,734 b |
-| protobuf-ts | 2.0.0-alpha.3 | speed | 73,236 b |
-| ts-proto | 1.26.0 |  | 111,762 b |
-| protobufjs | 6.10.2 |  | 139,360 b |
-| google-protobuf | 3.12.2 |  | 396,934 b |
-
-
+| protobuf-ts | 2.0.0-alpha.27 | force_optimize_code_size,long_type_string | 43,082 b |
+| ts-proto | 1.81.3 | outputJsonMethods=false,forceLong=string | 67,066 b |
+| protobuf-ts | 2.0.0-alpha.27 | force_optimize_speed,long_type_string | 71,552 b |
+| ts-proto | 1.81.3 | forceLong=string | 93,698 b |
+| protobufjs | 6.11.2 |  | 139,360 b |
+| google-protobuf | 3.17.3 | import_style=commonjs,binary | 397,348 b |
 
 The file sizes are calculated by compiling `google/protobuf/descriptor.proto`, 
 then packing with webpack in production mode. The source code of the size 
 benchmark is located in `packages/benchmarks`. 
 
+Note that ts-proto doesn't support JSON with `outputJsonMethods=false`. pbf has a very limited feature set.
 
 
 

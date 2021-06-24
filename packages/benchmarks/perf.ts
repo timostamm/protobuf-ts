@@ -1,11 +1,11 @@
 import {performance} from "perf_hooks";
 import {readFileSync} from "fs";
-import {FileDescriptorSet as tsProtoType} from "./testees/ts-proto-out/google/protobuf/descriptor";
+import {FileDescriptorSet as tsProtoType} from "./testees/ts-proto.default/.plugin-out/google/protobuf/descriptor";
 import {FileDescriptorSet as googleProtobufType} from "google-protobuf/google/protobuf/descriptor_pb";
-import {FileDescriptorSet as sizeType} from "./testees/size-out/google/protobuf/descriptor";
-import {FileDescriptorSet as speedType} from "./testees/speed-out/google/protobuf/descriptor";
-import {FileDescriptorSet as sizeBigintType} from "./testees/size-bigint-out/google/protobuf/descriptor";
-import {FileDescriptorSet as speedBigintType} from "./testees/speed-bigint-out/google/protobuf/descriptor";
+import {FileDescriptorSet as sizeType} from "./testees/protobuf-ts.size/.plugin-out/google/protobuf/descriptor";
+import {FileDescriptorSet as speedType} from "./testees/protobuf-ts.speed/.plugin-out/google/protobuf/descriptor";
+import {FileDescriptorSet as sizeBigintType} from "./testees/protobuf-ts.size-bigint/.plugin-out/google/protobuf/descriptor";
+import {FileDescriptorSet as speedBigintType} from "./testees/protobuf-ts.speed-bigint/.plugin-out/google/protobuf/descriptor";
 
 
 function bench(name: string, fn: () => void, durationSeconds = 5) {

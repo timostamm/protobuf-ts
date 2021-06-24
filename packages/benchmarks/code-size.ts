@@ -1,108 +1,96 @@
-import {readdirSync, statSync, writeFileSync} from "fs";
-import {execSync} from "child_process";
+import {readdirSync, readFileSync, statSync, writeFileSync} from "fs";
+import {join} from "path";
+
+const testeesPath = "./testees";
+const exclude = ["protobuf-ts.size-bigint", "protobuf-ts.speed-bigint"];
+
+const testees: Testee[] = readdirSync(testeesPath, {withFileTypes: true})
+    .filter(dirent => dirent.isDirectory())
+    .filter(dirent => !exclude.includes(dirent.name))
+    .map(dirent => {
+        const pluginName = dirent.name.split(".")[0];
+        return {
+            id: dirent.name,
+            pluginName,
+            pluginPackage: pluginNameToPackageName(pluginName),
+            pluginVersion: pluginNameToVersion(pluginName),
+            pluginParameters: readFileSync(join(testeesPath, dirent.name, ".plugin-out/parameters.txt"), "utf-8").trim(),
+            webpackFileSize: statSync(join(testeesPath, dirent.name, ".webpack-out/index.js")).size,
+            webpackLog: readFileSync(join(testeesPath, dirent.name, ".webpack-out/webpack.log"), "utf-8").trim()
+        };
+    })
+    .sort((a, b) => a.webpackFileSize - b.webpackFileSize);
 
 
-type Testee = {
+console.log(makeReportTable(testees));
+
+writeFileSync('code-size-report.md', makeFullReport(testees));
+
+
+interface Testee {
     id: string;
-    file: string;
-    name: string;
-    version: string;
-    options: string[];
-}
-
-type Stat = {
-    testee: Testee
+    pluginName: string;
+    pluginPackage: string;
+    pluginVersion: string;
+    pluginParameters: string;
+    webpackFileSize: number;
     webpackLog: string;
-    byteSize: number;
 }
 
 
-let testees: Testee[] = readdirSync("./testees")
-    .filter(file => file.endsWith(".code-size.ts") || file.endsWith("code-size-wkt.ts") || file.endsWith("code-size.js"))
-    .map(file => {
-        let id = file.substring(0, file.indexOf('.code-size'));
-        let version: string;
-        let options = [];
-        let name = id;
-        switch (id) {
-            case "pbf":
-                version = require('pbf/package.json').version;
-                break;
-            case "protobufjs":
-                version = require('protobufjs/package.json').version;
-                break;
-            case "google-protobuf":
-                version = require('google-protobuf/package.json').version;
-                break;
-            case "ts-proto":
-                version = require('ts-proto/package.json').version;
-                break;
-            default:
-                name = 'protobuf-ts';
-                version = require('@protobuf-ts/plugin/package.json').version;
-                if (id.includes("speed"))
-                    options.push("speed");
-                if (id.includes("size"))
-                    options.push("size");
-                break;
-        }
-        return {id, file, name, version, options};
-    });
+function makeFullReport(testees: Testee[]): string {
+    const lines = [];
+    lines.push('Code size report');
+    lines.push('================');
+    lines.push();
+    lines.push();
+    lines.push(makeReportTable(testees));
+    for (const testee of testees) {
+        lines.push();
+        lines.push();
+        lines.push(makeReportDetails(testee));
+    }
+    return lines.join("\n");
+}
 
+function makeReportTable(testees: Testee[]): string {
+    const lines = [];
+    lines.push('| generator               |                 version | parameters              |     webpack output size |');
+    lines.push('|-------------------------|------------------------:|-------------------------|------------------------:|');
+    for (let testee of testees) {
+        lines.push(`| ${testee.pluginName} | ${testee.pluginVersion} | ${testee.pluginParameters} | ${new Intl.NumberFormat().format(testee.webpackFileSize)} b |`);
+    }
+    return lines.join("\n");
+}
 
-let stats: Array<Stat> = [];
+function makeReportDetails(testee: Testee): string {
+    const nf = new Intl.NumberFormat();
+    const lines = [];
+    lines.push(`${testee.id}`);
+    lines.push("=".repeat(testee.id.length));
+    lines.push();
+    lines.push(`Plugin name: ${testee.pluginName}  `);
+    lines.push(`Plugin version: ${testee.pluginVersion}  `);
+    lines.push(`Plugin parameters: ${testee.pluginParameters}  `);
+    lines.push(`Webpack file size: ${nf.format(testee.webpackFileSize)} b  `);
+    lines.push();
+    lines.push(`#### Webpack log`);
+    lines.push("```");
+    lines.push(testee.webpackLog);
+    lines.push("```");
+    return lines.join("\n");
+}
 
-for (let testee of testees) {
-    if (!testee.file.endsWith('.ts')) continue;
-    let command = `npx tsc --rootDir ./ --baseUrl ./ --strict --module ES2015 --target ES2015 --moduleResolution node \
-    testees/${testee.file} --outDir ./.code-size/tsc-out`;
-    try {
-        execSync(command, {encoding: "utf8"});
-    } catch (e) {
-        console.log("WARN " + e.message);
+function pluginNameToPackageName(pluginName: string): string {
+    switch (pluginName) {
+        case "protobuf-ts":
+            return '@protobuf-ts/plugin';
+        default:
+            return pluginName;
     }
 }
 
-for (let testee of testees) {
-    let wpOutput = `.code-size/webpack-out/${testee.file.substring(0, testee.file.length - 3)}.min.js`;
-    let wpInput = `./testees/${testee.file}`;
-    if (testee.file.endsWith('ts')) {
-        wpInput = `.code-size/tsc-out/testees/${testee.file.substring(0, testee.file.length - 3)}.js`;
-    }
-    let command = `npx webpack --mode=production \
-    --display-used-exports=true \\
-    --display-provided-exports=true \\
-    --display-optimization-bailout=true \\
-    --display-entrypoints=false \\
-    --display-chunks=false \\
-    --display-modules=true --display-max-modules 999 \\
-    --display-reasons=false \\
-    --config webpack.config.js \\
-    --output ${wpOutput} \\
-    ${wpInput}`;
-    let webpackLog = execSync(command, {encoding: "utf8"});
-    let byteSize = statSync(wpOutput).size;
-    stats.push({testee, webpackLog, byteSize});
+function pluginNameToVersion(pluginName: string): string {
+    const packageName = pluginNameToPackageName(pluginName);
+    return require(`${packageName}/package.json`).version;
 }
-
-stats.sort((a, b) => a.byteSize - b.byteSize);
-
-let text = '| generator               | version         | optimize for      | webpack output size |\n';
-text +=    '|-------------------------|----------------:|-------------------|--------------------:|\n';
-for (let stat of stats) {
-    text += `| ${stat.testee.name} | ${stat.testee.version} | ${stat.testee.options.join(', ')} | ${new Intl.NumberFormat().format(stat.byteSize)} b |\n`;
-}
-
-console.log(text);
-
-for (let stat of stats) {
-    text += '\n';
-    text += '\n';
-    text += '\n';
-    text += `### ${stat.testee.file} webpack report\n`;
-    text += '```\n';
-    text += stat.webpackLog;
-    text += '```\n';
-}
-
-writeFileSync('code-size-report.md', text);
