@@ -9,6 +9,7 @@ generate: $(PROTOS)
 	@mkdir .plugin-out
 	@echo > .plugin-out/parameters.txt "$(OPTIONS)"
 	@npx pbjs -t static-module -w commonjs -o .plugin-out/descriptor.js $(PROTOS)
+	@npx pbts -o .plugin-out/descriptor.d.ts .plugin-out/descriptor.js
 
 webpack: generate
 	@rm -rf .webpack-out
