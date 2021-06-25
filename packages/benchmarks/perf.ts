@@ -6,7 +6,7 @@ import {FileDescriptorSet as sizeType} from "./testees/protobuf-ts.size/.plugin-
 import {FileDescriptorSet as speedType} from "./testees/protobuf-ts.speed/.plugin-out/google/protobuf/descriptor";
 import {FileDescriptorSet as sizeBigintType} from "./testees/protobuf-ts.size-bigint/.plugin-out/google/protobuf/descriptor";
 import {FileDescriptorSet as speedBigintType} from "./testees/protobuf-ts.speed-bigint/.plugin-out/google/protobuf/descriptor";
-import {google} from "./testees/protobufjs/.plugin-out/descriptor"
+import * as protobufjsNamespace from "./testees/protobufjs/.plugin-out/descriptor"
 
 function bench(name: string, fn: () => void, durationSeconds = 5) {
     let startTs = performance.now();
@@ -21,8 +21,8 @@ function bench(name: string, fn: () => void, durationSeconds = 5) {
     console.log(`${name}: ${formatNumber(opsPerSecond)} ops/s`);
 }
 
-const bytes = readFileSync('../test-fixtures/all.descriptorset');
-const protobufjsType = google.protobuf.FileDescriptorSet;
+const bytes = readFileSync('./all.descriptorset');
+const protobufjsType = protobufjsNamespace.google.protobuf.FileDescriptorSet;
 const numberFormat = new Intl.NumberFormat('en-US');
 const formatNumber = (n: number) => {
     const [whole = '0', fraction = '0'] = numberFormat.format(n).split('.');
