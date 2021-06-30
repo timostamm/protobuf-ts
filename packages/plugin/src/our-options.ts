@@ -269,7 +269,7 @@ export class OptionResolver {
                 .filter((value, index, array) => array.indexOf(value) === index);
         }
 
-        // fall back to normal style set by parameter
+        // fall back to normal style set by option
         if (this.params.client_none)
             return [];
         else if (this.params.client_grpc1)

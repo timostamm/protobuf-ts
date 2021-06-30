@@ -1,6 +1,11 @@
 ### unreleased changes
 
-none
+Cleanup:
+
+- Rename plugin parameters to "plugin options".  
+  The code generator request only accepts a single parameter string, 
+  but this should be considered an implementation detail. `protoc` 
+  uses `--ts_opt`, so we should speak of options, not parameters.
 
 
 ### v2.0.0-alpha.27

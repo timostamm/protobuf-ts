@@ -143,9 +143,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
     generate(request: CodeGeneratorRequest): OutFile[] {
         const
-            params = this.parseParameters(this.parameters, request.parameter),
+            params = this.parseOptions(this.parameters, request.parameter),
             options = makeInternalOptions({
-                pluginCredit: `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameters ${request.parameter}` : ''),
+                pluginCredit: `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : ''),
                 emitAngularAnnotations: params.enable_angular_annotations,
                 normalLongType: params.long_type_string ? rt.LongType.STRING : params.long_type_number ? rt.LongType.NUMBER : rt.LongType.BIGINT,
             }),

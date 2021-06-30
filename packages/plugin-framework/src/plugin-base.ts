@@ -10,7 +10,7 @@ import {GeneratedFile} from "./generated-file";
 import {PbULong} from "@protobuf-ts/runtime";
 
 
-export type ParameterSpec = {
+export type OptionsSpec = {
     [key: string]: {
         description: string;
         excludes?: string[];
@@ -18,7 +18,7 @@ export type ParameterSpec = {
     }
 }
 
-export type ResolvedParameters<T extends ParameterSpec> = {
+export type ResolvedOptions<T extends OptionsSpec> = {
     [P in keyof T]: boolean;
 }
 
@@ -45,10 +45,10 @@ export type ResolvedParameters<T extends ParameterSpec> = {
  * `CodeGeneratorResponse` to stdout.
  *
  *
- * Parameters:
+ * Options:
  *
- * Use the `parseParameters()` method the parse the parameters
- * of a `CodeGeneratorRequest` to a map of flags. Parameters are
+ * Use the `parseOptions()` method the parse the parameter
+ * of a `CodeGeneratorRequest` to a map of flags. Options are
  * validated and usage is generated on error.
  *
  *
@@ -105,23 +105,23 @@ export abstract class PluginBase<T extends GeneratedFile> {
     }
 
 
-    protected parseParameters<T extends ParameterSpec>(spec: T, parameter: string | undefined): ResolvedParameters<T> {
-        this.validateParameterSpec(spec);
+    protected parseOptions<T extends OptionsSpec>(spec: T, parameter: string | undefined): ResolvedOptions<T> {
+        this.validateOptionsSpec(spec);
         let given = parameter ? parameter.split(',') : [];
         let known = Object.keys(spec);
         let excess = given.filter(i => !known.includes(i));
         if (excess.length > 0) {
-            this.throwParameterError(spec, `Parameter "${excess.join('", "')}" not recognized.`);
+            this.throwOptionError(spec, `Option "${excess.join('", "')}" not recognized.`);
         }
         for (let [key, val] of Object.entries(spec)) {
             if (given.includes(key)) {
                 let missing = val.requires?.filter(i => !given.includes(i)) ?? [];
                 if (missing.length > 0) {
-                    this.throwParameterError(spec, `Parameter "${key}" requires parameter "${missing.join('", "')}" to be set.`);
+                    this.throwOptionError(spec, `Option "${key}" requires option "${missing.join('", "')}" to be set.`);
                 }
                 let excess = val.excludes?.filter(i => given.includes(i)) ?? [];
                 if (excess.length > 0) {
-                    this.throwParameterError(spec, `If parameter "${key}" is set, parameter "${excess.join('", "')}" cannot be set.`);
+                    this.throwOptionError(spec, `If option "${key}" is set, option "${excess.join('", "')}" cannot be set.`);
                 }
             }
         }
@@ -129,15 +129,15 @@ export abstract class PluginBase<T extends GeneratedFile> {
         for (let key of Object.keys(spec)) {
             resolved[key] = given.includes(key);
         }
-        return resolved as ResolvedParameters<T>;
+        return resolved as ResolvedOptions<T>;
     }
 
 
-    private throwParameterError(spec: ParameterSpec, error: string) {
+    private throwOptionError(spec: OptionsSpec, error: string) {
         let text = '';
         text += error + '\n';
         text += `\n`;
-        text += `Available parameters:\n`;
+        text += `Available options:\n`;
         text += `\n`;
         for (let [key, val] of Object.entries(spec)) {
             text += `- "${key}"\n`;
@@ -152,7 +152,7 @@ export abstract class PluginBase<T extends GeneratedFile> {
     }
 
 
-    private validateParameterSpec(spec: ParameterSpec) {
+    private validateOptionsSpec(spec: OptionsSpec) {
         let known = Object.keys(spec);
         for (let [key, {excludes, requires}] of Object.entries(spec)) {
             let r = requires?.filter(i => !known.includes(i)) ?? [];

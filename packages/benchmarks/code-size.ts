@@ -14,7 +14,7 @@ const testees: Testee[] = readdirSync(testeesPath, {withFileTypes: true})
             pluginName,
             pluginPackage: pluginNameToPackageName(pluginName),
             pluginVersion: pluginNameToVersion(pluginName),
-            pluginParameters: readFileSync(join(testeesPath, dirent.name, ".plugin-out/parameters.txt"), "utf-8").trim(),
+            pluginParameter: readFileSync(join(testeesPath, dirent.name, ".plugin-out/parameters.txt"), "utf-8").trim(),
             webpackFileSize: statSync(join(testeesPath, dirent.name, ".webpack-out/index.js")).size,
             webpackLog: readFileSync(join(testeesPath, dirent.name, ".webpack-out/webpack.log"), "utf-8").trim()
         };
@@ -32,7 +32,7 @@ interface Testee {
     pluginName: string;
     pluginPackage: string;
     pluginVersion: string;
-    pluginParameters: string;
+    pluginParameter: string;
     webpackFileSize: number;
     webpackLog: string;
 }
@@ -55,10 +55,10 @@ function makeFullReport(testees: Testee[]): string {
 
 function makeReportTable(testees: Testee[]): string {
     const lines = [];
-    lines.push('| generator               |                 version | parameters              |     webpack output size |');
+    lines.push('| generator               |                 version | parameter               |     webpack output size |');
     lines.push('|-------------------------|------------------------:|-------------------------|------------------------:|');
     for (let testee of testees) {
-        lines.push(`| ${testee.pluginName} | ${testee.pluginVersion} | ${testee.pluginParameters} | ${new Intl.NumberFormat().format(testee.webpackFileSize)} b |`);
+        lines.push(`| ${testee.pluginName} | ${testee.pluginVersion} | ${testee.pluginParameter} | ${new Intl.NumberFormat().format(testee.webpackFileSize)} b |`);
     }
     return lines.join("\n");
 }
@@ -71,7 +71,7 @@ function makeReportDetails(testee: Testee): string {
     lines.push();
     lines.push(`Plugin name: ${testee.pluginName}  `);
     lines.push(`Plugin version: ${testee.pluginVersion}  `);
-    lines.push(`Plugin parameters: ${testee.pluginParameters}  `);
+    lines.push(`Plugin parameters: ${testee.pluginParameter}  `);
     lines.push(`Webpack file size: ${nf.format(testee.webpackFileSize)} b  `);
     lines.push();
     lines.push(`#### Webpack log`);
