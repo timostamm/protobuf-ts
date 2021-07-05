@@ -1350,9 +1350,7 @@ two arguments:
 
 The methods returns a `UnaryCall`. An "unary" call takes exactly one input 
 messsage and returns exactly one output message. It is one of the four 
-[RPC method types](#rpc-method-types) available in protocol buffers. If you 
-want to use rxjs Observables or plain Promises, you can change the 
-[client style](#rpc-client-styles) for the service. 
+[RPC method types](#rpc-method-types) available in protocol buffers. 
 
 
 `protobuf-ts` also generates an implementation for this interface, the class 
