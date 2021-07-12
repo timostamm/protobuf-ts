@@ -28,6 +28,7 @@ protobuf-ts manual
 - [Binary format](#binary-format)
   - [Conformance](#conformance)
   - [Unknown field handling](#unknown-field-handling)
+- [JSON format](#json-format)
 - [Code size vs speed](#code-size-vs-speed)
 - [Running in the Web Browser](#running-in-the-web-browser)
 - [Running in Node.js](#running-in-nodejs)
