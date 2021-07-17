@@ -68,18 +68,6 @@ bench('ts-proto                    ', () => tsProtoType.fromPartial(tsProtoMessa
 bench('protobuf-ts (speed)         ', () => speedType.create(sizeMessage));
 bench('protobuf-ts (size)          ', () => sizeType.create(speedMessage));
 
-console.log('### read json');
-bench('ts-proto                    ', () => tsProtoType.fromJSON(tsProtoJson));
-bench('protobuf-ts (speed)         ', () => speedType.fromJson(speedJson));
-bench('protobuf-ts (size)          ', () => sizeType.fromJson(sizeJson));
-bench('protobufjs                  ', () => protobufjsType.fromObject(protobufjsJson));
-
-console.log('### write json');
-bench('ts-proto                    ', () => tsProtoType.toJSON(tsProtoMessage));
-bench('protobuf-ts (speed)         ', () => speedType.toJson(speedMessage));
-bench('protobuf-ts (size)          ', () => sizeType.toJson(sizeMessage));
-bench('protobufjs                  ', () => protobufjsType.toObject(protobufjsMessage));
-
 console.log('### read json string');
 bench('ts-proto                    ', () => tsProtoType.fromJSON(JSON.parse(tsProtoJsonString)));
 bench('protobuf-ts (speed)         ', () => speedType.fromJsonString(tsProtoJsonString));
@@ -91,3 +79,15 @@ bench('ts-proto                    ', () => JSON.stringify(tsProtoType.toJSON(ts
 bench('protobuf-ts (speed)         ', () => speedType.toJsonString(speedMessage));
 bench('protobuf-ts (size)          ', () => sizeType.toJsonString(sizeMessage));
 bench('protobufjs                  ', () => JSON.stringify(protobufjsType.toObject(protobufjsMessage)));
+
+console.log('### read json object');
+bench('ts-proto                    ', () => tsProtoType.fromJSON(tsProtoJson));
+bench('protobuf-ts (speed)         ', () => speedType.fromJson(speedJson));
+bench('protobuf-ts (size)          ', () => sizeType.fromJson(sizeJson));
+bench('protobufjs                  ', () => protobufjsType.fromObject(protobufjsJson));
+
+console.log('### write json object');
+bench('ts-proto                    ', () => tsProtoType.toJSON(tsProtoMessage));
+bench('protobuf-ts (speed)         ', () => speedType.toJson(speedMessage));
+bench('protobuf-ts (size)          ', () => sizeType.toJson(sizeMessage));
+bench('protobufjs                  ', () => protobufjsType.toObject(protobufjsMessage));
