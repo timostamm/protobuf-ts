@@ -1,4 +1,4 @@
-import type {UnknownEnum, UnknownMessage, UnknownOneofGroup, UnknownScalar} from "./unknown-types";
+import type {UnknownOneofGroup} from "./unknown-types";
 
 
 /**
@@ -59,11 +59,11 @@ export function isOneofGroup(any: any): any is UnknownOneofGroup {
  * ```
  *
  * In the rare case you just need the value, and do not care about
- * which protobuf field it actually is, you can use this function
+ * which protobuf field is selected, you can use this function
  * for convenience.
  */
 export function getOneofValue<T extends UnknownOneofGroup,
-    V extends string extends keyof T ? UnknownOneofValue
+    V extends string extends keyof T ? UnknownOneofGroup[string]
         : T extends { oneofKind: keyof T } ? T[T["oneofKind"]]
             : never>(oneof: T): V | undefined {
     if (oneof.oneofKind === undefined) {
@@ -71,12 +71,6 @@ export function getOneofValue<T extends UnknownOneofGroup,
     }
     return oneof[oneof.oneofKind] as any;
 }
-
-type UnknownOneofValue =
-    | UnknownScalar
-    | UnknownEnum
-    | UnknownMessage
-    | undefined;
 
 
 /**

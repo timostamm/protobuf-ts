@@ -1,5 +1,10 @@
 ### unreleased changes
 
+New features:
+
+- Add oneof accessor / mutator functions, see #129
+
+
 Cleanup:
 
 - Rename plugin parameters to "plugin options".  

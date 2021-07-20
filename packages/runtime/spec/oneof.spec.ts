@@ -183,7 +183,7 @@ describe('getOneofValue()', function () {
     });
 
     it('returns unknown oneof value', () => {
-        const val: string | number | boolean | undefined = getOneofValue(unknownOneof);
+        const val: UnknownOneofGroup[string] = getOneofValue(unknownOneof);
         expect(val).toBe("x");
         expect(isOneofGroup(emptyOneof)).toBeTrue();
     });
