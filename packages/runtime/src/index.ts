@@ -80,7 +80,7 @@ export {ReflectionJsonReader} from './reflection-json-reader';
 export {ReflectionJsonWriter} from './reflection-json-writer';
 
 // Type guarding at runtime, may be interesting to the user for his reflection ops
-export {isOneofGroup} from './is-oneof-group';
+export {isOneofGroup, setOneofValue, getOneofValue, clearOneofValue} from './oneof';
 
 // Enum object type guard and reflection util, may be interesting to the user.
 export {EnumObjectValue, listEnumValues, listEnumNames, listEnumNumbers, isEnumObject} from './enum-object';

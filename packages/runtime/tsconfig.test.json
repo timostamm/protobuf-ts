@@ -1,16 +1,11 @@
 {
   "extends": "./tsconfig.json",
+  "files": [],
   "include": [
     "spec/*.ts",
     "spec/**/*.ts"
   ],
   "compilerOptions": {
-    "module": "CommonJS",
-    "declaration": false,
-    "paths": {
-      "@protobuf-ts/runtime": [
-        "./src"
-      ]
-    }
+    "module": "CommonJS"
   }
 }

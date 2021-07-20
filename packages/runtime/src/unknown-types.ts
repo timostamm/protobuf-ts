@@ -43,10 +43,11 @@ export type UnknownEnum = number;
 /**
  * A unknown oneof group. See `isOneofGroup()` for details.
  */
-export type UnknownOneofGroup = { oneofKind: undefined | string; } & {
+export type UnknownOneofGroup = {
+    oneofKind: undefined | string;
     [k: string]:
         | UnknownScalar
         | UnknownEnum
-        | UnknownMessage;
-}
-
+        | UnknownMessage
+        | undefined;
+};
