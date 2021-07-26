@@ -89,6 +89,8 @@ export abstract class PluginBase<T extends GeneratedFile> {
                 });
             }
 
+            this.setBlockingStdout();
+
             process.stdout.write(CodeGeneratorResponse.toBinary(response));
 
         } catch (error) {
@@ -216,5 +218,17 @@ export abstract class PluginBase<T extends GeneratedFile> {
         return text;
     }
 
+    private setBlockingStdout() {
+        // Fixes https://github.com/timostamm/protobuf-ts/issues/134
+        // Node is buffering chunks to stdout, meaning that for big generated
+        // files the CodeGeneratorResponse will not reach protoc completely.
+        // To fix this, we set stdout to block using the internal private
+        // method setBlocking(true)
 
+        const stdoutHandle = (process.stdout as any)._handle;
+
+        if (stdoutHandle) {
+            stdoutHandle.setBlocking(true);
+        }
+    }
 }
