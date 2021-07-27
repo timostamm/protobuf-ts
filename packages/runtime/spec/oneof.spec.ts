@@ -1,4 +1,12 @@
-import {clearOneofValue, getOneofValue, isOneofGroup, setOneofValue, UnknownOneofGroup} from "../src";
+import {
+    clearOneofValue,
+    getOneofValue,
+    getSelectedOneofValue,
+    isOneofGroup,
+    setOneofValue,
+    UnknownOneofGroup
+} from "../src";
+import {setUnknownOneofValue} from "../src/oneof";
 
 
 describe('isOneofGroup()', function () {
@@ -144,15 +152,34 @@ describe('setOneofValue()', function () {
         expect(isOneofGroup(emptyOneof)).toBeTrue();
     });
 
-    it('sets unknown oneof value', () => {
+});
+
+describe('setUnknownOneofValue()', function () {
+    let unknownOneof: UnknownOneofGroup;
+    beforeEach(() => {
+        unknownOneof = {
+            oneofKind: "a",
+            a: "x"
+        };
+    });
+
+    it('sets undefined', () => {
         setOneofValue(unknownOneof, undefined);
         expect(unknownOneof.oneofKind).toBe(undefined);
         expect(isOneofGroup(unknownOneof)).toBeTrue();
     });
 
+    it('sets defined', () => {
+        setUnknownOneofValue(unknownOneof, "a", "x");
+        expect(unknownOneof.oneofKind).toBe("a");
+        expect(unknownOneof["a"]).toBe("x");
+        expect(isOneofGroup(unknownOneof)).toBeTrue();
+    });
+
 });
 
-describe('getOneofValue()', function () {
+
+describe('getSelectedOneofValue()', function () {
     let exampleOneof: ExampleOneof;
     let emptyOneof: EmptyOneof;
     let unknownOneof: UnknownOneofGroup;
@@ -171,21 +198,44 @@ describe('getOneofValue()', function () {
     });
 
     it('returns example oneof value', () => {
-        const val: string | number | boolean | undefined = getOneofValue(exampleOneof);
+        const val: string | number | boolean | undefined = getSelectedOneofValue(exampleOneof);
         expect(val).toBe("x");
         expect(isOneofGroup(exampleOneof)).toBeTrue();
     });
 
     it('returns empty oneof value', () => {
-        const val: string | number | boolean | undefined = getOneofValue(emptyOneof);
+        const val: string | number | boolean | undefined = getSelectedOneofValue(emptyOneof);
         expect(val).toBeUndefined();
         expect(isOneofGroup(emptyOneof)).toBeTrue();
     });
 
     it('returns unknown oneof value', () => {
-        const val: UnknownOneofGroup[string] = getOneofValue(unknownOneof);
+        const val: UnknownOneofGroup[string] = getSelectedOneofValue(unknownOneof);
         expect(val).toBe("x");
         expect(isOneofGroup(emptyOneof)).toBeTrue();
+    });
+
+});
+
+
+describe('getOneofValue()', function () {
+    let exampleOneof: ExampleOneof;
+    beforeEach(() => {
+        exampleOneof = {
+            oneofKind: "a",
+            a: "x"
+        };
+    });
+
+    it('returns typed oneof value', () => {
+        const a: string | undefined = getOneofValue(exampleOneof, "a");
+        expect(a).toBe("x");
+
+        const b: number | undefined = getOneofValue(exampleOneof, "b");
+        expect(b).toBeUndefined();
+
+        const c: boolean | undefined = getOneofValue(exampleOneof, "c");
+        expect(c).toBeUndefined();
     });
 
 });
