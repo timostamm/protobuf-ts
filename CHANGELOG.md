@@ -1,5 +1,17 @@
 ### unreleased changes
 
+none
+
+
+### v2.0.0-alpha.28
+
+Bug fixes:
+
+- Fix protoc error message "Plugin output is unparseable" for certain 
+  plugin output sizes, see #134.  
+  Thanks to @fenos for the investigation and fix!
+
+
 New features:
 
 - Add oneof accessor / mutator functions, see #129
