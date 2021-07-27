@@ -95,3 +95,6 @@ Read the [MANUAL](MANUAL.md) to learn more.
 - All other files are licensed under Apache-2.0, see [LICENSE](./LICENSE). 
 
 
+### Support
+
+<a href="https://www.buymeacoffee.com/timostamm" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="109" height="30" ></a>
