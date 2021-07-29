@@ -3,6 +3,14 @@
 none
 
 
+### v2.0.0-alpha.29
+
+Bug fixes:
+
+- @protobuf-ts/grpc-transport & @grpc/grpc-js dependency, see #136.  
+  Thanks to @hugebdu for the report.
+
+
 ### v2.0.0-alpha.28
 
 Bug fixes:
