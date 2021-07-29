@@ -31,6 +31,7 @@
     "@grpc/grpc-js": "^1.2.2"
   },
   "devDependencies": {
+    "@grpc/grpc-js": "^1.2.2",
     "@protobuf-ts/plugin": "^2.0.0-alpha.29",
     "@protobuf-ts/protoc": "^2.0.0-alpha.29",
     "@types/jasmine": "^3.5.10",
