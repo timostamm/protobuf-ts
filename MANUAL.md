@@ -33,12 +33,16 @@ protobuf-ts manual
 - [Running in the Web Browser](#running-in-the-web-browser)
 - [Running in Node.js](#running-in-nodejs)
 - [RPC support](#rpc-support)
+- [Generic RPC clients](#generic-rpc-clients)
   - [RPC options](#rpc-options)
   - [RPC method types](#rpc-method-types)
-  - [gRPC web transport](#grpc-web-transport)
-  - [Twirp transport](#twirp-transport)
-  - [gRPC transport](#grpc-transport)
-  - [gRPC server](#grpc-server)
+  - [RPC transports](#rpc-transports)
+- [gRPC web transport](#grpc-web-transport)
+- [Twirp transport](#twirp-transport)
+- [gRPC transport](#grpc-transport)
+- [Native gRPC server](#native-grpc-server)
+- [Native gRPC client](#native-grpc-client)
+- [Generic RPC servers](#generic-rpc-servers)
 - [Angular support](#angular-support)
 
 
@@ -158,6 +162,12 @@ Available plugin options:
   This is the default behaviour, but only applies to services that do   
   *not* use the option `ts.server`.  
   If you do not want servers at all, use `force_server_none`.
+
+- "server_generic"  
+  Generate a generic server interface. Adapters are used to serve the service,
+  for example @protobuf-ts/grpc-backend for gRPC.    
+  Note that this is an experimental feature and may change with a minor release.  
+  Only applies to services that do *not* use the option `ts.server`.
 
 - "server_grpc1"  
   Generate a server interface and definition for use with @grpc/grpc-js
@@ -1302,17 +1312,30 @@ for more information.
 
 
 
-
 ## RPC support
 
-`protobuf-ts` can generate clients for your rpc services. The clients are 
-not hard-wired to a specific protocol. They take a `RpcTransport` as a 
-constructor argument and there are transports for 
-[gRPC web](#grpc-web-transport),
-[gRPC](#grpc-transport) and 
-[Twirp](#twirp-transport).
+`protobuf-ts` provides several options for RPC clients and servers. By default, 
+it generates [generic clients](#generic-rpc-clients) which delegate the method 
+calls to a [transport](#rpc-transports) that implements a specific protocol. 
 
-Let's start with a real world example. For the following service definition:
+`protobuf-ts` comes with several RPC transport implementations:
+- `TwirpFetchTransport` from `@protobuf-ts/twirp-transport` - see [Twirp transport](#twirp-transport)
+- `GrpcWebFetchTransport` from `@protobuf-ts/grpcweb-transport` - see [gRPC web transport](#grpc-web-transport)
+- `GrpcTransport` from `@protobuf-ts/grpc-transport` - see [gRPC transport](#grpc-transport)
+
+`protobuf-ts` can also generate native [clients for gRPC](#native-grpc-client) and
+[servers for gRPC](#native-grpc-server) for the package `@grpc/grpc-js`.
+
+The 3rd party [Twirp TS plugin](https://github.com/hopin-team/twirp-ts) provides 
+server side support for the Twirp protocol.
+
+As an experimental feature, `protobuf-ts` provides a contract for 
+[generic servers](#generic-rpc-servers) with an adapter for gRPC.  
+
+
+## Generic RPC clients
+
+For the following service definition:
 ```proto
 service Haberdasher {
   rpc MakeHat(Size) returns (Hat);
@@ -1354,15 +1377,9 @@ messsage and returns exactly one output message. It is one of the four
 [RPC method types](#rpc-method-types) available in protocol buffers. 
 
 
-`protobuf-ts` also generates an implementation for this interface, the class 
-`HaberdasherClient`. It takes a `RpcTransport` argument. The actual work of 
-transferring messages is delegated to the `RpcTransport`.
-
-
-`@protobuf-ts` comes with several RPC transports: 
-- `TwirpFetchTransport` from `@protobuf-ts/twirp-transport` - see [Twirp transport](#twirp-transport)
-- `GrpcWebFetchTransport` from `@protobuf-ts/grpcweb-transport` - see [gRPC web transport](#grpc-web-transport)
-- `GrpcTransport` from `@protobuf-ts/grpc-transport` - see [gRPC transport](#grpc-transport)
+`protobuf-ts` also generates an implementation for `IHaberdasherClient`, the 
+class `HaberdasherClient`. It takes a `RpcTransport` and a `RpcOptions` 
+argument. 
 
 If you set the `enable_angular_annotations` option, `protobuf-ts` adds 
 annotations to the client that enable Angular dependency injection. 
@@ -1591,8 +1608,20 @@ If you cannot use async iterables in your environment, you can alternatively att
 to the `RpcOutputStream`. See the source code of `RpcOutputStream` for further documentation.
 
 
+#### RPC transports
 
-### gRPC web transport
+A `RpcTransport` executes Remote Procedure Calls defined by a protobuf
+service.
+
+This interface is the contract between a generated service client and
+some wire protocol like grpc, grpc-web, Twirp or other.
+
+The transport receives reflection information about the service and
+method being called.
+
+
+
+## gRPC web transport
 
 While gRPC requires HTTP 2 support on your server and client, gRPC web is a subset 
 that works with HTTP 1. gRPC works with unary and server streaming methods. 
@@ -1691,7 +1720,7 @@ provided by the `UnaryCall` and `ServerStreamingCall`, see [RPC method types](#r
 
 
 
-### Twirp transport
+## Twirp transport
 
 [Twirp](https://github.com/twitchtv/twirp) is a simple RPC framework with protobuf 
 service definitions. 
@@ -1782,7 +1811,7 @@ provided by the `UnaryCall`, see [RPC method types](#rpc-method-types).
 
 
 
-### gRPC transport
+## gRPC transport
 
 The gRPC transport supports all [method types](#rpc-method-types). It uses the 
 package `@grpc/grpc-js` to make gRPC requests and can only be used in Node.js.
@@ -1808,11 +1837,11 @@ for await (let hat of streamingCall.responses) {
 }
 ```
 
-
 For more information, have a look at the example client in [packages/example-node-grpc-transport-client](https://github.com/timostamm/protobuf-ts/tree/master/packages/example-node-grpc-transport-client).
 
 
-### gRPC server
+
+## Native gRPC server
 
 'protobuf-ts' can generate code for gRPC servers that run in Node.JS. 
 
@@ -1884,6 +1913,34 @@ server.bindAsync(
 
 For a working example, have a look at  [packages/example-node-grpc-server](https://github.com/timostamm/protobuf-ts/tree/master/packages/example-node-grpc-server).
 
+
+
+## Native gRPC client
+
+'protobuf-ts' can generate code for gRPC clients that run in Node.JS.
+
+> **Note:** The generated code requires the package @grpc/grpc-js. Install it with:
+> ```shell script
+> # with npm:
+> npm install @grpc/grpc-js
+> 
+> # with yarn:
+> yarn add @grpc/grpc-js
+> ```
+
+To generate a gRPC server, set the plugin option `client_grpc1` or
+set the service option `(ts_client) = GRPC1_CLIENT`.
+
+
+
+## Generic RPC servers
+
+With the plugin option `server_generic`, `protobuf-ts` generates generic interfaces
+for services for the server side.
+
+Note that this feature is experimental and may change with minor releases.
+
+For usage, see [/packages/example-chat-system/](./packages/example-chat-system/).
 
 
 

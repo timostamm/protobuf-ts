@@ -97,8 +97,9 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             excludes: ['server_grpc1'],
         },
         server_generic: {
-            description: "Generate a generic server interface. Adapters be used to serve the service, \n" +
+            description: "Generate a generic server interface. Adapters are used to serve the service, \n" +
                          "for example @protobuf-ts/grpc-backend for gRPC. \n" +
+                         "Note that this is an experimental feature and may change with a minor release. \n" +
                          "Only applies to services that do *not* use the option `ts.server`.",
             excludes: ['server_none', 'force_server_none'],
         },

@@ -62,8 +62,11 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 - [x] implements the [canonical proto3 JSON format](MANUAL.md#json-format)
 - [x] implements the [binary format](MANUAL.md#binary-format) and respects [unknown fields](MANUAL.md#unknown-field-handling)
 - [x] strictly [conforms to the protobuf spec](MANUAL.md#conformance)
-- [x] generates clients that can be used with [gRPC web](MANUAL.md#grpc-web-transport), [Twirp](MANUAL.md#twirp-transport) or [gRPC](MANUAL.md#grpc-transport)
-- [x] generates [gRPC servers](MANUAL.md#grpc-server)
+- [x] generates clients that can be used with the [gRPC web](MANUAL.md#grpc-web-transport), 
+      [Twirp](MANUAL.md#twirp-transport) or [gRPC](MANUAL.md#grpc-transport) protocol
+- [x] generates [native gRPC servers](MANUAL.md#native-grpc-server) and 
+      [clients](MANUAL.md#native-grpc-server) for usage with `@grpc/grpc-js`
+- [x] supported by [Twirp-TS](https://github.com/hopin-team/twirp-ts) for Twirp servers running on Node.js
 - [x] supports [Angular](MANUAL.md#angular-support) dependency injection and pipes
 - [x] automatically [installs protoc](./packages/protoc/README.md)
 - [x] can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
