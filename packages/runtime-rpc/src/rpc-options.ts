@@ -23,10 +23,10 @@ export interface RpcOptions {
     meta?: RpcMetadata;
 
     /**
-     * Deadline for the call. Can be given as a Date object or a
-     * timestamp in milliseconds.
+     * Timeout for the call in milliseconds.
+     * If a Date object is given, it is used as a deadline.
      */
-    deadline?: Date | number;
+    timeout?: number | Date;
 
     /**
      * Interceptors can be used to manipulate request and response data.

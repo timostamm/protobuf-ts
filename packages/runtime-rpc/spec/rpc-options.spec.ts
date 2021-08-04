@@ -5,8 +5,8 @@ import type {IMessageType} from "@protobuf-ts/runtime";
 describe('mergeRpcOptions()', () => {
 
     it('does not require seconds argument', function () {
-        let opt = mergeRpcOptions({deadline: 123}, undefined);
-        expect(opt).toEqual({deadline: 123});
+        let opt = mergeRpcOptions({timeout: 123}, undefined);
+        expect(opt).toEqual({timeout: 123});
     });
 
     it('merges interceptors', function () {

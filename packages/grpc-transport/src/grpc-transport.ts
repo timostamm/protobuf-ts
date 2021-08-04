@@ -45,9 +45,13 @@ export class GrpcTransport implements RpcTransport {
         if (options.callOptions) {
             return options.callOptions;
         }
-        return {
-            deadline: options.deadline
-        };
+        const co: CallOptions = {};
+        if (typeof options.timeout === "number") {
+            co.deadline = Date.now() + options.timeout;
+        } else if (options.timeout) {
+            co.deadline = options.timeout;
+        }
+        return co;
     }
 
     unary<I extends object, O extends object>(method: MethodInfo<I, O>, input: I, options: GrpcCallOptions): UnaryCall<I, O> {

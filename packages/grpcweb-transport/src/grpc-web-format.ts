@@ -6,7 +6,7 @@ import {GrpcStatusCode} from "./goog-grpc-status-code";
 /**
  * Create fetch API headers for a grpc-web request.
  */
-export function createGrpcWebRequestHeader(headers: Headers, format: GrpcWebFormat, deadline: Date | number | undefined, meta?: RpcMetadata, userAgent?: string): Headers {
+export function createGrpcWebRequestHeader(headers: Headers, format: GrpcWebFormat, timeout: Date | number | undefined, meta?: RpcMetadata, userAgent?: string): Headers {
     // add meta as headers
     if (meta) {
         for (let [k, v] of Object.entries(meta)) {
@@ -28,15 +28,23 @@ export function createGrpcWebRequestHeader(headers: Headers, format: GrpcWebForm
     headers.set('X-Grpc-Web', "1");
     if (userAgent)
         headers.set("X-User-Agent", userAgent);
-    if (deadline) {
-        let ts = typeof deadline == "number" ? deadline : deadline.getTime();
-        let timeout = ts - Date.now();
-        headers.set('grpc-timeout', timeout + 'm');
+
+    if (typeof timeout === "number") {
+        if (timeout <= 0) {
+            // we raise an error ourselves because header "grpc-timeout" must be a positive integer
+            throw new RpcError(`timeout ${timeout} ms exceeded`, GrpcStatusCode[GrpcStatusCode.DEADLINE_EXCEEDED]);
+        }
+        headers.set('grpc-timeout', `${timeout}m`);
+    } else if (timeout) {
+        const deadline = timeout.getTime();
+        const now = Date.now();
+        if (deadline <= now) {
+            // we raise an error ourselves because header "grpc-timeout" must be a positive integer
+            throw new RpcError(`deadline ${timeout} exceeded`, GrpcStatusCode[GrpcStatusCode.DEADLINE_EXCEEDED]);
+        }
+        headers.set('grpc-timeout', `${deadline - now}m`);
     }
-    // let timeout = typeof deadline == "number" ? deadline : deadline instanceof Date ? (deadline.getTime() - Date.now()) : 0;
-    // if (timeout > 0) {
-    //     headers.set('grpc-timeout', timeout + 'm');
-    // }
+
     return headers;
 }
 
