@@ -1,6 +1,9 @@
 ### unreleased changes
 
-none
+Breaking changes:
+
+- `RpcOptions` takes a `timeout` property now. `deadline` property 
+  has been removed. See #138 for details.
 
 
 ### v2.0.0-alpha.29
