@@ -28,11 +28,23 @@ export function createGrpcWebRequestHeader(headers: Headers, format: GrpcWebForm
     headers.set('X-Grpc-Web', "1");
     if (userAgent)
         headers.set("X-User-Agent", userAgent);
+
     if (typeof timeout === "number") {
-        headers.set('grpc-timeout', `${Date.now() + timeout}m`);
+        if (timeout <= 0) {
+            // we raise an error ourselves because header "grpc-timeout" must be a positive integer
+            throw new RpcError(`timeout ${timeout} ms exceeded`, GrpcStatusCode[GrpcStatusCode.DEADLINE_EXCEEDED]);
+        }
+        headers.set('grpc-timeout', `${timeout}m`);
     } else if (timeout) {
-        headers.set('grpc-timeout', `${timeout.getTime()}m`);
+        const deadline = timeout.getTime();
+        const now = Date.now();
+        if (deadline <= now) {
+            // we raise an error ourselves because header "grpc-timeout" must be a positive integer
+            throw new RpcError(`deadline ${timeout} exceeded`, GrpcStatusCode[GrpcStatusCode.DEADLINE_EXCEEDED]);
+        }
+        headers.set('grpc-timeout', `${deadline - now}m`);
     }
+
     return headers;
 }
 
