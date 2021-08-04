@@ -1409,10 +1409,9 @@ The options:
   If a key ends with `-bin`, it should contain binary data in base64
   encoding, allowing you to send serialized messages.
 
-- `deadline: Date | number`
-  
-  Deadline for the call. Can be a specific date or a
-  timeout in milliseconds.
+- `timeout: Date | number`  
+  Timeout for the call in milliseconds.  
+  If a Date object is given, it is used as a deadline.
 
 - `interceptors: RpcInterceptor[]`
   
