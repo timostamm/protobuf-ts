@@ -65,7 +65,7 @@ async function callServerStream(client: IExampleServiceClient) {
     const headers = await call.headers;
     console.log("got response headers: ", headers)
 
-    for await (let response of call.response) {
+    for await (let response of call.responses) {
         console.log("got response message: ", response)
     }
 
