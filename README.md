@@ -1,5 +1,5 @@
-protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?style=svg)](https://app.circleci.com/pipelines/github/timostamm/protobuf-ts) [![npm](https://img.shields.io/npm/v/@protobuf-ts/plugin)](https://www.npmjs.com/package/@protobuf-ts/plugin)
-============
+protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?style=svg)](https://app.circleci.com/pipelines/github/timostamm/protobuf-ts) [![npm](https://img.shields.io/npm/v/@protobuf-ts/plugin?x)](https://www.npmjs.com/package/@protobuf-ts/plugin)
+===========
 
 
 [Protocol buffers](https://developers.google.com/protocol-buffers) 
