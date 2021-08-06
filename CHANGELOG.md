@@ -3,6 +3,138 @@
 none
 
 
+
+### v2.0.0
+
+#### New features
+
+- gRPC server support for @grpc/grpc-js (see #52)  
+  Thanks to @badsyntax for inspiration
+
+- gRPC client support for @grpc/grpc-js (see #57)
+
+- Experimental generic server support (see #56)
+
+- gRPC transport (see #45)
+
+- Add oneof accessor / mutator functions, see #129
+
+- More convenience method to read custom options, see #36
+
+- runtime: Message options are now available in reflection
+  information, see #35.
+
+- runtime: BinaryReader.skip() supports WireType.StartGroup now.
+
+- plugin: Groups (deprecated proto2 feature) are now completely
+  ignored, but should still be treated properly as unknown fields.
+
+- The Twirp and gRPC-web transports let you pass options to fetch() now.  
+  See #95, #105.  
+  Thanks to @jamesbirtles for the PR!
+
+- Compatibility with Angular 11  
+  No code changes, just relaxed peer dependency constraints.
+
+- Compatibility with svelte (type imports), see #94  
+  Thanks to @frederikhors for the detailed reports.
+
+- protoc: prefer protoc from $PATH (see #60)
+
+- File option to exclude custom options (see #7)
+
+- Add long_type_number and long_type_bigint plugin options (see #13, thanks @vicb)
+
+
+#### Bug fixes
+
+- @protobuf-ts/grpc-transport & @grpc/grpc-js dependency, see #136.  
+  Thanks to @hugebdu for the report.
+
+- Fix protoc error message "Plugin output is unparseable" for certain
+  plugin output sizes, see #134.  
+  Thanks to @fenos for the investigation and fix!
+
+- Fix memory leak in @protobuf-ts/grpc-transport, see #107  
+  Thanks to @dddenis for the PR!
+
+- twirp-transport is now a bit more compatible with polyfills for
+  the fetch API that are incomplete.
+
+- Fix protoc arch detection on Apple Silicon #108  
+  Thanks to @lqs for the PR!
+
+- Fixed grpcweb-transport to handle responses with HTTP error status
+  and missing content-type header, see #102.  
+  Thanks to @frederikhors for the bug report.
+
+- fix wrong grpc status code INTERNAL for aborted server streaming method (see #86)
+
+- Added workaround for unhandled promise rejection (see #86)
+
+- Improve support for the `node-fetch` polyfill (see #81)
+
+- The `generate_dependencies` parameter doesn't work (see #59)  
+  Thanks to @jcready for the report and fix.
+
+- grpc-transport does not pass along provided deadline option (see #77)
+
+- grpcweb-transport: Recognize "application/grpc-web-text+proto".
+
+- Fixed conversion of gRPC metadata to our metadata (grpc-transport, grpc-backend)
+
+- Support grpc-web-text format with envoy (see #54)  
+  Thanks to @DiogoMaMartins for the bug report.
+
+- Fix windows import path #41
+
+- Proto fields with `[jstype = JS_NUMBER]` were documented as `* @generated from protobuf field: [...] [jstype = JS_STRING];`. (See #27)
+
+- Proto fields with `[jstype = JS_NORMAL]` were generated as `string` when the `long_type_string` plugin parameter was used. (See #27)
+
+
+#### Breaking changes
+
+- `RpcOptions` takes a `timeout` property now. `deadline` property
+  has been removed. See #138 for details.
+
+- The "response" property of ServerStreamingCall and BidiStreamingCall has been renamed "responses".
+
+- The "request" property of ClientStreamingCall and BidiStreamingCall has been renamed "requests".
+
+- plugin option "disable_service_client" was renamed to "force_client_none"
+
+- clients are generated into separate files (see #55)
+
+- The `cancel` method of RPC was removed, see #9  
+  As a replacement, you can pass an `AbortSignal` in the call options instead.
+
+
+#### Breaking changes in non-user-facing code
+
+- runtime: The MessageInfo interface requires the new "options"
+  property.
+
+- plugin-framework: IDescriptorInfo.isMessageField() no longer
+  returns true for GROUP field type.
+
+- grpcweb-transport: The function `readGrpcWebResponseHeader()` no longer
+  returns the format.
+
+- grpcweb-transport: The function `readGrpcWebResponseBody()` no longer takes
+  the format as an argument. Instead, it now takes the content-type response
+  header value and determines the format on its own.
+
+- The function `mergeExtendedRpcOptions` was renamed to `mergeRpcOptions`.
+
+- RpcOutputStream callback `onNext` is now called with `complete = false` on error.
+
+- the methods `stackUnaryInterceptors`, `stackServerStreamingInterceptors`,
+  `stackClientStreamingInterceptors`, `stackDuplexStreamingInterceptors` are
+  now deprecated. Use `stackIntercept` instead.
+
+
+
 ### v2.0.0-alpha.30
 
 Breaking changes:
