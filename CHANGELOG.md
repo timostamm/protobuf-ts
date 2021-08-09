@@ -2,6 +2,14 @@
 
 none
 
+### v2.0.1
+
+New features:
+
+- @protobuf-ts/plugin expresses TypeScript compatibility with 
+  a `peerDependency` `>=3.8.3`. Thanks to @ghaiklor-wix for the 
+  suggestion.
+
 
 
 ### v2.0.0
