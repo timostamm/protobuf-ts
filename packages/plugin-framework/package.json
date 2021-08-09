@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@protobuf-ts/runtime": "^2.0.0",
-    "typescript": ">=3.8.3 <4"
+    "typescript": "^3.9"
   },
   "gitHead": "2742e3995c14cab17e74be919b59b878c8383ad9"
 }
