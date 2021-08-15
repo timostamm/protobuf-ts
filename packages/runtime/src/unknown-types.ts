@@ -1,7 +1,7 @@
 /**
  * A message of unknown type.
  */
-export type UnknownMessage = {
+export interface UnknownMessage {
     [k: string]:
         | UnknownScalar
         | UnknownEnum
@@ -20,7 +20,7 @@ export type UnknownMessage = {
  */
 export type UnknownMap<T = UnknownMessage | UnknownScalar | UnknownEnum> = {
     [key: string]: T;
-}
+};
 
 
 /**
