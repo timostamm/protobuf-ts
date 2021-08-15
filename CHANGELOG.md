@@ -2,6 +2,15 @@
 
 none
 
+
+### v2.0.2.alpha-0
+
+Bug fixes:
+
+- Change `UnknownMessage` from type to interface, see #143
+
+
+
 ### v2.0.1
 
 New features:
