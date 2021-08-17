@@ -3,10 +3,11 @@
 none
 
 
-### v2.0.2.alpha-0
+### v2.0.2
 
 Bug fixes:
 
+- Revert TypeScript `peerDependency` in @protobuf-ts/plugin to support yarn 2, see #144
 - Change `UnknownMessage` from type to interface, see #143
 
 
