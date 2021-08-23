@@ -13,7 +13,7 @@ npm install @protobuf-ts/protoc
 
 # with yarn:
 yarn add @protobuf-ts/protoc
-```             
+```
 
 Now you can run protoc as usual, you just have to prefix your command with 
 `npx` or `yarn`:
@@ -29,6 +29,12 @@ yarn protoc --version
 If you do not already have protoc in your `$PATH`, this will automatically 
 download the latest release of protoc for your platform from the github 
 release page, then run the executable with your arguments.   
+
+
+#### Yarn berry
+
+This package is not compatible with Yarn berry. Please use 
+[node-protoc](https://www.npmjs.com/package/node-protoc).
 
 
 #### Installing a specific version

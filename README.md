@@ -48,7 +48,7 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 ### Quickstart
 
 - `npm install @protobuf-ts/plugin`
-  > installs the plugin and the compiler "protoc"
+  > installs the plugin and the compiler "protoc"  
 
 - download the example file [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/test-fixtures/msg-readme.proto) and place it into a `protos/` directory
 
@@ -68,7 +68,7 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
       [clients](MANUAL.md#native-grpc-client) for usage with `@grpc/grpc-js`
 - [x] supported by [Twirp-TS](https://github.com/hopin-team/twirp-ts) for Twirp servers running on Node.js
 - [x] supports [Angular](MANUAL.md#angular-support) dependency injection and pipes
-- [x] automatically [installs protoc](./packages/protoc/README.md)
+- [x] automatically [installs protoc](./packages/protoc/README.md) (with Yarn berry, please use [node-protoc](https://www.npmjs.com/package/node-protoc))
 - [x] can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
 - [x] supports [proto3 optionals](MANUAL.md#proto3-optionals)
 - [x] [supports bigint](MANUAL.md#bigint-support) for 64 bit integers
