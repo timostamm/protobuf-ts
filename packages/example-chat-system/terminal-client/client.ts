@@ -31,7 +31,7 @@ async function main(term: TerminalIO, client: IChatServiceClient) {
     const headers = await call.headers;
 
     // print all chat events
-    call.response.onMessage(message => {
+    call.responses.onMessage(message => {
         switch (message.event.oneofKind) {
             case "joined":
                 term.print(`* ${message.event.joined}`);

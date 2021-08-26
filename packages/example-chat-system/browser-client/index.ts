@@ -42,7 +42,7 @@ joinPanel.startCallback = async (username) => {
     chatPanel.show();
 
     // print all chat events
-    call.response.onMessage(message => {
+    call.responses.onMessage(message => {
         switch (message.event.oneofKind) {
             case "joined":
                 chatPanel.addOther(message.event.joined);
