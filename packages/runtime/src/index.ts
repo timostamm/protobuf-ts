@@ -79,6 +79,9 @@ export {ReflectionBinaryWriter} from './reflection-binary-writer';
 export {ReflectionJsonReader} from './reflection-json-reader';
 export {ReflectionJsonWriter} from './reflection-json-writer';
 
+export {REFLECTION_BRAND} from './reflection-brand';
+export {reflectionGetType, reflectionIsProtoMessage} from './reflection-get-type';
+
 // Oneof helpers
 export {isOneofGroup, setOneofValue, getOneofValue, clearOneofValue, getSelectedOneofValue} from './oneof';
 
