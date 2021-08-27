@@ -2,7 +2,7 @@ import type {FieldInfo, MessageInfo} from "./reflection-info";
 import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
 import type {JsonValue} from "./json-typings";
 import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
-import { REFLECTION_BRAND } from './reflection-brand';
+import {REFLECTION_BRAND} from './reflection-brand';
 
 /**
  * Similar to `Partial<T>`, but recursive, and keeps `oneof` groups
