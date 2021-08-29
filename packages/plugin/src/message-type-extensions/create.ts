@@ -30,7 +30,7 @@ export class Create implements CustomMethodGenerator {
     // create(value?: PartialMessage<ScalarValuesMessage>): ScalarValuesMessage {
     make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[] {
         // create(value?: PartialMessage<ScalarValuesMessage>): ScalarValuesMessage {
-        let internalBinaryRead = this.makeMethod(
+        let methodDeclaration = this.makeMethod(
             source,
             descriptor,
 
@@ -44,7 +44,7 @@ export class Create implements CustomMethodGenerator {
             // return message;
             ts.createReturn(ts.createIdentifier("message"))
         )
-        return [internalBinaryRead];
+        return [methodDeclaration];
     }
 
 
