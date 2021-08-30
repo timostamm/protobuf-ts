@@ -152,13 +152,56 @@ namespace asp_net_core_server
             };
         }
 
-        public override Task Bidi(IAsyncStreamReader<ExampleRequest> requestStream,
+        public override async Task Bidi(IAsyncStreamReader<ExampleRequest> requestStream,
             IServerStreamWriter<ExampleResponse> responseStream, ServerCallContext context)
         {
-            // context.
 
+            // by default, the server always writes some custom response headers
+            await context.WriteResponseHeadersAsync(new Metadata
+            {
+                {"server-header", "server header value"},
+                {"server-header", "server header value duplicate"},
+                {"server-header-bin", Encoding.UTF8.GetBytes("server header binary value")},
+            });
 
-            return base.Bidi(requestStream, responseStream, context);
+            await responseStream.WriteAsync(new ExampleResponse
+            {
+                Answer = "Ask me anything"
+            });
+
+            var questionCount = 0;
+
+            await foreach (var x in requestStream.ReadAllAsync())
+            {
+                questionCount++;
+                switch (x.PleaseFail)
+                {
+                    case FailRequest.MessageThenErrorStatus:
+                        context.Status = new Status(StatusCode.ResourceExhausted, "you requested an error");
+                        await responseStream.WriteAsync(new ExampleResponse
+                        {
+                            Answer = $"You asked {questionCount} questions and requested an error"
+                        });
+                        break;
+                    case FailRequest.ErrorStatusOnly:
+                        throw new RpcException(
+                            new Status(StatusCode.ResourceExhausted, "you requested an error, no message"),
+                            new Metadata
+                            {
+                                {"server-trailer", "created by rpc exception on server"}
+                            }
+                        );
+                    case FailRequest.None:
+                        await responseStream.WriteAsync(new ExampleResponse
+                        {
+                            Answer = $"You asked: {x.Question}"
+                        });
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+            }
         }
 
         private static MapField<string, string> MetadataToMap(Metadata metadata)
