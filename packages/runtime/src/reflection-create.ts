@@ -1,7 +1,7 @@
 import type {MessageInfo} from "./reflection-info";
 import {reflectionScalarDefault} from "./reflection-scalar-default";
 import type {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
-import { REFLECTION_BRAND } from './reflection-brand';
+import {MESSAGE_TYPE} from './message-type-contract';
 
 /**
  * Creates an instance of the generic message, using the field
@@ -9,7 +9,7 @@ import { REFLECTION_BRAND } from './reflection-brand';
  */
 export function reflectionCreate(info: MessageInfo): any {
     let msg: UnknownMessage = {
-        [REFLECTION_BRAND]: info,
+        [MESSAGE_TYPE]: info,
     };
     for (let field of info.fields) {
         let name = field.localName;

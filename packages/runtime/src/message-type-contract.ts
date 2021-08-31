@@ -2,7 +2,9 @@ import type {FieldInfo, MessageInfo} from "./reflection-info";
 import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
 import type {JsonValue} from "./json-typings";
 import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
-import {REFLECTION_BRAND} from './reflection-brand';
+
+/** The symbol used as a key on message objects to store the message type. */
+export const MESSAGE_TYPE: unique symbol = Symbol("protobuf-ts/message-type");
 
 /**
  * Similar to `Partial<T>`, but recursive, and keeps `oneof` groups

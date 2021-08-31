@@ -1,6 +1,6 @@
-import {MessageType, ScalarType, reflectionGetType, reflectionIsProtoMessage} from '../src';
+import {MessageType, ScalarType, containsMessageType, getMessageType} from '../src';
 
-describe('reflectionGetType', () => {
+describe('containsMessageType', () => {
     interface MyMessage {
         stringField: string;
     }
@@ -14,8 +14,11 @@ describe('reflectionGetType', () => {
             stringField: "hello world",
         });
 
-        expect(reflectionIsProtoMessage(msg)).toBeTrue();
-        expect(reflectionGetType(msg)).toEqual(MyMessage);
+        if (containsMessageType(msg)) {
+            expect(getMessageType(msg)).toEqual(MyMessage);
+        } else {
+            fail("containsMessageType() must return true");
+        }
     });
 
     it('allows to extract type after .clone', () => {
@@ -24,15 +27,16 @@ describe('reflectionGetType', () => {
         });
 
         const cloned = MyMessage.clone(msg);
-
-        expect(reflectionIsProtoMessage(cloned)).toBeTrue();
-        expect(reflectionGetType(cloned)).toEqual(MyMessage);
+        if (containsMessageType(cloned)) {
+            expect(getMessageType(cloned)).toEqual(MyMessage);
+        } else {
+            fail("containsMessageType() must return true");
+        }
     });
 
     it('returns error if provided a non-message', () => {
         const msg: MyMessage = { stringField: "foo" };
 
-        expect(reflectionIsProtoMessage(msg)).toBeFalse();
-        expect(() => reflectionGetType(msg)).toThrowError(/msg is not a protobuf message/);
+        expect(containsMessageType(msg)).toBeFalse();
     });
 });

@@ -1,10 +1,7 @@
-import { REFLECTION_BRAND } from './reflection-brand';
-
 /**
  * A message of unknown type.
  */
 export interface UnknownMessage {
-    [REFLECTION_BRAND]?: any;
     [k: string]:
         | UnknownScalar
         | UnknownEnum

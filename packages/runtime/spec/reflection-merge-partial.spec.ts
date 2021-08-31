@@ -5,7 +5,6 @@ import {
     normalizeFieldInfo,
     reflectionCreate,
     reflectionMergePartial,
-    REFLECTION_BRAND,
     RepeatType,
     ScalarType,
     UnknownMessage
@@ -143,12 +142,10 @@ describe('reflectionMergePartial()', () => {
 
         it('keeps target array instance', () => {
             let target: UnknownMessage = {
-                [REFLECTION_BRAND]: type,
                 arr: [1,2,3]
             };
             let targetArr = target.arr;
             let source = {
-                [REFLECTION_BRAND]: type,
                 arr: []
             };
             reflectionMergePartial(type, source, target);
