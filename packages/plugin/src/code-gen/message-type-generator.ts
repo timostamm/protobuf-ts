@@ -115,6 +115,7 @@ export class MessageTypeGenerator extends GeneratorBase {
         // "MyMessage$Type" members for optimized binary format
         if (optimizeFor === OptimizeMode.SPEED) {
             classDecMembers.push(
+                ...this.typeMethodCreate.make(source, descriptor),
                 ...this.typeMethodInternalBinaryRead.make(source, descriptor),
                 ...this.typeMethodInternalBinaryWrite.make(source, descriptor),
             );

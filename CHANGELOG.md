@@ -2,6 +2,11 @@
 
 none
 
+Bug fixes:
+
+- Generated `create()` method for speed optimized code got left behind in #55  
+  Thanks to @odashevskii-plaid for the find!
+
 
 ### v2.0.2
 

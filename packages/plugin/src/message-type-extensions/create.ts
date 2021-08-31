@@ -51,7 +51,7 @@ export class Create implements CustomMethodGenerator {
     makeMethod(source: TypescriptFile, descriptor: DescriptorProto, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
             MessageInterface = this.imports.type(source, descriptor),
-            PartialMessage = this.imports.name(source,'PartialMessage', this.options.runtimeImportPath)
+            PartialMessage = this.imports.name(source,'PartialMessage', this.options.runtimeImportPath, true)
         ;
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("create"), undefined, undefined,
             [
