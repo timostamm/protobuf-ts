@@ -116,7 +116,7 @@ export class Interpreter {
         if (!type) {
             type = new rt.MessageType(
                 typeName,
-                this.buildFieldInfos(this.registry.extensionsFor(optionsTypeName), excludeOptions),
+                this.buildFieldInfos(this.registry.extensionsFor(optionsTypeName)),
                 {}
             );
             this.messageTypes.set(typeName, type);
@@ -190,9 +190,33 @@ export class Interpreter {
         assert(DescriptorProto.is(descriptor));
         let type = this.messageTypes.get(typeName);
         if (!type) {
-            const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
-            type = this.buildMessageType(typeName, descriptor.field, ourFileOptions["ts.exclude_options"]);
+
+            // Create and store the message type
+            const optionsPlaceholder: JsonOptionsMap = {};
+            type = new rt.MessageType(
+                typeName,
+                this.buildFieldInfos(descriptor.field),
+                optionsPlaceholder
+            );
             this.messageTypes.set(typeName, type);
+
+            const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
+
+            // add message options *after* storing, so that the option can refer to itself
+            const messageOptions = this.readOptions(descriptor, ourFileOptions["ts.exclude_options"]);
+            if (messageOptions) {
+                for (let key of Object.keys(messageOptions)) {
+                    optionsPlaceholder[key] = messageOptions[key];
+                }
+            }
+
+            // same for field options
+            for (let i = 0; i < type.fields.length; i++) {
+                const fd = descriptor.field[i];
+                const fi = type.fields[i];
+                fi.options = this.readOptions(fd, ourFileOptions["ts.exclude_options"]);
+            }
+
         }
         return type;
     }
@@ -335,19 +359,8 @@ export class Interpreter {
     }
 
 
-    private buildMessageType(typeName: string, fields: FieldDescriptorProto[], excludeOptions: readonly string[]): rt.IMessageType<rt.UnknownMessage> {
-        let desc = this.registry.resolveTypeName(typeName);
-        assert(DescriptorProto.is(desc));
-        return new rt.MessageType(
-            typeName,
-            this.buildFieldInfos(fields, excludeOptions),
-            this.readOptions(desc, excludeOptions)
-        );
-    }
-
-
     // skips GROUP field type
-    private buildFieldInfos(fieldDescriptors: readonly FieldDescriptorProto[], excludeOptions: readonly string[]): rt.PartialFieldInfo[] {
+    private buildFieldInfos(fieldDescriptors: readonly FieldDescriptorProto[]): rt.PartialFieldInfo[] {
         const result: rt.PartialFieldInfo[] = [];
         for (const fd of fieldDescriptors) {
             if (this.registry.isGroupField(fd)) {
@@ -355,7 +368,7 @@ export class Interpreter {
                 // Note that groups are deprecated and not supported in proto3.
                 continue;
             }
-            const fi = this.buildFieldInfo(fd, excludeOptions);
+            const fi = this.buildFieldInfo(fd);
             if (fi) {
                 result.push(fi);
             }
@@ -365,7 +378,7 @@ export class Interpreter {
 
 
     // throws on unexpected field types, notably GROUP
-    private buildFieldInfo(fieldDescriptor: FieldDescriptorProto, excludeOptions: readonly string[]): undefined | rt.PartialFieldInfo {
+    private buildFieldInfo(fieldDescriptor: FieldDescriptorProto): undefined | rt.PartialFieldInfo {
         assert(fieldDescriptor.number);
         assert(fieldDescriptor.name);
         let info: { [k: string]: any } = {};
@@ -516,10 +529,6 @@ export class Interpreter {
             info.localName = extensionName;
             info.jsonName = extensionName;
             info.oneof = undefined;
-
-        } else {
-
-            info.options = this.readOptions(fieldDescriptor, excludeOptions);
 
         }
 

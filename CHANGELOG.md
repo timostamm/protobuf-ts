@@ -1,11 +1,14 @@
 ### unreleased changes
 
-none
 
 Bug fixes:
 
 - Generated `create()` method for speed optimized code got left behind in #55  
   Thanks to @odashevskii-plaid for the find!
+
+- Infinite recursion on compile step when using custom option on message used as custom option #141  
+  Thanks to @doochik for bringing it up.
+
 
 
 ### v2.0.2

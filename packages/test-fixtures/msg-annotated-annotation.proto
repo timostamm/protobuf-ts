@@ -1,0 +1,37 @@
+syntax = "proto3";
+package spec;
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.FieldOptions {
+    string fld_opt_str = 80001;
+    MsgOptSelf fld_opt_msg = 80002;
+}
+
+extend google.protobuf.MessageOptions {
+    string msg_opt_str = 90001;
+    MsgOptSelf msg_opt_msg = 90002;
+}
+
+// test case for #141
+message MsgOptSelf {
+
+    option (msg_opt_str) = "x";
+
+    option (msg_opt_msg) = {
+        a: true
+        b {
+            a: true
+        }
+    };
+
+    bool a = 1 [(fld_opt_str) = "y"];
+
+    spec.MsgOptSelf b = 3 [(fld_opt_msg) = {
+        a: true
+        b {
+            a: true
+        }
+    }];
+
+}
