@@ -1,6 +1,9 @@
 import {IMessageType, MESSAGE_TYPE} from './message-type-contract';
 
-interface MessageTypeContainer<T extends object> {
+/**
+ * The interface that models storing type in a symbol property.
+ */
+export interface MessageTypeContainer<T extends object> {
     [MESSAGE_TYPE]: IMessageType<T>;
 }
 
