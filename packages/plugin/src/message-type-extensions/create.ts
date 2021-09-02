@@ -37,6 +37,9 @@ export class Create implements CustomMethodGenerator {
             // const message = { boolField: false, ... };
             this.makeMessageVariable(source, descriptor),
 
+            // (message as unknown as MessageTypeContainer<ScalarValuesMessage>)[MESSAGE_TYPE] = this;
+            this.makeTypeAssignment(source, descriptor),
+
             // if (value !== undefined)
             //     reflectionMergePartial<ScalarValuesMessage>(message, value, this);
             this.makeMergeIf(source, descriptor),
@@ -70,7 +73,7 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMessageVariable(source: TypescriptFile,descriptor: DescriptorProto) {
+    makeMessageVariable(source: TypescriptFile, descriptor: DescriptorProto) {
         let messageType = this.interpreter.getMessageType(descriptor);
         let defaultMessage = messageType.create();
         return ts.createVariableStatement(
@@ -87,8 +90,35 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMergeIf(source: TypescriptFile,descriptor: DescriptorProto) {
-        const MessageInterface = this.imports.type(source,descriptor);
+    makeTypeAssignment(source: TypescriptFile, descriptor: DescriptorProto) {
+        const
+            MessageTypeContainer = this.imports.name(source, 'MessageTypeContainer', this.options.runtimeImportPath, true),
+            MESSAGE_TYPE = this.imports.name(source, 'MESSAGE_TYPE', this.options.runtimeImportPath),
+            MessageInterface = this.imports.type(source, descriptor);
+        ;
+
+        return ts.createExpressionStatement(
+            ts.createAssignment(
+                ts.createElementAccess(
+                    ts.createAsExpression(
+                        ts.createAsExpression(
+                            ts.createIdentifier("message"),
+                            ts.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword),
+                        ),
+                        ts.createTypeReferenceNode(MessageTypeContainer, [
+                            ts.createTypeReferenceNode(MessageInterface, undefined),
+                        ]),
+                    ),
+                    ts.createIdentifier(MESSAGE_TYPE)
+                ),
+                ts.createThis(),
+            ),
+        );
+    }
+
+
+    makeMergeIf(source: TypescriptFile, descriptor: DescriptorProto) {
+        const MessageInterface = this.imports.type(source, descriptor);
         return ts.createIf(
             ts.createBinary(
                 ts.createIdentifier("value"),
@@ -96,7 +126,7 @@ export class Create implements CustomMethodGenerator {
                 ts.createIdentifier("undefined")
             ),
             ts.createExpressionStatement(ts.createCall(
-                ts.createIdentifier(this.imports.name(source,'reflectionMergePartial', this.options.runtimeImportPath)),
+                ts.createIdentifier(this.imports.name(source, 'reflectionMergePartial', this.options.runtimeImportPath)),
                 [ts.createTypeReferenceNode(
                     MessageInterface,
                     undefined

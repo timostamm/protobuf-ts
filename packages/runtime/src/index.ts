@@ -39,7 +39,7 @@ export {
 } from './json-format-contract';
 
 // Message type contract
-export {IMessageType, PartialMessage} from './message-type-contract';
+export {IMessageType, PartialMessage, MESSAGE_TYPE} from './message-type-contract';
 
 // Message type implementation via reflection
 export {MessageType} from './message-type';
@@ -78,6 +78,7 @@ export {ReflectionBinaryReader} from './reflection-binary-reader';
 export {ReflectionBinaryWriter} from './reflection-binary-writer';
 export {ReflectionJsonReader} from './reflection-json-reader';
 export {ReflectionJsonWriter} from './reflection-json-writer';
+export {containsMessageType, MessageTypeContainer} from './reflection-contains-message-type';
 
 // Oneof helpers
 export {isOneofGroup, setOneofValue, getOneofValue, clearOneofValue, getSelectedOneofValue} from './oneof';

@@ -3,6 +3,9 @@ import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter
 import type {JsonValue} from "./json-typings";
 import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
 
+/** The symbol used as a key on message objects to store the message type. */
+export const MESSAGE_TYPE: unique symbol = Symbol("protobuf-ts/message-type");
+
 /**
  * Similar to `Partial<T>`, but recursive, and keeps `oneof` groups
  * intact.
