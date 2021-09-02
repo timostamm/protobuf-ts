@@ -10,13 +10,6 @@ export interface MessageTypeContainer<T extends object> {
 /**
  * Check if the provided object is a proto message.
  */
-export function containsMessageType<T extends object>(msg: object): msg is MessageTypeContainer<T> {
+export function containsMessageType<T extends object>(msg: T): msg is (T & MessageTypeContainer<T>) {
     return (msg as MessageTypeContainer<T>)[MESSAGE_TYPE] != null;
-}
-
-/**
- * Get a message type from a proto message.
- */
-export function getMessageType<T extends object>(msg: MessageTypeContainer<T>): IMessageType<T> {
-    return msg[MESSAGE_TYPE];
 }

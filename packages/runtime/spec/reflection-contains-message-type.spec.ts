@@ -1,4 +1,4 @@
-import {MessageType, ScalarType, containsMessageType, getMessageType} from '../src';
+import {MessageType, ScalarType, containsMessageType, MESSAGE_TYPE} from '../src';
 
 describe('containsMessageType', () => {
     interface MyMessage {
@@ -15,26 +15,25 @@ describe('containsMessageType', () => {
         });
 
         if (containsMessageType(msg)) {
-            expect(getMessageType(msg)).toEqual(MyMessage);
+            expect(msg[MESSAGE_TYPE]).toEqual(MyMessage);
         } else {
             fail("containsMessageType() must return true");
         }
     });
 
     it('allows to extract type after .clone', () => {
-        const msg = MyMessage.create({
+        const cloned = MyMessage.clone(MyMessage.create({
             stringField: "hello world",
-        });
+        }));
 
-        const cloned = MyMessage.clone(msg);
         if (containsMessageType(cloned)) {
-            expect(getMessageType(cloned)).toEqual(MyMessage);
+            expect(cloned[MESSAGE_TYPE]).toEqual(MyMessage);
         } else {
             fail("containsMessageType() must return true");
         }
     });
 
-    it('returns error if provided a non-message', () => {
+    it('returns false if provided a non-message', () => {
         const msg: MyMessage = { stringField: "foo" };
 
         expect(containsMessageType(msg)).toBeFalse();
