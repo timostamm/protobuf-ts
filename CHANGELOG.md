@@ -1,5 +1,21 @@
 ### unreleased changes
 
+none
+
+
+### v2.0.3
+
+New features:
+
+- All messages created with `create()` now have a symbol property `MESSAGE_TYPE` 
+  that provides access to the messages type. Use `containsMessageType(yourMessage)` 
+  to check if a message contains its type and access it with `yourMessage[MESSAGE_TYPE]`.
+  
+  Note that this is an experimental feature - it is here to stay, but implementation 
+  details may change without notice.
+  
+  Many thanks to @odashevskii-plaid for the contribution.
+
 
 Bug fixes:
 
