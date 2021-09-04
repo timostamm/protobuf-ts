@@ -416,7 +416,7 @@ export enum WireType {
 
     /**
      * Used for fixed64, sfixed64, double.
-     * Always 8 bytes.
+     * Always 8 bytes with little-endian byte order.
      */
     Bit64 = 1,
 
@@ -443,7 +443,7 @@ export enum WireType {
 
     /**
      * Used for fixed32, sfixed32, float.
-     * Always 4 bytes.
+     * Always 4 bytes with little-endian byte order.
      */
     Bit32 = 5,
 }
