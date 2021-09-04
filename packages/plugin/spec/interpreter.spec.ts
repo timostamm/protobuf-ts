@@ -13,6 +13,7 @@ describe('interpreter', function () {
                 normalLongType,
                 synthesizeEnumZeroValue: 'UNSPECIFIED$',
                 oneofKindDiscriminator: 'oneofKind',
+                forceExcludeAllOptions: false,
             });
             const messageType = interpreter.getMessageType('spec.LongsMessage');
 
