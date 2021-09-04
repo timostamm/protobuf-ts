@@ -3,6 +3,8 @@
 New features:
 
 - Do not unnecessarily copy read data in BinaryReader, see #148
+- Add `force_exclude_all_options` plugin option, see #126  
+  Thanks to @optiman for the suggestion.
 
 
 ### v2.0.3
