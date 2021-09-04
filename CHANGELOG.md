@@ -1,6 +1,8 @@
 ### unreleased changes
 
-none
+New features:
+
+- Do not unnecessarily copy read data in BinaryReader, see #148
 
 
 ### v2.0.3

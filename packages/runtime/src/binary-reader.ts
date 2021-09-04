@@ -76,7 +76,7 @@ export class BinaryReader implements IBinaryReader {
                 throw new Error("cant skip wire type " + wireType);
         }
         this.assertBounds();
-        return this.buf.slice(start, this.pos);
+        return this.buf.subarray(start, this.pos);
     }
 
 
@@ -210,7 +210,7 @@ export class BinaryReader implements IBinaryReader {
         let start = this.pos;
         this.pos += len;
         this.assertBounds();
-        return this.buf.slice(start, this.pos);
+        return this.buf.subarray(start, start + len);
     }
 
 
