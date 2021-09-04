@@ -51,6 +51,7 @@ export class Interpreter {
             normalLongType: rt.LongType,
             oneofKindDiscriminator: string,
             synthesizeEnumZeroValue: string | false,
+            forceExcludeAllOptions: boolean,
         },
     ) {
     }
@@ -83,6 +84,11 @@ export class Interpreter {
      * supported.
      */
     readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto | ServiceDescriptorProto | DescriptorProto, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
+
+        // the option for force exclude all options takes precedence
+        if (this.options.forceExcludeAllOptions) {
+            return undefined;
+        }
 
         // if options message not present, there cannot be any extension options
         if (!descriptor.options) {

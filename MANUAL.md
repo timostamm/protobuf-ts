@@ -115,80 +115,85 @@ npx protoc \
 
 Available plugin options:
 
-- "long_type_string"  
-  Sets jstype = JS_STRING for message fields with 64 bit integral values.  
-  The default behaviour is to use native `bigint`.  
+- "long_type_string"
+  Sets jstype = JS_STRING for message fields with 64 bit integral values.
+  The default behaviour is to use native `bigint`.
   Only applies to fields that do *not* use the option `jstype`.
 
-- "long_type_number"  
-  Sets jstype = JS_NUMBER for message fields with 64 bit integral values.  
-  The default behaviour is to use native `bigint`.  
+- "long_type_number"
+  Sets jstype = JS_NUMBER for message fields with 64 bit integral values.
+  The default behaviour is to use native `bigint`.
   Only applies to fields that do *not* use the option `jstype`.
 
-- "long_type_bigint"  
-  Sets jstype = JS_NORMAL for message fields with 64 bit integral values.  
-  This is the default behavior.  
+- "long_type_bigint"
+  Sets jstype = JS_NORMAL for message fields with 64 bit integral values.
+  This is the default behavior.
   Only applies to fields that do *not* use the option `jstype`.
 
-- "generate_dependencies"  
-  By default, only the PROTO_FILES passed as input to protoc are generated,  
-  not the files they import. Set this option to generate code for dependencies  
+- "generate_dependencies"
+  By default, only the PROTO_FILES passed as input to protoc are generated,
+  not the files they import. Set this option to generate code for dependencies
   too.
 
-- "client_none"  
-  Do not generate rpc clients.  
-  Only applies to services that do *not* use the option `ts.client`.  
+- "force_exclude_all_options"
+  By default, custom options are included in the metadata and can be blacklisted
+  with our option (ts.exclude_options). Set this option if you are certain you do not want
+  to include any options at all.
+
+- "client_none"
+  Do not generate rpc clients.
+  Only applies to services that do *not* use the option `ts.client`.
   If you do not want rpc clients at all, use `force_client_none`.
 
-- "client_generic"  
-  Only applies to services that do *not* use the option `ts.client`.  
-  Since CLIENT_GENERIC is the default, this option has no effect.
+- "client_generic"
+  Only applies to services that do *not* use the option `ts.client`.
+  Since GENERIC_CLIENT is the default, this option has no effect.
 
-- "client_grpc1"  
-  Generate a client using @grpc/grpc-js (major version 1).  
+- "client_grpc1"
+  Generate a client using @grpc/grpc-js (major version 1).
   Only applies to services that do *not* use the option `ts.client`.
 
-- "force_client_none"  
+- "force_client_none"
   Do not generate rpc clients, ignore options in proto files.
 
-- "enable_angular_annotations"  
-  If set, the generated rpc client will have an angular @Injectable()  
-  annotation and the `RpcTransport` constructor argument is annotated with a  
-  @Inject annotation. For this feature, you will need the npm package  
+- "enable_angular_annotations"
+  If set, the generated rpc client will have an angular @Injectable()
+  annotation and the `RpcTransport` constructor argument is annotated with a
+  @Inject annotation. For this feature, you will need the npm package
   '@protobuf-ts/runtime-angular'.
 
-- "server_none"  
-  Do not generate rpc servers.  
-  This is the default behaviour, but only applies to services that do   
-  *not* use the option `ts.server`.  
+- "server_none"
+  Do not generate rpc servers.
+  This is the default behaviour, but only applies to services that do
+  *not* use the option `ts.server`.
   If you do not want servers at all, use `force_server_none`.
 
-- "server_generic"  
+- "server_generic"
   Generate a generic server interface. Adapters are used to serve the service,
-  for example @protobuf-ts/grpc-backend for gRPC.    
-  Note that this is an experimental feature and may change with a minor release.  
+  for example @protobuf-ts/grpc-backend for gRPC.
+  Note that this is an experimental feature and may change with a minor release.
   Only applies to services that do *not* use the option `ts.server`.
 
-- "server_grpc1"  
+- "server_grpc1"
   Generate a server interface and definition for use with @grpc/grpc-js
-  (major version 1).  
+  (major version 1).
   Only applies to services that do *not* use the option `ts.server`.
 
-- "force_server_none"  
+- "force_server_none"
   Do not generate rpc servers, ignore options in proto files.
 
-- "optimize_speed"  
-  Sets optimize_for = SPEED for proto files that have no file option  
+- "optimize_speed"
+  Sets optimize_for = SPEED for proto files that have no file option
   'option optimize_for'. Since SPEED is the default, this option has no effect.
 
-- "optimize_code_size"  
-  Sets optimize_for = CODE_SIZE for proto files that have no file option  
+- "optimize_code_size"
+  Sets optimize_for = CODE_SIZE for proto files that have no file option
   'option optimize_for'.
 
-- "force_optimize_code_size"  
+- "force_optimize_code_size"
   Forces optimize_for = CODE_SIZE for all proto files, ignore file options.
 
-- "force_optimize_speed"  
+- "force_optimize_speed"
   Forces optimize_for = SPEED for all proto files, ignore file options.
 
 

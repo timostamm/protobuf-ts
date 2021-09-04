@@ -54,8 +54,13 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         // misc
         generate_dependencies: {
             description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
-                         "not the files they import. Set this option to generate code for dependencies \n" +
-                         "too.",
+                "not the files they import. Set this option to generate code for dependencies \n" +
+                "too.",
+        },
+        force_exclude_all_options: {
+            description: "By default, custom options are included in the metadata and can be blacklisted \n" +
+                "with our option (ts.exclude_options). Set this option if you are certain you do not want \n" +
+                "to include any options at all.",
         },
 
         // client
@@ -66,8 +71,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
             excludes: ['client_generic', 'client_grpc1'],
         },
         client_generic: {
-            description: "Use *Call return types for rpc clients. \n" +
-                         "Only applies to services that do *not* use the option `ts.client`. \n" +
+            description: "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "Since GENERIC_CLIENT is the default, this option has no effect.",
             excludes: ['client_none', 'client_grpc1', 'force_client_none'],
         },
@@ -149,6 +153,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 pluginCredit: `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : ''),
                 emitAngularAnnotations: params.enable_angular_annotations,
                 normalLongType: params.long_type_string ? rt.LongType.STRING : params.long_type_number ? rt.LongType.NUMBER : rt.LongType.BIGINT,
+                forceExcludeAllOptions: params.force_exclude_all_options,
             }),
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
