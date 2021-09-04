@@ -85,7 +85,7 @@ export class Interpreter {
      */
     readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto | ServiceDescriptorProto | DescriptorProto, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
 
-        // the option for force exclude all options takes precedence
+        // the option to force exclude all options takes precedence
         if (this.options.forceExcludeAllOptions) {
             return undefined;
         }
