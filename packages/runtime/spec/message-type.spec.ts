@@ -1,4 +1,4 @@
-import {MessageType, RepeatType, ScalarType} from "../src";
+import {containsMessageType, MESSAGE_TYPE, MessageType, RepeatType, ScalarType} from "../src";
 
 
 describe('MessageType', () => {
@@ -69,6 +69,34 @@ describe('MessageType', () => {
         expect(copy).toEqual(msg);
         expect(MyMessage.is(copy));
         expect(copy.repeatedInt32Field).not.toBe(msg.repeatedInt32Field);
+    })
+
+    it('create() adds message type', () => {
+        const msg = MyMessage.create({
+            stringField: "hello world",
+        });
+        expect(containsMessageType(msg)).toBeTrue();
+        if (containsMessageType(msg)) {
+            expect(msg[MESSAGE_TYPE]).toBe(MyMessage);
+        } else {
+            fail("containsMessageType() must return true");
+        }
+    })
+
+    it('create() creates expected object', () => {
+        const msg = MyMessage.create({
+            stringField: "hello world",
+        });
+        const exp: MyMessage = {
+            boolField: false,
+            messageMap: {},
+            stringField: "hello world",
+            repeatedInt32Field: [],
+            result: {
+                oneofKind: undefined
+            },
+        }
+        expect(msg).toEqual(exp);
     })
 
 });
