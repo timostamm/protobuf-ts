@@ -37,8 +37,8 @@ export class Create implements CustomMethodGenerator {
             // const message = { boolField: false, ... };
             this.makeMessageVariable(source, descriptor),
 
-            // (message as unknown as MessageTypeContainer<ScalarValuesMessage>)[MESSAGE_TYPE] = this;
-            this.makeTypeAssignment(source, descriptor),
+            // Object.defineProperty(message, MESSAGE_TYPE, {enumerable: false, value: this});
+            this.makeDefineMessageTypeSymbolProperty(source),
 
             // if (value !== undefined)
             //     reflectionMergePartial<ScalarValuesMessage>(message, value, this);
@@ -90,30 +90,33 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeTypeAssignment(source: TypescriptFile, descriptor: DescriptorProto) {
-        const
-            MessageTypeContainer = this.imports.name(source, 'MessageTypeContainer', this.options.runtimeImportPath, true),
-            MESSAGE_TYPE = this.imports.name(source, 'MESSAGE_TYPE', this.options.runtimeImportPath),
-            MessageInterface = this.imports.type(source, descriptor);
-        ;
+    makeDefineMessageTypeSymbolProperty(source: TypescriptFile) {
+        const MESSAGE_TYPE = this.imports.name(source, 'MESSAGE_TYPE', this.options.runtimeImportPath);
 
-        return ts.createExpressionStatement(
-            ts.createAssignment(
-                ts.createElementAccess(
-                    ts.createAsExpression(
-                        ts.createAsExpression(
-                            ts.createIdentifier("message"),
-                            ts.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword),
-                        ),
-                        ts.createTypeReferenceNode(MessageTypeContainer, [
-                            ts.createTypeReferenceNode(MessageInterface, undefined),
-                        ]),
-                    ),
-                    ts.createIdentifier(MESSAGE_TYPE)
-                ),
-                ts.createThis(),
+        return ts.createExpressionStatement(ts.createCall(
+            ts.createPropertyAccess(
+                ts.createIdentifier("Object"),
+                ts.createIdentifier("defineProperty")
             ),
-        );
+            undefined,
+            [
+                ts.createIdentifier("message"),
+                ts.createIdentifier(MESSAGE_TYPE),
+                ts.createObjectLiteral(
+                    [
+                        ts.createPropertyAssignment(
+                            ts.createIdentifier("enumerable"),
+                            ts.createFalse()
+                        ),
+                        ts.createPropertyAssignment(
+                            ts.createIdentifier("value"),
+                            ts.createThis()
+                        )
+                    ],
+                    false
+                )
+            ]
+        ));
     }
 
 

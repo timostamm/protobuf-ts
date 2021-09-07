@@ -1,7 +1,6 @@
 import {fixtures} from "../../test-fixtures";
-import {reflectionCreate} from "../src";
-import {normalizeFieldInfo, ScalarType} from "../src";
 import type {IMessageType} from "../src";
+import {MessageType, normalizeFieldInfo, reflectionCreate, ScalarType, UnknownMessage} from "../src";
 
 
 describe('reflectionCreate()', function () {
@@ -11,7 +10,9 @@ describe('reflectionCreate()', function () {
     describe('creates fixture messages as expected', () => {
         fixtures.usingMessages((typeName, key, msg) => {
             it(`${typeName} '${key}'`, function () {
-                const message = reflectionCreate(fixtures.makeMessageInfo(typeName));
+                const mi = fixtures.makeMessageInfo(typeName);
+                const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
+                const message = reflectionCreate(mt);
                 const defaults = fixtures.getMessage(typeName, 'default');
                 expect(message).toEqual(defaults);
             });
@@ -28,7 +29,7 @@ describe('reflectionCreate()', function () {
             no: 1,
             name: 'map_field'
         });
-        const msg = reflectionCreate({typeName: '.test.TestMessage', fields: [fld], options: {}});
+        const msg = reflectionCreate(new MessageType<UnknownMessage>('.test.TestMessage', [fld]));
         const val = msg[fld.localName];
         expect(val).toEqual({});
     });
@@ -41,7 +42,7 @@ describe('reflectionCreate()', function () {
             kind: 'message', T: () => true as unknown as IMessageType<any>,
             no: 1, name: 'msg_field', localName: 'msg_field', jsonName: 'msg_field',
         });
-        const msg = reflectionCreate({typeName: '.test.TestMessage', fields: [fld], options: {}});
+        const msg = reflectionCreate(new MessageType<UnknownMessage>('.test.TestMessage', [fld]));
         const val = msg[fld.localName];
         expect(val).toBeUndefined()
     });

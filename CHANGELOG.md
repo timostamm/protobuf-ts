@@ -1,10 +1,20 @@
 ### unreleased changes
 
+
+### v2.0.4-alpha.0
+
 New features:
 
-- Do not unnecessarily copy read data in BinaryReader, see #148
+- Do not unnecessarily copy read data in BinaryReader, see #148  
+  Note that it is now strictly necessary to respect the offset of the underlying buffer 
+  of byte fields.
 - Add `force_exclude_all_options` plugin option, see #126  
   Thanks to @optiman for the suggestion.
+
+Bug fixes:
+
+- The new symbol property `MESSAGE_TYPE` broke user unit tests. The property was set to non-enumerable.  
+  Thanks to @jcready for the feedback. 
 
 
 ### v2.0.3

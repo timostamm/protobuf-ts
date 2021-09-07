@@ -29,10 +29,7 @@ describe('reflectionMergePartial()', () => {
             no: 1, name: 'repeated_string_field'
         });
 
-        const messageInfo: MessageInfo = {
-            typeName: '.test.TestMessage', fields: [string_field, bool_field, repeated_string_field], options: {}
-        };
-
+        const messageInfo = new MessageType<UnknownMessage>('.test.TestMessage', [string_field, bool_field, repeated_string_field]);
 
         it('new value overwrites old value', () => {
             const target = reflectionCreate(messageInfo);

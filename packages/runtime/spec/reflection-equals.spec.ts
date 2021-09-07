@@ -1,5 +1,12 @@
 import {fixtures} from "../../test-fixtures";
-import {normalizeFieldInfo, reflectionCreate, reflectionMergePartial, reflectionEquals, ScalarType} from "../src";
+import {
+    normalizeFieldInfo,
+    reflectionCreate,
+    reflectionMergePartial,
+    reflectionEquals,
+    ScalarType,
+    MessageType, UnknownMessage
+} from "../src";
 
 
 enum TestEnum {
@@ -72,10 +79,11 @@ describe('reflectionEquals()', function () {
     describe('should return true for all cloned fixture messages', function () {
         fixtures.usingMessages((typeName, key, msg) => {
             it(`${typeName} '${key}'`, function () {
-                const info = fixtures.makeMessageInfo(typeName);
-                let copy = reflectionCreate(info);
-                reflectionMergePartial(info, copy, msg);
-                let eq = reflectionEquals(info, msg, copy);
+                const mi = fixtures.makeMessageInfo(typeName);
+                const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
+                let copy = reflectionCreate(mt);
+                reflectionMergePartial(mi, copy, msg);
+                let eq = reflectionEquals(mi, msg, copy);
                 expect(eq).toBeTrue();
             });
         });
@@ -84,10 +92,11 @@ describe('reflectionEquals()', function () {
     describe('should behave like jasmine equality comparator for all fixture messages', function () {
         fixtures.usingMessages((typeName, key, msg) => {
             it(`${typeName} '${key}'`, function () {
-                const info = fixtures.makeMessageInfo(typeName);
-                let copy = reflectionCreate(info);
-                reflectionMergePartial(info, copy, msg);
-                let eq = reflectionEquals(info, msg, copy);
+                const mi = fixtures.makeMessageInfo(typeName);
+                const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
+                let copy = reflectionCreate(mt);
+                reflectionMergePartial(mi, copy, msg);
+                let eq = reflectionEquals(mi, msg, copy);
                 if (eq)
                     expect(msg).toEqual(copy);
                 else
