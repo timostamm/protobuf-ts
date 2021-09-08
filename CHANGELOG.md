@@ -1,7 +1,7 @@
 ### unreleased changes
 
 
-### v2.0.4-alpha.0
+### v2.0.4
 
 New features:
 
