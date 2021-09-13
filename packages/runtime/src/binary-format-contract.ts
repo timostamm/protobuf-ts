@@ -78,7 +78,7 @@ export namespace UnknownFieldHandler {
      * The symbol used to store unknown fields for a message.
      * The property must conform to `UnknownFieldContainer`.
      */
-    export const symbol: unique symbol = Symbol("protobuf-ts/unknown");
+    export const symbol: unique symbol = Symbol.for("protobuf-ts/unknown");
 
 
     /**
