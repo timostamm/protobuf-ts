@@ -9,7 +9,7 @@ import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./
  * Note that this is an experimental feature - it is here to stay, but
  * implementation details may change without notice.
  */
-export const MESSAGE_TYPE: unique symbol = Symbol("protobuf-ts/message-type");
+export const MESSAGE_TYPE: unique symbol = Symbol.for("protobuf-ts/message-type");
 
 /**
  * Similar to `Partial<T>`, but recursive, and keeps `oneof` groups
