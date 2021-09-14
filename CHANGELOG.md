@@ -1,6 +1,12 @@
 ### unreleased changes
 
 
+### v2.0.5
+
+- Use Symbol.for() to define MESSAGE_TYPE, see #151  
+  Thanks to @be9 for the contribution.
+
+
 ### v2.0.4
 
 New features:
