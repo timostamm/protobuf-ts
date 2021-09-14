@@ -10,7 +10,7 @@ problem.
 
 ### Do you have a question?
 
-Just [open an issue](https://github.com/timostamm/protobuf-ts/issues/new).
+Just [start a discussion](https://github.com/timostamm/protobuf-ts/discussions/new).
 
 
 ### Building this project 
