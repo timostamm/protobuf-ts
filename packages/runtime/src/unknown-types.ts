@@ -44,10 +44,9 @@ export type UnknownEnum = number;
  * A unknown oneof group. See `isOneofGroup()` for details.
  */
 export type UnknownOneofGroup = {
-    oneofKind: undefined | string;
-    [k: string]:
+    kind: undefined | string;
+    value?:
         | UnknownScalar
         | UnknownEnum
-        | UnknownMessage
-        | undefined;
+        | UnknownMessage;
 };
