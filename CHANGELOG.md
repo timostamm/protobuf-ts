@@ -1,8 +1,14 @@
 ### unreleased changes
 
+none
+
+
+### v2.0.6
+
 Bug fixes:
 
-- Naming collisions with message named Object #161
+- Naming collisions with message named Object #161  
+  Thanks to @joeflatt for the report.
 
 
 ### v2.0.5
