@@ -95,7 +95,10 @@ export class Create implements CustomMethodGenerator {
 
         return ts.createExpressionStatement(ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier("Object"),
+                ts.createPropertyAccess(
+                    ts.createIdentifier("globalThis"),
+                    ts.createIdentifier("Object")
+                ),
                 ts.createIdentifier("defineProperty")
             ),
             undefined,

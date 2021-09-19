@@ -2,8 +2,11 @@ import {AnyTypeDescriptorProto, FileDescriptorProto, IDescriptorTree} from "@pro
 import {assert} from "@protobuf-ts/runtime";
 
 
+// TODO in generated code, use globalThis for all types in global scope
+//      rationale: keywords are much less likely to change than objects in the global scope
+// TODO move all code creating names into one place (see interpreter.ts for more code)
 const reservedKeywords = 'break,case,catch,class,const,continue,debugger,default,delete,do,else,enum,export,extends,false,finally,for,function,if,import,in,instanceof,new,null,return,super,switch,this,throw,true,try,typeof,var,void,while,with,as,implements,interface,let,package,private,protected,public,static,yield,any,boolean,constructor,declare,get,module,require,number,set,string,symbol,type,from,of'.split(',');
-const reservedTypeNames = 'Long,Uint8Array,array,Array,string,String,number,Number,boolean,Boolean,bigint,BigInt'.split(',');
+const reservedTypeNames = 'object,Uint8Array,array,Array,string,String,number,Number,boolean,Boolean,bigint,BigInt'.split(',');
 const escapeCharacter = '$';
 
 

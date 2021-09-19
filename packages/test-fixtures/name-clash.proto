@@ -54,6 +54,44 @@ message Error {
     string field_name = 1;
     string message = 2;
 }
+// clash with global type
+message Object {
+}
+message object {
+}
+// clash with global type
+message Uint8Array {
+}
+// clash with global type
+message array {
+}
+// clash with global type
+message Array {
+}
+// clash with global type
+message string {
+}
+// clash with global type
+message String {
+}
+// clash with global type
+message number {
+}
+// clash with global type
+message Number {
+}
+// clash with global type
+message boolean {
+}
+// clash with global type
+message Boolean {
+}
+// clash with global type
+message bigint {
+}
+// clash with global type
+message BigInt {
+}
 
 
 message ClashParent {
