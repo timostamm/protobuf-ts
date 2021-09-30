@@ -1,0 +1,21 @@
+syntax="proto3";
+
+package foo.v1;
+
+import "common/v1/common.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/money.proto";
+
+message GetRequest {
+	int32 a = 1;
+}
+
+message GetResponse {
+	common.v1.CommonMessage a = 1;
+	google.protobuf.Timestamp b = 2;
+	google.type.Money c = 3;
+}
+
+service FooService {
+	rpc Get (GetRequest) returns (GetResponse);
+}

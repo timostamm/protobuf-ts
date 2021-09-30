@@ -1,0 +1,10 @@
+syntax="proto3";
+
+package common.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message CommonMessage {
+	string a = 1;
+	google.protobuf.Timestamp b = 2;
+}

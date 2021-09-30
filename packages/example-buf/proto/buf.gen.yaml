@@ -1,0 +1,10 @@
+version: v1
+plugins:
+  - name: ts
+    out: ../src-gen
+    opt:
+      - generate_dependencies
+      - long_type_string
+    path: ../node_modules/.bin/protoc-gen-ts
+    strategy: all
+

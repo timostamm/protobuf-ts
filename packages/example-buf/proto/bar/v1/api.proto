@@ -1,0 +1,16 @@
+syntax="proto3";
+
+package bar.v1;
+
+import "common/v1/common.proto";
+
+message GetRequest {
+	int32 a = 1;
+}
+message GetResponse {
+	common.v1.CommonMessage a = 1;
+}
+
+service BarService {
+	rpc Get (GetRequest) returns (GetResponse);
+}
