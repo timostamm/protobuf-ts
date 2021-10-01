@@ -300,7 +300,10 @@ function parseMetadata(headers: HttpHeaders): RpcMetadata {
 function parseTrailer(trailerData: Uint8Array): HttpHeaders {
     let headers: HttpHeaders = {};
     for (let chunk of String.fromCharCode.apply(String, trailerData as unknown as number[]).trim().split("\r\n")) {
-        let [key, value] = chunk.split(":", 2);
+        if (chunk == "")
+            continue;
+        let [key, ...val] = chunk.split(":");
+        let value = val.join(":")
         key = key.trim();
         value = value.trim();
         let e = headers[key];
