@@ -303,9 +303,8 @@ function parseTrailer(trailerData: Uint8Array): HttpHeaders {
         if (chunk == "")
             continue;
         let [key, ...val] = chunk.split(":");
-        let value = val.join(":");
+        const value = val.join(":").trim();
         key = key.trim();
-        value = value.trim();
         let e = headers[key];
         if (typeof e == "string")
             headers[key] = [e, value];
