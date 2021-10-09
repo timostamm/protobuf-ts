@@ -1,17 +1,7 @@
 import {
-    createGrpcWebRequestBody,
-    createGrpcWebRequestHeader,
-    GrpcWebFrame,
-    readGrpcWebResponseBody,
-    readGrpcWebResponseHeader,
-    readGrpcWebResponseTrailer
-} from "./grpc-web-format";
-import {
     ClientStreamingCall,
     Deferred,
-    DeferredState,
     DuplexStreamingCall,
-    mergeRpcOptions,
     MethodInfo,
     RpcError,
     RpcMetadata,
@@ -20,11 +10,20 @@ import {
     RpcStatus,
     RpcTransport,
     ServerStreamingCall,
-    UnaryCall
+    UnaryCall,
+    mergeRpcOptions
 } from "@protobuf-ts/runtime-rpc";
-import {GrpcWebOptions} from "./grpc-web-options";
-import {GrpcStatusCode} from "./goog-grpc-status-code";
+import {
+    GrpcWebFrame,
+    createGrpcWebRequestBody,
+    createGrpcWebRequestHeader,
+    readGrpcWebResponseBody,
+    readGrpcWebResponseHeader,
+    readGrpcWebResponseTrailer
+} from "./grpc-web-format";
 
+import {GrpcStatusCode} from "./goog-grpc-status-code";
+import {GrpcWebOptions} from "./grpc-web-options";
 
 /**
  * Implements the grpc-web protocol, supporting text format or binary
@@ -136,6 +135,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                 if (!maybeTrailer)
                     throw new RpcError(`missing trailers`, GrpcStatusCode[GrpcStatusCode.DATA_LOSS]);
 
+                // istanbul ignore if - this should be impossible and only here to satisfy TypeScript
                 if (!maybeStatus)
                     throw new RpcError(`missing status`, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
 
@@ -215,7 +215,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                 return readGrpcWebResponseBody(fetchResponse.body!, fetchResponse.headers.get('content-type'), (type, data) => {
                     switch (type) {
                         case GrpcWebFrame.DATA:
-                            if (defMessage.state === DeferredState.RESOLVED)
+                            if (maybeMessage)
                                 throw new RpcError(`unary call received 2nd message`, GrpcStatusCode[GrpcStatusCode.DATA_LOSS]);
                             maybeMessage = method.O.fromBinary(data, opt.binaryOptions);
                             break;
@@ -235,6 +235,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                 if (!maybeTrailer)
                     throw new RpcError(`missing trailers`, GrpcStatusCode[GrpcStatusCode.DATA_LOSS]);
 
+                // istanbul ignore if - this should be impossible and only here to satisfy TypeScript
                 if (!maybeStatus)
                     throw new RpcError(`missing status`, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
 

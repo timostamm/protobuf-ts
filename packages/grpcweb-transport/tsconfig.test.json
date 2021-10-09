@@ -5,6 +5,7 @@
     "spec/**/*.ts"
   ],
   "compilerOptions": {
+    "sourceMap": true,
     "module": "CommonJS",
     "declaration": false,
     "paths": {}
