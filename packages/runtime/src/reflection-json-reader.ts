@@ -213,7 +213,7 @@ export class ReflectionJsonReader {
                     localEnumName = json.substring(type[2].length);
                 let enumNumber = type[1][localEnumName];
                 if (typeof enumNumber === 'undefined' && ignoreUnknownFields) {
-                    return -1
+                    return 0;
                 }
                 assert(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
                 return enumNumber;

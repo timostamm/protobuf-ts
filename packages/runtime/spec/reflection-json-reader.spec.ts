@@ -176,7 +176,7 @@ describe('ReflectionJsonReader', function () {
 
         it('return -1 if unknown value was found, but ignoreUnknownFields was set', function () {
             const reader = new ReflectionJsonReader({typeName: '.test.Message', fields: []});
-            expect(reader.enum([".spec.SimpleEnum", SimpleEnum], 'test', '', true)).toEqual(-1);
+            expect(reader.enum([".spec.SimpleEnum", SimpleEnum], 'test', '', true)).toEqual(0);
         })
 
     });
