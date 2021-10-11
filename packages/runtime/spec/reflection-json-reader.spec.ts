@@ -1,6 +1,5 @@
 import {fixtures} from "../../test-fixtures";
-import {EnumInfo, JsonObject, normalizeFieldInfo, jsonReadOptions, ReflectionJsonReader} from "../src";
-import {RepeatType} from "../src";
+import {EnumInfo, JsonObject, jsonReadOptions, normalizeFieldInfo, ReflectionJsonReader, RepeatType} from "../src";
 
 describe('ReflectionJsonReader', function () {
 
@@ -164,6 +163,66 @@ describe('ReflectionJsonReader', function () {
 
     });
 
+    describe('read() enum', function () {
+        enum SimpleEnum {
+            ANY = 0
+        }
+
+        it('skip map value if the value is invalid', function () {
+            const reader = new ReflectionJsonReader({
+                typeName: 'test',
+                fields: [
+                    normalizeFieldInfo({no: 1, name: "field", kind: "map", K: 9 /*string*/, V: {kind: "enum", T: () => ["SimpleEnum", SimpleEnum]}}),
+                ]
+            });
+            let output: any = {field: {}};
+            reader.read({field: {valid: "ANY", invalid: "XXX"}}, output, {ignoreUnknownFields: true});
+            expect(output).toEqual({field: {valid: SimpleEnum.ANY}});
+        });
+
+        it('skip array value if the value is invalid', function () {
+            const reader = new ReflectionJsonReader({
+                typeName: 'test',
+                fields: [
+                    normalizeFieldInfo({no: 1, name: "field", kind: "enum", T: () => ["SimpleEnum", SimpleEnum], repeat: RepeatType.PACKED}),
+                ]
+            });
+            let output: any = {field: []};
+            reader.read({field: ["ANY", "XXX", "ANY"]}, output, {ignoreUnknownFields: true});
+            expect(output).toEqual({field: [SimpleEnum.ANY, SimpleEnum.ANY]});
+        });
+
+        it('skip enum value if the value is invalid', function () {
+            const reader = new ReflectionJsonReader({
+                typeName: 'test',
+                fields: [
+                    normalizeFieldInfo({no: 1, name: "field", kind: "enum", T: () => ["SimpleEnum", SimpleEnum]}),
+                ]
+            });
+            let output = {};
+            reader.read({field: "XXX"}, output, {ignoreUnknownFields: true});
+            expect(output).toEqual({});
+        });
+
+    });
+
+    describe('enum()', function () {
+        enum SimpleEnum {
+            ANY = 0
+        }
+
+        it('throws if unknown value was found', function () {
+            const reader = new ReflectionJsonReader({typeName: '.test.Message', fields: []});
+            expect(() => reader.enum([".spec.SimpleEnum", SimpleEnum], 'test', '', false)).toThrowError(/enum \.spec\.SimpleEnum has no value for "test"/);
+        })
+
+        it('return false if unknown value was found, but ignoreUnknownFields was set', function () {
+            const reader = new ReflectionJsonReader({typeName: '.test.Message', fields: []});
+            expect(reader.enum([".spec.SimpleEnum", SimpleEnum], 'test', '', true)).toBeFalse();
+        })
+
+    });
+
 
     describe('read() throws', function () {
 
@@ -195,20 +254,20 @@ describe('ReflectionJsonReader', function () {
             T: () => ["google.protobuf.NullValue", NullValue]
         });
         it('`null` parses as `null`', () => {
-            const val = reader.enum(handler, null, field.name);
+            const val = reader.enum(handler, null, field.name, false);
             expect(val).toBe(NullValue.NULL_VALUE);
         });
         it('other value throws', () => {
-            expect(() => reader.enum(handler, 0, field.name))
+            expect(() => reader.enum(handler, 0, field.name, false))
                 .toThrow();
-            expect(() => reader.enum(handler, 'NULL_VALUE', field.name))
+            expect(() => reader.enum(handler, 'NULL_VALUE', field.name, false))
                 .toThrow();
         });
         it('`0` throws', () => {
-            expect(() => reader.enum(handler, 0, field.name)).toThrowError(/only accepts null/);
+            expect(() => reader.enum(handler, 0, field.name, false)).toThrowError(/only accepts null/);
         });
         it('`NULL_VALUE` throws', () => {
-            expect(() => reader.enum(handler, 'NULL_VALUE', field.name)).toThrowError(/only accepts null/);
+            expect(() => reader.enum(handler, 'NULL_VALUE', field.name, false)).toThrowError(/only accepts null/);
         });
 
     });

@@ -115,7 +115,9 @@ export class ReflectionJsonReader {
                             break;
 
                         case "enum":
-                            val = this.enum(field.V.T(), jsonObjValue, field.name);
+                            val = this.enum(field.V.T(), jsonObjValue, field.name, options.ignoreUnknownFields);
+                            if (val === false)
+                                continue;
                             break;
 
                         case "scalar":
@@ -154,7 +156,9 @@ export class ReflectionJsonReader {
                             break;
 
                         case "enum":
-                            val = this.enum(field.T(), jsonItem, field.name);
+                            val = this.enum(field.T(), jsonItem, field.name, options.ignoreUnknownFields);
+                            if (val === false)
+                                continue;
                             break;
 
                         case "scalar":
@@ -180,7 +184,10 @@ export class ReflectionJsonReader {
                         break;
 
                     case "enum":
-                        target[localName] = this.enum(field.T(), jsonValue, field.name);
+                        let val = this.enum(field.T(), jsonValue, field.name, options.ignoreUnknownFields);
+                        if (val === false)
+                            continue;
+                        target[localName] = val;
                         break;
 
                     case "scalar":
@@ -196,7 +203,7 @@ export class ReflectionJsonReader {
     /**
      * google.protobuf.NullValue accepts only JSON `null`.
      */
-    enum(type: EnumInfo, json: unknown, fieldName: string): UnknownEnum {
+    enum(type: EnumInfo, json: unknown, fieldName: string, ignoreUnknownFields: boolean): UnknownEnum|false {
         if (type[0] == 'google.protobuf.NullValue')
             assert(json === null, `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
         if (json === null)
@@ -212,6 +219,9 @@ export class ReflectionJsonReader {
                     // lookup without the shared prefix
                     localEnumName = json.substring(type[2].length);
                 let enumNumber = type[1][localEnumName];
+                if (typeof enumNumber === 'undefined' && ignoreUnknownFields) {
+                    return false;
+                }
                 assert(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
                 return enumNumber;
         }
