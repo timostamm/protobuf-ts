@@ -136,19 +136,6 @@ export function readGrpcWebResponseTrailer(data: Uint8Array): [GrpcStatusCode, s
  */
 export enum GrpcWebFrame { DATA = 0x00, TRAILER = 0x80 }
 
-export interface StreamReader<T> {
-    next(): Promise<ReadableStreamReadResult<T>>
-}
-
-interface NodeReadableStream<T> {
-    [Symbol.asyncIterator](): { next(): Promise<ReadableStreamReadResult<T>> };
-}
-
-type WebResponseBodyStream = ReadableStream<Uint8Array> | NodeReadableStream<Uint8Array>;
-
-export interface FrameHandler {
-    (type: GrpcWebFrame, data: Uint8Array): void;
-}
 
 /**
  * Parses a grpc-web response (unary or server streaming) from a fetch API
@@ -233,10 +220,34 @@ export async function readGrpcWebResponseBody(stream: WebResponseBodyStream, con
 
 }
 
+
+// internal, exported for tests
+export interface StreamReader<T> {
+    next(): Promise<ReadableStreamReadResult<T>>
+}
+
+
+// internal, exported for tests
+export interface FrameHandler {
+    (type: GrpcWebFrame, data: Uint8Array): void;
+}
+
+
+// internal
+interface NodeReadableStream<T> {
+    [Symbol.asyncIterator](): { next(): Promise<ReadableStreamReadResult<T>> };
+}
+
+
+// internal
+type WebResponseBodyStream = ReadableStream<Uint8Array> | NodeReadableStream<Uint8Array>;
+
+
 // internal
 const isReadableStream = (s: WebResponseBodyStream): s is ReadableStream<Uint8Array> => {
     return typeof (s as unknown as any).getReader == "function";
 }
+
 
 // internal
 type GrpcWebFormat = "text" | "binary";

@@ -30,7 +30,7 @@ if (!globalThis.DOMException) {
     }
 }
 
-export function identity<T>(v: T): T { return v }
+function identity<T>(v: T): T { return v }
 
 export function microTaskDelay<T>(p: Promise<T>): Promise<T> {
     return p.then(identity).then(identity);

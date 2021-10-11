@@ -235,7 +235,7 @@ describe('readGrpcWebResponse', () => {
             const { frames, next } = getFrameRef({ format: 'application/grpc-web-text' });
             const input = [38, 39];
             const message = createGrpcWebRequestBody(new Uint8Array(input), 'text');
-            const [first, ...rest] = asciiToCharCodes(message as string);
+            const [first, ...rest] = asciiToCharCodes(message);
             
             await next([first]);
             assertFrames(frames, []);
