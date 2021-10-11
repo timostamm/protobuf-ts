@@ -8,7 +8,8 @@ export interface JsonReadOptions {
 
     /**
      * Ignore unknown fields: Proto3 JSON parser should reject unknown fields
-     * by default. This option ignores unknown fields in parsing.
+     * by default. This option ignores unknown fields in parsing, as well as
+     * unrecognized enum string representations.
      */
     ignoreUnknownFields: boolean;
 

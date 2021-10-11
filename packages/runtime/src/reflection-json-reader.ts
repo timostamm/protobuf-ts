@@ -42,7 +42,6 @@ export class ReflectionJsonReader {
     }
 
 
-
     // Cannot parse JSON <type of jsonValue> for <type name>#<fieldName>.
     assert(condition: any, fieldName: string, jsonValue: JsonValue): asserts condition {
         if (!condition) {
@@ -201,9 +200,11 @@ export class ReflectionJsonReader {
 
 
     /**
+     * Returns `false` for unrecognized string representations.
+     *
      * google.protobuf.NullValue accepts only JSON `null`.
      */
-    enum(type: EnumInfo, json: unknown, fieldName: string, ignoreUnknownFields: boolean): UnknownEnum|false {
+    enum(type: EnumInfo, json: unknown, fieldName: string, ignoreUnknownFields: boolean): UnknownEnum | false {
         if (type[0] == 'google.protobuf.NullValue')
             assert(json === null, `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
         if (json === null)
