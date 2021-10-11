@@ -3,6 +3,19 @@
 none
 
 
+### v2.0.7
+
+New features:
+
+- json: Ignore unknown enum values #170  
+  Thanks to @whs for the contribution.
+
+Bug fixes:
+
+- Update parseTrailer function to support empty trailers & trailers with colon in content #168  
+  Thanks to @wielski for the contribution.
+
+
 ### v2.0.6
 
 Bug fixes:
