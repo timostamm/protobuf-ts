@@ -196,7 +196,7 @@ export class ReflectionJsonReader {
     /**
      * google.protobuf.NullValue accepts only JSON `null`.
      */
-    enum(type: EnumInfo, json: unknown, fieldName: string, ignoreUnknownFields = false): UnknownEnum {
+    enum(type: EnumInfo, json: unknown, fieldName: string, ignoreUnknownFields = false): UnknownEnum|undefined {
         if (type[0] == 'google.protobuf.NullValue')
             assert(json === null, `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
         if (json === null)
@@ -213,7 +213,7 @@ export class ReflectionJsonReader {
                     localEnumName = json.substring(type[2].length);
                 let enumNumber = type[1][localEnumName];
                 if (typeof enumNumber === 'undefined' && ignoreUnknownFields) {
-                    return 0;
+                    return undefined;
                 }
                 assert(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
                 return enumNumber;

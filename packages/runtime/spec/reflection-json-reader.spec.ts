@@ -174,9 +174,9 @@ describe('ReflectionJsonReader', function () {
             expect(() => reader.enum([".spec.SimpleEnum", SimpleEnum], 'test', '')).toThrowError(/enum \.spec\.SimpleEnum has no value for "test"/);
         })
 
-        it('return -1 if unknown value was found, but ignoreUnknownFields was set', function () {
+        it('return undefined if unknown value was found, but ignoreUnknownFields was set', function () {
             const reader = new ReflectionJsonReader({typeName: '.test.Message', fields: []});
-            expect(reader.enum([".spec.SimpleEnum", SimpleEnum], 'test', '', true)).toEqual(0);
+            expect(reader.enum([".spec.SimpleEnum", SimpleEnum], 'test', '', true)).toBeUndefined();
         })
 
     });
