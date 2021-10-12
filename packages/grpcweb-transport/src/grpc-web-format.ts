@@ -55,6 +55,9 @@ export function createGrpcWebRequestHeader(headers: Headers, format: GrpcWebForm
  * Packs the serialized message into a data frame, and base64 encodes if
  * format is "text".
  */
+export function createGrpcWebRequestBody(message: Uint8Array, format: GrpcWebFormat): Uint8Array | string;
+export function createGrpcWebRequestBody(message: Uint8Array, format: "text"): string;
+export function createGrpcWebRequestBody(message: Uint8Array, format: "binary"): Uint8Array;
 export function createGrpcWebRequestBody(message: Uint8Array, format: GrpcWebFormat): Uint8Array | string {
     let body = new Uint8Array(5 + message.length); // we need 5 bytes for frame type + message length
     body[0] = GrpcWebFrame.DATA; // first byte is frame type
@@ -142,22 +145,22 @@ export enum GrpcWebFrame { DATA = 0x00, TRAILER = 0x80 }
  *
  * The returned promise resolves when the response is complete.
  */
-export async function readGrpcWebResponseBody(stream: ReadableStream<Uint8Array>, contentType: string | undefined | null, onFrame: (type: GrpcWebFrame, data: Uint8Array) => void): Promise<void> {
+export async function readGrpcWebResponseBody(stream: WebResponseBodyStream, contentType: string | undefined | null, onFrame: FrameHandler): Promise<void> {
 
-    let streamReader: { next(): Promise<ReadableStreamReadResult<Uint8Array>> },
+    let streamReader: StreamReader<Uint8Array>,
         base64queue = "",
         byteQueue: Uint8Array = new Uint8Array(0),
         format = parseFormat(contentType);
 
     // allows to read streams from the 'node-fetch' polyfill which uses
     // node.js ReadableStream instead of the what-wg streams api ReadableStream
-    if (typeof stream.getReader == 'function') {
+    if (isReadableStream(stream)) {
         let whatWgReadableStream = stream.getReader();
         streamReader = {
             next: () => whatWgReadableStream.read()
         };
     } else {
-        streamReader = (stream as unknown as AsyncIterable<Uint8Array>)[Symbol.asyncIterator]() as any;
+        streamReader = stream[Symbol.asyncIterator]();
     }
 
     while (true) {
@@ -218,6 +221,34 @@ export async function readGrpcWebResponseBody(stream: ReadableStream<Uint8Array>
 }
 
 
+// internal, exported for tests
+export interface StreamReader<T> {
+    next(): Promise<ReadableStreamReadResult<T>>
+}
+
+
+// internal, exported for tests
+export interface FrameHandler {
+    (type: GrpcWebFrame, data: Uint8Array): void;
+}
+
+
+// internal
+interface NodeReadableStream<T> {
+    [Symbol.asyncIterator](): { next(): Promise<ReadableStreamReadResult<T>> };
+}
+
+
+// internal
+type WebResponseBodyStream = ReadableStream<Uint8Array> | NodeReadableStream<Uint8Array>;
+
+
+// internal
+const isReadableStream = (s: WebResponseBodyStream): s is ReadableStream<Uint8Array> => {
+    return typeof (s as unknown as any).getReader == "function";
+}
+
+
 // internal
 type GrpcWebFormat = "text" | "binary";
 
@@ -272,9 +303,11 @@ function parseStatus(headers: HttpHeaders): [GrpcStatusCode, string | undefined]
     }
     let s = headers['grpc-status'];
     if (s !== undefined) {
-        if (Array.isArray(m) || GrpcStatusCode[code] === undefined)
+        if (Array.isArray(s))
             return [GrpcStatusCode.INTERNAL, "invalid grpc-web status"];
-        code = parseInt(s as string);
+        code = parseInt(s, 10);
+        if (GrpcStatusCode[code] === undefined)
+            return [GrpcStatusCode.INTERNAL, "invalid grpc-web status"];
     }
     return [code, message];
 }
