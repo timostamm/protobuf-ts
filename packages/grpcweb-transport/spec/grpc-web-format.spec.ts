@@ -19,6 +19,16 @@ const trailerFromObject = (o: { readonly [key: string]: unknown }) => asciiToBin
 );
 
 describe('createGrpcWebRequestHeader', () => {
+    beforeAll(() => {
+        // Ensure the `Date` is stable
+        jasmine.clock().install();
+        jasmine.clock().mockDate();
+    });
+
+    afterAll(() => {
+        jasmine.clock().uninstall();
+    });
+
     it('adds RpcMetadata to Headers', () => {
         const actual = createGrpcWebRequestHeader(
             new globalThis.Headers(),
@@ -160,8 +170,11 @@ describe('readGrpcWebResponse', () => {
             const messageInvalid = readGrpcWebResponseHeader({ 'grpc-message': [] }, 400, '');
             expect(messageInvalid[0]).toEqual(GrpcStatusCode.INTERNAL);
 
-            const statusInvalid = readGrpcWebResponseHeader({ 'grpc-status': '-1' }, 400, '');
-            expect(statusInvalid[0]).toEqual(GrpcStatusCode.INTERNAL);
+            const statusInvalid1 = readGrpcWebResponseHeader({ 'grpc-status': '-1' }, 400, '');
+            expect(statusInvalid1[0]).toEqual(GrpcStatusCode.INTERNAL);
+
+            const statusInvalid2 = readGrpcWebResponseHeader({ 'grpc-status': [] }, 400, '');
+            expect(statusInvalid2[0]).toEqual(GrpcStatusCode.INTERNAL);
         });
 
         it('handles normal Responses', function () {

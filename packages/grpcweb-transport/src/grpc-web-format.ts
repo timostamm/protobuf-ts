@@ -303,8 +303,10 @@ function parseStatus(headers: HttpHeaders): [GrpcStatusCode, string | undefined]
     }
     let s = headers['grpc-status'];
     if (s !== undefined) {
-        code = parseInt(s as string);
-        if (Array.isArray(m) || GrpcStatusCode[code] === undefined)
+        if (Array.isArray(s))
+            return [GrpcStatusCode.INTERNAL, "invalid grpc-web status"];
+        code = parseInt(s, 10);
+        if (GrpcStatusCode[code] === undefined)
             return [GrpcStatusCode.INTERNAL, "invalid grpc-web status"];
     }
     return [code, message];

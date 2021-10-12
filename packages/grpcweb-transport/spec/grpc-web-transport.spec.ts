@@ -509,7 +509,6 @@ describe('GrpcWebFetchTransport', () => {
             });
             try {
                 await call;
-                for await (let chunk of call.responses) {}
                 fail('should fail');
             } catch (e) {
                 expect(e).toBeInstanceOf(RpcError);
@@ -525,7 +524,6 @@ describe('GrpcWebFetchTransport', () => {
             await next(getTrailerFrame(GrpcStatusCode.FAILED_PRECONDITION, 'Precondition failed'), true);
             try {
                 await call;
-                for await (let chunk of call.responses) {}
                 fail('should fail');
             } catch (e) {
                 expect(e).toBeInstanceOf(RpcError);
@@ -543,7 +541,6 @@ describe('GrpcWebFetchTransport', () => {
             });
             try {
                 await call;
-                for await (let chunk of call.responses) {}
                 fail('should fail');
             } catch (e) {
                 expect(e).toBeInstanceOf(RpcError);
@@ -556,7 +553,6 @@ describe('GrpcWebFetchTransport', () => {
             await next(getDataFrame('response'), true);
             try {
                 await call;
-                for await (let chunk of call.responses) {}
                 fail('should fail');
             } catch (e) {
                 expect(e).toBeInstanceOf(RpcError);
@@ -569,7 +565,6 @@ describe('GrpcWebFetchTransport', () => {
             await next(getTrailerFrame(GrpcStatusCode.RESOURCE_EXHAUSTED, 'exhaused'), true);
             try {
                 await call;
-                for await (let chunk of call.responses) {}
                 fail('should fail');
             } catch (e) {
                 expect(e).toBeInstanceOf(RpcError);
@@ -583,7 +578,6 @@ describe('GrpcWebFetchTransport', () => {
             const call = transport.serverStreaming(methodInfo, callInput, callOptions);
             try {
                 await call;
-                for await (let chunk of call.responses) {}
                 fail('should fail');
             } catch (e) {
                 expect(e).toBeInstanceOf(RpcError);
