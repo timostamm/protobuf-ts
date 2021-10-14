@@ -1,10 +1,10 @@
 @protobuf-ts/example-grpcweb-websockets
 =======================================
 
+`@protobuf-ts` does _not_ implement gRPC-web over websockets at this time.
 This is an example for gRPC-web over websockets, as implemented by 
 improbable-eng's Proxy [grpcwebproxy](https://github.com/improbable-eng/grpc-web/tree/master/go/grpcwebproxy) 
 and Plugin [ts-protoc-gen](https://github.com/improbable-eng/ts-protoc-gen). 
-It is using our [ExampleService](../test-fixtures/service-example.proto).
 
 To run the improbable-eng example, you need 3 terminal sessions:
 
