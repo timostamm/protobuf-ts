@@ -3,7 +3,7 @@
 REMOTE=buf.build
 OWNER=timostamm
 VERSION=2.0.7
-GENERATION=0
+GENERATION=1
 TAG=plugins."${REMOTE}/${OWNER}/protobuf-ts:v${VERSION}-${GENERATION}"
 
 BUF_API_TOKEN=$(awk "/machine ${REMOTE}/ { found_machine=1 } /password/ && found_machine { print \$2 ; exit }" < "$HOME"/.netrc)
