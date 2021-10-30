@@ -59,6 +59,12 @@ for (let i = 3; i <= 14; i++) {
 
 for (let fix of fixtures) {
     console.log(`### ${fix.characters} characters`);
-    bench('@protobufjs/utf8     ', () => protobufJsDecode(protobufJsEncode(fix.text)));
-    bench('native               ', () => nativeDecode(nativeEncode(fix.text)));
+    const bytes = nativeEncode(fix.text);
+    bench('decode @protobufjs/utf8     ', () => protobufJsDecode(bytes));
+    bench('decode native               ', () => nativeDecode(bytes));
+}
+for (let fix of fixtures) {
+    console.log(`### ${fix.characters} characters`);
+    bench('encode @protobufjs/utf8     ', () => protobufJsEncode(fix.text));
+    bench('encode native               ', () => nativeEncode(fix.text));
 }
