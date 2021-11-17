@@ -140,6 +140,11 @@ Available plugin options:
   with our option (ts.exclude_options). Set this option if you are certain you do not want
   to include any options at all.
 
+- "keep_enum_prefix"
+  By default, if all enum values share a prefix that corresponds with the enum's name,
+  the prefix is dropped from the value names. Set this option if you want to disable this behavior
+  and keep the prefix intact.
+
 - "client_none"  
   Do not generate rpc clients.
   Only applies to services that do *not* use the option `ts.client`.
@@ -510,7 +515,7 @@ enum Foo {
 }
  ```
 
-The prefix "FOO_" is dropped in TypeScript:
+The prefix "FOO_" is dropped in TypeScript (unless `keep_enum_prefix` option is provided to the plugin):
 
  ```typescript
 enum Foo {
@@ -1120,7 +1125,7 @@ string-based 64 bit integer support (see [Bigint support](#bigint-support)).
 
 
 
-#### Unknown field handling 
+#### Unknown field handling
 
 Unknown fields occur when a message has been created with a newer version 
 of a proto file, or when proto2 extensions are used (see [proto2 support](#proto2-support)). 
