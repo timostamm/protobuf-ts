@@ -31,16 +31,14 @@ export class ReflectionJsonWriter {
     write<T extends object>(message: T, options: JsonWriteOptions): JsonValue {
         const json: JsonObject = {}, source = message as UnknownMessage;
 
-        for (const field of this.fields.filter(f => !f.oneof)) {
-            let jsonValue = this.field(field, source[field.localName], options);
-            if (jsonValue !== undefined)
-                json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
-        }
-
         // flatten all oneof`s
         for (const field of this.fields) {
-            if (!field.oneof)
+            if (!field.oneof) {
+                let jsonValue = this.field(field, source[field.localName], options);
+                if (jsonValue !== undefined)
+                    json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
                 continue;
+            }
 
             const group = source[field.oneof] as UnknownOneofGroup;
             if (group.oneofKind !== field.localName)
