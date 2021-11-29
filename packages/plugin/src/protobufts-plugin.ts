@@ -64,8 +64,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         },
         keep_enum_prefix: {
             description: "By default, if all enum values share a prefix that corresponds with the enum's name, \n" +
-                "the prefix is dropped from the value names. Set this option if you want to disable this behavior \n" +
-                "and keep the prefix intact.",
+                "the prefix is dropped from the value names. Set this option to disable this behavior.",
         },
 
         // client
