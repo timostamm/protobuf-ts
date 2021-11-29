@@ -142,8 +142,7 @@ Available plugin options:
 
 - "keep_enum_prefix"
   By default, if all enum values share a prefix that corresponds with the enum's name,
-  the prefix is dropped from the value names. Set this option if you want to disable this behavior
-  and keep the prefix intact.
+  the prefix is dropped from the value names. Set this option to disable this behavior.
 
 - "client_none"  
   Do not generate rpc clients.
