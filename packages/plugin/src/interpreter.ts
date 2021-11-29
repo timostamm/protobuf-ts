@@ -52,6 +52,7 @@ export class Interpreter {
             oneofKindDiscriminator: string,
             synthesizeEnumZeroValue: string | false,
             forceExcludeAllOptions: boolean,
+            keepEnumPrefix: boolean,
         },
     ) {
     }
@@ -543,7 +544,9 @@ export class Interpreter {
 
 
     protected buildEnumInfo(descriptor: EnumDescriptorProto): rt.EnumInfo {
-        let sharedPrefix = this.registry.findEnumSharedPrefix(descriptor, `${descriptor.name}`);
+        let sharedPrefix = this.options.keepEnumPrefix
+            ? undefined
+            : this.registry.findEnumSharedPrefix(descriptor, `${descriptor.name}`);
         let hasZero = descriptor.value.some(v => v.number === 0);
         let builder = new RuntimeEnumBuilder();
         if (!hasZero && typeof this.options.synthesizeEnumZeroValue == 'string') {

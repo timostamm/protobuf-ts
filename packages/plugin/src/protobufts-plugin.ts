@@ -62,6 +62,10 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 "with our option (ts.exclude_options). Set this option if you are certain you do not want \n" +
                 "to include any options at all.",
         },
+        keep_enum_prefix: {
+            description: "By default, if all enum values share a prefix that corresponds with the enum's name, \n" +
+                "the prefix is dropped from the value names. Set this option to disable this behavior.",
+        },
 
         // client
         client_none: {
@@ -154,6 +158,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 emitAngularAnnotations: params.enable_angular_annotations,
                 normalLongType: params.long_type_string ? rt.LongType.STRING : params.long_type_number ? rt.LongType.NUMBER : rt.LongType.BIGINT,
                 forceExcludeAllOptions: params.force_exclude_all_options,
+                keepEnumPrefix: params.keep_enum_prefix,
             }),
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),

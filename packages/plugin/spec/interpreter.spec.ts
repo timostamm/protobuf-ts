@@ -14,6 +14,7 @@ describe('interpreter', function () {
                 synthesizeEnumZeroValue: 'UNSPECIFIED$',
                 oneofKindDiscriminator: 'oneofKind',
                 forceExcludeAllOptions: false,
+                keepEnumPrefix: false,
             });
             const messageType = interpreter.getMessageType('spec.LongsMessage');
 

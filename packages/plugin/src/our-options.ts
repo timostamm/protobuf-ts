@@ -188,6 +188,7 @@ export interface InternalOptions {
     readonly runtimeRpcImportPath: string;
     readonly runtimeImportPath: string;
     readonly forceExcludeAllOptions: boolean;
+    readonly keepEnumPrefix: boolean;
 }
 
 export function makeInternalOptions(options?: Partial<InternalOptions>): InternalOptions {
@@ -211,6 +212,7 @@ const defaultOptions: InternalOptions = {
     angularCoreImportPath: '@angular/core',
     runtimeImportPath: '@protobuf-ts/runtime',
     forceExcludeAllOptions: false,
+    keepEnumPrefix: false,
 } as const;
 
 
