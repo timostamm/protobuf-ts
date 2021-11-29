@@ -30,38 +30,25 @@ export class ReflectionJsonWriter {
      */
     write<T extends object>(message: T, options: JsonWriteOptions): JsonValue {
         const json: JsonObject = {}, source = message as UnknownMessage;
-
-        for (const field of this.fields.filter(f => !f.oneof)) {
-            let jsonValue = this.field(field, source[field.localName], options);
-            if (jsonValue !== undefined)
-                json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
-        }
-
-        // flatten all oneof`s
         for (const field of this.fields) {
-            if (!field.oneof)
+            // field is not part of a oneof, simply write as is
+            if (!field.oneof) {
+                let jsonValue = this.field(field, source[field.localName], options);
+                if (jsonValue !== undefined)
+                    json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
                 continue;
-
+            }
+            // field is part of a oneof
             const group = source[field.oneof] as UnknownOneofGroup;
             if (group.oneofKind !== field.localName)
-                // if field is not selected, skip
-                continue;
-
-            let jsonValue: JsonValue | undefined = undefined;
-
-            if (field.kind == 'scalar' || field.kind == 'enum')
-                // for a selected oneof member, we must emit the default value
-                jsonValue = this.field(field, group[field.localName], {
-                    enumAsInteger: options.enumAsInteger,
-                    useProtoFieldName: options.useProtoFieldName,
-                    emitDefaultValues: true
-                });
-            else
-                jsonValue = this.field(field, group[field.localName], options);
+                continue; // not selected, skip
+            const opt = field.kind == 'scalar' || field.kind == 'enum'
+                ? {...options, emitDefaultValues: true} // make sure to emit default values too
+                : options;
+            let jsonValue = this.field(field, group[field.localName], opt);
             assert(jsonValue !== undefined);
             json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
         }
-
         return json;
     }
 

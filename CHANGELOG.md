@@ -1,6 +1,7 @@
 ### unreleased changes
 
-none
+
+- json: Small performance improvement when encoding to JSON, see #191
 
 
 ### v2.0.7
