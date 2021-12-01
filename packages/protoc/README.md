@@ -59,6 +59,6 @@ following arguments:
 
 1. `--proto_path` that points to the `include/` directory of the 
    downloaded release (skipped when found on `$PATH`)
-2. --plugin` argument for all plugins found in `node_modules/.bin/`
+2. `--plugin` argument for all plugins found in `node_modules/.bin/`
 3. `--proto_path` argument for `node_modules/@protobuf-ts/plugin` 
 
