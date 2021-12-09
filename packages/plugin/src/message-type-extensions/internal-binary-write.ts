@@ -11,7 +11,7 @@ import {
 import * as rt from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {Interpreter} from "../interpreter";
-import assert = require("assert");
+import {assert} from "@protobuf-ts/runtime";
 
 
 /**

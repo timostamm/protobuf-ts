@@ -11,7 +11,7 @@ import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
 import {GeneratorBase} from "./generator-base";
 import {createLocalTypeName} from "./local-type-name";
-import assert = require("assert");
+import {assert} from "@protobuf-ts/runtime";
 
 
 export abstract class ServiceClientGeneratorBase extends GeneratorBase {
