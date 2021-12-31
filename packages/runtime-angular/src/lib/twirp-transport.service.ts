@@ -120,6 +120,8 @@ export class TwirpTransport implements RpcTransport {
         // RpcErrors are thrown by us, everything else is an internal error
         let error = reason instanceof RpcError ? reason
           : new RpcError(reason instanceof Error ? reason.message : reason, TwirpErrorCode[TwirpErrorCode.internal]);
+        error.methodName = method.name;
+        error.serviceName  = method.service.typeName;
         defHeader.rejectPending(error);
         defMessage.rejectPending(error);
         defStatus.rejectPending(error);
@@ -168,16 +170,25 @@ export class TwirpTransport implements RpcTransport {
   }
 
 
-  clientStreaming<I extends object, O extends object>(/*service: ServiceInfo, method: MethodInfo<I, O>, options: RpcOptions*/): ClientStreamingCall<I, O> {
-    throw new RpcError('Client streaming is not supported by Twirp', TwirpErrorCode[TwirpErrorCode.unimplemented]);
+  clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>/*, options: RpcOptions*/): ClientStreamingCall<I, O> {
+    const e = new RpcError('Client streaming is not supported by Twirp', TwirpErrorCode[TwirpErrorCode.unimplemented]);
+    e.methodName = method.name;
+    e.serviceName  = method.service.typeName;
+    throw e;
   }
 
-  duplex<I extends object, O extends object>(/*service: ServiceInfo, method: MethodInfo<I, O>, options: RpcOptions*/): DuplexStreamingCall<I, O> {
-    throw new RpcError('Duplex streaming is not supported by Twirp', TwirpErrorCode[TwirpErrorCode.unimplemented]);
+  duplex<I extends object, O extends object>(method: MethodInfo<I, O>/*, options: RpcOptions*/): DuplexStreamingCall<I, O> {
+    const e = new RpcError('Duplex streaming is not supported by Twirp', TwirpErrorCode[TwirpErrorCode.unimplemented]);
+    e.methodName = method.name;
+    e.serviceName  = method.service.typeName;
+    throw e;
   }
 
-  serverStreaming<I extends object, O extends object>(/*service: ServiceInfo, method: MethodInfo<I, O>, input: I, options?: RpcOptions*/): ServerStreamingCall<I, O> {
-    throw new RpcError('Server streaming is not supported by Twirp', TwirpErrorCode[TwirpErrorCode.unimplemented]);
+  serverStreaming<I extends object, O extends object>(method: MethodInfo<I, O>/*, input: I, options?: RpcOptions*/): ServerStreamingCall<I, O> {
+    const e = new RpcError('Server streaming is not supported by Twirp', TwirpErrorCode[TwirpErrorCode.unimplemented]);
+    e.methodName = method.name;
+    e.serviceName  = method.service.typeName;
+    throw e;
   }
 
 }
