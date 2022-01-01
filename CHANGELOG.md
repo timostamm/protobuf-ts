@@ -10,9 +10,8 @@ New features:
 - Add keep_enum_prefix plugin option #187
 - json: Small performance improvement when encoding to JSON, see #191
 
-Note: Going forward, protobuf-ts will bump the major version for all 
-releases that add features. Minor releases will be used for releases 
-that only contain bug fixes.
+Note: In the past, protobuf-ts only had patch releases and major releases. Going forward, protobuf-ts will bump the minor version for 
+releases that add features. 
 
 
 ### v2.0.7
