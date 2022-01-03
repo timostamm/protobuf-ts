@@ -27,6 +27,7 @@ protobuf-ts manual
   - [Excluding options from generated code](#excluding-options-from-generated-code)
 - [Binary format](#binary-format)
   - [Conformance](#conformance)
+  - [UTF-8 decoding](#utf-8-decoding)
   - [Unknown field handling](#unknown-field-handling)
 - [JSON format](#json-format)
 - [Code size vs speed](#code-size-vs-speed)
