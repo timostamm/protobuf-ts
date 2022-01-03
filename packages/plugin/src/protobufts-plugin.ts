@@ -77,6 +77,10 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                          "the default behaviour, this option has no effect.",
             excludes: ['ts_nocheck'],
         },
+        add_pb_suffix: {
+            description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
+                         "default behaviour in the next major release.",
+        },
 
         // client
         client_none: {
@@ -195,11 +199,11 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
         // ensure unique file names
         for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '');
+            const base = fileDescriptor.name!.replace('.proto', '') + (params.add_pb_suffix ? "_pb" : "");
             fileTable.register(base + '.ts', fileDescriptor);
         }
         for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '');
+            const base = fileDescriptor.name!.replace('.proto', '') + (params.add_pb_suffix ? "_pb" : "");
             fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
             fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc1-server');
             fileTable.register(base + '.client.ts', fileDescriptor, 'client');

@@ -148,6 +148,10 @@ Available plugin options:
   Generate a @ts-nocheck annotation at the top of each file. This will become the 
   default behaviour in the next major release.
 
+- "add_pb_suffix"
+  Adds the suffix `_pb` to the names of all generated files. This will become the
+  default behaviour in the next major release.
+
 - "client_none"  
   Do not generate rpc clients.
   Only applies to services that do *not* use the option `ts.client`.

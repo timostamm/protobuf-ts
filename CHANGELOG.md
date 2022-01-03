@@ -3,6 +3,7 @@
 New features:
 
 - Add the plugin option `ts_nocheck` to support most strict compiler options in userspace, see #152.
+- The new plugin option `add_pb_suffix` adds the suffix `_pb` to all file names, see #186.
 
 
 ### v2.1.0
