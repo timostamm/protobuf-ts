@@ -33,11 +33,14 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
             props.push('package "' + this.fileDescriptor.package + '"');
         }
         props.push('syntax ' + (this.fileDescriptor.syntax ?? 'proto2'));
-        let header = [
+        const header = [
             `// @generated ${this.options.pluginCredit}`,
             `// @generated from protobuf file "${this.fileDescriptor.name}" (${props.join(', ')})`,
             `// tslint:disable`
         ];
+        if (this.options.tsNoCheck) {
+            header.push(`// @ts-nocheck`);
+        }
         if (this.registry.isExplicitlyDeclaredDeprecated(this.fileDescriptor)) {
             header.push('// @deprecated');
         }

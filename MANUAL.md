@@ -137,12 +137,16 @@ Available plugin options:
 
 - "force_exclude_all_options"  
   By default, custom options are included in the metadata and can be blacklisted
-  with our option (ts.exclude_options). Set this option if you are certain you do not want
-  to include any options at all.
+  with our option (ts.exclude_options). Set this option if you are certain you 
+  do not want to include any options at all.
 
 - "keep_enum_prefix"
   By default, if all enum values share a prefix that corresponds with the enum's name,
   the prefix is dropped from the value names. Set this option to disable this behavior.
+
+- "ts_nocheck"
+  Generate a @ts-nocheck annotation at the top of each file. This will become the 
+  default behaviour in the next major release.
 
 - "client_none"  
   Do not generate rpc clients.

@@ -180,8 +180,7 @@ export interface InternalOptions {
     readonly pluginCredit?: string;
     readonly normalLongType: rt.LongType,
     readonly emitAngularAnnotations: boolean;
-    // create a "synthetic" enum value with this string as name if no 0 value is present
-    readonly synthesizeEnumZeroValue: string | false;
+    readonly synthesizeEnumZeroValue: string | false; // create a "synthetic" enum value with this string as name if no 0 value is present
     readonly oneofKindDiscriminator: string;
     readonly angularCoreImportPath: string;
     readonly runtimeAngularImportPath: string;
@@ -189,6 +188,7 @@ export interface InternalOptions {
     readonly runtimeImportPath: string;
     readonly forceExcludeAllOptions: boolean;
     readonly keepEnumPrefix: boolean;
+    readonly tsNoCheck: boolean;
 }
 
 export function makeInternalOptions(options?: Partial<InternalOptions>): InternalOptions {
@@ -213,6 +213,7 @@ const defaultOptions: InternalOptions = {
     runtimeImportPath: '@protobuf-ts/runtime',
     forceExcludeAllOptions: false,
     keepEnumPrefix: false,
+    tsNoCheck: true,
 } as const;
 
 

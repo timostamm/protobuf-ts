@@ -54,17 +54,28 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         // misc
         generate_dependencies: {
             description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
-                "not the files they import. Set this option to generate code for dependencies \n" +
-                "too.",
+                         "not the files they import. Set this option to generate code for dependencies \n" +
+                         "too.",
         },
         force_exclude_all_options: {
             description: "By default, custom options are included in the metadata and can be blacklisted \n" +
-                "with our option (ts.exclude_options). Set this option if you are certain you do not want \n" +
-                "to include any options at all.",
+                          "with our option (ts.exclude_options). Set this option if you are certain you \n" +
+                          "do not want to include any options at all.",
         },
         keep_enum_prefix: {
-            description: "By default, if all enum values share a prefix that corresponds with the enum's name, \n" +
-                "the prefix is dropped from the value names. Set this option to disable this behavior.",
+            description: "By default, if all enum values share a prefix that corresponds with the enum's \n" +
+                         "name, the prefix is dropped from the value names. Set this option to disable \n" +
+                         "this behavior.",
+        },
+        ts_nocheck: {
+            description: "Generate a @ts-nocheck annotation at the top of each file. This will become the \n" +
+                         "default behaviour in the next major release.",
+            excludes: ['disable_ts_nocheck'],
+        },
+        disable_ts_nocheck: {
+            description: "Do not generate a @ts-nocheck annotation at the top of each file. Since this is \n" +
+                         "the default behaviour, this option has no effect.",
+            excludes: ['ts_nocheck'],
         },
 
         // client
@@ -159,6 +170,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 normalLongType: params.long_type_string ? rt.LongType.STRING : params.long_type_number ? rt.LongType.NUMBER : rt.LongType.BIGINT,
                 forceExcludeAllOptions: params.force_exclude_all_options,
                 keepEnumPrefix: params.keep_enum_prefix,
+                tsNoCheck: params.ts_nocheck,
             }),
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
