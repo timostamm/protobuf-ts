@@ -1,9 +1,14 @@
 import type {IBinaryReader} from "./binary-format-contract";
 import {WireType} from "./binary-format-contract";
 import {PbLong, PbULong} from "./pb-long";
-import {utf8read} from "./protobufjs-utf8";
 import {varint32read, varint64read} from "./goog-varint";
 
+/**
+ * TextDecoderLike is the subset of the TextDecoder API required by protobuf-ts.
+ */
+interface TextDecoderLike {
+    decode(input?: Uint8Array): string;
+}
 
 export class BinaryReader implements IBinaryReader {
 
@@ -19,13 +24,17 @@ export class BinaryReader implements IBinaryReader {
 
     private readonly buf: Uint8Array;
     private readonly view: DataView;
+    private readonly textDecoder: TextDecoderLike;
 
 
-    constructor(buf: Uint8Array) {
+    constructor(buf: Uint8Array, textDecoder?: TextDecoderLike) {
         this.buf = buf;
         this.len = buf.length;
         this.pos = 0;
         this.view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+        this.textDecoder = textDecoder ?? new TextDecoder("utf-8", {
+            fatal: true
+        });
     }
 
 
@@ -218,7 +227,7 @@ export class BinaryReader implements IBinaryReader {
      * Read a `string` field, length-delimited data converted to UTF-8 text.
      */
     string(): string {
-        return utf8read(this.bytes());
+        return this.textDecoder.decode(this.bytes());
     }
 
 }

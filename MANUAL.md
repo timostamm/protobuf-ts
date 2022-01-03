@@ -1120,6 +1120,38 @@ The `toBinary` method takes an optional second argument of type
   Allows to use a custom implementation to encode binary data.
 
 
+#### UTF-8 decoding
+
+JavaScript uses UTF-16 for strings, but protobuf uses UTF-8. In order 
+to serialize to and from binary data, protobuf-ts converts between the 
+encodings with the [TextEncoder / TextDecoder API](https://developer.mozilla.org/en-US/docs/Web/API/Encoding_API). 
+
+Note that the protobuf [language guide](https://developers.google.com/protocol-buffers/docs/proto3#scalar) states:
+
+> A string must always contain UTF-8 encoded or 7-bit ASCII text [...]
+
+If an invalid UTF-8 string is encoded in the binary format, protobuf-ts
+will raise an error on decoding through the TextDecoder option `fatal`.
+If you do not want that behaviour, use the `readerFactory` option to 
+pass your own TextDecoder instance.
+
+As of January 2022, performance of TextDecoder on Node.js falls behind
+Node.js' `Buffer`. In order to use `Buffer` to decode UTF-8, use the 
+`readerFactory` option:
+
+```ts
+const nodeBinaryReadOptions = {
+    readerFactory: (bytes: Uint8Array) => new BinaryReader(bytes, {
+        decode(input?: Uint8Array): string {
+            return input ? (input as Buffer).toString("utf8") : "";
+        }
+    })
+};
+MyMessage.fromBinary(bytes, nodeBinaryReadOptions);
+```
+
+
+
 #### Conformance
 
 `protobuf-ts` strictly conforms to the protobuf spec. It passes all 

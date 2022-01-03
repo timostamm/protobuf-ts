@@ -5,6 +5,13 @@ import {varint32write, varint64write} from "./goog-varint";
 import {assertFloat32, assertInt32, assertUInt32} from "./assert";
 
 
+/**
+ * TextEncoderLike is the subset of the TextEncoder API required by protobuf-ts.
+ */
+interface TextEncoderLike {
+    encode(input?: string): Uint8Array;
+}
+
 export class BinaryWriter implements IBinaryWriter {
 
 
@@ -35,10 +42,10 @@ export class BinaryWriter implements IBinaryWriter {
     /**
      * Text encoder instance to convert UTF-8 to bytes.
      */
-    private readonly textEncoder: TextEncoder;
+    private readonly textEncoder: TextEncoderLike;
 
 
-    constructor(textEncoder?: TextEncoder) {
+    constructor(textEncoder?: TextEncoderLike) {
         this.textEncoder = textEncoder ?? new TextEncoder();
         this.chunks = [];
         this.buf = [];

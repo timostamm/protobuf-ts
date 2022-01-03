@@ -6,6 +6,14 @@ New features:
 - The new plugin option `add_pb_suffix` adds the suffix `_pb` to all file names, see #186.
 
 
+Bug fixes:
+
+- Use TextDecoder API for decoding UTF-8 from binary data, see #184.  
+  We have been using protobuf.js' algorithm to decode UTF-8, but it has had [bugs](https://github.com/protobufjs/protobuf.js/pull/1486)
+  in the past. For best possible compatibility, we have switched to the TextDecoder API.
+  See [MANUAL](./MANUAL.md#utf-8-decoding) for details.
+
+
 ### v2.1.0
 
 New features:
