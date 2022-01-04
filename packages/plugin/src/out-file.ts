@@ -14,6 +14,9 @@ import {InternalOptions} from "./our-options";
 export class OutFile extends TypescriptFile implements GeneratedFile {
 
 
+    private header: string | undefined;
+
+
     constructor(
         name: string,
         public readonly fileDescriptor: FileDescriptorProto,
@@ -28,6 +31,22 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         if (this.isEmpty()) {
             return "";
         }
+        return this.getHeader() + super.getContent();
+    }
+
+
+    getHeader(): string {
+        if (this.isEmpty()) {
+            return "";
+        }
+        if (!this.header) {
+            this.header = this.makeHeader();
+        }
+        return this.header;
+    }
+
+
+    private makeHeader(): string {
         let props = [];
         if (this.fileDescriptor.package) {
             props.push('package "' + this.fileDescriptor.package + '"');
@@ -52,7 +71,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         if (head.length > 0 && !head.endsWith('\n')) {
             head += '\n';
         }
-        return head + super.getContent();
+        return head;
     }
 
 

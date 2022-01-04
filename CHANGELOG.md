@@ -6,6 +6,7 @@ New features:
 - The new plugin option `add_pb_suffix` adds the suffix `_pb` to all file names, see #186.
 - Add service/method name to RpcError, see #197  
   Thanks to @jcready for the contribution.
+- Support JavaScript output via plugin option `output_javascript`, see #200.
 
 
 Bug fixes:

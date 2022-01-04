@@ -33,6 +33,7 @@ protobuf-ts manual
 - [Code size vs speed](#code-size-vs-speed)
 - [Running in the Web Browser](#running-in-the-web-browser)
 - [Running in Node.js](#running-in-nodejs)
+- [Outputting JavaScript](#outputting-javascript)
 - [RPC support](#rpc-support)
 - [Generic RPC clients](#generic-rpc-clients)
   - [RPC options](#rpc-options)
@@ -138,20 +139,55 @@ Available plugin options:
 
 - "force_exclude_all_options"  
   By default, custom options are included in the metadata and can be blacklisted
-  with our option (ts.exclude_options). Set this option if you are certain you 
+  with our option (ts.exclude_options). Set this option if you are certain you
   do not want to include any options at all.
 
-- "keep_enum_prefix"
-  By default, if all enum values share a prefix that corresponds with the enum's name,
-  the prefix is dropped from the value names. Set this option to disable this behavior.
+- "keep_enum_prefix"  
+  By default, if all enum values share a prefix that corresponds with the enum's
+  name, the prefix is dropped from the value names. Set this option to disable
+  this behavior.
 
-- "ts_nocheck"
-  Generate a @ts-nocheck annotation at the top of each file. This will become the 
+- "ts_nocheck"  
+  Generate a @ts-nocheck annotation at the top of each file. This will become the
   default behaviour in the next major release.
 
-- "add_pb_suffix"
+- "disable_ts_nocheck"  
+  Do not generate a @ts-nocheck annotation at the top of each file. Since this is
+  the default behaviour, this option has no effect.
+
+- "add_pb_suffix"  
   Adds the suffix `_pb` to the names of all generated files. This will become the
   default behaviour in the next major release.
+
+- "output_typescript"  
+  Output TypeScript files. This is the default behavior.
+
+- "output_javascript"  
+  Output JavaScript for the currently recommended target ES2020. The target may
+  change with a major release of protobuf-ts.
+  By default, the ECMAScript module system is used (`import` and `export`).
+  Along with JavaScript files, this always outputs TypeScript declaration files.
+
+- "output_javascript_es2015"  
+  Output JavaScript for the ES2015 target.
+
+- "output_javascript_es2016"  
+  Output JavaScript for the ES2016 target.
+
+- "output_javascript_es2017"  
+  Output JavaScript for the ES2017 target.
+
+- "output_javascript_es2018"  
+  Output JavaScript for the ES2018 target.
+
+- "output_javascript_es2019"  
+  Output JavaScript for the ES2019 target.
+
+- "output_javascript_es2020"  
+  Output JavaScript for the ES2020 target.
+
+- "output_legacy_commonjs"  
+  Use CommonJS instead of the default ECMAScript module system.
 
 - "client_none"  
   Do not generate rpc clients.
@@ -353,7 +389,7 @@ Some things to note:
 
 ## IMessageType
 
-The `IMessageType` provides the following methods:
+The `IMessageType` interface provides the following methods:
 
 - `create(): T`
   
@@ -1324,7 +1360,6 @@ benchmark is located in `packages/benchmarks`.
 Note that ts-proto doesn't support JSON with `outputJsonMethods=false`. pbf has a very limited feature set.
 
 
-
 ## Running in the Web Browser
 
 `protobuf-ts` works in the browser. The runtime and generated code is compatible 
@@ -1360,6 +1395,23 @@ If you are using the `grpcweb-transport` or `twirp-transport`, you probably
 have to polyfill the fetch API. See the README files of the transport packages 
 for more information.  
 
+
+
+## Outputting JavaScript
+
+By default, `protobuf-ts` outputs TypeScript files, but can alternatively output
+JavaScript for different runtimes. This might save you an additional build
+step, for example if you want to publish the generated code as a npm package.
+
+To output JavaScript, simply set the
+[plugin option](#the-protoc-plugin) `output_javascript`, which will output
+JavaScript for the recommended target. The recommended target will change with
+`protobuf-ts` releases. If you want to stick to a specific target, use
+`output_javascript_es2015` for example.
+
+By default, the ECMAScript module system is used. If you are stuck with an
+older project that still requires CommonJS, set the plugin option
+`output_legacy_commonjs`.
 
 
 ## RPC support
