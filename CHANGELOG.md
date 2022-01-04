@@ -4,6 +4,8 @@ New features:
 
 - Add the plugin option `ts_nocheck` to support most strict compiler options in userspace, see #152.
 - The new plugin option `add_pb_suffix` adds the suffix `_pb` to all file names, see #186.
+- Add service/method name to RpcError, see #197  
+  Thanks to @jcready for the contribution.
 
 
 Bug fixes:
