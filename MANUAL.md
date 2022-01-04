@@ -1404,7 +1404,7 @@ JavaScript for different runtimes. This might save you an additional build
 step, for example if you want to publish the generated code as a npm package.
 
 To output JavaScript, simply set the
-[plugin options](#the-protoc-plugin) `output_javascript`, which will output
+[plugin option](#the-protoc-plugin) `output_javascript`, which will output
 JavaScript for the recommended target. The recommended target will change with
 `protobuf-ts` releases. If you want to stick to a specific target, use
 `output_javascript_es2015` for example.
