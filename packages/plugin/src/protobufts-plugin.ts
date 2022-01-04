@@ -4,16 +4,17 @@ import {
     DescriptorProto,
     DescriptorRegistry,
     EnumDescriptorProto,
+    GeneratedFile,
     PluginBase,
     ServiceDescriptorProto,
+    setupCompiler,
     SymbolTable,
     TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {OutFile} from "./out-file";
 import {createLocalTypeName} from "./code-gen/local-type-name";
-import * as rt from "@protobuf-ts/runtime";
 import {Interpreter} from "./interpreter";
-import {ClientStyle, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
+import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 import {CommentGenerator} from "./code-gen/comment-generator";
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
@@ -24,9 +25,10 @@ import {ServiceClientGeneratorGeneric} from "./code-gen/service-client-generator
 import {FileTable} from "./file-table";
 import {ServiceServerGeneratorGeneric} from "./code-gen/service-server-generator-generic";
 import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-grpc";
+import * as ts from "typescript";
 
 
-export class ProtobuftsPlugin extends PluginBase<OutFile> {
+export class ProtobuftsPlugin extends PluginBase {
 
     parameters = {
         // @formatter:off
@@ -80,6 +82,47 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         add_pb_suffix: {
             description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
                          "default behaviour in the next major release.",
+        },
+
+        // output types
+        output_typescript: {
+            description: "Output TypeScript files. This is the default behavior.",
+            excludes: ["output_javascript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
+        },
+        output_javascript: {
+            description: "Output JavaScript for the currently recommended target ES2020. The target may \n" +
+                         "change with a major release of protobuf-ts. \n" +
+                         "By default, the ECMAScript module system is used (`import` and `export`). \n" +
+                         "Along with JavaScript files, this always outputs TypeScript declaration files.",
+            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
+        },
+        output_javascript_es2015: {
+            description: "Output JavaScript for the ES2015 target.",
+            excludes: ["output_typescript", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
+        },
+        output_javascript_es2016: {
+            description: "Output JavaScript for the ES2016 target.",
+            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
+        },
+        output_javascript_es2017: {
+            description: "Output JavaScript for the ES2017 target.",
+            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
+        },
+        output_javascript_es2018: {
+            description: "Output JavaScript for the ES2018 target.",
+            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2019", "output_javascript_es2020"]
+        },
+        output_javascript_es2019: {
+            description: "Output JavaScript for the ES2019 target.",
+            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2020"]
+        },
+        output_javascript_es2020: {
+            description: "Output JavaScript for the ES2020 target.",
+            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019"]
+        },
+        output_legacy_commonjs: {
+            description: "Use CommonJS instead of the default ECMAScript module system.",
+            excludes: ["output_typescript"]
         },
 
         // client
@@ -165,24 +208,19 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
     }
 
 
-    generate(request: CodeGeneratorRequest): OutFile[] {
+    generate(request: CodeGeneratorRequest): GeneratedFile[] {
         const
-            params = this.parseOptions(this.parameters, request.parameter),
-            options = makeInternalOptions({
-                pluginCredit: `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : ''),
-                emitAngularAnnotations: params.enable_angular_annotations,
-                normalLongType: params.long_type_string ? rt.LongType.STRING : params.long_type_number ? rt.LongType.NUMBER : rt.LongType.BIGINT,
-                forceExcludeAllOptions: params.force_exclude_all_options,
-                keepEnumPrefix: params.keep_enum_prefix,
-                tsNoCheck: params.ts_nocheck,
-            }),
+            options = makeInternalOptions(
+                this.parseOptions(this.parameters, request.parameter),
+                `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
+            ),
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(),
             imports = new TypeScriptImports(symbols),
             comments = new CommentGenerator(registry),
             interpreter = new Interpreter(registry, options),
-            optionResolver = new OptionResolver(interpreter, registry, params),
+            optionResolver = new OptionResolver(interpreter, registry, options),
             genMessageInterface = new MessageInterfaceGenerator(symbols, registry, imports, comments, interpreter, options),
             genEnum = new EnumGenerator(symbols, registry, imports, comments, interpreter, options),
             genMessageType = new MessageTypeGenerator(symbols, registry, imports, comments, interpreter, options),
@@ -194,16 +232,16 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
         ;
 
 
-        let outFiles: OutFile[] = [];
+        let tsFiles: OutFile[] = [];
 
 
         // ensure unique file names
         for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '') + (params.add_pb_suffix ? "_pb" : "");
+            const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.ts', fileDescriptor);
         }
         for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '') + (params.add_pb_suffix ? "_pb" : "");
+            const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
             fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc1-server');
             fileTable.register(base + '.client.ts', fileDescriptor, 'client');
@@ -222,7 +260,7 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
                 outClientPromise = new OutFile(fileTable.get(fileDescriptor, 'promise-client').name, fileDescriptor, registry, options),
                 outClientRx = new OutFile(fileTable.get(fileDescriptor, 'rx-client').name, fileDescriptor, registry, options),
                 outClientGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-client').name, fileDescriptor, registry, options);
-            outFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
+            tsFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
 
             registry.visitTypes(fileDescriptor, descriptor => {
                 // we are not interested in synthetic types like map entry messages
@@ -290,19 +328,67 @@ export class ProtobuftsPlugin extends PluginBase<OutFile> {
 
         // plugins should only return files requested to generate
         // unless our option "generate_dependencies" is set
-        if (!params.generate_dependencies) {
-            outFiles = outFiles.filter(file => request.fileToGenerate.includes(file.fileDescriptor.name!));
+        if (!options.generateDependencies) {
+            tsFiles = tsFiles.filter(file => request.fileToGenerate.includes(file.fileDescriptor.name!));
         }
 
         // if a proto file is imported to use custom options, or if a proto file declares custom options,
         // we do not to emit it. unless it was explicitly requested.
-        const outFileDescriptors = outFiles.map(of => of.fileDescriptor);
-        outFiles = outFiles.filter(of =>
+        const outFileDescriptors = tsFiles.map(of => of.fileDescriptor);
+        tsFiles = tsFiles.filter(of =>
             request.fileToGenerate.includes(of.fileDescriptor.name!)
             || registry.isFileUsed(of.fileDescriptor, outFileDescriptors)
         );
 
-        return outFiles;
+        return this.transpile(tsFiles, options);
+    }
+
+
+    protected transpile(tsFiles: OutFile[], options: InternalOptions): GeneratedFile[] {
+        if (options.transpileTarget === undefined) {
+            return tsFiles;
+        }
+        const opt: ts.CompilerOptions = {
+            moduleResolution: ts.ModuleResolutionKind.NodeJs,
+            skipLibCheck: true,
+            declaration: true,
+            module: options.transpileModule,
+            target: options.transpileTarget,
+        };
+        const [program,] = setupCompiler(opt, tsFiles, tsFiles.map(f => f.getFilename()));
+        const results: GeneratedFile[] = [];
+        let err: Error | undefined;
+        program.emit(undefined, (fileName: string, data: string, writeByteOrderMark: boolean, onError?: (message: string) => void, sourceFiles?: readonly ts.SourceFile[]) => {
+            // We have to go through some hoops here because the header we add to each file
+            // is not part of the AST. So we find the TypeScript file we generated for each
+            // emitted file and add the header to each output ourselves.
+            if (!sourceFiles) {
+                err = new Error(`unable to map emitted file "${fileName}" to a source file: missing source files`)
+                return;
+            }
+            if (sourceFiles.length !== 1) {
+                err = new Error(`unable to map emitted file "${fileName}" to a source file: expected 1 source file, got ${sourceFiles.length}`)
+                return;
+            }
+            const tsFile = tsFiles.find(x => sourceFiles[0].fileName === x.getFilename());
+            if (!tsFile) {
+                err = new Error(`unable to map emitted file "${fileName}" to a source file: not found`)
+                return;
+            }
+            const content = tsFile.getHeader() + data;
+            results.push({
+                getFilename() {
+                    return fileName;
+                },
+                getContent() {
+                    return content;
+                }
+            });
+        });
+        if (err) {
+            throw err;
+        }
+        return results;
     }
 
 

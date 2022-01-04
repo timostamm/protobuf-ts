@@ -66,7 +66,7 @@ export type ResolvedOptions<T extends OptionsSpec> = {
  *
  *
  */
-export abstract class PluginBase<T extends GeneratedFile> {
+export abstract class PluginBase<T extends GeneratedFile = GeneratedFile> {
 
 
     abstract generate(request: CodeGeneratorRequest): Promise<T[]> | T[];

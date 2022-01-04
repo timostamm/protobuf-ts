@@ -79,6 +79,7 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 - [x] uses standard [TypeScript enums](MANUAL.md#enum-representation)
 - [x] runs [in the Web Browser](MANUAL.md#running-in-the-web-browser) and in [Node.js](MANUAL.md#running-in-nodejs)
 - [x] uses an [algebraic data type for oneof](MANUAL.md#oneof-representation) groups
+- [x] can generate TypeScript [or JavaScript](MANUAL.md#outputting-javascript)
 
 
 Read the [MANUAL](MANUAL.md) to learn more.

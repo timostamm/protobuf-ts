@@ -1,6 +1,6 @@
 import {getFixtureCodeGeneratorRequest} from "./support/helpers";
 import {ProtobuftsPlugin} from "../src/protobufts-plugin";
-import {OutFile} from "src/out-file";
+import {GeneratedFile} from "@protobuf-ts/plugin-framework/src";
 
 const stringSnippets = [
     // Message
@@ -138,7 +138,7 @@ describe('Generated code for long type', function () {
 
 // Generate typescript code for msg-longs.proto. 
 // The `parameter` is forwarded to the request.
-function generateTypescript(parameter: string): OutFile {
+function generateTypescript(parameter: string): GeneratedFile {
     let plugin = new ProtobuftsPlugin('test');
     let request = getFixtureCodeGeneratorRequest({
         parameter,
