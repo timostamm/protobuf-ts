@@ -70,21 +70,17 @@ export class GrpcWebFetchTransport implements RpcTransport {
     }
 
 
-    clientStreaming<I extends object, O extends object>(method?: MethodInfo<I, O>/*, options: RpcOptions*/): ClientStreamingCall<I, O> {
+    clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>/*, options: RpcOptions*/): ClientStreamingCall<I, O> {
         const e = new RpcError('Client streaming is not supported by grpc-web', GrpcStatusCode[GrpcStatusCode.UNIMPLEMENTED]);
-        if (method) {
-            e.methodName = method.name;
-            e.serviceName  = method.service.typeName;
-        }
+        e.methodName = method.name;
+        e.serviceName  = method.service.typeName;
         throw e;
     }
 
-    duplex<I extends object, O extends object>(method?: MethodInfo<I, O>/*, options: RpcOptions*/): DuplexStreamingCall<I, O> {
+    duplex<I extends object, O extends object>(method: MethodInfo<I, O>/*, options: RpcOptions*/): DuplexStreamingCall<I, O> {
         const e = new RpcError('Duplex streaming is not supported by grpc-web', GrpcStatusCode[GrpcStatusCode.UNIMPLEMENTED]);
-        if (method) {
-            e.methodName = method.name;
-            e.serviceName  = method.service.typeName;
-        }
+        e.methodName = method.name;
+        e.serviceName  = method.service.typeName;
         throw e;
     }
 
