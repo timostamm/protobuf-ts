@@ -81,6 +81,8 @@ export class GrpcTransport implements RpcTransport {
                 }
                 if (err) {
                     const e = new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata));
+                    e.methodName = method.name;
+                    e.serviceName  = method.service.typeName;
                     defHeader.rejectPending(e);
                     defMessage.rejectPending(e);
                     defStatus.rejectPending(e);
@@ -105,6 +107,8 @@ export class GrpcTransport implements RpcTransport {
             // we require that the status is an error status.
             if (defMessage.state === DeferredState.PENDING && val.code === GrpcStatus.OK) {
                 const e = new RpcError('expected error status', GrpcStatus[GrpcStatus.DATA_LOSS]);
+                e.methodName = method.name;
+                e.serviceName  = method.service.typeName;
                 defMessage.rejectPending(e);
                 defStatus.rejectPending(e);
                 defTrailer.rejectPending(e);
@@ -152,6 +156,8 @@ export class GrpcTransport implements RpcTransport {
 
         gCall.addListener('error', err => {
             const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata)) : new RpcError(err.message);
+            e.methodName = method.name;
+            e.serviceName  = method.service.typeName;
             defHeader.rejectPending(e);
             if (!outStream.closed) {
                 outStream.notifyError(e);
@@ -210,6 +216,8 @@ export class GrpcTransport implements RpcTransport {
                     }
                     if (err) {
                         const e = new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata));
+                        e.methodName = method.name;
+                        e.serviceName  = method.service.typeName;
                         defHeader.rejectPending(e);
                         defMessage.rejectPending(e);
                         defStatus.rejectPending(e);
@@ -273,6 +281,8 @@ export class GrpcTransport implements RpcTransport {
 
         gCall.addListener('error', err => {
             const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata)) : new RpcError(err.message);
+            e.methodName = method.name;
+            e.serviceName  = method.service.typeName;
             defHeader.rejectPending(e);
             if (!outStream.closed) {
                 outStream.notifyError(e);

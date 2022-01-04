@@ -22,6 +22,24 @@ export class RpcError extends Error {
      */
     meta: RpcMetadata;
 
+    /**
+     * The name of the RPC method that was called as declared in .proto
+     */
+    methodName?: string;
+
+    /**
+     * The name of the RPC service that was called as declared in .proto
+     *
+     * It will be in the form of:
+     * - package name
+     * - dot "."
+     * - service name
+     *
+     * If the service was declared without a package, the package name and dot
+     * are omitted.
+     */
+    serviceName?: string;
+
     name = 'RpcError';
 
     constructor(message: string, code = 'UNKNOWN', meta?: RpcMetadata) {
@@ -38,6 +56,9 @@ export class RpcError extends Error {
         if (this.code) {
             l.push('');
             l.push('Code: ' + this.code);
+        }
+        if (this.serviceName && this.methodName) {
+            l.push('Method: ' + this.serviceName + '/' + this.methodName)
         }
         let m = Object.entries(this.meta);
         if (m.length) {

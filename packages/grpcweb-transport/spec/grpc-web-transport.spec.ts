@@ -80,8 +80,23 @@ describe('GrpcWebFetchTransport', () => {
     describe('clientStreaming()', function () {
         it('throws because it is not supported in grpc-web', async () => {
             const transport = new GrpcWebFetchTransport({ baseUrl: '' });
+            const methodInfo: MethodInfo<RequestMessage, ResponseMessage> = {
+                service: {
+                    typeName: "test.Service",
+                    methods: [],
+                    options: {},
+                },
+                name: "clientStreaming",
+                I: RequestMessage,
+                O: ResponseMessage,
+                localName: "clientStreaming",
+                idempotency: undefined,
+                clientStreaming: true,
+                serverStreaming: false,
+                options: {},
+            };
             try {
-                await transport.clientStreaming();
+                await transport.clientStreaming(methodInfo);
                 fail('this should not be implemented');
             } catch (e) {
                 expect(e).toBeInstanceOf(RpcError);
@@ -93,8 +108,23 @@ describe('GrpcWebFetchTransport', () => {
     describe('duplex()', function () {
         it('throws because it is not supported in grpc-web', async () => {
             const transport = new GrpcWebFetchTransport({ baseUrl: '' });
+            const methodInfo: MethodInfo<RequestMessage, ResponseMessage> = {
+                service: {
+                    typeName: "test.Service",
+                    methods: [],
+                    options: {},
+                },
+                name: "duplex",
+                I: RequestMessage,
+                O: ResponseMessage,
+                localName: "duplex",
+                idempotency: undefined,
+                clientStreaming: true,
+                serverStreaming: true,
+                options: {},
+            };
             try {
-                await transport.duplex();
+                await transport.duplex(methodInfo);
                 fail('this should not be implemented');
             } catch (e) {
                 expect(e).toBeInstanceOf(RpcError);
