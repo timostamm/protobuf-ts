@@ -4,6 +4,14 @@
 none
 
 
+### v2.2.1
+
+Bug fixes:
+
+- server_generic option stopped working, see #202.  
+  Thanks to @sessfeld for the contribution.
+
+
 ### v2.2.0
 
 New features:
