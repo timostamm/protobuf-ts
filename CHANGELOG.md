@@ -1,5 +1,11 @@
 ### unreleased changes
 
+
+none
+
+
+### v2.2.0-alpha.0
+
 New features:
 
 - Add the plugin option `ts_nocheck` to support most strict compiler options in userspace, see #152.
