@@ -305,7 +305,7 @@ export function makeInternalOptions(
         o.forcedClientStyle = ClientStyle.NO_CLIENT;
     }
     if (params?.server_generic) {
-        o.normalServerStyle = ServerStyle.NO_SERVER;
+        o.normalServerStyle = ServerStyle.GENERIC_SERVER;
     }
     if (params?.server_grpc1) {
         o.normalServerStyle = ServerStyle.GRPC1_SERVER;
