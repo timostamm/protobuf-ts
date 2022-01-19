@@ -87,7 +87,7 @@ export function mapService(si: ServiceInfo, service: any, options: AdaptServiceO
 }
 
 
-function createContext(serviceInfo: ServiceInfo, methodInfo: MethodInfo, call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any> | grpc.ServerWritableStream<any, any>): ServerCallContext {
+export function createContext(serviceInfo: ServiceInfo, methodInfo: MethodInfo, call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any> | grpc.ServerWritableStream<any, any>): ServerCallContext {
     const deadlineGrpc = call.getDeadline();
     const deadlineDate = typeof deadlineGrpc === 'number' ? new Date(deadlineGrpc) : deadlineGrpc;
 
