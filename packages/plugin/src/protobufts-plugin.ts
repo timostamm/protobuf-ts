@@ -28,7 +28,7 @@ import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-gr
 import * as ts from "typescript";
 
 
-export class ProtobuftsPlugin extends PluginBase {
+export class ProtobuftsPlugin extends PluginBase<GeneratedFile> {
 
     parameters = {
         // @formatter:off

@@ -38,14 +38,24 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
     generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto) {
         const
             interpreterType = this.interpreter.getServiceType(descriptor),
-            IGenericServer = this.imports.type(source, descriptor, this.symbolKindInterface)
+            IGenericServer = this.imports.type(source, descriptor, this.symbolKindInterface),
+            ServerCallContext = this.imports.name(source, "ServerCallContext", this.options.runtimeRpcImportPath)
         ;
 
         const statement = ts.createInterfaceDeclaration(
             undefined,
             [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
             ts.createIdentifier(IGenericServer),
-            undefined,
+            [
+              ts.createTypeParameterDeclaration(
+                "T",
+                undefined,
+                ts.createTypeReferenceNode(
+                  ts.createIdentifier(ServerCallContext),
+                  undefined
+                ),
+              )
+            ],
             undefined,
             interpreterType.methods.map(mi => {
                 const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
@@ -81,8 +91,7 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
                 this.registry.resolveTypeName(methodInfo.O.typeName)
-            )), undefined),
-            ServerCallContext = this.imports.name(source, 'ServerCallContext', this.options.runtimeRpcImportPath);
+            )), undefined);
         return ts.createMethodSignature(
             undefined,
             [
@@ -102,7 +111,7 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                     ts.createIdentifier("context"),
                     undefined,
                     ts.createTypeReferenceNode(
-                        ts.createIdentifier(ServerCallContext),
+                        ts.createIdentifier("T"),
                         undefined
                     ),
                     undefined
@@ -128,7 +137,6 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                 source,
                 this.registry.resolveTypeName(methodInfo.O.typeName)
             )), undefined),
-            ServerCallContext = this.imports.name(source, 'ServerCallContext', this.options.runtimeRpcImportPath),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
             undefined,
@@ -161,7 +169,7 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                     ts.createIdentifier("context"),
                     undefined,
                     ts.createTypeReferenceNode(
-                        ts.createIdentifier(ServerCallContext),
+                        ts.createIdentifier("T"),
                         undefined
                     ),
                     undefined
@@ -188,7 +196,6 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                 source,
                 this.registry.resolveTypeName(methodInfo.O.typeName)
             )), undefined),
-            ServerCallContext = this.imports.name(source, 'ServerCallContext', this.options.runtimeRpcImportPath),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
             undefined,
@@ -212,7 +219,7 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                     ts.createIdentifier("context"),
                     undefined,
                     ts.createTypeReferenceNode(
-                        ts.createIdentifier(ServerCallContext),
+                        ts.createIdentifier("T"),
                         undefined
                     ),
                     undefined
@@ -238,7 +245,6 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                 source,
                 this.registry.resolveTypeName(methodInfo.O.typeName)
             )), undefined),
-            ServerCallContext = this.imports.name(source, 'ServerCallContext', this.options.runtimeRpcImportPath),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -275,7 +281,7 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                     ts.createIdentifier("context"),
                     undefined,
                     ts.createTypeReferenceNode(
-                        ts.createIdentifier(ServerCallContext),
+                        ts.createIdentifier("T"),
                         undefined
                     ),
                     undefined
