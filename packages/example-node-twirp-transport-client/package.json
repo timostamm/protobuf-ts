@@ -17,7 +17,7 @@
     "@protobuf-ts/twirp-transport": "^2.2.1",
     "@types/node-fetch": "^2.5.8",
     "abort-controller": "^3.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   }
