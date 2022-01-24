@@ -4,7 +4,7 @@
 none
 
 
-### v2.2.2-alpha.0
+### v2.2.2
 
 New Features:
 
