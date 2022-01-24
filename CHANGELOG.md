@@ -4,6 +4,14 @@
 none
 
 
+### v2.2.2-alpha.0
+
+New Features:
+
+- For generic servers, support custom contexts, see #201.  
+  Thanks to @be9 for the contribution.
+
+
 ### v2.2.1
 
 Bug fixes:
