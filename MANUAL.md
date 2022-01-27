@@ -88,7 +88,7 @@ The protocol buffer compiler `protoc` is automatically installed ([explanation](
 
 Usage:
 ```shell script
-npx protoc \ 
+npx protoc \
   --ts_out src/generated/ \
   --ts_opt long_type_string \
   --proto_path protos \
