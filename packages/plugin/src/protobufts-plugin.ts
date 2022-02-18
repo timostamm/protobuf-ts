@@ -92,7 +92,6 @@ export class ProtobuftsPlugin extends PluginBase {
         output_javascript: {
             description: "Output JavaScript for the currently recommended target ES2020. The target may \n" +
                          "change with a major release of protobuf-ts. \n" +
-                         "By default, the ECMAScript module system is used (`import` and `export`). \n" +
                          "Along with JavaScript files, this always outputs TypeScript declaration files.",
             excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
         },

@@ -165,7 +165,6 @@ Available plugin options:
 - "output_javascript"  
   Output JavaScript for the currently recommended target ES2020. The target may
   change with a major release of protobuf-ts.
-  By default, the ECMAScript module system is used (`import` and `export`).
   Along with JavaScript files, this always outputs TypeScript declaration files.
 
 - "output_javascript_es2015"  
