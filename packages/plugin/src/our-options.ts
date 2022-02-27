@@ -421,4 +421,3 @@ export class OptionResolver {
     }
 
 }
-
