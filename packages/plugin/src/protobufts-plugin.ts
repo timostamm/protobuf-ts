@@ -124,6 +124,11 @@ export class ProtobuftsPlugin extends PluginBase {
             excludes: ["output_typescript"]
         },
 
+        // Add file extension for ESM compatibility with node
+        enable_import_extensions: {
+            description: "Use .js extension in ESM import statements",
+        },
+
         // client
         client_none: {
             description: "Do not generate rpc clients. \n" +
@@ -216,7 +221,7 @@ export class ProtobuftsPlugin extends PluginBase {
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(),
-            imports = new TypeScriptImports(symbols),
+            imports = new TypeScriptImports(symbols, this.parameters.enable_import_extension),
             comments = new CommentGenerator(registry),
             interpreter = new Interpreter(registry, options),
             optionResolver = new OptionResolver(interpreter, registry, options),
