@@ -221,7 +221,7 @@ export class ProtobuftsPlugin extends PluginBase {
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(),
-            imports = new TypeScriptImports(symbols, this.parameters.enable_import_extension),
+            imports = new TypeScriptImports(symbols, options.enable_import_extensions),
             comments = new CommentGenerator(registry),
             interpreter = new Interpreter(registry, options),
             optionResolver = new OptionResolver(interpreter, registry, options),
