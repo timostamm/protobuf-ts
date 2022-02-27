@@ -304,6 +304,7 @@ function createRelativeImportPath(currentPath: string, pathToImportFrom: string,
     if (!fromPath.startsWith('../') && !fromPath.startsWith('./')) {
         fromPath = './' + fromPath;
     }
+    
     // add .js extensions on import statements for ESM compatibility with typescript and nodejs
     if (addExtension === true) {
         fromPath = fromPath + ".js";

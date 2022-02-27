@@ -126,7 +126,7 @@ export class ProtobuftsPlugin extends PluginBase {
 
         // Add file extension for ESM compatibility with node
         enable_import_extensions: {
-            description: "Use .js extension in ESM import statements",
+            description: "Use .js extension for ESM import statements",
         },
 
         // client
