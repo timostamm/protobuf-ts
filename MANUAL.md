@@ -18,6 +18,7 @@ protobuf-ts manual
 - [Well-known-types](#well-known-types)
   - [google.protobuf.Any](#googleprotobufany)
   - [google.protobuf.Timestamp](#googleprotobuftimestamp)
+  - [google.protobuf.Struct](#googleprotobufstruct)
   - [google.type.Color](#googletypecolor)
   - [google.type.DateTime and google.type.Date](#googletypedatetime-and-googletypedate)
 - [Reflection](#reflection)
@@ -865,6 +866,24 @@ Any.toJson(any, {
 
 
 
+#### google.protobuf.Struct
+
+`Struct` is a well-known type that can represent all values JSON can represent, 
+and maps to simple JSON when serializing to or from JSON.
+
+The definition for `Struct` is a bit complex in order to cover all cases, and 
+consequently, constructing instances of this message can be a bit cumbersome.
+However, you can simply use `fromJson` and `toJson` to convert between the 
+simple JSON representation, and the message representation for convenience:
+
+```ts
+let struct = Struct.fromJson({
+  "foo": "you can put any JSON here",
+  "bar": 123,
+});
+```
+
+
 #### google.type.Color
 
 - `toHex(message: Color): string` 
@@ -890,11 +909,11 @@ Any.toJson(any, {
 
 #### google.type.DateTime and google.type.Date
 
-Both types provide methods to convert to and from JavaScript Dates, similar 
-to `google.protobuf.Timestamp`. 
+Both types provide methods to convert to and from JavaScript Dates, similar
+to `google.protobuf.Timestamp`.
 
-> **Note:** `DateTime` is also supported by the `PbDatePipe` provided by 
-> `@protobuf-ts/runtime-angular`. 
+> **Note:** `DateTime` is also supported by the `PbDatePipe` provided by
+> `@protobuf-ts/runtime-angular`.
 
 
 
