@@ -24,7 +24,7 @@ jobs:
           name: Install conformance-test-runner
           command: |
             archive=conformance-test-runner-3.12.3-linux-x86_64.zip
-            curl -O -L https://pub.devserver2.de/protobuf/conformance-test-runner-3.12.3-linux-x86_64.zip
+            curl -O -L http://pub.devserver2.de/protobuf/conformance-test-runner-3.12.3-linux-x86_64.zip
             unzip ${archive}
             sudo cp libprotobuf.so.23 /usr/lib/
             sudo cp conformance-test-runner /usr/bin/
