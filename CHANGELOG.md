@@ -2,7 +2,7 @@
 
 none
 
-### v2.2.3.alpha.1
+### v2.2.3
 
 Bug fixes:
 
