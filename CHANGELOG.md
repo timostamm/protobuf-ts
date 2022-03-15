@@ -1,7 +1,10 @@
 ### unreleased changes
 
 
-none
+Bug fixes:
+
+- Improved compatibility of grpcweb-transport with TypeScript >= 4.1.5 and skipLibCheck=false,
+  see #248
 
 
 ### v2.2.2
