@@ -148,6 +148,11 @@ Available plugin options:
   name, the prefix is dropped from the value names. Set this option to disable
   this behavior.
 
+- "use_proto_field_name"
+  By default interface fields use lowerCamelCase names by transforming proto field
+  names to follow common style convention for TypeScript. Set this option to preserve
+  original proto field names in generated interfaces.
+
 - "ts_nocheck"  
   Generate a @ts-nocheck annotation at the top of each file. This will become the
   default behaviour in the next major release.

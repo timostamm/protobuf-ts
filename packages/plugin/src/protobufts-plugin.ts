@@ -69,6 +69,11 @@ export class ProtobuftsPlugin extends PluginBase {
                          "name, the prefix is dropped from the value names. Set this option to disable \n" +
                          "this behavior.",
         },
+        use_proto_field_name: {
+            description: "By default interface fields use lowerCamelCase names by transforming proto field\n" +
+                         "names to follow common style convention for TypeScript. Set this option to preserve\n" +
+                         "original proto field names in generated interfaces.",
+        },
         ts_nocheck: {
             description: "Generate a @ts-nocheck annotation at the top of each file. This will become the \n" +
                          "default behaviour in the next major release.",

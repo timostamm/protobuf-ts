@@ -53,6 +53,7 @@ export class Interpreter {
             synthesizeEnumZeroValue: string | false,
             forceExcludeAllOptions: boolean,
             keepEnumPrefix: boolean,
+            useProtoFieldName: boolean,
         },
     ) {
     }
@@ -346,20 +347,22 @@ export class Interpreter {
 
     /**
      * Create a name for a field or a oneof.
-     * - use lowerCamelCase
+     * - use lowerCamelCase unless useProtoFieldName option is enabled
      * - escape reserved object property names by
      *   adding '$' at the end
      * - don't have to escape reserved keywords
      */
-    private static createTypescriptNameForField(descriptor: FieldDescriptorProto | OneofDescriptorProto, additionalReservedWords = '', escapeCharacter = '$'): string {
+    private createTypescriptNameForField(descriptor: FieldDescriptorProto | OneofDescriptorProto, escapeCharacter = '$'): string {
         const reservedObjectProperties = '__proto__,toString'.split(',');
         let name = descriptor.name;
         assert(name !== undefined);
-        name = rt.lowerCamelCase(name);
+        if (!this.options.useProtoFieldName) {
+            name = rt.lowerCamelCase(name);
+        }
         if (reservedObjectProperties.includes(name)) {
             name = name + escapeCharacter;
         }
-        if (additionalReservedWords.split(',').includes(name)) {
+        if (this.options.oneofKindDiscriminator.split(',').includes(name)) {
             name = name + escapeCharacter;
         }
         return name;
@@ -404,7 +407,7 @@ export class Interpreter {
 
 
         // localName: The name of the field in the runtime.
-        let localName = Interpreter.createTypescriptNameForField(fieldDescriptor, this.options.oneofKindDiscriminator);
+        let localName = this.createTypescriptNameForField(fieldDescriptor);
         if (localName !== rt.lowerCamelCase(fieldDescriptor.name)) {
             info.localName = localName;
         }
@@ -423,7 +426,7 @@ export class Interpreter {
             const parentDescriptor = this.registry.parentOf(fieldDescriptor);
             assert(DescriptorProto.is(parentDescriptor));
             const ooDecl = parentDescriptor.oneofDecl[fieldDescriptor.oneofIndex];
-            info.oneof = Interpreter.createTypescriptNameForField(ooDecl, this.options.oneofKindDiscriminator);
+            info.oneof = this.createTypescriptNameForField(ooDecl);
         }
 
 
