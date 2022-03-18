@@ -1,6 +1,9 @@
 ### unreleased changes
 
-none
+New Features:
+
+- Relax angular version constraints in runtime-angular, see #246
+
 
 ### v2.2.3
 

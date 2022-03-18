@@ -32,8 +32,8 @@
   },
   "private": false,
   "peerDependencies": {
-    "@angular/common": "8 - 11",
-    "@angular/core": "8 - 11",
+    "@angular/common": "8 - 13",
+    "@angular/core": "8 - 13",
     "@protobuf-ts/runtime": "2.2.3",
     "@protobuf-ts/runtime-rpc": "2.2.3",
     "@protobuf-ts/twirp-transport": "2.2.3",
