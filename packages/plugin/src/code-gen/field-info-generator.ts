@@ -107,6 +107,14 @@ export class FieldInfoGenerator {
 
 
     /**
+     * Creates the interface field / oneof name based on original proto field name and naming options.
+     */
+    static createTypescriptLocalName(name: string, options: { useProtoFieldName: boolean }): string {
+        return options.useProtoFieldName ? name : rt.lowerCamelCase(name);
+    }
+
+
+    /**
      * Turn normalized field info returned by normalizeFieldInfo() back into
      * the minimized form.
      */

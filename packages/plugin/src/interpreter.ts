@@ -13,6 +13,7 @@ import {
 import * as rt from "@protobuf-ts/runtime";
 import {assert} from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
+import { FieldInfoGenerator } from "./code-gen/field-info-generator";
 import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
 
 
@@ -356,9 +357,7 @@ export class Interpreter {
         const reservedObjectProperties = '__proto__,toString'.split(',');
         let name = descriptor.name;
         assert(name !== undefined);
-        if (!this.options.useProtoFieldName) {
-            name = rt.lowerCamelCase(name);
-        }
+        name = FieldInfoGenerator.createTypescriptLocalName(name, this.options);
         if (reservedObjectProperties.includes(name)) {
             name = name + escapeCharacter;
         }
