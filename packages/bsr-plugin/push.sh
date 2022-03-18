@@ -2,7 +2,7 @@
 
 REMOTE=buf.build
 OWNER=timostamm
-VERSION=2.2.3
+VERSION=2.2.4
 GENERATION=1
 TAG=plugins."${REMOTE}/${OWNER}/protobuf-ts:v${VERSION}-${GENERATION}"
 
