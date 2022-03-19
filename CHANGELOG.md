@@ -1,7 +1,21 @@
 ### unreleased changes
 
-
 none
+
+
+### v2.2.4
+
+New Features:
+
+- Relax angular version constraints in runtime-angular, see #246
+
+
+### v2.2.3
+
+Bug fixes:
+
+- Improved compatibility of grpcweb-transport with TypeScript >= 4.1.5 and skipLibCheck=false,
+  see #248
 
 
 ### v2.2.2

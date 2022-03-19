@@ -1,4 +1,5 @@
 import { GrpcStatusCode, GrpcWebFrame, createGrpcWebRequestBody, readGrpcWebResponseBody } from "../../src";
+import {StreamReaderNextResult} from "../../src/grpc-web-format";
 
 import { Deferred } from "@protobuf-ts/runtime-rpc";
 
@@ -51,10 +52,10 @@ export const asciiToCharCodes = (ascii: string): number[] => ascii.split('').map
 export const asciiToBin = (ascii: string): Uint8Array => new Uint8Array(asciiToCharCodes(ascii));
 
 export function makeStream() {
-    let nextValue = new Deferred<ReadableStreamReadResult<Uint8Array>>(true);
+    let nextValue = new Deferred<StreamReaderNextResult<Uint8Array>>(true);
     const streamReader = {
         next: () => nextValue.promise.then((value) => {
-            nextValue = new Deferred<ReadableStreamReadResult<Uint8Array>>(true);
+            nextValue = new Deferred<StreamReaderNextResult<Uint8Array>>(true);
             return value;
         })
     };
@@ -70,10 +71,10 @@ export function makeStream() {
 }
 
 export function makeWhatWgStream() {
-    let nextValue = new Deferred<ReadableStreamReadResult<Uint8Array>>(true);
+    let nextValue = new Deferred<StreamReaderNextResult<Uint8Array>>(true);
     const streamReader = {
         read: () => nextValue.promise.then((value) => {
-            nextValue = new Deferred<ReadableStreamReadResult<Uint8Array>>(true);
+            nextValue = new Deferred<StreamReaderNextResult<Uint8Array>>(true);
             return value;
         })
     };

@@ -223,7 +223,18 @@ export async function readGrpcWebResponseBody(stream: WebResponseBodyStream, con
 
 // internal, exported for tests
 export interface StreamReader<T> {
-    next(): Promise<ReadableStreamReadResult<T>>
+    next(): Promise<StreamReaderNextResult<T>>
+}
+// we use our own type definition because the name changed between TypeScript <= 4.1.5 and 4.2.x
+// which raises an error with skipLibCheck=false, see https://github.com/timostamm/protobuf-ts/issues/248
+export type StreamReaderNextResult<T> = StreamReaderNextValueResult<T> | StreamReaderNextDoneResult<T>;
+interface StreamReaderNextValueResult<T> {
+    done: true;
+    value?: T;
+}
+interface StreamReaderNextDoneResult<T> {
+    done: false;
+    value: T;
 }
 
 
@@ -235,7 +246,7 @@ export interface FrameHandler {
 
 // internal
 interface NodeReadableStream<T> {
-    [Symbol.asyncIterator](): { next(): Promise<ReadableStreamReadResult<T>> };
+    [Symbol.asyncIterator](): { next(): Promise<StreamReaderNextResult<T>> };
 }
 
 

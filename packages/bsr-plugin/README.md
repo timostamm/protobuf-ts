@@ -11,7 +11,7 @@ Which lets you compile your proto files with the [Buf CLI](https://docs.buf.buil
 # buf.gen.yaml
 version: v1
 plugins:
-  - remote: buf.build/timostamm/plugins/protobuf-ts:v2.0.7-0
+  - remote: buf.build/timostamm/plugins/protobuf-ts:v2.2.2-1
     out: gen/
     opt:
       - long_type_string
