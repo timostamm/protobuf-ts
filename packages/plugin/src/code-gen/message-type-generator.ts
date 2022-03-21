@@ -41,6 +41,7 @@ export class MessageTypeGenerator extends GeneratorBase {
                     runtimeImportPath: string;
                     normalLongType: LongType;
                     oneofKindDiscriminator: string;
+                    useProtoFieldName: boolean;
                 }) {
         super(symbols, registry, imports, comments, interpreter);
         this.fieldInfoGenerator = new FieldInfoGenerator(this.registry, this.imports, this.options);

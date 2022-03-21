@@ -15,6 +15,7 @@ describe('interpreter', function () {
                 oneofKindDiscriminator: 'oneofKind',
                 forceExcludeAllOptions: false,
                 keepEnumPrefix: false,
+                useProtoFieldName: false,
             });
             const messageType = interpreter.getMessageType('spec.LongsMessage');
 

@@ -196,6 +196,7 @@ export interface InternalOptions {
     readonly runtimeImportPath: string;
     readonly forceExcludeAllOptions: boolean;
     readonly keepEnumPrefix: boolean;
+    readonly useProtoFieldName: boolean;
     readonly tsNoCheck: boolean;
     readonly transpileTarget: ts.ScriptTarget | undefined,
     readonly transpileModule: ts.ModuleKind,
@@ -210,6 +211,7 @@ export function makeInternalOptions(
         enable_angular_annotations: boolean,
         force_exclude_all_options: boolean,
         keep_enum_prefix: boolean,
+        use_proto_field_name: boolean,
         ts_nocheck: boolean,
         force_optimize_code_size: boolean,
         force_optimize_speed: boolean,
@@ -256,6 +258,7 @@ export function makeInternalOptions(
             runtimeImportPath: '@protobuf-ts/runtime',
             forceExcludeAllOptions: false,
             keepEnumPrefix: false,
+            useProtoFieldName: false,
             tsNoCheck: false,
             transpileTarget: undefined,
             transpileModule: ts.ModuleKind.ES2015,
@@ -276,6 +279,9 @@ export function makeInternalOptions(
     }
     if (params?.keep_enum_prefix) {
         o.keepEnumPrefix = true;
+    }
+    if (params?.use_proto_field_name) {
+        o.useProtoFieldName = true;
     }
     if (params?.ts_nocheck) {
         o.tsNoCheck = true;
