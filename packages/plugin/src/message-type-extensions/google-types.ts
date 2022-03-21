@@ -8,7 +8,7 @@ import {
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
-import { FieldInfoGenerator } from "src/code-gen/field-info-generator";
+import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 
 
 export class GoogleTypes implements CustomMethodGenerator {
