@@ -3,6 +3,14 @@
 none
 
 
+### v2.3.0
+
+New Features:
+
+- Add option for preserving original proto field names in generated interfaces. #250  
+  Thanks to @kskalksi for the contribution.
+
+
 ### v2.2.4
 
 New Features:
