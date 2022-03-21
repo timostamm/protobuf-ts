@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/example-chat-system",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "description": "",
   "private": true,
   "scripts": {
@@ -11,13 +11,13 @@
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
     "@grpc/grpc-js": "^1.2.2",
-    "@protobuf-ts/grpc-backend": "^2.2.4",
-    "@protobuf-ts/grpc-transport": "^2.2.4",
-    "@protobuf-ts/grpcweb-transport": "^2.2.4",
-    "@protobuf-ts/plugin": "^2.2.4",
-    "@protobuf-ts/protoc": "^2.2.4",
-    "@protobuf-ts/runtime": "^2.2.4",
-    "@protobuf-ts/runtime-rpc": "^2.2.4",
+    "@protobuf-ts/grpc-backend": "^2.3.0",
+    "@protobuf-ts/grpc-transport": "^2.3.0",
+    "@protobuf-ts/grpcweb-transport": "^2.3.0",
+    "@protobuf-ts/plugin": "^2.3.0",
+    "@protobuf-ts/protoc": "^2.3.0",
+    "@protobuf-ts/runtime": "^2.3.0",
+    "@protobuf-ts/runtime-rpc": "^2.3.0",
     "@types/express": "^4.17.9",
     "@types/node": "^14.14.14",
     "abort-controller": "^3.0.0",
