@@ -643,13 +643,14 @@ interface OneofExample {
 }
 
 let message: OneofExample;
-if (message.oneofKind === "value") {
- message.value // the union has been narrowed down
+if (message.result.oneofKind === "value") {
+ message.result.value // the union has been narrowed down
 }
 ```
 
-> **Note:** you have to turn on the `strictNullChecks` option in your 
-> `tsconfig.json` for this feature
+> **Note:** This feature requires the TypeScript compiler option `strictNullChecks` 
+> to be true. The option is enabled by default if you set the option `strict` to 
+> true, which is recommended. See the [documentation](https://www.typescriptlang.org/tsconfig#strictNullChecks) for details.
 
 
 ## BigInt support
