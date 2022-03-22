@@ -26,6 +26,8 @@ import {FileTable} from "./file-table";
 import {ServiceServerGeneratorGeneric} from "./code-gen/service-server-generator-generic";
 import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-grpc";
 import * as ts from "typescript";
+import {assert} from "@protobuf-ts/runtime";
+import {WellKnownTypes} from "./message-type-extensions/well-known-types";
 
 
 export class ProtobuftsPlugin extends PluginBase {
@@ -331,9 +333,22 @@ export class ProtobuftsPlugin extends PluginBase {
 
 
         // plugins should only return files requested to generate
-        // unless our option "generate_dependencies" is set
+        // unless our option "generate_dependencies" is set.
+        // We always return well-known types, because we do not
+        // maintain them in a package - they are always generated
+        // on demand.
         if (!options.generateDependencies) {
-            tsFiles = tsFiles.filter(file => request.fileToGenerate.includes(file.fileDescriptor.name!));
+            tsFiles = tsFiles.filter(file => {
+                const protoFilename = file.fileDescriptor.name;
+                assert(protoFilename);
+                if (request.fileToGenerate.includes(protoFilename)) {
+                    return true;
+                }
+                if (WellKnownTypes.protoFilenames.includes(protoFilename)) {
+                    return true;
+                }
+                return false;
+            });
         }
 
         // if a proto file is imported to use custom options, or if a proto file declares custom options,
