@@ -1,6 +1,9 @@
 ### unreleased changes
 
-none
+New Features:
+
+- Add option `eslint_disable`, which generates a comment /* eslint-disable */ at the
+  top of each file, see #256
 
 
 ### v2.3.0

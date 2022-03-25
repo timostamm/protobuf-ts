@@ -76,13 +76,23 @@ export class ProtobuftsPlugin extends PluginBase {
         },
         ts_nocheck: {
             description: "Generate a @ts-nocheck annotation at the top of each file. This will become the \n" +
-                         "default behaviour in the next major release.",
+                "default behaviour in the next major release.",
             excludes: ['disable_ts_nocheck'],
         },
         disable_ts_nocheck: {
             description: "Do not generate a @ts-nocheck annotation at the top of each file. Since this is \n" +
-                         "the default behaviour, this option has no effect.",
+                "the default behaviour, this option has no effect.",
             excludes: ['ts_nocheck'],
+        },
+        eslint_disable: {
+            description: "Generate a eslint-disable comment at the top of each file. This will become the \n" +
+                "default behaviour in the next major release.",
+            excludes: ['no_eslint_disable'],
+        },
+        no_eslint_disable: {
+            description: "Do not generate a eslint-disable comment at the top of each file. Since this is \n" +
+                "the default behaviour, this option has no effect.",
+            excludes: ['eslint_disable'],
         },
         add_pb_suffix: {
             description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +

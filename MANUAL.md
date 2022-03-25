@@ -161,6 +161,14 @@ Available plugin options:
   Do not generate a @ts-nocheck annotation at the top of each file. Since this is
   the default behaviour, this option has no effect.
 
+- "eslint_disable"
+  Generate a eslint-disable comment at the top of each file. This will become the
+  default behaviour in the next major release.
+
+- "no_eslint_disable"
+  Do not generate a eslint-disable comment at the top of each file. Since this is
+  the default behaviour, this option has no effect.
+
 - "add_pb_suffix"  
   Adds the suffix `_pb` to the names of all generated files. This will become the
   default behaviour in the next major release.
