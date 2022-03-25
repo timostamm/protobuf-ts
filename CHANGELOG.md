@@ -1,5 +1,10 @@
 ### unreleased changes
 
+Bug fixes:
+
+- Make sure to add non-default longtype to map field info, see #260
+
+
 New Features:
 
 - Add option `eslint_disable`, which generates a comment /* eslint-disable */ at the
