@@ -6,32 +6,32 @@ describe('google.protobuf.Struct', function () {
 
     let fixMessage: Struct = {
         fields: {
-            "bool": {kind: {oneofKind: 'boolValue', boolValue: true}},
-            "null": {kind: {oneofKind: 'nullValue', nullValue: NullValue.NULL_VALUE}},
-            "string": {kind: {oneofKind: 'stringValue', stringValue: "a string"}},
-            "number": {kind: {oneofKind: 'numberValue', numberValue: 123}},
+            "bool": {kind: {kind: 'boolValue', value: true}},
+            "null": {kind: {kind: 'nullValue', value: NullValue.NULL_VALUE}},
+            "string": {kind: {kind: 'stringValue', value: "a string"}},
+            "number": {kind: {kind: 'numberValue', value: 123}},
             "list": {
                 kind: {
-                    oneofKind: 'listValue',
-                    listValue: {
+                    kind: 'listValue',
+                    value: {
                         values: [
-                            {kind: {oneofKind: 'boolValue', boolValue: true}},
-                            {kind: {oneofKind: 'nullValue', nullValue: NullValue.NULL_VALUE}},
-                            {kind: {oneofKind: 'stringValue', stringValue: "a string"}},
-                            {kind: {oneofKind: 'numberValue', numberValue: 123}},
+                            {kind: {kind: 'boolValue', value: true}},
+                            {kind: {kind: 'nullValue', value: NullValue.NULL_VALUE}},
+                            {kind: {kind: 'stringValue', value: "a string"}},
+                            {kind: {kind: 'numberValue', value: 123}},
                         ]
                     }
                 }
             },
             "struct": {
                 kind: {
-                    oneofKind: 'structValue',
-                    structValue: {
+                    kind: 'structValue',
+                    value: {
                         fields: {
-                            "bool": {kind: {oneofKind: 'boolValue', boolValue: true}},
-                            "null": {kind: {oneofKind: 'nullValue', nullValue: NullValue.NULL_VALUE}},
-                            "string": {kind: {oneofKind: 'stringValue', stringValue: "a string"}},
-                            "number": {kind: {oneofKind: 'numberValue', numberValue: 123}},
+                            "bool": {kind: {kind: 'boolValue', value: true}},
+                            "null": {kind: {kind: 'nullValue', value: NullValue.NULL_VALUE}},
+                            "string": {kind: {kind: 'stringValue', value: "a string"}},
+                            "number": {kind: {kind: 'numberValue', value: 123}},
                         }
                     }
                 }

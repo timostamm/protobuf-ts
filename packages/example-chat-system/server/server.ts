@@ -26,8 +26,8 @@ class ChatService implements IChatService {
         await this.broadcast({
             username: request.username,
             event: {
-                oneofKind: "joined",
-                joined: `${request.username} joined the chat`
+                kind: "joined",
+                value: `${request.username} joined the chat`
             }
         });
 
@@ -37,8 +37,8 @@ class ChatService implements IChatService {
         await this.broadcast({
             username: request.username,
             event: {
-                oneofKind: "left",
-                left: `${request.username} left the chat`
+                kind: "left",
+                value: `${request.username} left the chat`
             }
         });
 
@@ -54,8 +54,8 @@ class ChatService implements IChatService {
         await this.broadcast({
             username: user.username,
             event: {
-                oneofKind: 'message',
-                message: request.message
+                kind: 'message',
+                value: request.message
             }
         });
 

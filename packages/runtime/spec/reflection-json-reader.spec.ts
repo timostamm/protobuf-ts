@@ -127,7 +127,7 @@ describe('ReflectionJsonReader', function () {
         it('throws on invalid input', () => {
             const output = fixtures.getMessage(typeName, 'default');
             const input: JsonObject = {
-                value: 123,
+                int: 123,
                 error: 'hello'
             };
             expect(() => reader.read(input, output, jsonReadOptions()))
@@ -137,18 +137,18 @@ describe('ReflectionJsonReader', function () {
         it('null selects kind with scalar default value', () => {
             const output = fixtures.getMessage(typeName, 'default');
             const input: JsonObject = {
-                value: null,
+                int: null,
             };
             reader.read(input, output, jsonReadOptions());
             expect(output).toEqual({
-                result: {oneofKind: 'value', value: 0}
+                result: {kind: 'int', value: 0}
             });
         });
 
         it('deletes existing oneof member', () => {
             const output: object = {
                 result: {
-                    oneofKind: 'value',
+                    kind: 'int',
                     value: 123
                 }
             };
@@ -157,7 +157,7 @@ describe('ReflectionJsonReader', function () {
             };
             reader.read(input, output, jsonReadOptions());
             expect(output).toEqual({
-                result: {oneofKind: 'error', error: 'message'}
+                result: {kind: 'error', value: 'message'}
             });
         });
 

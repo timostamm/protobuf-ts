@@ -61,16 +61,18 @@ export class ReflectionBinaryReader {
             // target object for the field we are reading
             let target: UnknownMessage | UnknownOneofGroup = message as UnknownMessage,
                 repeated = field.repeat,
-                localName = field.localName;
+                /** This can actually be any `string`, but we cast it to the literal `"value"` so we can index into oneof groups */
+                localName = field.localName as "value";
 
             // if field is member of oneof ADT, use ADT as target
             if (field.oneof) {
                 target = target[field.oneof] as UnknownOneofGroup;
                 // if other oneof member selected, set new ADT
-                if (target.oneofKind !== localName)
+                if (target.kind !== localName)
                     target = (message as UnknownMessage)[field.oneof] = {
-                        oneofKind: localName
-                    };
+                        kind: localName
+                    } as UnknownOneofGroup;
+                localName = "value";
             }
 
             // we have handled oneof above, we just have read the value into `target[localName]`

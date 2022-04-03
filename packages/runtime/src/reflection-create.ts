@@ -15,7 +15,7 @@ export function reflectionCreate<T extends object>(type: IMessageType<T>): T {
         if (field.opt)
             continue;
         if (field.oneof)
-            msg[field.oneof] = {oneofKind: undefined} as UnknownOneofGroup;
+            msg[field.oneof] = {kind: undefined} as UnknownOneofGroup;
         else if (field.repeat)
             msg[name] = [];
         else

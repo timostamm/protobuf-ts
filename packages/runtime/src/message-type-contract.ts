@@ -22,8 +22,8 @@ export type PartialMessage<T extends object> = {
      T extends (Date | Uint8Array | bigint | boolean | string | number) ? T
    : T extends Array<infer U> ? Array<PartialField<U>>
    : T extends ReadonlyArray<infer U> ? ReadonlyArray<PartialField<U>>
-   : T extends { oneofKind: string } ? T
-   : T extends { oneofKind: undefined } ? T
+   : T extends { kind: string } ? T
+   : T extends { kind: undefined } ? T
    : T extends object ? PartialMessage<T>
    : T ;
 // @formatter:on

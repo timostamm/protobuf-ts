@@ -17,6 +17,10 @@ import { FieldInfoGenerator } from "./code-gen/field-info-generator";
 import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
 
 
+const reservedObjectProperties = ['__proto__', 'toString'];
+const escapeCharacter = '$';
+
+
 type JsonOptionsMap = {
     [extensionName: string]: rt.JsonValue
 }
@@ -270,7 +274,6 @@ export class Interpreter {
 
 
     private static createTypescriptNameForMethod(descriptor: MethodDescriptorProto): string {
-        let escapeCharacter = '$';
         let reservedClassProperties = [
             // js built in
             "__proto__", "toString", "name", "constructor",
@@ -353,15 +356,11 @@ export class Interpreter {
      *   adding '$' at the end
      * - don't have to escape reserved keywords
      */
-    private createTypescriptNameForField(descriptor: FieldDescriptorProto | OneofDescriptorProto, escapeCharacter = '$'): string {
-        const reservedObjectProperties = '__proto__,toString'.split(',');
+    private createTypescriptNameForField(descriptor: FieldDescriptorProto | OneofDescriptorProto): string {
         let name = descriptor.name;
         assert(name !== undefined);
         name = FieldInfoGenerator.createTypescriptLocalName(name, this.options);
         if (reservedObjectProperties.includes(name)) {
-            name = name + escapeCharacter;
-        }
-        if (this.options.oneofKindDiscriminator.split(',').includes(name)) {
             name = name + escapeCharacter;
         }
         return name;
@@ -407,9 +406,6 @@ export class Interpreter {
 
         // localName: The name of the field in the runtime.
         let localName = this.createTypescriptNameForField(fieldDescriptor);
-        if (localName !== rt.lowerCamelCase(fieldDescriptor.name)) {
-            info.localName = localName;
-        }
 
 
         // jsonName: The name of the field in JSON.
@@ -426,6 +422,15 @@ export class Interpreter {
             assert(DescriptorProto.is(parentDescriptor));
             const ooDecl = parentDescriptor.oneofDecl[fieldDescriptor.oneofIndex];
             info.oneof = this.createTypescriptNameForField(ooDecl);
+            if (localName === this.options.oneofKindDiscriminator) {
+                localName = localName + escapeCharacter;
+            }
+        }
+
+        
+        
+        if (localName !== rt.lowerCamelCase(fieldDescriptor.name)) {
+            info.localName = localName;
         }
 
 

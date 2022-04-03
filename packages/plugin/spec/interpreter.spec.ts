@@ -12,7 +12,7 @@ describe('interpreter', function () {
             const interpreter = new Interpreter(registry, {
                 normalLongType,
                 synthesizeEnumZeroValue: 'UNSPECIFIED$',
-                oneofKindDiscriminator: 'oneofKind',
+                oneofKindDiscriminator: 'kind',
                 forceExcludeAllOptions: false,
                 keepEnumPrefix: false,
                 useProtoFieldName: false,

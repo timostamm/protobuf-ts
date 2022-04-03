@@ -7,15 +7,12 @@ message ReservedFieldNames {
 
     // not allowed as object property, should be escaped
     string to_string = 2;
-
-    // reserved for our ADT discriminator, should be escaped
-    string oneofKind = 3;
 }
 
 message ReservedFieldNamesInOneof {
     oneof oneof_group {
         // reserved for our ADT discriminator, should be escaped
-        string oneofKind = 1;
+        string kind = 1;
 
         // not allowed as object property, should be escaped
         string __proto__ = 2;

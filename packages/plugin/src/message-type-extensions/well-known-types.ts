@@ -428,26 +428,24 @@ export class WellKnownTypes implements CustomMethodGenerator {
              * Encode \`${descriptor.name}\` to JSON value. 
              */
             function internalJsonWrite(message: ${Value}, options: ${JsonWriteOptions}): ${JsonValue} {
-                if (message.kind.oneofKind === undefined) throw new globalThis.Error();
-                switch (message.kind.oneofKind) {
+                if (message.kind.kind === undefined) throw new globalThis.Error();
+                switch (message.kind.kind) {
                     case undefined:
                         throw new globalThis.Error();
                     case "${boolValueField}":
-                        return message.kind.${boolValueField};
+                    case "${numberValueField}":
+                    case "${stringValueField}":
+                        return message.kind.value;
                     case "${nullValueField}":
                         return null;
-                    case "${numberValueField}":
-                        return message.kind.${numberValueField};
-                    case "${stringValueField}":
-                        return message.kind.${stringValueField};
                     case "${listValueField}":
                         let listValueField = this.fields.find(f => f.no === 6);
                         if (listValueField?.kind !== 'message') throw new globalThis.Error();
-                        return listValueField.T().toJson(message.kind.${listValueField});
+                        return listValueField.T().toJson(message.kind.value);
                     case "${structValueField}":
                         let structValueField = this.fields.find(f => f.no === 5);
                         if (structValueField?.kind !== 'message') throw new globalThis.Error();
-                        return structValueField.T().toJson(message.kind.${structValueField});
+                        return structValueField.T().toJson(message.kind.value);
                 }
             }
             `, `
@@ -459,22 +457,22 @@ export class WellKnownTypes implements CustomMethodGenerator {
                     target = this.create();
                 switch (typeof json) {
                     case "number":
-                        target.kind = {oneofKind: "${numberValueField}", ${numberValueField}: json};
+                        target.kind = {kind: "${numberValueField}", value: json};
                         break;
                     case "string":
-                        target.kind = {oneofKind: "${stringValueField}", ${stringValueField}: json};
+                        target.kind = {kind: "${stringValueField}", value: json};
                         break;
                     case "boolean":
-                        target.kind = {oneofKind: "${boolValueField}", ${boolValueField}: json};
+                        target.kind = {kind: "${boolValueField}", value: json};
                         break;
                     case "object":
                         if (json === null) {
-                            target.kind = {oneofKind: "${nullValueField}", ${nullValueField}: NullValue.NULL_VALUE};
+                            target.kind = {kind: "${nullValueField}", value: NullValue.NULL_VALUE};
                         } else if (globalThis.Array.isArray(json)) {
-                            target.kind = {oneofKind: "${listValueField}", ${listValueField}: ListValue.fromJson(json)};
+                            target.kind = {kind: "${listValueField}", value: ListValue.fromJson(json)};
                         } else {
                             let val = Struct.fromJson(json);
-                            target.kind = {oneofKind: "${structValueField}", ${structValueField}: Struct.fromJson(json)};
+                            target.kind = {kind: "${structValueField}", value: Struct.fromJson(json)};
                         }
                         break;
                     default:

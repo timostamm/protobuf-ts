@@ -636,7 +636,7 @@ idiosyncrasies.
 message OneofExample {
  // Only one of (or none of) the fields can be set
  oneof result { 
-   int32 value = 1;
+   int32 int = 1;
    string error = 2;
  }
 }
@@ -645,13 +645,13 @@ Compiles the `oneof` group to a union type that ensures that only one member
 field is set:
 ```ts   
 interface OneofExample {
- result: { oneofKind: "value"; value: number; } 
-       | { oneofKind: "error"; error: string; } 
-       | { oneofKind: undefined; };
+ result: { kind: "int"; value: number; } 
+       | { kind: "error"; value: string; } 
+       | { kind: undefined; };
 }
 
 let message: OneofExample;
-if (message.result.oneofKind === "value") {
+if (message.result.kind === "int") {
  message.result.value // the union has been narrowed down
 }
 ```

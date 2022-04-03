@@ -13,7 +13,7 @@ describe('PbDatePipe', () => {
     minutes: 45,
     seconds: 59,
     nanos: 0,
-    timeOffset: {oneofKind: undefined}
+    timeOffset: {kind: undefined}
   };
   let dateTimeOffset = {
     year: 2020,
@@ -24,8 +24,8 @@ describe('PbDatePipe', () => {
     seconds: 59,
     nanos: 0,
     timeOffset: {
-      oneofKind: "utcOffset",
-      utcOffset: {
+      kind: "utcOffset",
+      value: {
         seconds: -3600,
         nanos: 0
       }

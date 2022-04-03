@@ -418,12 +418,16 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     // message.result = {
-    //     oneofKind: "msg",
-    //     msg: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, (message.result as any).msg)
+    //     kind: "msg",
+    //     value: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, message.result.kind === "msg" ? message.result.value : undefined)
     // };
     messageOneof(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }): ts.Statement[] {
         let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
         assert(DescriptorProto.is(messageDescriptor));
+        let groupPropertyAccess = ts.createPropertyAccess(
+            ts.createIdentifier("message"),
+            ts.createIdentifier(field.oneof)
+        );
         let handlerMergeCall = ts.createCall(
             ts.createPropertyAccess(
                 ts.createIdentifier(this.imports.type(source, messageDescriptor)),
@@ -434,24 +438,34 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                 ts.createIdentifier("reader"),
                 this.makeReaderCall("reader", rt.ScalarType.UINT32),
                 ts.createIdentifier("options"),
-                ts.createPropertyAccess(
-                    ts.createParen(ts.createAsExpression(
-                        ts.createPropertyAccess(ts.createIdentifier("message"), field.oneof),
-                        ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
-                    )),
-                    ts.createIdentifier(field.localName)
+                ts.createConditional(
+                    ts.createBinary(
+                        ts.createPropertyAccess(
+                            groupPropertyAccess,
+                            ts.createIdentifier(this.options.oneofKindDiscriminator)
+                        ),
+                        ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
+                        ts.createStringLiteral(field.localName)
+                    ),
+                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.createPropertyAccess(
+                        groupPropertyAccess,
+                        ts.createIdentifier("value")
+                    ),
+                    ts.createToken(ts.SyntaxKind.ColonToken),
+                    ts.createIdentifier("undefined")
                 )
             ]
         );
         return [ts.createExpressionStatement(ts.createBinary(
-            ts.createPropertyAccess(ts.createIdentifier("message"), field.oneof),
+            groupPropertyAccess,
             ts.createToken(ts.SyntaxKind.EqualsToken),
             ts.createObjectLiteral(
                 [
-                    //     oneofKind: "msg",
+                    //     kind: "msg",
                     ts.createPropertyAssignment(ts.createIdentifier(this.options.oneofKindDiscriminator), ts.createStringLiteral(field.localName)),
-                    //     msg: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, (message.result as any).msg)
-                    ts.createPropertyAssignment(field.localName, handlerMergeCall)
+                    //     value: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, message.result.kind === "msg" ? message.result.value : undefined)
+                    ts.createPropertyAssignment(ts.createIdentifier("value"), handlerMergeCall)
                 ],
                 true
             )
@@ -500,8 +514,8 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     // message.result = {
-    //     oneofKind: "err",
-    //     err: reader.string()
+    //     kind: "err",
+    //     value: reader.string()
     // };
     scalarOneof(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
@@ -511,10 +525,10 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             ts.createToken(ts.SyntaxKind.EqualsToken),
             ts.createObjectLiteral(
                 [
-                    //     oneofKind: "err",
+                    //     kind: "err",
                     ts.createPropertyAssignment(ts.createIdentifier(this.options.oneofKindDiscriminator), ts.createStringLiteral(field.localName)),
-                    //     err: reader.string()
-                    ts.createPropertyAssignment(field.localName, this.makeReaderCall("reader", type, longType))
+                    //     value: reader.string()
+                    ts.createPropertyAssignment("value", this.makeReaderCall("reader", type, longType))
                 ],
                 true
             )

@@ -16,9 +16,9 @@ describe('google.type.DateTime', function () {
             expect(nowPb.hours).toBe(nowDate.getHours());
             expect(nowPb.minutes).toBe(nowDate.getMinutes());
             expect(nowPb.seconds).toBe(nowDate.getSeconds());
-            expect(nowPb.timeOffset.oneofKind).toBe("utcOffset");
-            if (nowPb.timeOffset.oneofKind === "utcOffset") {
-                let offsetSeconds = PbLong.from(nowPb.timeOffset.utcOffset.seconds).toNumber();
+            expect(nowPb.timeOffset.kind).toBe("utcOffset");
+            if (nowPb.timeOffset.kind === "utcOffset") {
+                let offsetSeconds = PbLong.from(nowPb.timeOffset.value.seconds).toNumber();
                 expect(offsetSeconds / 60).toBe(nowDate.getTimezoneOffset());
             }
         });
@@ -36,7 +36,7 @@ describe('google.type.DateTime', function () {
                 seconds: 59,
                 nanos: 500 * 1000,
                 timeOffset: {
-                    oneofKind: undefined
+                    kind: undefined
                 }
             });
             expect(dt).toBeInstanceOf(globalThis.Date);
@@ -51,7 +51,7 @@ describe('google.type.DateTime', function () {
                 seconds: 59,
                 nanos: 500 * 1000,
                 timeOffset: {
-                    oneofKind: undefined
+                    kind: undefined
                 }
             });
             expect(dt.getFullYear()).toBe(2020);
@@ -72,8 +72,8 @@ describe('google.type.DateTime', function () {
                 seconds: 59,
                 nanos: 500 * 1000,
                 timeOffset: {
-                    oneofKind: "timeZone",
-                    timeZone: {
+                    kind: "timeZone",
+                    value: {
                         id: "foo",
                         version: "bar"
                     }
@@ -94,8 +94,8 @@ describe('google.type.DateTime', function () {
                 seconds: now.getUTCSeconds(),
                 nanos: now.getUTCMilliseconds() * 1000,
                 timeOffset: {
-                    oneofKind: "utcOffset",
-                    utcOffset: utcOffset
+                    kind: "utcOffset",
+                    value: utcOffset
                 }
             });
             expect(dt.getFullYear()).toBe(now.getFullYear());
@@ -119,9 +119,9 @@ describe('google.type.DateTime', function () {
             expect(dt.minutes).toBe(now.getMinutes());
             expect(dt.seconds).toBe(now.getSeconds());
             expect(dt.nanos).toBe(now.getMilliseconds() * 1000);
-            expect(dt.timeOffset.oneofKind).toBe("utcOffset");
-            if (dt.timeOffset.oneofKind === "utcOffset") {
-                let act = dt.timeOffset.utcOffset;
+            expect(dt.timeOffset.kind).toBe("utcOffset");
+            if (dt.timeOffset.kind === "utcOffset") {
+                let act = dt.timeOffset.value;
                 let exp = makeDuration(now.getTimezoneOffset() * 60);
                 expect(act).toEqual(exp);
             }

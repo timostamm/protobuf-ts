@@ -253,7 +253,7 @@ export function makeInternalOptions(
             forcedServerStyle: undefined,
             emitAngularAnnotations: false,
             synthesizeEnumZeroValue: 'UNSPECIFIED$',
-            oneofKindDiscriminator: 'oneofKind',
+            oneofKindDiscriminator: 'kind',
             runtimeAngularImportPath: '@protobuf-ts/runtime-angular',
             runtimeRpcImportPath: '@protobuf-ts/runtime-rpc',
             angularCoreImportPath: '@angular/core',

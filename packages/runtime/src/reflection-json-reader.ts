@@ -73,7 +73,9 @@ export class ReflectionJsonReader {
                     throw new Error(`Found unknown field while reading ${this.info.typeName} from JSON format. JSON key: ${jsonKey}`);
                 continue;
             }
-            const localName = field.localName;
+
+            /** This can actually be any `string`, but we cast it to the literal `"value"` so we can index into oneof groups */
+            let localName = field.localName as "value";
 
             // handle oneof ADT
             let target: UnknownMessage | UnknownOneofGroup; // this will be the target for the field value, whether it is member of a oneof or not
@@ -82,8 +84,9 @@ export class ReflectionJsonReader {
                 if (oneofsHandled.includes(field.oneof)) throw new Error(`Multiple members of the oneof group "${field.oneof}" of ${this.info.typeName} are present in JSON.`);
                 oneofsHandled.push(field.oneof);
                 target = (message as UnknownMessage)[field.oneof] = {
-                    oneofKind: localName
-                }
+                    kind: localName
+                } as UnknownOneofGroup;
+                localName = "value";
             } else {
                 target = message as UnknownMessage;
             }
