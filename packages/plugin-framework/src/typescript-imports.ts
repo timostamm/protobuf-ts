@@ -43,11 +43,12 @@ export class TypeScriptImports {
      *
      * Returns name for `importAs`.
      */
-    namespace(source: TypescriptFile, importAs: string, importFrom: string): string {
+    namespace(source: TypescriptFile, importAs: string, importFrom: string, isTypeOnly = false): string {
         return ensureNamespaceImportPresent(
             source.getSourceFile(),
             importAs,
             importFrom,
+            isTypeOnly,
             statementToAdd => source.addStatement(statementToAdd, true)
         );
     }
@@ -108,15 +109,16 @@ function ensureNamespaceImportPresent(
     currentFile: ts.SourceFile,
     asName: string,
     importFrom: string,
+    isTypeOnly: boolean,
     addStatementFn: (statementToAdd: ts.ImportDeclaration) => void,
 ): string {
     const
         all = findNamespaceImports(currentFile),
-        match = all.find(ni => ni.as === asName && ni.from === importFrom);
+        match = all.find(ni => ni.as === asName && ni.from === importFrom && ni.isTypeOnly === isTypeOnly);
     if (match) {
         return match.as;
     }
-    const statementToAdd = createNamespaceImport(asName, importFrom);
+    const statementToAdd = createNamespaceImport(asName, importFrom, isTypeOnly);
     addStatementFn(statementToAdd);
     return asName;
 }
@@ -124,13 +126,14 @@ function ensureNamespaceImportPresent(
 /**
  * import * as <asName> from "<importFrom>";
  */
-function createNamespaceImport(asName: string, importFrom: string) {
+function createNamespaceImport(asName: string, importFrom: string, isTypeOnly: boolean) {
     return ts.createImportDeclaration(
         undefined,
         undefined,
         ts.createImportClause(
             undefined,
-            ts.createNamespaceImport(ts.createIdentifier(asName))
+            ts.createNamespaceImport(ts.createIdentifier(asName)),
+            isTypeOnly
         ),
         ts.createStringLiteral(importFrom)
     );
@@ -139,8 +142,8 @@ function createNamespaceImport(asName: string, importFrom: string) {
 /**
  * import * as <as> from "<from>";
  */
-function findNamespaceImports(sourceFile: ts.SourceFile): { as: string, from: string }[] {
-    let r: Array<{ as: string, from: string }> = [];
+function findNamespaceImports(sourceFile: ts.SourceFile): { as: string; from: string; isTypeOnly: boolean }[] {
+    let r: Array<{ as: string; from: string; isTypeOnly: boolean }> = [];
     for (let s of sourceFile.statements) {
         if (ts.isImportDeclaration(s) && s.importClause) {
             let namedBindings = s.importClause.namedBindings;
@@ -148,7 +151,8 @@ function findNamespaceImports(sourceFile: ts.SourceFile): { as: string, from: st
                 assert(ts.isStringLiteral(s.moduleSpecifier));
                 r.push({
                     as: namedBindings.name.escapedText.toString(),
-                    from: s.moduleSpecifier.text
+                    from: s.moduleSpecifier.text,
+                    isTypeOnly: s.importClause.isTypeOnly,
                 });
             }
         }
