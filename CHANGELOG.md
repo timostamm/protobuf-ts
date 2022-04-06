@@ -1,5 +1,9 @@
 ### unreleased changes
 
+Bug fixes:
+
+- Use type import in grpc server #264
+
 Project maintenance:
 
 - Support go 1.18 in build #263
