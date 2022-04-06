@@ -1,6 +1,8 @@
 ### unreleased changes
 
-none
+Project maintenance:
+
+- Support go 1.18 in build #263
 
 
 ### v2.4.0
