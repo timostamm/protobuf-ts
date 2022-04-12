@@ -94,6 +94,9 @@ export class ProtobuftsPlugin extends PluginBase {
                 "the default behaviour, this option has no effect.",
             excludes: ['eslint_disable'],
         },
+        disable_service_types: {
+            description: 'Prevents the generation of service metadata.',
+        },
         add_pb_suffix: {
             description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
                          "default behaviour in the next major release.",
@@ -309,10 +312,12 @@ export class ProtobuftsPlugin extends PluginBase {
                 if (DescriptorProto.is(descriptor)) {
                     genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
                 }
-                if (ServiceDescriptorProto.is(descriptor)) {
 
-                    // service type
-                    genServiceType.generateServiceType(outMain, descriptor)
+                if (ServiceDescriptorProto.is(descriptor)) {
+                    if (!options.disableServiceTypes) {
+                        // service type
+                        genServiceType.generateServiceType(outMain, descriptor);
+                    }
 
                     // clients
                     const clientStyles = optionResolver.getClientStyles(descriptor);
