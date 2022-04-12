@@ -201,6 +201,7 @@ export interface InternalOptions {
     readonly esLintDisable: boolean;
     readonly transpileTarget: ts.ScriptTarget | undefined,
     readonly transpileModule: ts.ModuleKind,
+    readonly disableServiceTypes: boolean;
     readonly addPbSuffix: boolean;
 }
 
@@ -227,6 +228,7 @@ export function makeInternalOptions(
         client_none: boolean,
         client_grpc1: boolean,
         add_pb_suffix: boolean,
+        disable_service_types: boolean;
         output_typescript: boolean,
         output_javascript: boolean,
         output_javascript_es2015: boolean,
@@ -265,6 +267,7 @@ export function makeInternalOptions(
             esLintDisable: false,
             transpileTarget: undefined,
             transpileModule: ts.ModuleKind.ES2015,
+            disableServiceTypes: false,
             addPbSuffix: false,
         },
     ) as Writeable<InternalOptions>;
@@ -327,6 +330,9 @@ export function makeInternalOptions(
     }
     if (params?.add_pb_suffix) {
         o.addPbSuffix = true;
+    }
+    if (params?.disable_service_types) {
+      o.disableServiceTypes = true;
     }
     if (params?.output_javascript) {
         o.transpileTarget = ts.ScriptTarget.ES2020;
