@@ -1,5 +1,3 @@
-import {BinaryReader} from "./binary-reader";
-import {BinaryWriter} from "./binary-writer";
 import type {PbLong, PbULong} from "./pb-long";
 
 
@@ -135,31 +133,6 @@ interface UnknownField {
 export interface UnknownFieldContainer {
     [UnknownFieldHandler.symbol]: UnknownField[];
 }
-
-
-/**
- * Make options for writing binary data form partial options.
- */
-export function binaryWriteOptions(options?: Partial<BinaryWriteOptions>): Readonly<BinaryWriteOptions> {
-    return options ? {...defaultsWrite, ...options} : defaultsWrite;
-}
-
-
-/**
- * Make options for reading binary data form partial options.
- */
-export function binaryReadOptions(options?: Partial<BinaryReadOptions>): Readonly<BinaryReadOptions> {
-    return options ? {...defaultsRead, ...options} : defaultsRead;
-}
-
-const defaultsRead: Readonly<BinaryReadOptions> = {
-        readUnknownField: true,
-        readerFactory: bytes => new BinaryReader(bytes),
-    },
-    defaultsWrite: Readonly<BinaryWriteOptions> = {
-        writeUnknownFields: true,
-        writerFactory: () => new BinaryWriter(),
-    }
 
 
 /**
