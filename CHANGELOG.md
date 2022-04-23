@@ -2,6 +2,7 @@
 
 Bug fixes:
 
+- Fix line breaks in header comments #289
 - Use type import in grpc server #264
 
 Project maintenance:
