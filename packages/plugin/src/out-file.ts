@@ -56,7 +56,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         if (this.options.esLintDisable) {
             header.push(`/* eslint-disable */`);
         }
-        header.push([
+        header.push(...[
             `// @generated ${this.options.pluginCredit}`,
             `// @generated from protobuf file "${this.fileDescriptor.name}" (${props.join(', ')})`,
             `// tslint:disable`
