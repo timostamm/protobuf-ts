@@ -58,8 +58,9 @@ export class ProtobuftsPlugin extends PluginBase {
         // misc
         generate_dependencies: {
             description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
-                         "not the files they import. Set this option to generate code for dependencies \n" +
-                         "too.",
+                         "not the files they import (with the exception of well-known types, which are \n" +
+                         "always generated when imported). \n"+
+                         "Set this option to generate code for dependencies too.",
         },
         force_exclude_all_options: {
             description: "By default, custom options are included in the metadata and can be blacklisted \n" +
