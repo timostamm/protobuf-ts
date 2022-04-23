@@ -63,7 +63,6 @@ generate-speed: $(PROTOS)
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_speed \
 		--ts_opt long_type_string \
-		--ts_opt generate_dependencies \
 		--proto_path $(PROTO_PATH) \
 		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
@@ -76,7 +75,6 @@ generate-size: $(PROTOS)
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_code_size \
 		--ts_opt long_type_string \
-		--ts_opt generate_dependencies \
 		--proto_path $(PROTO_PATH) \
 		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
@@ -88,7 +86,6 @@ generate-size-bigint: $(PROTOS)
 	@npx protoc \
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_code_size \
-		--ts_opt generate_dependencies \
 		--proto_path $(PROTO_PATH) \
 		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
@@ -100,7 +97,6 @@ generate-speed-bigint: $(PROTOS)
 	@npx protoc \
 		--ts_out ./ts-out/ \
 		--ts_opt force_optimize_speed \
-		--ts_opt generate_dependencies \
 		--proto_path $(PROTO_PATH) \
 		--proto_path ../plugin/ \
 		--experimental_allow_proto3_optional \
