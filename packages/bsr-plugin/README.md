@@ -15,7 +15,6 @@ plugins:
     out: gen/
     opt:
       - long_type_string
-      - generate_dependencies
 ```
 
 ```sh
