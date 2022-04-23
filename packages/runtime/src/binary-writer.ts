@@ -1,9 +1,29 @@
-import type {IBinaryWriter} from "./binary-format-contract";
-import type {WireType} from "./binary-format-contract";
+import type {BinaryWriteOptions, IBinaryWriter, WireType} from "./binary-format-contract";
 import {PbLong, PbULong} from "./pb-long";
 import {varint32write, varint64write} from "./goog-varint";
 import {assertFloat32, assertInt32, assertUInt32} from "./assert";
 
+
+const defaultsWrite: Readonly<BinaryWriteOptions> = {
+    writeUnknownFields: true,
+    writerFactory: () => new BinaryWriter(),
+};
+
+
+/**
+ * Make options for writing binary data form partial options.
+ */
+export function binaryWriteOptions(options?: Partial<BinaryWriteOptions>): Readonly<BinaryWriteOptions> {
+    return options ? {...defaultsWrite, ...options} : defaultsWrite;
+}
+
+
+/**
+ * TextEncoderLike is the subset of the TextEncoder API required by protobuf-ts.
+ */
+interface TextEncoderLike {
+    encode(input?: string): Uint8Array;
+}
 
 export class BinaryWriter implements IBinaryWriter {
 
@@ -35,10 +55,10 @@ export class BinaryWriter implements IBinaryWriter {
     /**
      * Text encoder instance to convert UTF-8 to bytes.
      */
-    private readonly textEncoder: TextEncoder;
+    private readonly textEncoder: TextEncoderLike;
 
 
-    constructor(textEncoder?: TextEncoder) {
+    constructor(textEncoder?: TextEncoderLike) {
         this.textEncoder = textEncoder ?? new TextEncoder();
         this.chunks = [];
         this.buf = [];
@@ -282,3 +302,4 @@ export class BinaryWriter implements IBinaryWriter {
 
 
 }
+

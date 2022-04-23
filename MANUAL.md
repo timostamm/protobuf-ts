@@ -18,6 +18,7 @@ protobuf-ts manual
 - [Well-known-types](#well-known-types)
   - [google.protobuf.Any](#googleprotobufany)
   - [google.protobuf.Timestamp](#googleprotobuftimestamp)
+  - [google.protobuf.Struct](#googleprotobufstruct)
   - [google.type.Color](#googletypecolor)
   - [google.type.DateTime and google.type.Date](#googletypedatetime-and-googletypedate)
 - [Reflection](#reflection)
@@ -27,11 +28,13 @@ protobuf-ts manual
   - [Excluding options from generated code](#excluding-options-from-generated-code)
 - [Binary format](#binary-format)
   - [Conformance](#conformance)
+  - [UTF-8 decoding](#utf-8-decoding)
   - [Unknown field handling](#unknown-field-handling)
 - [JSON format](#json-format)
 - [Code size vs speed](#code-size-vs-speed)
 - [Running in the Web Browser](#running-in-the-web-browser)
 - [Running in Node.js](#running-in-nodejs)
+- [Outputting JavaScript](#outputting-javascript)
 - [RPC support](#rpc-support)
 - [Generic RPC clients](#generic-rpc-clients)
   - [RPC options](#rpc-options)
@@ -86,7 +89,7 @@ The protocol buffer compiler `protoc` is automatically installed ([explanation](
 
 Usage:
 ```shell script
-npx protoc \ 
+npx protoc \
   --ts_out src/generated/ \
   --ts_opt long_type_string \
   --proto_path protos \
@@ -137,12 +140,67 @@ Available plugin options:
 
 - "force_exclude_all_options"  
   By default, custom options are included in the metadata and can be blacklisted
-  with our option (ts.exclude_options). Set this option if you are certain you do not want
-  to include any options at all.
+  with our option (ts.exclude_options). Set this option if you are certain you
+  do not want to include any options at all.
 
-- "keep_enum_prefix"
-  By default, if all enum values share a prefix that corresponds with the enum's name,
-  the prefix is dropped from the value names. Set this option to disable this behavior.
+- "keep_enum_prefix"  
+  By default, if all enum values share a prefix that corresponds with the enum's
+  name, the prefix is dropped from the value names. Set this option to disable
+  this behavior.
+
+- "use_proto_field_name"
+  By default interface fields use lowerCamelCase names by transforming proto field
+  names to follow common style convention for TypeScript. Set this option to preserve
+  original proto field names in generated interfaces.
+
+- "ts_nocheck"  
+  Generate a @ts-nocheck annotation at the top of each file. This will become the
+  default behaviour in the next major release.
+
+- "disable_ts_nocheck"  
+  Do not generate a @ts-nocheck annotation at the top of each file. Since this is
+  the default behaviour, this option has no effect.
+
+- "eslint_disable"
+  Generate a eslint-disable comment at the top of each file. This will become the
+  default behaviour in the next major release.
+
+- "no_eslint_disable"
+  Do not generate a eslint-disable comment at the top of each file. Since this is
+  the default behaviour, this option has no effect.
+
+- "add_pb_suffix"  
+  Adds the suffix `_pb` to the names of all generated files. This will become the
+  default behaviour in the next major release.
+
+- "output_typescript"  
+  Output TypeScript files. This is the default behavior.
+
+- "output_javascript"  
+  Output JavaScript for the currently recommended target ES2020. The target may
+  change with a major release of protobuf-ts.
+  Along with JavaScript files, this always outputs TypeScript declaration files.
+
+- "output_javascript_es2015"  
+  Output JavaScript for the ES2015 target.
+
+- "output_javascript_es2016"  
+  Output JavaScript for the ES2016 target.
+
+- "output_javascript_es2017"  
+  Output JavaScript for the ES2017 target.
+
+- "output_javascript_es2018"  
+  Output JavaScript for the ES2018 target.
+
+- "output_javascript_es2019"  
+  Output JavaScript for the ES2019 target.
+
+- "output_javascript_es2020"  
+  Output JavaScript for the ES2020 target.
+
+- "output_legacy_commonjs"  
+  Use CommonJS instead of the default ECMAScript module system.
 
 - "client_none"  
   Do not generate rpc clients.
@@ -344,7 +402,7 @@ Some things to note:
 
 ## IMessageType
 
-The `IMessageType` provides the following methods:
+The `IMessageType` interface provides the following methods:
 
 - `create(): T`
   
@@ -593,13 +651,14 @@ interface OneofExample {
 }
 
 let message: OneofExample;
-if (message.oneofKind === "value") {
- message.value // the union has been narrowed down
+if (message.result.oneofKind === "value") {
+ message.result.value // the union has been narrowed down
 }
 ```
 
-> **Note:** you have to turn on the `strictNullChecks` option in your 
-> `tsconfig.json` for this feature
+> **Note:** This feature requires the TypeScript compiler option `strictNullChecks` 
+> to be true. The option is enabled by default if you set the option `strict` to 
+> true, which is recommended. See the [documentation](https://www.typescriptlang.org/tsconfig#strictNullChecks) for details.
 
 
 ## BigInt support
@@ -821,6 +880,24 @@ Any.toJson(any, {
 
 
 
+#### google.protobuf.Struct
+
+`Struct` is a well-known type that can represent all values JSON can represent, 
+and maps to simple JSON when serializing to or from JSON.
+
+The definition for `Struct` is a bit complex in order to cover all cases, and 
+consequently, constructing instances of this message can be a bit cumbersome.
+However, you can simply use `fromJson` and `toJson` to convert between the 
+simple JSON representation, and the message representation for convenience:
+
+```ts
+let struct = Struct.fromJson({
+  "foo": "you can put any JSON here",
+  "bar": 123,
+});
+```
+
+
 #### google.type.Color
 
 - `toHex(message: Color): string` 
@@ -846,11 +923,11 @@ Any.toJson(any, {
 
 #### google.type.DateTime and google.type.Date
 
-Both types provide methods to convert to and from JavaScript Dates, similar 
-to `google.protobuf.Timestamp`. 
+Both types provide methods to convert to and from JavaScript Dates, similar
+to `google.protobuf.Timestamp`.
 
-> **Note:** `DateTime` is also supported by the `PbDatePipe` provided by 
-> `@protobuf-ts/runtime-angular`. 
+> **Note:** `DateTime` is also supported by the `PbDatePipe` provided by
+> `@protobuf-ts/runtime-angular`.
 
 
 
@@ -1112,6 +1189,38 @@ The `toBinary` method takes an optional second argument of type
   Allows to use a custom implementation to encode binary data.
 
 
+#### UTF-8 decoding
+
+JavaScript uses UTF-16 for strings, but protobuf uses UTF-8. In order 
+to serialize to and from binary data, protobuf-ts converts between the 
+encodings with the [TextEncoder / TextDecoder API](https://developer.mozilla.org/en-US/docs/Web/API/Encoding_API). 
+
+Note that the protobuf [language guide](https://developers.google.com/protocol-buffers/docs/proto3#scalar) states:
+
+> A string must always contain UTF-8 encoded or 7-bit ASCII text [...]
+
+If an invalid UTF-8 string is encoded in the binary format, protobuf-ts
+will raise an error on decoding through the TextDecoder option `fatal`.
+If you do not want that behaviour, use the `readerFactory` option to 
+pass your own TextDecoder instance.
+
+As of January 2022, performance of TextDecoder on Node.js falls behind
+Node.js' `Buffer`. In order to use `Buffer` to decode UTF-8, use the 
+`readerFactory` option:
+
+```ts
+const nodeBinaryReadOptions = {
+    readerFactory: (bytes: Uint8Array) => new BinaryReader(bytes, {
+        decode(input?: Uint8Array): string {
+            return input ? (input as Buffer).toString("utf8") : "";
+        }
+    })
+};
+MyMessage.fromBinary(bytes, nodeBinaryReadOptions);
+```
+
+
+
 #### Conformance
 
 `protobuf-ts` strictly conforms to the protobuf spec. It passes all 
@@ -1283,7 +1392,6 @@ benchmark is located in `packages/benchmarks`.
 Note that ts-proto doesn't support JSON with `outputJsonMethods=false`. pbf has a very limited feature set.
 
 
-
 ## Running in the Web Browser
 
 `protobuf-ts` works in the browser. The runtime and generated code is compatible 
@@ -1319,6 +1427,23 @@ If you are using the `grpcweb-transport` or `twirp-transport`, you probably
 have to polyfill the fetch API. See the README files of the transport packages 
 for more information.  
 
+
+
+## Outputting JavaScript
+
+By default, `protobuf-ts` outputs TypeScript files, but can alternatively output
+JavaScript for different runtimes. This might save you an additional build
+step, for example if you want to publish the generated code as a npm package.
+
+To output JavaScript, simply set the
+[plugin option](#the-protoc-plugin) `output_javascript`, which will output
+JavaScript for the recommended target. The recommended target will change with
+`protobuf-ts` releases. If you want to stick to a specific target, use
+`output_javascript_es2015` for example.
+
+By default, the ECMAScript module system is used. If you are stuck with an
+older project that still requires CommonJS, set the plugin option
+`output_legacy_commonjs`.
 
 
 ## RPC support

@@ -38,6 +38,9 @@ describe('RpcError', () => {
             foo: "bar"
         });
         expect(err.toString()).toBe('RpcError: msg\n\nCode: cde\n\nMeta:\n  x: y\n  foo: bar');
+        err.methodName = "Qux";
+        err.serviceName = "Foo.Bar.Baz";
+        expect(err.toString()).toBe('RpcError: msg\n\nCode: cde\nMethod: Foo.Bar.Baz/Qux\n\nMeta:\n  x: y\n  foo: bar');
     });
 
 

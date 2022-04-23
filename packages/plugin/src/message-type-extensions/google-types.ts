@@ -8,6 +8,7 @@ import {
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
+import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 
 
 export class GoogleTypes implements CustomMethodGenerator {
@@ -15,7 +16,7 @@ export class GoogleTypes implements CustomMethodGenerator {
     constructor(
         private readonly typeNameLookup: ITypeNameLookup,
         private readonly imports: TypeScriptImports,
-        private readonly options: { normalLongType: LongType; runtimeImportPath: string },
+        private readonly options: { normalLongType: LongType; runtimeImportPath: string; useProtoFieldName: boolean },
     ) {
     }
 
@@ -166,6 +167,9 @@ export class GoogleTypes implements CustomMethodGenerator {
             longConvertMethod = 'toNumber';
         else if (this.options.normalLongType === LongType.STRING)
             longConvertMethod = 'toString';
+        const utcOffsetField = FieldInfoGenerator.createTypescriptLocalName('utc_offset', this.options),
+              timeOffsetField = FieldInfoGenerator.createTypescriptLocalName('time_offset', this.options),
+              timeZoneField = FieldInfoGenerator.createTypescriptLocalName('time_zone', this.options);
         return [
             `
             /**
@@ -196,12 +200,12 @@ export class GoogleTypes implements CustomMethodGenerator {
                         message.seconds,
                         message.nanos / 1000,
                     ),
-                    to = message.timeOffset;
+                    to = message.${timeOffsetField};
                 if (to) {
-                    if (to.oneofKind === "timeZone")
+                    if (to.oneofKind === "${timeZoneField}")
                         throw new globalThis.Error("IANA time zone not supported");
-                    if (to.oneofKind === "utcOffset") {
-                        let s = ${PbLong}.from(to.utcOffset.seconds).toNumber();
+                    if (to.oneofKind === "${utcOffsetField}") {
+                        let s = ${PbLong}.from(to.${utcOffsetField}.seconds).toNumber();
                         dt = new globalThis.Date(dt.getTime() - (s * 1000));
                     }
                 }
@@ -222,9 +226,9 @@ export class GoogleTypes implements CustomMethodGenerator {
                     minutes: date.getMinutes(),
                     seconds: date.getSeconds(),
                     nanos: date.getMilliseconds() * 1000,
-                    timeOffset: {
-                        oneofKind: "utcOffset",
-                        utcOffset: {
+                    ${timeOffsetField}: {
+                        oneofKind: "${utcOffsetField}",
+                        ${utcOffsetField}: {
                             seconds: ${PbLong}.from(date.getTimezoneOffset() * 60).${longConvertMethod}(),
                             nanos: 0,
                         }

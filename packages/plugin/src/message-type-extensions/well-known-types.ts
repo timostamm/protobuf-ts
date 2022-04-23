@@ -9,6 +9,7 @@ import {
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
+import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 
 
 export class WellKnownTypes implements CustomMethodGenerator {
@@ -16,7 +17,7 @@ export class WellKnownTypes implements CustomMethodGenerator {
     constructor(
         private readonly typeNameLookup: ITypeNameLookup,
         private readonly imports: TypeScriptImports,
-        private readonly options: { normalLongType: LongType; runtimeImportPath: string },
+        private readonly options: { normalLongType: LongType; runtimeImportPath: string, useProtoFieldName: boolean },
     ) {
     }
 
@@ -59,7 +60,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
             jsonWriteOptions = this.imports.name(source,'jsonWriteOptions', this.options.runtimeImportPath),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
             typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath),
-            isJsonObject = this.imports.name(source,'isJsonObject', this.options.runtimeImportPath);
+            isJsonObject = this.imports.name(source,'isJsonObject', this.options.runtimeImportPath),
+            typeUrlField = FieldInfoGenerator.createTypescriptLocalName('type_url', this.options);
 
         return [
             `
@@ -70,7 +72,7 @@ export class WellKnownTypes implements CustomMethodGenerator {
 			 */
 			function pack<T extends object>(message: T, type: ${IMessageType}<T>): ${Any} {
 				return {
-                    typeUrl: this.typeNameToUrl(type.typeName), 
+                    ${typeUrlField}: this.typeNameToUrl(type.typeName),
 					value: type.toBinary(message),
 				};
 			}
@@ -80,7 +82,7 @@ export class WellKnownTypes implements CustomMethodGenerator {
 			 */
 			function unpack<T extends object>(any: ${Any}, type: ${IMessageType}<T>, options?: Partial<${BinaryReadOptions}>): T {
 				if (!this.contains(any, type))
-					throw new Error("Cannot unpack google.protobuf.Any with typeUrl '" + any.typeUrl + "' as " + type.typeName + ".");
+					throw new Error("Cannot unpack google.protobuf.Any with ${typeUrlField} '" + any.${typeUrlField} + "' as " + type.typeName + ".");
                 return type.fromBinary(any.value, options);
 			}
             `, `
@@ -88,10 +90,10 @@ export class WellKnownTypes implements CustomMethodGenerator {
              * Does the given \`Any\` contain a packed message of the given type?
 			 */
 			function contains(any: ${Any}, type: ${IMessageType}<any> | string): boolean {
-                if (!any.typeUrl.length)
+                if (!any.${typeUrlField}.length)
                     return false;
                 let wants = typeof type == "string" ? type : type.typeName;
-                let has = this.typeUrlToName(any.typeUrl);
+                let has = this.typeUrlToName(any.${typeUrlField});
                 return wants === has;
 			}
             `, `
@@ -105,18 +107,18 @@ export class WellKnownTypes implements CustomMethodGenerator {
 			 * \`google.protobuf.Any\` from JSON format.
 			 */
 			function internalJsonWrite(any: ${Any}, options: ${JsonWriteOptions}): ${JsonValue} {
-                if (any.typeUrl === "")
+                if (any.${typeUrlField} === "")
                     return {};
-                let typeName = this.typeUrlToName(any.typeUrl);
+                let typeName = this.typeUrlToName(any.${typeUrlField});
 				let opt = ${jsonWriteOptions}(options);
 				let type = opt.typeRegistry?.find(t => t.typeName === typeName);
 				if (!type)
-					throw new globalThis.Error("Unable to convert google.protobuf.Any with typeUrl '" + any.typeUrl + "' to JSON. The specified type " + typeName + " is not available in the type registry.");
+					throw new globalThis.Error("Unable to convert google.protobuf.Any with typeUrl '" + any.${typeUrlField} + "' to JSON. The specified type " + typeName + " is not available in the type registry.");
 				let value = type.fromBinary(any.value, {readUnknownField: false});
 				let json = type.internalJsonWrite(value, opt);
                 if (typeName.startsWith("google.protobuf.") || !${isJsonObject}(json))
 					json = {value: json};
-				json['@type'] = any.typeUrl;
+				json['@type'] = any.${typeUrlField};
 				return json;
 			}
             `, `
@@ -139,7 +141,7 @@ export class WellKnownTypes implements CustomMethodGenerator {
 				}
 				if (target === undefined)
 					target = this.create();
-				target.typeUrl = json['@type'];
+				target.${typeUrlField} = json['@type'];
 				target.value = type.toBinary(value);
 				return target;
 			}
@@ -413,7 +415,13 @@ export class WellKnownTypes implements CustomMethodGenerator {
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
-            typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath);
+            typeofJsonValue = this.imports.name(source,'typeofJsonValue', this.options.runtimeImportPath),
+            nullValueField = FieldInfoGenerator.createTypescriptLocalName('null_value', this.options),
+            boolValueField = FieldInfoGenerator.createTypescriptLocalName('bool_value', this.options),
+            numberValueField = FieldInfoGenerator.createTypescriptLocalName('number_value', this.options),
+            stringValueField = FieldInfoGenerator.createTypescriptLocalName('string_value', this.options),
+            listValueField = FieldInfoGenerator.createTypescriptLocalName('list_value', this.options),
+            structValueField = FieldInfoGenerator.createTypescriptLocalName('struct_value', this.options);
         return [
             `
             /**
@@ -424,22 +432,22 @@ export class WellKnownTypes implements CustomMethodGenerator {
                 switch (message.kind.oneofKind) {
                     case undefined:
                         throw new globalThis.Error();
-                    case "boolValue":
-                        return message.kind.boolValue;
-                    case "nullValue":
+                    case "${boolValueField}":
+                        return message.kind.${boolValueField};
+                    case "${nullValueField}":
                         return null;
-                    case "numberValue":
-                        return message.kind.numberValue;
-                    case "stringValue":
-                        return message.kind.stringValue;
-                    case "listValue":
+                    case "${numberValueField}":
+                        return message.kind.${numberValueField};
+                    case "${stringValueField}":
+                        return message.kind.${stringValueField};
+                    case "${listValueField}":
                         let listValueField = this.fields.find(f => f.no === 6);
                         if (listValueField?.kind !== 'message') throw new globalThis.Error();
-                        return listValueField.T().toJson(message.kind.listValue);
-                    case "structValue":
+                        return listValueField.T().toJson(message.kind.${listValueField});
+                    case "${structValueField}":
                         let structValueField = this.fields.find(f => f.no === 5);
                         if (structValueField?.kind !== 'message') throw new globalThis.Error();
-                        return structValueField.T().toJson(message.kind.structValue);
+                        return structValueField.T().toJson(message.kind.${structValueField});
                 }
             }
             `, `
@@ -451,22 +459,22 @@ export class WellKnownTypes implements CustomMethodGenerator {
                     target = this.create();
                 switch (typeof json) {
                     case "number":
-                        target.kind = {oneofKind: "numberValue", numberValue: json};
+                        target.kind = {oneofKind: "${numberValueField}", ${numberValueField}: json};
                         break;
                     case "string":
-                        target.kind = {oneofKind: "stringValue", stringValue: json};
+                        target.kind = {oneofKind: "${stringValueField}", ${stringValueField}: json};
                         break;
                     case "boolean":
-                        target.kind = {oneofKind: "boolValue", boolValue: json};
+                        target.kind = {oneofKind: "${boolValueField}", ${boolValueField}: json};
                         break;
                     case "object":
                         if (json === null) {
-                            target.kind = {oneofKind: "nullValue", nullValue: NullValue.NULL_VALUE};
+                            target.kind = {oneofKind: "${nullValueField}", ${nullValueField}: NullValue.NULL_VALUE};
                         } else if (globalThis.Array.isArray(json)) {
-                            target.kind = {oneofKind: "listValue", listValue: ListValue.fromJson(json)};
+                            target.kind = {oneofKind: "${listValueField}", ${listValueField}: ListValue.fromJson(json)};
                         } else {
                             let val = Struct.fromJson(json);
-                            target.kind = {oneofKind: "structValue", structValue: Struct.fromJson(json)};
+                            target.kind = {oneofKind: "${structValueField}", ${structValueField}: Struct.fromJson(json)};
                         }
                         break;
                     default:

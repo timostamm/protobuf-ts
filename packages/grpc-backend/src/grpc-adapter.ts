@@ -13,14 +13,24 @@ import * as grpc from "@grpc/grpc-js";
 import {assert} from "@protobuf-ts/runtime";
 import {metadataFromGrpc, metadataToGrpc, rpcCodeToGrpc} from "./util";
 
+type ContextFactory = (
+  serviceInfo: ServiceInfo,
+  methodInfo: MethodInfo,
+  call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any> | grpc.ServerWritableStream<any, any>,
+) => ServerCallContext;
+
+export interface AdaptServiceOptions {
+    contextFactory?: ContextFactory;
+}
 
 /**
  * Create a grpc service definition and an implementation for @grpc/grpc-js.
  */
-export function adaptService(serviceInfo: ServiceInfo, serviceImplementation: any): [grpc.ServiceDefinition, grpc.UntypedServiceImplementation] {
+export function adaptService(serviceInfo: ServiceInfo, serviceImplementation: any, options: AdaptServiceOptions = {})
+  : [grpc.ServiceDefinition, grpc.UntypedServiceImplementation] {
     return [
         createDefinition(serviceInfo),
-        mapService(serviceInfo, serviceImplementation)
+        mapService(serviceInfo, serviceImplementation, options)
     ];
 }
 
@@ -56,26 +66,28 @@ type BidiMethod<I extends object, O extends object> = (requestStream: RpcOutputS
  * Create a grpc service implementation that delegates to the given
  * protobuf-ts service implementation.
  */
-export function mapService(serviceInfo: ServiceInfo, service: any): grpc.UntypedServiceImplementation {
+export function mapService(si: ServiceInfo, service: any, options: AdaptServiceOptions): grpc.UntypedServiceImplementation {
     const grpcImp: grpc.UntypedServiceImplementation = {};
-    for (let mi of serviceInfo.methods) {
+    const ctxFactory = options.contextFactory ?? createContext;
+
+    for (let mi of si.methods) {
         assert(typeof service[mi.localName] == "function", `implementation is missing method ${mi.localName}()`);
         const fn = service[mi.localName].bind(service);
         if (mi.serverStreaming && mi.clientStreaming) {
-            grpcImp[mi.localName] = mapBidi(mi, fn as BidiMethod<object, object>)
+            grpcImp[mi.localName] = mapBidi(si, mi, ctxFactory, fn as BidiMethod<object, object>)
         } else if (mi.serverStreaming) {
-            grpcImp[mi.localName] = mapServerStreaming(mi, fn as ServerStreamingMethod<object, object>)
+            grpcImp[mi.localName] = mapServerStreaming(si, mi, ctxFactory, fn as ServerStreamingMethod<object, object>)
         } else if (mi.clientStreaming) {
-            grpcImp[mi.localName] = mapClientStreaming(mi, fn as ClientStreamingMethod<object, object>)
+            grpcImp[mi.localName] = mapClientStreaming(si, mi, ctxFactory, fn as ClientStreamingMethod<object, object>)
         } else {
-            grpcImp[mi.localName] = mapUnary(mi, fn as UnaryMethod<object, object>)
+            grpcImp[mi.localName] = mapUnary(si, mi, ctxFactory, fn as UnaryMethod<object, object>)
         }
     }
     return grpcImp;
 }
 
 
-function createContext(methodInfo: MethodInfo, call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any> | grpc.ServerWritableStream<any, any>): ServerCallContext {
+export function createContext(serviceInfo: ServiceInfo, methodInfo: MethodInfo, call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any> | grpc.ServerWritableStream<any, any>): ServerCallContext {
     const deadlineGrpc = call.getDeadline();
     const deadlineDate = typeof deadlineGrpc === 'number' ? new Date(deadlineGrpc) : deadlineGrpc;
 
@@ -94,10 +106,10 @@ function createContext(methodInfo: MethodInfo, call: grpc.ServerUnaryCall<any, a
 }
 
 
-function mapUnary<I extends object, O extends object>(methodInfo: MethodInfo, method: UnaryMethod<I, O>): grpc.handleUnaryCall<I, O> {
+function mapUnary<I extends object, O extends object>(serviceInfo: ServiceInfo, methodInfo: MethodInfo, ctxFactory: ContextFactory,
+                                                      method: UnaryMethod<I, O>): grpc.handleUnaryCall<I, O> {
     return async (call: grpc.ServerUnaryCall<I, O>, callback: grpc.sendUnaryData<O>) => {
-
-        const context = createContext(methodInfo, call);
+        const context = ctxFactory(serviceInfo, methodInfo, call);
 
         let response: O;
         try {
@@ -153,10 +165,11 @@ function mapUnary<I extends object, O extends object>(methodInfo: MethodInfo, me
 }
 
 
-function mapServerStreaming<I extends object, O extends object>(methodInfo: MethodInfo, method: ServerStreamingMethod<I, O>): grpc.handleServerStreamingCall<I, O> {
+function mapServerStreaming<I extends object, O extends object>(serviceInfo: ServiceInfo, methodInfo: MethodInfo,
+                                                                ctxFactory: ContextFactory, method: ServerStreamingMethod<I, O>): grpc.handleServerStreamingCall<I, O> {
     return async (call: grpc.ServerWritableStream<I, O>) => {
 
-        const context = createContext(methodInfo, call);
+        const context = ctxFactory(serviceInfo, methodInfo, call);
 
         const responseStream: RpcInputStream<O> = {
             send(message: O) {
@@ -209,10 +222,11 @@ function mapServerStreaming<I extends object, O extends object>(methodInfo: Meth
 }
 
 
-function mapClientStreaming<I extends object, O extends object>(methodInfo: MethodInfo, method: ClientStreamingMethod<I, O>): grpc.handleClientStreamingCall<I, O> {
+function mapClientStreaming<I extends object, O extends object>(serviceInfo: ServiceInfo, methodInfo: MethodInfo,
+                                                                ctxFactory: ContextFactory, method: ClientStreamingMethod<I, O>): grpc.handleClientStreamingCall<I, O> {
     return async (call: grpc.ServerReadableStream<I, O>, callback: grpc.sendUnaryData<O>) => {
 
-        const context = createContext(methodInfo, call);
+        const context = ctxFactory(serviceInfo, methodInfo, call);
 
         const requestStream = new RpcOutputStreamController<I>();
 
@@ -284,10 +298,11 @@ function mapClientStreaming<I extends object, O extends object>(methodInfo: Meth
 }
 
 
-function mapBidi<I extends object, O extends object>(methodInfo: MethodInfo, method: BidiMethod<I, O>): grpc.handleBidiStreamingCall<I, O> {
+function mapBidi<I extends object, O extends object>(serviceInfo: ServiceInfo, methodInfo: MethodInfo,
+                                                     ctxFactory: ContextFactory, method: BidiMethod<I, O>): grpc.handleBidiStreamingCall<I, O> {
     return async (call: grpc.ServerDuplexStream<I, O>) => {
 
-        const context = createContext(methodInfo, call);
+        const context = ctxFactory(serviceInfo, methodInfo, call);
 
         const requestStream = new RpcOutputStreamController<I>();
 

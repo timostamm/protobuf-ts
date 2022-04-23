@@ -1,6 +1,90 @@
 ### unreleased changes
 
-none
+New Features:
+
+- Added disable_service_types option for disabling service metadata generation, see #268  
+  Thanks to @ColinLaws for the contribution!
+
+Bug fixes:
+
+- Fix line breaks in header comments, see #289  
+  Thanks to @RyotaSugawara for the fix!
+- Avoid cyclic import in binary format contract, see #271
+- Use type import in grpc server, see #264
+
+Project maintenance:
+
+- Support go 1.18 in build #263
+
+
+### v2.4.0
+
+New Features:
+
+- Add option `eslint_disable`, which generates a comment /* eslint-disable */ at the
+  top of each file, see #256
+
+Bug fixes:
+
+- Make sure to add non-default longtype to map field info, see #260
+
+
+### v2.3.0
+
+New Features:
+
+- Add option for preserving original proto field names in generated interfaces. #250  
+  Thanks to @kskalksi for the contribution.
+
+
+### v2.2.4
+
+New Features:
+
+- Relax angular version constraints in runtime-angular, see #246
+
+
+### v2.2.3
+
+Bug fixes:
+
+- Improved compatibility of grpcweb-transport with TypeScript >= 4.1.5 and skipLibCheck=false,
+  see #248
+
+
+### v2.2.2
+
+New Features:
+
+- For generic servers, support custom contexts, see #201.  
+  Thanks to @be9 for the contribution.
+
+
+### v2.2.1
+
+Bug fixes:
+
+- server_generic option stopped working, see #202.  
+  Thanks to @sessfeld for the contribution.
+
+
+### v2.2.0
+
+New features:
+
+- Add the plugin option `ts_nocheck` to support most strict compiler options in userspace, see #152.
+- The new plugin option `add_pb_suffix` adds the suffix `_pb` to all file names, see #186.
+- Add service/method name to RpcError, see #197  
+  Thanks to @jcready for the contribution.
+- Support JavaScript output via plugin option `output_javascript`, see #200.
+
+
+Bug fixes:
+
+- Use TextDecoder API for decoding UTF-8 from binary data, see #184.  
+  We have been using protobuf.js' algorithm to decode UTF-8, but it has had [bugs](https://github.com/protobufjs/protobuf.js/pull/1486)
+  in the past. For best possible compatibility, we have switched to the TextDecoder API.
+  See [MANUAL](./MANUAL.md#utf-8-decoding) for details.
 
 
 ### v2.1.0

@@ -12,6 +12,7 @@ import {
     ServiceOptions
 } from "@protobuf-ts/plugin-framework";
 import {Interpreter} from "./interpreter";
+import * as ts from "typescript";
 
 
 /**
@@ -177,11 +178,17 @@ const emptyServiceOptions = OurServiceOptions.create();
  * Internal settings for the file generation.
  */
 export interface InternalOptions {
+    readonly generateDependencies: boolean;
     readonly pluginCredit?: string;
     readonly normalLongType: rt.LongType,
+    readonly normalOptimizeMode: OptimizeMode,
+    readonly forcedOptimizeMode: OptimizeMode | undefined,
+    readonly normalServerStyle: ServerStyle,
+    readonly forcedServerStyle: ServerStyle | undefined,
+    readonly normalClientStyle: ClientStyle,
+    readonly forcedClientStyle: ClientStyle | undefined,
     readonly emitAngularAnnotations: boolean;
-    // create a "synthetic" enum value with this string as name if no 0 value is present
-    readonly synthesizeEnumZeroValue: string | false;
+    readonly synthesizeEnumZeroValue: string | false; // create a "synthetic" enum value with this string as name if no 0 value is present
     readonly oneofKindDiscriminator: string;
     readonly angularCoreImportPath: string;
     readonly runtimeAngularImportPath: string;
@@ -189,31 +196,164 @@ export interface InternalOptions {
     readonly runtimeImportPath: string;
     readonly forceExcludeAllOptions: boolean;
     readonly keepEnumPrefix: boolean;
+    readonly useProtoFieldName: boolean;
+    readonly tsNoCheck: boolean;
+    readonly esLintDisable: boolean;
+    readonly transpileTarget: ts.ScriptTarget | undefined,
+    readonly transpileModule: ts.ModuleKind,
+    readonly addPbSuffix: boolean;
 }
 
-export function makeInternalOptions(options?: Partial<InternalOptions>): InternalOptions {
-    let o = options as any, i = defaultOptions as any;
-    if (!o) return i;
-    for (let k of Object.keys(defaultOptions)) {
-        if (o[k] === undefined) {
-            o[k] = i[k];
-        }
+export function makeInternalOptions(
+    params?: {
+        generate_dependencies: boolean,
+        long_type_string: boolean,
+        long_type_number: boolean,
+        enable_angular_annotations: boolean,
+        force_exclude_all_options: boolean,
+        keep_enum_prefix: boolean,
+        use_proto_field_name: boolean,
+        ts_nocheck: boolean,
+        eslint_disable: boolean,
+        force_optimize_code_size: boolean,
+        force_optimize_speed: boolean,
+        optimize_code_size: boolean,
+        force_server_none: boolean,
+        server_none: boolean,
+        server_generic: boolean
+        server_grpc1: boolean
+        force_client_none: boolean,
+        client_generic: boolean,
+        client_none: boolean,
+        client_grpc1: boolean,
+        add_pb_suffix: boolean,
+        output_typescript: boolean,
+        output_javascript: boolean,
+        output_javascript_es2015: boolean,
+        output_javascript_es2016: boolean,
+        output_javascript_es2017: boolean,
+        output_javascript_es2018: boolean,
+        output_javascript_es2019: boolean,
+        output_javascript_es2020: boolean,
+        output_legacy_commonjs: boolean,
+    },
+    pluginCredit?: string,
+): InternalOptions {
+    type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+    const o = Object.assign<Partial<InternalOptions>, InternalOptions>(
+        {},
+        {
+            generateDependencies: false,
+            normalLongType: rt.LongType.BIGINT,
+            normalOptimizeMode: OptimizeMode.SPEED,
+            forcedOptimizeMode: undefined,
+            normalClientStyle: ClientStyle.GENERIC_CLIENT,
+            forcedClientStyle: undefined,
+            normalServerStyle: ServerStyle.NO_SERVER,
+            forcedServerStyle: undefined,
+            emitAngularAnnotations: false,
+            synthesizeEnumZeroValue: 'UNSPECIFIED$',
+            oneofKindDiscriminator: 'oneofKind',
+            runtimeAngularImportPath: '@protobuf-ts/runtime-angular',
+            runtimeRpcImportPath: '@protobuf-ts/runtime-rpc',
+            angularCoreImportPath: '@angular/core',
+            runtimeImportPath: '@protobuf-ts/runtime',
+            forceExcludeAllOptions: false,
+            keepEnumPrefix: false,
+            useProtoFieldName: false,
+            tsNoCheck: false,
+            esLintDisable: false,
+            transpileTarget: undefined,
+            transpileModule: ts.ModuleKind.ES2015,
+            addPbSuffix: false,
+        },
+    ) as Writeable<InternalOptions>;
+    if (pluginCredit) {
+        o.pluginCredit = pluginCredit;
     }
-    return o as InternalOptions;
+    if (params?.generate_dependencies) {
+        o.generateDependencies = true;
+    }
+    if (params?.enable_angular_annotations) {
+        o.emitAngularAnnotations = true;
+    }
+    if (params?.force_exclude_all_options) {
+        o.forceExcludeAllOptions = true;
+    }
+    if (params?.keep_enum_prefix) {
+        o.keepEnumPrefix = true;
+    }
+    if (params?.use_proto_field_name) {
+        o.useProtoFieldName = true;
+    }
+    if (params?.ts_nocheck) {
+        o.tsNoCheck = true;
+    }
+    if (params?.eslint_disable) {
+        o.esLintDisable = true;
+    }
+    if (params?.long_type_string) {
+        o.normalLongType = rt.LongType.STRING;
+    }
+    if (params?.long_type_number) {
+        o.normalLongType = rt.LongType.NUMBER;
+    }
+    if (params?.optimize_code_size) {
+        o.normalOptimizeMode = OptimizeMode.CODE_SIZE;
+    }
+    if (params?.force_optimize_speed) {
+        o.forcedOptimizeMode = OptimizeMode.SPEED;
+    }
+    if (params?.force_optimize_code_size) {
+        o.forcedOptimizeMode = OptimizeMode.CODE_SIZE;
+    }
+    if (params?.client_none) {
+        o.normalClientStyle = ClientStyle.NO_CLIENT;
+    }
+    if (params?.client_grpc1) {
+        o.normalClientStyle = ClientStyle.GRPC1_CLIENT;
+    }
+    if (params?.force_client_none) {
+        o.forcedClientStyle = ClientStyle.NO_CLIENT;
+    }
+    if (params?.server_generic) {
+        o.normalServerStyle = ServerStyle.GENERIC_SERVER;
+    }
+    if (params?.server_grpc1) {
+        o.normalServerStyle = ServerStyle.GRPC1_SERVER;
+    }
+    if (params?.force_server_none) {
+        o.forcedServerStyle = ServerStyle.NO_SERVER;
+    }
+    if (params?.add_pb_suffix) {
+        o.addPbSuffix = true;
+    }
+    if (params?.output_javascript) {
+        o.transpileTarget = ts.ScriptTarget.ES2020;
+    }
+    if (params?.output_javascript_es2015) {
+        o.transpileTarget = ts.ScriptTarget.ES2015;
+    }
+    if (params?.output_javascript_es2016) {
+        o.transpileTarget = ts.ScriptTarget.ES2016;
+    }
+    if (params?.output_javascript_es2017) {
+        o.transpileTarget = ts.ScriptTarget.ES2017;
+    }
+    if (params?.output_javascript_es2018) {
+        o.transpileTarget = ts.ScriptTarget.ES2018;
+    }
+    if (params?.output_javascript_es2019) {
+        o.transpileTarget = ts.ScriptTarget.ES2019;
+    }
+    if (params?.output_javascript_es2020) {
+        o.transpileTarget = ts.ScriptTarget.ES2020;
+    }
+    if (params?.output_legacy_commonjs) {
+        o.transpileModule = ts.ModuleKind.CommonJS;
+    }
+    return o;
 }
-
-const defaultOptions: InternalOptions = {
-    normalLongType: rt.LongType.BIGINT,
-    emitAngularAnnotations: false,
-    synthesizeEnumZeroValue: 'UNSPECIFIED$',
-    oneofKindDiscriminator: 'oneofKind',
-    runtimeAngularImportPath: '@protobuf-ts/runtime-angular',
-    runtimeRpcImportPath: '@protobuf-ts/runtime-rpc',
-    angularCoreImportPath: '@angular/core',
-    runtimeImportPath: '@protobuf-ts/runtime',
-    forceExcludeAllOptions: false,
-    keepEnumPrefix: false,
-} as const;
 
 
 export class OptionResolver {
@@ -222,32 +362,19 @@ export class OptionResolver {
     constructor(
         private readonly interpreter: Interpreter,
         private readonly stringFormat: IStringFormat,
-        private readonly params: {
-            force_optimize_code_size: boolean,
-            force_optimize_speed: boolean,
-            optimize_code_size: boolean,
-            force_server_none: boolean,
-            server_none: boolean,
-            server_generic: boolean
-            server_grpc1: boolean
-            force_client_none: boolean,
-            client_none: boolean,
-            client_grpc1: boolean,
-        }
+        private readonly options: InternalOptions,
     ) {
     }
 
 
     getOptimizeMode(file: FileDescriptorProto): OptimizeMode {
-        if (this.params.force_optimize_code_size)
-            return OptimizeMode.CODE_SIZE;
-        if (this.params.force_optimize_speed)
-            return OptimizeMode.SPEED;
-        if (file.options?.optimizeFor)
+        if (this.options.forcedOptimizeMode !== undefined) {
+            return this.options.forcedOptimizeMode;
+        }
+        if (file.options?.optimizeFor !== undefined) {
             return file.options.optimizeFor;
-        if (this.params.optimize_code_size)
-            return OptimizeMode.CODE_SIZE;
-        return OptimizeMode.SPEED;
+        }
+        return this.options.normalOptimizeMode;
     }
 
 
@@ -261,9 +388,8 @@ export class OptionResolver {
             throw err;
         }
 
-        // clients disabled altogether?
-        if (this.params.force_client_none) {
-            return [];
+        if (this.options.forcedClientStyle !== undefined) {
+            return [this.options.forcedClientStyle];
         }
 
         // look for service options
@@ -274,12 +400,7 @@ export class OptionResolver {
         }
 
         // fall back to normal style set by option
-        if (this.params.client_none)
-            return [];
-        else if (this.params.client_grpc1)
-            return [ClientStyle.GRPC1_CLIENT];
-        else
-            return [ClientStyle.GENERIC_CLIENT];
+        return [this.options.normalClientStyle];
     }
 
 
@@ -293,9 +414,8 @@ export class OptionResolver {
             throw err;
         }
 
-        // clients disabled altogether?
-        if (this.params.force_server_none) {
-            return [];
+        if (this.options.forcedServerStyle !== undefined) {
+            return [this.options.forcedServerStyle];
         }
 
         // look for service options
@@ -305,14 +425,8 @@ export class OptionResolver {
                 .filter((value, index, array) => array.indexOf(value) === index);
         }
 
-        // fall back to normal style set by parameter
-        if (this.params.server_generic) {
-            return [ServerStyle.GENERIC_SERVER];
-        }
-        if (this.params.server_grpc1) {
-            return [ServerStyle.GRPC1_SERVER];
-        }
-        return [];
+        // fall back to normal style set by option
+        return [this.options.normalServerStyle];
     }
 
 }

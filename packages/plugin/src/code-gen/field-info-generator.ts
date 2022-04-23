@@ -107,6 +107,14 @@ export class FieldInfoGenerator {
 
 
     /**
+     * Creates the interface field / oneof name based on original proto field name and naming options.
+     */
+    static createTypescriptLocalName(name: string, options: { useProtoFieldName: boolean }): string {
+        return options.useProtoFieldName ? name : rt.lowerCamelCase(name);
+    }
+
+
+    /**
      * Turn normalized field info returned by normalizeFieldInfo() back into
      * the minimized form.
      */
@@ -192,16 +200,18 @@ export class FieldInfoGenerator {
                 break;
             case "scalar":
                 T = this.createScalarType(mapV.T);
-                if (mapV.L)
+                if (mapV.L !== undefined)
                     L = this.createLongType(mapV.L);
                 break;
         }
-        let properties: ts.ObjectLiteralElementLike[] = [
+        const properties: ts.ObjectLiteralElementLike[] = [
             ts.createPropertyAssignment(ts.createIdentifier('kind'), ts.createStringLiteral(mapV.kind)),
             ts.createPropertyAssignment(ts.createIdentifier('T'), T)
         ];
         if (L) {
-            ts.createPropertyAssignment(ts.createIdentifier('L'), L)
+            properties.push(
+                ts.createPropertyAssignment(ts.createIdentifier('L'), L)
+            );
         }
         return ts.createObjectLiteral(properties);
     }

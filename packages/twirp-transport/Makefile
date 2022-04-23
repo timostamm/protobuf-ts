@@ -40,7 +40,7 @@ clientcompat7: build
 		--proto_path=clientcompat/ \
 		clientcompat/clientcompat.proto
 	./node_modules/.bin/tsc --target ES2015 --module commonjs clientcompat/clientcompat.ts clientcompat/client.ts
-	go get github.com/twitchtv/twirp/clientcompat@v7.0.0
+	go install github.com/twitchtv/twirp/clientcompat@v7.0.0
 	${HOME}/go/bin/clientcompat -client clientcompat/client-runner.js
 
 clientcompat8: build
@@ -50,5 +50,5 @@ clientcompat8: build
 		--proto_path=clientcompat/ \
 		clientcompat/clientcompat.proto
 	./node_modules/.bin/tsc --target ES2015 --module commonjs clientcompat/clientcompat.ts clientcompat/client.ts
-	go get github.com/twitchtv/twirp/clientcompat@v8.0.0
+	go install github.com/twitchtv/twirp/clientcompat@v8.0.0
 	${HOME}/go/bin/clientcompat -client clientcompat/client-runner.js

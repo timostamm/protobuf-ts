@@ -2,6 +2,7 @@ import {getFixtureCodeGeneratorRequest} from "./support/helpers";
 import {ProtobuftsPlugin} from "../src/protobufts-plugin";
 import * as ts from "typescript";
 import {setupCompiler} from "@protobuf-ts/plugin-framework";
+import {OutFile} from "../src/out-file";
 
 
 describe('protobuftsPlugin', function () {
@@ -104,7 +105,7 @@ describe('protobuftsPlugin', function () {
         // check each .proto for ts compilation errors
         for (let fileDescriptor of request.protoFile) {
             it(`${fileDescriptor.name}`, function () {
-                const file = generatedFiles.find(f => f.fileDescriptor === fileDescriptor);
+                const file = generatedFiles.find(f => f instanceof OutFile && f.fileDescriptor === fileDescriptor);
                 expect(file).toBeDefined('Missing associated typescript file!');
                 const problems = diagnostics.filter(d => d.file?.fileName === file?.getFilename());
                 if (problems.length > 0) fail(ts.formatDiagnostics(problems, host));

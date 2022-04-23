@@ -1,7 +1,6 @@
 import msgOneofs from './msg-oneofs.fixtures'
 import msgScalar from './msg-scalar.fixtures'
 import msgEnum from './msg-enum.fixtures'
-import msgMaps from './msg-maps.fixtures'
 import msgJsonNames from './msg-json-names.fixtures'
 import msgProto2Optionals from './msg-proto2-optionals.fixtures'
 import msgProto3Optionals from './msg-proto3-optionals.fixtures'
@@ -551,7 +550,6 @@ export const fixtures = new FixtureRegistry();
 fixtures.register(msgOneofs);
 fixtures.register(msgScalar);
 fixtures.register(msgEnum);
-fixtures.register(msgMaps);
 fixtures.register(msgJsonNames);
 fixtures.register(msgProto2Optionals);
 fixtures.register(msgProto3Optionals);

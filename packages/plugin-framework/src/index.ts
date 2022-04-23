@@ -9,7 +9,7 @@ export * from './symbol-table';
 export * from './type-names';
 export * from './google/protobuf/descriptor';
 export * from './google/protobuf/compiler/plugin';
-export * from './typescript-check';
+export * from './typescript-compile';
 export * from './typescript-comments';
 export * from './typescript-import-manager';
 export * from './typescript-method-from-text';

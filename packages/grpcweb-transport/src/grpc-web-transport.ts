@@ -70,12 +70,18 @@ export class GrpcWebFetchTransport implements RpcTransport {
     }
 
 
-    clientStreaming<I extends object, O extends object>(/*method: MethodInfo<I, O>, options: RpcOptions*/): ClientStreamingCall<I, O> {
-        throw new RpcError('Client streaming is not supported by grpc-web', GrpcStatusCode[GrpcStatusCode.UNIMPLEMENTED]);
+    clientStreaming<I extends object, O extends object>(method: MethodInfo<I, O>/*, options: RpcOptions*/): ClientStreamingCall<I, O> {
+        const e = new RpcError('Client streaming is not supported by grpc-web', GrpcStatusCode[GrpcStatusCode.UNIMPLEMENTED]);
+        e.methodName = method.name;
+        e.serviceName  = method.service.typeName;
+        throw e;
     }
 
-    duplex<I extends object, O extends object>(/*method: MethodInfo<I, O>, options: RpcOptions*/): DuplexStreamingCall<I, O> {
-        throw new RpcError('Duplex streaming is not supported by grpc-web', GrpcStatusCode[GrpcStatusCode.UNIMPLEMENTED]);
+    duplex<I extends object, O extends object>(method: MethodInfo<I, O>/*, options: RpcOptions*/): DuplexStreamingCall<I, O> {
+        const e = new RpcError('Duplex streaming is not supported by grpc-web', GrpcStatusCode[GrpcStatusCode.UNIMPLEMENTED]);
+        e.methodName = method.name;
+        e.serviceName  = method.service.typeName;
+        throw e;
     }
 
 
@@ -158,6 +164,8 @@ export class GrpcWebFetchTransport implements RpcTransport {
                 else
                     // RpcErrors are thrown by us, everything else is an internal error
                     error = new RpcError(reason instanceof Error ? reason.message : "" + reason, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+                error.methodName = method.name;
+                error.serviceName  = method.service.typeName;
                 defHeader.rejectPending(error);
                 responseStream.notifyError(error)
                 defStatus.rejectPending(error);
@@ -264,6 +272,8 @@ export class GrpcWebFetchTransport implements RpcTransport {
                 else
                     // RpcErrors are thrown by us, everything else is an internal error
                     error = new RpcError(reason instanceof Error ? reason.message : "" + reason, GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+                error.methodName = method.name;
+                error.serviceName  = method.service.typeName;
                 defHeader.rejectPending(error);
                 defMessage.rejectPending(error);
                 defStatus.rejectPending(error);
