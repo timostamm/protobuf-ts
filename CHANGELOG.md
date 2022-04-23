@@ -1,5 +1,9 @@
 ### unreleased changes
 
+none
+
+### v2.5.0
+
 New Features:
 
 - Added disable_service_types option for disabling service metadata generation, see #268  
