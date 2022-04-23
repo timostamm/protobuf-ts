@@ -1,9 +1,16 @@
 ### unreleased changes
 
+New Features:
+
+- Added disable_service_types option for disabling service metadata generation, see #268  
+  Thanks to @ColinLaws for the contribution!
+
 Bug fixes:
 
-- Fix line breaks in header comments #289
-- Use type import in grpc server #264
+- Fix line breaks in header comments, see #289  
+  Thanks to @RyotaSugawara for the fix!
+- Avoid cyclic import in binary format contract, see #271
+- Use type import in grpc server, see #264
 
 Project maintenance:
 
