@@ -1,6 +1,32 @@
 ### unreleased changes
 
-none
+New Features:
+
+- Added disable_service_types option for disabling service metadata generation, see #268  
+  Thanks to @ColinLaws for the contribution!
+
+Bug fixes:
+
+- Fix line breaks in header comments, see #289  
+  Thanks to @RyotaSugawara for the fix!
+- Avoid cyclic import in binary format contract, see #271
+- Use type import in grpc server, see #264
+
+Project maintenance:
+
+- Support go 1.18 in build #263
+
+
+### v2.4.0
+
+New Features:
+
+- Add option `eslint_disable`, which generates a comment /* eslint-disable */ at the
+  top of each file, see #256
+
+Bug fixes:
+
+- Make sure to add non-default longtype to map field info, see #260
 
 
 ### v2.3.0

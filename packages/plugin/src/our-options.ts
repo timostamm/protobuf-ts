@@ -198,6 +198,7 @@ export interface InternalOptions {
     readonly keepEnumPrefix: boolean;
     readonly useProtoFieldName: boolean;
     readonly tsNoCheck: boolean;
+    readonly esLintDisable: boolean;
     readonly transpileTarget: ts.ScriptTarget | undefined,
     readonly transpileModule: ts.ModuleKind,
     readonly addPbSuffix: boolean;
@@ -213,6 +214,7 @@ export function makeInternalOptions(
         keep_enum_prefix: boolean,
         use_proto_field_name: boolean,
         ts_nocheck: boolean,
+        eslint_disable: boolean,
         force_optimize_code_size: boolean,
         force_optimize_speed: boolean,
         optimize_code_size: boolean,
@@ -260,6 +262,7 @@ export function makeInternalOptions(
             keepEnumPrefix: false,
             useProtoFieldName: false,
             tsNoCheck: false,
+            esLintDisable: false,
             transpileTarget: undefined,
             transpileModule: ts.ModuleKind.ES2015,
             addPbSuffix: false,
@@ -285,6 +288,9 @@ export function makeInternalOptions(
     }
     if (params?.ts_nocheck) {
         o.tsNoCheck = true;
+    }
+    if (params?.eslint_disable) {
+        o.esLintDisable = true;
     }
     if (params?.long_type_string) {
         o.normalLongType = rt.LongType.STRING;

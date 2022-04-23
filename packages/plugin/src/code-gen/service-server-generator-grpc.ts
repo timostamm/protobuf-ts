@@ -42,7 +42,7 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
         const
             interpreterType = this.interpreter.getServiceType(descriptor),
             IGrpcServer = this.imports.type(source, descriptor, this.symbolKindInterface),
-            grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
+            grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true)
         ;
 
         const statement = ts.createInterfaceDeclaration(
@@ -76,7 +76,7 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
 
 
     private createMethodPropertySignature(source: TypescriptFile, methodInfo: rpc.MethodInfo, methodDescriptor: MethodDescriptorProto): ts.PropertySignature {
-        const grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js');
+        const grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true)
 
         let handler: string;
         if (methodInfo.serverStreaming && methodInfo.clientStreaming) {
@@ -123,7 +123,7 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
             grpcServerDefinition = this.imports.type(source, descriptor, this.symbolKindDefinition),
             IGrpcServer = this.imports.type(source, descriptor, this.symbolKindInterface),
             interpreterType = this.interpreter.getServiceType(descriptor),
-            grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js');
+            grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true);
 
         const statement = ts.createVariableStatement(
             [ts.createModifier(ts.SyntaxKind.ExportKeyword)],

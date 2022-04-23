@@ -52,11 +52,15 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
             props.push('package "' + this.fileDescriptor.package + '"');
         }
         props.push('syntax ' + (this.fileDescriptor.syntax ?? 'proto2'));
-        const header = [
+        const header = []
+        if (this.options.esLintDisable) {
+            header.push(`/* eslint-disable */`);
+        }
+        header.push(...[
             `// @generated ${this.options.pluginCredit}`,
             `// @generated from protobuf file "${this.fileDescriptor.name}" (${props.join(', ')})`,
             `// tslint:disable`
-        ];
+        ]);
         if (this.options.tsNoCheck) {
             header.push(`// @ts-nocheck`);
         }

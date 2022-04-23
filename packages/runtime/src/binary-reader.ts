@@ -1,7 +1,22 @@
-import type {IBinaryReader} from "./binary-format-contract";
+import type {BinaryReadOptions, IBinaryReader} from "./binary-format-contract";
 import {WireType} from "./binary-format-contract";
 import {PbLong, PbULong} from "./pb-long";
 import {varint32read, varint64read} from "./goog-varint";
+
+
+const defaultsRead: Readonly<BinaryReadOptions> = {
+    readUnknownField: true,
+    readerFactory: bytes => new BinaryReader(bytes),
+};
+
+
+/**
+ * Make options for reading binary data form partial options.
+ */
+export function binaryReadOptions(options?: Partial<BinaryReadOptions>): Readonly<BinaryReadOptions> {
+    return options ? {...defaultsRead, ...options} : defaultsRead;
+}
+
 
 /**
  * TextDecoderLike is the subset of the TextDecoder API required by protobuf-ts.

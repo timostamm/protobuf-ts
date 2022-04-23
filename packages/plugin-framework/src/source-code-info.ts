@@ -162,7 +162,7 @@ export function sourceCodeLocationToComment(locations: readonly SourceCodeInfo_L
 
 function stripTrailingNewline(block: string): string {
     return block.endsWith('\n')
-        ? block.substr(0, block.length - 1)
+        ? block.slice(0, -1)
         : block;
 }
 

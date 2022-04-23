@@ -200,16 +200,18 @@ export class FieldInfoGenerator {
                 break;
             case "scalar":
                 T = this.createScalarType(mapV.T);
-                if (mapV.L)
+                if (mapV.L !== undefined)
                     L = this.createLongType(mapV.L);
                 break;
         }
-        let properties: ts.ObjectLiteralElementLike[] = [
+        const properties: ts.ObjectLiteralElementLike[] = [
             ts.createPropertyAssignment(ts.createIdentifier('kind'), ts.createStringLiteral(mapV.kind)),
             ts.createPropertyAssignment(ts.createIdentifier('T'), T)
         ];
         if (L) {
-            ts.createPropertyAssignment(ts.createIdentifier('L'), L)
+            properties.push(
+                ts.createPropertyAssignment(ts.createIdentifier('L'), L)
+            );
         }
         return ts.createObjectLiteral(properties);
     }
