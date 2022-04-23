@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/example-node-grpc-server",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "",
   "private": true,
   "scripts": {
@@ -11,10 +11,10 @@
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
     "@grpc/grpc-js": "^1.2.2",
-    "@protobuf-ts/plugin": "^2.4.0",
-    "@protobuf-ts/protoc": "^2.4.0",
-    "@protobuf-ts/runtime": "^2.4.0",
-    "@protobuf-ts/runtime-rpc": "^2.4.0",
+    "@protobuf-ts/plugin": "^2.5.0",
+    "@protobuf-ts/protoc": "^2.5.0",
+    "@protobuf-ts/runtime": "^2.5.0",
+    "@protobuf-ts/runtime-rpc": "^2.5.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   }
