@@ -5,6 +5,10 @@ New Features:
 - Added disable_service_types option for disabling service metadata generation, see #268  
   Thanks to @ColinLaws for the contribution!
 
+- Change dependency behavior for well-known types.  
+  If you have been using the option `generate_dependencies`, you can probably remove it now!  
+  See #258 for details.
+
 Bug fixes:
 
 - Fix line breaks in header comments, see #289  
