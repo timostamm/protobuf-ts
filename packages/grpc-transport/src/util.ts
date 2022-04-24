@@ -1,7 +1,7 @@
 import * as grpc from "@grpc/grpc-js";
 import {RpcMetadata} from "@protobuf-ts/runtime-rpc";
 import {listEnumValues} from "@protobuf-ts/runtime";
-import {MetadataOptions} from "@grpc/grpc-js/build/src/metadata";
+import {MetadataOptions} from "@grpc/grpc-js";
 
 
 /**
