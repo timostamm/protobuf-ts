@@ -29,20 +29,20 @@ export function reflectionMergePartial<T extends object>(info: MessageInfo, targ
 
         if (field.oneof) {
             const group = input[field.oneof] as UnknownOneofGroup | undefined; // this is the oneof`s group in the source
-            if (group === undefined) { // the user is free to omit
+            if (group == undefined) { // the user is free to omit
                 continue; // we skip this field, and all other members too
             }
             fieldValue = group[name]; // our value comes from the the oneof group of the source
             output = (target as UnknownMessage)[field.oneof] as UnknownOneofGroup; // and our output is the oneof group of the target
             output.oneofKind = group.oneofKind; // always update discriminator
-            if (fieldValue === undefined) {
+            if (fieldValue == undefined) {
                 delete output[name]; // remove any existing value
                 continue; // skip further work on field
             }
         } else {
             fieldValue = input[name]; // we are using the source directly
             output = target as UnknownMessage; // we want our field value to go directly into the target
-            if (fieldValue === undefined) {
+            if (fieldValue == undefined) {
                 continue; // skip further work on field, existing value is used as is
             }
         }
