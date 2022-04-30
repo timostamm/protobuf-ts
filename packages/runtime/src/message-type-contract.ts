@@ -1,7 +1,7 @@
-import type {FieldInfo, MessageInfo} from "./reflection-info";
-import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
-import type {JsonValue} from "./json-typings";
-import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
+import type { FieldInfo, MessageInfo } from "./reflection-info";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter } from "./binary-format-contract";
+import type { JsonValue } from "./json-typings";
+import type { JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions } from "./json-format-contract";
 
 /**
  * The symbol used as a key on message objects to store the message type.
@@ -17,15 +17,15 @@ export const MESSAGE_TYPE: unique symbol = Symbol.for("protobuf-ts/message-type"
  */
 // @formatter:off
 export type PartialMessage<T extends object> = {
-    [K in keyof T]?: PartialField<T[K]>
+  [K in keyof T]?: PartialField<T[K]>
 }; type PartialField<T> =
-     T extends (Date | Uint8Array | bigint | boolean | string | number) ? T
-   : T extends Array<infer U> ? Array<PartialField<U>>
-   : T extends ReadonlyArray<infer U> ? ReadonlyArray<PartialField<U>>
-   : T extends { oneofKind: string } ? T
-   : T extends { oneofKind: undefined } ? T
-   : T extends object ? PartialMessage<T>
-   : T ;
+  T extends (Date | Uint8Array | bigint | boolean | string | number) ? T
+  : T extends Array<infer U> ? Array<PartialField<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<PartialField<U>>
+  : T extends { oneofKind: string } ? T
+  : T extends { oneofKind: undefined } ? T
+  : T extends object ? PartialMessage<T>
+  : T;
 // @formatter:on
 
 
@@ -36,161 +36,161 @@ export type PartialMessage<T extends object> = {
  */
 export interface IMessageType<T extends object> extends MessageInfo {
 
-    /**
-     * The protobuf type name of the message, including package and
-     * parent types if present.
-     *
-     * Examples:
-     * 'MyNamespaceLessMessage'
-     * 'my_package.MyMessage'
-     * 'my_package.ParentMessage.ChildMessage'
-     */
-    readonly typeName: string;
+  /**
+   * The protobuf type name of the message, including package and
+   * parent types if present.
+   *
+   * Examples:
+   * 'MyNamespaceLessMessage'
+   * 'my_package.MyMessage'
+   * 'my_package.ParentMessage.ChildMessage'
+   */
+  readonly typeName: string;
 
-    /**
-     * Simple information for each message field, in the order
-     * of declaration in the .proto.
-     */
-    readonly fields: readonly FieldInfo[];
+  /**
+   * Simple information for each message field, in the order
+   * of declaration in the .proto.
+   */
+  fields: FieldInfo[];
 
-    /**
-     * Contains custom message options from the .proto source in JSON format.
-     */
-    readonly options: { [extensionName: string]: JsonValue };
-
-
-    /**
-     * Create a new message with default values.
-     *
-     * For example, a protobuf `string name = 1;` has the default value `""`.
-     */
-    create(): T;
+  /**
+   * Contains custom message options from the .proto source in JSON format.
+   */
+  readonly options: { [extensionName: string]: JsonValue };
 
 
-    /**
-     * Create a new message from partial data.
-     *
-     * Unknown fields are discarded.
-     *
-     * `PartialMessage<T>` is similar to `Partial<T>`,
-     * but it is recursive, and it keeps `oneof` groups
-     * intact.
-     */
-    create(value: PartialMessage<T>): T;
+  /**
+   * Create a new message with default values.
+   *
+   * For example, a protobuf `string name = 1;` has the default value `""`.
+   */
+  create (): T;
 
 
-    /**
-     * Create a new message from binary format.
-     */
-    fromBinary(data: Uint8Array, options?: Partial<BinaryReadOptions>): T;
+  /**
+   * Create a new message from partial data.
+   *
+   * Unknown fields are discarded.
+   *
+   * `PartialMessage<T>` is similar to `Partial<T>`,
+   * but it is recursive, and it keeps `oneof` groups
+   * intact.
+   */
+  create (value: PartialMessage<T>): T;
 
 
-    /**
-     * Write the message to binary format.
-     */
-    toBinary(message: T, options?: Partial<BinaryWriteOptions>): Uint8Array;
+  /**
+   * Create a new message from binary format.
+   */
+  fromBinary (data: Uint8Array, options?: Partial<BinaryReadOptions>): T;
 
 
-    /**
-     * Read a new message from a JSON value.
-     */
-    fromJson(json: JsonValue, options?: Partial<JsonReadOptions>): T;
-
-    /**
-     * Read a new message from a JSON string.
-     * This is equivalent to `T.fromJson(JSON.parse(json))`.
-     */
-    fromJsonString(json: string, options?: Partial<JsonReadOptions>): T;
+  /**
+   * Write the message to binary format.
+   */
+  toBinary (message: T, options?: Partial<BinaryWriteOptions>): Uint8Array;
 
 
-    /**
-     * Convert the message to canonical JSON value.
-     */
-    toJson(message: T, options?: Partial<JsonWriteOptions>): JsonValue;
+  /**
+   * Read a new message from a JSON value.
+   */
+  fromJson (json: JsonValue, options?: Partial<JsonReadOptions>): T;
 
-    /**
-     * Convert the message to canonical JSON string.
-     * This is equivalent to `JSON.stringify(T.toJson(t))`
-     */
-    toJsonString(message: T, options?: Partial<JsonWriteStringOptions>): string;
-
-
-    /**
-     * Clone the message.
-     *
-     * Unknown fields are discarded.
-     */
-    clone(message: T): T;
+  /**
+   * Read a new message from a JSON string.
+   * This is equivalent to `T.fromJson(JSON.parse(json))`.
+   */
+  fromJsonString (json: string, options?: Partial<JsonReadOptions>): T;
 
 
-    /**
-     * Copy partial data into the target message.
-     */
-    mergePartial(target: T, source: PartialMessage<T>): void;
+  /**
+   * Convert the message to canonical JSON value.
+   */
+  toJson (message: T, options?: Partial<JsonWriteOptions>): JsonValue;
+
+  /**
+   * Convert the message to canonical JSON string.
+   * This is equivalent to `JSON.stringify(T.toJson(t))`
+   */
+  toJsonString (message: T, options?: Partial<JsonWriteStringOptions>): string;
 
 
-    /**
-     * Determines whether two message of the same type have the same field values.
-     * Checks for deep equality, traversing repeated fields, oneof groups, maps
-     * and messages recursively.
-     * Will also return true if both messages are `undefined`.
-     */
-    equals(a: T | undefined, b: T | undefined): boolean;
+  /**
+   * Clone the message.
+   *
+   * Unknown fields are discarded.
+   */
+  clone (message: T): T;
 
 
-    /**
-     * Is the given value assignable to our message type
-     * and contains no [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks)?
-     */
-    is(arg: any, depth?: number): arg is T;
+  /**
+   * Copy partial data into the target message.
+   */
+  mergePartial (target: T, source: PartialMessage<T>): void;
 
 
-    /**
-     * Is the given value assignable to our message type,
-     * regardless of [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks)?
-     */
-    isAssignable(arg: any, depth?: number): arg is T;
+  /**
+   * Determines whether two message of the same type have the same field values.
+   * Checks for deep equality, traversing repeated fields, oneof groups, maps
+   * and messages recursively.
+   * Will also return true if both messages are `undefined`.
+   */
+  equals (a: T | undefined, b: T | undefined): boolean;
 
 
-    /**
-     * This is an internal method. If you just want to read a message from
-     * JSON, use `fromJson()` or `fromJsonString()`.
-     *
-     * Reads JSON value and merges the fields into the target
-     * according to protobuf rules. If the target is omitted,
-     * a new instance is created first.
-     */
-    internalJsonRead(json: JsonValue, options: JsonReadOptions, target?: T): T;
+  /**
+   * Is the given value assignable to our message type
+   * and contains no [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks)?
+   */
+  is (arg: any, depth?: number): arg is T;
 
 
-    /**
-     * This is an internal method. If you just want to write a message
-     * to JSON, use `toJson()` or `toJsonString().
-     *
-     * Writes JSON value and returns it.
-     */
-    internalJsonWrite(message: T, options: JsonWriteOptions): JsonValue;
+  /**
+   * Is the given value assignable to our message type,
+   * regardless of [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks)?
+   */
+  isAssignable (arg: any, depth?: number): arg is T;
 
 
-    /**
-     * This is an internal method. If you just want to write a message
-     * in binary format, use `toBinary()`.
-     *
-     * Serializes the message in binary format and appends it to the given
-     * writer. Returns passed writer.
-     */
-    internalBinaryWrite(message: T, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+  /**
+   * This is an internal method. If you just want to read a message from
+   * JSON, use `fromJson()` or `fromJsonString()`.
+   *
+   * Reads JSON value and merges the fields into the target
+   * according to protobuf rules. If the target is omitted,
+   * a new instance is created first.
+   */
+  internalJsonRead (json: JsonValue, options: JsonReadOptions, target?: T): T;
 
 
-    /**
-     * This is an internal method. If you just want to read a message from
-     * binary data, use `fromBinary()`.
-     *
-     * Reads data from binary format and merges the fields into
-     * the target according to protobuf rules. If the target is
-     * omitted, a new instance is created first.
-     */
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: T): T;
+  /**
+   * This is an internal method. If you just want to write a message
+   * to JSON, use `toJson()` or `toJsonString().
+   *
+   * Writes JSON value and returns it.
+   */
+  internalJsonWrite (message: T, options: JsonWriteOptions): JsonValue;
+
+
+  /**
+   * This is an internal method. If you just want to write a message
+   * in binary format, use `toBinary()`.
+   *
+   * Serializes the message in binary format and appends it to the given
+   * writer. Returns passed writer.
+   */
+  internalBinaryWrite (message: T, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+
+
+  /**
+   * This is an internal method. If you just want to read a message from
+   * binary data, use `fromBinary()`.
+   *
+   * Reads data from binary format and merges the fields into
+   * the target according to protobuf rules. If the target is
+   * omitted, a new instance is created first.
+   */
+  internalBinaryRead (reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: T): T;
 
 
 }

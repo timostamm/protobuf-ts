@@ -8,7 +8,7 @@ message EnumFieldMessage {
 
     repeated SimpleEnum repeated_enum_field = 2;
 
-    AliasEnum alias_enum_field = 3;
+    // AliasEnum alias_enum_field = 3;
 
     PrefixEnum prefix_enum_field = 4;
 
@@ -17,9 +17,7 @@ message EnumFieldMessage {
         YES = 1;
         NO = 2;
     }
-
 }
-
 
 enum SimpleEnum {
     // this is the default value
@@ -34,12 +32,12 @@ enum SimpleEnum {
 
 
 // Both B and C have the same numerical value.
-enum AliasEnum {
+/*enum AliasEnum {
     option allow_alias = true;
     A = 0;
     B = 1;
     C = 1;
-}
+}*/
 
 
 // The generated enum values should drop the "PREFIX_"

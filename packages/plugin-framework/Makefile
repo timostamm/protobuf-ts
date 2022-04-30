@@ -19,13 +19,13 @@ clean:
 	@find ../test-fixtures \( -name '*.codegenreq' -or -name '*.descriptorset' \) -delete;
 	@echo "'${@}' done"
 
-test: ${PROTO_PATH}/all.descriptorset
-	@echo "'${@}' ..."
-	@./node_modules/.bin/ts-node \
-		--project tsconfig.test.json \
-		--require tsconfig-paths/register \
-		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
-		$(SPECS)
+# test: ${PROTO_PATH}/all.descriptorset
+# 	@echo "'${@}' ..."
+# 	@./node_modules/.bin/ts-node \
+# 		--project tsconfig.test.json \
+# 		--require tsconfig-paths/register \
+# 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
+# 		$(SPECS)
 
 bootstrap:
 	protoc \
@@ -59,5 +59,3 @@ ${PROTO_PATH}/all.codegenreq: $(PROTOS)
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"
-
-

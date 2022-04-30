@@ -37,7 +37,7 @@ export type UnknownScalar =
 /**
  * A enum field of unknown type.
  */
-export type UnknownEnum = number;
+export type UnknownEnum = number | string;
 
 
 /**

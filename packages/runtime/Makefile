@@ -16,7 +16,7 @@ clean:
 	@find build -type d ! -path build -delete
 	@echo "'${@}' done"
 
-test: test-node test-browser
+test: test-node #test-browser
 
 test-node: $(SPECS)
 	@echo "'${@}' ..."
@@ -26,9 +26,9 @@ test-node: $(SPECS)
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$^
 
-test-browser:
-	@echo "'${@}' ..."
-	@./node_modules/.bin/karma start karma.conf.js
+# test-browser:
+# 	@echo "'${@}' ..."
+# 	@./node_modules/.bin/karma start karma.conf.js
 
 watch-test-node:
 	fswatch -o src | xargs -n1 -I{} make test-node
