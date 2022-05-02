@@ -34,9 +34,8 @@ export class ReflectionJsonWriter {
       // field is not part of a oneof, simply write as is
       if (!field.oneof) {
         let jsonValue = this.field(field, source[field.localName], options);
-        if (field.kind == 'enum')
-          if (jsonValue !== undefined)
-            json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
+        if (jsonValue !== undefined)
+          json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
         continue;
       }
       // field is part of a oneof

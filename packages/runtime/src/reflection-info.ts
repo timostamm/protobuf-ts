@@ -427,13 +427,14 @@ export enum RepeatType {
  * Turns PartialFieldInfo into FieldInfo.
  */
 export function normalizeFieldInfo (field: PartialFieldInfo): FieldInfo {
+  if (field.kind === 'enum') {
+    field = addEnumMappingToField(field)
+  }
   field.localName = field.localName ?? lowerCamelCase(field.name);
   field.jsonName = field.jsonName ?? lowerCamelCase(field.name);
   field.repeat = field.repeat ?? RepeatType.NO;
   field.opt = field.opt ?? (field.repeat ? false : field.oneof ? false : field.kind == "message");
-  if (field.kind === 'enum') {
-    field = addEnumMappingToField(field)
-  }
+
   return field as FieldInfo;
 }
 
@@ -442,7 +443,7 @@ function addEnumMappingToField (field: PartialFieldInfo): PartialFieldInfo {
   if (field.kind !== 'enum' || isEnumObject(field.T()[1])) {
     return field;
   }
-  // protobuf-ts/plugin uses some enums that don't generate enumInfo?
+  // protobuf-ts/plugin uses some enums that don't generate enumInfo.
   if (typeof field.T()[1] !== 'object') {
     return field;
   }
