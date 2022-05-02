@@ -636,7 +636,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                 [
                   field.kind == "enum" ?
                     this.readEnum(enumName, this.makeReaderCall("reader", rt.ScalarType.INT32)) :
-                    this.makeReaderCall("reader", rt.ScalarType.INT32)]
+                    this.makeReaderCall("reader", type, longType)]
               ))
             ),
             ts.createExpressionStatement(ts.createCall(
@@ -648,7 +648,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
               [
                 field.kind == "enum" ?
                   this.readEnum(enumName, this.makeReaderCall("reader", rt.ScalarType.INT32)) :
-                  this.makeReaderCall("reader", rt.ScalarType.INT32)
+                  this.makeReaderCall("reader", type, longType)
               ]
             ))
           ),
