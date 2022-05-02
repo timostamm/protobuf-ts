@@ -189,9 +189,11 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
       // get a default value for the scalar field using the MessageType
       let defaultValue = new rt.MessageType<rt.UnknownMessage>("$synthetic.InternalBinaryWrite", [field]).create()[field.localName];
       let defaultValueExpression = typescriptLiteralFromValue(defaultValue);
-      if (field.kind == 'enum') {
+      if (field.kind == 'enum' && defaultValue != undefined) {
         assert(typeof defaultValue == 'string')
-        defaultValueExpression = createEnumPropertyAccessExp(defaultValue, getTypeNameFromFullName(field.T()[0]))
+        const enumDescriptor = this.registry.resolveTypeName(field.T()[0])
+        const type = this.imports.type(source, enumDescriptor)
+        defaultValueExpression = createEnumPropertyAccessExp(defaultValue, type)
       }
       shouldWriteCondition = ts.createBinary(
         fieldPropertyAccess,
@@ -204,15 +206,9 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     // e.g. writer.tag(1, WireType.Varint).int32((SimpleEnum_TagAndValueMap[SimpleEnum[message.enumField]] as number))
     let enumWriteExp
     if (field.kind == "enum") {
-      const enumName = getTypeNameFromFullName(field.T()[0])
-      enumWriteExp = this.createEnumValueWriteExpression(enumName, fieldPropertyAccess)
-      /*const enumMapVariableName = `${enumName}_TagAndValueMap`
-      const enumSubElementAccess = ts.createElementAccess(
-        ts.createIdentifier(enumName),
-        fieldPropertyAccess
-      )
-      const enumMapElementAccess = ts.createElementAccess(ts.createIdentifier(enumMapVariableName), enumSubElementAccess)
-      enumWriteExp = ts.createAsExpression(enumMapElementAccess, ts.createTypeReferenceNode('number', undefined))*/
+      const enumDescriptor = this.registry.resolveTypeName(field.T()[0])
+      const type = this.imports.type(source, enumDescriptor)
+      enumWriteExp = this.createEnumValueWriteExpression(type, fieldPropertyAccess)
     }
 
     // if ( <shouldWriteCondition> )
@@ -241,7 +237,8 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     let type: rt.ScalarType = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
     let enumName: string = ''
     if (field.kind == "enum") {
-      enumName = getTypeNameFromFullName(field.T()[0])
+      const enumDescriptor = this.registry.resolveTypeName(field.T()[0])
+      enumName = this.imports.type(source, enumDescriptor)
     }
 
     if (field.repeat === rt.RepeatType.PACKED) {

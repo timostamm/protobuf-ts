@@ -100,16 +100,16 @@ export class EnumGenerator extends GeneratorBase {
         : "@generated synthetic value - protobuf-ts requires all enums to have a 0 value";
       builder.add(ev.name, ev.number, comments);
     }
-
+    const enumName = this.imports.type(source, descriptor)
     let statement = builder.build(
-      this.imports.type(source, descriptor),
+      enumName,
       [ts.createModifier(ts.SyntaxKind.ExportKeyword)]
     );
     const enumMapDefinition = ts.createVariableStatement(
       undefined,
       ts.createVariableDeclarationList(
         [ts.createVariableDeclaration(
-          ts.createIdentifier(`${descriptor.name}_${this.enumMapTypeName}`),
+          ts.createIdentifier(`${enumName}_${this.enumMapTypeName}`),
           ts.createTypeReferenceNode(
             ts.createIdentifier(this.enumMapTypeName),
             undefined
