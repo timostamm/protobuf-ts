@@ -204,6 +204,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
 
     // e.g. writer.tag(1, WireType.Varint).int32((SimpleEnum_TagAndValueMap[SimpleEnum[message.enumField]] as number))
+    //                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     let enumWriteExp
     if (field.kind == "enum") {
       const enumDescriptor = this.registry.resolveTypeName(field.T()[0])
@@ -595,9 +596,16 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
       );
 
     } else {
-
       // handle enum as INT32
       let mapEntryValueScalarType: rt.ScalarType = field.V.kind == "enum" ? rt.ScalarType.INT32 : field.V.T;
+
+      let enumWriteExp
+      if (field.V.kind == "enum") {
+        const enumDescriptor = this.registry.resolveTypeName(field.V.T()[0])
+        const type = this.imports.type(source, enumDescriptor)
+        enumWriteExp = this.createEnumValueWriteExpression(type, mapEntryValueRead)
+      }
+      // writer.tag(1, WireType.Varint).int32((SimpleEnum_TagAndValueMap[SimpleEnum[message.enumField]] as number));
 
       // *rolleyes*
       forBody = ts.createExpressionStatement(
@@ -630,7 +638,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             ),
             // .string(message.strStrField[k]) // MapEntry value value
             mapEntryValueScalarType,
-            mapEntryValueRead
+            field.V.kind == "enum" ? enumWriteExp : mapEntryValueRead
           ),
           'join'
         )

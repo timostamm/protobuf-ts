@@ -10,28 +10,27 @@ describe('protobuftsPlugin', function () {
   let request = getFixtureCodeGeneratorRequest({
     parameter: 'long_type_string',
     fileToGenerate: [
-      // 'msg-scalar.proto',
-      // 'msg-oneofs.proto',
-      // 'msg-annotated.proto',
+      'msg-scalar.proto',
+      'msg-oneofs.proto',
+      'msg-annotated.proto',
       'msg-enum.proto',
-      'msg-longs.proto'
-      //'msg-proto3-optionals.proto'
-      // NB: Currently enums in maps are broken.
-      // 'msg-maps.proto',
+      'msg-longs.proto',
+      'msg-proto3-optionals.proto',
+      'msg-maps.proto',
       // 'google/protobuf/descriptor.proto'
     ],
     includeFiles: [
-      // 'msg-annotated.proto',
+      'msg-annotated.proto',
       'msg-enum.proto',
-      'msg-longs.proto'
+      'msg-longs.proto',
       // 'google/protobuf/descriptor.proto',
       // 'google/protobuf/unittest_enormous_descriptor.proto',
       // 'google/protobuf/unittest_proto3_lite.proto',
       // 'google/protobuf/unittest_import.proto',
       // 'google/protobuf/unittest_import_public.proto',
       // 'google/protobuf/wrappers.proto',
-      // 'msg-scalar.proto',
-      // 'msg-proto3-optionals.proto',
+      'msg-scalar.proto',
+      'msg-proto3-optionals.proto',
       // 'google/protobuf/any.proto',
       // 'google/protobuf/wrappers.proto',
       // 'google/protobuf/struct.proto',
@@ -39,8 +38,8 @@ describe('protobuftsPlugin', function () {
       // 'google/protobuf/duration.proto',
       //     'service-twirp-example.proto',
       //     'service-example.proto',
-      // 'msg-oneofs.proto',
-      // 'msg-maps.proto',
+      'msg-oneofs.proto',
+      'msg-maps.proto',
       // 'google/protobuf/unittest_lazy_dependencies_enum.proto',
       //  'service-simple.proto',
       //  'service-example.proto',
@@ -58,7 +57,7 @@ describe('protobuftsPlugin', function () {
       const lines = content.split('\n')
       // console.log(lines)
       for (let idx = 0; idx < lines.length; idx++) {
-        // console.log(idx + ' ');
+        console.log(idx + ' ');
         console.log(lines[idx])
       }
       // console.log(content);

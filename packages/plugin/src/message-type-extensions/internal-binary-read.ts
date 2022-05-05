@@ -499,10 +499,6 @@ export class InternalBinaryRead implements CustomMethodGenerator {
   }
 
   readEnum (enumTypeName: string, readerCall: ts.Expression) {
-    // $EnumName_TagAndValue[reader.int32().toString()] as $EnumName;
-    // const enumFullNamePieces = enumFullName.split('.')
-    //  const enumName = enumFullNamePieces[enumFullNamePieces.length - 1]
-
     const enumMapVariableName = `${enumTypeName}_TagAndValueMap`
     const exp = ts.createAsExpression(
       ts.createElementAccess(
@@ -744,18 +740,24 @@ export class InternalBinaryRead implements CustomMethodGenerator {
       readKeyExpression = ts.createCall(ts.createPropertyAccess(readKeyExpression, ts.createIdentifier("toString")), undefined, []);
     }
 
+    let enumName = ""
+    if (field.V.kind == "enum") {
+      const enumDescriptor = this.registry.resolveTypeName(field.V.T()[0])
+      enumName = this.imports.type(source, enumDescriptor)
+    }
+
     // reader.bytes()
     let readValueExpression: ts.Expression;
     switch (field.V.kind) {
-      case "scalar":
+      case "scalar": {
         readValueExpression = this.makeReaderCall("reader", field.V.T, field.V.L);
         break;
-
-      case "enum":
-        readValueExpression = this.makeReaderCall("reader", rt.ScalarType.INT32);
+      }
+      case "enum": {
+        readValueExpression = this.readEnum(enumName, this.makeReaderCall("reader", rt.ScalarType.INT32));
         break;
-
-      case "message":
+      }
+      case "message": {
         let valueMessageDescriptor = this.registry.resolveTypeName(field.V.T().typeName);
         assert(DescriptorProto.is(valueMessageDescriptor));
         readValueExpression = ts.createCall(
@@ -768,6 +770,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
           ]
         );
         break;
+      }
     }
 
 
@@ -958,8 +961,18 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     switch (V.kind) {
       case "scalar":
         return typescriptLiteralFromValue(this.createScalarDefaultValue(V.T, V.L));
-      case "enum":
-        return typescriptLiteralFromValue(this.createScalarDefaultValue(rt.ScalarType.INT32));
+      case "enum": {
+        const enumDescriptor = this.registry.resolveTypeName(V.T()[0])
+        const enumName = this.imports.type(source, enumDescriptor)
+        const enumMapVariableName = `${enumName}_TagAndValueMap`;
+        return ts.createAsExpression(
+          ts.createElementAccess(
+            ts.createIdentifier(enumMapVariableName),
+            ts.createNumericLiteral("0")
+          ),
+          ts.createTypeReferenceNode(enumName, undefined)
+        )
+      }
       case "message":
         let messageDescriptor = this.registry.resolveTypeName(V.T().typeName);
         assert(DescriptorProto.is(messageDescriptor));
