@@ -75,65 +75,65 @@ describe('Generated code for long type', function () {
     });*/
   });
 
-  // describe('Default to bigint', () => {
-  //   let file: string;
+  describe('Default to bigint', () => {
+    let file: string;
 
-  //   beforeAll(() => {
-  //     file = generateTypescript('long_type_bigint').getContent();
-  //   });
+    beforeAll(() => {
+      file = generateTypescript('long_type_bigint').getContent();
+    });
 
-  //   it('should set the default type to bigint', () => {
-  //     expectContainAll(file, [
-  //       // Message
-  //       '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
-  //       'sfixed64FieldMin: bigint;',
-  //       // MessageType
-  //       'case /* sfixed64 sfixed64_field_min */ 5:',
-  //       '{ no: 5, name: "sfixed64_field_min", kind: "scalar", T: 16 /*ScalarType.SFIXED64*/, L: 0 /*LongType.BIGINT*/ },',
-  //       // BinaryReader
-  //       'message.sfixed64FieldMin = reader.sfixed64().toBigInt();',
-  //       // BinaryWriter
-  //       '/* sfixed64 sfixed64_field_min = 5; */',
-  //       'if (message.sfixed64FieldMin !== 0n)',
-  //     ]);
-  //   });
+    it('should set the default type to bigint', () => {
+      expectContainAll(file, [
+        // Message
+        '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
+        'sfixed64FieldMin: bigint;',
+        // MessageType
+        'case /* sfixed64 sfixed64_field_min */ 5:',
+        '{ no: 5, name: "sfixed64_field_min", kind: "scalar", T: 16 /*ScalarType.SFIXED64*/, L: 0 /*LongType.BIGINT*/ },',
+        // BinaryReader
+        'message.sfixed64FieldMin = reader.sfixed64().toBigInt();',
+        // BinaryWriter
+        '/* sfixed64 sfixed64_field_min = 5; */',
+        'if (message.sfixed64FieldMin !== 0n)',
+      ]);
+    });
 
-  //   it('should support explicit types', () => {
-  //     expectContainAll(file, stringSnippets);
-  //     expectContainAll(file, bigintSnippets);
-  //     expectContainAll(file, numberSnippets);
-  //   });
-  // });
+    /*it('should support explicit types', () => {
+      expectContainAll(file, stringSnippets);
+      expectContainAll(file, bigintSnippets);
+      expectContainAll(file, numberSnippets);
+    });*/
+  });
 
-  // describe('Default to number', () => {
-  //   let file: string;
+  describe('Default to number', () => {
+    let file: string;
 
-  //   beforeAll(() => {
-  //     file = generateTypescript('long_type_number').getContent();
-  //   });
+    beforeAll(() => {
+      file = generateTypescript('long_type_number').getContent();
+    });
 
-  //   it('should set the default type to number', () => {
-  //     expectContainAll(file, [
-  //       // Message
-  //       '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
-  //       'sfixed64FieldMin: number;',
-  //       // MessageType
-  //       'case /* sfixed64 sfixed64_field_min */ 5:',
-  //       '{ no: 5, name: "sfixed64_field_min", kind: "scalar", T: 16 /*ScalarType.SFIXED64*/, L: 2 /*LongType.NUMBER*/ },',
-  //       // BinaryReader
-  //       'message.sfixed64FieldMin = reader.sfixed64().toNumber();',
-  //       // BinaryWriter
-  //       '/* sfixed64 sfixed64_field_min = 5; */',
-  //       'if (message.sfixed64FieldMin !== 0)',
-  //     ]);
-  //   });
+    it('should set the default type to number', () => {
+      expectContainAll(file, [
+        // Message
+        '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
+        'sfixed64FieldMin: number;',
+        // MessageType
+        'case /* sfixed64 sfixed64_field_min */ 5:',
+        '{ no: 5, name: "sfixed64_field_min", kind: "scalar", T: 16 /*ScalarType.SFIXED64*/, L: 2 /*LongType.NUMBER*/ },',
+        // BinaryReader
+        'message.sfixed64FieldMin = reader.sfixed64().toNumber();',
+        // BinaryWriter
+        '/* sfixed64 sfixed64_field_min = 5; */',
+        'if (message.sfixed64FieldMin !== 0)',
+      ]);
+    });
 
-  //   it('should support explicit types', () => {
-  //     expectContainAll(file, stringSnippets);
-  //     expectContainAll(file, bigintSnippets);
-  //     expectContainAll(file, numberSnippets);
-  //   });
-  // });
+    /*it('should support explicit types', () => {
+      expectContainAll(file, stringSnippets);
+      expectContainAll(file, bigintSnippets);
+      expectContainAll(file, numberSnippets);
+    });*/
+  });
 });
 
 // Generate typescript code for msg-longs.proto. 

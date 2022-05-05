@@ -13,7 +13,8 @@ describe('protobuftsPlugin', function () {
       // 'msg-scalar.proto',
       // 'msg-oneofs.proto',
       // 'msg-annotated.proto',
-      'msg-enum.proto'
+      'msg-enum.proto',
+      'msg-longs.proto'
       //'msg-proto3-optionals.proto'
       // NB: Currently enums in maps are broken.
       // 'msg-maps.proto',
@@ -21,7 +22,8 @@ describe('protobuftsPlugin', function () {
     ],
     includeFiles: [
       // 'msg-annotated.proto',
-      'msg-enum.proto'
+      'msg-enum.proto',
+      'msg-longs.proto'
       // 'google/protobuf/descriptor.proto',
       // 'google/protobuf/unittest_enormous_descriptor.proto',
       // 'google/protobuf/unittest_proto3_lite.proto',
@@ -130,7 +132,7 @@ describe('protobuftsPlugin', function () {
     it(`no global typescript errors`, function () {
       let genNames = generatedFiles.map(f => f.getFilename());
       let globals = diagnostics.filter(d => !genNames.includes(d.file?.fileName ?? ''))
-      // if (globals.length > 0) fail(ts.formatDiagnostics(globals, host));
+      if (globals.length > 0) fail(ts.formatDiagnostics(globals, host));
     })
 
   });
