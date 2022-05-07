@@ -100,7 +100,7 @@ export function setUnknownOneofValue(oneof: UnknownOneofGroup, kind: string, val
 export function setUnknownOneofValue(oneof: UnknownOneofGroup, kind: undefined, value?: undefined): void;
 export function setUnknownOneofValue(oneof: UnknownOneofGroup, kind?: string, value?: any): void {
     if (oneof.kind !== undefined) {
-        delete oneof.value;
+        delete (oneof as any).value;
     }
     oneof.kind = kind;
     if (value !== undefined && kind !== undefined) {
@@ -121,7 +121,7 @@ export function setUnknownOneofValue(oneof: UnknownOneofGroup, kind?: string, va
  */
 export function clearOneofValue<T extends UnknownOneofGroup>(oneof: T) {
     if (oneof.kind !== undefined) {
-        delete oneof.value;
+        delete (oneof as any).value;
     }
     oneof.kind = undefined;
 }

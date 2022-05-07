@@ -189,7 +189,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
      *
      *   result: { kind: "int"; value: number; }
      *         | { kind: "error"; value: string; }
-     *         | { kind: undefined; };
+     *         | { kind: undefined; value?: never };
      */
     protected createOneofADTPropertySignature(source:TypescriptFile, oneofDescriptor: OneofDescriptorProto): ts.PropertySignature {
         const
@@ -223,7 +223,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
 
         }
 
-        // case for no selection: { kind: undefined; }
+        // case for no selection: { kind: undefined; value?: never }
         oneofCases.push(
             ts.createTypeLiteralNode([
                 ts.createPropertySignature(
@@ -231,6 +231,13 @@ export class MessageInterfaceGenerator extends GeneratorBase {
                     ts.createIdentifier(this.options.oneofKindDiscriminator),
                     undefined,
                     ts.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
+                    undefined
+                ),
+                ts.createPropertySignature(
+                    undefined,
+                    ts.createIdentifier("value"),
+                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.createKeywordTypeNode(ts.SyntaxKind.NeverKeyword),
                     undefined
                 )
             ])

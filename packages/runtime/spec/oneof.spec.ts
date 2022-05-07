@@ -59,11 +59,10 @@ type ExampleOneof =
     | { kind: "a"; value: string; }
     | { kind: "b"; value: number; }
     | { kind: "c"; value: boolean; }
-    | { kind: undefined; };
+    | { kind: undefined; value?: never };
 
 type EmptyOneof =
-    | { kind: undefined; };
-
+    | { kind: undefined; value?: never };
 
 describe('clearOneofValue()', function () {
     let exampleOneof: ExampleOneof;

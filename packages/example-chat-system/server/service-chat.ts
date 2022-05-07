@@ -49,6 +49,7 @@ export interface ChatEvent {
         value: string;
     } | {
         kind: undefined;
+        value?: never;
     };
 }
 /**
