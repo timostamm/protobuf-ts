@@ -48,3 +48,11 @@ enum PrefixEnum {
     PREFIX_ENUM_YES = 1;
     PREFIX_ENUM_NO = 2;
 }
+
+message ChipperError {
+  SimpleEnum enum = 1;
+  string serviceCode = 2;
+  string message = 3;
+  bool isUserVisible = 4;
+  string traceId = 5;
+}

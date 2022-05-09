@@ -156,6 +156,8 @@ export class FieldInfoGenerator {
         ts.createStringLiteral(pbTypeName),
         ts.createIdentifier(generatedEnum),
       ];
+    // Add import statement for enum's TagAndValue map object if necessary.
+    this.imports.type(source, descriptor, 'object')
     if (sharedPrefix) {
       enumInfoLiteral.push(ts.createStringLiteral(sharedPrefix));
     }

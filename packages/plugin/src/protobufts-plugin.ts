@@ -282,12 +282,16 @@ export class ProtobuftsPlugin extends PluginBase {
         if (registry.isSyntheticElement(descriptor)) return;
 
         // register all symbols, regardless whether they are going to be used - we want stable behaviour
-        symbols.register(createLocalTypeName(descriptor, registry), descriptor, outMain);
+        const localName = createLocalTypeName(descriptor, registry)
+        symbols.register(localName, descriptor, outMain);
         if (ServiceDescriptorProto.is(descriptor)) {
           genClientGeneric.registerSymbols(outClientCall, descriptor);
           genClientGrpc.registerSymbols(outClientGrpc, descriptor);
           genServerGeneric.registerSymbols(outServerGeneric, descriptor);
           genServerGrpc.registerSymbols(outServerGrpc, descriptor);
+        }
+        if (EnumDescriptorProto.is(descriptor)) {
+          symbols.register(localName + '_TagAndValueMap', descriptor, outMain, 'object')
         }
       });
 

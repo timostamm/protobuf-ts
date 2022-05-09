@@ -3,6 +3,7 @@ package spec;
 
 
 import "google/protobuf/descriptor.proto";
+import "msg-enum.proto";
 
 extend google.protobuf.FieldOptions {
 
@@ -91,5 +92,8 @@ message AnnotatedMessage {
     // annotated with a field option defined right in the message
     int32 ann_local = 10 [(spec.AnnotatedMessage.local_opt) = true];
 
-}
+    spec.SimpleEnum status = 11;
+    // spec.EnumFieldMessage msg = 12;
+    // repeated spec.ChipperError errors = 12;
 
+}

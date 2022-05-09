@@ -224,13 +224,14 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         }
         case "enum": {
           const enumDescriptor = this.registry.resolveTypeName(fieldInfo.T()[0])
-          const type = this.imports.type(source, enumDescriptor)
+          const enumName = this.imports.type(source, enumDescriptor)
+          const enumMapName = this.imports.type(source, enumDescriptor, 'object')
           if (fieldInfo.repeat) {
-            statements = this.scalarRepeated(source, fieldInfo, fieldPropertyAccess, type);
+            statements = this.scalarRepeated(source, fieldInfo, fieldPropertyAccess, enumName, enumMapName);
           } else if (fieldInfo.oneof !== undefined) {
             statements = this.scalarOneof(fieldInfo);
           } else {
-            statements = this.enum(fieldInfo, fieldPropertyAccess, type);
+            statements = this.enum(fieldInfo, fieldPropertyAccess, enumName, enumMapName);
           }
           break;
         }
@@ -498,11 +499,10 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     ))];
   }
 
-  readEnum (enumTypeName: string, readerCall: ts.Expression) {
-    const enumMapVariableName = `${enumTypeName}_TagAndValueMap`
+  readEnum (enumTypeName: string, enumMapName: string, readerCall: ts.Expression) {
     const exp = ts.createAsExpression(
       ts.createElementAccess(
-        ts.createIdentifier(enumMapVariableName),
+        ts.createIdentifier(enumMapName),
         ts.createCall(
           ts.createPropertyAccess(readerCall, ts.createIdentifier('toString')),
           undefined,
@@ -525,12 +525,12 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     ))];
   }
 
-  enum (field: rt.FieldInfo & { kind: "enum"; oneof: undefined; repeat: undefined | rt.RepeatType.NO }, fieldPropertyAccess: ts.PropertyAccessExpression, enumTypeName: string): ts.Statement[] {
+  enum (field: rt.FieldInfo & { kind: "enum"; oneof: undefined; repeat: undefined | rt.RepeatType.NO }, fieldPropertyAccess: ts.PropertyAccessExpression, enumTypeName: string, enumMapName: string): ts.Statement[] {
     assert(field.kind == "enum")
     let type = rt.ScalarType.INT32;
     let longType = undefined;
     let readerCall = this.makeReaderCall("reader", type, longType);
-    let rightExp = this.readEnum(enumTypeName, readerCall)
+    let rightExp = this.readEnum(enumTypeName, enumMapName, readerCall)
     return [ts.createExpressionStatement(ts.createBinary(
       fieldPropertyAccess,
       ts.createToken(ts.SyntaxKind.EqualsToken),
@@ -567,7 +567,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
   //         message.doubleField.push(reader.double());
   // else
   //     message.doubleField.push(reader.double());
-  scalarRepeated (source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED }, fieldPropertyAccess: ts.PropertyAccessExpression, enumName: string = ''): ts.Statement[] {
+  scalarRepeated (source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED }, fieldPropertyAccess: ts.PropertyAccessExpression, enumName: string = '', enumMapName: string = ''): ts.Statement[] {
     let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
     let longType = field.kind == "enum" ? undefined : field.L;
 
@@ -631,7 +631,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                 undefined,
                 [
                   field.kind == "enum" ?
-                    this.readEnum(enumName, this.makeReaderCall("reader", rt.ScalarType.INT32)) :
+                    this.readEnum(enumName, enumMapName, this.makeReaderCall("reader", rt.ScalarType.INT32)) :
                     this.makeReaderCall("reader", type, longType)]
               ))
             ),
@@ -643,7 +643,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
               undefined,
               [
                 field.kind == "enum" ?
-                  this.readEnum(enumName, this.makeReaderCall("reader", rt.ScalarType.INT32)) :
+                  this.readEnum(enumName, enumMapName, this.makeReaderCall("reader", rt.ScalarType.INT32)) :
                   this.makeReaderCall("reader", type, longType)
               ]
             ))
@@ -741,9 +741,11 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     }
 
     let enumName = ""
+    let enumMapName = ""
     if (field.V.kind == "enum") {
       const enumDescriptor = this.registry.resolveTypeName(field.V.T()[0])
       enumName = this.imports.type(source, enumDescriptor)
+      enumMapName = this.imports.type(source, enumDescriptor, 'object')
     }
 
     // reader.bytes()
@@ -754,7 +756,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         break;
       }
       case "enum": {
-        readValueExpression = this.readEnum(enumName, this.makeReaderCall("reader", rt.ScalarType.INT32));
+        readValueExpression = this.readEnum(enumName, enumMapName, this.makeReaderCall("reader", rt.ScalarType.INT32));
         break;
       }
       case "message": {
@@ -964,10 +966,10 @@ export class InternalBinaryRead implements CustomMethodGenerator {
       case "enum": {
         const enumDescriptor = this.registry.resolveTypeName(V.T()[0])
         const enumName = this.imports.type(source, enumDescriptor)
-        const enumMapVariableName = `${enumName}_TagAndValueMap`;
+        const enumMapName = this.imports.type(source, enumDescriptor, 'object');
         return ts.createAsExpression(
           ts.createElementAccess(
-            ts.createIdentifier(enumMapVariableName),
+            ts.createIdentifier(enumMapName),
             ts.createNumericLiteral("0")
           ),
           ts.createTypeReferenceNode(enumName, undefined)

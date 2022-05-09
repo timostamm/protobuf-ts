@@ -208,8 +208,9 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     let enumWriteExp
     if (field.kind == "enum") {
       const enumDescriptor = this.registry.resolveTypeName(field.T()[0])
-      const type = this.imports.type(source, enumDescriptor)
-      enumWriteExp = this.createEnumValueWriteExpression(type, fieldPropertyAccess)
+      const enumName = this.imports.type(source, enumDescriptor)
+      const enumMap = this.imports.type(source, enumDescriptor, 'object')
+      enumWriteExp = this.createEnumValueWriteExpression(enumName, enumMap, fieldPropertyAccess)
     }
 
     // if ( <shouldWriteCondition> )
@@ -237,9 +238,11 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     let statement;
     let type: rt.ScalarType = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
     let enumName: string = ''
+    let enumMap: string = ''
     if (field.kind == "enum") {
       const enumDescriptor = this.registry.resolveTypeName(field.T()[0])
       enumName = this.imports.type(source, enumDescriptor)
+      enumMap = this.imports.type(source, enumDescriptor, 'object')
     }
 
     if (field.repeat === rt.RepeatType.PACKED) {
@@ -271,7 +274,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                 'writer', type,
                 field.kind == "enum" ?
                   this.createEnumValueWriteExpression(
-                    enumName,
+                    enumName, enumMap,
                     ts.createElementAccess(fieldPropertyAccess, ts.createIdentifier("i")
                     )
                   ) :
@@ -602,8 +605,9 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
       let enumWriteExp
       if (field.V.kind == "enum") {
         const enumDescriptor = this.registry.resolveTypeName(field.V.T()[0])
-        const type = this.imports.type(source, enumDescriptor)
-        enumWriteExp = this.createEnumValueWriteExpression(type, mapEntryValueRead)
+        const enumName = this.imports.type(source, enumDescriptor)
+        const enumMap = this.imports.type(source, enumDescriptor, 'object')
+        enumWriteExp = this.createEnumValueWriteExpression(enumName, enumMap, mapEntryValueRead)
       }
       // writer.tag(1, WireType.Varint).int32((SimpleEnum_TagAndValueMap[SimpleEnum[message.enumField]] as number));
 
@@ -739,13 +743,12 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     return wireType;
   }
 
-  protected createEnumValueWriteExpression (enumName: string, fieldPropertyAccess: ts.Expression) {
-    const enumMapVariableName = `${enumName}_TagAndValueMap`
+  protected createEnumValueWriteExpression (enumName: string, enumMapName: string, fieldPropertyAccess: ts.Expression) {
     const enumSubElementAccess = ts.createElementAccess(
       ts.createIdentifier(enumName),
       fieldPropertyAccess
     )
-    const enumMapElementAccess = ts.createElementAccess(ts.createIdentifier(enumMapVariableName), enumSubElementAccess)
+    const enumMapElementAccess = ts.createElementAccess(ts.createIdentifier(enumMapName), enumSubElementAccess)
     return ts.createAsExpression(enumMapElementAccess, ts.createTypeReferenceNode('number', undefined))
   }
 }

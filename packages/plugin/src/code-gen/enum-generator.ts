@@ -28,7 +28,8 @@ export class EnumGenerator extends GeneratorBase {
   generateEnumMapTypeDeclaration (source: TypescriptFile) {
     // Add enum map declaration.
     const enumMapTypeDecl = ts.createTypeAliasDeclaration(
-      undefined, undefined,
+      undefined,
+      [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
       ts.createIdentifier(this.enumMapTypeName), undefined,
       ts.createTypeLiteralNode([
         ts.createIndexSignature(
@@ -101,15 +102,16 @@ export class EnumGenerator extends GeneratorBase {
       builder.add(ev.name, ev.number, comments);
     }
     const enumName = this.imports.type(source, descriptor)
+    const enumMapName = this.imports.type(source, descriptor, 'object')
     let statement = builder.build(
       enumName,
       [ts.createModifier(ts.SyntaxKind.ExportKeyword)]
     );
     const enumMapDefinition = ts.createVariableStatement(
-      undefined,
+      [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
       ts.createVariableDeclarationList(
         [ts.createVariableDeclaration(
-          ts.createIdentifier(`${enumName}_${this.enumMapTypeName}`),
+          ts.createIdentifier(`${enumMapName}`),
           ts.createTypeReferenceNode(
             ts.createIdentifier(this.enumMapTypeName),
             undefined
