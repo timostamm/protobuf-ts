@@ -53,7 +53,7 @@ async function main() {
         args.push("--proto_path", includePath);
     }
 
-    // search for @protobuf-ts/plugin in node_modules and add --proto_path argument
+    // search for @chippercash/protobuf-plugin in node_modules and add --proto_path argument
     let protobufTs = findProtobufTs(process.cwd());
     if (protobufTs) {
         args.push("--proto_path", protobufTs);
@@ -71,7 +71,7 @@ async function main() {
     });
 
     if (child.error) {
-        throw new Error("@protobuf-ts/protoc was unable to spawn protoc. " + child.error);
+        throw new Error("@chippercash/protobuf-protoc was unable to spawn protoc. " + child.error);
     }
     process.exit(child.status);
 }
@@ -84,7 +84,7 @@ async function ensureInstalled(version) {
         try {
             latestLocation = await httpGetRedirect("https://github.com/protocolbuffers/protobuf/releases/latest");
         } catch (e) {
-            throw new Error(`@protobuf-ts/protoc failed to retrieve latest protoc version number: ${e}`);
+            throw new Error(`@chippercash/protobuf-protoc failed to retrieve latest protoc version number: ${e}`);
         }
         version = latestLocation.split("/v").pop();
     }
@@ -107,7 +107,7 @@ async function ensureInstalled(version) {
     try {
         archive = await httpDownload(`https://github.com/protocolbuffers/protobuf/releases/download/v${version}/${releaseName}.zip`);
     } catch (e) {
-        throw new Error(`@protobuf-ts/protoc failed to download protoc v${version}. \nDid you misspell the version number? The version number must look like "3.0.12", without a leading "v".\n${e}`);
+        throw new Error(`@chippercash/protobuf-protoc failed to download protoc v${version}. \nDid you misspell the version number? The version number must look like "3.0.12", without a leading "v".\n${e}`);
     }
 
     // unzip the archive
@@ -121,17 +121,16 @@ async function ensureInstalled(version) {
             });
         });
     } catch (e) {
-        throw new Error(`@protobuf-ts/protoc failed unzip the downloaded protoc release v${version}: ${e}`);
+        throw new Error(`@chippercash/protobuf-protoc failed unzip the downloaded protoc release v${version}: ${e}`);
     }
 
     // sanity check
     let installed = listInstalled().find(i => i.name === releaseName);
     if (!installed) {
-        throw new Error(`@protobuf-ts/protoc failed to install protoc v${version}.`);
+        throw new Error(`@chippercash/protobuf-protoc failed to install protoc v${version}.`);
     }
 
     // finished
-    console.info(`@protobuf-ts/protoc installed protoc v${installed.version}.`);
+    console.info(`@chippercash/protobuf-protoc installed protoc v${installed.version}.`);
     return installed;
 }
-

@@ -1,5 +1,5 @@
 import {RpcError, RpcMetadata, RpcStatus, TestTransport} from "../src";
-import {MessageType, ScalarType} from "@protobuf-ts/runtime";
+import {MessageType, ScalarType} from "@chippercash/protobuf-runtime";
 import {normalizeMethodInfo} from "../src/reflection-info";
 
 

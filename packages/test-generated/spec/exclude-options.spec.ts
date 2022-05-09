@@ -1,6 +1,6 @@
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 import {MessageWithExcludedOptions} from "../ts-out/exclude-options";
-import type {RpcTransport} from "@protobuf-ts/runtime-rpc";
+import type {RpcTransport} from "@chippercash/protobuf-runtime-rpc";
 import {ServiceWithExcludedOptionsClient} from "../ts-out/exclude-options.client";
 
 
@@ -64,5 +64,3 @@ describe('spec.ServiceWithExcludedOptions', function () {
     });
 
 });
-
-

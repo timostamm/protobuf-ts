@@ -1,6 +1,6 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
 import {ExampleRequest, FailRequest} from "./service-example";
-import {GrpcTransport} from "@protobuf-ts/grpc-transport";
+import {GrpcTransport} from "@chippercash/protobuf-grpc-transport";
 import {ExampleServiceClient, IExampleServiceClient} from "./service-example.client";
 
 
@@ -163,4 +163,3 @@ async function callBidi(client: IExampleServiceClient) {
 
 
 main().catch(e => console.error(e)).finally(() => process.exit());
-

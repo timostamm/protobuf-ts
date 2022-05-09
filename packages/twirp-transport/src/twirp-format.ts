@@ -1,5 +1,5 @@
-import {isJsonObject, JsonValue} from "@protobuf-ts/runtime";
-import {RpcError, RpcMetadata} from "@protobuf-ts/runtime-rpc";
+import {isJsonObject, JsonValue} from "@chippercash/protobuf-runtime";
+import {RpcError, RpcMetadata} from "@chippercash/protobuf-runtime-rpc";
 import {TwirpErrorCode} from "./twitch-twirp-error-code";
 
 /**
@@ -60,5 +60,3 @@ export function parseMetadataFromResponseHeaders(headers: Headers): RpcMetadata 
     });
     return meta;
 }
-
-

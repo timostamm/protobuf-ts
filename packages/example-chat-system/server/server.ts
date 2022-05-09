@@ -1,6 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
-import {RpcError, RpcInputStream, ServerCallContext} from "@protobuf-ts/runtime-rpc";
-import {adaptService} from "@protobuf-ts/grpc-backend";
+import {RpcError, RpcInputStream, ServerCallContext} from "@chippercash/protobuf-runtime-rpc";
+import {adaptService} from "@chippercash/protobuf-grpc-backend";
 import {IChatService} from "./service-chat.server";
 import {ChatEvent, ChatService as ChatServiceType, JoinRequest, PostRequest, PostResponse} from "./service-chat";
 

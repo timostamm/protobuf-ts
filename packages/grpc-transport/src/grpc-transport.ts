@@ -14,10 +14,10 @@ import {
     RpcTransport,
     ServerStreamingCall,
     UnaryCall
-} from "@protobuf-ts/runtime-rpc";
+} from "@chippercash/protobuf-runtime-rpc";
 import {GrpcCallOptions, GrpcOptions} from "./grpc-options";
 import {CallOptions, Client, ClientWritableStream, Metadata, status as GrpcStatus} from "@grpc/grpc-js";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 import {metadataFromGrpc, isServiceError, metadataToGrpc} from "./util";
 
 

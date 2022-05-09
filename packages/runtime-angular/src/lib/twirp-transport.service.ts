@@ -12,10 +12,10 @@ import {
   RpcTransport,
   ServerStreamingCall,
   UnaryCall
-} from "@protobuf-ts/runtime-rpc";
-import {isJsonObject, JsonValue, lowerCamelCase, utf8read} from "@protobuf-ts/runtime";
+} from "@chippercash/protobuf-runtime-rpc";
+import {isJsonObject, JsonValue, lowerCamelCase, utf8read} from "@chippercash/protobuf-runtime";
 import {fromEvent, NEVER, of} from "rxjs";
-import {TwirpErrorCode, TwirpOptions} from "@protobuf-ts/twirp-transport";
+import {TwirpErrorCode, TwirpOptions} from "@chippercash/protobuf-twirp-transport";
 import {Inject, Injectable} from "@angular/core";
 import {TWIRP_TRANSPORT_OPTIONS} from "./twirp-transport-options";
 import {takeUntil} from "rxjs/operators";
@@ -265,4 +265,3 @@ function parseMetadataFromResponseHeaders(headers: HttpHeaders): RpcMetadata {
   }
   return meta;
 }
-

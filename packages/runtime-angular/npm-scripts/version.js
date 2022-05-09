@@ -41,7 +41,7 @@ function updatePeerDeps(pkg, version) {
     return;
   }
   for (let key of Object.keys(pkg.peerDependencies)) {
-    if (!key.startsWith("@protobuf-ts/")) {
+    if (!key.startsWith("@chippercash/protobuf-")) {
       continue;
     }
     pkg.peerDependencies[key] = version;

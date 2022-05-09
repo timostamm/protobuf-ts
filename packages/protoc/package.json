@@ -1,5 +1,5 @@
 {
-  "name": "@protobuf-ts/protoc",
+  "name": "@chippercash/protobuf-protoc",
   "version": "2.4.0",
   "description": "Installs the protocol buffer compiler \"protoc\" for you.",
   "license": "Apache-2.0",

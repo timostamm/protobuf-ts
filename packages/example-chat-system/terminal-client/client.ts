@@ -1,5 +1,5 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
-import {GrpcTransport} from "@protobuf-ts/grpc-transport";
+import {GrpcTransport} from "@chippercash/protobuf-grpc-transport";
 import {ChatServiceClient, IChatServiceClient} from "./service-chat.client";
 import {TerminalIO} from "./terminal-io";
 

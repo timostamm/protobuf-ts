@@ -1,4 +1,4 @@
-import {RpcInterceptor, ServerStreamingCall, UnaryCall} from '@protobuf-ts/runtime-rpc';
+import {RpcInterceptor, ServerStreamingCall, UnaryCall} from '@chippercash/protobuf-runtime-rpc';
 
 
 /**

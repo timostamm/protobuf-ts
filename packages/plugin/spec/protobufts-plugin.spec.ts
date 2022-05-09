@@ -1,7 +1,7 @@
 import { getFixtureCodeGeneratorRequest } from "./support/helpers";
 import { ProtobuftsPlugin } from "../src/protobufts-plugin";
 import * as ts from "typescript";
-import { setupCompiler } from "@protobuf-ts/plugin-framework";
+import { setupCompiler } from "@chippercash/protobuf-plugin-framework";
 import { OutFile } from "../src/out-file";
 
 
@@ -101,10 +101,10 @@ describe('protobuftsPlugin', function () {
         // ES2020 is required for bigint support
         target: ts.ScriptTarget.ES2020,
         paths: {
-          "@protobuf-ts/runtime": [
+          "@chippercash/protobuf-runtime": [
             '../runtime/src/index'
           ],
-          "@protobuf-ts/runtime-rpc": [
+          "@chippercash/protobuf-runtime-rpc": [
             '../runtime-rpc/src/index'
           ],
         }

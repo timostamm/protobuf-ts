@@ -1,7 +1,7 @@
 import {getFixtureCodeGeneratorRequest} from "./support/helpers";
 import {fixtures} from "../../test-fixtures";
 import {DescriptorProto, DescriptorRegistry} from "../src/";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 
 
 describe('google/protobuf/descriptor.ts', function () {
@@ -66,4 +66,3 @@ describe('google/protobuf/descriptor.ts', function () {
 
 
 });
-

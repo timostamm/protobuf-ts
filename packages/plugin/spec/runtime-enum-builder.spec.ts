@@ -1,4 +1,4 @@
-import {isEnumObject} from "@protobuf-ts/runtime";
+import {isEnumObject} from "@chippercash/protobuf-runtime";
 import {RuntimeEnumBuilder} from "../src/interpreter";
 
 
@@ -53,5 +53,3 @@ describe('RuntimeEnumBuilder', function () {
     });
 
 });
-
-

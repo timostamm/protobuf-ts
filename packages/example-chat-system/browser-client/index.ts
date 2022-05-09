@@ -1,6 +1,6 @@
-import {GrpcWebFetchTransport} from "@protobuf-ts/grpcweb-transport";
+import {GrpcWebFetchTransport} from "@chippercash/protobuf-grpcweb-transport";
 import {ChatServiceClient} from "./service-chat.client";
-import {RpcMetadata} from "@protobuf-ts/runtime-rpc";
+import {RpcMetadata} from "@chippercash/protobuf-runtime-rpc";
 import {ChatPanel, JoinPanel} from "./panels";
 
 
@@ -90,4 +90,3 @@ joinPanel.startCallback = async (username) => {
     }
 
 };
-

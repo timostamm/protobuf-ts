@@ -1,11 +1,11 @@
-import * as rt from "@protobuf-ts/runtime";
+import * as rt from "@chippercash/protobuf-runtime";
 import * as ts from "typescript";
 import {
   DescriptorRegistry,
   TypescriptFile,
   TypeScriptImports,
   typescriptLiteralFromValue
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 
 
 /**

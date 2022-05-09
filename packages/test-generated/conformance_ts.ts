@@ -3,7 +3,7 @@
 import {ConformanceRequest, ConformanceResponse, TestCategory, WireFormat} from "./ts-out/conformance/conformance";
 import {TestAllTypesProto3} from "./ts-out/google/protobuf/test_messages_proto3";
 import {TestAllTypesProto2} from "./ts-out/google/protobuf/test_messages_proto2";
-import type {IMessageType} from "@protobuf-ts/runtime";
+import type {IMessageType} from "@chippercash/protobuf-runtime";
 import {readSync, writeSync} from "fs";
 import {Struct, Value} from "./ts-out/google/protobuf/struct";
 import {FieldMask} from "./ts-out/google/protobuf/field_mask";

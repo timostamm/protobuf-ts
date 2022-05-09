@@ -11,7 +11,7 @@ import {
     FileDescriptorSet as speedBigintType
 } from "./testees/protobuf-ts.speed-bigint/.plugin-out/google/protobuf/descriptor";
 import * as protobufjsNamespace from "./testees/protobufjs/.plugin-out/descriptor"
-import {BinaryReader} from "@protobuf-ts/runtime";
+import {BinaryReader} from "@chippercash/protobuf-runtime";
 
 function bench(name: string, fn: () => void, durationSeconds = 5) {
     let startTs = performance.now();

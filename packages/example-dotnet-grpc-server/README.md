@@ -1,4 +1,4 @@
-@protobuf-ts/example-dotnet-grpc-server
+@chippercash/protobuf-example-dotnet-grpc-server
 =======================================
 
 This is a simple gRPC server using dotnet core. 

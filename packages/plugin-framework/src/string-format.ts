@@ -14,7 +14,7 @@ import { AnyDescriptorProto, IDescriptorInfo, isAnyTypeDescriptorProto, ScalarVa
 import { IDescriptorTree } from "./descriptor-tree";
 import { ISourceCodeInfoLookup } from "./source-code-info";
 import { ITypeNameLookup } from "./type-names";
-import { assert, assertNever } from "@protobuf-ts/runtime";
+import { assert, assertNever } from "@chippercash/protobuf-runtime";
 
 
 export interface IStringFormat {

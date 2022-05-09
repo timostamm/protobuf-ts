@@ -1,4 +1,4 @@
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 
 
 export abstract class Panel {

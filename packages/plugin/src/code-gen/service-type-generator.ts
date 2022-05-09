@@ -6,7 +6,7 @@ import {
     TypescriptFile,
     TypeScriptImports,
     typescriptLiteralFromValue
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import {Interpreter} from "../interpreter";
 import {CommentGenerator} from "./comment-generator";
 import * as ts from "typescript";

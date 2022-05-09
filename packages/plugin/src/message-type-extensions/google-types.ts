@@ -4,9 +4,9 @@ import {
     TypescriptFile,
     TypeScriptImports,
     typescriptMethodFromText
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import * as ts from "typescript";
-import {LongType} from "@protobuf-ts/runtime";
+import {LongType} from "@chippercash/protobuf-runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 

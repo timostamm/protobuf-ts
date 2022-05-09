@@ -1,6 +1,6 @@
 import * as ts from "typescript";
-import * as rt from "@protobuf-ts/runtime";
-import {assert} from "@protobuf-ts/runtime";
+import * as rt from "@chippercash/protobuf-runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 import {
     DescriptorProto,
     DescriptorRegistry,
@@ -10,7 +10,7 @@ import {
     SymbolTable,
     TypescriptFile,
     TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
 import {GeneratorBase} from "./generator-base";

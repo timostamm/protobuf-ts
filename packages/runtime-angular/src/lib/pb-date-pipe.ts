@@ -1,6 +1,6 @@
 import {Inject, LOCALE_ID, Pipe, PipeTransform} from "@angular/core";
 import {formatDate} from "@angular/common";
-import {isOneofGroup, PbLong} from "@protobuf-ts/runtime";
+import {isOneofGroup, PbLong} from "@chippercash/protobuf-runtime";
 
 
 /**

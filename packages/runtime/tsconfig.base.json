@@ -19,7 +19,7 @@
     ],
 
     "paths": {
-      "@protobuf-ts/runtime": [
+      "@chippercash/protobuf-runtime": [
         "./src"
       ]
     }

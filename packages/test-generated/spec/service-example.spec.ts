@@ -13,7 +13,7 @@ import {
     RpcTransport,
     ServerStreamingCall,
     UnaryCall
-} from "@protobuf-ts/runtime-rpc";
+} from "@chippercash/protobuf-runtime-rpc";
 import {ExampleServiceClient, IExampleServiceClient} from "../ts-out/service-example.client";
 
 

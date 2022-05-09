@@ -11,7 +11,7 @@ generate: $(PROTOS)
 	@protoc \
 		--ts_out .plugin-out \
 		--ts_opt "${OPTIONS}" \
-		--plugin ../../node_modules/@protobuf-ts/plugin/bin/protoc-gen-ts \
+		--plugin ../../node_modules/@chippercash/protobuf-plugin/bin/protoc-gen-ts \
 		--proto_path $(PROTO_PATH) \
 		--experimental_allow_proto3_optional \
 		$^

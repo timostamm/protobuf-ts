@@ -1,4 +1,4 @@
-@protobuf-ts/example-twirp-server
+@chippercash/protobuf-example-twirp-server
 =================================
 
 This is a simple Twirp server written in go. 

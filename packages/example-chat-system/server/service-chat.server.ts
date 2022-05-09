@@ -3,8 +3,8 @@
 // tslint:disable
 import { PostResponse } from "./service-chat";
 import { PostRequest } from "./service-chat";
-import { RpcInputStream } from "@protobuf-ts/runtime-rpc";
-import { ServerCallContext } from "@protobuf-ts/runtime-rpc";
+import { RpcInputStream } from "@chippercash/protobuf-runtime-rpc";
+import { ServerCallContext } from "@chippercash/protobuf-runtime-rpc";
 import { ChatEvent } from "./service-chat";
 import { JoinRequest } from "./service-chat";
 /**

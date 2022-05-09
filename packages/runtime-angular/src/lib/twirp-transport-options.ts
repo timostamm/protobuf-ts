@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import { TwirpOptions } from "@protobuf-ts/twirp-transport";
+import { TwirpOptions } from "@chippercash/protobuf-twirp-transport";
 
 /**
  * Injection token for `TwirpOptions` for the `TwirpTransport`.

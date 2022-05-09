@@ -13,8 +13,8 @@ import {
     RpcTransport,
     ServerStreamingCall,
     UnaryCall
-} from "@protobuf-ts/runtime-rpc";
-import {lowerCamelCase} from "@protobuf-ts/runtime";
+} from "@chippercash/protobuf-runtime-rpc";
+import {lowerCamelCase} from "@chippercash/protobuf-runtime";
 import {TwirpErrorCode} from "./twitch-twirp-error-code";
 
 /**

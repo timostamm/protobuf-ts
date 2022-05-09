@@ -4,7 +4,7 @@ import {
   RpcOutputStreamController,
   ServerStreamingCall,
   UnaryCall
-} from '@protobuf-ts/runtime-rpc';
+} from '@chippercash/protobuf-runtime-rpc';
 
 
 /**
@@ -105,4 +105,3 @@ function fetchToken(): Promise<string> {
     }, 200);
   });
 }
-

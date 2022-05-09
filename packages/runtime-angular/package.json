@@ -1,5 +1,5 @@
 {
-  "name": "@protobuf-ts/runtime-angular",
+  "name": "@chippercash/protobuf-runtime-angular",
   "version": "2.4.0",
   "description": "Runtime library for using the protoc plugin \"protobuf-ts\" with Angular",
   "license": "Apache-2.0",
@@ -34,9 +34,9 @@
   "peerDependencies": {
     "@angular/common": "8 - 13",
     "@angular/core": "8 - 13",
-    "@protobuf-ts/runtime": "2.4.0",
-    "@protobuf-ts/runtime-rpc": "2.4.0",
-    "@protobuf-ts/twirp-transport": "2.4.0",
+    "@chippercash/protobuf-runtime": "2.4.0",
+    "@chippercash/protobuf-runtime-rpc": "2.4.0",
+    "@chippercash/protobuf-twirp-transport": "2.4.0",
     "rxjs": "^6.5"
   },
   "devDependencies": {
@@ -49,9 +49,9 @@
     "@angular/core": "~10.0.6",
     "@angular/platform-browser": "~10.0.6",
     "@angular/platform-browser-dynamic": "~10.0.6",
-    "@protobuf-ts/runtime": "^2.4.0",
-    "@protobuf-ts/runtime-rpc": "^2.4.0",
-    "@protobuf-ts/twirp-transport": "^2.4.0",
+    "@chippercash/protobuf-runtime": "^2.4.0",
+    "@chippercash/protobuf-runtime-rpc": "^2.4.0",
+    "@chippercash/protobuf-twirp-transport": "^2.4.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.47",

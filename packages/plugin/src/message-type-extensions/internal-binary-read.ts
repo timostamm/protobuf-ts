@@ -7,12 +7,12 @@ import {
   TypescriptFile,
   TypeScriptImports,
   typescriptLiteralFromValue
-} from "@protobuf-ts/plugin-framework";
-import * as rt from "@protobuf-ts/runtime";
-import { assert, LongType } from "@protobuf-ts/runtime";
+} from "@chippercash/protobuf-plugin-framework";
+import * as rt from "@chippercash/protobuf-runtime";
+import { assert, LongType } from "@chippercash/protobuf-runtime";
 import { CustomMethodGenerator } from "../code-gen/message-type-generator";
 import { Interpreter } from "../interpreter";
-import { EnumDescriptorProto } from "@protobuf-ts/plugin-framework";
+import { EnumDescriptorProto } from "@chippercash/protobuf-plugin-framework";
 
 
 /**

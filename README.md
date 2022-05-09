@@ -1,4 +1,4 @@
-protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?style=svg)](https://app.circleci.com/pipelines/github/timostamm/protobuf-ts) [![npm](https://img.shields.io/npm/v/@protobuf-ts/plugin?x)](https://www.npmjs.com/package/@protobuf-ts/plugin)
+protobuf-ts [![<timostamm>](https://circleci.com/gh/timostamm/protobuf-ts.svg?style=svg)](https://app.circleci.com/pipelines/github/timostamm/protobuf-ts) [![npm](https://img.shields.io/npm/v/@chippercash/protobuf-plugin?x)](https://www.npmjs.com/package/@chippercash/protobuf-plugin)
 ===========
 
 
@@ -47,7 +47,7 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 
 ### Quickstart
 
-- `npm install @protobuf-ts/plugin`
+- `npm install @chippercash/protobuf-plugin`
   > installs the plugin and the compiler "protoc"  
 
 - download the example file [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/test-fixtures/msg-readme.proto) and place it into a `protos/` directory

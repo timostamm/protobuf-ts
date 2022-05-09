@@ -14,7 +14,7 @@ import {
     stackIntercept,
     UnaryCall
 } from "../src";
-import type {IMessageType} from "@protobuf-ts/runtime";
+import type {IMessageType} from "@chippercash/protobuf-runtime";
 
 
 const TestService = new ServiceType("TestService", [
@@ -137,4 +137,3 @@ class MockTransport implements RpcTransport {
     }
 
 }
-

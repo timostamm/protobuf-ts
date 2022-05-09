@@ -1,4 +1,4 @@
-import { assert, assertNever } from "@protobuf-ts/runtime";
+import { assert, assertNever } from "@chippercash/protobuf-runtime";
 import * as ts from "typescript";
 import {
   DescriptorProto,

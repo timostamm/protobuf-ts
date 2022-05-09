@@ -12,7 +12,7 @@ import {
     ServerStreamingCall,
     UnaryCall,
     mergeRpcOptions
-} from "@protobuf-ts/runtime-rpc";
+} from "@chippercash/protobuf-runtime-rpc";
 import {
     GrpcWebFrame,
     createGrpcWebRequestBody,
@@ -293,5 +293,3 @@ export class GrpcWebFetchTransport implements RpcTransport {
     }
 
 }
-
-

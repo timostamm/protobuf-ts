@@ -3,7 +3,7 @@ import type {RpcMetadata} from "./rpc-metadata";
 import type {RpcStatus} from "./rpc-status";
 import type {RpcTransport} from "./rpc-transport";
 import type {MethodInfo} from "./reflection-info";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 import {RpcOutputStreamController} from "./rpc-output-stream";
 import {mergeRpcOptions, RpcOptions} from "./rpc-options";
 import {UnaryCall} from "./unary-call";

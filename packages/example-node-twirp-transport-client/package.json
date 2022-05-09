@@ -1,5 +1,5 @@
 {
-  "name": "@protobuf-ts/example-node-twirp-transport-client",
+  "name": "@chippercash/protobuf-example-node-twirp-transport-client",
   "version": "2.4.0",
   "description": "",
   "private": true,
@@ -10,11 +10,11 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
-    "@protobuf-ts/plugin": "^2.4.0",
-    "@protobuf-ts/protoc": "^2.4.0",
-    "@protobuf-ts/runtime": "^2.4.0",
-    "@protobuf-ts/runtime-rpc": "^2.4.0",
-    "@protobuf-ts/twirp-transport": "^2.4.0",
+    "@chippercash/protobuf-plugin": "^2.4.0",
+    "@chippercash/protobuf-protoc": "^2.4.0",
+    "@chippercash/protobuf-runtime": "^2.4.0",
+    "@chippercash/protobuf-runtime-rpc": "^2.4.0",
+    "@chippercash/protobuf-twirp-transport": "^2.4.0",
     "@types/node-fetch": "^2.5.8",
     "abort-controller": "^3.0.0",
     "node-fetch": "^2.6.0",

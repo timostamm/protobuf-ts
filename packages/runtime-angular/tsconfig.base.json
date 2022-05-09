@@ -17,7 +17,7 @@
     ],
     "strictNullChecks": true,
     "paths": {
-      "@protobuf-ts/runtime-angular": [
+      "@chippercash/protobuf-runtime-angular": [
         "dist/"
       ]
     }

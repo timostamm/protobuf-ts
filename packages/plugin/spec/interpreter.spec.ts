@@ -1,7 +1,7 @@
 import { getFixtureFileDescriptor } from "./support/helpers";
-import { DescriptorRegistry } from "@protobuf-ts/plugin-framework";
+import { DescriptorRegistry } from "@chippercash/protobuf-plugin-framework";
 import { Interpreter } from "../src/interpreter";
-import * as rt from "@protobuf-ts/runtime";
+import * as rt from "@chippercash/protobuf-runtime";
 
 
 describe('interpreter', function () {

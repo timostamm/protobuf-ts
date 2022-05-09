@@ -1,6 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
 import {metadataFromGrpc, isServiceError, rpcCodeToGrpc, metadataToGrpc} from "../src/util";
-import {RpcMetadata} from "@protobuf-ts/runtime-rpc";
+import {RpcMetadata} from "@chippercash/protobuf-runtime-rpc";
 
 
 describe('isServiceError', function () {
@@ -84,4 +84,3 @@ describe('metadataToGrpc', function () {
     });
 
 });
-

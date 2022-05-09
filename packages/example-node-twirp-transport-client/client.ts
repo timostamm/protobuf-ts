@@ -1,4 +1,4 @@
-import {TwirpFetchTransport} from "@protobuf-ts/twirp-transport";
+import {TwirpFetchTransport} from "@chippercash/protobuf-twirp-transport";
 import {HaberdasherClient} from "./service-twirp-example.client";
 import {default as fetch, Headers} from "node-fetch";
 
@@ -38,4 +38,3 @@ async function main() {
 
 
 main().catch(e => console.error(e)).finally(() => process.exit());
-

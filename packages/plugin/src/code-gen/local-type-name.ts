@@ -1,5 +1,5 @@
-import {AnyTypeDescriptorProto, FileDescriptorProto, IDescriptorTree} from "@protobuf-ts/plugin-framework";
-import {assert} from "@protobuf-ts/runtime";
+import {AnyTypeDescriptorProto, FileDescriptorProto, IDescriptorTree} from "@chippercash/protobuf-plugin-framework";
+import {assert} from "@chippercash/protobuf-runtime";
 
 
 // TODO in generated code, use globalThis for all types in global scope
@@ -47,4 +47,3 @@ export function createLocalTypeName(descriptor: AnyTypeDescriptorProto, treeLook
     }
     return fullName;
 }
-

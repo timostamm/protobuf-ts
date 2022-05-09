@@ -1,4 +1,4 @@
-import {RpcOptions} from "@protobuf-ts/runtime-rpc";
+import {RpcOptions} from "@chippercash/protobuf-runtime-rpc";
 
 export interface TwirpOptions extends RpcOptions {
 

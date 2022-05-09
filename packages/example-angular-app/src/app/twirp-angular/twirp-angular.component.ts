@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {RpcError, RpcOptions} from '@protobuf-ts/runtime-rpc';
+import {RpcError, RpcOptions} from '@chippercash/protobuf-runtime-rpc';
 import {Size} from '../../protoc-gen-ts-out/service-twirp-example';
 import {HaberdasherClient} from '../../protoc-gen-ts-out/service-twirp-example.client';
 

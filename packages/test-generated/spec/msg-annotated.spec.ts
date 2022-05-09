@@ -1,5 +1,5 @@
 import {AnnotatedMessage, FieldUiBehaviour} from "../ts-out/msg-annotated";
-import {readFieldOption, readMessageOption} from "@protobuf-ts/runtime";
+import {readFieldOption, readMessageOption} from "@chippercash/protobuf-runtime";
 
 
 describe('readFieldOption', function () {
@@ -134,5 +134,3 @@ describe('spec.AnnotatedMessage', function () {
     });
 
 });
-
-

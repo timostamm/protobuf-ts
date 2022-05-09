@@ -1,5 +1,5 @@
 import {fixtures} from "../../test-fixtures";
-import {IMessageType, MessageType} from "@protobuf-ts/runtime";
+import {IMessageType, MessageType} from "@chippercash/protobuf-runtime";
 import {EnumFieldMessage} from "../ts-out/msg-enum";
 import {JsonNamesMessage} from "../ts-out/msg-json-names";
 import {MessageFieldMessage} from "../ts-out/msg-message";
@@ -79,4 +79,3 @@ describe('generated code compatibility', () => {
     });
 
 });
-

@@ -49,9 +49,9 @@
 // plugin should be named "protoc-gen-$NAME", and will then be used when the
 // flag "--${NAME}_out" is passed to protoc.
 //
-import { RepeatType } from "@protobuf-ts/runtime";
-import { ScalarType } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
+import { RepeatType } from "@chippercash/protobuf-runtime";
+import { ScalarType } from "@chippercash/protobuf-runtime";
+import { MessageType } from "@chippercash/protobuf-runtime";
 import { FileDescriptorProto } from "../descriptor";
 /**
  * The version number of protocol compiler.

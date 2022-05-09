@@ -1,7 +1,7 @@
 /**
- * Custom file options interpreted by @protobuf-ts/plugin
+ * Custom file options interpreted by @chippercash/protobuf-plugin
  */
-import * as rt from "@protobuf-ts/runtime";
+import * as rt from "@chippercash/protobuf-runtime";
 import {
   FileDescriptorProto,
   FileOptions,
@@ -10,13 +10,13 @@ import {
   MethodOptions,
   ServiceDescriptorProto,
   ServiceOptions
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import { Interpreter } from "./interpreter";
 import * as ts from "typescript";
 
 
 /**
- * Custom file options interpreted by @protobuf-ts/plugin
+ * Custom file options interpreted by @chippercash/protobuf-plugin
  * The extensions are declared in protobuf-ts.proto
  */
 export interface OurFileOptions {
@@ -40,7 +40,7 @@ export interface OurFileOptions {
 
 
 /**
- * Custom service options interpreted by @protobuf-ts/plugin
+ * Custom service options interpreted by @chippercash/protobuf-plugin
  */
 export interface OurServiceOptions {
 
@@ -121,7 +121,7 @@ const OurServiceOptions = new rt.MessageType<OurServiceOptions>("$synthetic.OurS
 
 
 /**
- * The available client styles from @protobuf-ts/plugin
+ * The available client styles from @chippercash/protobuf-plugin
  * The extensions are declared in protobuf-ts.proto
  */
 export enum ClientStyle {
@@ -132,7 +132,7 @@ export enum ClientStyle {
   NO_CLIENT = 0,
 
   /**
-   * Use the call implementations of @protobuf-ts/runtime-rpc.
+   * Use the call implementations of @chippercash/protobuf-runtime-rpc.
    * This is the default behaviour.
    */
   GENERIC_CLIENT = 1,
@@ -145,7 +145,7 @@ export enum ClientStyle {
 
 
 /**
- * The available server styles from @protobuf-ts/plugin
+ * The available server styles from @chippercash/protobuf-plugin
  * The extensions are declared in protobuf-ts.proto
  */
 export enum ServerStyle {
@@ -158,7 +158,7 @@ export enum ServerStyle {
 
   /**
    * Generate a generic server interface.
-   * Adapters be used to serve the service, for example @protobuf-ts/grpc-backend
+   * Adapters be used to serve the service, for example @chippercash/protobuf-grpc-backend
    * for gRPC.
    */
   GENERIC_SERVER = 1,
@@ -254,10 +254,10 @@ export function makeInternalOptions (
       emitAngularAnnotations: false,
       synthesizeEnumZeroValue: 'UNSPECIFIED$',
       oneofKindDiscriminator: 'oneofKind',
-      runtimeAngularImportPath: '@protobuf-ts/runtime-angular',
-      runtimeRpcImportPath: '@protobuf-ts/runtime-rpc',
+      runtimeAngularImportPath: '@chippercash/protobuf-runtime-angular',
+      runtimeRpcImportPath: '@chippercash/protobuf-runtime-rpc',
       angularCoreImportPath: '@angular/core',
-      runtimeImportPath: '@protobuf-ts/runtime',
+      runtimeImportPath: '@chippercash/protobuf-runtime',
       forceExcludeAllOptions: false,
       keepEnumPrefix: false,
       useProtoFieldName: false,

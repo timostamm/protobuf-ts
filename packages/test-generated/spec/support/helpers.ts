@@ -1,4 +1,4 @@
-import {assert, LongType, PbLong, PbULong} from "@protobuf-ts/runtime";
+import {assert, LongType, PbLong, PbULong} from "@chippercash/protobuf-runtime";
 import {Duration} from "../../ts-out/google/protobuf/duration";
 import {Timestamp} from "../../ts-out/google/protobuf/timestamp";
 import {Int64Value, UInt64Value} from "../../ts-out/google/protobuf/wrappers";

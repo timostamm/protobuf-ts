@@ -1,4 +1,4 @@
-import {FileDescriptorProto, StringFormat} from "@protobuf-ts/plugin-framework";
+import {FileDescriptorProto, StringFormat} from "@chippercash/protobuf-plugin-framework";
 
 
 export class FileTable {

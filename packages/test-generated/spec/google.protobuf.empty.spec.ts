@@ -1,5 +1,5 @@
 import {Empty} from "../ts-out/google/protobuf/empty";
-import type {JsonValue} from "@protobuf-ts/runtime";
+import type {JsonValue} from "@chippercash/protobuf-runtime";
 
 
 

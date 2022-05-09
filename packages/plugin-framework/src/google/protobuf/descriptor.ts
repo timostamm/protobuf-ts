@@ -41,9 +41,9 @@
 // A valid .proto file can be translated directly to a FileDescriptorProto
 // without any other information (e.g. without reading its imports).
 //
-import { ScalarType } from "@protobuf-ts/runtime";
-import { RepeatType } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
+import { ScalarType } from "@chippercash/protobuf-runtime";
+import { RepeatType } from "@chippercash/protobuf-runtime";
+import { MessageType } from "@chippercash/protobuf-runtime";
 /**
  * The protocol compiler can output a FileDescriptorSet containing the .proto
  * files it parses.

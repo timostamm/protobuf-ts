@@ -9,11 +9,11 @@ import {
   typescriptLiteralFromValue,
   createEnumPropertyAccessExp,
   getTypeNameFromFullName
-} from "@protobuf-ts/plugin-framework";
-import * as rt from "@protobuf-ts/runtime";
+} from "@chippercash/protobuf-plugin-framework";
+import * as rt from "@chippercash/protobuf-runtime";
 import { CustomMethodGenerator } from "../code-gen/message-type-generator";
 import { Interpreter } from "../interpreter";
-import { assert } from "@protobuf-ts/runtime";
+import { assert } from "@chippercash/protobuf-runtime";
 
 
 /**

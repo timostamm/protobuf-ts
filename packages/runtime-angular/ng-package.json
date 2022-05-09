@@ -5,9 +5,9 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
-      "@protobuf-ts/runtime": "protobufTs.runtime",
-      "@protobuf-ts/runtime-rpc": "protobufTs.runtimeRpc",
-      "@protobuf-ts/twirp-transport": "protobufTs.twirpTransport"
+      "@chippercash/protobuf-runtime": "protobufTs.runtime",
+      "@chippercash/protobuf-runtime-rpc": "protobufTs.runtimeRpc",
+      "@chippercash/protobuf-twirp-transport": "protobufTs.twirpTransport"
     }
   }
 }

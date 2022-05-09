@@ -1,5 +1,5 @@
 import {Deferred, DeferredState} from "./deferred";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 
 
 /**
