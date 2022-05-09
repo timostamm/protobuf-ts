@@ -1,5 +1,5 @@
-import {MethodInfo, RpcInterceptor, ServiceType} from "@protobuf-ts/runtime-rpc";
-import {IMessageType} from "@protobuf-ts/runtime";
+import {MethodInfo, RpcInterceptor, ServiceType} from "@chippercash/protobuf-runtime-rpc";
+import {IMessageType} from "@chippercash/protobuf-runtime";
 import {TwirpFetchTransport, TwirpOptions} from "../src";
 
 describe('TwirpFetchTransport', () => {

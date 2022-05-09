@@ -161,7 +161,7 @@ Bug fixes:
 
 Bug fixes:
 
-- Revert TypeScript `peerDependency` in @protobuf-ts/plugin to support yarn 2, see #144
+- Revert TypeScript `peerDependency` in @chippercash/protobuf-plugin to support yarn 2, see #144
 - Change `UnknownMessage` from type to interface, see #143
 
 
@@ -170,7 +170,7 @@ Bug fixes:
 
 New features:
 
-- @protobuf-ts/plugin expresses TypeScript compatibility with 
+- @chippercash/protobuf-plugin expresses TypeScript compatibility with 
   a `peerDependency` `>=3.8.3`. Thanks to @ghaiklor-wix for the 
   suggestion.
 
@@ -220,14 +220,14 @@ New features:
 
 #### Bug fixes
 
-- @protobuf-ts/grpc-transport & @grpc/grpc-js dependency, see #136.  
+- @chippercash/protobuf-grpc-transport & @grpc/grpc-js dependency, see #136.  
   Thanks to @hugebdu for the report.
 
 - Fix protoc error message "Plugin output is unparseable" for certain
   plugin output sizes, see #134.  
   Thanks to @fenos for the investigation and fix!
 
-- Fix memory leak in @protobuf-ts/grpc-transport, see #107  
+- Fix memory leak in @chippercash/protobuf-grpc-transport, see #107  
   Thanks to @dddenis for the PR!
 
 - twirp-transport is now a bit more compatible with polyfills for
@@ -319,7 +319,7 @@ Breaking changes:
 
 Bug fixes:
 
-- @protobuf-ts/grpc-transport & @grpc/grpc-js dependency, see #136.  
+- @chippercash/protobuf-grpc-transport & @grpc/grpc-js dependency, see #136.  
   Thanks to @hugebdu for the report.
 
 
@@ -349,7 +349,7 @@ Cleanup:
 
 Bug fixes:
 
-- Fix memory leak in @protobuf-ts/grpc-transport, see #107  
+- Fix memory leak in @chippercash/protobuf-grpc-transport, see #107  
   Thanks to @dddenis for the PR!
 
 
@@ -558,7 +558,7 @@ Breaking changes:
 
 - clients are generated into separate files (see #55)
 - option values for (ts.client) have changed (see #55)
-- ClientStyle enum is no longer exported from @protobuf-ts/runtime-rpc (see #55)
+- ClientStyle enum is no longer exported from @chippercash/protobuf-runtime-rpc (see #55)
 
 
 ### v2.0.0-alpha.8
@@ -727,7 +727,7 @@ This patch fixes issue #2
 
 This release adds automatic installation of the protocol buffer compiler.
 
-Installation is managed by the new package @protobuf-ts/protoc and is 
+Installation is managed by the new package @chippercash/protobuf-protoc and is 
 tested on macos, linux and windows.
 
 
@@ -739,5 +739,3 @@ This patch fixes issue #1
 ### v1.0.0 First release
 
 This is the first public release of protobuf-ts.
-
-

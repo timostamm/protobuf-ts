@@ -1,6 +1,6 @@
 import {Timestamp} from "../ts-out/google/protobuf/timestamp";
 import {makeTimestamp} from "./support/helpers";
-import {PbLong} from "@protobuf-ts/runtime";
+import {PbLong} from "@chippercash/protobuf-runtime";
 
 
 describe('google.protobuf.Timestamp', function () {

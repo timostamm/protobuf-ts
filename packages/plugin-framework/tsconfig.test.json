@@ -8,7 +8,7 @@
     "module": "CommonJS",
     "declaration": false,
     "paths": {
-      "@protobuf-ts/runtime": [
+      "@chippercash/protobuf-runtime": [
         "../runtime"
       ]
     }

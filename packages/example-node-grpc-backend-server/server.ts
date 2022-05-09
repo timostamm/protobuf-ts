@@ -1,8 +1,8 @@
 import * as grpc from '@grpc/grpc-js';
 import {ExampleRequest, ExampleResponse, ExampleService} from "./service-example";
 import {IExampleService} from "./service-example.server";
-import {RpcInputStream, RpcOutputStream, ServerCallContext} from "@protobuf-ts/runtime-rpc";
-import {adaptService} from "@protobuf-ts/grpc-backend";
+import {RpcInputStream, RpcOutputStream, ServerCallContext} from "@chippercash/protobuf-runtime-rpc";
+import {adaptService} from "@chippercash/protobuf-grpc-backend";
 
 
 const host = '0.0.0.0:5000';

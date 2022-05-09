@@ -1,7 +1,7 @@
 import {Any} from "../ts-out/google/protobuf/any";
 import {StructMessage} from "../ts-out/wkt-struct";
 import {Duration} from "../ts-out/google/protobuf/duration";
-import type {JsonObject} from "@protobuf-ts/runtime";
+import type {JsonObject} from "@chippercash/protobuf-runtime";
 import {makeDuration} from "./support/helpers";
 import {ScalarValuesMessage} from "../ts-out/msg-scalar";
 

@@ -1,4 +1,4 @@
-@protobuf-ts/protoc
+@chippercash/protobuf-protoc
 ===================
 
 
@@ -9,10 +9,10 @@ Installation (not necessary if you use the [protobuf-ts plugin](https://github.c
 
 ```shell script
 # with npm:
-npm install @protobuf-ts/protoc
+npm install @chippercash/protobuf-protoc
 
 # with yarn:
-yarn add @protobuf-ts/protoc
+yarn add @chippercash/protobuf-protoc
 ```
 
 Now you can run protoc as usual, you just have to prefix your command with 
@@ -60,5 +60,4 @@ following arguments:
 1. `--proto_path` that points to the `include/` directory of the 
    downloaded release (skipped when found on `$PATH`)
 2. `--plugin` argument for all plugins found in `node_modules/.bin/`
-3. `--proto_path` argument for `node_modules/@protobuf-ts/plugin` 
-
+3. `--proto_path` argument for `node_modules/@chippercash/protobuf-plugin` 

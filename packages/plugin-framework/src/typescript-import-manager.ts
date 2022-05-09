@@ -1,4 +1,4 @@
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 import * as ts from "typescript";
 import * as path from "path";
 import {GeneratedFile} from "./generated-file";

@@ -8,9 +8,9 @@ import {
     ServerCallContext,
     ServerCallContextController,
     ServiceInfo
-} from "@protobuf-ts/runtime-rpc";
+} from "@chippercash/protobuf-runtime-rpc";
 import * as grpc from "@grpc/grpc-js";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 import {metadataFromGrpc, metadataToGrpc, rpcCodeToGrpc} from "./util";
 
 type ContextFactory = (
@@ -377,5 +377,3 @@ function mapBidi<I extends object, O extends object>(serviceInfo: ServiceInfo, m
 
     };
 }
-
-

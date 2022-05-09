@@ -1,7 +1,7 @@
 import { GrpcStatusCode, GrpcWebFrame, createGrpcWebRequestBody, readGrpcWebResponseBody } from "../../src";
 import {StreamReaderNextResult} from "../../src/grpc-web-format";
 
-import { Deferred } from "@protobuf-ts/runtime-rpc";
+import { Deferred } from "@chippercash/protobuf-runtime-rpc";
 
 // Polyfills for node
 if (!globalThis.fetch) {

@@ -8,7 +8,7 @@ import msgMessage from './msg-message.fixtures'
 import msgLongs from './msg-longs.fixtures'
 import deprecationExplicit from './deprecation-explicit.fixture'
 import deprecationImplicit from './deprecation-implicit.fixture'
-import { assert, EnumInfo, EnumObjectValue, FieldInfo, isEnumObject, listEnumNames, MessageInfo, normalizeFieldInfo, PartialFieldInfo } from "@protobuf-ts/runtime";
+import { assert, EnumInfo, EnumObjectValue, FieldInfo, isEnumObject, listEnumNames, MessageInfo, normalizeFieldInfo, PartialFieldInfo } from "@chippercash/protobuf-runtime";
 
 /**
  * A fixture for a message type.

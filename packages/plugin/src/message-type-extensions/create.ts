@@ -5,9 +5,9 @@ import {
   TypescriptFile,
   TypeScriptImports,
   typescriptLiteralFromValueAndDescriptor
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import * as ts from "typescript";
-import { LongType } from "@protobuf-ts/runtime";
+import { LongType } from "@chippercash/protobuf-runtime";
 import { Interpreter } from "../interpreter";
 import { CustomMethodGenerator } from "../code-gen/message-type-generator";
 

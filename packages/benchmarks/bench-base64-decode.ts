@@ -1,6 +1,6 @@
 import {performance} from "perf_hooks";
 import * as protobufJs from "@protobufjs/base64";
-import {base64decode} from "@protobuf-ts/runtime";
+import {base64decode} from "@chippercash/protobuf-runtime";
 
 
 function bench(name: string, fn: () => void, durationSeconds = 5) {
@@ -60,6 +60,6 @@ for (let fix of fixtures) {
 
     console.log(`=== ${fix.size} bytes ===`);
     bench(`@protobufjs/base64 / decode()`, () => protobufJsBase64Decode(fix.base64));
-    bench(`@protobuf-ts/runtime / base64decode()`, () => base64decode(fix.base64));
+    bench(`@chippercash/protobuf-runtime / base64decode()`, () => base64decode(fix.base64));
 
 }

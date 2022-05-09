@@ -1,4 +1,4 @@
-@protobuf-ts/plugin-framework
+@chippercash/protobuf-plugin-framework
 =============================
 
 A framework to create protoc plugins in typescript.
@@ -58,4 +58,3 @@ code, but can be used to generate code in other languages.
 
 - The files [plugin.ts](https://github.com/timostamm/protobuf-ts/blob/master/packages/plugin-framework/src/google/protobuf/compiler/plugin.ts) and [descriptor.ts](https://github.com/timostamm/protobuf-ts/blob/master/packages/plugin-framework/src/google/protobuf/descriptor.ts) are Copyright 2008 Google Inc., licensed under BSD-3-Clause
 - All other files are licensed under Apache-2.0, see [LICENSE](https://github.com/timostamm/protobuf-ts/blob/master/packages/plugin-framework/LICENSE). 
-

@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {PbDatePipeModule, TwirpModule} from '@protobuf-ts/runtime-angular';
+import {PbDatePipeModule, TwirpModule} from '@chippercash/protobuf-runtime-angular';
 import {GrpcwebUnaryComponent} from './grpcweb-unary/grpcweb-unary.component';
 import {FormsModule} from '@angular/forms';
 import {GrpcwebServerStreamingComponent} from './grpcweb-server-streaming/grpcweb-server-streaming.component';
@@ -17,7 +17,7 @@ import {HaberdasherClient} from '../protoc-gen-ts-out/service-twirp-example.clie
     BrowserModule,
     FormsModule,
 
-    // Registers the `PbDatePipe` of @protobuf-ts/runtime-angular.
+    // Registers the `PbDatePipe` of @chippercash/protobuf-runtime-angular.
     // This pipe overrides the standard "date" pipe and adds support
     // for `google.protobuf.Timestamp` and `google.type.DateTime`.
     PbDatePipeModule,

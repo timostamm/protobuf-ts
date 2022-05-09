@@ -1,15 +1,15 @@
 import {GeneratorBase} from "./generator-base";
-import * as rpc from "@protobuf-ts/runtime-rpc";
+import * as rpc from "@chippercash/protobuf-runtime-rpc";
 import {
     DescriptorRegistry,
     ServiceDescriptorProto,
     SymbolTable,
     TypescriptFile,
     TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import {Interpreter} from "../interpreter";
 import * as ts from "typescript";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 

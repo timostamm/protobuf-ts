@@ -84,7 +84,7 @@ function makeReportDetails(testee: Testee): string {
 function pluginNameToPackageName(pluginName: string): string {
     switch (pluginName) {
         case "protobuf-ts":
-            return '@protobuf-ts/plugin';
+            return '@chippercash/protobuf-plugin';
         default:
             return pluginName;
     }

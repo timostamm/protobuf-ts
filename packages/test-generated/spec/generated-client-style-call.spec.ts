@@ -1,4 +1,4 @@
-import {RpcError, ServerStreamingCall, TestTransport, UnaryCall} from "@protobuf-ts/runtime-rpc";
+import {RpcError, ServerStreamingCall, TestTransport, UnaryCall} from "@chippercash/protobuf-runtime-rpc";
 import {AbortController} from "abort-controller";
 import {Int32Value, StringValue} from "../ts-out/google/protobuf/wrappers";
 import {AllStyleServiceClient} from "../ts-out/service-style-all.client";
@@ -200,4 +200,3 @@ describe('generated client style call', () => {
 
 
 });
-

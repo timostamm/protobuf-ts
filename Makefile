@@ -19,8 +19,8 @@ lerna-clean:
 # run `make` for every package (with a few exceptions)
 lerna-make:
 	./node_modules/.bin/lerna exec --stream \
-	--ignore @protobuf-ts/example-* \
-	--ignore @protobuf-ts/protoc \
+	--ignore @chippercash/protobuf-example-* \
+	--ignore @chippercash/protobuf-protoc \
 	-- make
 
 # release a new version in the "latest" (the stable) channel

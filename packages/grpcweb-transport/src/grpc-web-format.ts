@@ -1,5 +1,5 @@
-import {base64decode, base64encode} from "@protobuf-ts/runtime";
-import {RpcError, RpcMetadata} from "@protobuf-ts/runtime-rpc";
+import {base64decode, base64encode} from "@chippercash/protobuf-runtime";
+import {RpcError, RpcMetadata} from "@chippercash/protobuf-runtime-rpc";
 import {GrpcStatusCode} from "./goog-grpc-status-code";
 
 
@@ -409,4 +409,3 @@ function httpStatusToGrpc(httpStatus: number): GrpcStatusCode {
             return GrpcStatusCode.UNKNOWN;
     }
 }
-

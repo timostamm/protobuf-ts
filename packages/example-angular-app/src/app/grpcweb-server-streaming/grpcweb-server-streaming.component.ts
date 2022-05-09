@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {GrpcWebFetchTransport, GrpcWebOptions} from '@protobuf-ts/grpcweb-transport';
+import {GrpcWebFetchTransport, GrpcWebOptions} from '@chippercash/protobuf-grpcweb-transport';
 import {ExampleRequest, FailRequest} from '../../protoc-gen-ts-out/service-example';
-import {EnumObjectValue, listEnumValues} from '@protobuf-ts/runtime';
+import {EnumObjectValue, listEnumValues} from '@chippercash/protobuf-runtime';
 import {BehaviorSubject} from 'rxjs';
-import {RpcError, RpcOptions, ServerStreamingCall, UnaryCall} from '@protobuf-ts/runtime-rpc';
+import {RpcError, RpcOptions, ServerStreamingCall, UnaryCall} from '@chippercash/protobuf-runtime-rpc';
 import {ExampleServiceClient} from '../../protoc-gen-ts-out/service-example.client';
 
 

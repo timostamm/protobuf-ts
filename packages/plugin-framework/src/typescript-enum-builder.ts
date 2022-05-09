@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-import * as rt from "@protobuf-ts/runtime";
+import * as rt from "@chippercash/protobuf-runtime";
 import { addCommentBlockAsJsDoc } from "./typescript-comments";
 
 

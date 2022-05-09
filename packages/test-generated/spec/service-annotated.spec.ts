@@ -1,10 +1,10 @@
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 import {AnnotatedService} from "../ts-out/service-annotated";
-import type {RpcTransport} from "@protobuf-ts/runtime-rpc";
-import {readServiceOption} from "@protobuf-ts/runtime-rpc";
+import type {RpcTransport} from "@chippercash/protobuf-runtime-rpc";
+import {readServiceOption} from "@chippercash/protobuf-runtime-rpc";
 import {HttpRule} from "../ts-out/google/api/http";
 import {AnnotatedServiceClient} from "../ts-out/service-annotated.client";
-import {readMethodOption} from "@protobuf-ts/runtime-rpc/";
+import {readMethodOption} from "@chippercash/protobuf-runtime-rpc/";
 
 
 describe('readMethodOption', function () {
@@ -109,5 +109,3 @@ describe('spec.AnnotatedService', function () {
     });
 
 });
-
-

@@ -4,14 +4,14 @@ import {
     SymbolTable,
     TypescriptFile,
     TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import * as ts from "typescript";
-import * as rpc from "@protobuf-ts/runtime-rpc";
+import * as rpc from "@chippercash/protobuf-runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
 import {Interpreter} from "../interpreter";
 import {GeneratorBase} from "./generator-base";
 import {createLocalTypeName} from "./local-type-name";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 
 
 export abstract class ServiceClientGeneratorBase extends GeneratorBase {
@@ -322,4 +322,3 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
     }
 
 }
-

@@ -17,7 +17,7 @@ import {
     ServiceOptions
 } from "./google/protobuf/descriptor";
 import {AnyDescriptorProto, AnyOptions, AnyTypeDescriptorProto, isAnyTypeDescriptorProto} from "./descriptor-info";
-import {assert, assertNever} from "@protobuf-ts/runtime";
+import {assert, assertNever} from "@chippercash/protobuf-runtime";
 
 
 /**

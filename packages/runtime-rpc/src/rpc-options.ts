@@ -1,6 +1,6 @@
 import type {RpcMetadata} from "./rpc-metadata";
-import type {BinaryReadOptions, BinaryWriteOptions, JsonReadOptions, JsonWriteOptions,} from "@protobuf-ts/runtime";
-import {mergeBinaryOptions, mergeJsonOptions} from "@protobuf-ts/runtime";
+import type {BinaryReadOptions, BinaryWriteOptions, JsonReadOptions, JsonWriteOptions,} from "@chippercash/protobuf-runtime";
+import {mergeBinaryOptions, mergeJsonOptions} from "@chippercash/protobuf-runtime";
 import type {RpcInterceptor} from "./rpc-interceptor";
 
 /**

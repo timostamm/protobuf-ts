@@ -1,6 +1,6 @@
 import {performance} from "perf_hooks";
 import * as protobufJs from "@protobufjs/base64";
-import {base64encode} from "@protobuf-ts/runtime";
+import {base64encode} from "@chippercash/protobuf-runtime";
 
 
 function bench(name: string, fn: () => void, durationSeconds = 5) {
@@ -94,10 +94,8 @@ if (base64encode(fixtures[0].bytes) !== protobufJs.encode(fixtures[0].bytes, 0, 
 for (let fix of fixtures) {
 
     console.log(`=== ${fix.size} bytes ===`);
-    bench(`@protobuf-ts/runtime / base64encode()`, () => base64encode(fix.bytes));
+    bench(`@chippercash/protobuf-runtime / base64encode()`, () => base64encode(fix.bytes));
     bench(`@protobufjs/base64 / encode()`, () => protobufJs.encode(fix.bytes, 0, fix.bytes.length));
     bench(`goog.crypt.base64.encodeByteArray()`, () => goog_encodeByteArray(fix.bytes));
 
 }
-
-

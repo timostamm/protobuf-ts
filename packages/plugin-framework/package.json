@@ -1,5 +1,5 @@
 {
-  "name": "@protobuf-ts/plugin-framework",
+  "name": "@chippercash/protobuf-plugin-framework",
   "version": "2.4.0",
   "description": "framework to create protoc plugins",
   "license": "(Apache-2.0 AND BSD-3-Clause)",
@@ -13,11 +13,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/timostamm/protobuf-ts.git",
+    "url": "https://github.com/ChipperCash/protobuf-ts.git",
     "directory": "packages/plugin-framework"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
   },
   "main": "./build/commonjs/index.js",
   "module": "./build/es2015/index.js",
@@ -33,7 +33,7 @@
     "tslib": ">=1.6.1"
   },
   "dependencies": {
-    "@protobuf-ts/runtime": "^2.4.0",
+    "@chippercash/protobuf-runtime": "^2.4.0",
     "typescript": "^3.9"
   },
   "gitHead": "2742e3995c14cab17e74be919b59b878c8383ad9"

@@ -1,5 +1,5 @@
 {
-  "name": "@protobuf-ts/protoc",
+  "name": "@chippercash/protobuf-protoc",
   "version": "2.4.0",
   "description": "Installs the protocol buffer compiler \"protoc\" for you.",
   "license": "Apache-2.0",
@@ -13,13 +13,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/timostamm/protobuf-ts.git",
+    "url": "https://github.com/ChipperCash/protobuf-ts.git",
     "directory": "packages/protoc"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "bin": {
     "protoc": "./protoc.js"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

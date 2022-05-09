@@ -7,7 +7,7 @@ import {
 import {ReadStream} from "tty";
 import {types} from "util";
 import {GeneratedFile} from "./generated-file";
-import {PbULong} from "@protobuf-ts/runtime";
+import {PbULong} from "@chippercash/protobuf-runtime";
 
 
 export type OptionsSpec = {

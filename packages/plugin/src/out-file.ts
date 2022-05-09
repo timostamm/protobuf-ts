@@ -4,7 +4,7 @@ import {
     FileDescriptorProtoFields,
     GeneratedFile,
     TypescriptFile,
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import {InternalOptions} from "./our-options";
 
 

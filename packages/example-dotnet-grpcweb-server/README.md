@@ -1,4 +1,4 @@
-@protobuf-ts/example-dotnet-grpcweb-server
+@chippercash/protobuf-example-dotnet-grpcweb-server
 ==========================================
 
 This is a simple gRPC-web server using dotnet core. 
@@ -20,4 +20,3 @@ without restrictions.
 
 For a gRPC server (no web), see packages/example-dotnet-grpc-server. It shares 
 the same code (except for minor changes in `appsettings.json` and `Startup.cs`).
-

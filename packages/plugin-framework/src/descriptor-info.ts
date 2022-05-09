@@ -20,7 +20,7 @@ import {
 } from "./google/protobuf/descriptor";
 import { ITypeNameLookup } from "./type-names";
 import { IDescriptorTree } from "./descriptor-tree";
-import { assert, lowerCamelCase } from "@protobuf-ts/runtime";
+import { assert, lowerCamelCase } from "@chippercash/protobuf-runtime";
 import { StringFormat } from "./string-format";
 
 

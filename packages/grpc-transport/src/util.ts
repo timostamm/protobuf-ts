@@ -1,6 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
-import {RpcMetadata} from "@protobuf-ts/runtime-rpc";
-import {listEnumValues} from "@protobuf-ts/runtime";
+import {RpcMetadata} from "@chippercash/protobuf-runtime-rpc";
+import {listEnumValues} from "@chippercash/protobuf-runtime";
 
 
 /**

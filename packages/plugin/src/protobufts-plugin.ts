@@ -10,7 +10,7 @@ import {
   setupCompiler,
   SymbolTable,
   TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 import { OutFile } from "./out-file";
 import { createLocalTypeName } from "./code-gen/local-type-name";
 import { Interpreter } from "./interpreter";
@@ -164,7 +164,7 @@ export class ProtobuftsPlugin extends PluginBase {
       description: "If set, the generated rpc client will have an angular @Injectable() \n" +
         "annotation and the `RpcTransport` constructor argument is annotated with a \n" +
         "@Inject annotation. For this feature, you will need the npm package \n" +
-        "'@protobuf-ts/runtime-angular'.",
+        "'@chippercash/protobuf-runtime-angular'.",
       excludes: ['force_client_none'],
     },
 
@@ -178,7 +178,7 @@ export class ProtobuftsPlugin extends PluginBase {
     },
     server_generic: {
       description: "Generate a generic server interface. Adapters are used to serve the service, \n" +
-        "for example @protobuf-ts/grpc-backend for gRPC. \n" +
+        "for example @chippercash/protobuf-grpc-backend for gRPC. \n" +
         "Note that this is an experimental feature and may change with a minor release. \n" +
         "Only applies to services that do *not* use the option `ts.server`.",
       excludes: ['server_none', 'force_server_none'],

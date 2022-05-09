@@ -5,14 +5,14 @@
 // Twirp example RPC
 // https://github.com/twitchtv/twirp-example/blob/c1501aeb89609a522db7d79d4c2e71b6c032af28/rpc/haberdasher/haberdasher.proto
 //
-import { RpcTransport } from "@protobuf-ts/runtime-rpc";
-import { ServiceInfo } from "@protobuf-ts/runtime-rpc";
+import { RpcTransport } from "@chippercash/protobuf-runtime-rpc";
+import { ServiceInfo } from "@chippercash/protobuf-runtime-rpc";
 import { Haberdasher } from "./service-twirp-example";
-import { stackIntercept } from "@protobuf-ts/runtime-rpc";
+import { stackIntercept } from "@chippercash/protobuf-runtime-rpc";
 import { Hat } from "./service-twirp-example";
 import { Size } from "./service-twirp-example";
-import { UnaryCall } from "@protobuf-ts/runtime-rpc";
-import { RpcOptions } from "@protobuf-ts/runtime-rpc";
+import { UnaryCall } from "@chippercash/protobuf-runtime-rpc";
+import { RpcOptions } from "@chippercash/protobuf-runtime-rpc";
 /**
  * A Haberdasher makes hats for clients.
  *

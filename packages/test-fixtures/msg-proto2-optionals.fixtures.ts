@@ -1,5 +1,5 @@
 import type { Fixture } from "./index";
-import { MessageType } from "@protobuf-ts/runtime";
+import { MessageType } from "@chippercash/protobuf-runtime";
 
 
 const f: Fixture[] = [];

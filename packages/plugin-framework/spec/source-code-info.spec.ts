@@ -10,7 +10,7 @@ import {
     sourceCodeLocationToComment,
     sourceCodeLocationToCursor
 } from "../src/";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 
 const pathTo_MessageWithComments_Foo = [4, 0, 2, 0];
 const cursor_MessageWithComments_Foo = [28, 5];
@@ -65,4 +65,3 @@ describe('makeSourceCodePathComponent()', function () {
         expect(component).toBeDefined();
     });
 });
-

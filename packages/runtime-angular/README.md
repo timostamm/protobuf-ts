@@ -1,4 +1,4 @@
-@protobuf-ts/runtime-angular
+@chippercash/protobuf-runtime-angular
 ============================
 
 Runtime library for using [protobuf-ts](https://github.com/timostamm/protobuf-ts/) with Angular.
@@ -7,13 +7,13 @@ Runtime library for using [protobuf-ts](https://github.com/timostamm/protobuf-ts
 Installation:
                                                                                          
 ```shell script
-npm i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/runtime-angular @protobuf-ts/twirp-transport
+npm i @chippercash/protobuf-runtime @chippercash/protobuf-runtime-rpc @chippercash/protobuf-runtime-angular @chippercash/protobuf-twirp-transport
 ``` 
 
 You probably want the protoc plugin as well: 
                                                                                          
 ```shell script
-npm i -D @protobuf-ts/plugin
+npm i -D @chippercash/protobuf-plugin
 ``` 
 
 
@@ -40,4 +40,3 @@ version 10.0.5.
 To work with lerna, `package.json` has the `publishConfig.directory` set to `./dist/` 
 and the [lifecycle script]( https://github.com/lerna/lerna/tree/master/commands/version#lifecycle-scripts) 
 `scripts.version` bumps the versions of `peerDependencies` and updates `dist/package.jsons`. 
-

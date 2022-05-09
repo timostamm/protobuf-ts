@@ -1,12 +1,12 @@
-import * as rt from "@protobuf-ts/runtime";
-import * as rpc from "@protobuf-ts/runtime-rpc";
+import * as rt from "@chippercash/protobuf-runtime";
+import * as rpc from "@chippercash/protobuf-runtime-rpc";
 import * as ts from "typescript";
 import {
     DescriptorRegistry,
     TypescriptFile,
     TypeScriptImports,
     typescriptLiteralFromValue
-} from "@protobuf-ts/plugin-framework";
+} from "@chippercash/protobuf-plugin-framework";
 
 
 /**

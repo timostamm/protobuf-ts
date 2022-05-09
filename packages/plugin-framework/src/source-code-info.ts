@@ -11,7 +11,7 @@ import {
 } from "./google/protobuf/descriptor";
 import {AnyDescriptorProto} from "./descriptor-info";
 import {DescriptorParentFn} from "./descriptor-tree";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 
 
 export interface ISourceCodeInfoLookup {

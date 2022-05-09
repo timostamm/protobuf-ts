@@ -1,5 +1,5 @@
 import {NullValue, Struct} from "../ts-out/google/protobuf/struct";
-import type {JsonObject} from "@protobuf-ts/runtime";
+import type {JsonObject} from "@chippercash/protobuf-runtime";
 
 describe('google.protobuf.Struct', function () {
 

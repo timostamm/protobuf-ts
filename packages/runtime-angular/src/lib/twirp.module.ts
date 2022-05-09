@@ -1,6 +1,6 @@
 import { ModuleWithProviders, NgModule } from "@angular/core";
 import { TwirpTransport } from "./twirp-transport.service";
-import { TwirpOptions } from "@protobuf-ts/twirp-transport";
+import { TwirpOptions } from "@chippercash/protobuf-twirp-transport";
 import { HttpClientModule } from "@angular/common/http";
 import { TWIRP_TRANSPORT_OPTIONS } from "./twirp-transport-options";
 import { RPC_TRANSPORT } from "./rpc-transport";

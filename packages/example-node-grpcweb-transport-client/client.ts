@@ -1,6 +1,6 @@
 import {FailRequest} from "./service-example";
 import {ExampleServiceClient, IExampleServiceClient} from "./service-example.client";
-import {GrpcWebFetchTransport} from "@protobuf-ts/grpcweb-transport";
+import {GrpcWebFetchTransport} from "@chippercash/protobuf-grpcweb-transport";
 import {default as fetch, Headers} from "node-fetch";
 
 
@@ -81,4 +81,3 @@ async function callServerStream(client: IExampleServiceClient) {
 
 
 main().catch(e => console.error(e)).finally(() => process.exit());
-

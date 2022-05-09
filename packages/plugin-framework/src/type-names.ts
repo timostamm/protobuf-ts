@@ -1,7 +1,7 @@
 import {AnyDescriptorProto, AnyTypeDescriptorProto, isAnyTypeDescriptorProto} from "./descriptor-info";
 import {DescriptorParentFn, IDescriptorTree} from "./descriptor-tree";
 import {FileDescriptorProto} from "./google/protobuf/descriptor";
-import {assert} from "@protobuf-ts/runtime";
+import {assert} from "@chippercash/protobuf-runtime";
 
 /**
  * Can lookup a type name.

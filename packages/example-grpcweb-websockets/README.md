@@ -1,4 +1,4 @@
-@protobuf-ts/example-grpcweb-websockets
+@chippercash/protobuf-example-grpcweb-websockets
 =======================================
 
 `@protobuf-ts` does _not_ implement gRPC-web over websockets at this time.
@@ -26,4 +26,3 @@ Run `make improbable-client`. This will generate improbable-eng client
 code and start a webpack dev server listening on `localhost:8080`. 
 Launch http://localhost:8080 in your browser. The [script](./improbable-client/src/index.ts) 
 will run all methods of the example service.
-

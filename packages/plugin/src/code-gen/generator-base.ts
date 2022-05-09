@@ -1,5 +1,5 @@
 import {CommentGenerator} from "./comment-generator";
-import {DescriptorRegistry, SymbolTable, TypeScriptImports} from "@protobuf-ts/plugin-framework";
+import {DescriptorRegistry, SymbolTable, TypeScriptImports} from "@chippercash/protobuf-plugin-framework";
 import {Interpreter} from "../interpreter";
 
 

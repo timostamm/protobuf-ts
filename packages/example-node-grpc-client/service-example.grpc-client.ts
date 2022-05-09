@@ -2,8 +2,8 @@
 // @generated from protobuf file "service-example.proto" (package "spec", syntax proto3)
 // tslint:disable
 import { ExampleService } from "./service-example";
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
+import type { BinaryWriteOptions } from "@chippercash/protobuf-runtime";
+import type { BinaryReadOptions } from "@chippercash/protobuf-runtime";
 import type { ExampleResponse } from "./service-example";
 import type { ExampleRequest } from "./service-example";
 import * as grpc from "@grpc/grpc-js";
