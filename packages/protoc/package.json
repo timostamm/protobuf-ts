@@ -16,10 +16,10 @@
     "url": "https://github.com/ChipperCash/protobuf-ts.git",
     "directory": "packages/protoc"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "bin": {
     "protoc": "./protoc.js"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

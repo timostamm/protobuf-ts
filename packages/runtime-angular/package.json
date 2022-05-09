@@ -18,7 +18,7 @@
     "directory": "packages/runtime-angular"
   },
   "publishConfig": {
-    "access": "public",
+    "registry": "https://npm.pkg.github.com",
     "directory": "./dist/"
   },
   "scripts": {

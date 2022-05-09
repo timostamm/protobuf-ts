@@ -27,7 +27,7 @@
     "directory": "packages/plugin"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "@types/jasmine": "^3.5.10",

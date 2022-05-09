@@ -17,13 +17,13 @@
     "url": "https://github.com/ChipperCash/protobuf-ts.git",
     "directory": "packages/twirp-transport"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "main": "./build/commonjs/index.js",
   "module": "./build/es2015/index.js",
   "typings": "./build/types/index.d.ts",
   "sideEffects": false,
-  "publishConfig": {
-    "access": "public"
-  },
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
     "abort-controller": "^3.0.0",
