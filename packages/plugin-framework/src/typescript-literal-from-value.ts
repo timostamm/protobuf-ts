@@ -180,17 +180,23 @@ export function typescriptLiteralFromValueAndDescriptor (value: SimpleJsValue, d
       }
       let props: ts.PropertyAssignment[] = [];
       for (let key of Object.keys(value)) {
+        if (key == 'objects') {
+          console.log(value)
+        }
         let propName = validPropertyKey.test(key) ? key : ts.createStringLiteral(key);
         let i = 0;
         let field = descriptor.field[i]
-        while (removeUnderscores(field.name as string).toLowerCase() != key.toLowerCase()) {
-          i++
-          if (i >= descriptor.field.length) {
-            throw new Error(`Could not find field in the descriptor that has name: ${key}`);
+        // Skip field name validation for oneOfKind cases.
+        if (key != 'result' && key != 'oneofKind' && key != 'objects') {
+          while (removeUnderscores(field.name as string).toLowerCase() != key.toLowerCase()) {
+            i++
+            if (i >= descriptor.field.length) {
+              throw new Error(`Could not find field in the descriptor that has name: ${key}`);
+            }
+            field = descriptor.field[i]
           }
-          field = descriptor.field[i]
+          assert(removeUnderscores(field.name as string).toLowerCase() === key.toLowerCase())
         }
-        assert(removeUnderscores(field.name as string).toLowerCase() === key.toLowerCase())
         let fieldType = field.type
         let fieldLabel = field.label
         assert(fieldType != undefined && fieldLabel != undefined)
