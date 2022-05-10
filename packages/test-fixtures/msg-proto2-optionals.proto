@@ -1,6 +1,8 @@
 syntax = "proto2";
 package spec;
 
+import "msg-enum.proto";
+
 
 message Proto2OptionalsMessage {
     optional string string_field = 1;
@@ -14,6 +16,26 @@ message Proto2OptionalsMessage {
         NO = 2;
     }
     message TestMessage {
-        required string field = 1;
+      required string field = 1;
     }
+}
+
+enum SagaStatus {
+  SAGA_STATUS_UNSPECIFIED = 0;
+  PENDING = 1;
+  COMPLETED = 2;
+  FAILED = 3;
+}
+
+enum SagaType {
+  SAGA_TYPE_UNSPECIFIED = 0;
+  PAYMENTS = 1;
+}
+
+message GetSagaQuestionResponse {
+  required string id = 1;
+  optional SagaStatus status = 2;
+  optional SagaType type = 3;
+  repeated spec.ChipperError errors = 4;
+  // optional SagaResponsePayload response = 5;
 }

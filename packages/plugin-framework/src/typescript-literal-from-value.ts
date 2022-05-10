@@ -179,10 +179,18 @@ export function typescriptLiteralFromValueAndDescriptor (value: SimpleJsValue, d
         throw new Error(`got a non-plain object ${value.constructor}`);
       }
       let props: ts.PropertyAssignment[] = [];
-      let i = 0;
       for (let key of Object.keys(value)) {
         let propName = validPropertyKey.test(key) ? key : ts.createStringLiteral(key);
+        let i = 0;
         let field = descriptor.field[i]
+        while (removeUnderscores(field.name as string).toLowerCase() != key.toLowerCase()) {
+          i++
+          if (i >= descriptor.field.length) {
+            throw new Error(`Could not find field in the descriptor that has name: ${key}`);
+          }
+          field = descriptor.field[i]
+        }
+        assert(removeUnderscores(field.name as string).toLowerCase() === key.toLowerCase())
         let fieldType = field.type
         let fieldLabel = field.label
         assert(fieldType != undefined && fieldLabel != undefined)
@@ -222,6 +230,15 @@ export function typescriptLiteralFromValueAndDescriptor (value: SimpleJsValue, d
       return ts.createObjectLiteral(props, false);
   }
   assertNever(value);
+}
+
+function removeUnderscores (str: string): string {
+  const pieces = str.split('_')
+  let result = ''
+  for (let el of pieces) {
+    result += el
+  }
+  return result
 }
 
 export function createEnumPropertyAccessExp (value: string, enumType: string): ts.PropertyAccessExpression {

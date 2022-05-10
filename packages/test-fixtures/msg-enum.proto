@@ -51,8 +51,8 @@ enum PrefixEnum {
 
 message ChipperError {
   SimpleEnum enum = 1;
-  string serviceCode = 2;
+  string service_code = 2;
   string message = 3;
-  bool isUserVisible = 4;
-  string traceId = 5;
+  bool is_user_visible = 4;
+  string trace_id = 5;
 }

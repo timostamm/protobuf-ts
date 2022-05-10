@@ -57,7 +57,6 @@ message FieldUiBehaviour {
     }
 }
 
-
 // shows the usage of custom field options
 message AnnotatedMessage {
 
@@ -94,6 +93,6 @@ message AnnotatedMessage {
 
     spec.SimpleEnum status = 11;
     // spec.EnumFieldMessage msg = 12;
-    // repeated spec.ChipperError errors = 12;
+    repeated spec.ChipperError errors = 12;
 
 }
