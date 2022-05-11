@@ -13,6 +13,31 @@ message OneofScalarMemberMessage {
         // Contains error message if result not available
         string error = 2;
     }
+    int32 extra = 3;
+}
+
+message OneofEnumMemberMessage {
+
+  // Only one of (or none of) the fields below can be selected
+  oneof result {
+
+      // Contains the value if result available
+      EnumA enum_a = 1;
+
+      // Contains error message if result not available
+      EnumB enum_b = 2;
+  }
+  int32 extra = 3;
+
+  enum EnumA {
+    DEFAULT_B = 0;
+    ONE = 1;
+  }
+
+  enum EnumB {
+    DEFAULT = 0;
+    TEN = 1;
+  }
 }
 
 // Oneof with 2 message members

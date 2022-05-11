@@ -179,24 +179,33 @@ export function typescriptLiteralFromValueAndDescriptor (value: SimpleJsValue, d
         throw new Error(`got a non-plain object ${value.constructor}`);
       }
       let props: ts.PropertyAssignment[] = [];
-      for (let key of Object.keys(value)) {
-        if (key == 'objects') {
-          console.log(value)
+      let oneofFieldNames = new Set<string>(['oneofkind']);
+      if (descriptor.oneofDecl.length > 0) {
+        for (const decl of descriptor.oneofDecl) {
+          oneofFieldNames.add(removeUnderscores(decl.name!).toLowerCase())
         }
+      }
+      for (let key of Object.keys(value)) {
         let propName = validPropertyKey.test(key) ? key : ts.createStringLiteral(key);
+        // Handle oneof cases.
+        if (oneofFieldNames.has(key.toLowerCase())) {
+          let propVal = typescriptLiteralFromValueAndDescriptor(value[key], descriptor);
+          props.push(
+            ts.createPropertyAssignment(propName, propVal)
+          );
+          continue;
+        }
         let i = 0;
         let field = descriptor.field[i]
-        // Skip field name validation for oneOfKind cases.
-        if (key != 'result' && key != 'oneofKind' && key != 'objects') {
-          while (removeUnderscores(field.name as string).toLowerCase() != key.toLowerCase()) {
-            i++
-            if (i >= descriptor.field.length) {
-              throw new Error(`Could not find field in the descriptor that has name: ${key}`);
-            }
-            field = descriptor.field[i]
+
+        while (removeUnderscores(field.name as string).toLowerCase() != key.toLowerCase()) {
+          i++
+          if (i >= descriptor.field.length) {
+            throw new Error(`Could not find field in the descriptor that has name: ${key}`);
           }
-          assert(removeUnderscores(field.name as string).toLowerCase() === key.toLowerCase())
+          field = descriptor.field[i]
         }
+        assert(removeUnderscores(field.name as string).toLowerCase() === key.toLowerCase())
         let fieldType = field.type
         let fieldLabel = field.label
         assert(fieldType != undefined && fieldLabel != undefined)
