@@ -1,6 +1,6 @@
 {
   "name": "@chippercash/protobuf-plugin-framework",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "framework to create protoc plugins",
   "license": "(Apache-2.0 AND BSD-3-Clause)",
   "author": "Timo Stamm <ts@timostamm.com>",
