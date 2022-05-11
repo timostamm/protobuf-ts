@@ -322,11 +322,21 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
   scalarOneof (source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }, fieldDeclarationComment: string): ts.Statement[] {
     let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
-
     let groupPropertyAccess = ts.createPropertyAccess(
       ts.createIdentifier("message"),
       ts.createIdentifier(field.oneof)
     );
+    let enumWriteExp
+    if (field.kind == "enum") {
+      const enumDescriptor = this.registry.resolveTypeName(field.T()[0])
+      const enumName = this.imports.type(source, enumDescriptor)
+      const enumMap = this.imports.type(source, enumDescriptor, 'object')
+      const fieldPropertyAccess = ts.createPropertyAccess(
+        groupPropertyAccess,
+        field.localName
+      )
+      enumWriteExp = this.createEnumValueWriteExpression(enumName, enumMap, fieldPropertyAccess)
+    }
 
     let statement = ts.createIf(
       // if (message.result.oneofKind === 'value')
@@ -343,10 +353,12 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         this.makeWriterCall(
           this.makeWriterTagCall(source, 'writer', field.no, this.wireTypeForSingleScalar(type)),
           type,
-          ts.createPropertyAccess(
-            groupPropertyAccess,
-            field.localName
-          )
+          field.kind == "enum" ?
+            enumWriteExp :
+            ts.createPropertyAccess(
+              groupPropertyAccess,
+              field.localName
+            )
         )
       ),
       undefined

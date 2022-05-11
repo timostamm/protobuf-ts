@@ -15,8 +15,9 @@ describe('protobuftsPlugin', function () {
       'msg-annotated.proto',
       'msg-enum.proto',
       'msg-longs.proto',
-      'msg-proto3-optionals.proto',
+      'msg-proto2-optionals.proto',
       'msg-maps.proto',
+      'msg-proto3-optionals.proto',
       // 'google/protobuf/descriptor.proto'
     ],
     includeFiles: [
@@ -30,7 +31,7 @@ describe('protobuftsPlugin', function () {
       // 'google/protobuf/unittest_import_public.proto',
       // 'google/protobuf/wrappers.proto',
       'msg-scalar.proto',
-      'msg-proto3-optionals.proto',
+      'msg-proto2-optionals.proto',
       // 'google/protobuf/any.proto',
       // 'google/protobuf/wrappers.proto',
       // 'google/protobuf/struct.proto',
@@ -44,7 +45,7 @@ describe('protobuftsPlugin', function () {
       //  'service-simple.proto',
       //  'service-example.proto',
       //  'service-style-all.proto',
-      // 'msg-proto3-optionals.proto',
+      'msg-proto3-optionals.proto',
       // 'google/rpc/status.proto',
     ]
   });
