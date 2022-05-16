@@ -3,4 +3,4 @@
 // webpack verbose output hints that this should be useful
 
 
-export {adaptService, createContext} from "./grpc-adapter";
+export {adaptService, createContext, createDefinition} from "./grpc-adapter";
