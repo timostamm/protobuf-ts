@@ -2,6 +2,23 @@
 
 none
 
+
+### v2.6.0
+
+New Features:
+
+- Add ability to pass grpc-js MetadataOptions to GrpcOptions in @protobuf-ts/grpc-transport #261  
+  Thanks to @kskalski for the contribution!
+
+- export createDefinition from @protobuf-ts/grpc-backend #307  
+  Thanks to @3Aeyalpost for the contribution!
+
+- Treat null values the same as undefined when generating protobuf messages #299  
+  Thanks to @markh123 for the contribution!
+
+- Use Promise as return type for call.then() #308
+
+
 ### v2.5.0
 
 New Features:
@@ -102,8 +119,8 @@ New features:
 - Add keep_enum_prefix plugin option #187
 - json: Small performance improvement when encoding to JSON, see #191
 
-Note: In the past, protobuf-ts only had patch releases and major releases. Going forward, protobuf-ts will bump the minor version for 
-releases that add features. 
+Note: In the past, protobuf-ts only had patch releases and major releases. Going forward, protobuf-ts will bump the minor version for
+releases that add features.
 
 
 ### v2.0.7
@@ -138,7 +155,7 @@ Bug fixes:
 New features:
 
 - Do not unnecessarily copy read data in BinaryReader, see #148  
-  Note that it is now strictly necessary to respect the offset of the underlying buffer 
+  Note that it is now strictly necessary to respect the offset of the underlying buffer
   of byte fields.
 - Add `force_exclude_all_options` plugin option, see #126  
   Thanks to @optiman for the suggestion.
@@ -146,20 +163,20 @@ New features:
 Bug fixes:
 
 - The new symbol property `MESSAGE_TYPE` broke user unit tests. The property was set to non-enumerable.  
-  Thanks to @jcready for the feedback. 
+  Thanks to @jcready for the feedback.
 
 
 ### v2.0.3
 
 New features:
 
-- All messages created with `create()` now have a symbol property `MESSAGE_TYPE` 
-  that provides access to the messages type. Use `containsMessageType(yourMessage)` 
+- All messages created with `create()` now have a symbol property `MESSAGE_TYPE`
+  that provides access to the messages type. Use `containsMessageType(yourMessage)`
   to check if a message contains its type and access it with `yourMessage[MESSAGE_TYPE]`.
-  
-  Note that this is an experimental feature - it is here to stay, but implementation 
+
+  Note that this is an experimental feature - it is here to stay, but implementation
   details may change without notice.
-  
+
   Many thanks to @odashevskii-plaid for the contribution.
 
 
@@ -186,8 +203,8 @@ Bug fixes:
 
 New features:
 
-- @protobuf-ts/plugin expresses TypeScript compatibility with 
-  a `peerDependency` `>=3.8.3`. Thanks to @ghaiklor-wix for the 
+- @protobuf-ts/plugin expresses TypeScript compatibility with
+  a `peerDependency` `>=3.8.3`. Thanks to @ghaiklor-wix for the
   suggestion.
 
 
@@ -327,7 +344,7 @@ New features:
 
 Breaking changes:
 
-- `RpcOptions` takes a `timeout` property now. `deadline` property 
+- `RpcOptions` takes a `timeout` property now. `deadline` property
   has been removed. See #138 for details.
 
 
@@ -343,7 +360,7 @@ Bug fixes:
 
 Bug fixes:
 
-- Fix protoc error message "Plugin output is unparseable" for certain 
+- Fix protoc error message "Plugin output is unparseable" for certain
   plugin output sizes, see #134.  
   Thanks to @fenos for the investigation and fix!
 
@@ -356,8 +373,8 @@ New features:
 Cleanup:
 
 - Rename plugin parameters to "plugin options".  
-  The code generator request only accepts a single parameter string, 
-  but this should be considered an implementation detail. `protoc` 
+  The code generator request only accepts a single parameter string,
+  but this should be considered an implementation detail. `protoc`
   uses `--ts_opt`, so we should speak of options, not parameters.
 
 
@@ -396,17 +413,17 @@ New feature:
 
 New feature:
 
-- runtime: Message options are now available in reflection 
+- runtime: Message options are now available in reflection
   information, see #35.
-- plugin: Groups (deprecated proto2 feature) are now completely 
-  ignored, but should still be treated properly as unknown fields. 
+- plugin: Groups (deprecated proto2 feature) are now completely
+  ignored, but should still be treated properly as unknown fields.
 - runtime: BinaryReader.skip() supports WireType.StartGroup now.
 
 Breaking changes:
 
-- runtime: The MessageInfo interface requires the new "options" 
-  property.  
-- plugin-framework: IDescriptorInfo.isMessageField() no longer 
+- runtime: The MessageInfo interface requires the new "options"
+  property.
+- plugin-framework: IDescriptorInfo.isMessageField() no longer
   returns true for GROUP field type.
 
 ### v2.0.0-alpha.22
@@ -430,26 +447,26 @@ New features:
 
 Bug Fixes:
 
-- Fixed grpcweb-transport to handle responses with HTTP error status 
+- Fixed grpcweb-transport to handle responses with HTTP error status
   and missing content-type header, see #102.  
   Thanks to @frederikhors for the bug report.
-  
+
 Breaking changes:
 
-- grpcweb-transport: The function `readGrpcWebResponseHeader()` no longer 
+- grpcweb-transport: The function `readGrpcWebResponseHeader()` no longer
   returns the format.
-  
+
 - grpcweb-transport: The function `readGrpcWebResponseBody()` no longer takes
-  the format as an argument. Instead, it now takes the content-type response 
+  the format as an argument. Instead, it now takes the content-type response
   header value and determines the format on its own.
 
 
 
 ### v1.0.13
 
-v2.0.0-alpha.18 was accidentally published in the "latest" channel. 
-This release is identical with v1.0.12, it just fixes the "latest" 
-NPM release. 
+v2.0.0-alpha.18 was accidentally published in the "latest" channel.
+This release is identical with v1.0.12, it just fixes the "latest"
+NPM release.
 
 
 
@@ -463,7 +480,7 @@ New features:
 
 ### v2.0.0-alpha.18
 
-This release was accidentally published in the "latest" channel as 
+This release was accidentally published in the "latest" channel as
 v2.0.0-alpha.18
 
 Please disregard.
@@ -512,7 +529,7 @@ Breaking changes:
 
 - grpcweb-transport deadline option is used as a timeout, but should be used as a timestamp (see #80)
 
-Bug Fixes: 
+Bug Fixes:
 
 - Improve support for the `node-fetch` polyfill (see #81)
 
@@ -607,10 +624,10 @@ New features:
 - server streaming and client streaming added to experimental gRPC transport (see #45)
 
 
-### v1.0.12 
+### v1.0.12
 
-This patch removes source mappings and declaration mappings from 
-the npm packages. See #40. 
+This patch removes source mappings and declaration mappings from
+the npm packages. See #40.
 
 Thanks to @johnsoncodehk and @tlstyer for the reports.
 
@@ -624,7 +641,7 @@ New features:
 
 Breaking changes:
 
-- The function `mergeExtendedRpcOptions` was renamed to `mergeRpcOptions`.  
+- The function `mergeExtendedRpcOptions` was renamed to `mergeRpcOptions`.
 
 
 ### v2.0.0-alpha.3
@@ -661,23 +678,23 @@ Bug Fixes:
 Breaking changes:
 
 - The `cancel` method of RPC was removed, see #9  
-  As a replacement, you can pass an `AbortSignal` in the call options instead.  
+  As a replacement, you can pass an `AbortSignal` in the call options instead.
 - plugin option "disable_service_client" was renamed to "force_client_none"
 - RpcOutputStream callback `onNext` is now called with `complete = false` on error.
 
 
 Deprecations:
 
-- the methods `stackUnaryInterceptors`, `stackServerStreamingInterceptors`, 
-  `stackClientStreamingInterceptors`, `stackDuplexStreamingInterceptors` are 
+- the methods `stackUnaryInterceptors`, `stackServerStreamingInterceptors`,
+  `stackClientStreamingInterceptors`, `stackDuplexStreamingInterceptors` are
   now deprecated. Use `stackIntercept` instead.
 
 
 
 ### v1.0.10 Bugfix for jstype = JS_STRING field option for speed optimized code
 
-This patch fixes a bug in the plugin: The field option jstype = JS_STRING 
-would generate invalid code for optimized speed. 
+This patch fixes a bug in the plugin: The field option jstype = JS_STRING
+would generate invalid code for optimized speed.
 
 The problem only surfaces if the plugin parameter long_type_string
 is *not* set and code is optimized for speed (instead of for code size).
@@ -686,8 +703,8 @@ See PR #29
 
 ### v1.0.9 Bugfix for jstype = JS_STRING field option
 
-This patch fixes a bug in the plugin: The field option jstype = JS_STRING 
-would still generate an interface with a bigint property. The problem only 
+This patch fixes a bug in the plugin: The field option jstype = JS_STRING
+would still generate an interface with a bigint property. The problem only
 surfaces if the plugin parameter long_type_string is *not* set.  
 See PR #28
 
@@ -701,7 +718,7 @@ Thanks to @pedelman and @pzeinlinger for the bug reports!
 
 ### v1.0.7 Bugfix for RangeError in google.protobuf.Timestamp.fromDate()
 
-This patch fixes a bug in the method google.protobuf.Timestamp.fromDate(). 
+This patch fixes a bug in the method google.protobuf.Timestamp.fromDate().
 See issue #22
 
 
@@ -743,7 +760,7 @@ This patch fixes issue #2
 
 This release adds automatic installation of the protocol buffer compiler.
 
-Installation is managed by the new package @protobuf-ts/protoc and is 
+Installation is managed by the new package @protobuf-ts/protoc and is
 tested on macos, linux and windows.
 
 
