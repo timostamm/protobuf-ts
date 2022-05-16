@@ -51,6 +51,16 @@ describe('reflectionMergePartial()', () => {
             expect(target[string_field.localName]).toBe("");
         });
 
+        it('null value does not overwrite existing value', () => {
+            const target = reflectionCreate(messageInfo);
+            target[string_field.localName] = "hello";
+            const source = {
+                [string_field.localName]: null as unknown as string
+            };
+            reflectionMergePartial(messageInfo, target, source);
+            expect(target[string_field.localName]).toBe("hello");
+        });
+
         it('omitted value does not overwrite existing value', () => {
             const target = reflectionCreate(messageInfo);
             target[string_field.localName] = "hello";
@@ -90,6 +100,20 @@ describe('reflectionMergePartial()', () => {
 
         describe('and source field empty', () => {
             const source: object = {child: undefined};
+            it('does not touch target', () => {
+                const target: any = {child: 123};
+                reflectionMergePartial(messageInfo, target, source);
+                expect(target.child).toBe(123);
+            });
+            it('does not call child handler', () => {
+                reflectionMergePartial(messageInfo, {}, source);
+                expect(childHandler.create).not.toHaveBeenCalled();
+                expect(childHandler.mergePartial).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('and source field null', () => {
+            const source: object = {child: null};
             it('does not touch target', () => {
                 const target: any = {child: 123};
                 reflectionMergePartial(messageInfo, target, source);
