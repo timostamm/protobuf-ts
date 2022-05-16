@@ -11,7 +11,7 @@ New Features:
   Thanks to @kskalski for the contribution!
 
 - export createDefinition from @protobuf-ts/grpc-backend #307  
-  Thanks to @3Aeyalpost for the contribution!
+  Thanks to @eyalpost for the contribution!
 
 - Treat null values the same as undefined when generating protobuf messages #299  
   Thanks to @markh123 for the contribution!
