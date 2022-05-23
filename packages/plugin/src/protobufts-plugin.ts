@@ -101,6 +101,9 @@ export class ProtobuftsPlugin extends PluginBase {
             description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
                          "default behaviour in the next major release.",
         },
+        force_optional_interface_fields: {
+            description: "All generated interface fields will have `?` syntax so that they're optional"
+        },
 
         // output types
         output_typescript: {

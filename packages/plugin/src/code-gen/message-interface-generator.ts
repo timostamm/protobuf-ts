@@ -24,6 +24,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
                 private readonly options: {
                     oneofKindDiscriminator: string;
                     normalLongType: rt.LongType;
+                    forceOptionalInterfaceFields: boolean;
                 }) {
         super(symbols, registry, imports, comments, interpreter);
     }
@@ -160,8 +161,8 @@ export class MessageInterfaceGenerator extends GeneratorBase {
             type = ts.createArrayTypeNode(type);
         }
 
-        // if optional, add question mark
-        let questionToken = fieldInfo.opt ? ts.createToken(ts.SyntaxKind.QuestionToken) : undefined;
+        // if optional, or force optional interface fields is true, add question mark
+        let questionToken = (fieldInfo.opt || this.options.forceOptionalInterfaceFields) ? ts.createToken(ts.SyntaxKind.QuestionToken) : undefined;
 
         // create property
         const property = ts.createPropertySignature(
