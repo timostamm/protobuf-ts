@@ -101,6 +101,10 @@ export class ProtobuftsPlugin extends PluginBase {
             description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
                          "default behaviour in the next major release.",
         },
+        change_client_suffix: {
+            description: "Changes the suffix `.client` to `_client`. This allows \n" +
+                         "compatibility with remix.run.",
+        },
 
         // output types
         output_typescript: {
@@ -259,9 +263,10 @@ export class ProtobuftsPlugin extends PluginBase {
         }
         for (let fileDescriptor of registry.allFiles()) {
             const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
+            const clientSuffix = (options.changeClientSuffix ? "_" : ".") + 'client.ts';
             fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
             fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc1-server');
-            fileTable.register(base + '.client.ts', fileDescriptor, 'client');
+            fileTable.register(base + clientSuffix, fileDescriptor, 'client');
             fileTable.register(base + '.promise-client.ts', fileDescriptor, 'promise-client');
             fileTable.register(base + '.rx-client.ts', fileDescriptor, 'rx-client');
             fileTable.register(base + '.grpc-client.ts', fileDescriptor, 'grpc1-client');
