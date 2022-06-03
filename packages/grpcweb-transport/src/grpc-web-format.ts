@@ -86,13 +86,21 @@ export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: numb
 export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatus?: number, httpStatusText?: string): [GrpcStatusCode, string | undefined, RpcMetadata] {
     if (arguments.length === 1) {
         let fetchResponse = headersOrFetchResponse as Response;
-        switch (fetchResponse.type) {
+
+        // Cloudflare Workers throw when the type property of a fetch response
+        // is accessed, so wrap access with try/catch. See:
+        // * https://developers.cloudflare.com/workers/runtime-apis/response/#properties
+        // * https://github.com/cloudflare/miniflare/blob/72f046e/packages/core/src/standards/http.ts#L646
+        let responseType
+        try { responseType = fetchResponse.type } catch {}
+        switch (responseType) {
             case "error":
             case "opaque":
             case "opaqueredirect":
                 // see https://developer.mozilla.org/en-US/docs/Web/API/Response/type
                 throw new RpcError(`fetch response type ${fetchResponse.type}`, GrpcStatusCode[GrpcStatusCode.UNKNOWN]);
         }
+
         return readGrpcWebResponseHeader(
             fetchHeadersToHttp(fetchResponse.headers),
             fetchResponse.status,
