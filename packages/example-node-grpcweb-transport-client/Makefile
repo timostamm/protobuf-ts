@@ -7,7 +7,7 @@ npm-install:
 	npm i
 
 generate:
-	npx protoc -I . --ts_out . --ts_opt generate_dependencies,optimize_code_size service-example.proto
+	npx protoc -I . --ts_out . --ts_opt optimize_code_size service-example.proto
 
 run-client:
 	npx ts-node client.ts

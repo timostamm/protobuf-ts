@@ -93,7 +93,7 @@ export class ClientStreamingCall<I extends object = object, O extends object = o
     then<TResult1 = FinishedClientStreamingCall<I, O>, TResult2 = never>(
         onfulfilled?: ((value: FinishedClientStreamingCall<I, O>) => (PromiseLike<TResult1> | TResult1)) | undefined | null,
         onrejected?: ((reason: any) => (PromiseLike<TResult2> | TResult2)) | undefined | null
-    ): PromiseLike<TResult1 | TResult2> {
+    ): Promise<TResult1 | TResult2> {
         return this.promiseFinished().then(
             value => onfulfilled ? Promise.resolve(onfulfilled(value)) : value as unknown as TResult1,
             reason => onrejected ? Promise.resolve(onrejected(reason)) : Promise.reject(reason));

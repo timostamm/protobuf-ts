@@ -13,9 +13,10 @@ import {typeofJsonValue} from "./json-typings";
 import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
 import {jsonReadOptions, jsonWriteOptions,} from "./json-format-contract";
 import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
-import {binaryReadOptions, binaryWriteOptions} from "./binary-format-contract";
 import {reflectionEquals} from "./reflection-equals";
 import type {UnknownMessage} from "./unknown-types";
+import {binaryWriteOptions} from "./binary-writer";
+import {binaryReadOptions} from "./binary-reader";
 
 /**
  * This standard message type provides reflection-based

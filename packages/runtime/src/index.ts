@@ -16,8 +16,6 @@ export {
     WireType,
     BinaryReadOptions,
     BinaryWriteOptions,
-    binaryWriteOptions,
-    binaryReadOptions,
     mergeBinaryOptions,
     IBinaryWriter,
     IBinaryReader,
@@ -25,10 +23,10 @@ export {
 } from './binary-format-contract';
 
 // Standard IBinaryReader implementation
-export {BinaryReader} from './binary-reader';
+export {BinaryReader, binaryReadOptions} from './binary-reader';
 
 // Standard IBinaryWriter implementation
-export {BinaryWriter} from './binary-writer';
+export {BinaryWriter, binaryWriteOptions} from './binary-writer';
 
 // Int64 and UInt64 implementations required for the binary format
 export {PbLong, PbULong} from './pb-long';

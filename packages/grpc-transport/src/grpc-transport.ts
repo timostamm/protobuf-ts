@@ -58,9 +58,7 @@ export class GrpcTransport implements RpcTransport {
 
         const opt = options,
             meta = opt.meta ?? {},
-            gMeta = metadataToGrpc(meta, new Metadata({
-                idempotentRequest: method.idempotency === "IDEMPOTENT"
-            })),
+            gMeta = metadataToGrpc(meta, opt.metadataOptions, method.idempotency === "IDEMPOTENT"),
             defHeader = new Deferred<RpcMetadata>(),
             defMessage = new Deferred<O>(),
             defStatus = new Deferred<RpcStatus>(),
@@ -129,9 +127,7 @@ export class GrpcTransport implements RpcTransport {
 
         const opt = options,
             meta = opt.meta ?? {},
-            gMeta = metadataToGrpc(meta, new Metadata({
-                idempotentRequest: method.idempotency === "IDEMPOTENT"
-            })),
+            gMeta = metadataToGrpc(meta, opt.metadataOptions, method.idempotency === "IDEMPOTENT"),
             defHeader = new Deferred<RpcMetadata>(),
             outStream = new RpcOutputStreamController<O>(),
             defStatus = new Deferred<RpcStatus>(),
@@ -197,9 +193,7 @@ export class GrpcTransport implements RpcTransport {
 
         const opt = options,
             meta = opt.meta ?? {},
-            gMeta = metadataToGrpc(meta, new Metadata({
-                idempotentRequest: method.idempotency === "IDEMPOTENT"
-            })),
+            gMeta = metadataToGrpc(meta, opt.metadataOptions, method.idempotency === "IDEMPOTENT"),
             defHeader = new Deferred<RpcMetadata>(),
             defMessage = new Deferred<O>(),
             defStatus = new Deferred<RpcStatus>(),
@@ -255,9 +249,7 @@ export class GrpcTransport implements RpcTransport {
 
         const opt = options,
             meta = opt.meta ?? {},
-            gMeta = metadataToGrpc(meta, new Metadata({
-                idempotentRequest: method.idempotency === "IDEMPOTENT"
-            })),
+            gMeta = metadataToGrpc(meta, opt.metadataOptions, method.idempotency === "IDEMPOTENT"),
             defHeader = new Deferred<RpcMetadata>(),
             outStream = new RpcOutputStreamController<O>(),
             defStatus = new Deferred<RpcStatus>(),

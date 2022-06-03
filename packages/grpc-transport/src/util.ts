@@ -1,6 +1,7 @@
 import * as grpc from "@grpc/grpc-js";
 import {RpcMetadata} from "@protobuf-ts/runtime-rpc";
 import {listEnumValues} from "@protobuf-ts/runtime";
+import {MetadataOptions} from "@grpc/grpc-js";
 
 
 /**
@@ -33,8 +34,11 @@ export function rpcCodeToGrpc(from: string): grpc.status | undefined {
 /**
  * Convert our RPC Metadata to gRPC Metadata.
  */
-export function metadataToGrpc(from: RpcMetadata, base?: grpc.Metadata): grpc.Metadata {
-    const to = base ?? new grpc.Metadata();
+export function metadataToGrpc(from: RpcMetadata, options?: MetadataOptions, indempotentMethod?: boolean): grpc.Metadata {
+    options = options ?? {};
+    if (indempotentMethod)
+        options = { idempotentRequest: true, ...options };
+    const to = new grpc.Metadata(options);
     const decode = (k: string, v: string) => k.endsWith('-bin') ? Buffer.from(v, 'base64') : v;
     for (let k of Object.keys(from)) {
         let v = from[k];
