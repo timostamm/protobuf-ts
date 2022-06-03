@@ -1,6 +1,10 @@
 ### unreleased changes
 
-none
+
+Bug fixes:
+
+- Guard access of response.type to support Cloudflare Workers, see #321  
+  Thanks to @mikeylemmon for the fix!
 
 
 ### v2.6.0
