@@ -97,8 +97,9 @@ export class ProtobuftsPlugin extends PluginBase {
                 "the default behaviour, this option has no effect.",
             excludes: ['eslint_disable'],
         },
-        disable_service_types: {
-            description: 'Prevents the generation of service metadata.',
+        force_disable_services: {
+            description: 'Prevents the generation of GRPC services and clients.',
+            excludes: ['client_generic', 'client_grpc1', 'server_generic', 'server_grpc1']
         },
         add_pb_suffix: {
             description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
@@ -155,12 +156,12 @@ export class ProtobuftsPlugin extends PluginBase {
         client_generic: {
             description: "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "Since GENERIC_CLIENT is the default, this option has no effect.",
-            excludes: ['client_none', 'client_grpc1', 'force_client_none'],
+            excludes: ['client_none', 'client_grpc1', 'force_client_none', 'force_disable_services'],
         },
         client_grpc1: {
             description: "Generate a client using @grpc/grpc-js (major version 1). \n" +
                 "Only applies to services that do *not* use the option `ts.client`." ,
-            excludes: ['client_none', 'client_generic', 'force_client_none'],
+            excludes: ['client_none', 'client_generic', 'force_client_none', 'force_disable_services'],
         },
         force_client_none: {
             description: "Do not generate rpc clients, ignore options in proto files.",
@@ -187,13 +188,13 @@ export class ProtobuftsPlugin extends PluginBase {
                          "for example @protobuf-ts/grpc-backend for gRPC. \n" +
                          "Note that this is an experimental feature and may change with a minor release. \n" +
                          "Only applies to services that do *not* use the option `ts.server`.",
-            excludes: ['server_none', 'force_server_none'],
+            excludes: ['server_none', 'force_server_none', 'force_disable_services'],
         },
         server_grpc1: {
             description: "Generate a server interface and definition for use with @grpc/grpc-js \n" +
                          "(major version 1). \n" +
                          "Only applies to services that do *not* use the option `ts.server`.",
-            excludes: ['server_none', 'force_server_none'],
+            excludes: ['server_none', 'force_server_none', 'force_disable_services'],
         },
         force_server_none: {
             description: "Do not generate rpc servers, ignore options in proto files.",
@@ -316,31 +317,31 @@ export class ProtobuftsPlugin extends PluginBase {
                     genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
                 }
 
-                if (ServiceDescriptorProto.is(descriptor)) {
-                    if (!options.disableServiceTypes) {
+                if (!options.forceDisableServices) {
+                    if (ServiceDescriptorProto.is(descriptor)) {
                         // service type
                         genServiceType.generateServiceType(outMain, descriptor);
-                    }
+                        
+                        // clients
+                        const clientStyles = optionResolver.getClientStyles(descriptor);
+                        if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
+                            genClientGeneric.generateInterface(outClientCall, descriptor);
+                            genClientGeneric.generateImplementationClass(outClientCall, descriptor);
+                        }
+                        if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
+                            genClientGrpc.generateInterface(outClientGrpc, descriptor);
+                            genClientGrpc.generateImplementationClass(outClientGrpc, descriptor);
+                        }
 
-                    // clients
-                    const clientStyles = optionResolver.getClientStyles(descriptor);
-                    if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
-                        genClientGeneric.generateInterface(outClientCall, descriptor);
-                        genClientGeneric.generateImplementationClass(outClientCall, descriptor);
-                    }
-                    if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
-                        genClientGrpc.generateInterface(outClientGrpc, descriptor);
-                        genClientGrpc.generateImplementationClass(outClientGrpc, descriptor);
-                    }
-
-                    // servers
-                    const serverStyles = optionResolver.getServerStyles(descriptor);
-                    if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
-                        genServerGeneric.generateInterface(outServerGeneric, descriptor);
-                    }
-                    if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
-                        genServerGrpc.generateInterface(outServerGrpc, descriptor);
-                        genServerGrpc.generateDefinition(outServerGrpc, descriptor);
+                        // servers
+                        const serverStyles = optionResolver.getServerStyles(descriptor);
+                        if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
+                            genServerGeneric.generateInterface(outServerGeneric, descriptor);
+                        }
+                        if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
+                            genServerGrpc.generateInterface(outServerGrpc, descriptor);
+                            genServerGrpc.generateDefinition(outServerGrpc, descriptor);
+                        }
                     }
                 }
             });
