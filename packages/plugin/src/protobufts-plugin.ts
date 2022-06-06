@@ -98,7 +98,7 @@ export class ProtobuftsPlugin extends PluginBase {
             excludes: ['eslint_disable'],
         },
         force_disable_services: {
-            description: 'Prevents the generation of GRPC services and clients.',
+            description: 'Do not generate GRPC services, clients, or servers.',
             excludes: ['client_generic', 'client_grpc1', 'server_generic', 'server_grpc1']
         },
         add_pb_suffix: {
