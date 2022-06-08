@@ -338,9 +338,6 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
       enumWriteExp = this.createEnumValueWriteExpression(enumName, enumMap, fieldPropertyAccess)
     }
 
-
-
-
     let statement = ts.createIf(
       // if (message.result instanceof UndefinedOneOf)
       //   console.log('Undefined oneofKind handled')
@@ -510,19 +507,6 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     // <...>.join()
     let binaryWriteAndJoin = this.makeWriterCall(binaryWrite, 'join');
 
-    // if (message.objects.oneofKind === 'a') {
-    /*let statement = ts.createIf(
-      ts.createBinary(
-        ts.createPropertyAccess(
-          groupPropertyAccess,
-          ts.createIdentifier(this.options.oneofKindDiscriminator)
-        ),
-        ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
-        ts.createStringLiteral(field.localName)
-      ),
-      ts.createExpressionStatement(binaryWriteAndJoin),
-      undefined
-    )*/
     let statement = ts.createIf(
       // if (message.objects instanceof UndefinedOneOf)
       //   console.log('Undefined oneofKind handled')
