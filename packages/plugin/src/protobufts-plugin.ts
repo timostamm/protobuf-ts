@@ -5,6 +5,7 @@ import {
   DescriptorRegistry,
   EnumDescriptorProto,
   GeneratedFile,
+  OneofDescriptorProto,
   PluginBase,
   ServiceDescriptorProto,
   setupCompiler,
@@ -26,6 +27,7 @@ import { FileTable } from "./file-table";
 import { ServiceServerGeneratorGeneric } from "./code-gen/service-server-generator-generic";
 import { ServiceClientGeneratorGrpc } from "./code-gen/service-client-generator-grpc";
 import * as ts from "typescript";
+import { OneofGenerator } from "./code-gen/oneof-generator";
 
 
 export class ProtobuftsPlugin extends PluginBase {
@@ -237,6 +239,7 @@ export class ProtobuftsPlugin extends PluginBase {
       optionResolver = new OptionResolver(interpreter, registry, options),
       genMessageInterface = new MessageInterfaceGenerator(symbols, registry, imports, comments, interpreter, options),
       genEnum = new EnumGenerator(symbols, registry, imports, comments, interpreter, options),
+      genOneOf = new OneofGenerator(symbols, registry, imports, comments, interpreter, options),
       genMessageType = new MessageTypeGenerator(symbols, registry, imports, comments, interpreter, options),
       genServiceType = new ServiceTypeGenerator(symbols, registry, imports, comments, interpreter, options),
       genServerGeneric = new ServiceServerGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
@@ -276,6 +279,7 @@ export class ProtobuftsPlugin extends PluginBase {
         outClientGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-client').name, fileDescriptor, registry, options);
       tsFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
       genEnum.generateEnumMapTypeDeclaration(outMain)
+      genOneOf.generateUndefinedOfDeclaration(outMain)
 
       registry.visitTypes(fileDescriptor, descriptor => {
         // we are not interested in synthetic types like map entry messages

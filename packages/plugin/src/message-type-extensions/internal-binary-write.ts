@@ -339,29 +339,46 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
     let statement = ts.createIf(
-      // if (message.result.oneofKind === 'value')
+      // if (message.result instanceof UndefinedOneOf)
+      //   console.log('Undefined oneofKind handled')
+      // else if (message.result.oneofKind === 'value')
       ts.createBinary(
+        groupPropertyAccess,
+        ts.createToken(ts.SyntaxKind.InstanceOfKeyword),
+        ts.createIdentifier("UndefinedOneOf")
+      ),
+      ts.createExpressionStatement(ts.createCall(
         ts.createPropertyAccess(
-          groupPropertyAccess,
-          ts.createIdentifier(this.options.oneofKindDiscriminator)
+          ts.createIdentifier("console"),
+          ts.createIdentifier("log")
         ),
-        ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
-        ts.createStringLiteral(field.localName)
-      ),
-      // writer.tag( <field no>, <wire type> ).string(message.stringField)
-      ts.createExpressionStatement(
-        this.makeWriterCall(
-          this.makeWriterTagCall(source, 'writer', field.no, this.wireTypeForSingleScalar(type)),
-          type,
-          field.kind == "enum" ?
-            enumWriteExp :
-            ts.createPropertyAccess(
-              groupPropertyAccess,
-              field.localName
-            )
-        )
-      ),
-      undefined
+        undefined,
+        [ts.createStringLiteral("Undefined oneofKind handled.")]
+      )),
+      ts.createIf(
+        ts.createBinary(
+          ts.createPropertyAccess(
+            groupPropertyAccess,
+            ts.createIdentifier(this.options.oneofKindDiscriminator)
+          ),
+          ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
+          ts.createStringLiteral(field.localName)
+        ),
+        // writer.tag( <field no>, <wire type> ).string(message.stringField)
+        ts.createExpressionStatement(
+          this.makeWriterCall(
+            this.makeWriterTagCall(source, 'writer', field.no, this.wireTypeForSingleScalar(type)),
+            type,
+            field.kind == "enum" ?
+              enumWriteExp :
+              ts.createPropertyAccess(
+                groupPropertyAccess,
+                field.localName
+              )
+          )
+        ),
+        undefined
+      )
     );
     ts.addSyntheticLeadingComment(
       statement, ts.SyntaxKind.MultiLineCommentTrivia, ' ' + fieldDeclarationComment + ' ', true
@@ -490,19 +507,36 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     // <...>.join()
     let binaryWriteAndJoin = this.makeWriterCall(binaryWrite, 'join');
 
-    // if (message.objects.oneofKind === 'a') {
     let statement = ts.createIf(
+      // if (message.objects instanceof UndefinedOneOf)
+      //   console.log('Undefined oneofKind handled')
+      // else if (message.objects.oneofKind === 'a') {
       ts.createBinary(
-        ts.createPropertyAccess(
-          groupPropertyAccess,
-          ts.createIdentifier(this.options.oneofKindDiscriminator)
-        ),
-        ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
-        ts.createStringLiteral(field.localName)
+        groupPropertyAccess,
+        ts.createToken(ts.SyntaxKind.InstanceOfKeyword),
+        ts.createIdentifier("UndefinedOneOf")
       ),
-      ts.createExpressionStatement(binaryWriteAndJoin),
-      undefined
-    )
+      ts.createExpressionStatement(ts.createCall(
+        ts.createPropertyAccess(
+          ts.createIdentifier("console"),
+          ts.createIdentifier("log")
+        ),
+        undefined,
+        [ts.createStringLiteral("Undefined oneofKind handled.")]
+      )),
+      ts.createIf(
+        ts.createBinary(
+          ts.createPropertyAccess(
+            groupPropertyAccess,
+            ts.createIdentifier(this.options.oneofKindDiscriminator)
+          ),
+          ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
+          ts.createStringLiteral(field.localName)
+        ),
+        ts.createExpressionStatement(binaryWriteAndJoin),
+        undefined
+      )
+    );
 
     ts.addSyntheticLeadingComment(
       statement, ts.SyntaxKind.MultiLineCommentTrivia, ' ' + fieldDeclarationComment + ' ', true
