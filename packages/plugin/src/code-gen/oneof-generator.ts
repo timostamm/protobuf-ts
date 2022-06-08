@@ -1,5 +1,4 @@
 import * as ts from "typescript";
-import * as rt from "@chippercash/protobuf-runtime";
 import {
   DescriptorRegistry,
   SymbolTable,
