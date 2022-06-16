@@ -7,7 +7,7 @@ none
 
 New Features:
 
-- Added `disable_service_types` option to protobuf-ts/plugin for disabling service metadata generation, see #268  
+- Added `force_disable_services` option to protobuf-ts/plugin for disabling service metadata generation, see #268  
   Thanks to @ColinLaws for the contribution!
 
 Bug fixes:
