@@ -245,6 +245,11 @@ Available plugin options:
 - "force_server_none"  
   Do not generate rpc servers, ignore options in proto files.
 
+- "force_disable_services"  
+  Do not generate anything for service definitions, and ignore options in proto
+  files. This is the same as setting both options `force_server_none` and
+  `force_client_none`, but also stops generating service metadata.
+
 - "optimize_speed"  
   Sets optimize_for = SPEED for proto files that have no file option
   'option optimize_for'. Since SPEED is the default, this option has no effect.

@@ -97,13 +97,6 @@ export class ProtobuftsPlugin extends PluginBase {
                 "the default behaviour, this option has no effect.",
             excludes: ['eslint_disable'],
         },
-        force_disable_services: {
-            description: "Do not generate anything for service definitions, and \n" +
-                         "ignore options in proto files. This is the same as setting both \n" + 
-                         "`force_server_none` and `force_client_none`, but also stops \n" + 
-                         "generating service metadata."
-            excludes: ['client_generic', 'client_grpc1', 'server_generic', 'server_grpc1']
-        },
         add_pb_suffix: {
             description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
                          "default behaviour in the next major release.",
@@ -201,6 +194,13 @@ export class ProtobuftsPlugin extends PluginBase {
         },
         force_server_none: {
             description: "Do not generate rpc servers, ignore options in proto files.",
+        },
+
+        force_disable_services: {
+            description: "Do not generate anything for service definitions, and ignore options in proto \n" +
+                "files. This is the same as setting both options `force_server_none` and \n" +
+                "`force_client_none`, but also stops generating service metadata.",
+            excludes: ['client_generic', 'client_grpc1', 'server_generic', 'server_grpc1']
         },
 
         // optimization
@@ -324,7 +324,7 @@ export class ProtobuftsPlugin extends PluginBase {
                     if (ServiceDescriptorProto.is(descriptor)) {
                         // service type
                         genServiceType.generateServiceType(outMain, descriptor);
-                        
+
                         // clients
                         const clientStyles = optionResolver.getClientStyles(descriptor);
                         if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
