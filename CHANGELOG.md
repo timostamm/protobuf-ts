@@ -1,10 +1,20 @@
 ### unreleased changes
 
+New Features:
+
+- Added `disable_service_types` option to protobuf-ts/plugin for disabling service metadata generation, see #268  
+  Thanks to @ColinLaws for the contribution!
 
 Bug fixes:
 
 - Guard access of response.type to support Cloudflare Workers, see #321  
   Thanks to @mikeylemmon for the fix!
+
+- find protoc in path also in windows, see #334  
+  Thanks to @tannera for the fix!
+
+- Update baseURL in example, see #333
+  Thanks to @GRB3NW for the fix!
 
 
 ### v2.6.0
