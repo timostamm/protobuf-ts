@@ -1,5 +1,10 @@
 ### unreleased changes
 
+none
+
+
+### v2.7.0
+
 New Features:
 
 - Added `disable_service_types` option to protobuf-ts/plugin for disabling service metadata generation, see #268  
