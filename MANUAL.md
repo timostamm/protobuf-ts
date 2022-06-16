@@ -1808,7 +1808,7 @@ Example usage:
 
 ```typescript
 let transport = new GrpcWebFetchTransport({
-    baseUrl: "localhost:3000"
+    baseUrl: "http://localhost:3000"
 });
 
 let client = new HaberdasheryClient(transport);
