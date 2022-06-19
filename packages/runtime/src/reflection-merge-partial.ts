@@ -47,12 +47,16 @@ export function reflectionMergePartial<T extends object>(info: MessageInfo, targ
             }
         }
 
+        if (field.repeat)
+            (output[name] as any[]).length = (fieldValue as any[]).length; // resize target array to match source array
+
         // now we just work with `fieldValue` and `output` to merge the value
         switch (field.kind) {
             case "scalar":
             case "enum":
                 if (field.repeat)
-                    output[name] = (fieldValue as any[]).concat(); // elements are not reference types
+                    for (let i = 0; i < (fieldValue as any[]).length; i++)
+                        (output[name] as any[])[i] = (fieldValue as any[])[i]; // not a reference type
                 else
                     output[name] = fieldValue; // not a reference type
                 break;
