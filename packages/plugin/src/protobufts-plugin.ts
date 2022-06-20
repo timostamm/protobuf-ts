@@ -241,7 +241,14 @@ export class ProtobuftsPlugin extends PluginBase {
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(),
-            imports = new TypeScriptImports(symbols),
+            protoFnToGeneratedBaseFn = (fn: string) => fn.replace(".proto", "") + (options.addPbSuffix ? "_pb" : ""),
+            imports = new TypeScriptImports(symbols,
+                options.runtimeWellKnownTypesImportPath ?
+                    new Map(WellKnownTypes.protoFilenames.map(f => [
+                      protoFnToGeneratedBaseFn(f) + ".ts", 
+                      options.runtimeWellKnownTypesImportPath
+                    ])) :
+                    undefined),
             comments = new CommentGenerator(registry),
             interpreter = new Interpreter(registry, options),
             optionResolver = new OptionResolver(interpreter, registry, options),
@@ -261,11 +268,11 @@ export class ProtobuftsPlugin extends PluginBase {
 
         // ensure unique file names
         for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
+            const base = protoFnToGeneratedBaseFn(fileDescriptor.name!);
             fileTable.register(base + '.ts', fileDescriptor);
         }
         for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
+            const base = protoFnToGeneratedBaseFn(fileDescriptor.name!);
             fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
             fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc1-server');
             fileTable.register(base + '.client.ts', fileDescriptor, 'client');
@@ -364,7 +371,8 @@ export class ProtobuftsPlugin extends PluginBase {
                 if (request.fileToGenerate.includes(protoFilename)) {
                     return true;
                 }
-                if (WellKnownTypes.protoFilenames.includes(protoFilename)) {
+                if (WellKnownTypes.protoFilenames.includes(protoFilename)
+                    && !options.runtimeWellKnownTypesImportPath) {
                     return true;
                 }
                 return false;

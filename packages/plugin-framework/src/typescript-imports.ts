@@ -8,11 +8,9 @@ import {TypescriptFile} from "./typescript-file";
 
 export class TypeScriptImports {
 
-    private readonly symbols: SymbolTable;
-
-
-    constructor(symbols: SymbolTable) {
-        this.symbols = symbols;
+    constructor(
+        private readonly symbols: SymbolTable,
+        private readonly fileToPackageOverloads?: Map<string, string>) {
     }
 
 
@@ -75,10 +73,10 @@ export class TypeScriptImports {
 
         // symbol not in file
         // add an import statement
-        const importPath = createRelativeImportPath(
-            source.getSourceFile().fileName,
-            symbolReg.file.getFilename()
-        );
+        const overloadPackage = this.fileToPackageOverloads?.get(symbolReg.file.getFilename());
+        const importPath = overloadPackage ??
+            createRelativeImportPath(source.getSourceFile().fileName, symbolReg.file.getFilename());
+
         const blackListedNames = this.symbols.list(source).map(e => e.name);
         return ensureNamedImportPresent(
             source.getSourceFile(),

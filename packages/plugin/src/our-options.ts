@@ -194,6 +194,7 @@ export interface InternalOptions {
     readonly runtimeAngularImportPath: string;
     readonly runtimeRpcImportPath: string;
     readonly runtimeImportPath: string;
+    readonly runtimeWellKnownTypesImportPath: string;
     readonly forceExcludeAllOptions: boolean;
     readonly keepEnumPrefix: boolean;
     readonly useProtoFieldName: boolean;
@@ -260,6 +261,7 @@ export function makeInternalOptions(
             runtimeRpcImportPath: '@protobuf-ts/runtime-rpc',
             angularCoreImportPath: '@angular/core',
             runtimeImportPath: '@protobuf-ts/runtime',
+            runtimeWellKnownTypesImportPath: "",
             forceExcludeAllOptions: false,
             keepEnumPrefix: false,
             useProtoFieldName: false,
@@ -357,6 +359,9 @@ export function makeInternalOptions(
     }
     if (params?.output_legacy_commonjs) {
         o.transpileModule = ts.ModuleKind.CommonJS;
+    }
+    if (process.env.PROTOBUF_TS_RUNTIME_WELL_KNOWN_TYPES_IMPORT_PATH) {
+        o.runtimeWellKnownTypesImportPath = process.env.PROTOBUF_TS_RUNTIME_WELL_KNOWN_TYPES_IMPORT_PATH;
     }
     return o;
 }
