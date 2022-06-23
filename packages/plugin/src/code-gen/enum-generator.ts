@@ -20,15 +20,15 @@ export class EnumGenerator extends GeneratorBase {
 
 
   constructor (symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
-   private readonly options: {
-        runtimeImportPath: string;
-   }) {
+    private readonly options: {
+      runtimeImportPath: string;
+    }) {
     super(symbols, registry, imports, comments, interpreter);
   }
 
   generateEnumMapTypeDeclaration (source: TypescriptFile) {
     // Added by Michael
-    let TagAndValueMap = this.imports.name(source, 'TagAndValueMap', this.options.runtimeImportPath);
+    // this.imports.name(source, 'TagAndValueMap', this.options.runtimeImportPath);
   }
 
 
@@ -83,6 +83,7 @@ export class EnumGenerator extends GeneratorBase {
       builder.add(ev.name, ev.number, comments);
     }
     const enumName = this.imports.type(source, descriptor)
+    this.imports.name(source, 'TagAndValueMap', this.options.runtimeImportPath, true);
     const enumMapName = this.imports.type(source, descriptor, 'object')
     let statement = builder.build(
       enumName,
@@ -106,6 +107,7 @@ export class EnumGenerator extends GeneratorBase {
     // add to our file
     source.addStatement(statement);
     source.addStatement(enumMapDefinition);
+
 
     this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
     return statement;

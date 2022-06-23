@@ -337,7 +337,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
       )
       enumWriteExp = this.createEnumValueWriteExpression(enumName, enumMap, fieldPropertyAccess)
     }
-
+    this.imports.name(source, 'UndefinedOneOf', this.options.runtimeImportPath, true);
     let statement = ts.createIf(
       // if (message.result.oneofKind === 'value')
       ts.createBinary(
@@ -490,6 +490,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     // <...>.join()
     let binaryWriteAndJoin = this.makeWriterCall(binaryWrite, 'join');
 
+    this.imports.name(source, 'UndefinedOneOf', this.options.runtimeImportPath, true);
     // if (message.objects.oneofKind === 'a') {
     let statement = ts.createIf(
       ts.createBinary(
