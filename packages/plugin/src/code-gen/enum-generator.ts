@@ -20,34 +20,15 @@ export class EnumGenerator extends GeneratorBase {
 
 
   constructor (symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
-    private readonly options: {
-    }) {
+   private readonly options: {
+        runtimeImportPath: string;
+   }) {
     super(symbols, registry, imports, comments, interpreter);
   }
 
   generateEnumMapTypeDeclaration (source: TypescriptFile) {
-    // Add enum map declaration.
-    const enumMapTypeDecl = ts.createTypeAliasDeclaration(
-      undefined,
-      [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
-      ts.createIdentifier(this.enumMapTypeName), undefined,
-      ts.createTypeLiteralNode([
-        ts.createIndexSignature(
-          undefined, undefined,
-          [ts.createParameter(
-            undefined, undefined, undefined,
-            ts.createIdentifier("key"), undefined,
-            ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
-            undefined
-          )],
-          ts.createUnionTypeNode([
-            ts.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
-            ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword)
-          ])
-        )
-      ])
-    )
-    source.addStatement(enumMapTypeDecl)
+    // Added by Michael
+    let TagAndValueMap = this.imports.name(source, 'TagAndValueMap', this.options.runtimeImportPath);
   }
 
 
