@@ -47,8 +47,8 @@ export class BinaryReader implements IBinaryReader {
         this.len = buf.length;
         this.pos = 0;
         this.view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
-        this.textDecoder = textDecoder ?? new TextDecoder("utf-8", {
-            fatal: true
+        this.textDecoder = new TextDecoder("utf-8", {
+            fatal: false
         });
     }
 
@@ -242,7 +242,8 @@ export class BinaryReader implements IBinaryReader {
      * Read a `string` field, length-delimited data converted to UTF-8 text.
      */
     string(): string {
-        return this.textDecoder.decode(this.bytes());
+       const result = this.textDecoder.decode(this.bytes());
+        return result;
     }
 
 }
