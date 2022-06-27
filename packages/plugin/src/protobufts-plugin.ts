@@ -278,8 +278,8 @@ export class ProtobuftsPlugin extends PluginBase {
         outClientRx = new OutFile(fileTable.get(fileDescriptor, 'rx-client').name, fileDescriptor, registry, options),
         outClientGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-client').name, fileDescriptor, registry, options);
       tsFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
-      genEnum.generateEnumMapTypeDeclaration(outMain)
-      genOneOf.generateUndefinedOfDeclaration(outMain)
+      // genEnum.generateEnumMapTypeDeclaration(outMain)
+      // genOneOf.generateUndefinedOfDeclaration(outMain)
 
       registry.visitTypes(fileDescriptor, descriptor => {
         // we are not interested in synthetic types like map entry messages
