@@ -189,11 +189,11 @@ export class MessageInterfaceGenerator extends GeneratorBase {
      *
      *   result: { oneofKind: "value"; value: number; }
      *         | { oneofKind: "error"; error: string; }
-     *         | { oneofKind: undefined; };
+     *         | UndefinedOneOf; // old: { oneofKind: undefined; };
      */
     protected createOneofADTPropertySignature(source:TypescriptFile, oneofDescriptor: OneofDescriptorProto): ts.PropertySignature {
         const
-            oneofCases: ts.TypeLiteralNode[] = [],
+            oneofCases: ts.TypeNode[] = [],
             [messageDescriptor, interpreterType, oneofLocalName] = this.oneofInfo(oneofDescriptor),
             memberFieldInfos = interpreterType.fields.filter(fi => fi.oneof === oneofLocalName);
 
@@ -223,17 +223,12 @@ export class MessageInterfaceGenerator extends GeneratorBase {
 
         }
 
-        // case for no selection: { oneofKind: undefined; }
+        // case for no selection: UndefinedOneOf // old: { oneofKind: undefined; }
         oneofCases.push(
-            ts.createTypeLiteralNode([
-                ts.createPropertySignature(
-                    undefined,
-                    ts.createIdentifier(this.options.oneofKindDiscriminator),
-                    undefined,
-                    ts.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
-                    undefined
-                )
-            ])
+         ts.createTypeReferenceNode(
+            ts.createIdentifier("UndefinedOneOf"),
+            undefined
+          )
         );
 
         // final property signature for the oneof group, with a union type for all oneof cases
