@@ -168,7 +168,7 @@ describe('GrpcWebFetchTransport', () => {
         afterAll(() => {
             globalThis.fetch = originalFetch;
         });
-    
+
         beforeEach(() => {
             fetch = jasmine.createSpy('fetch', originalFetch);
             globalThis.fetch = fetch;
@@ -236,7 +236,7 @@ describe('GrpcWebFetchTransport', () => {
 
             // Tailers with OK status, stream finished
             await microTaskDelay(next(getTrailerFrame(GrpcStatusCode.OK), true));
-            
+
             // Everything resolved
             expect(spy.headers).toHaveBeenCalledTimes(1);
             expect(spy.response).toHaveBeenCalledTimes(1);
@@ -298,7 +298,39 @@ describe('GrpcWebFetchTransport', () => {
             }
         });
 
-        it('throws `DATA_LOSS` if it does not get a trailer', async () => {
+        it('throws `INTERNAL` if empty response body and no status in headers', async () => {
+            const { next, call } = getNextCall();
+            await next([], true);
+            try {
+                await call;
+                fail('should fail');
+            } catch (e) {
+                expect(e).toBeInstanceOf(RpcError);
+                expect(e.code).toBe(GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+            }
+        });
+
+        it('throws `DATA_LOSS` if empty response body and OK status in headers', async () => {
+            const { next, call } = getNextCall({
+                status: 200,
+                statusText: 'success',
+                headers: new globalThis.Headers({
+                    'some': 'header',
+                    'content-type': 'application/grpc-web+proto',
+                    'grpc-status': '0',
+                }),
+            });
+            await next([], true);
+            try {
+                await call;
+                fail('should fail');
+            } catch (e) {
+                expect(e).toBeInstanceOf(RpcError);
+                expect(e.code).toBe(GrpcStatusCode[GrpcStatusCode.DATA_LOSS]);
+            }
+        });
+
+        it('throws `DATA_LOSS` if it does not get a trailer with response', async () => {
             const { next, call } = getNextCall();
             await next(getDataFrame('response'), true);
             try {
@@ -383,7 +415,7 @@ describe('GrpcWebFetchTransport', () => {
                 expect(e.code).toBe(GrpcStatusCode[GrpcStatusCode.INTERNAL]);
             }
         });
-        
+
     });
 
     describe('serverStreaming()', () => {
@@ -421,7 +453,7 @@ describe('GrpcWebFetchTransport', () => {
         afterAll(() => {
             globalThis.fetch = originalFetch;
         });
-    
+
         beforeEach(() => {
             fetch = jasmine.createSpy('fetch', originalFetch);
             globalThis.fetch = fetch;
@@ -514,7 +546,7 @@ describe('GrpcWebFetchTransport', () => {
 
             // Tailers with OK status, stream finished
             await microTaskDelay(next(getTrailerFrame(GrpcStatusCode.OK), true));
-            
+
             // Everything resolved
             expect(spy.headers).toHaveBeenCalledTimes(1);
             expect(responsesIteratorSpy).toHaveBeenCalledTimes(3);
@@ -578,7 +610,35 @@ describe('GrpcWebFetchTransport', () => {
             }
         });
 
-        it('throws `DATA_LOSS` if it does not get a trailer', async () => {
+        it('throws `INTERNAL` if empty response body and no status in headers', async () => {
+            const { next, call } = getNextCall();
+            await next([], true);
+            try {
+                await call;
+                fail('should fail');
+            } catch (e) {
+                expect(e).toBeInstanceOf(RpcError);
+                expect(e.code).toBe(GrpcStatusCode[GrpcStatusCode.INTERNAL]);
+            }
+        });
+
+        it('success if empty response body and OK status in headers', async () => {
+            const { next, call } = getNextCall({
+                status: 200,
+                statusText: 'success',
+                headers: new globalThis.Headers({
+                    'some': 'header',
+                    'content-type': 'application/grpc-web+proto',
+                    'grpc-status': '0',
+                }),
+            });
+            await next([], true);
+            const streamResult = await call;
+            expect(streamResult.status.code).toBe('OK');
+            expect(streamResult.headers).toEqual({ some: 'header' });
+        });
+
+        it('throws `DATA_LOSS` if it does not get a trailer with response', async () => {
             const { next, call } = getNextCall();
             await next(getDataFrame('response'), true);
             try {
@@ -642,7 +702,7 @@ describe('GrpcWebFetchTransport', () => {
                 expect(e.code).toBe(GrpcStatusCode[GrpcStatusCode.INTERNAL]);
             }
         });
-        
+
     });
 
 

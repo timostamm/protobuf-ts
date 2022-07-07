@@ -81,9 +81,9 @@ export function createGrpcWebRequestBody(message: Uint8Array, format: GrpcWebFor
  * If given a fetch response, checks for fetch-specific error information
  * ("type" property) and whether the "body" is null and throws a RpcError.
  */
-export function readGrpcWebResponseHeader(fetchResponse: Response): [GrpcStatusCode, string | undefined, RpcMetadata];
-export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: number, httpStatusText: string): [GrpcStatusCode, string | undefined, RpcMetadata];
-export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatus?: number, httpStatusText?: string): [GrpcStatusCode, string | undefined, RpcMetadata] {
+export function readGrpcWebResponseHeader(fetchResponse: Response): [GrpcStatusCode | undefined, string | undefined, RpcMetadata];
+export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: number, httpStatusText: string): [GrpcStatusCode | undefined, string | undefined, RpcMetadata];
+export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatus?: number, httpStatusText?: string): [GrpcStatusCode | undefined, string | undefined, RpcMetadata] {
     if (arguments.length === 1) {
         let fetchResponse = headersOrFetchResponse as Response;
 
@@ -113,7 +113,7 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
         responseMeta = parseMetadata(headers),
         [statusCode, statusDetail] = parseStatus(headers);
 
-    if (statusCode === GrpcStatusCode.OK && !httpOk) {
+    if ((statusCode === undefined || statusCode === GrpcStatusCode.OK) && !httpOk) {
         statusCode = httpStatusToGrpc(httpStatus!);
         statusDetail = httpStatusText;
     }
@@ -134,7 +134,7 @@ export function readGrpcWebResponseTrailer(data: Uint8Array): [GrpcStatusCode, s
         headers = parseTrailer(data),
         [code, detail] = parseStatus(headers),
         meta = parseMetadata(headers);
-    return [code, detail, meta];
+    return [code ?? GrpcStatusCode.OK, detail, meta];
 }
 
 
@@ -310,9 +310,9 @@ function parseFormat(contentType: string | undefined | null): GrpcWebFormat {
 }
 
 
-// returns error code on parse failure, uses OK as default code
-function parseStatus(headers: HttpHeaders): [GrpcStatusCode, string | undefined] {
-    let code = GrpcStatusCode.OK,
+// returns error code on parse failure
+function parseStatus(headers: HttpHeaders): [GrpcStatusCode | undefined, string | undefined] {
+    let code: GrpcStatusCode | undefined,
         message: string | undefined;
     let m = headers['grpc-message'];
     if (m !== undefined) {

@@ -94,6 +94,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             inputBytes = method.I.toBinary(input, opt.binaryOptions),
             defHeader = new Deferred<RpcMetadata>(),
             responseStream = new RpcOutputStreamController<O>(),
+            responseEmptyBody = true,
             maybeStatus: RpcStatus | undefined,
             defStatus = new Deferred<RpcStatus>(),
             maybeTrailer: RpcMetadata | undefined,
@@ -109,8 +110,13 @@ export class GrpcWebFetchTransport implements RpcTransport {
             .then(fetchResponse => {
                 let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse);
                 defHeader.resolve(meta);
-                if (code !== GrpcStatusCode.OK)
+                if (code != null && code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
+                if (code != null)
+                    maybeStatus = {
+                        code: GrpcStatusCode[code],
+                        detail: detail ?? GrpcStatusCode[code]
+                    };
                 return fetchResponse;
             })
 
@@ -123,6 +129,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                             responseStream.notifyMessage(
                                 method.O.fromBinary(data, opt.binaryOptions)
                             );
+                            responseEmptyBody = false;
                             break;
                         case GrpcWebFrame.TRAILER:
                             let code, detail;
@@ -137,8 +144,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             })
 
             .then(() => {
-
-                if (!maybeTrailer)
+                if (!maybeTrailer && !responseEmptyBody)
                     throw new RpcError(`missing trailers`, GrpcStatusCode[GrpcStatusCode.DATA_LOSS]);
 
                 // istanbul ignore if - this should be impossible and only here to satisfy TypeScript
@@ -150,7 +156,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
 
                 responseStream.notifyComplete();
                 defStatus.resolve(maybeStatus);
-                defTrailer.resolve(maybeTrailer);
+                defTrailer.resolve(maybeTrailer || {});
 
             })
 
@@ -212,8 +218,13 @@ export class GrpcWebFetchTransport implements RpcTransport {
             .then(fetchResponse => {
                 let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse);
                 defHeader.resolve(meta);
-                if (code !== GrpcStatusCode.OK)
+                if (code != null && code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
+                if (code != null)
+                    maybeStatus = {
+                        code: GrpcStatusCode[code],
+                        detail: detail ?? GrpcStatusCode[code]
+                    };
                 return fetchResponse;
             })
 
@@ -240,7 +251,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             })
 
             .then(() => {
-                if (!maybeTrailer)
+                if (!maybeTrailer && maybeMessage)
                     throw new RpcError(`missing trailers`, GrpcStatusCode[GrpcStatusCode.DATA_LOSS]);
 
                 // istanbul ignore if - this should be impossible and only here to satisfy TypeScript
@@ -258,7 +269,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                     throw new RpcError(maybeStatus.detail, maybeStatus.code, maybeTrailer);
 
                 defStatus.resolve(maybeStatus);
-                defTrailer.resolve(maybeTrailer);
+                defTrailer.resolve(maybeTrailer || {});
 
             })
 
