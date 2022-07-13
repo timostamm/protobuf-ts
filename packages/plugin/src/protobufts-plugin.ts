@@ -322,6 +322,7 @@ export class ProtobuftsPlugin extends PluginBase {
 
           // service type
           genServiceType.generateServiceType(outMain, descriptor)
+          genServiceType.generateQetaServiceConfig(outMain, descriptor)
 
           // clients
           const clientStyles = optionResolver.getClientStyles(descriptor);
