@@ -19,7 +19,7 @@ export class ServiceTypeGenerator extends GeneratorBase {
   private readonly methodInfoGenerator: MethodInfoGenerator;
 
 
-  constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+  constructor (symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
     private readonly options: {
       runtimeRpcImportPath: string;
     }) {
@@ -31,7 +31,7 @@ export class ServiceTypeGenerator extends GeneratorBase {
   // export const Haberdasher = new ServiceType("spec.haberdasher.Haberdasher", [
   //     { name: "MakeHat", localName: "makeHat", I: Size, O: Hat },
   // ], {});
-  generateServiceType(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
+  generateServiceType (source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
 
     const
       // identifier for the service
@@ -77,7 +77,7 @@ export class ServiceTypeGenerator extends GeneratorBase {
     return;
   }
 
-  generateQetaServiceConfig(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
+  generateQetaServiceConfig (source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
     const MyService = this.imports.type(source, descriptor);
     const properties: ts.TypeElement[] = []
     for (const method of descriptor.method) {
