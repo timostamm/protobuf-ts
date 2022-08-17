@@ -3,6 +3,27 @@
 none
 
 
+### v2.8.0
+
+Bug fixes:
+
+- grpcweb-transport: fix handling responses with empty body and status in headers #331  
+  Thanks to @eKazim for the contribution!
+
+- Make repeated field merging consistent #335
+  Thanks to @jcready for the contribution!
+
+New features and improvements:
+
+- Relax constraints on runtime-angular to include Angular 14 #358
+  Thanks to @ColinLaws for the contribution!
+
+- Clarify mergePartial() behavior in the documentation #361
+
+- Do not strip byte-order mark when decoding text from binary #362
+  Thanks to @kivancguckiran and @jcready for the investigation!
+
+
 ### v2.7.0
 
 New Features:
