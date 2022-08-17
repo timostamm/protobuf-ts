@@ -48,7 +48,8 @@ export class BinaryReader implements IBinaryReader {
         this.pos = 0;
         this.view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
         this.textDecoder = textDecoder ?? new TextDecoder("utf-8", {
-            fatal: true
+            fatal: true,
+            ignoreBOM: true,
         });
     }
 
