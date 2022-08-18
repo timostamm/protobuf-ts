@@ -1,6 +1,6 @@
 {
   "name": "@chippercash/protobuf-plugin",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "The protocol buffer compiler plugin \"protobuf-ts\" generates TypeScript, gRPC-web, Twirp, and more.",
   "bin": {
     "protoc-gen-ts": "./bin/protoc-gen-ts",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@chippercash/protobuf-plugin-framework": "^2.5.0",
     "@chippercash/protobuf-protoc": "^2.4.0",
-    "@chippercash/protobuf-runtime": "^2.5.0",
+    "@chippercash/protobuf-runtime": "^2.5.2",
     "@chippercash/protobuf-runtime-rpc": "^2.4.0",
     "typescript": "^4.7"
   },
