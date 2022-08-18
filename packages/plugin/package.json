@@ -39,7 +39,7 @@
     "tslib": ">=2.4.0"
   },
   "dependencies": {
-    "@chippercash/protobuf-plugin-framework": "^2.5.0",
+    "@chippercash/protobuf-plugin-framework": "^2.5.1",
     "@chippercash/protobuf-protoc": "^2.4.0",
     "@chippercash/protobuf-runtime": "^2.5.2",
     "@chippercash/protobuf-runtime-rpc": "^2.4.0",
