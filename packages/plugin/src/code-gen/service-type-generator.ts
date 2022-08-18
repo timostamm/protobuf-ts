@@ -79,9 +79,19 @@ export class ServiceTypeGenerator extends GeneratorBase {
 
   generateQetaServiceConfig (source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
     const MyService = this.imports.type(source, descriptor);
-    const properties: ts.TypeElement[] = []
+    const propertySignatures: ts.TypeElement[] = []
+    const propertyAssignments: ts.PropertyAssignment[] = []
     for (const method of descriptor.method) {
-      const prop = ts.createPropertySignature(
+      /* Properties for Qeta config interface e.g.
+         interface SagaServiceQetaConfigInterface {
+          GetSagaQuestion: {
+              request: GetSagaQuestionRequest;
+              response: GetSagaQuestionResponse;
+          };
+          ...
+        }
+      */
+      const propSignature = ts.createPropertySignature(
         undefined,
         ts.createIdentifier(method.name!),
         undefined,
@@ -115,19 +125,73 @@ export class ServiceTypeGenerator extends GeneratorBase {
         ]),
         undefined
       )
-      properties.push(prop);
+      propertySignatures.push(propSignature);
+      /* Properties for Qeta config object, e.g. 
+        export const SagaServiceConfig = {
+          GetSagaQuestion: {
+              request: GetSagaQuestionRequest,
+              response: GetSagaQuestionResponse,
+          },
+          ...
+        }
+      */
+      const propAssignment = ts.createPropertyAssignment(
+        ts.createIdentifier(method.name!),
+        ts.createObjectLiteral(
+          [
+            ts.createPropertyAssignment(
+              ts.createIdentifier("request"),
+              ts.createIdentifier(this.imports.type(
+                source,
+                this.registry.resolveTypeName(method.inputType!)
+              ))
+            ),
+            ts.createPropertyAssignment(
+              ts.createIdentifier("response"),
+              ts.createIdentifier(this.imports.type(
+                source,
+                this.registry.resolveTypeName(method.outputType!)
+              ))
+            )
+          ],
+          true
+        )
+      )
+      propertyAssignments.push(propAssignment)
     }
 
-    const config = ts.createInterfaceDeclaration(
+    const configInterface = ts.createInterfaceDeclaration(
+      undefined,
+      [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
+      ts.createIdentifier(`${MyService}Config`),
       undefined,
       undefined,
-      ts.createIdentifier(`${MyService}QetaConfig`),
-      undefined,
-      undefined,
-      properties
+      propertySignatures
+    )
+
+    const configObject = ts.createVariableStatement(
+      [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
+      ts.createVariableDeclarationList(
+        [ts.createVariableDeclaration(
+          ts.createIdentifier(`${MyService}Config`),
+          undefined,
+          ts.createAsExpression(
+            ts.createObjectLiteral(
+              propertyAssignments,
+              true
+            ),
+            ts.createTypeReferenceNode(
+              ts.createIdentifier("const"),
+              undefined
+            )
+          )
+        )],
+        ts.NodeFlags.Const
+      )
     )
     // add to our file
-    source.addStatement(config);
+    source.addStatement(configInterface);
+    source.addStatement(configObject)
 
     return;
   }
