@@ -18,6 +18,7 @@ describe('protobuftsPlugin', function () {
       'msg-proto2-optionals.proto',
       'msg-maps.proto',
       'msg-proto3-optionals.proto',
+      'service-example.proto',
       // 'google/protobuf/descriptor.proto'
     ],
     includeFiles: [
@@ -43,7 +44,7 @@ describe('protobuftsPlugin', function () {
       'msg-maps.proto',
       // 'google/protobuf/unittest_lazy_dependencies_enum.proto',
       //  'service-simple.proto',
-      //  'service-example.proto',
+      'service-example.proto',
       //  'service-style-all.proto',
       'msg-proto3-optionals.proto',
       // 'google/rpc/status.proto',
