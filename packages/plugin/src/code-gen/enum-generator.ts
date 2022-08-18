@@ -21,33 +21,14 @@ export class EnumGenerator extends GeneratorBase {
 
   constructor (symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
     private readonly options: {
+      runtimeImportPath: string;
     }) {
     super(symbols, registry, imports, comments, interpreter);
   }
 
   generateEnumMapTypeDeclaration (source: TypescriptFile) {
-    // Add enum map declaration.
-    const enumMapTypeDecl = ts.createTypeAliasDeclaration(
-      undefined,
-      [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
-      ts.createIdentifier(this.enumMapTypeName), undefined,
-      ts.createTypeLiteralNode([
-        ts.createIndexSignature(
-          undefined, undefined,
-          [ts.createParameter(
-            undefined, undefined, undefined,
-            ts.createIdentifier("key"), undefined,
-            ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
-            undefined
-          )],
-          ts.createUnionTypeNode([
-            ts.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
-            ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword)
-          ])
-        )
-      ])
-    )
-    source.addStatement(enumMapTypeDecl)
+    // Added by Michael
+    // this.imports.name(source, 'TagAndValueMap', this.options.runtimeImportPath);
   }
 
 
@@ -102,6 +83,7 @@ export class EnumGenerator extends GeneratorBase {
       builder.add(ev.name, ev.number, comments);
     }
     const enumName = this.imports.type(source, descriptor)
+    this.imports.name(source, 'TagAndValueMap', this.options.runtimeImportPath, true);
     const enumMapName = this.imports.type(source, descriptor, 'object')
     let statement = builder.build(
       enumName,
@@ -125,6 +107,7 @@ export class EnumGenerator extends GeneratorBase {
     // add to our file
     source.addStatement(statement);
     source.addStatement(enumMapDefinition);
+
 
     this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
     return statement;

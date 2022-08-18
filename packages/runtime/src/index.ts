@@ -91,3 +91,7 @@ export {lowerCamelCase} from './lower-camel-case';
 
 // assertion functions are exported for plugin, may also be useful to user
 export {assert, assertNever, assertInt32, assertUInt32, assertFloat32} from './assert';
+
+// used for enums
+export {UndefinedOneOf} from './undefined-one-of';
+export {TagAndValueMap} from './tag-and-value-map';

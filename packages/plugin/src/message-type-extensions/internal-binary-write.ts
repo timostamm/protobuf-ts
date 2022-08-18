@@ -337,7 +337,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
       )
       enumWriteExp = this.createEnumValueWriteExpression(enumName, enumMap, fieldPropertyAccess)
     }
-
+    this.imports.name(source, 'UndefinedOneOf', this.options.runtimeImportPath, true);
     let statement = ts.createIf(
       // if (message.result instanceof UndefinedOneOf)
       //   console.log('Undefined oneofKind handled')
@@ -507,6 +507,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     // <...>.join()
     let binaryWriteAndJoin = this.makeWriterCall(binaryWrite, 'join');
 
+    this.imports.name(source, 'UndefinedOneOf', this.options.runtimeImportPath, true);
     let statement = ts.createIf(
       // if (message.objects instanceof UndefinedOneOf)
       //   console.log('Undefined oneofKind handled')
