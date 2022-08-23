@@ -20,6 +20,7 @@ describe('protobuftsPlugin', function () {
       'msg-proto3-optionals.proto',
       'service-example.proto',
       // 'google/protobuf/descriptor.proto'
+      'msg-message.proto'
     ],
     includeFiles: [
       'msg-annotated.proto',
@@ -48,6 +49,7 @@ describe('protobuftsPlugin', function () {
       //  'service-style-all.proto',
       'msg-proto3-optionals.proto',
       // 'google/rpc/status.proto',
+      'msg-message.proto'
     ]
   });
   let generatedFiles = plugin.generate(request);

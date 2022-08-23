@@ -13,7 +13,6 @@ import * as ts from "typescript";
 import { MethodInfoGenerator } from "./method-info-generator";
 import { GeneratorBase } from "./generator-base";
 
-
 export class ServiceTypeGenerator extends GeneratorBase {
 
   private readonly methodInfoGenerator: MethodInfoGenerator;
@@ -158,6 +157,16 @@ export class ServiceTypeGenerator extends GeneratorBase {
         )
       )
       propertyAssignments.push(propAssignment)
+      // Imports {Request}$Type class.
+      this.imports.type(
+        source,
+        this.registry.resolveTypeName(method.inputType!), 'message-class'
+      )
+      // Imports {Response}$Type class.
+      this.imports.type(
+        source,
+        this.registry.resolveTypeName(method.outputType!), 'message-class'
+      )
     }
 
     const configInterface = ts.createInterfaceDeclaration(
