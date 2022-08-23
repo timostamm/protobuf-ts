@@ -1,5 +1,12 @@
 syntax = "proto3";
+
 package spec;
+
+import "msg-message.proto";
+
+service QetaTestService { 
+  rpc QetaMethod(RequestMessage) returns (ResponseMessage);
+}
 
 
 service ExampleService {

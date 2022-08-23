@@ -15,3 +15,10 @@ message MessageFieldMessage {
 
 }
 
+message RequestMessage {
+  string field = 1;
+}
+
+message ResponseMessage {
+  string field = 1;
+}
