@@ -1,4 +1,5 @@
 import {PbLong, PbULong} from "../src";
+import {int64toString} from '../src/goog-varint';
 
 
 describe('PbULong', function () {
@@ -70,6 +71,14 @@ describe('PbULong', function () {
         let ulong = PbULong.from(0);
         expect(ulong.hi).toBe(0);
         expect(ulong.lo).toBe(0);
+    });
+
+    it('int64toString should serialize the same was as BigInt.toString()', function () {
+        let ulong = PbULong.from(1661324400000);
+        expect(ulong.hi).toBe(386);
+        expect(ulong.lo).toBe(-827943552);
+        expect(ulong.toString()).toBe('1661324400000')
+        expect(int64toString(ulong.lo, ulong.hi)).toBe('1661324400000')
     });
 
 });
@@ -302,4 +311,3 @@ describe('testing native bigint', function () {
     });
 
 });
-

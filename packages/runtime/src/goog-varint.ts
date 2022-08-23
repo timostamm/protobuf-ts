@@ -175,12 +175,6 @@ export function int64fromString(dec: string): [boolean, number, number] {
  * Copyright 2008 Google Inc.
  */
 export function int64toString(bitsLow: number, bitsHigh: number): string {
-    // Skip the expensive conversion if the number is small enough to use the
-    // built-in conversions.
-    if (bitsHigh <= 0x1FFFFF) {
-        return '' + (TWO_PWR_32_DBL * bitsHigh + bitsLow);
-    }
-
     // What this code is doing is essentially converting the input number from
     // base-2 to base-1e7, which allows us to represent the 64-bit range with
     // only 3 (very large) digits. Those digits are then trivial to convert to
