@@ -178,7 +178,7 @@ export function int64toString(bitsLow: number, bitsHigh: number): string {
     // Skip the expensive conversion if the number is small enough to use the
     // built-in conversions.
     if (bitsHigh <= 0x1FFFFF) {
-        return '' + (TWO_PWR_32_DBL * bitsHigh + bitsLow);
+        return '' + (TWO_PWR_32_DBL * bitsHigh + (bitsLow >>> 0));
     }
 
     // What this code is doing is essentially converting the input number from
