@@ -3,6 +3,14 @@
 none
 
 
+### v2.8.1
+
+Bug fixes:
+
+- fix for int64toString #367  
+  Thanks to @tpcstld and @ajpalkovic for the investigation and contributing a fix!
+
+
 ### v2.8.0
 
 Bug fixes:
