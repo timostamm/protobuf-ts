@@ -18,6 +18,7 @@ describe('jsonWriteOptions()', () => {
             enumAsInteger: true,
             useProtoFieldName: false,
             prettySpaces: 0,
+            typeRegistry: [],
         });
         expect(jsonWriteOptions({
             useProtoFieldName: true,
@@ -27,6 +28,7 @@ describe('jsonWriteOptions()', () => {
             enumAsInteger: false,
             useProtoFieldName: true,
             prettySpaces: 99,
+            typeRegistry: [],
         });
         expect(jsonWriteOptions({
             emitDefaultValues: true,
@@ -38,6 +40,7 @@ describe('jsonWriteOptions()', () => {
             enumAsInteger: true,
             useProtoFieldName: true,
             prettySpaces: 99,
+            typeRegistry: [],
         });
         expect(jsonWriteOptions({
             typeRegistry: [],

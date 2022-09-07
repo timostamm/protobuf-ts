@@ -66,6 +66,20 @@ export interface JsonWriteStringOptions extends JsonWriteOptions {
     prettySpaces: number;
 }
 
+/**
+ * Globally stores message types to read and write `google.protobuf.Any` from
+ * and to JSON format.
+ */
+const typeRegistry: IMessageType<any>[] = [];
+
+/**
+ * Registers a message type to the global type registry. Registered types are
+ * used reading and writing `google.protobuf.Any` from and to JSON format.
+ */
+export function registerType(t: IMessageType<any>) {
+  typeRegistry.push(t)
+}
+
 const defaultsWrite: Readonly<JsonWriteStringOptions> = {
         emitDefaultValues: false,
         enumAsInteger: false,
@@ -80,14 +94,16 @@ const defaultsWrite: Readonly<JsonWriteStringOptions> = {
  * Make options for reading JSON data from partial options.
  */
 export function jsonReadOptions(options?: Partial<JsonReadOptions>): Readonly<JsonReadOptions> {
-    return options ? {...defaultsRead, ...options} : defaultsRead;
+    const opts = options ? {...defaultsRead, ...options} : defaultsRead;
+    return mergeJsonOptions({typeRegistry}, opts) as Readonly<JsonReadOptions>;
 }
 
 /**
  * Make options for writing JSON data from partial options.
  */
 export function jsonWriteOptions(options?: Partial<JsonWriteStringOptions>): JsonWriteStringOptions {
-    return options ? {...defaultsWrite, ...options} : defaultsWrite;
+    const opts = options ? {...defaultsWrite, ...options} : defaultsWrite;
+    return mergeJsonOptions({typeRegistry}, opts) as JsonWriteStringOptions;
 }
 
 

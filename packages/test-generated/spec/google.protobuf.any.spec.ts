@@ -79,19 +79,19 @@ describe('google.protobuf.Any', function () {
 
         let scalarMsgAny = Any.pack(scalarMsg, ScalarValuesMessage);
 
-        it('throws without type registry', function () {
-            expect(() => Any.toJson(scalarMsgAny)).toThrow();
-        });
-
-        it('throws when type not in registry', function () {
-            expect(
-                () => Any.toJson(scalarMsgAny, {typeRegistry: [StructMessage]})
-            ).toThrow();
-        });
-
         it('creates expected JSON', function () {
             let registry = [StructMessage, ScalarValuesMessage];
             let json = Any.toJson(scalarMsgAny, {typeRegistry: registry});
+            expect(json).toEqual({
+                "@type": "type.googleapis.com/spec.ScalarValuesMessage",
+                doubleField: 0.5,
+                stringField: "hello",
+                boolField: true,
+            });
+        });
+
+        it('creates expected JSON from global type registry', function () {
+            let json = Any.toJson(scalarMsgAny);
             expect(json).toEqual({
                 "@type": "type.googleapis.com/spec.ScalarValuesMessage",
                 doubleField: 0.5,

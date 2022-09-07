@@ -83,6 +83,7 @@ export class MessageTypeGenerator extends GeneratorBase {
             MyMessage = this.imports.type(source, descriptor),
             Message$Type = ts.createIdentifier(this.imports.type(source, descriptor) + '$Type'),
             MessageType = ts.createIdentifier(this.imports.name(source, "MessageType", this.options.runtimeImportPath)),
+            RegisterTypeFunc = ts.createIdentifier(this.imports.name(source, "registerType", this.options.runtimeImportPath)),
             interpreterType = this.interpreter.getMessageType(descriptor),
             classDecMembers: ts.ClassElement[] = [],
             classDecSuperArgs: ts.Expression[] = [ // arguments to the MessageType CTOR
@@ -146,9 +147,14 @@ export class MessageTypeGenerator extends GeneratorBase {
         );
 
 
+        // registerType("messageId");
+        const registerType = ts.createCall(RegisterTypeFunc, undefined, [ts.createIdentifier(MyMessage)]);
+
+
         // add to our file
         source.addStatement(classDec);
         source.addStatement(exportConst);
+        source.addStatement(registerType);
 
 
         // add comments
