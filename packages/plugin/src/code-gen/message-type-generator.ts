@@ -148,7 +148,9 @@ export class MessageTypeGenerator extends GeneratorBase {
 
 
         // registerType("messageId");
-        const registerType = ts.createCall(RegisterTypeFunc, undefined, [ts.createIdentifier(MyMessage)]);
+        const registerType = ts.createExpressionStatement(
+            ts.createCall(RegisterTypeFunc, undefined, [ts.createIdentifier(MyMessage)])
+        );
 
 
         // add to our file
