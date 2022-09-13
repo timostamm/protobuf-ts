@@ -93,9 +93,6 @@ export class MessageType<T extends object> implements IMessageType<T> {
 
   create (value?: PartialMessage<T>): T {
     let message = reflectionCreate(this);
-    if (this.protoSyntax === "proto2") {
-      console.log(this)
-    }
     if (value !== undefined) {
       reflectionMergePartial<T>(this, message, value);
     }

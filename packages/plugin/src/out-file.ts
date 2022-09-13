@@ -46,7 +46,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
     }
 
     getProtoSyntax(): string {
-        return this.fileDescriptor.syntax === undefined ? 'proto2' : 'proto3'
+        return this.fileDescriptor.syntax === undefined ? 'proto2' : this.fileDescriptor.syntax
     }
 
 
