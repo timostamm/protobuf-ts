@@ -93,6 +93,8 @@ export interface MessageInfo {
    */
   readonly options: { [extensionName: string]: JsonValue };
 
+  readonly protoSyntax?: string;
+
 }
 
 

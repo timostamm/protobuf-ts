@@ -19,6 +19,7 @@ import { Interpreter } from "../interpreter";
 import { FieldInfoGenerator } from "./field-info-generator";
 import { GeneratorBase } from "./generator-base";
 import { createLocalTypeName } from "./local-type-name";
+import { OutFile } from "src/out-file";
 
 
 export interface CustomMethodGenerator {
@@ -85,7 +86,7 @@ export class MessageTypeGenerator extends GeneratorBase {
    * Some field information is passed to the handler's
    * constructor.
    */
-  generateMessageType (source: TypescriptFile, descriptor: DescriptorProto, optimizeFor: OptimizeMode): void {
+  generateMessageType (source: OutFile, descriptor: DescriptorProto, optimizeFor: OptimizeMode): void {
     const
       // identifier for the message
       MyMessage = this.imports.type(source, descriptor),
@@ -104,6 +105,16 @@ export class MessageTypeGenerator extends GeneratorBase {
     if (Object.keys(interpreterType.options).length) {
       classDecSuperArgs.push(
         typescriptLiteralFromValue(interpreterType.options)
+      );
+    } else {
+      classDecSuperArgs.push(
+        typescriptLiteralFromValue(undefined)
+      );
+    }
+    // if present, add proto syntax
+    if (source) {
+      classDecSuperArgs.push(
+        typescriptLiteralFromValue(source.getProtoSyntax())
       );
     }
 

@@ -48,6 +48,8 @@ export class MessageType<T extends object> implements IMessageType<T> {
    */
   readonly options: JsonOptionsMap;
 
+  readonly protoSyntax: string;
+
 
   protected readonly defaultCheckDepth = 16;
   protected readonly refTypeCheck: ReflectionTypeCheck;
@@ -56,10 +58,11 @@ export class MessageType<T extends object> implements IMessageType<T> {
   protected readonly refBinReader: ReflectionBinaryReader;
   protected readonly refBinWriter: ReflectionBinaryWriter;
 
-  constructor (name: string, fields: readonly PartialFieldInfo[], options?: JsonOptionsMap) {
+  constructor (name: string, fields: readonly PartialFieldInfo[], options?: JsonOptionsMap, protoSyntax?: string) {
     this.typeName = name;
     this.fields = fields.map(normalizeFieldInfo);
     this.options = options ?? {};
+    this.protoSyntax = protoSyntax === undefined ? "proto3" : protoSyntax;
     this.refTypeCheck = new ReflectionTypeCheck(this);
     this.refJsonReader = new ReflectionJsonReader(this);
     this.refJsonWriter = new ReflectionJsonWriter(this);

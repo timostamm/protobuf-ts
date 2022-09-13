@@ -58,6 +58,8 @@ export interface IMessageType<T extends object> extends MessageInfo {
    */
   readonly options: { [extensionName: string]: JsonValue };
 
+  readonly protoSyntax?: string;
+
 
   /**
    * Create a new message with default values.
