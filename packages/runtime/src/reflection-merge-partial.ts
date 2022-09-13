@@ -43,7 +43,7 @@ export function reflectionMergePartial<T extends object> (info: MessageInfo, tar
       fieldValue = input[name]; // we are using the source directly
       output = target as UnknownMessage; // we want our field value to go directly into the target
       if (fieldValue === undefined) {
-        if (!field.opt) {
+        if (!field.opt && info.protoSyntax === "proto2") {
           throw new Error(`Required field not provided [${info.typeName}.${name}]`)
         }
         continue; // skip further work on field, existing value is used as is

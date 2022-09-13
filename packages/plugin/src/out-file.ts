@@ -45,6 +45,10 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         return this.header;
     }
 
+    getProtoSyntax(): string {
+        return this.fileDescriptor.syntax === undefined ? 'proto2' : 'proto3'
+    }
+
 
     private makeHeader(): string {
         let props = [];

@@ -17,6 +17,17 @@ describe('reflectionCreate()', function () {
                 expect(message).toEqual(defaults);
             });
         });
+
+        fixtures.usingMessages((typeName, key, msg) => {
+            it(`${typeName} '${key}' proto2`, function () {
+                const mi = fixtures.makeMessageInfo(typeName, "proto2");
+                const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
+                const message = reflectionCreate(mt);
+                const defaults = fixtures.getMessage(typeName, 'default');
+                expect(message).toEqual(defaults);
+            });
+        });
+        
     });
 
 

@@ -397,12 +397,13 @@ class FixtureRegistry {
   /**
    * Return message info with normalized fields for given fixture.
    */
-  makeMessageInfo (type: string): MessageInfo {
+  makeMessageInfo (type: string, protoSyntax: string = "proto3"): MessageInfo {
     let fix = this.getFix(type);
     return {
       typeName: fix.typeName,
       fields: this.getFieldsNormalized(type),
-      options: {}
+      options: {},
+      protoSyntax
     }
   }
 
