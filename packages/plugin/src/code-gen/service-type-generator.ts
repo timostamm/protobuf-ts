@@ -1,5 +1,6 @@
 import {
   addCommentBlockAsJsDoc,
+  AnyTypeDescriptorProto,
   DescriptorRegistry,
   ServiceDescriptorProto,
   SymbolTable,
@@ -77,12 +78,17 @@ export class ServiceTypeGenerator extends GeneratorBase {
   }
 
   generateQetaServiceConfig (source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
+    const qetaKindOptionName = 'chipper.qeta.kind'
+    const qetaKindTypeName = '.chipper.qeta.QetaKind'
+    let qetaKindDescriptor: AnyTypeDescriptorProto | undefined
     const MyService = this.imports.type(source, descriptor);
+    const interpreterType = this.interpreter.getServiceType(descriptor);
     const propertySignatures: ts.TypeElement[] = []
     const propertyAssignments: ts.PropertyAssignment[] = []
+    let i = 0
     for (const method of descriptor.method) {
       /* Properties for Qeta config interface e.g.
-         interface SagaServiceQetaConfigInterface {
+         interface SagaServiceConfig {
           GetSagaQuestion: {
               request: GetSagaQuestionRequest;
               response: GetSagaQuestionResponse;
@@ -90,6 +96,16 @@ export class ServiceTypeGenerator extends GeneratorBase {
           ...
         }
       */
+      const options = interpreterType.methods[i].options
+      let kind: string | undefined
+      for (const [optionName, value] of Object.entries(options)) {
+        if (optionName === qetaKindOptionName) {
+          kind = value!.toString()
+          qetaKindDescriptor = this.registry.resolveTypeName(qetaKindTypeName)
+        }
+      }
+      i++
+        
       const propSignature = ts.createPropertySignature(
         undefined,
         ts.createIdentifier(method.name!),
@@ -119,6 +135,26 @@ export class ServiceTypeGenerator extends GeneratorBase {
               )),
               undefined
             ),
+            undefined
+          ),
+          ts.createPropertySignature(
+            undefined,
+            ts.createIdentifier("kind"),
+            undefined,
+            qetaKindDescriptor ?
+              ts.createTypeReferenceNode(
+                ts.createQualifiedName(
+                  ts.createIdentifier(this.imports.type(
+                    source,
+                    qetaKindDescriptor
+                  )),
+                  ts.createIdentifier(kind!)
+                ),
+                undefined
+              )
+              :
+              ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+            ,
             undefined
           )
         ]),
@@ -151,6 +187,19 @@ export class ServiceTypeGenerator extends GeneratorBase {
                 source,
                 this.registry.resolveTypeName(method.outputType!)
               ))
+            ),
+            ts.createPropertyAssignment(
+              ts.createIdentifier("kind"),
+              qetaKindDescriptor ?
+                ts.createPropertyAccess(
+                  ts.createIdentifier(this.imports.type(
+                    source,
+                    qetaKindDescriptor
+                  )),
+                  ts.createIdentifier(kind!)
+                )
+                :
+                typescriptLiteralFromValue(kind)
             )
           ],
           true
@@ -182,7 +231,7 @@ export class ServiceTypeGenerator extends GeneratorBase {
       [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
       ts.createVariableDeclarationList(
         [ts.createVariableDeclaration(
-          ts.createIdentifier(`${MyService}Config`),
+          ts.createIdentifier(`${MyService}Parsers`),
           undefined,
           ts.createAsExpression(
             ts.createObjectLiteral(
