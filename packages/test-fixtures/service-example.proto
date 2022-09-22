@@ -3,9 +3,20 @@ syntax = "proto3";
 package spec;
 
 import "msg-message.proto";
+import "google/protobuf/descriptor.proto";
+
+message WowType {
+    optional string value = 1;
+}
+extend google.protobuf.MethodOptions {
+    optional WowType wow = 50002;
+}
 
 service QetaTestService { 
-  rpc QetaMethod(RequestMessage) returns (ResponseMessage);
+  rpc QetaMethod(RequestMessage) returns (ResponseMessage) {
+    // option (chipper.qeta.config).key = true;
+    option (wow).value = 'haha';
+  };
 }
 
 
