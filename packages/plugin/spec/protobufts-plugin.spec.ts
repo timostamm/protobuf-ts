@@ -10,29 +10,31 @@ describe('protobuftsPlugin', function () {
   let request = getFixtureCodeGeneratorRequest({
     parameter: 'long_type_string',
     fileToGenerate: [
-      'msg-scalar.proto',
+      /*'msg-scalar.proto',
       'msg-oneofs.proto',
       'msg-annotated.proto',
       'msg-enum.proto',
       'msg-longs.proto',
       'msg-proto2-optionals.proto',
       'msg-maps.proto',
-      'msg-proto3-optionals.proto',
+      'msg-proto3-optionals.proto',*/
       'service-example.proto',
       'msg-message.proto',
+      'qeta.proto',
       // 'google/protobuf/descriptor.proto'
     ],
     includeFiles: [
-      'msg-annotated.proto',
+      /*'msg-annotated.proto',
       'msg-enum.proto',
       'msg-longs.proto',
       'msg-scalar.proto',
       'msg-proto2-optionals.proto',
       'msg-proto3-optionals.proto',
       'msg-oneofs.proto',
-      'msg-maps.proto',
+      'msg-maps.proto',*/
       'service-example.proto',
       'msg-message.proto',
+      'qeta.proto',
       // 'google/protobuf/descriptor.proto',
       // 'google/protobuf/unittest_enormous_descriptor.proto',
       // 'google/protobuf/unittest_proto3_lite.proto',

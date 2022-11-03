@@ -28,6 +28,7 @@ import { ServiceServerGeneratorGeneric } from "./code-gen/service-server-generat
 import { ServiceClientGeneratorGrpc } from "./code-gen/service-client-generator-grpc";
 import * as ts from "typescript";
 import { OneofGenerator } from "./code-gen/oneof-generator";
+import { camelToUnderscore } from "./code-gen/util";
 
 
 export class ProtobuftsPlugin extends PluginBase {
@@ -310,7 +311,7 @@ export class ProtobuftsPlugin extends PluginBase {
           genEnum.generateEnum(outMain, descriptor);
         }
       });
-
+      
       registry.visitTypes(fileDescriptor, descriptor => {
         // still not interested in synthetic types like map entry messages
         if (registry.isSyntheticElement(descriptor)) return;
@@ -319,11 +320,28 @@ export class ProtobuftsPlugin extends PluginBase {
           genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
         }
         if (ServiceDescriptorProto.is(descriptor)) {
-
           // service type
           genServiceType.generateServiceType(outMain, descriptor)
-          genServiceType.generateQetaServiceConfig(outMain, descriptor)
-
+          const qetaKindOptionName = 'chipper.qeta.kind'
+          const interpreterType = interpreter.getServiceType(descriptor);
+          let i = 0;
+          let isQetaService = false
+          for (const method of descriptor.method) {
+            for (const [optionName, value] of Object.entries(interpreterType.methods[i].options)) {
+              if (optionName === qetaKindOptionName) {
+                isQetaService = true
+                const methodName = camelToUnderscore(method.name!)
+                fileTable.register(`${methodName}.publisher.ts`, fileDescriptor, `${methodName}_publisher`)
+              }
+            }
+            i++
+          }
+          // Remove this check to test qeta code locally. Protobuf-ts tests do not populate options so this will always be false.
+          if (isQetaService) {
+            genServiceType.generateQetaServiceConfig(outMain, descriptor)
+            const publisherFiles: OutFile[] = genServiceType.generateQetaPublisher(descriptor, fileTable, fileDescriptor, registry, options)
+            publisherFiles.map(file => tsFiles.push(file))
+          }
           // clients
           const clientStyles = optionResolver.getClientStyles(descriptor);
           if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+
+package chipper.qeta;
+
+enum QetaKind {
+    UNKNOWN = 0;
+    ACTION = 1;
+    EVENT = 2;
+    QUESTION = 3;
+    TASK = 4;
+}
+
+extend google.protobuf.MethodOptions {
+  optional QetaKind kind = 50001;
+}

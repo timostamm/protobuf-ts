@@ -3,6 +3,7 @@ syntax = "proto3";
 package spec;
 
 import "msg-message.proto";
+import "qeta.proto";
 import "google/protobuf/descriptor.proto";
 
 message WowType {
@@ -14,13 +15,12 @@ extend google.protobuf.MethodOptions {
 
 service QetaTestService { 
   rpc QetaMethod(RequestMessage) returns (ResponseMessage) {
-    // option (chipper.qeta.config).key = true;
-    option (wow).value = 'haha';
+    option (chipper.qeta.kind) = ACTION;
+    // option (wow).value = 'haha';
   };
 }
 
-
-service ExampleService {
+/*service ExampleService {
     // An example unary call.
     rpc Unary (ExampleRequest) returns (ExampleResponse);
 
@@ -72,4 +72,4 @@ enum FailRequest {
 
     // send an error status, don't send any message
     ERROR_STATUS_ONLY = 2;
-}
+}*/
