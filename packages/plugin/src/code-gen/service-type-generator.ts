@@ -36,18 +36,6 @@ let kindCollectionMap = new Map<string, string>([
 const qetaKindOptionName = "chipper.qeta.kind"
 const qetaKindTypeName = ".chipper.qeta.QetaKind"
 
-/*interface QetaKindDetails {
-  kind?: string | undefined
-  qetaKindDescriptor?: AnyTypeDescriptorProto | undefined
-}*/
-
-interface QetaKindConfig {
-  // ActionConfig, QuestionConfig, TaskConfig or EventConfig.
-  configName?: string
-  // Actions, Questions, Tasks or Events.
-  collectionName?: string
-}
-
 export class ServiceTypeGenerator extends GeneratorBase {
 
   private readonly methodInfoGenerator: MethodInfoGenerator;
