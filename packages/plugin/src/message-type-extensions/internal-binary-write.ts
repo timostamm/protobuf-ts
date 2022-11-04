@@ -398,6 +398,16 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
       'fork'
     );
 
+    const isTimeStampField = field.T().typeName === "google.protobuf.Timestamp"
+    const timestampFieldAccess = ts.createCall(
+      ts.createPropertyAccess(
+        ts.createIdentifier("Timestamp"),
+        ts.createIdentifier("fromDate")
+      ),
+      undefined,
+      [fieldPropertyAccess]
+    )
+
     // MessageFieldMessage_TestMessage.internalBinaryWrite(message.messageField, <writeTagAndFork>, options);
     let binaryWrite = ts.createCall(
       ts.createPropertyAccess(
@@ -405,7 +415,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         ts.createIdentifier("internalBinaryWrite")
       ),
       undefined,
-      [fieldPropertyAccess, writeTagAndFork, ts.createIdentifier("options")],
+      [isTimeStampField ? timestampFieldAccess : fieldPropertyAccess, writeTagAndFork, ts.createIdentifier("options")],
     );
 
     // <...>.join()

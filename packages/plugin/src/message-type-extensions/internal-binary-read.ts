@@ -410,6 +410,15 @@ export class InternalBinaryRead implements CustomMethodGenerator {
   message (source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
     let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
     assert(DescriptorProto.is(messageDescriptor));
+    // For Timestamps we output as Date.
+    // e.g. Timestamp.toDate(Timestamp.internalBinaryRead(reader, reader.uint32(), options, message.createdAt ? Timestamp.fromDate(message.createdAt) : undefined));
+    if (field.T().typeName === "google.protobuf.Timestamp") {
+      return [ts.createExpressionStatement(ts.createBinary(
+        ts.createPropertyAccess(ts.createIdentifier("message"), field.localName),
+        ts.createToken(ts.SyntaxKind.EqualsToken),
+        this.createTimestampToDateConversion(this.imports.type(source, messageDescriptor), fieldPropertyAccess)
+      ))]
+    }
     let handlerMergeCall = ts.createCall(
       ts.createPropertyAccess(
         ts.createIdentifier(this.imports.type(source, messageDescriptor)),
@@ -963,6 +972,39 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     return typescriptLiteralFromValue(value);
   }
 
+  private createTimestampToDateConversion(timestampIdentifier: string, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Expression {
+    return ts.createCall(
+      ts.createPropertyAccess(
+        ts.createIdentifier(timestampIdentifier),
+        ts.createIdentifier("toDate")
+      ),
+      undefined,
+      [ts.createCall(
+        ts.createPropertyAccess(
+          ts.createIdentifier(timestampIdentifier),
+          ts.createIdentifier("internalBinaryRead")
+        ),
+        undefined,
+        [
+          ts.createIdentifier("reader"),
+          this.makeReaderCall("reader", rt.ScalarType.UINT32),
+          ts.createIdentifier("options"),
+          ts.createConditional(
+            fieldPropertyAccess,
+            ts.createCall(
+              ts.createPropertyAccess(
+                ts.createIdentifier("Timestamp"),
+                ts.createIdentifier("fromDate")
+              ),
+              undefined,
+              [fieldPropertyAccess]
+            ),
+            ts.createIdentifier("undefined")
+          )
+        ]
+      )]
+    )
+  }
   private createMapValueDefaultValue (source: TypescriptFile, V: (rt.FieldInfo & { kind: "map" })["V"]): ts.Expression {
     switch (V.kind) {
       case "scalar":

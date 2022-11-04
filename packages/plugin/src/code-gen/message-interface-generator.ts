@@ -303,6 +303,10 @@ export class MessageInterfaceGenerator extends GeneratorBase {
   }
 
   private createMessageTypeNode (source: TypescriptFile, type: rt.IMessageType<rt.UnknownMessage>): ts.TypeNode {
+    // Replace Timestamp with typescript Date.
+    if (type.typeName === 'google.protobuf.Timestamp') {
+      return ts.createTypeReferenceNode("Date", undefined);
+    }
     let messageDescriptor = this.registry.resolveTypeName(type.typeName);
     assert(DescriptorProto.is(messageDescriptor));
     return ts.createTypeReferenceNode(this.imports.type(source, messageDescriptor), undefined);
