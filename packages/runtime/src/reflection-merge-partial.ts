@@ -37,7 +37,7 @@ export function reflectionMergePartial<T extends object>(info: MessageInfo, targ
 
         if (field.oneof) {
             const group = input[field.oneof] as UnknownOneofGroup | undefined; // this is the oneof`s group in the source
-            if (group == undefined) { // the user is free to omit
+            if (group?.oneofKind == undefined) { // the user is free to omit
                 continue; // we skip this field, and all other members too
             }
             fieldValue = group[name]; // our value comes from the the oneof group of the source
