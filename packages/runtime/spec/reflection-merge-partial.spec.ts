@@ -170,5 +170,24 @@ describe('reflectionMergePartial()', () => {
 
     });
 
+    describe("oneof", () => {
+        const messageType = new MessageType<UnknownMessage>('.test.TestMessage', [
+            {no: 1, name: 'baz', kind: "scalar", T: ScalarType.INT32, oneof: "bar"},
+            {no: 2, name: 'qux', kind: "scalar", T: ScalarType.INT32, oneof: "bar"},
+        ]);
+        it("unset field in source does not overwrite set field in target", () => {
+            const dst = messageType.create({bar: {
+                oneofKind: "baz",
+                baz: 1,
+            }});
+            const src = messageType.create();
+            messageType.mergePartial(dst, src);
+            expect(dst.bar).toEqual({
+                oneofKind: "baz",
+                baz: 1,
+            });
+        });
+    });
+
 });
 
