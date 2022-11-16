@@ -1,5 +1,11 @@
 ### unreleased changes
 
+none
+
+
+### v2.8.2
+
+Bug fixes:
 
 - Avoid overwriting a set oneof field in target with an unset oneof field in source #395  
   Thanks to @jcready for the contribution!
