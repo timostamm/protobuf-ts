@@ -43,16 +43,14 @@ joinPanel.startCallback = async (username) => {
 
     // print all chat events
     call.responses.onMessage(message => {
-        switch (message.event.oneofKind) {
+        switch (message.event.kind) {
             case "joined":
-                chatPanel.addOther(message.event.joined);
-                break;
             case "left":
-                chatPanel.addOther(message.event.left);
+                chatPanel.addOther(message.event.value);
                 break;
             case "message":
-                chatPanel.addMessage(message.username, message.event.message);
-                console.log(`${message.username}: ${message.event.message}`);
+                chatPanel.addMessage(message.username, message.event.value);
+                console.log(`${message.username}: ${message.event.value}`);
                 break;
         }
     });

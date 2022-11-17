@@ -30,25 +30,26 @@ export interface ChatEvent {
      * @generated from protobuf oneof: event
      */
     event: {
-        oneofKind: "joined";
+        kind: "joined";
         /**
          * @generated from protobuf field: string joined = 2;
          */
-        joined: string;
+        value: string;
     } | {
-        oneofKind: "message";
+        kind: "message";
         /**
          * @generated from protobuf field: string message = 3;
          */
-        message: string;
+        value: string;
     } | {
-        oneofKind: "left";
+        kind: "left";
         /**
          * @generated from protobuf field: string left = 4;
          */
-        left: string;
+        value: string;
     } | {
-        oneofKind: undefined;
+        kind: undefined;
+        value?: never;
     };
 }
 /**
@@ -125,20 +126,20 @@ class ChatEvent$Type extends MessageType<ChatEvent> {
                     break;
                 case /* string joined */ 2:
                     message.event = {
-                        oneofKind: "joined",
-                        joined: reader.string()
+                        kind: "joined",
+                        value: reader.string()
                     };
                     break;
                 case /* string message */ 3:
                     message.event = {
-                        oneofKind: "message",
-                        message: reader.string()
+                        kind: "message",
+                        value: reader.string()
                     };
                     break;
                 case /* string left */ 4:
                     message.event = {
-                        oneofKind: "left",
-                        left: reader.string()
+                        kind: "left",
+                        value: reader.string()
                     };
                     break;
                 default:
@@ -157,14 +158,14 @@ class ChatEvent$Type extends MessageType<ChatEvent> {
         if (message.username !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.username);
         /* string joined = 2; */
-        if (message.event.oneofKind === "joined")
-            writer.tag(2, WireType.LengthDelimited).string(message.event.joined);
+        if (message.event.kind === "joined")
+            writer.tag(2, WireType.LengthDelimited).string(message.event.value);
         /* string message = 3; */
-        if (message.event.oneofKind === "message")
-            writer.tag(3, WireType.LengthDelimited).string(message.event.message);
+        if (message.event.kind === "message")
+            writer.tag(3, WireType.LengthDelimited).string(message.event.value);
         /* string left = 4; */
-        if (message.event.oneofKind === "left")
-            writer.tag(4, WireType.LengthDelimited).string(message.event.left);
+        if (message.event.kind === "left")
+            writer.tag(4, WireType.LengthDelimited).string(message.event.value);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

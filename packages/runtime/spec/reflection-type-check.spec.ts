@@ -81,7 +81,7 @@ describe('ReflectionTypeCheck.is()', function () {
             let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.OneofScalarMemberMessage'));
             let m = fixtures.getMessage('spec.OneofScalarMemberMessage', 'err');
             assert(isOneofGroup(m.result));
-            m.result.oneofKind = 'xxx';
+            m.result.kind = 'xxx';
             let is = check.is(m, depth, false);
             expect(is).toBe(false);
         });
@@ -90,7 +90,7 @@ describe('ReflectionTypeCheck.is()', function () {
             let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.OneofScalarMemberMessage'));
             let m = fixtures.getMessage('spec.OneofScalarMemberMessage', 'err');
             assert(isOneofGroup(m.result));
-            m.result.error = 123;
+            m.result.value = 123;
             let is = check.is(m, depth, false);
             expect(is).toBe(false);
         });
@@ -100,8 +100,8 @@ describe('ReflectionTypeCheck.is()', function () {
             let m = fixtures.getMessage('spec.OneofScalarMemberMessage', 'err');
             assert(isOneofGroup(m.result));
             m.result = {
-                oneofKind: 'wrong',
-                wrong: 123
+                kind: 'wrong',
+                value: 123
             };
             let is = check.is(m, depth, false);
             expect(is).toBe(false);

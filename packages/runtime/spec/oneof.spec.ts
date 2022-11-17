@@ -13,14 +13,14 @@ describe('isOneofGroup()', function () {
 
     it('returns true for case "none"', () => {
         expect(isOneofGroup({
-            oneofKind: undefined
+            kind: undefined
         })).toBeTrue();
     });
 
     it('returns true for a valid case', () => {
         expect(isOneofGroup({
-            oneofKind: "error",
-            error: "error message"
+            kind: "error",
+            value: "error message"
         })).toBeTrue();
     });
 
@@ -32,29 +32,22 @@ describe('isOneofGroup()', function () {
 
     it('returns false if discriminator is not a string', () => {
         expect(isOneofGroup({
-            oneofKind: true,
-            true: 123
-        })).toBeFalse();
-    });
-
-    it('returns false if discriminator points to a missing property', () => {
-        expect(isOneofGroup({
-            oneofKind: "error",
-            foo: 123
+            kind: true,
+            value: 123
         })).toBeFalse();
     });
 
     it('returns false if case "none" has extra properties', () => {
         expect(isOneofGroup({
-            oneofKind: undefined,
+            kind: undefined,
             foo: 123
         })).toBeFalse();
     });
 
     it('returns false if valid case has extra properties', () => {
         expect(isOneofGroup({
-            oneofKind: "error",
-            error: "error message",
+            kind: "error",
+            value: "error message",
             foo: 123
         })).toBeFalse();
     });
@@ -63,14 +56,13 @@ describe('isOneofGroup()', function () {
 
 
 type ExampleOneof =
-    | { oneofKind: "a"; a: string; }
-    | { oneofKind: "b"; b: number; }
-    | { oneofKind: "c"; c: boolean; }
-    | { oneofKind: undefined; };
+    | { kind: "a"; value: string; }
+    | { kind: "b"; value: number; }
+    | { kind: "c"; value: boolean; }
+    | { kind: undefined; value?: never };
 
 type EmptyOneof =
-    | { oneofKind: undefined; };
-
+    | { kind: undefined; value?: never };
 
 describe('clearOneofValue()', function () {
     let exampleOneof: ExampleOneof;
@@ -78,33 +70,33 @@ describe('clearOneofValue()', function () {
     let unknownOneof: UnknownOneofGroup;
     beforeEach(() => {
         exampleOneof = {
-            oneofKind: "a",
-            a: "x"
+            kind: "a",
+            value: "x"
         };
         emptyOneof = {
-            oneofKind: undefined,
+            kind: undefined,
         };
         unknownOneof = {
-            oneofKind: "a",
-            a: "x"
+            kind: "a",
+            value: "x"
         };
     });
 
     it('clears empty oneof', () => {
         clearOneofValue(emptyOneof);
-        expect(emptyOneof.oneofKind).toBe(undefined);
+        expect(emptyOneof.kind).toBe(undefined);
         expect(isOneofGroup(emptyOneof)).toBeTrue();
     });
 
     it('clears example oneof', () => {
         clearOneofValue(exampleOneof);
-        expect(exampleOneof.oneofKind).toBe(undefined);
+        expect(exampleOneof.kind).toBe(undefined);
         expect(isOneofGroup(exampleOneof)).toBeTrue();
     });
 
     it('clears unknown oneof', () => {
         clearOneofValue(unknownOneof);
-        expect(unknownOneof.oneofKind).toBe(undefined);
+        expect(unknownOneof.kind).toBe(undefined);
         expect(isOneofGroup(unknownOneof)).toBeTrue();
     });
 
@@ -116,39 +108,39 @@ describe('setOneofValue()', function () {
     let unknownOneof: UnknownOneofGroup;
     beforeEach(() => {
         exampleOneof = {
-            oneofKind: "a",
-            a: "x"
+            kind: "a",
+            value: "x"
         };
         emptyOneof = {
-            oneofKind: undefined,
+            kind: undefined,
         };
         unknownOneof = {
-            oneofKind: "a",
-            a: "x"
+            kind: "a",
+            value: "x"
         };
     });
 
     it('sets example oneof value', () => {
         setOneofValue(exampleOneof, "b", 1);
-        expect(exampleOneof.oneofKind).toBe("b");
-        if (exampleOneof.oneofKind === "b") {
-            expect(exampleOneof.b).toBe(1);
+        expect(exampleOneof.kind).toBe("b");
+        if (exampleOneof.kind === "b") {
+            expect(exampleOneof.value).toBe(1);
         }
         expect(isOneofGroup(exampleOneof)).toBeTrue();
     });
 
     it('sets example oneof other value', () => {
         setOneofValue(exampleOneof, "c", true);
-        expect(exampleOneof.oneofKind).toBe("c");
-        if (exampleOneof.oneofKind === "c") {
-            expect(exampleOneof.c).toBeTrue()
+        expect(exampleOneof.kind).toBe("c");
+        if (exampleOneof.kind === "c") {
+            expect(exampleOneof.value).toBeTrue()
         }
         expect(isOneofGroup(exampleOneof)).toBeTrue();
     });
 
     it('sets empty oneof value', () => {
         setOneofValue(emptyOneof, undefined);
-        expect(emptyOneof.oneofKind).toBe(undefined);
+        expect(emptyOneof.kind).toBe(undefined);
         expect(isOneofGroup(emptyOneof)).toBeTrue();
     });
 
@@ -158,21 +150,21 @@ describe('setUnknownOneofValue()', function () {
     let unknownOneof: UnknownOneofGroup;
     beforeEach(() => {
         unknownOneof = {
-            oneofKind: "a",
-            a: "x"
+            kind: "a",
+            value: "x"
         };
     });
 
     it('sets undefined', () => {
         setOneofValue(unknownOneof, undefined);
-        expect(unknownOneof.oneofKind).toBe(undefined);
+        expect(unknownOneof.kind).toBe(undefined);
         expect(isOneofGroup(unknownOneof)).toBeTrue();
     });
 
     it('sets defined', () => {
         setUnknownOneofValue(unknownOneof, "a", "x");
-        expect(unknownOneof.oneofKind).toBe("a");
-        expect(unknownOneof["a"]).toBe("x");
+        expect(unknownOneof.kind).toBe("a");
+        expect(unknownOneof["value"]).toBe("x");
         expect(isOneofGroup(unknownOneof)).toBeTrue();
     });
 
@@ -185,15 +177,15 @@ describe('getSelectedOneofValue()', function () {
     let unknownOneof: UnknownOneofGroup;
     beforeEach(() => {
         exampleOneof = {
-            oneofKind: "a",
-            a: "x"
+            kind: "a",
+            value: "x"
         };
         emptyOneof = {
-            oneofKind: undefined,
+            kind: undefined,
         };
         unknownOneof = {
-            oneofKind: "a",
-            a: "x"
+            kind: "a",
+            value: "x"
         };
     });
 
@@ -210,7 +202,7 @@ describe('getSelectedOneofValue()', function () {
     });
 
     it('returns unknown oneof value', () => {
-        const val: UnknownOneofGroup[string] = getSelectedOneofValue(unknownOneof);
+        const val: UnknownOneofGroup["value"] = getSelectedOneofValue(unknownOneof);
         expect(val).toBe("x");
         expect(isOneofGroup(emptyOneof)).toBeTrue();
     });
@@ -222,8 +214,8 @@ describe('getOneofValue()', function () {
     let exampleOneof: ExampleOneof;
     beforeEach(() => {
         exampleOneof = {
-            oneofKind: "a",
-            a: "x"
+            kind: "a",
+            value: "x"
         };
     });
 

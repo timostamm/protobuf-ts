@@ -32,15 +32,13 @@ async function main(term: TerminalIO, client: IChatServiceClient) {
 
     // print all chat events
     call.responses.onMessage(message => {
-        switch (message.event.oneofKind) {
+        switch (message.event.kind) {
             case "joined":
-                term.print(`* ${message.event.joined}`);
-                break;
             case "left":
-                term.print(`* ${message.event.left}`);
+                term.print(`* ${message.event.value}`);
                 break;
             case "message":
-                term.print(`${message.username}: ${message.event.message}`);
+                term.print(`${message.username}: ${message.event.value}`);
                 break;
         }
     });

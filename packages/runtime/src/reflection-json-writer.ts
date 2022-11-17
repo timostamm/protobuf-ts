@@ -40,12 +40,12 @@ export class ReflectionJsonWriter {
             }
             // field is part of a oneof
             const group = source[field.oneof] as UnknownOneofGroup;
-            if (group.oneofKind !== field.localName)
+            if (group.kind !== field.localName)
                 continue; // not selected, skip
             const opt = field.kind == 'scalar' || field.kind == 'enum'
                 ? {...options, emitDefaultValues: true} // make sure to emit default values too
                 : options;
-            let jsonValue = this.field(field, group[field.localName], opt);
+            let jsonValue = this.field(field, group.value, opt);
             assert(jsonValue !== undefined);
             json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
         }

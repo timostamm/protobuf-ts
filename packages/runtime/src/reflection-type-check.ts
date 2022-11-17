@@ -105,12 +105,12 @@ export class ReflectionTypeCheck {
             const group = message[name];
             if (!isOneofGroup(group))
                 return false;
-            if (group.oneofKind === undefined)
+            if (group.kind === undefined)
                 continue;
-            const field = this.fields.find(f => f.localName === group.oneofKind);
+            const field = this.fields.find(f => f.localName === group.kind);
             if (!field)
                 return false; // we found no field, but have a kind, something is wrong
-            if (!this.field(group[group.oneofKind], field, allowExcessProperties, depth))
+            if (!this.field(group.value, field, allowExcessProperties, depth))
                 return false;
         }
 

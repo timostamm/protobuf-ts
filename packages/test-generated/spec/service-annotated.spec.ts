@@ -62,18 +62,18 @@ describe('spec.AnnotatedService', function () {
                 const rule = HttpRule.fromJson(mi.options["google.api.http"]);
                 expect(rule).toEqual(HttpRule.create({
                     pattern: {
-                        oneofKind: "get",
-                        get: "/v1/{name=messages/*}"
+                        kind: "get",
+                        value: "/v1/{name=messages/*}"
                     },
                     additionalBindings: [{
                         pattern: {
-                            oneofKind: "get",
-                            get: "xxx"
+                            kind: "get",
+                            value: "xxx"
                         }
                     }, {
                         pattern: {
-                            oneofKind: "get",
-                            get: "yyy"
+                            kind: "get",
+                            value: "yyy"
                         }
                     }]
                 }));

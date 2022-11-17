@@ -166,7 +166,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
         // create property
         const property = ts.createPropertySignature(
             undefined,
-            ts.createIdentifier(fieldInfo.localName),
+            ts.createIdentifier(fieldInfo.oneof ? "value" : fieldInfo.localName),
             questionToken,
             type,
             undefined
@@ -181,15 +181,15 @@ export class MessageInterfaceGenerator extends GeneratorBase {
      * For the following .proto:
      *
      *   oneof result {
-     *     int32 value = 1;
+     *     int32 int = 1;
      *     string error = 2;
      *   }
      *
      * We generate the following property signature:
      *
-     *   result: { oneofKind: "value"; value: number; }
-     *         | { oneofKind: "error"; error: string; }
-     *         | { oneofKind: undefined; };
+     *   result: { kind: "int"; value: number; }
+     *         | { kind: "error"; value: string; }
+     *         | { kind: undefined; value?: never };
      */
     protected createOneofADTPropertySignature(source:TypescriptFile, oneofDescriptor: OneofDescriptorProto): ts.PropertySignature {
         const
@@ -202,7 +202,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
         // create a type for each selection case
         for (let fieldInfo of memberFieldInfos) {
 
-            // { oneofKind: 'fieldName' ... } part
+            // { kind: 'fieldName' ... } part
             const kindProperty = ts.createPropertySignature(
                 undefined,
                 ts.createIdentifier(this.options.oneofKindDiscriminator),
@@ -211,7 +211,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
                 undefined
             );
 
-            // { ..., fieldName: type } part
+            // { ..., value: type } part
             let fieldDescriptor = messageDescriptor.field.find(fd => fd.number === fieldInfo.no);
             assert(fieldDescriptor !== undefined);
             let valueProperty = this.createFieldPropertySignature(source, fieldDescriptor, fieldInfo);
@@ -223,7 +223,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
 
         }
 
-        // case for no selection: { oneofKind: undefined; }
+        // case for no selection: { kind: undefined; value?: never }
         oneofCases.push(
             ts.createTypeLiteralNode([
                 ts.createPropertySignature(
@@ -231,6 +231,13 @@ export class MessageInterfaceGenerator extends GeneratorBase {
                     ts.createIdentifier(this.options.oneofKindDiscriminator),
                     undefined,
                     ts.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
+                    undefined
+                ),
+                ts.createPropertySignature(
+                    undefined,
+                    ts.createIdentifier("value"),
+                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.createKeywordTypeNode(ts.SyntaxKind.NeverKeyword),
                     undefined
                 )
             ])

@@ -25,18 +25,20 @@ export function reflectionMergePartial<T extends object>(info: MessageInfo, targ
         output: UnknownMessage | UnknownOneofGroup; // where we want our field value to go
 
     for (let field of info.fields) {
-        let name = field.localName;
+        /** This can actually be any `string`, but we cast it to the literal `"value"` so we can index into oneof groups */
+        let name = field.localName as "value";
 
         if (field.oneof) {
             const group = input[field.oneof] as UnknownOneofGroup | undefined; // this is the oneof`s group in the source
-            if (group === undefined) { // the user is free to omit
+            if (group?.kind !== name) { // the user is free to omit
                 continue; // we skip this field, and all other members too
             }
-            fieldValue = group[name]; // our value comes from the the oneof group of the source
+            fieldValue = group.value; // our value comes from the the oneof group of the source
             output = (target as UnknownMessage)[field.oneof] as UnknownOneofGroup; // and our output is the oneof group of the target
-            output.oneofKind = group.oneofKind; // always update discriminator
+            output.kind = group.kind; // always update discriminator
+            name = "value"; // the field name for a oneof's value is always 'value'
             if (fieldValue === undefined) {
-                delete output[name]; // remove any existing value
+                delete output.value; // remove any existing value
                 continue; // skip further work on field
             }
         } else {

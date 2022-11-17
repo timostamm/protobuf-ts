@@ -42,20 +42,20 @@ function doTest(request: ConformanceRequest): ConformanceResponse {
         default:
             return ConformanceResponse.create({
                 result: {
-                    oneofKind: "runtimeError",
-                    runtimeError: `unknown request message type ${request.messageType}`
+                    kind: "runtimeError",
+                    value: `unknown request message type ${request.messageType}`
                 }
             });
     }
 
     try {
-        switch (request.payload.oneofKind) {
+        switch (request.payload.kind) {
             case "protobufPayload":
-                testMessage = testMessageType.fromBinary(request.payload.protobufPayload);
+                testMessage = testMessageType.fromBinary(request.payload.value);
                 break;
 
             case "jsonPayload":
-                testMessage = testMessageType.fromJsonString(request.payload.jsonPayload, {
+                testMessage = testMessageType.fromJsonString(request.payload.value, {
                     ignoreUnknownFields: request.testCategory === TestCategory.JSON_IGNORE_UNKNOWN_PARSING_TEST,
                     typeRegistry,
                 });
@@ -64,8 +64,8 @@ function doTest(request: ConformanceRequest): ConformanceResponse {
             default:
                 return ConformanceResponse.create({
                     result: {
-                        oneofKind: "skipped",
-                        skipped: `${request.payload.oneofKind} not supported.`,
+                        kind: "skipped",
+                        value: `${request.payload.kind} not supported.`,
                     }
                 });
 
@@ -73,8 +73,8 @@ function doTest(request: ConformanceRequest): ConformanceResponse {
     } catch (err) {
         return ConformanceResponse.create({
             result: {
-                oneofKind: "parseError",
-                parseError: err.toString() + "\n" + err.stack,
+                kind: "parseError",
+                value: err.toString() + "\n" + err.stack,
             }
         });
     }
@@ -83,41 +83,41 @@ function doTest(request: ConformanceRequest): ConformanceResponse {
         switch (request.requestedOutputFormat) {
             case WireFormat.PROTOBUF:
                 response.result = {
-                    oneofKind: "protobufPayload",
-                    protobufPayload: testMessageType.toBinary(testMessage),
+                    kind: "protobufPayload",
+                    value: testMessageType.toBinary(testMessage),
                 };
                 break;
 
             case WireFormat.JSON:
                 response.result = {
-                    oneofKind: "jsonPayload",
-                    jsonPayload: testMessageType.toJsonString(testMessage, {
+                    kind: "jsonPayload",
+                    value: testMessageType.toJsonString(testMessage, {
                         typeRegistry
                     })
                 };
                 break;
 
             case WireFormat.JSPB:
-                response.result = {oneofKind: "skipped", skipped: "JSPB not supported."};
+                response.result = {kind: "skipped", value: "JSPB not supported."};
                 return response;
 
             case WireFormat.TEXT_FORMAT:
-                response.result = {oneofKind: "skipped", skipped: "Text format not supported."};
+                response.result = {kind: "skipped", value: "Text format not supported."};
                 return response;
 
             default:
                 return ConformanceResponse.create({
                     result: {
-                        oneofKind: "runtimeError",
-                        runtimeError: `unknown requested output format ${request.requestedOutputFormat}`
+                        kind: "runtimeError",
+                        value: `unknown requested output format ${request.requestedOutputFormat}`
                     }
                 });
         }
     } catch (err) {
         return ConformanceResponse.create({
             result: {
-                oneofKind: "serializeError",
-                serializeError: err.toString() + "\n" + err.stack
+                kind: "serializeError",
+                value: err.toString() + "\n" + err.stack
             }
         });
     }

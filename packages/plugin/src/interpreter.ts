@@ -17,6 +17,18 @@ import { FieldInfoGenerator } from "./code-gen/field-info-generator";
 import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
 
 
+const escapeCharacter = "$";
+export const reservedObjectProperties = new Set(["__proto__", "toString"]);
+export const reservedClassProperties = new Set([
+    // js built in
+    "__proto__", "toString", "name", "constructor",
+    // generic clients
+    "methods", "typeName", "options", "_transport",
+    // @grpc/grpc-js clients
+    "close", "getChannel", "waitForReady", "makeUnaryRequest", "makeClientStreamRequest", "makeServerStreamRequest", "makeBidiStreamRequest"
+]);
+
+
 type JsonOptionsMap = {
     [extensionName: string]: rt.JsonValue
 }
@@ -270,19 +282,10 @@ export class Interpreter {
 
 
     private static createTypescriptNameForMethod(descriptor: MethodDescriptorProto): string {
-        let escapeCharacter = '$';
-        let reservedClassProperties = [
-            // js built in
-            "__proto__", "toString", "name", "constructor",
-            // generic clients
-            "methods", "typeName", "options", "_transport",
-            // @grpc/grpc-js clients
-            "close", "getChannel", "waitForReady", "makeUnaryRequest", "makeClientStreamRequest", "makeServerStreamRequest", "makeBidiStreamRequest"
-        ];
         let name = descriptor.name;
         assert(name !== undefined);
         name = rt.lowerCamelCase(name);
-        if (reservedClassProperties.includes(name)) {
+        if (reservedClassProperties.has(name)) {
             name = name + escapeCharacter;
         }
         return name;
@@ -353,15 +356,11 @@ export class Interpreter {
      *   adding '$' at the end
      * - don't have to escape reserved keywords
      */
-    private createTypescriptNameForField(descriptor: FieldDescriptorProto | OneofDescriptorProto, escapeCharacter = '$'): string {
-        const reservedObjectProperties = '__proto__,toString'.split(',');
+    private createTypescriptNameForField(descriptor: FieldDescriptorProto | OneofDescriptorProto): string {
         let name = descriptor.name;
         assert(name !== undefined);
         name = FieldInfoGenerator.createTypescriptLocalName(name, this.options);
-        if (reservedObjectProperties.includes(name)) {
-            name = name + escapeCharacter;
-        }
-        if (this.options.oneofKindDiscriminator.split(',').includes(name)) {
+        if (reservedObjectProperties.has(name)) {
             name = name + escapeCharacter;
         }
         return name;
@@ -370,6 +369,8 @@ export class Interpreter {
 
     // skips GROUP field type
     private buildFieldInfos(fieldDescriptors: readonly FieldDescriptorProto[]): rt.PartialFieldInfo[] {
+        const kind = this.options.oneofKindDiscriminator;
+        const has: Record<string, rt.PartialFieldInfo> = {};
         const result: rt.PartialFieldInfo[] = [];
         for (const fd of fieldDescriptors) {
             if (this.registry.isGroupField(fd)) {
@@ -379,8 +380,27 @@ export class Interpreter {
             }
             const fi = this.buildFieldInfo(fd);
             if (fi) {
+                const name = fi.localName ?? fi.name;
+                if (name === kind || name === "value") {
+                    has[name] = fi;
+                }
                 result.push(fi);
             }
+        }
+        // Escape a field in this partial field info array if all of the following are true:
+        // 1. One of them has a name of "value"
+        // 2. Another one has a name matching the `oneofKindDiscriminator`
+        // 3. That other field is also a non-repeating string (or Long type represented with string) field
+        const fi = has[kind];
+        if (
+            fi && has.value && fi.kind === "scalar" &&
+            (fi.repeat === undefined || fi.repeat === rt.RepeatType.NO) &&
+            (fi.T === rt.ScalarType.STRING || (
+                Interpreter.isLongValueType(fi.T) &&
+                (fi.L !== rt.LongType.BIGINT && fi.L !== rt.LongType.NUMBER)
+            ))
+        ) {
+            fi.localName = kind + escapeCharacter;
         }
         return result;
     }

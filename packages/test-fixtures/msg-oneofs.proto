@@ -8,7 +8,7 @@ message OneofScalarMemberMessage {
     oneof result {
 
         // Contains the value if result available
-        int32 value = 1;
+        int32 int = 1;
 
         // Contains error message if result not available
         string error = 2;

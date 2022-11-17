@@ -24,25 +24,26 @@ export interface ChatEvent {
      * @generated from protobuf oneof: event
      */
     event: {
-        oneofKind: "joined";
+        kind: "joined";
         /**
          * @generated from protobuf field: string joined = 2;
          */
-        joined: string;
+        value: string;
     } | {
-        oneofKind: "message";
+        kind: "message";
         /**
          * @generated from protobuf field: string message = 3;
          */
-        message: string;
+        value: string;
     } | {
-        oneofKind: "left";
+        kind: "left";
         /**
          * @generated from protobuf field: string left = 4;
          */
-        left: string;
+        value: string;
     } | {
-        oneofKind: undefined;
+        kind: undefined;
+        value?: never;
     };
 }
 /**

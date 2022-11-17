@@ -46,9 +46,9 @@ export class ReflectionBinaryWriter {
             // handle oneof ADT
             if (field.oneof) {
                 const group = (message as UnknownMessage)[field.oneof] as UnknownOneofGroup;
-                if (group.oneofKind !== localName)
+                if (group.kind !== localName)
                     continue; // if field is not selected, skip
-                value = group[localName];
+                value = group.value;
                 emitDefault = true;
             } else {
                 value = (message as UnknownMessage)[localName];

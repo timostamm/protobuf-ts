@@ -8,15 +8,15 @@ export default f;
 f.push({
     typeName: 'spec.OneofScalarMemberMessage',
     fields: [
-        {no: 1, name: "value", oneof: "result", kind: "scalar", T: 5 /*int32*/},
+        {no: 1, name: "int", oneof: "result", kind: "scalar", T: 5 /*int32*/},
         {no: 2, name: "error", oneof: "result", kind: "scalar", T: 9 /*string*/}
     ],
     messages: {
         'default': {
-            result: {oneofKind: undefined}
+            result: {kind: undefined}
         },
         'err': {
-            result: {oneofKind: 'error', error: 'hello'}
+            result: {kind: 'error', value: 'hello'}
         },
     },
     json: {
@@ -34,10 +34,10 @@ f.push({
     ],
     messages: {
         'default': {
-            objects: {oneofKind: undefined}
+            objects: {kind: undefined}
         },
         'a': {
-            objects: {oneofKind: 'a', a: {name: 'A'}}
+            objects: {kind: 'a', value: {name: 'A'}}
         },
     },
     json: {

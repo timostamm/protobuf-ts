@@ -8,14 +8,18 @@ message ReservedFieldNames {
     // not allowed as object property, should be escaped
     string to_string = 2;
 
-    // reserved for our ADT discriminator, should be escaped
-    string oneofKind = 3;
+    // not allowed as object property ONLY if a "value" field is also present
+    // see OneofDiscriminatorClash below for example escaping case
+    // should NOT be escaped
+    string kind = 3;
 }
 
 message ReservedFieldNamesInOneof {
     oneof oneof_group {
-        // reserved for our ADT discriminator, should be escaped
-        string oneofKind = 1;
+        // reserved for our ADT discriminator ONLY if a "value" field is also present
+        // see OneofDiscriminatorClashInOneof below for example escaping case
+        // should NOT be escaped
+        string kind = 1;
 
         // not allowed as object property, should be escaped
         string __proto__ = 2;
@@ -23,6 +27,42 @@ message ReservedFieldNamesInOneof {
         // not allowed as object property, should be escaped
         string to_string = 3;
     }
+}
+
+// reserved oneof group fields, only escaped when both "value" and "kind fields are present
+message OneofDiscriminatorClash {
+    // should be escaped
+    string kind = 1;
+    string value = 2;
+    string other = 3;
+}
+
+// reserved oneof group fields, only escaped when both "value" and "kind fields are present
+message OneofDiscriminatorClashInOneof {
+    oneof oneof_group {
+        // should be escaped
+        string kind = 1;
+        string value = 2;
+        string other = 3;
+    }
+}
+
+message OneofDiscriminatorClashNumber {
+    // should be escaped
+    int64 kind = 1 [jstype = JS_STRING];
+    string value = 2;
+}
+
+message NoOneofDiscriminatorClashNumber {
+    // should NOT be escaped
+    int64 kind = 1;
+    string value = 2;
+}
+
+message NoOneofDiscriminatorClashRepeated {
+    // should NOT be escaped
+    repeated string kind = 1;
+    string value = 2;
 }
 
 // reserved word, should be escaped

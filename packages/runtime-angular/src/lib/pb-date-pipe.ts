@@ -22,10 +22,10 @@ export class PbDatePipe implements PipeTransform {
     if (isPbDateTime(value)) {
       let dt = new Date(value.year, value.month - 1, value.day, value.hours, value.minutes, value.seconds, value.nanos / 1000);
       if (value.timeOffset) {
-        if (value.timeOffset.oneofKind === "timeZone") {
+        if (value.timeOffset.kind === "timeZone") {
           throw new Error("Do not understand IANA time zone. Cannot convert to javascript Date.");
-        } else if (value.timeOffset.oneofKind === "utcOffset") {
-          let pbOffset = PbLong.from(value.timeOffset.utcOffset.seconds).toNumber() / 60;
+        } else if (value.timeOffset.kind === "utcOffset") {
+          let pbOffset = PbLong.from(value.timeOffset.value.seconds).toNumber() / 60;
           let jsOffset = dt.getTimezoneOffset();
           dt.setMinutes(dt.getMinutes() + (pbOffset - jsOffset))
         }
@@ -96,10 +96,10 @@ function isPbDateTime(arg: any): arg is PbDateTime {
     return false;
   if (!isOneofGroup(arg.timeOffset))
     return false;
-  let k = arg.timeOffset.oneofKind;
+  let k = arg.timeOffset.kind;
   if (k !== undefined && k != "timeZone" && k != "utcOffset")
     return false;
-  return arg.timeOffset.utcOffset === undefined || isPbDuration(arg.timeOffset.utcOffset);
+  return arg.timeOffset.value === undefined || isPbDuration(arg.timeOffset.value);
 }
 
 
@@ -159,7 +159,7 @@ interface PbDateTime {
    * @generated from protobuf oneof: time_offset
    */
   timeOffset: {
-    oneofKind: "utcOffset";
+    kind: "utcOffset";
     /**
      * UTC offset. Must be whole seconds, between -18 hours and +18 hours.
      * For example, a UTC offset of -4:00 would be represented as
@@ -167,17 +167,17 @@ interface PbDateTime {
      *
      * @generated from protobuf field: google.protobuf.Duration utc_offset = 8;
      */
-    utcOffset: PbDuration;
+    value: PbDuration;
   } | {
-    oneofKind: "timeZone";
+    kind: "timeZone";
     /**
      * Time zone.
      *
      * @generated from protobuf field: google.type.TimeZone time_zone = 9;
      */
-    timeZone: any;
+    value: any;
   } | {
-    oneofKind: undefined;
+    kind: undefined;
   };
 }
 

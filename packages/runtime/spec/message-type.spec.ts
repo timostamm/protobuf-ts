@@ -8,9 +8,9 @@ describe('MessageType', () => {
         boolField: boolean;
         repeatedInt32Field: number[],
         msg?: MyMessage;
-        result: { oneofKind: 'error'; readonly error: string; }
-            | { oneofKind: 'value'; readonly value: number; }
-            | { oneofKind: undefined; };
+        result: { kind: 'error'; readonly value: string; }
+            | { kind: 'int'; readonly value: number; }
+            | { kind: undefined; };
         messageMap: { [key: string]: MyMessage };
     }
 
@@ -20,7 +20,7 @@ describe('MessageType', () => {
         {no: 3, name: 'repeated_int32_field', kind: "scalar", T: ScalarType.INT32, repeat: RepeatType.PACKED},
         {no: 4, name: 'msg', kind: "message", T: () => MyMessage},
         {no: 5, name: 'error', kind: "scalar", T: ScalarType.STRING, oneof: 'result'},
-        {no: 6, name: 'value', kind: "scalar", T: ScalarType.INT32, oneof: 'result'},
+        {no: 6, name: 'int', kind: "scalar", T: ScalarType.INT32, oneof: 'result'},
         {
             no: 7, name: 'message_map', kind: "map", K: ScalarType.STRING, V: {kind: "message", T: () => MyMessage}
         }
@@ -30,7 +30,7 @@ describe('MessageType', () => {
         const msg = MyMessage.create({
             stringField: "hello world",
             result: {
-                oneofKind: 'value',
+                kind: 'int',
                 value: 123
             },
             messageMap: {
@@ -45,7 +45,7 @@ describe('MessageType', () => {
             repeatedInt32Field: [],
             // msg: undefined,
             result: {
-                oneofKind: 'value',
+                kind: 'int',
                 value: 123
             },
             messageMap: {
@@ -53,7 +53,7 @@ describe('MessageType', () => {
                     stringField: "",
                     boolField: false,
                     // msg: undefined,
-                    result: {oneofKind: undefined},
+                    result: {kind: undefined},
                     messageMap: {},
                     repeatedInt32Field: [],
                 }
@@ -93,7 +93,7 @@ describe('MessageType', () => {
             stringField: "hello world",
             repeatedInt32Field: [],
             result: {
-                oneofKind: undefined
+                kind: undefined
             },
         }
         expect(msg).toEqual(exp);

@@ -293,7 +293,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         );
 
         let statement = ts.createIf(
-            // if (message.result.oneofKind === 'value')
+            // if (message.result.kind === 'value')
             ts.createBinary(
                 ts.createPropertyAccess(
                     groupPropertyAccess,
@@ -302,14 +302,14 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                 ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
                 ts.createStringLiteral(field.localName)
             ),
-            // writer.tag( <field no>, <wire type> ).string(message.stringField)
+            // writer.tag( <field no>, <wire type> ).string(message.result.value)
             ts.createExpressionStatement(
                 this.makeWriterCall(
                     this.makeWriterTagCall(source, 'writer', field.no, this.wireTypeForSingleScalar(type)),
                     type,
                     ts.createPropertyAccess(
                         groupPropertyAccess,
-                        field.localName
+                        ts.createIdentifier("value")
                     )
                 )
             ),
@@ -422,7 +422,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             'fork'
         );
 
-        // MessageFieldMessage_TestMessage.internalBinaryWrite(message.<groupPropertyAccess>.<fieldLocalName>, <writeTagAndFork>, options);
+        // MessageFieldMessage_TestMessage.internalBinaryWrite(message.<groupPropertyAccess>.value, <writeTagAndFork>, options);
         let binaryWrite = ts.createCall(
             ts.createPropertyAccess(
                 ts.createIdentifier(this.imports.type(source, messageDescriptor)),
@@ -432,7 +432,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             [
                 ts.createPropertyAccess(
                     groupPropertyAccess,
-                    field.localName
+                    "value"
                 ),
                 writeTagAndFork,
                 ts.createIdentifier("options")
@@ -442,7 +442,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         // <...>.join()
         let binaryWriteAndJoin = this.makeWriterCall(binaryWrite, 'join');
 
-        // if (message.objects.oneofKind === 'a') {
+        // if (message.objects.kind === 'a') {
         let statement = ts.createIf(
             ts.createBinary(
                 ts.createPropertyAccess(
