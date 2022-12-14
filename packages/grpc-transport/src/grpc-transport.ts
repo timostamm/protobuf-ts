@@ -78,7 +78,7 @@ export class GrpcTransport implements RpcTransport {
                     defMessage.resolve(value);
                 }
                 if (err) {
-                    const e = new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata));
+                    const e = new RpcError(err.details, GrpcStatus[err.code], metadataFromGrpc(err.metadata));
                     e.methodName = method.name;
                     e.serviceName  = method.service.typeName;
                     defHeader.rejectPending(e);
@@ -151,7 +151,7 @@ export class GrpcTransport implements RpcTransport {
         }
 
         gCall.addListener('error', err => {
-            const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata)) : new RpcError(err.message);
+            const e = isServiceError(err) ? new RpcError(err.details, GrpcStatus[err.code], metadataFromGrpc(err.metadata)) : new RpcError(err.message);
             e.methodName = method.name;
             e.serviceName  = method.service.typeName;
             defHeader.rejectPending(e);
@@ -209,7 +209,7 @@ export class GrpcTransport implements RpcTransport {
                         defMessage.resolve(value);
                     }
                     if (err) {
-                        const e = new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata));
+                        const e = new RpcError(err.details, GrpcStatus[err.code], metadataFromGrpc(err.metadata));
                         e.methodName = method.name;
                         e.serviceName  = method.service.typeName;
                         defHeader.rejectPending(e);
@@ -272,7 +272,7 @@ export class GrpcTransport implements RpcTransport {
         }
 
         gCall.addListener('error', err => {
-            const e = isServiceError(err) ? new RpcError(err.message, GrpcStatus[err.code], metadataFromGrpc(err.metadata)) : new RpcError(err.message);
+            const e = isServiceError(err) ? new RpcError(err.details, GrpcStatus[err.code], metadataFromGrpc(err.metadata)) : new RpcError(err.message);
             e.methodName = method.name;
             e.serviceName  = method.service.typeName;
             defHeader.rejectPending(e);
