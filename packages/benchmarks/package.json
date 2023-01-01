@@ -24,7 +24,7 @@
     "ts-protoc-gen": "^0.15.0",
     "tslib": "^2.0.0",
     "typescript": "^3.9.3",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
