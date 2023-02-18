@@ -83,8 +83,8 @@ export class GrpcwebServerStreamingComponent {
         // you can set request headers here
         meta: {},
 
-        // or a deadline
-        // deadline: 123,
+        // or a timeout
+        // timeout: 123,
 
         // change the format
         // format: "binary",
