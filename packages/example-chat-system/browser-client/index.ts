@@ -21,7 +21,7 @@ joinPanel.startCallback = async (username) => {
     const abortController = new AbortController();
     const call = client.join({username}, {
         abort: abortController.signal,
-        // deadline: Date.now() + 400
+        // timeout: 400
     });
 
     // wait for the response headers, they contain our "authentication" token

@@ -4,10 +4,6 @@ import {ChatServiceClient, IChatServiceClient} from "./service-chat.client";
 import {TerminalIO} from "./terminal-io";
 
 
-// TODO #56 fix UnhandledPromiseRejectionWarning when server dies while client is running
-// TODO #56 fix net::ERR_INCOMPLETE_CHUNKED_ENCODING in browser when using a deadline in browser (this seems like a server issue)
-
-
 main(
     new TerminalIO(),
     new ChatServiceClient(new GrpcTransport({

@@ -25,7 +25,7 @@ export class GrpcwebUnaryComponent {
 
   readonly options: GrpcWebOptions = {
     baseUrl: 'http://localhost:5080',
-    deadline: Date.now() + 2000,
+    timeout: 2000,
     format: 'binary',
 
     // simple example for how to add auth headers to each request
@@ -75,8 +75,8 @@ export class GrpcwebUnaryComponent {
         // you can set request headers here
         meta: {},
 
-        // or a deadline
-        // deadline: 123,
+        // or a timeout
+        // timeout: 123,
 
         // ... or any other option
 
