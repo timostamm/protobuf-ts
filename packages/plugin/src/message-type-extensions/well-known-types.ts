@@ -491,7 +491,6 @@ export class WellKnownTypes implements CustomMethodGenerator {
                         } else if (globalThis.Array.isArray(json)) {
                             target.kind = {oneofKind: "${listValueField}", ${listValueField}: ListValue.fromJson(json)};
                         } else {
-                            let val = Struct.fromJson(json);
                             target.kind = {oneofKind: "${structValueField}", ${structValueField}: Struct.fromJson(json)};
                         }
                         break;
