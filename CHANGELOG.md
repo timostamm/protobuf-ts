@@ -3,6 +3,14 @@
 none
 
 
+### v2.8.3
+
+Bug fixes:
+
+- plugin: fix generated fromJson for google.protobuf.Value #500  
+  Thanks to @hugebdu for the contribution!
+
+
 ### v2.8.2
 
 Bug fixes:
