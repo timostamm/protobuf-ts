@@ -177,6 +177,14 @@ describe('readGrpcWebResponse', () => {
             expect(statusInvalid2[0]).toEqual(GrpcStatusCode.INTERNAL);
         });
 
+        it('handles empty HTTP headers', function () {
+            const actual1 = readGrpcWebResponseHeader({}, 200, 'success');
+            expect(actual1).toEqual([undefined, undefined, {}]);
+
+            const actual2 = readGrpcWebResponseHeader({}, 400, 'invalid');
+            expect(actual2).toEqual([GrpcStatusCode.INVALID_ARGUMENT, 'invalid', {}]);
+        });
+
         it('handles normal Responses', function () {
             const headers = new globalThis.Headers([
                 ['foo', 'bar'],
@@ -249,7 +257,7 @@ describe('readGrpcWebResponse', () => {
             const input = [38, 39];
             const message = createGrpcWebRequestBody(new Uint8Array(input), 'text');
             const [first, ...rest] = asciiToCharCodes(message);
-            
+
             await next([first]);
             assertFrames(frames, []);
 
@@ -384,7 +392,7 @@ describe('readGrpcWebResponse', () => {
             const trailer = readGrpcWebResponseTrailer(new Uint8Array([]));
             expect(trailer).toEqual([GrpcStatusCode.OK, undefined, {}])
         });
-        
+
         it('handles success status without message', function () {
             const trailer = readGrpcWebResponseTrailer(trailerFromObject({
                 'grpc-status': GrpcStatusCode.OK,

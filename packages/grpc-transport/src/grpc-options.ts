@@ -1,6 +1,5 @@
 import {RpcOptions} from "@protobuf-ts/runtime-rpc";
-import {CallOptions, ChannelCredentials, ClientOptions} from "@grpc/grpc-js";
-
+import {CallOptions, ChannelCredentials, ClientOptions,Metadata,MetadataOptions} from "@grpc/grpc-js";
 
 export interface GrpcOptions extends RpcOptions {
 
@@ -36,4 +35,11 @@ export interface GrpcCallOptions extends RpcOptions {
      */
     callOptions?: CallOptions;
 
+    /**
+     * This option can be provided when calling a client method.
+     * The MetadataOptions are used for creating Metadata object passed
+     * to request factory method of the @grpc/grpc-js client as the
+     * "metadata" argument.
+     */
+     metadataOptions?: MetadataOptions;
 }

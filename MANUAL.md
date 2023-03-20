@@ -135,8 +135,9 @@ Available plugin options:
 
 - "generate_dependencies"  
   By default, only the PROTO_FILES passed as input to protoc are generated,
-  not the files they import. Set this option to generate code for dependencies
-  too.
+  not the files they import (with the exception of well-known types which are 
+  always generated when imported).
+  Set this option to generate code for dependencies too.
 
 - "force_exclude_all_options"  
   By default, custom options are included in the metadata and can be blacklisted
@@ -243,6 +244,11 @@ Available plugin options:
 
 - "force_server_none"  
   Do not generate rpc servers, ignore options in proto files.
+
+- "force_disable_services"  
+  Do not generate anything for service definitions, and ignore options in proto
+  files. This is the same as setting both options `force_server_none` and
+  `force_client_none`, but also stops generating service metadata.
 
 - "optimize_speed"  
   Sets optimize_for = SPEED for proto files that have no file option
@@ -465,7 +471,27 @@ The `IMessageType` interface provides the following methods:
 
 - `mergePartial(target: T, source: PartialMessage<T>): void`
   
-  Copy partial data into the target message. 
+  Copy partial data into the target message.
+  
+  If a singular scalar or enum field is present in the source, it
+  replaces the field in the target.
+  
+  If a singular message field is present in the source, it is merged
+  with the target field by calling mergePartial() of the responsible
+  message type.
+  
+  If a repeated field is present in the source, its values replace
+  all values in the target array, removing extraneous values.
+  Repeated message fields are copied, not merged.
+  
+  If a map field is present in the source, entries are added to the
+  target map, replacing entries with the same key. Entries that only
+  exist in the target remain. Entries with message values are copied,
+  not merged.
+  
+  Note that this function differs from protobuf merge semantics,
+  which appends repeated fields.
+
 
 - `equals(a: T, b: T): boolean`
   
@@ -475,11 +501,13 @@ The `IMessageType` interface provides the following methods:
   Accepts `undefined` for convenience, but will return false if one or both 
   arguments are undefined.
 
+
 - `is(arg: any, depth?: number): arg is T`
   
   Is the given value assignable to our message type 
   and contains no excess properties?  
   Learn more about the [Message type guards](#message-type-guards).
+
 
 - `isAssignable(arg: any, depth?: number): arg is T`
   
@@ -1807,7 +1835,7 @@ Example usage:
 
 ```typescript
 let transport = new GrpcWebFetchTransport({
-    baseUrl: "localhost:3000"
+    baseUrl: "http://localhost:3000"
 });
 
 let client = new HaberdasheryClient(transport);

@@ -294,7 +294,7 @@ module.exports.findProtocInPath = function (envPath) {
     const candidates = envPath.split(path.delimiter)
         .filter(p => !p.endsWith(`node_modules${path.sep}.bin`)) // make sure to exlude ...
         .filter(p => !p.endsWith(`.npm-global${path.sep}bin`)) // ...
-        .map(p => path.join(p, "protoc")) // we are looking for "protoc"
+        .map(p => path.join(p, os.platform() === "win32" ? "protoc.exe" : "protoc")) // we are looking for "protoc"
         .map(p => p[0] === "~" ? path.join(os.homedir(), p.slice(1)) : p) // try expand "~"
     ;
     for (let c of candidates) {

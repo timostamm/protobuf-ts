@@ -142,8 +142,6 @@ export class MessageType<T extends object> implements IMessageType<T> {
 
     /**
      * Copy partial data into the target message.
-     *
-     * See MessageCreator.merge() for details.
      */
     mergePartial(target: T, source: PartialMessage<T>): void {
         reflectionMergePartial<T>(this, target, source);

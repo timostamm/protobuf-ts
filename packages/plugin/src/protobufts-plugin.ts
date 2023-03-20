@@ -26,6 +26,8 @@ import {FileTable} from "./file-table";
 import {ServiceServerGeneratorGeneric} from "./code-gen/service-server-generator-generic";
 import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-grpc";
 import * as ts from "typescript";
+import {assert} from "@protobuf-ts/runtime";
+import {WellKnownTypes} from "./message-type-extensions/well-known-types";
 
 
 export class ProtobuftsPlugin extends PluginBase {
@@ -56,8 +58,9 @@ export class ProtobuftsPlugin extends PluginBase {
         // misc
         generate_dependencies: {
             description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
-                         "not the files they import. Set this option to generate code for dependencies \n" +
-                         "too.",
+                         "not the files they import (with the exception of well-known types, which are \n" +
+                         "always generated when imported). \n"+
+                         "Set this option to generate code for dependencies too.",
         },
         force_exclude_all_options: {
             description: "By default, custom options are included in the metadata and can be blacklisted \n" +
@@ -149,12 +152,12 @@ export class ProtobuftsPlugin extends PluginBase {
         client_generic: {
             description: "Only applies to services that do *not* use the option `ts.client`. \n" +
                          "Since GENERIC_CLIENT is the default, this option has no effect.",
-            excludes: ['client_none', 'client_grpc1', 'force_client_none'],
+            excludes: ['client_none', 'client_grpc1', 'force_client_none', 'force_disable_services'],
         },
         client_grpc1: {
             description: "Generate a client using @grpc/grpc-js (major version 1). \n" +
                 "Only applies to services that do *not* use the option `ts.client`." ,
-            excludes: ['client_none', 'client_generic', 'force_client_none'],
+            excludes: ['client_none', 'client_generic', 'force_client_none', 'force_disable_services'],
         },
         force_client_none: {
             description: "Do not generate rpc clients, ignore options in proto files.",
@@ -181,16 +184,23 @@ export class ProtobuftsPlugin extends PluginBase {
                          "for example @protobuf-ts/grpc-backend for gRPC. \n" +
                          "Note that this is an experimental feature and may change with a minor release. \n" +
                          "Only applies to services that do *not* use the option `ts.server`.",
-            excludes: ['server_none', 'force_server_none'],
+            excludes: ['server_none', 'force_server_none', 'force_disable_services'],
         },
         server_grpc1: {
             description: "Generate a server interface and definition for use with @grpc/grpc-js \n" +
                          "(major version 1). \n" +
                          "Only applies to services that do *not* use the option `ts.server`.",
-            excludes: ['server_none', 'force_server_none'],
+            excludes: ['server_none', 'force_server_none', 'force_disable_services'],
         },
         force_server_none: {
             description: "Do not generate rpc servers, ignore options in proto files.",
+        },
+
+        force_disable_services: {
+            description: "Do not generate anything for service definitions, and ignore options in proto \n" +
+                "files. This is the same as setting both options `force_server_none` and \n" +
+                "`force_client_none`, but also stops generating service metadata.",
+            excludes: ['client_generic', 'client_grpc1', 'server_generic', 'server_grpc1']
         },
 
         // optimization
@@ -309,30 +319,32 @@ export class ProtobuftsPlugin extends PluginBase {
                 if (DescriptorProto.is(descriptor)) {
                     genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
                 }
-                if (ServiceDescriptorProto.is(descriptor)) {
 
-                    // service type
-                    genServiceType.generateServiceType(outMain, descriptor)
+                if (!options.forceDisableServices) {
+                    if (ServiceDescriptorProto.is(descriptor)) {
+                        // service type
+                        genServiceType.generateServiceType(outMain, descriptor);
 
-                    // clients
-                    const clientStyles = optionResolver.getClientStyles(descriptor);
-                    if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
-                        genClientGeneric.generateInterface(outClientCall, descriptor);
-                        genClientGeneric.generateImplementationClass(outClientCall, descriptor);
-                    }
-                    if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
-                        genClientGrpc.generateInterface(outClientGrpc, descriptor);
-                        genClientGrpc.generateImplementationClass(outClientGrpc, descriptor);
-                    }
+                        // clients
+                        const clientStyles = optionResolver.getClientStyles(descriptor);
+                        if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
+                            genClientGeneric.generateInterface(outClientCall, descriptor);
+                            genClientGeneric.generateImplementationClass(outClientCall, descriptor);
+                        }
+                        if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
+                            genClientGrpc.generateInterface(outClientGrpc, descriptor);
+                            genClientGrpc.generateImplementationClass(outClientGrpc, descriptor);
+                        }
 
-                    // servers
-                    const serverStyles = optionResolver.getServerStyles(descriptor);
-                    if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
-                        genServerGeneric.generateInterface(outServerGeneric, descriptor);
-                    }
-                    if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
-                        genServerGrpc.generateInterface(outServerGrpc, descriptor);
-                        genServerGrpc.generateDefinition(outServerGrpc, descriptor);
+                        // servers
+                        const serverStyles = optionResolver.getServerStyles(descriptor);
+                        if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
+                            genServerGeneric.generateInterface(outServerGeneric, descriptor);
+                        }
+                        if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
+                            genServerGrpc.generateInterface(outServerGrpc, descriptor);
+                            genServerGrpc.generateDefinition(outServerGrpc, descriptor);
+                        }
                     }
                 }
             });
@@ -341,9 +353,22 @@ export class ProtobuftsPlugin extends PluginBase {
 
 
         // plugins should only return files requested to generate
-        // unless our option "generate_dependencies" is set
+        // unless our option "generate_dependencies" is set.
+        // We always return well-known types, because we do not
+        // maintain them in a package - they are always generated
+        // on demand.
         if (!options.generateDependencies) {
-            tsFiles = tsFiles.filter(file => request.fileToGenerate.includes(file.fileDescriptor.name!));
+            tsFiles = tsFiles.filter(file => {
+                const protoFilename = file.fileDescriptor.name;
+                assert(protoFilename);
+                if (request.fileToGenerate.includes(protoFilename)) {
+                    return true;
+                }
+                if (WellKnownTypes.protoFilenames.includes(protoFilename)) {
+                    return true;
+                }
+                return false;
+            });
         }
 
         // if a proto file is imported to use custom options, or if a proto file declares custom options,

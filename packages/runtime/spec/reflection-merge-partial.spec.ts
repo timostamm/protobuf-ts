@@ -51,6 +51,16 @@ describe('reflectionMergePartial()', () => {
             expect(target[string_field.localName]).toBe("");
         });
 
+        it('null value does not overwrite existing value', () => {
+            const target = reflectionCreate(messageInfo);
+            target[string_field.localName] = "hello";
+            const source = {
+                [string_field.localName]: null as unknown as string
+            };
+            reflectionMergePartial(messageInfo, target, source);
+            expect(target[string_field.localName]).toBe("hello");
+        });
+
         it('omitted value does not overwrite existing value', () => {
             const target = reflectionCreate(messageInfo);
             target[string_field.localName] = "hello";
@@ -61,12 +71,13 @@ describe('reflectionMergePartial()', () => {
 
         it('repeated fields are overwritten', () => {
             const target = reflectionCreate(messageInfo);
-            target[repeated_string_field.localName] = ['a', 'b'];
-            const source = {
-                [repeated_string_field.localName]: ['c']
-            };
+            const arr = repeated_string_field.localName;
+            const targetArr = target[arr] = ['a', 'b'];
+            const source = { [arr]: ['c'] };
             reflectionMergePartial(messageInfo, target, source);
-            expect(target[repeated_string_field.localName]).toEqual(['c']);
+            expect(target[arr]).toEqual(source[arr]);
+            expect(target[arr]).not.toBe(source[arr]);
+            expect(target[arr]).toBe(targetArr);
         });
 
     });
@@ -83,13 +94,30 @@ describe('reflectionMergePartial()', () => {
             spyOn(childHandler, 'create').and.returnValue(handlerCreateReturn);
             messageInfo = {
                 typeName: 'Host',
-                fields: [normalizeFieldInfo({kind: "message", T: () => childHandler, no: 1, name: 'child'})],
+                fields: [
+                    normalizeFieldInfo({kind: "message", T: () => childHandler, no: 1, name: 'child'}),
+                    normalizeFieldInfo({kind: "message", T: () => childHandler, no: 2, name: 'children', repeat: RepeatType.UNPACKED}),
+                ],
                 options: {}
             };
         });
 
         describe('and source field empty', () => {
             const source: object = {child: undefined};
+            it('does not touch target', () => {
+                const target: any = {child: 123};
+                reflectionMergePartial(messageInfo, target, source);
+                expect(target.child).toBe(123);
+            });
+            it('does not call child handler', () => {
+                reflectionMergePartial(messageInfo, {}, source);
+                expect(childHandler.create).not.toHaveBeenCalled();
+                expect(childHandler.mergePartial).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('and source field null', () => {
+            const source: object = {child: null};
             it('does not touch target', () => {
                 const target: any = {child: 123};
                 reflectionMergePartial(messageInfo, target, source);
@@ -128,28 +156,37 @@ describe('reflectionMergePartial()', () => {
             });
         });
 
+        describe('which is repeated', () => {
+            it('is overwritten', () => {
+                const source = {children: [{fake_handler_create_return_value: true}]};
+                const target = {children: [{fake_handler_create_return_value: false}, {fake_handler_create_return_value: false}]};
+                const targetArr = target.children;
+                reflectionMergePartial(messageInfo, target, source);
+                expect(target.children).toEqual(source.children);
+                expect(target.children).not.toBe(source.children);
+                expect(target.children).toBe(targetArr);
+            });
+        });
 
     });
 
-    describe('with repeated scalar field', function () {
-
-        let type = new MessageType<UnknownMessage>(".test.Message", [
-            {no: 1, name: "arr", kind: "scalar", T: ScalarType.INT32, repeat: RepeatType.PACKED}
+    describe("oneof", () => {
+        const messageType = new MessageType<UnknownMessage>('.test.TestMessage', [
+            {no: 1, name: 'baz', kind: "scalar", T: ScalarType.INT32, oneof: "bar"},
+            {no: 2, name: 'qux', kind: "scalar", T: ScalarType.INT32, oneof: "bar"},
         ]);
-
-        it('keeps target array instance', () => {
-            let target: UnknownMessage = {
-                arr: [1,2,3]
-            };
-            let targetArr = target.arr;
-            let source = {
-                arr: []
-            };
-            reflectionMergePartial(type, source, target);
-            expect(target.arr).not.toBe(source.arr);
-            expect(target.arr).toBe(targetArr);
+        it("unset field in source does not overwrite set field in target", () => {
+            const dst = messageType.create({bar: {
+                oneofKind: "baz",
+                baz: 1,
+            }});
+            const src = messageType.create();
+            messageType.mergePartial(dst, src);
+            expect(dst.bar).toEqual({
+                oneofKind: "baz",
+                baz: 1,
+            });
         });
-
     });
 
 });

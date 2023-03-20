@@ -58,7 +58,13 @@ export class TwirpFetchTransport implements RpcTransport {
 
                 defHeader.resolve(parseMetadataFromResponseHeaders(fetchResponse.headers));
 
-                switch (fetchResponse.type) {
+                // Cloudflare Workers throw when the type property of a fetch response
+                // is accessed, so wrap access with try/catch. See:
+                // * https://developers.cloudflare.com/workers/runtime-apis/response/#properties
+                // * https://github.com/cloudflare/miniflare/blob/72f046e/packages/core/src/standards/http.ts#L646
+                let responseType
+                try { responseType = fetchResponse.type } catch {}
+                switch (responseType) {
                     case "error":
                     case "opaque":
                     case "opaqueredirect":
