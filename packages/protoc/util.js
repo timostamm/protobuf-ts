@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require("fs");
 const os = require("os");
 const assert = require("assert");
-const ProxyAgent = require("proxy-agent");
 
 const standardInstallDirectory = path.join(__dirname, "installed");
 module.exports.standardInstallDirectory = standardInstallDirectory;
@@ -102,7 +101,7 @@ module.exports.httpGetRedirect = function httpGetRedirect(url) {
     assert(url.startsWith("https://") || url.startsWith("http://"));
     const client = url.startsWith("https") ? require("https") : require("http");
     return new Promise((resolve, reject) => {
-        const request = client.get(url, { agent: new ProxyAgent() }, (response) => {
+        const request = client.get(url, (response) => {
             if (response.statusCode >= 300 && response.statusCode < 400) {
                 let location = response.headers.location;
                 assert(location && location.length > 0);
@@ -131,7 +130,7 @@ function httpGet(url, redirects) {
     assert(redirects.length <= 3);
     const client = url.startsWith("https") ? require("https") : require("http");
     return new Promise((resolve, reject) => {
-        const request = client.get(url, { agent: new ProxyAgent() }, (response) => {
+        const request = client.get(url, (response) => {
             if (response.statusCode >= 300 && response.statusCode < 400) {
                 let location = response.headers.location;
                 assert(location && location.length > 0);
