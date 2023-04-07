@@ -92,7 +92,7 @@ async function ensureInstalled(version) {
     // make the release name for the current platform and the requested version number
     let releaseName = makeReleaseName({
         platform: os.platform(),
-        arch: os.arch(),
+        arch: os.arch().replace('arm64', 'aarch_64'),
         version: version
     });
 
