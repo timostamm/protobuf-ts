@@ -159,14 +159,16 @@ function httpGet(url, redirects) {
  */
 
 /**
- * protoc-3.13.0-linux-aarch_64.zip
- * protoc-3.13.0-linux-ppcle_64.zip
- * protoc-3.13.0-linux-s390x.zip
- * protoc-3.13.0-linux-x86_32.zip
- * protoc-3.13.0-linux-x86_64.zip
- * protoc-3.13.0-osx-x86_64.zip
- * protoc-3.13.0-win32.zip
- * protoc-3.13.0-win64.zip
+ * protoc-22.3-linux-aarch_64.zip
+ * protoc-22.3-linux-ppcle_64.zip
+ * protoc-22.3-linux-s390_64.zip
+ * protoc-22.3-linux-x86_32.zip
+ * protoc-22.3-linux-x86_64.zip
+ * protoc-22.3-osx-aarch_64.zip
+ * protoc-22.3-osx-universal_binary.zip
+ * protoc-22.3-osx-x86_64.zip
+ * protoc-22.3-win32.zip
+ + protoc-22.3-win64.zip
  *
  * @param {ReleaseParameters} params
  * @return {string}
@@ -175,19 +177,27 @@ module.exports.makeReleaseName = function makeReleaseName(params) {
     let build = `${params.platform}-${params.arch}`;
     switch (params.platform) {
         case "darwin":
-            build = 'osx-x86_64'
+            if (params.arch === "arm64") {
+                build = 'osx-aarch_64'
+            } else if (params.arch === "x64") {
+                build = 'osx-x86_64'
+            } else {
+                build = 'osx-universal_binary'
+            }
             break;
         case "linux":
             if (params.arch === "x64") {
                 build = 'linux-x86_64'
             } else if (params.arch === "x32") {
                 build = 'linux-x86_32'
+            } else if (params.arch === "arm64") {
+                build = 'linux-aarch_64'
             }
             break;
         case "win32":
             if (params.arch === "x64") {
                 build = 'win64'
-            } else if (params.arch === "x32") {
+            } else if (params.arch === "x32" || params.arch === "ia32") {
                 build = 'win32'
             }
             break;
