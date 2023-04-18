@@ -26,6 +26,7 @@ default:
 
 clean:
 	@find ts-out \( -name '*.ts' -or -name '*.js' \) -delete
+	@rm -rf ./bin
 	@echo "'${@}' done"
 
 test-runner:
