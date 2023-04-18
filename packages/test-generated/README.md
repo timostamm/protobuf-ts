@@ -18,7 +18,7 @@ Each test validates:
 - equality of generated field information with fixture data
 - presence (and exclusion) of custom field options in generated code
 - presence (and exclusion) of custom service and method options in generated code
-- binary and JSON format conformance, using googles [conformance test runner](https://github.com/protocolbuffers/protobuf/blob/3.12.x/conformance/README.md) 
+- binary and JSON format conformance, using googles [conformance test runner](https://github.com/protocolbuffers/protobuf/tree/main/conformance) 
 - functionality of generated RPC method styles
 
 Each test is run in node as well as a headless browser.

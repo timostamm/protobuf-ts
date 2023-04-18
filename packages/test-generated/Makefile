@@ -4,6 +4,17 @@ PROTO_PATH = ../test-fixtures
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 SPECS := $(shell find spec -name '*.spec.ts')
 TEST_RUNNER = $(shell command -v conformance-test-runner 2> /dev/null)
+UNAME_OS := $(shell uname -s)
+GOOGLE_PROTOBUF_VERSION := 22.3
+
+ifeq ($(UNAME_OS),Darwin)
+CONFORMANCE_RUNNER := conformance_test_runner-${GOOGLE_PROTOBUF_VERSION}-osx-x86_64.zip
+endif
+ifeq ($(UNAME_OS),Linux)
+CONFORMANCE_RUNNER := conformance_test_runner-${GOOGLE_PROTOBUF_VERSION}-linux-x86_64.zip
+endif
+
+
 
 
 default:
@@ -20,19 +31,18 @@ clean:
 test-runner:
 ifeq ("${TEST_RUNNER}", "")
 	make protobuf
-	$(eval TEST_RUNNER=protobuf/bazel-bin/conformance_test_runner)
+	$(eval TEST_RUNNER=bin/conformance_test_runner)
 endif
 
+.PHONY: protobuf
 protobuf:
-	git clone git@github.com:protocolbuffers/protobuf.git protobuf \
-	&& cd protobuf \
-	&& git checkout -q c9d2bd2fc781fe67ebf306807b9b6edb4a0d2764 \
-	&& bazel build test_messages_proto3_proto conformance_proto conformance_test conformance_test_runner
+	curl -O -L https://github.com/bufbuild/protobuf-conformance/releases/download/v${GOOGLE_PROTOBUF_VERSION}/${CONFORMANCE_RUNNER}
+	unzip ${CONFORMANCE_RUNNER}
 
 test-conformance: test-runner
 	@npx tsc --target ES2015 --module CommonJS --strict conformance_ts.ts
 	@chmod +x conformance_ts.js
-	@$(TEST_RUNNER) --enforce_recommended conformance_ts.js
+	@$(TEST_RUNNER) --enforce_recommended --failure_list failing_tests.txt conformance_ts.js
 	@echo "'${@}' done"
 
 test-conformance-bigint: test-runner
