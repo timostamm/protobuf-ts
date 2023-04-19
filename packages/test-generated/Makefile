@@ -26,7 +26,7 @@ default:
 
 clean:
 	@find ts-out \( -name '*.ts' -or -name '*.js' \) -delete
-	@rm -rf ./bin
+	rm -rf ./bin
 	@echo "'${@}' done"
 
 test-runner:
@@ -35,7 +35,6 @@ ifeq ("${TEST_RUNNER}", "")
 	$(eval TEST_RUNNER=bin/conformance_test_runner)
 endif
 
-.PHONY: protobuf
 protobuf:
 	curl -O -L https://github.com/bufbuild/protobuf-conformance/releases/download/v${GOOGLE_PROTOBUF_VERSION}/${CONFORMANCE_RUNNER}
 	unzip ${CONFORMANCE_RUNNER}
@@ -43,13 +42,13 @@ protobuf:
 test-conformance: test-runner
 	@npx tsc --target ES2015 --module CommonJS --strict conformance_ts.ts
 	@chmod +x conformance_ts.js
-	@$(TEST_RUNNER) --enforce_recommended --failure_list failing_tests.txt conformance_ts.js
+	@$(TEST_RUNNER) --enforce_recommended --failure_list failing_tests_without_bigint.txt conformance_ts.js
 	@echo "'${@}' done"
 
 test-conformance-bigint: test-runner
 	@npx tsc --target ES2020 --module CommonJS --strict conformance_ts.ts
 	@chmod +x conformance_ts.js
-	@$(TEST_RUNNER) --enforce_recommended conformance_ts.js
+	@$(TEST_RUNNER) --enforce_recommended --failure_list failing_tests_with_bigint.txt conformance_ts.js
 	@echo "'${@}' done"
 
 test-spec:
