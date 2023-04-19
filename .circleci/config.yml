@@ -4,7 +4,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/node:14.15.0-browsers
+      - image: cimg/node:14.5.0-browsers
     steps:
       - go/install:
           version: 1.16.4
