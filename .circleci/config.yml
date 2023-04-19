@@ -28,8 +28,8 @@ jobs:
             curl -O -L https://github.com/bufbuild/protobuf-conformance/releases/download/v${version}/${archive}
             unzip ${archive}
             # sudo cp libprotobuf.so.23 /usr/lib/
-            sudo cp ./bin/conformance-test-runner /usr/bin/
-            sudo chmod 755 /usr/bin/conformance-test-runner
+            sudo cp ./bin/conformance_test_runner /usr/bin/
+            sudo chmod 755 /usr/bin/conformance_test_runner
             # rm libprotobuf.so.23
             rm -rf ./bin
             rm ${archive}
