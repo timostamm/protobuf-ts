@@ -4,18 +4,10 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/node:14.5.0-browsers
+      - image: cimg/node:14.15.0-browsers
     steps:
       - go/install:
           version: 1.16.4
-      - run:
-          name: Update compiler
-          command: |
-            ls /usr/lib/x86_64-linux-gnu/
-            sudo apt update
-            sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-            sudo apt update
-            sudo apt-get install --only-upgrade libstdc++6
 
       - run:
           name: Install protoc
