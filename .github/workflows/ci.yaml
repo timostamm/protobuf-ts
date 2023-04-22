@@ -1,0 +1,56 @@
+name: ci
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+# Prevent writing to the repository using the CI token.
+# Ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#permissions
+permissions: read-all
+jobs:
+  ci:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup-go
+        if: success()
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.16.4
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.tmp
+            .tmp
+          key: ${{ runner.os }}-protobuf-ts-ci-${{ hashFiles('Makefile') }}
+          restore-keys: |
+            ${{ runner.os }}-protobuf-ts-ci-
+
+      - name: Install protoc
+        run: |
+          version=3.12.0
+          archive=protoc-${version}-linux-x86_64.zip
+          curl -O -L https://github.com/protocolbuffers/protobuf/releases/download/v${version}/${archive}
+          sudo unzip -d '/usr/local' ${archive} 'bin/*' 'include/*'
+          sudo chmod 755 /usr/local/bin/protoc
+          rm ${archive}
+          protoc --version
+
+      - name: Install conformance-test-runner
+        run: |
+          version=22.3
+          archive=conformance_test_runner-${version}-linux-x86_64.zip
+          curl -O -L https://github.com/bufbuild/protobuf-conformance/releases/download/v${version}/${archive}
+          unzip ${archive}
+          # sudo cp libprotobuf.so.23 /usr/lib/
+          sudo cp ./bin/conformance_test_runner /usr/bin/
+          sudo chmod 755 /usr/bin/conformance_test_runner
+          # rm libprotobuf.so.23
+          rm -rf ./bin
+          rm ${archive}
+
+      - name: Run make
+        run: make
