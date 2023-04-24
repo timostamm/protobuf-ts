@@ -1430,7 +1430,7 @@ size comparison.
 
 ## Running in Node.js
 
-`protobuf-ts` is tested with Node.js version 14.5.0. 
+`protobuf-ts` is tested with Node.js version 16.20.0. 
 
 Older versions certainly work, but may not support all features or require polyfills. 
 For example, if you target lower than ES2020 to run in an older node version, you 
