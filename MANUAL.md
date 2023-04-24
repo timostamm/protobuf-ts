@@ -46,7 +46,6 @@ protobuf-ts manual
 - [Native gRPC server](#native-grpc-server)
 - [Native gRPC client](#native-grpc-client)
 - [Generic RPC servers](#generic-rpc-servers)
-- [Angular support](#angular-support)
 
 
 
@@ -218,12 +217,6 @@ Available plugin options:
 
 - "force_client_none"  
   Do not generate rpc clients, ignore options in proto files.
-
-- "enable_angular_annotations"  
-  If set, the generated rpc client will have an angular @Injectable()
-  annotation and the `RpcTransport` constructor argument is annotated with a
-  @Inject annotation. For this feature, you will need the npm package
-  '@protobuf-ts/runtime-angular'.
 
 - "server_none"  
   Do not generate rpc servers.
@@ -903,9 +896,6 @@ Any.toJson(any, {
   
   Converts a JavaScript Date to a `Timestamp`.
 
-> **Note:** `Timestamp` is also supported by the `PbDatePipe` provided by 
-> `@protobuf-ts/runtime-angular`. 
-
 
 
 #### google.protobuf.Struct
@@ -954,8 +944,6 @@ let struct = Struct.fromJson({
 Both types provide methods to convert to and from JavaScript Dates, similar
 to `google.protobuf.Timestamp`.
 
-> **Note:** `DateTime` is also supported by the `PbDatePipe` provided by
-> `@protobuf-ts/runtime-angular`.
 
 
 
@@ -1432,9 +1420,6 @@ can be polyfilled quite easily:
 - `Symbol.asyncIterator` [polyfill](https://stackoverflow.com/questions/43694281 )
 - `globalThis` - [polyfill](https://mathiasbynens.be/notes/globalthis#robust-polyfill)
 
-The Angular example app `packages/example-angular-app` is using these polyfills 
-and works with Edge 44. 
-
 For the Web Browser, it is recommended to use the `CODE_SIZE` optimization for 
 all messages by setting plugin option `--ts_opt optimize_code_size`. Then set the 
 file option `optimize_for = SPEED` for files where you can measure a noticeable 
@@ -1542,10 +1527,6 @@ messsage and returns exactly one output message. It is one of the four
 `protobuf-ts` also generates an implementation for `IHaberdasherClient`, the 
 class `HaberdasherClient`. It takes a `RpcTransport` and a `RpcOptions` 
 argument. 
-
-If you set the `enable_angular_annotations` option, `protobuf-ts` adds 
-annotations to the client that enable Angular dependency injection. 
-See [Angular support](#angular-support) to learn more.
 
 To learn about `RpcOptions` and the `RpcTransport` implementations, please 
 continue reading.
@@ -1872,8 +1853,7 @@ as a single constructor argument. It extends the standard `RpcOptions`
   This will make requests include cookies for cross-origin calls.
 
 
-`protobuf-ts` includes an example gRPC web server in `packages/example-dotnet-grpcweb-server` 
-and exemplary client usage in `packages/example-angular-app`. 
+`protobuf-ts` includes an example gRPC web server in `packages/example-dotnet-grpcweb-server`.
 
 To learn more about the inner workings of the transport, make sure 
 to read the introduction to [RPC support](#rpc-support). To learn about the features 
@@ -1895,9 +1875,6 @@ To use the Twirp transport, install the package `@protobuf-ts/twirp-transport`.
 > **Note:** This transport requires the fetch API and the AbortController API.  
 > `globalThis.fetch`, `globalThis.Headers` and `globalThis.AbortController` are expected.    
 > For Node.js, use the polyfills [node-fetch](https://github.com/node-fetch/node-fetch) and [abort-controller](https://github.com/mysticatea/abort-controller).
-
-> **Note:** If you use Angular, consider using the Twirp transport based on 
-> Angular's HttpClient. See [Angular support](#angular-support).
 
 > **Note:** For requests across domains, your server must allow request
 > headers you intend to send and expose response headers you intend to read.
@@ -2103,82 +2080,3 @@ Note that this feature is experimental and may change with minor releases.
 
 For usage, see [/packages/example-chat-system/](./packages/example-chat-system/).
 
-
-
-## Angular support
-
-`protobuf-ts` has built-in support for [Angular](https://angular.io/), including: 
-
-- a Twirp transport that uses the Angular `HttpClient`
-- a date pipe that supports `google.protobuf.Timestamp` and `google.type.DateTime`
-- annotations for dependency injection
-
-To enable Angular support, 
-1. set the `enable_angular_annotations` [plugin option](#the-protoc-plugin)
-2. install all related packages with `npm i @protobuf-ts/runtime @protobuf-ts/runtime-rpc @protobuf-ts/runtime-angular @protobuf-ts/twirp-transport`
-
-
-Update your `app.module.ts` with the following:
-
-```typescript
-// app.module.ts
-
-@NgModule({
-  imports: [
-    // ...
-
-    // Registers the `PbDatePipe`.
-    // This pipe overrides the standard "date" pipe and adds support
-    // for `google.protobuf.Timestamp` and `google.type.DateTime`.
-    PbDatePipeModule,
-
-    // Registers the `TwirpTransport` with the given options
-    // and sets up dependency injection.
-    TwirpModule.forRoot({
-      // don't forget the "twirp" prefix if your server requires it
-      baseUrl: "http://localhost:8080/twirp/",
-    })
-
-  ],
-  providers: [
-
-    // Make a service available for dependency injection.
-    // Now you can use it as a constructor argument of your component.
-    HaberdasherClient,
-    
-    // ...
-  ],
-  // ...
-})
-export class AppModule {
-}
-```
-
-If you want to use a different RPC transport, you can wire it up using the
-`RPC_TRANSPORT` injection token. The following example uses the `GrpcWebFetchTransport`
-from @protobuf-ts/grpcweb-transport:
-
-```typescript
-// app.module.ts
-
-@NgModule({
-  // ...
-  providers: [
-
-    // Make this service available for injection in all components:
-    MyServerStreamingServiceClient,
-
-    // Configure gRPC web as transport for all services. 
-    {provide: RPC_TRANSPORT, useValue: new GrpcWebFetchTransport({
-        baseUrl: "http://localhost:4200"
-    })},
-  ],
-  // ...
-})
-export class AppModule {
-}
-```
-
-For more information, have a look at the example angular app in [packages/example-angular-app](./packages/example-angular-app). 
-It shows how the pipe is used, how Twirp is setup and can be run against an 
-example gRPC-web or Twirp server (also included in the examples). 

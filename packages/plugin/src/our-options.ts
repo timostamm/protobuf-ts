@@ -187,11 +187,8 @@ export interface InternalOptions {
     readonly forcedServerStyle: ServerStyle | undefined,
     readonly normalClientStyle: ClientStyle,
     readonly forcedClientStyle: ClientStyle | undefined,
-    readonly emitAngularAnnotations: boolean;
     readonly synthesizeEnumZeroValue: string | false; // create a "synthetic" enum value with this string as name if no 0 value is present
     readonly oneofKindDiscriminator: string;
-    readonly angularCoreImportPath: string;
-    readonly runtimeAngularImportPath: string;
     readonly runtimeRpcImportPath: string;
     readonly runtimeImportPath: string;
     readonly forceExcludeAllOptions: boolean;
@@ -210,7 +207,6 @@ export function makeInternalOptions(
         generate_dependencies: boolean,
         long_type_string: boolean,
         long_type_number: boolean,
-        enable_angular_annotations: boolean,
         force_exclude_all_options: boolean,
         keep_enum_prefix: boolean,
         use_proto_field_name: boolean,
@@ -253,12 +249,9 @@ export function makeInternalOptions(
             forcedClientStyle: undefined,
             normalServerStyle: ServerStyle.NO_SERVER,
             forcedServerStyle: undefined,
-            emitAngularAnnotations: false,
             synthesizeEnumZeroValue: 'UNSPECIFIED$',
             oneofKindDiscriminator: 'oneofKind',
-            runtimeAngularImportPath: '@protobuf-ts/runtime-angular',
             runtimeRpcImportPath: '@protobuf-ts/runtime-rpc',
-            angularCoreImportPath: '@angular/core',
             runtimeImportPath: '@protobuf-ts/runtime',
             forceExcludeAllOptions: false,
             keepEnumPrefix: false,
@@ -276,9 +269,6 @@ export function makeInternalOptions(
     }
     if (params?.generate_dependencies) {
         o.generateDependencies = true;
-    }
-    if (params?.enable_angular_annotations) {
-        o.emitAngularAnnotations = true;
     }
     if (params?.force_exclude_all_options) {
         o.forceExcludeAllOptions = true;
