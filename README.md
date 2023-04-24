@@ -67,7 +67,6 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 - [x] generates [native gRPC servers](MANUAL.md#native-grpc-server) and 
       [clients](MANUAL.md#native-grpc-client) for usage with `@grpc/grpc-js`
 - [x] supported by [Twirp-TS](https://github.com/hopin-team/twirp-ts) for Twirp servers running on Node.js
-- [x] supports [Angular](MANUAL.md#angular-support) dependency injection and pipes
 - [x] automatically [installs protoc](./packages/protoc/README.md) (with Yarn berry, please use [node-protoc](https://www.npmjs.com/package/node-protoc))
 - [x] can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
 - [x] supports [proto3 optionals](MANUAL.md#proto3-optionals)

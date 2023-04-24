@@ -163,13 +163,6 @@ export class ProtobuftsPlugin extends PluginBase {
             description: "Do not generate rpc clients, ignore options in proto files.",
             excludes: ['client_none', 'client_generic', 'client_grpc1'],
         },
-        enable_angular_annotations: {
-            description: "If set, the generated rpc client will have an angular @Injectable() \n" +
-                         "annotation and the `RpcTransport` constructor argument is annotated with a \n" +
-                         "@Inject annotation. For this feature, you will need the npm package \n" +
-                         "'@protobuf-ts/runtime-angular'.",
-            excludes: ['force_client_none'],
-        },
 
         // server
         server_none: {

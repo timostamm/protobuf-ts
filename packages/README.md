@@ -16,8 +16,6 @@
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/grpc-transport?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/grpc-transport)
 - [@protobuf-ts/grpc-backend](./grpc-backend) - the [gRPC](https://grpc.io/) protocol for RPC servers  
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/grpc-backend?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/grpc-backend)
-- [@protobuf-ts/runtime-angular](./runtime-angular) - [Angular](https://angular.io/) support  
-  [![npm](https://img.shields.io/npm/v/@protobuf-ts/runtime-angular?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/runtime-angular)
 - [@protobuf-ts/runtime-rpc](./runtime-rpc) - shared contracts for RPC  
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/runtime-rpc?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/runtime-rpc)
 - [@protobuf-ts/plugin-framework](./plugin-framework) - a framework for writing `protoc` plugins in TypeScript  
@@ -27,10 +25,9 @@
 
 #### Other packages
 
-- [example-angular-app](./example-angular-app) - shows how to use the Angular support and other features
-- [example-dotnet-grpcweb-server](./example-dotnet-grpcweb-server) - gRPC-web server in dotnet, works with the example Angular app
+- [example-dotnet-grpcweb-server](./example-dotnet-grpcweb-server) - gRPC-web server in dotnet
 - [example-chat-system](./example-chat-system) - a gRPC chat server and a gRCP terminal client
-- [example-go-twirp-server](example-go-twirp-server) - a Twirp server in go, works with the example Angular app
+- [example-go-twirp-server](example-go-twirp-server) - a Twirp server in go
 - [example-dotnet-grpc-client](./example-dotnet-grpc-client) - a gRPC client in dotnet
 - [example-node-grpc-transport-client](./example-node-grpc-transport-client) - a gRPC client using @protobuf-ts/grpc-transport, running in Node.JS
 - [example-node-twirp-transport-client](./example-node-twirp-transport-client) - a Twirp client using @protobuf-ts/twirp-transport, running in Node.JS

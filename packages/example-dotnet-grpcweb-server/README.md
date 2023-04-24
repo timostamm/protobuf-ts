@@ -4,7 +4,6 @@
 This is a simple gRPC-web server using dotnet core. 
 
 This server can be used by one of the clients:
-- example-angular-app (grpcweb-transport)
 - example-browser-grpcweb-transport-client (grpcweb-transport)
 - example-node-grpcweb-transport-client (grpcweb-transport)
 

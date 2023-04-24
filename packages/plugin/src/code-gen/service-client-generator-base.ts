@@ -25,9 +25,6 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
                 protected readonly options: {
                     runtimeImportPath: string;
                     runtimeRpcImportPath: string;
-                    angularCoreImportPath: string;
-                    emitAngularAnnotations: boolean;
-                    runtimeAngularImportPath: string;
                 }) {
         super(symbols, registry, imports, comments, interpreter);
     }
@@ -177,30 +174,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
             RpcTransport = this.imports.name(source, 'RpcTransport', this.options.runtimeRpcImportPath, true);
 
         const classDecorators: ts.Decorator[] = [];
-        if (this.options.emitAngularAnnotations) {
-            let Injectable = this.imports.name(source, 'Injectable', this.options.angularCoreImportPath);
-            classDecorators.push(
-                ts.createDecorator(ts.createCall(
-                    ts.createIdentifier(Injectable), undefined, []
-                ))
-            );
-        }
-
         const constructorDecorators: ts.Decorator[] = [];
-        if (this.options.emitAngularAnnotations) {
-            let RPC_TRANSPORT = this.imports.name(source, 'RPC_TRANSPORT', this.options.runtimeAngularImportPath);
-            let Inject = this.imports.name(source, 'Inject', this.options.angularCoreImportPath);
-            constructorDecorators.push(
-                ts.createDecorator(ts.createCall(
-                    ts.createIdentifier(Inject),
-                    undefined,
-                    [
-                        ts.createIdentifier(RPC_TRANSPORT)
-                    ]
-                ))
-            );
-        }
-
         const members: ts.ClassElement[] = [
 
             // typeName = Haberdasher.typeName;
