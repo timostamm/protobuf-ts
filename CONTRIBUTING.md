@@ -15,7 +15,7 @@ Just [start a discussion](https://github.com/timostamm/protobuf-ts/discussions/n
 
 ### Building this project 
 
-Building and testing this project requires `node` (14.5.0), `npm`, `protoc` (3.12.3), 
+Building and testing this project requires `node`, `npm`, `protoc`, 
 `make`, `git`, and `go`.  
 
 - `go` is required for the Twirp transport client compatibility test suite
