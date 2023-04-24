@@ -16,12 +16,10 @@ Just [start a discussion](https://github.com/timostamm/protobuf-ts/discussions/n
 ### Building this project 
 
 Building and testing this project requires `node` (14.5.0), `npm`, `protoc` (3.12.3), 
-`make`, `bazel`, `git`, `go`.  
+`make`, `git`, and `go`.  
 
 - `go` is required for the Twirp transport client compatibility test suite
 - `protoc` is required for test fixtures
-- `git` and `bazel` are required to checkout and compile the protobuf conformance test 
-  suite
 
 The entire project can be built by running `make`, but if you do not have all required
 tooling installed, you can still build all of the TypeScript packages. 

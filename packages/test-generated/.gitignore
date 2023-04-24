@@ -1,5 +1,6 @@
 /node_modules
 /failing_tests.txt
 /succeeding_tests.txt
-/protobuf
 /conformance_ts.js
+bin/**
+conformance_test_runner-*.zip
