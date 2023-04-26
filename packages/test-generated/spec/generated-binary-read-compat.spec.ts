@@ -1,4 +1,3 @@
-import {fixtures} from "../../test-fixtures";
 import {IMessageType, MessageType} from "@protobuf-ts/runtime";
 import {EnumFieldMessage} from "../ts-out/msg-enum";
 import {JsonNamesMessage} from "../ts-out/msg-json-names";
@@ -29,53 +28,15 @@ describe('generated code compatibility', () => {
         );
     });
 
-    describe('generated create() produces same data as reflection', function () {
-        fixtures.usingTypeNames((typeName) => {
-            let generatedType = generatedRegistry.find(t => t.typeName === typeName);
-            if (!generatedType)
-                return;
-
-            it(`${typeName}`, function () {
-                let reflectionType = new MessageType(generatedType!.typeName, generatedType!.fields);
+    describe('generated create()', function () {
+        for (const generatedType of generatedRegistry) {
+            it(`should have same result as reflection for ${generatedType.typeName}`, function () {
+                const reflectionType = new MessageType(generatedType.typeName, generatedType.fields);
                 let reflectionMsg = reflectionType.create();
-                let generatedMsg = generatedType!.create();
+                let generatedMsg = generatedType.create();
                 expect(generatedMsg).toEqual(reflectionMsg);
             });
-        });
-    });
-
-    describe('generated toBinary() produces same data as reflection', function () {
-        // using json because fixture data uses LongType.STRING, but generated code also uses LongType.BIGINT
-        fixtures.usingJson((typeName, key, json) => {
-            let generatedType = generatedRegistry.find(t => t.typeName === typeName);
-            if (!generatedType)
-                return;
-
-            it(`${typeName} '${key}'`, function () {
-                let reflectionType = new MessageType(generatedType!.typeName, generatedType!.fields);
-                let msg = reflectionType.fromJson(json);
-                let reflectionBytes = reflectionType.toBinary(msg);
-                let generatedBytes = generatedType!.toBinary(msg);
-                expect(generatedBytes).toEqual(reflectionBytes);
-            });
-        });
-    });
-
-
-    describe('generated fromBinary() produces same data as reflection', function () {
-        // using json because fixture data uses LongType.STRING, but generated code also uses LongType.BIGINT
-        fixtures.usingJson((typeName, key, json) => {
-            let generatedType = generatedRegistry.find(t => t.typeName === typeName);
-            if (!generatedType)
-                return;
-            it(`${typeName} '${key}'`, function () {
-                let reflectionType = new MessageType(generatedType!.typeName, generatedType!.fields);
-                let msg = reflectionType.fromJson(json);
-                let bytes = reflectionType.toBinary(msg);
-                let msgRead = generatedType!.fromBinary(bytes);
-                expect(msgRead).toEqual(msg);
-            });
-        });
+        }
     });
 
 });

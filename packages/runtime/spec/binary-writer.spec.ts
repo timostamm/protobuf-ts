@@ -1,6 +1,6 @@
 import {BinaryReader, BinaryWriter, WireType} from "../src";
 import {WireDataDelimited, WireDataPlain} from "./support/wire-data";
-import {msg_longs_bytes} from "../../test-fixtures/msg-longs.fixtures";
+import {msg_longs_bytes} from "./support/msg-longs-fixture";
 
 
 describe('BinaryWriter', () => {

@@ -5,7 +5,6 @@ import msgJsonNames from './msg-json-names.fixtures'
 import msgProto2Optionals from './msg-proto2-optionals.fixtures'
 import msgProto3Optionals from './msg-proto3-optionals.fixtures'
 import msgMessage from './msg-message.fixtures'
-import msgLongs from './msg-longs.fixtures'
 import deprecationExplicit from './deprecation-explicit.fixture'
 import deprecationImplicit from './deprecation-implicit.fixture'
 import {FieldInfo, MessageInfo, normalizeFieldInfo, PartialFieldInfo} from "@protobuf-ts/runtime";
@@ -554,7 +553,6 @@ fixtures.register(msgJsonNames);
 fixtures.register(msgProto2Optionals);
 fixtures.register(msgProto3Optionals);
 fixtures.register(msgMessage);
-fixtures.register(msgLongs);
 fixtures.register(deprecationExplicit);
 fixtures.register(deprecationImplicit);
 
