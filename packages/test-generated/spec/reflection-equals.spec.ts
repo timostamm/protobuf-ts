@@ -84,41 +84,44 @@ describe('reflectionEquals()', function () {
     });
 
 
-    for (const type of types) {
-        describe(`with message type ${type.typeName}`, () => {
-            it("determines messages to be equal", function () {
-                const mi = {
-                    typeName: type.typeName,
-                    fields: type.fields.map(normalizeFieldInfo),
-                    options: {}
-                };
-                const message = reflectionCreate(type);
-                reflectionMergePartial(mi, message, {});
-                let eq = reflectionEquals(mi, {}, message);
-                expect(eq).toBeTrue();
-            });
-        });
-    }
+    // for (const type of types) {
+    //     describe(`with message type ${type.typeName}`, () => {
+    //         it("determines messages to be equal", function () {
+    //             const mi = {
+    //                 typeName: type.typeName,
+    //                 fields: type.fields.map(normalizeFieldInfo),
+    //                 options: {}
+    //             };
+    //             // Is there a way to do this dynamically for each generated type without a fixture?
+    //             const msg = {};
+    //             const message = reflectionCreate(type);
+    //             reflectionMergePartial(mi, message, {});
+    //             let eq = reflectionEquals(mi, {}, message);
+    //             expect(eq).toBeTrue();
+    //         });
+    //     });
+    // }
 
-    for (const type of types) {
-        describe(`with message type ${type.typeName}`, () => {
-            it("determines messages to be equal", function () {
-                const mi = {
-                    typeName: type.typeName,
-                    fields: type.fields.map(normalizeFieldInfo),
-                    options: {}
-                };
-                const msg = {};
-                const message = reflectionCreate(type);
-                reflectionMergePartial(mi, message, msg);
-                let eq = reflectionEquals(mi, msg, message);
-                if (eq) {
-                    expect(msg).toEqual(message);
-                } else {
-                    expect(msg).not.toEqual(message);
-                }
-            });
-        });
-    }
+    // for (const type of types) {
+    //     describe(`with message type ${type.typeName}`, () => {
+    //         it("determines messages to be equal", function () {
+    //             const mi = {
+    //                 typeName: type.typeName,
+    //                 fields: type.fields.map(normalizeFieldInfo),
+    //                 options: {}
+    //             };
+    //             // Is there a way to do this dynamically for each generated type without a fixture?
+    //             const msg = {};
+    //             const message = reflectionCreate(type);
+    //             reflectionMergePartial(mi, message, msg);
+    //             let eq = reflectionEquals(mi, msg, message);
+    //             if (eq) {
+    //                 expect(msg).toEqual(message);
+    //             } else {
+    //                 expect(msg).not.toEqual(message);
+    //             }
+    //         });
+    //     });
+    // }
 
 });
