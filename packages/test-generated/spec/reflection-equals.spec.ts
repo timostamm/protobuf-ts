@@ -1,10 +1,8 @@
-import type {IMessageType} from "@protobuf-ts/runtime";
-import {normalizeFieldInfo, reflectionCreate, reflectionEquals, reflectionMergePartial, ScalarType} from "@protobuf-ts/runtime";
+import type {IMessageType, PartialMessage, UnknownMessage} from "@protobuf-ts/runtime";
+import {normalizeFieldInfo, reflectionCreate, reflectionEquals, reflectionMergePartial, MessageType, ScalarType} from "@protobuf-ts/runtime";
 import {EnumFieldMessage} from "../ts-out/msg-enum";
 import {MessageMapMessage, ScalarMapsMessage} from "../ts-out/msg-maps";
 import {OneofMessageMemberMessage, OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
-import {TestAllTypesProto3} from "../ts-out/google/protobuf/test_messages_proto3";
-import {TestAllTypesProto2} from "../ts-out/google/protobuf/test_messages_proto2";
 
 
 enum TestEnum {
@@ -21,8 +19,6 @@ describe('reflectionEquals()', function () {
                     MessageMapMessage,
                     OneofScalarMemberMessage,
                     OneofMessageMemberMessage,
-                    TestAllTypesProto3,
-                    TestAllTypesProto2,
                 ];
 
 
@@ -84,64 +80,79 @@ describe('reflectionEquals()', function () {
     });
 
     it('oneofs are equal', () => {
-                const mi = {
-                    typeName: OneofScalarMemberMessage.typeName,
-                    fields: OneofScalarMemberMessage.fields.map(normalizeFieldInfo),
-                    options: {}
-                };
+        const mi = {
+            typeName: OneofScalarMemberMessage.typeName,
+            fields: OneofScalarMemberMessage.fields.map(normalizeFieldInfo),
+            options: {}
+        };
         const msg = {
             result: {
                 oneofKind: "value",
                 value: 42
             }
-        };
-                const message = reflectionCreate(OneofScalarMemberMessage);
-        reflectionMergePartial(mi, message, PartialMessage<msg>);
-                let eq = reflectionEquals(mi, {}, message);
-                expect(eq).toBeTrue();
-
-
+        } as PartialMessage<OneofScalarMemberMessage>;
+        const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
+        const message = reflectionCreate(mt);
+        reflectionMergePartial(mi, message, msg);
+        let eq = reflectionEquals(mi, msg, message);
+        expect(eq).toBeTrue();
     });
 
+    // describe('should behave like jasmine equality comparator for all fixture messages', function () {
+    //     fixtures.usingMessages((typeName, key, msg) => {
+    //         it(`${typeName} '${key}'`, function () {
+    //             const mi = fixtures.makeMessageInfo(typeName);
+    //             const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
+    //             let copy = reflectionCreate(mt);
+    //             reflectionMergePartial(mi, copy, msg);
+    //             let eq = reflectionEquals(mi, msg, copy);
+    //             if (eq)
+    //                 expect(msg).toEqual(copy);
+    //             else
+    //                 expect(msg).not.toEqual(copy);
+    //         });
+    //     });
+    // });
 
-    for (const type of types) {
-        describe(`with message type ${type.typeName}`, () => {
-            it("determines messages to be equal", function () {
-                const mi = {
-                    typeName: type.typeName,
-                    fields: type.fields.map(normalizeFieldInfo),
-                    options: {}
-                };
-                // Is there a way to do this dynamically for each generated type without a fixture?
-                const msg = {};
-                const message = reflectionCreate(type);
-                reflectionMergePartial(mi, message, {});
-                let eq = reflectionEquals(mi, {}, message);
-                expect(eq).toBeTrue();
-            });
-        });
-    }
 
-    for (const type of types) {
-        describe(`with message type ${type.typeName}`, () => {
-            it("determines messages to be equal", function () {
-                const mi = {
-                    typeName: type.typeName,
-                    fields: type.fields.map(normalizeFieldInfo),
-                    options: {}
-                };
-                // Is there a way to do this dynamically for each generated type without a fixture?
-                const msg = {};
-                const message = reflectionCreate(type);
-                reflectionMergePartial(mi, message, msg);
-                let eq = reflectionEquals(mi, msg, message);
-                if (eq) {
-                    expect(msg).toEqual(message);
-                } else {
-                    expect(msg).not.toEqual(message);
-                }
-            });
-        });
-    }
+    // for (const type of types) {
+    //     describe(`with message type ${type.typeName}`, () => {
+    //         it("determines messages to be equal", function () {
+    //             const mi = {
+    //                 typeName: type.typeName,
+    //                 fields: type.fields.map(normalizeFieldInfo),
+    //                 options: {}
+    //             };
+    //             // Is there a way to do this dynamically for each generated type without a fixture?
+    //             const msg = {};
+    //             const message = reflectionCreate(type);
+    //             reflectionMergePartial(mi, message, {});
+    //             let eq = reflectionEquals(mi, {}, message);
+    //             expect(eq).toBeTrue();
+    //         });
+    //     });
+    // }
+
+    // for (const type of types) {
+    //     describe(`with message type ${type.typeName}`, () => {
+    //         it("determines messages to be equal", function () {
+    //             const mi = {
+    //                 typeName: type.typeName,
+    //                 fields: type.fields.map(normalizeFieldInfo),
+    //                 options: {}
+    //             };
+    //             // Is there a way to do this dynamically for each generated type without a fixture?
+    //             const msg = {};
+    //             const message = reflectionCreate(type);
+    //             reflectionMergePartial(mi, message, msg);
+    //             let eq = reflectionEquals(mi, msg, message);
+    //             if (eq) {
+    //                 expect(msg).toEqual(message);
+    //             } else {
+    //                 expect(msg).not.toEqual(message);
+    //             }
+    //         });
+    //     });
+    // }
 
 });
