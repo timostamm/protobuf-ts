@@ -83,45 +83,65 @@ describe('reflectionEquals()', function () {
         expect(reflectionEquals(info, a, c)).toBeTrue();
     });
 
+    it('oneofs are equal', () => {
+                const mi = {
+                    typeName: OneofScalarMemberMessage.typeName,
+                    fields: OneofScalarMemberMessage.fields.map(normalizeFieldInfo),
+                    options: {}
+                };
+        const msg = {
+            result: {
+                oneofKind: "value",
+                value: 42
+            }
+        };
+                const message = reflectionCreate(OneofScalarMemberMessage);
+        reflectionMergePartial(mi, message, PartialMessage<msg>);
+                let eq = reflectionEquals(mi, {}, message);
+                expect(eq).toBeTrue();
 
-    // for (const type of types) {
-    //     describe(`with message type ${type.typeName}`, () => {
-    //         it("determines messages to be equal", function () {
-    //             const mi = {
-    //                 typeName: type.typeName,
-    //                 fields: type.fields.map(normalizeFieldInfo),
-    //                 options: {}
-    //             };
-    //             // Is there a way to do this dynamically for each generated type without a fixture?
-    //             const msg = {};
-    //             const message = reflectionCreate(type);
-    //             reflectionMergePartial(mi, message, {});
-    //             let eq = reflectionEquals(mi, {}, message);
-    //             expect(eq).toBeTrue();
-    //         });
-    //     });
-    // }
 
-    // for (const type of types) {
-    //     describe(`with message type ${type.typeName}`, () => {
-    //         it("determines messages to be equal", function () {
-    //             const mi = {
-    //                 typeName: type.typeName,
-    //                 fields: type.fields.map(normalizeFieldInfo),
-    //                 options: {}
-    //             };
-    //             // Is there a way to do this dynamically for each generated type without a fixture?
-    //             const msg = {};
-    //             const message = reflectionCreate(type);
-    //             reflectionMergePartial(mi, message, msg);
-    //             let eq = reflectionEquals(mi, msg, message);
-    //             if (eq) {
-    //                 expect(msg).toEqual(message);
-    //             } else {
-    //                 expect(msg).not.toEqual(message);
-    //             }
-    //         });
-    //     });
-    // }
+    });
+
+
+    for (const type of types) {
+        describe(`with message type ${type.typeName}`, () => {
+            it("determines messages to be equal", function () {
+                const mi = {
+                    typeName: type.typeName,
+                    fields: type.fields.map(normalizeFieldInfo),
+                    options: {}
+                };
+                // Is there a way to do this dynamically for each generated type without a fixture?
+                const msg = {};
+                const message = reflectionCreate(type);
+                reflectionMergePartial(mi, message, {});
+                let eq = reflectionEquals(mi, {}, message);
+                expect(eq).toBeTrue();
+            });
+        });
+    }
+
+    for (const type of types) {
+        describe(`with message type ${type.typeName}`, () => {
+            it("determines messages to be equal", function () {
+                const mi = {
+                    typeName: type.typeName,
+                    fields: type.fields.map(normalizeFieldInfo),
+                    options: {}
+                };
+                // Is there a way to do this dynamically for each generated type without a fixture?
+                const msg = {};
+                const message = reflectionCreate(type);
+                reflectionMergePartial(mi, message, msg);
+                let eq = reflectionEquals(mi, msg, message);
+                if (eq) {
+                    expect(msg).toEqual(message);
+                } else {
+                    expect(msg).not.toEqual(message);
+                }
+            });
+        });
+    }
 
 });
