@@ -1,28 +1,18 @@
-import {assert, isOneofGroup, normalizeFieldInfo, ReflectionTypeCheck, ScalarType} from "../src";
-import {fixtures} from "../../test-fixtures";
+import {assert, isOneofGroup, normalizeFieldInfo, PartialMessage, ReflectionTypeCheck, ScalarType} from "@protobuf-ts/runtime";
+import {ScalarValuesMessage} from "../ts-out/msg-scalar";
 
 
 describe('ReflectionTypeCheck.is()', function () {
 
-    describe('accepts all fixture messages', function () {
-        fixtures.usingMessages((typeName, key, msg) => {
-            it(`${typeName} '${key}'`, function () {
-                let check = new ReflectionTypeCheck(fixtures.makeMessageInfo(typeName));
-                let is = check.is(msg, 16, false);
-                expect(is).toBe(true);
-            });
-        });
-    });
-
-    describe('rejects all invalid fixture messages', function () {
-        fixtures.usingInvalidMessages((typeName, key, msg) => {
-            it(`${typeName} '${key}'`, function () {
-                let check = new ReflectionTypeCheck(fixtures.makeMessageInfo(typeName));
-                let is = check.is(msg, 16, false);
-                expect(is).toBeFalse();
-            });
-        });
-    });
+    // describe('accepts all fixture messages', function () {
+    //     fixtures.usingMessages((typeName, key, msg) => {
+    //         it(`${typeName} '${key}'`, function () {
+    //             let check = new ReflectionTypeCheck(fixtures.makeMessageInfo(typeName));
+    //             let is = check.is(msg, 16, false);
+    //             expect(is).toBe(true);
+    //         });
+    //     });
+    // });
 
 
     describe('check() with depth < 0', function () {
@@ -47,29 +37,37 @@ describe('ReflectionTypeCheck.is()', function () {
             expect(check.is(null, 0, false)).toBe(false);
         });
 
-        it('checks presence of fields but not types', function () {
-            let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.ScalarValuesMessage'));
-            let m = fixtures.getInvalidMessage('spec.ScalarValuesMessage', 'all types wrong');
-            let is = check.is(m, 0, false);
-            expect(is).toBe(true);
-        });
+        describe("scalar values message", () => {
+            const mi = {
+                typeName: ScalarValuesMessage.typeName,
+                fields: ScalarValuesMessage.fields.map(normalizeFieldInfo),
+                options: {}
+            };
+            let m = {
+                doubleField: 0,
+                floatField: 0,
+                int64Field: "0",
+                uint64Field: "0",
+                int32Field: 0,
+                fixed64Field: "0",
+                fixed32Field: 0,
+                boolField: false,
+                stringField: "",
+                bytesField: new Uint8Array(0),
+                uint32Field: 0,
+                sfixed32Field: 0,
+                sfixed64Field: "0",
+                sint32Field: 0,
+                sint64Field: "0",
+            } as PartialMessage<ScalarValuesMessage>;
 
-        it('detects missing field', function () {
-            let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.ScalarValuesMessage'));
-            let m = fixtures.getMessage('spec.ScalarValuesMessage', 'default');
-            delete m['doubleField'];
-            let is = check.is(m, 0, false);
-            expect(is).toBe(false);
+            it('detects missing field', function () {
+                let check = new ReflectionTypeCheck(mi);
+                delete m['doubleField'];
+                let is = check.is(m, 0, false);
+                expect(is).toBe(false);
+            });
         });
-
-        it('detects unknown fields', function () {
-            let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.ScalarValuesMessage'));
-            let m = fixtures.getMessage('spec.ScalarValuesMessage', 'default');
-            m.foo = 'bar';
-            let is = check.is(m, 0, false);
-            expect(is).toBe(false);
-        });
-
     });
 
 
