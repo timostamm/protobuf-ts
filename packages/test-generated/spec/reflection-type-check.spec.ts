@@ -1,5 +1,5 @@
 import {assert, isOneofGroup, normalizeFieldInfo, PartialMessage, ReflectionTypeCheck, ScalarType} from "@protobuf-ts/runtime";
-import {ScalarValuesMessage} from "../ts-out/msg-scalar";
+import {OneofScalarMemberMessage, ScalarValuesMessage} from "../ts-out/msg-scalar";
 
 
 describe('ReflectionTypeCheck.is()', function () {
@@ -75,23 +75,31 @@ describe('ReflectionTypeCheck.is()', function () {
 
         const depth = 1;
 
-        it('checks oneof group structure', function () {
-            let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.OneofScalarMemberMessage'));
-            let m = fixtures.getMessage('spec.OneofScalarMemberMessage', 'err');
-            assert(isOneofGroup(m.result));
-            m.result.oneofKind = 'xxx';
-            let is = check.is(m, depth, false);
-            expect(is).toBe(false);
+        describe("oneof scalar member messages", () => {
+            const mi = {
+                typeName: OneofScalarMemberMessage.typeName,
+                fields: OneofScalarMemberMessage.fields.map(normalizeFieldInfo),
+                options: {}
+            };
+            it('checks oneof group structure', function () {
+                let check = new ReflectionTypeCheck(mi);
+                let m = {result: {oneofKind: 'error', error: 'hello'}};
+                assert(isOneofGroup(m.result));
+                m.result.oneofKind = 'xxx';
+                let is = check.is(m, depth, false);
+                expect(is).toBe(false);
+            });
+            it('checks oneof member type', function () {
+                let check = new ReflectionTypeCheck(mi);
+                let m = {result: {oneofKind: 'error', error: 'hello'}};
+                assert(isOneofGroup(m.result));
+                m.result.error = 123;
+                let is = check.is(m, depth, false);
+                expect(is).toBe(false);
+            });
         });
 
-        it('checks oneof member type', function () {
-            let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.OneofScalarMemberMessage'));
-            let m = fixtures.getMessage('spec.OneofScalarMemberMessage', 'err');
-            assert(isOneofGroup(m.result));
-            m.result.error = 123;
-            let is = check.is(m, depth, false);
-            expect(is).toBe(false);
-        });
+
 
         it('checks oneof discriminator', function () {
             let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.OneofScalarMemberMessage'));
