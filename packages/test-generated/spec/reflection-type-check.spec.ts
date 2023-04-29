@@ -1,19 +1,51 @@
-import {assert, isOneofGroup, normalizeFieldInfo, PartialMessage, ReflectionTypeCheck, ScalarType} from "@protobuf-ts/runtime";
-import {OneofScalarMemberMessage, ScalarValuesMessage} from "../ts-out/msg-scalar";
+import {
+    assert,
+    isOneofGroup,
+    normalizeFieldInfo,
+    IMessageType,
+    PartialMessage,
+    ReflectionTypeCheck,
+    ScalarType,
+    UnknownMessage
+} from "@protobuf-ts/runtime";
+import {
+    RepeatedScalarValuesMessage,
+    ScalarValuesMessage
+} from "../ts-out/msg-scalar";
+import {EnumFieldMessage} from "../ts-out/msg-enum";
+import {MessageMapMessage, ScalarMapsMessage} from "../ts-out/msg-maps";
+import {OneofMessageMemberMessage, OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
+import {TestAllTypesProto3} from "../ts-out/google/protobuf/test_messages_proto3";
+import {TestAllTypesProto2} from "../ts-out/google/protobuf/test_messages_proto2";
 
 
 describe('ReflectionTypeCheck.is()', function () {
+    const types: IMessageType<any>[] = [
+        EnumFieldMessage,
+        ScalarMapsMessage,
+        MessageMapMessage,
+        OneofScalarMemberMessage,
+        OneofMessageMemberMessage,
+        TestAllTypesProto3,
+        TestAllTypesProto2,
+    ];
 
-    // describe('accepts all fixture messages', function () {
-    //     fixtures.usingMessages((typeName, key, msg) => {
-    //         it(`${typeName} '${key}'`, function () {
-    //             let check = new ReflectionTypeCheck(fixtures.makeMessageInfo(typeName));
-    //             let is = check.is(msg, 16, false);
-    //             expect(is).toBe(true);
-    //         });
-    //     });
-    // });
-
+    it('oneof scalars type check correctly', () => {
+        const mi = {
+            typeName: OneofScalarMemberMessage.typeName,
+            fields: OneofScalarMemberMessage.fields.map(normalizeFieldInfo),
+            options: {}
+        };
+        const msg = {
+            result: {
+                oneofKind: "value",
+                value: 42
+            }
+        } as PartialMessage<OneofScalarMemberMessage>;
+        let check = new ReflectionTypeCheck(mi);
+        let is = check.is(msg, 16, false);
+        expect(is).toBe(true);
+    });
 
     describe('check() with depth < 0', function () {
         it('always returns true', function () {
@@ -91,31 +123,70 @@ describe('ReflectionTypeCheck.is()', function () {
             });
             it('checks oneof member type', function () {
                 let check = new ReflectionTypeCheck(mi);
-                let m = {result: {oneofKind: 'error', error: 'hello'}};
+                let m = {result: {oneofKind: 'error', error: 'hello'}} as UnknownMessage;
                 assert(isOneofGroup(m.result));
                 m.result.error = 123;
+                let is = check.is(m, depth, false);
+                expect(is).toBe(false);
+            });
+            it('checks oneof discriminator', function () {
+                let check = new ReflectionTypeCheck(mi);
+                let m = {result: {oneofKind: 'error', error: 'hello'}} as UnknownMessage;
+                assert(isOneofGroup(m.result));
+                m.result = {
+                    oneofKind: 'wrong',
+                    wrong: 123
+                };
                 let is = check.is(m, depth, false);
                 expect(is).toBe(false);
             });
         });
 
 
-
-        it('checks oneof discriminator', function () {
-            let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.OneofScalarMemberMessage'));
-            let m = fixtures.getMessage('spec.OneofScalarMemberMessage', 'err');
-            assert(isOneofGroup(m.result));
-            m.result = {
-                oneofKind: 'wrong',
-                wrong: 123
-            };
-            let is = check.is(m, depth, false);
-            expect(is).toBe(false);
-        });
-
         it('checks repeated is array', function () {
-            let check = new ReflectionTypeCheck(fixtures.makeMessageInfo('spec.RepeatedScalarValuesMessage'));
-            let m = fixtures.getMessage('spec.RepeatedScalarValuesMessage', 'example');
+            const mi = {
+                typeName: RepeatedScalarValuesMessage.typeName,
+                fields: RepeatedScalarValuesMessage.fields.map(normalizeFieldInfo),
+                options: {}
+            };
+            const m = {
+                doubleField: [0.75, 0, 1],
+                floatField: [0.75, -0.75],
+                int64Field: [
+                    "-1",
+                    "-2"
+                ],
+                uint64Field: [
+                    "1",
+                    "2"
+                ],
+                int32Field: [-123, 500],
+                fixed64Field: [
+                    "1",
+                    "99"
+                ],
+                fixed32Field: [123, 999],
+                boolField: [true, false, true],
+                stringField: ["hello", "world"],
+                bytesField: [
+                    new Uint8Array([104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100])
+                ],
+                uint32Field: [123, 123],
+                sfixed32Field: [-123, -123, -123],
+                sfixed64Field: [
+                    "-1",
+                    "-2",
+                    "100",
+                ],
+                sint32Field: [-1, -2, 999],
+                sint64Field: [
+                    "-1",
+                    "-99",
+                    "99",
+                ]
+            } as UnknownMessage;
+
+            let check = new ReflectionTypeCheck(mi);
             m.doubleField = "str";
 
             let is = check.is(m, depth, false);
