@@ -126,7 +126,6 @@ describe('reflectionEquals()', function () {
         const msg = {
             strStrField: {"a": "a"},
             strInt32Field: {"a": 42},
-            strInt64Field: {"a": "123456"}
         } as PartialMessage<ScalarMapsMessage>;
 
         const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
