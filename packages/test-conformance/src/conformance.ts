@@ -1,51 +1,33 @@
 #!/usr/bin/env node
 
-import {ConformanceRequest, ConformanceResponse, TestCategory, WireFormat} from "./ts-out/conformance/conformance";
-import {TestAllTypesProto3} from "./ts-out/google/protobuf/test_messages_proto3";
-import {TestAllTypesProto2} from "./ts-out/google/protobuf/test_messages_proto2";
-import type {IMessageType} from "@protobuf-ts/runtime";
 import {readSync, writeSync} from "fs";
-import {Struct, Value} from "./ts-out/google/protobuf/struct";
-import {FieldMask} from "./ts-out/google/protobuf/field_mask";
-import {Timestamp} from "./ts-out/google/protobuf/timestamp";
-import {Duration} from "./ts-out/google/protobuf/duration";
-import {Int32Value} from "./ts-out/google/protobuf/wrappers";
-import {Any} from "./ts-out/google/protobuf/any";
+import type {IMessageType} from "@protobuf-ts/runtime";
+import {ConformanceRequest, ConformanceResponse, TestCategory, WireFormat} from "./gen/optimize_code_size-long_type_bigint/conformance/conformance";
 
-const typeRegistry = [
-    Value,
-    Struct,
-    FieldMask,
-    Timestamp,
-    Duration,
-    Int32Value,
-    TestAllTypesProto3,
-    TestAllTypesProto2,
-    Any,
-] as const;
+export function runTests(typeRegistry: readonly IMessageType<any>[]) {
+    let testCount = 0;
+    try {
+        while (doTestIo((request) => doTest(request, typeRegistry))) {
+            testCount += 1
+        }
+    } catch (e) {
+        console.error("conformance.ts: exiting after " + testCount + " tests: " + e)
+    }
 
+}
 
-function doTest(request: ConformanceRequest): ConformanceResponse {
+function doTest(request: ConformanceRequest, typeRegistry: readonly IMessageType<any>[]): ConformanceResponse {
     let testMessage: object;
-    let testMessageType: IMessageType<object>;
     let response = ConformanceResponse.create();
 
-    switch (request.messageType) {
-        case TestAllTypesProto3.typeName:
-            testMessageType = TestAllTypesProto3;
-            break;
-
-        case TestAllTypesProto2.typeName:
-            testMessageType = TestAllTypesProto2;
-            break;
-
-        default:
-            return ConformanceResponse.create({
-                result: {
-                    oneofKind: "runtimeError",
-                    runtimeError: `unknown request message type ${request.messageType}`
-                }
-            });
+    const testMessageType = typeRegistry.find(mt => request.messageType === mt.typeName);
+    if (testMessageType === undefined) {
+        return ConformanceResponse.create({
+            result: {
+                oneofKind: "runtimeError",
+                runtimeError: `unknown request message type ${request.messageType}`
+            }
+        });
     }
 
     try {
@@ -143,16 +125,9 @@ function readBuffer(bytes: number): Buffer | 'EOF' {
     return buf;
 }
 
-function writeBuffer(buffer: Buffer): void {
-    let totalWritten = 0;
-    while (totalWritten < buffer.length) {
-        totalWritten += writeSync(1, buffer, totalWritten, buffer.length - totalWritten);
-    }
-}
-
 // Returns true if the test ran successfully, false on legitimate EOF.
 // If EOF is encountered in an unexpected place, raises IOError.
-function doTestIo(): boolean {
+function doTestIo(testFn: (request: ConformanceRequest) => ConformanceResponse): boolean {
     let lengthBuf = readBuffer(4);
     if (lengthBuf === "EOF") {
         return false;
@@ -163,7 +138,7 @@ function doTestIo(): boolean {
         throw "Failed to read request.";
     }
     let request = ConformanceRequest.fromBinary(serializedRequest);
-    let response = doTest(request);
+    let response = testFn(request);
     let serializedResponse = ConformanceResponse.toBinary(response);
     lengthBuf = Buffer.alloc(4);
     lengthBuf.writeInt32LE(serializedResponse.length, 0);
@@ -172,11 +147,9 @@ function doTestIo(): boolean {
     return true;
 }
 
-let testCount = 0;
-try {
-    while (doTestIo()) {
-        testCount += 1
+function writeBuffer(buffer: Buffer): void {
+    let totalWritten = 0;
+    while (totalWritten < buffer.length) {
+        totalWritten += writeSync(1, buffer, totalWritten, buffer.length - totalWritten);
     }
-} catch (e) {
-    console.error("conformance_ts: exiting after " + testCount + " tests: " + e)
 }
