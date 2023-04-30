@@ -9,7 +9,7 @@ UNAME_OS=$(uname -s)
 if [[ "$UNAME_OS" == "Darwin" ]]; then
   PLATFORM=osx-x86_64
 elif [[ "$UNAME_OS" == "Linux" ]]; then
-  PLATFORM=osxlinux-x86_64
+  PLATFORM=linux-x86_64
 else
   >&2 echo "unsupported platform ${UNAME_OS}"
   exit 1;
