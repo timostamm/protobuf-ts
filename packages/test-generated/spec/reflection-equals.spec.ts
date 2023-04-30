@@ -80,18 +80,18 @@ describe('reflectionEquals()', function () {
     });
 
     it('oneof scalars are equal', () => {
-        const mi = {
-            typeName: OneofScalarMemberMessage.typeName,
-            fields: OneofScalarMemberMessage.fields.map(normalizeFieldInfo),
-            options: {}
-        };
-        const msg = {
+        const make = (): OneofScalarMemberMessage => ({
             result: {
                 oneofKind: "value",
                 value: 42
             }
-        } as PartialMessage<OneofScalarMemberMessage>;
-        const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
+        });
+        const eq = reflectionEquals(
+            OneofScalarMemberMessage,
+            make() as unknown as UnknownMessage,
+            make() as unknown as UnknownMessage
+        );
+        expect(eq).toBeTrue();
         const message = reflectionCreate(mt);
         reflectionMergePartial(mi, message, msg);
         let eq = reflectionEquals(mi, msg, message);
