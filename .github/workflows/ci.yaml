@@ -38,6 +38,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-protobuf-ts-ci-
 
+      - name: WTF
+        run: |
+          which npx
+
       - name: Install protoc
         run: |
           version=3.12.0
