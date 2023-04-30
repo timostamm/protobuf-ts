@@ -111,7 +111,7 @@ describe('reflectionEquals()', function () {
         const make = (): ScalarMapsMessage => ({
             strStrField: {"a": "a"},
             strInt32Field: {"a": 42},
-            strInt64Field: {"a": "42"},
+            strInt64Field: {"a": BigInt("42")},
             int32StrField: {42: "a"},
             int64StrField: {"42": "a"},
             strBoolField: {"a": true},
