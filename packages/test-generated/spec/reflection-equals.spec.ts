@@ -2,6 +2,7 @@ import type {UnknownMessage} from "@protobuf-ts/runtime";
 import {
     normalizeFieldInfo,
     reflectionEquals,
+    PartialMessage,
     ScalarType
 } from "@protobuf-ts/runtime";
 import {EnumFieldMessage} from "../ts-out/msg-enum";
@@ -107,24 +108,10 @@ describe('reflectionEquals()', function () {
         expect(eq).toBeTrue();
     });
 
-    it('maps messages are equal', () => {
-        const make = (): ScalarMapsMessage => ({
-            strStrField: {"a": "a"},
-            strInt32Field: {"a": 42},
-            strInt64Field: {"a": BigInt("42")},
-            int32StrField: {42: "a"},
-            int64StrField: {"42": "a"},
-            strBoolField: {"a": true},
-            strBytesField: {"a": new Uint8Array()},
-            boolStrField: {true: "a"}
-        });
-
-        const eq = reflectionEquals(
-            ScalarMapsMessage,
-            make() as unknown as UnknownMessage,
-            make() as unknown as UnknownMessage
-        );
-        expect(eq).toBeTrue();
-    });
-
+    // Note that we can't test generated code that uses int64
+    // (for example, ScalarMapsMessage) since the int64 fields may be generated
+    // as bigint, number, or string, depending on plugin options and field
+    // option JS_TYPE.
+    // We should cover all three cases explicitly, but we currently cannot,
+    // because the same tests are run on different generated code.
 });
