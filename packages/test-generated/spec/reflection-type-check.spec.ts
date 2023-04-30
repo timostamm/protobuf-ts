@@ -78,8 +78,6 @@ describe('ReflectionTypeCheck.is()', function () {
             let m = {
                 doubleField: 0,
                 floatField: 0,
-                int64Field: "0",
-                uint64Field: "0",
                 int32Field: 0,
                 fixed64Field: "0",
                 fixed32Field: 0,
@@ -90,7 +88,6 @@ describe('ReflectionTypeCheck.is()', function () {
                 sfixed32Field: 0,
                 sfixed64Field: "0",
                 sint32Field: 0,
-                sint64Field: "0",
             } as PartialMessage<ScalarValuesMessage>;
 
             it('detects missing field', function () {
