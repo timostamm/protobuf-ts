@@ -8,10 +8,10 @@
     "lint": "tsc --noEmit",
     "download-conformance-runner": "./download-conformance-runner.bash",
     "test": "npm run generate && npm run download-conformance-runner && npm run conformance-optimize_code_size-long_type_bigint && npm run conformance-optimize_code_size-long_type_string && npm run conformance-optimize_speed-long_type_bigint && npm run conformance-optimize_speed-long_type_string",
-    "conformance-optimize_code_size-long_type_bigint": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_code_size-long_type_bigint.txt src/conformance-optimize_code_size-long_type_bigint.ts",
-    "conformance-optimize_code_size-long_type_string": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_code_size-long_type_string.txt src/conformance-optimize_code_size-long_type_string.ts",
-    "conformance-optimize_speed-long_type_bigint": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_speed-long_type_bigint.txt src/conformance-optimize_speed-long_type_bigint.ts",
-    "conformance-optimize_speed-long_type_string": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_speed-long_type_string.txt src/conformance-optimize_speed-long_type_string.ts"
+    "conformance-optimize_code_size-long_type_bigint": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_code_size-long_type_bigint.txt conformance-optimize_code_size-long_type_bigint.bash",
+    "conformance-optimize_code_size-long_type_string": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_code_size-long_type_string.txt conformance-optimize_code_size-long_type_string.bash",
+    "conformance-optimize_speed-long_type_bigint": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_speed-long_type_bigint.txt conformance-optimize_speed-long_type_bigint.bash",
+    "conformance-optimize_speed-long_type_string": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_speed-long_type_string.txt conformance-optimize_speed-long_type_string.bash"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.15.0-1",
