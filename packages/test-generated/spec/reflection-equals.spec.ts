@@ -1,10 +1,7 @@
-import type {PartialMessage, UnknownMessage} from "@protobuf-ts/runtime";
+import type {UnknownMessage} from "@protobuf-ts/runtime";
 import {
     normalizeFieldInfo,
-    reflectionCreate,
     reflectionEquals,
-    reflectionMergePartial,
-    MessageType,
     ScalarType
 } from "@protobuf-ts/runtime";
 import {EnumFieldMessage} from "../ts-out/msg-enum";
@@ -92,46 +89,42 @@ describe('reflectionEquals()', function () {
             make() as unknown as UnknownMessage
         );
         expect(eq).toBeTrue();
-        const message = reflectionCreate(mt);
-        reflectionMergePartial(mi, message, msg);
-        let eq = reflectionEquals(mi, msg, message);
-        expect(eq).toBeTrue();
     });
 
     it('enum messages are equal', () => {
-        const mi = {
-            typeName: EnumFieldMessage.typeName,
-            fields: EnumFieldMessage.fields.map(normalizeFieldInfo),
-            options: {}
-        };
-        const msg = {
+        const make = (): EnumFieldMessage => ({
             enumField: 1,
             repeatedEnumField: [0, 1, 2],
             aliasEnumField: 1,
             prefixEnumField: 2,
-        } as PartialMessage<EnumFieldMessage>;
+        });
 
-        const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
-        const message = reflectionCreate(mt);
-        reflectionMergePartial(mi, message, msg);
-        expect(true).toBeTrue();
+        const eq = reflectionEquals(
+            EnumFieldMessage,
+            make() as unknown as UnknownMessage,
+            make() as unknown as UnknownMessage
+        );
+        expect(eq).toBeTrue();
     });
 
     it('maps messages are equal', () => {
-        const mi = {
-            typeName: ScalarMapsMessage.typeName,
-            fields: ScalarMapsMessage.fields.map(normalizeFieldInfo),
-            options: {}
-        };
-        const msg = {
+        const make = (): ScalarMapsMessage => ({
             strStrField: {"a": "a"},
             strInt32Field: {"a": 42},
-        } as PartialMessage<ScalarMapsMessage>;
+            strInt64Field: {"a": "42"},
+            int32StrField: {42: "a"},
+            int64StrField: {"42": "a"},
+            strBoolField: {"a": true},
+            strBytesField: {"a": new Uint8Array()},
+            boolStrField: {true: "a"}
+        });
 
-        const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
-        const message = reflectionCreate(mt);
-        reflectionMergePartial(mi, message, msg);
-        expect(true).toBeTrue();
+        const eq = reflectionEquals(
+            ScalarMapsMessage,
+            make() as unknown as UnknownMessage,
+            make() as unknown as UnknownMessage
+        );
+        expect(eq).toBeTrue();
     });
 
 });
