@@ -79,14 +79,12 @@ describe('ReflectionTypeCheck.is()', function () {
                 doubleField: 0,
                 floatField: 0,
                 int32Field: 0,
-                fixed64Field: "0",
                 fixed32Field: 0,
                 boolField: false,
                 stringField: "",
                 bytesField: new Uint8Array(0),
                 uint32Field: 0,
                 sfixed32Field: 0,
-                sfixed64Field: "0",
                 sint32Field: 0,
             } as PartialMessage<ScalarValuesMessage>;
 
