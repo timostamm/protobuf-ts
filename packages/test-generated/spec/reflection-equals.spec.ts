@@ -2,11 +2,9 @@ import type {UnknownMessage} from "@protobuf-ts/runtime";
 import {
     normalizeFieldInfo,
     reflectionEquals,
-    PartialMessage,
     ScalarType
 } from "@protobuf-ts/runtime";
 import {EnumFieldMessage} from "../ts-out/msg-enum";
-import {ScalarMapsMessage} from "../ts-out/msg-maps";
 import {OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
 
 
