@@ -1,0 +1,23 @@
+{
+  "name": "@protobuf-ts/test-conformance",
+  "version": "2.9.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "generate": "rm -rf src/gen/* && buf generate proto",
+    "lint": "tsc --noEmit",
+    "download-conformance-runner": "./download-conformance-runner.bash",
+    "test": "npm run generate && npm run download-conformance-runner && npm run conformance-optimize_code_size-long_type_bigint && npm run conformance-optimize_code_size-long_type_string && npm run conformance-optimize_speed-long_type_bigint && npm run conformance-optimize_speed-long_type_string",
+    "conformance-optimize_code_size-long_type_bigint": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_code_size-long_type_bigint.txt conformance-optimize_code_size-long_type_bigint.bash",
+    "conformance-optimize_code_size-long_type_string": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_code_size-long_type_string.txt conformance-optimize_code_size-long_type_string.bash",
+    "conformance-optimize_speed-long_type_bigint": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_speed-long_type_bigint.txt conformance-optimize_speed-long_type_bigint.bash",
+    "conformance-optimize_speed-long_type_string": "bin/conformance_test_runner --enforce_recommended --failure_list failing_tests_optimize_speed-long_type_string.txt conformance-optimize_speed-long_type_string.bash"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.15.0-1",
+    "@protobuf-ts/plugin": "^2.9.0",
+    "@protobuf-ts/runtime": "^2.9.0",
+    "tsx": "^3.12.7",
+    "typescript": "3.8.3"
+  }
+}

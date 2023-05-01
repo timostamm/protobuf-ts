@@ -1,55 +1,21 @@
-.PHONY: default clean test-runner test-conformance test-conformance-bigint test-spec test-spec-bigint generate-size generate-speed generate-speed-bigint generate-size-bigint
+.PHONY: default clean test-runner test-spec test-spec-bigint generate-size generate-speed generate-speed-bigint generate-size-bigint
 
 PROTO_PATH = ../test-fixtures
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 SPECS := $(shell find spec -name '*.spec.ts')
-TEST_RUNNER = $(shell command -v conformance-test-runner 2> /dev/null)
-UNAME_OS := $(shell uname -s)
-GOOGLE_PROTOBUF_VERSION := 22.3
-
-ifeq ($(UNAME_OS),Darwin)
-CONFORMANCE_RUNNER := conformance_test_runner-${GOOGLE_PROTOBUF_VERSION}-osx-x86_64.zip
-endif
-ifeq ($(UNAME_OS),Linux)
-CONFORMANCE_RUNNER := conformance_test_runner-${GOOGLE_PROTOBUF_VERSION}-linux-x86_64.zip
-endif
-
-
 
 
 default:
-	make clean generate-speed 	     test-spec		  test-conformance
-	make clean generate-size  	     test-spec		  test-conformance
-	make clean generate-speed-bigint test-spec-bigint test-conformance-bigint
-	make clean generate-size-bigint  test-spec-bigint test-conformance-bigint
+	make clean generate-speed 	     test-spec
+	make clean generate-size  	     test-spec
+	make clean generate-speed-bigint test-spec-bigint
+	make clean generate-size-bigint  test-spec-bigint
 
 
 clean:
 	@find ts-out \( -name '*.ts' -or -name '*.js' \) -delete
-	rm -rf ./bin
 	@echo "'${@}' done"
 
-test-runner:
-ifeq ("${TEST_RUNNER}", "")
-	make protobuf
-	$(eval TEST_RUNNER=bin/conformance_test_runner)
-endif
-
-protobuf:
-	curl -O -L https://github.com/bufbuild/protobuf-conformance/releases/download/v${GOOGLE_PROTOBUF_VERSION}/${CONFORMANCE_RUNNER}
-	unzip ${CONFORMANCE_RUNNER}
-
-test-conformance: test-runner
-	@npx tsc --target ES2015 --module CommonJS --strict conformance_ts.ts
-	@chmod +x conformance_ts.js
-	@$(TEST_RUNNER) --enforce_recommended --failure_list failing_tests_without_bigint.txt conformance_ts.js
-	@echo "'${@}' done"
-
-test-conformance-bigint: test-runner
-	@npx tsc --target ES2020 --module CommonJS --strict conformance_ts.ts
-	@chmod +x conformance_ts.js
-	@$(TEST_RUNNER) --enforce_recommended --failure_list failing_tests_with_bigint.txt conformance_ts.js
-	@echo "'${@}' done"
 
 test-spec:
 	@./node_modules/.bin/ts-node \
