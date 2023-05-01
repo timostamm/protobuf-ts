@@ -2,7 +2,6 @@ import {
     assert,
     isOneofGroup,
     normalizeFieldInfo,
-    IMessageType,
     PartialMessage,
     ReflectionTypeCheck,
     ScalarType,
@@ -12,23 +11,10 @@ import {
     RepeatedScalarValuesMessage,
     ScalarValuesMessage
 } from "../ts-out/msg-scalar";
-import {EnumFieldMessage} from "../ts-out/msg-enum";
-import {MessageMapMessage, ScalarMapsMessage} from "../ts-out/msg-maps";
-import {OneofMessageMemberMessage, OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
-import {TestAllTypesProto3} from "../ts-out/google/protobuf/test_messages_proto3";
-import {TestAllTypesProto2} from "../ts-out/google/protobuf/test_messages_proto2";
+import {OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
 
 
 describe('ReflectionTypeCheck.is()', function () {
-    const types: IMessageType<any>[] = [
-        EnumFieldMessage,
-        ScalarMapsMessage,
-        MessageMapMessage,
-        OneofScalarMemberMessage,
-        OneofMessageMemberMessage,
-        TestAllTypesProto3,
-        TestAllTypesProto2,
-    ];
 
     it('oneof scalars type check correctly', () => {
         const mi = {
