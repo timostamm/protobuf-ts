@@ -1,12 +1,11 @@
-import {fixtures} from "../../test-fixtures";
+import type {UnknownMessage} from "@protobuf-ts/runtime";
 import {
     normalizeFieldInfo,
-    reflectionCreate,
-    reflectionMergePartial,
     reflectionEquals,
-    ScalarType,
-    MessageType, UnknownMessage
-} from "../src";
+    ScalarType
+} from "@protobuf-ts/runtime";
+import {EnumFieldMessage} from "../ts-out/msg-enum";
+import {OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
 
 
 enum TestEnum {
@@ -76,34 +75,41 @@ describe('reflectionEquals()', function () {
         expect(reflectionEquals(info, a, c)).toBeTrue();
     });
 
-    describe('should return true for all cloned fixture messages', function () {
-        fixtures.usingMessages((typeName, key, msg) => {
-            it(`${typeName} '${key}'`, function () {
-                const mi = fixtures.makeMessageInfo(typeName);
-                const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
-                let copy = reflectionCreate(mt);
-                reflectionMergePartial(mi, copy, msg);
-                let eq = reflectionEquals(mi, msg, copy);
-                expect(eq).toBeTrue();
-            });
+    it('oneof scalars are equal', () => {
+        const make = (): OneofScalarMemberMessage => ({
+            result: {
+                oneofKind: "value",
+                value: 42
+            }
         });
+        const eq = reflectionEquals(
+            OneofScalarMemberMessage,
+            make() as unknown as UnknownMessage,
+            make() as unknown as UnknownMessage
+        );
+        expect(eq).toBeTrue();
     });
 
-    describe('should behave like jasmine equality comparator for all fixture messages', function () {
-        fixtures.usingMessages((typeName, key, msg) => {
-            it(`${typeName} '${key}'`, function () {
-                const mi = fixtures.makeMessageInfo(typeName);
-                const mt = new MessageType<UnknownMessage>(mi.typeName, mi.fields, mi.options);
-                let copy = reflectionCreate(mt);
-                reflectionMergePartial(mi, copy, msg);
-                let eq = reflectionEquals(mi, msg, copy);
-                if (eq)
-                    expect(msg).toEqual(copy);
-                else
-                    expect(msg).not.toEqual(copy);
-            });
+    it('enum messages are equal', () => {
+        const make = (): EnumFieldMessage => ({
+            enumField: 1,
+            repeatedEnumField: [0, 1, 2],
+            aliasEnumField: 1,
+            prefixEnumField: 2,
         });
+
+        const eq = reflectionEquals(
+            EnumFieldMessage,
+            make() as unknown as UnknownMessage,
+            make() as unknown as UnknownMessage
+        );
+        expect(eq).toBeTrue();
     });
 
-
+    // Note that we can't test generated code that uses int64
+    // (for example, ScalarMapsMessage) since the int64 fields may be generated
+    // as bigint, number, or string, depending on plugin options and field
+    // option JS_TYPE.
+    // We should cover all three cases explicitly, but we currently cannot,
+    // because the same tests are run on different generated code.
 });
