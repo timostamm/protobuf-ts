@@ -1,6 +1,6 @@
 .PHONY: default clean test-runner test-spec test-spec-bigint generate-size generate-speed generate-speed-bigint generate-size-bigint
 
-PROTO_PATH = ../test-fixtures
+PROTO_PATH = ../proto
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 SPECS := $(shell find spec -name '*.spec.ts')
 

@@ -1,5 +1,5 @@
 .PHONY: server install generate
-PROTO_PATH = ../test-fixtures
+PROTO_PATH = ../proto
 
 
 server:

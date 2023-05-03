@@ -1,6 +1,6 @@
 .PHONY: default perf code-size testees-generate testees-webpack
 
-PROTO_PATH = ../test-fixtures
+PROTO_PATH = ../proto
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 TESTEES := $(shell find ./testees -type d -maxdepth 1 -mindepth 1)
 

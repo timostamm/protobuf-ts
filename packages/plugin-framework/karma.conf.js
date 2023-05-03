@@ -10,7 +10,6 @@ module.exports = function (config) {
         files: [
             "spec/**/*.ts",
             "src/**/*.ts",
-            "../test-fixtures/*.ts",
         ],
         exclude: [
             "spec/support/reporter.ts",

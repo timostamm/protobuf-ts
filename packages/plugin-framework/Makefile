@@ -1,5 +1,5 @@
 .PHONY: default build clean test
-PROTO_PATH = ../test-fixtures
+PROTO_PATH = ../proto
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 SPECS := $(shell find spec -name '*.spec.ts')
 
@@ -16,7 +16,7 @@ build:
 clean:
 	@find build \( -name '*.js' -or -name '*.map' -or -name '*.ts' \) -delete;
 	@find build -type d ! -path build -delete
-	@find ../test-fixtures \( -name '*.codegenreq' -or -name '*.descriptorset' \) -delete;
+	@find ../proto \( -name '*.codegenreq' -or -name '*.descriptorset' \) -delete;
 	@echo "'${@}' done"
 
 test: ${PROTO_PATH}/all.descriptorset
