@@ -1,6 +1,6 @@
 .PHONY: default clean test-runner test-spec test-spec-bigint generate-size generate-speed generate-speed-bigint generate-size-bigint
 
-PROTO_PATH = ../test-fixtures
+PROTO_PATH = ../proto
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 SPECS := $(shell find spec -name '*.spec.ts')
 
@@ -75,18 +75,6 @@ generate-speed-bigint: $(PROTOS)
 		--ts_opt force_optimize_speed \
 		--proto_path $(PROTO_PATH) \
 		--proto_path ../plugin/ \
-		--experimental_allow_proto3_optional \
-		$^
-	@echo "'${@}' done"
-
-
-${PROTO_PATH}/all.descriptorset: $(PROTOS)
-	@npx protoc \
-		--descriptor_set_out ${@} \
-		--proto_path $(PROTO_PATH) \
-		--proto_path ../plugin/ \
-		--include_source_info \
-		--include_imports \
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"

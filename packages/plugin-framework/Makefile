@@ -1,5 +1,5 @@
 .PHONY: default build clean test
-PROTO_PATH = ../test-fixtures
+PROTO_PATH = ../proto
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 SPECS := $(shell find spec -name '*.spec.ts')
 
@@ -16,10 +16,10 @@ build:
 clean:
 	@find build \( -name '*.js' -or -name '*.map' -or -name '*.ts' \) -delete;
 	@find build -type d ! -path build -delete
-	@find ../test-fixtures \( -name '*.codegenreq' -or -name '*.descriptorset' \) -delete;
+	@rm -f all.codegenreq
 	@echo "'${@}' done"
 
-test: ${PROTO_PATH}/all.descriptorset
+test:
 	@echo "'${@}' ..."
 	@./node_modules/.bin/ts-node \
 		--project tsconfig.test.json \
@@ -38,18 +38,7 @@ bootstrap:
 		google/protobuf/descriptor.proto \
 		google/protobuf/compiler/plugin.proto
 
-${PROTO_PATH}/all.descriptorset: $(PROTOS)
-	@protoc \
-		--descriptor_set_out=${@} \
-		--proto_path=${PROTO_PATH} \
-		--proto_path ../plugin/ \
-		--include_source_info \
-		--include_imports \
-		--experimental_allow_proto3_optional \
-		$^
-	@echo "'${@}' done"
-
-${PROTO_PATH}/all.codegenreq: $(PROTOS)
+all.codegenreq: $(PROTOS)
 	@protoc \
 		--dump_out=. \
 		--plugin=./bin/protoc-gen-dump \

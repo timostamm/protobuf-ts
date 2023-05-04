@@ -1,6 +1,6 @@
 .PHONY: generate webpack tsc
 
-PROTO_PATH = ../../../test-fixtures
+PROTO_PATH = ../../../proto
 PROTOS	:= ${PROTO_PATH}/google/protobuf/descriptor.proto
 OPTIONS := "import_style=commonjs,binary"
 

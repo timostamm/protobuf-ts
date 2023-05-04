@@ -32,5 +32,5 @@
 - [example-node-grpc-transport-client](./example-node-grpc-transport-client) - a gRPC client using @protobuf-ts/grpc-transport, running in Node.JS
 - [example-node-twirp-transport-client](./example-node-twirp-transport-client) - a Twirp client using @protobuf-ts/twirp-transport, running in Node.JS
 - [example-browser-grpcweb-transport-client](example-browser-grpcweb-transport-client) - a gRPC-web client using @protobuf-ts/grpcweb-transport, running in the web browser
-- [test-fixtures](./test-fixtures) - example .proto files and test fixtures
+- [proto](./proto) - example .proto files
 - [benchmarks](./benchmarks) - code size and performance benchmarks

@@ -1,5 +1,5 @@
 .PHONY: default npm-install generate run-client
-PROTO_PATH = ../test-fixtures
+PROTO_PATH = ../proto
 
 
 default: npm-install generate run-client

@@ -1,4 +1,4 @@
-import {getFixtureFileDescriptor} from "./support/helpers";
+import {getFileDescriptor} from "./support/helpers";
 import {DescriptorRegistry} from "@protobuf-ts/plugin-framework";
 import {Interpreter} from "../src/interpreter";
 import * as rt from "@protobuf-ts/runtime";
@@ -8,7 +8,7 @@ describe('interpreter', function () {
     it('recognizes field option jstype', function () {
         [rt.LongType.NUMBER, rt.LongType.STRING, rt.LongType.BIGINT].forEach(normalLongType => {
 
-            const registry = DescriptorRegistry.createFrom(getFixtureFileDescriptor("msg-longs.proto"));
+            const registry = DescriptorRegistry.createFrom(getFileDescriptor("msg-longs.proto"));
             const interpreter = new Interpreter(registry, {
                 normalLongType,
                 synthesizeEnumZeroValue: 'UNSPECIFIED$',

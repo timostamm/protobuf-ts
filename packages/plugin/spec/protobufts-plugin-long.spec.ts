@@ -1,4 +1,4 @@
-import {getFixtureCodeGeneratorRequest} from "./support/helpers";
+import {getCodeGeneratorRequest} from "./support/helpers";
 import {ProtobuftsPlugin} from "../src/protobufts-plugin";
 import {GeneratedFile} from "@protobuf-ts/plugin-framework/src";
 
@@ -14,7 +14,7 @@ const stringSnippets = [
     // BinaryWriter
     '/* fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING]; */',
     'if (message.fixed64FieldMinStr !== "0")',
-];      
+];
 
 const bigintSnippets = [
     // Message
@@ -47,7 +47,7 @@ const numberSnippets = [
 describe('Generated code for long type', function () {
     describe('Default to string', () => {
         let file: string;
-        
+
         beforeAll(() => {
             file = generateTypescript('long_type_string').getContent();
         });
@@ -77,7 +77,7 @@ describe('Generated code for long type', function () {
 
     describe('Default to bigint', () => {
         let file: string;
-        
+
         beforeAll(() => {
             file = generateTypescript('long_type_bigint').getContent();
         });
@@ -103,11 +103,11 @@ describe('Generated code for long type', function () {
             expectContainAll(file, bigintSnippets);
             expectContainAll(file, numberSnippets);
         });
-    });    
+    });
 
     describe('Default to number', () => {
         let file: string;
-        
+
         beforeAll(() => {
             file = generateTypescript('long_type_number').getContent();
         });
@@ -133,14 +133,14 @@ describe('Generated code for long type', function () {
             expectContainAll(file, bigintSnippets);
             expectContainAll(file, numberSnippets);
         });
-    });       
+    });
 });
 
-// Generate typescript code for msg-longs.proto. 
+// Generate typescript code for msg-longs.proto.
 // The `parameter` is forwarded to the request.
 function generateTypescript(parameter: string): GeneratedFile {
     let plugin = new ProtobuftsPlugin('test');
-    let request = getFixtureCodeGeneratorRequest({
+    let request = getCodeGeneratorRequest({
         parameter,
         includeFiles: [ 'msg-longs.proto' ]
     });

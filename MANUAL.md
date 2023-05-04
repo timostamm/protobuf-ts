@@ -1034,7 +1034,7 @@ operations.
 and methods and will add them to the reflection information. 
 
 For example, consider the following service definition in 
-[service-annotated.proto](./packages/test-fixtures/service-annotated.proto):
+[service-annotated.proto](./packages/proto/service-annotated.proto):
 
 ```proto
 // import the proto that extends google.protobuf.MethodOptions
@@ -1078,7 +1078,7 @@ console.log(AnnotatedService.options);
 ```
 
 Because the option "google.api.http" is actually a message 
-(see [annotations.proto](./packages/test-fixtures/google/api/annotations.proto)), 
+(see [annotations.proto](./packages/proto/google/api/annotations.proto)), 
 you can parse the message with this convenience method: 
 
 

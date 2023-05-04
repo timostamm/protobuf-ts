@@ -19,14 +19,14 @@ Building and testing this project requires `node`, `npm`, `protoc`,
 `make`, `git`, and `go`.  
 
 - `go` is required for the Twirp transport client compatibility test suite
-- `protoc` is required for test fixtures
+- `protoc` is required for compiling .proto files.
 
 The entire project can be built by running `make`, but if you do not have all required
 tooling installed, you can still build all of the TypeScript packages. 
 
 
 Not all packages are public, or even JavaScript projects. There are also examples, 
-benchmarks and fixtures in the `packages/` directory. They can be built with their 
+benchmarks and Protobuf files in the `packages/` directory. They can be built with their 
 respective Makefiles.
 
 
@@ -92,21 +92,21 @@ run the plugin during testing without invoking protoc.
 All protobuf plugins work with `CodeGeneratorRequest` and `CodeGeneratorResponse` 
 messages (defined in `google/protobuf/compiler/plugin.proto`). 
 
-The protocol buffer compiler parses .proto files and creates a `CodeGeneratorRequest`, 
-then passes it to a plugin. Because invoking protoc during testing is difficult, 
-we generate a `FileDescriptorSet` in `packages/test-fixtures/all.descriptorset` 
-ahead of time. The `FileDescriptorSet` contains all information necessary to 
-create the `CodeGeneratorRequest`s we need for testing the plugin. 
+A protocol buffer compiler parses .proto files and creates a `CodeGeneratorRequest`, 
+then passes it to a plugin. Because invoking a compiler during testing is difficult, 
+we generate a `FileDescriptorSet` ahead of time. The `FileDescriptorSet` contains all 
+information necessary to create the `CodeGeneratorRequest`s we need for testing 
+the plugin. 
 
 `packages/plugin` and `packages/plugin-framework` are both tested using the 
-`FileDescriptorSet`. In `spec/helpers.ts`, the function `getFixtureCodeGeneratorRequest` 
-can be used to create a `CodeGeneratorRequest` from the fixture file descriptors.  
+`FileDescriptorSet`. In `spec/helpers.ts`, the function `getCodeGeneratorRequest` 
+can be used to create a `CodeGeneratorRequest` from the file descriptors.  
 
 The plugin itself has only very basic test coverage. We generate TypeScript 
-(in memory) for all .proto files in `packages/test-fixture` and compile the 
+(in memory) for all .proto files in `packages/proto` and compile the 
 generated code using the TypeScript Compiler API, checking for static errors. 
 
-Adding a feature or fixing a bug in the plugin can cumbersome. Instead of 
+Adding a feature or fixing a bug in the plugin can be cumbersome. Instead of 
 building the plugin and running it with protoc, you can let a test case spit 
 out the generated code for you. `spec/protobufts-plugin.spec.ts` contains the 
 necessary code to do this (commented out). If you enable the code, you can simply 

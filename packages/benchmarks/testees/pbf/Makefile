@@ -1,6 +1,6 @@
 .PHONY: generate webpack
 
-PROTO_PATH = ../../../test-fixtures
+PROTO_PATH = ../../../proto
 PROTOS	:= ${PROTO_PATH}/google/protobuf/descriptor.proto
 OPTIONS := ""
 

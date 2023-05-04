@@ -1,6 +1,6 @@
 .PHONY: generate tsc webpack
 
-PROTO_PATH = ../../../test-fixtures
+PROTO_PATH = ../../../proto
 PROTOS	:= ${PROTO_PATH}/google/protobuf/descriptor.proto
 OPTIONS := "force_optimize_code_size,long_type_string"
 
