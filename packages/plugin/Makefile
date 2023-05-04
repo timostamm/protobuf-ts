@@ -15,14 +15,14 @@ clean:
 	@find build -type d ! -path build -delete
 	@echo "'${@}' done"
 
-test: ${PROTO_PATH}/all.descriptorset
+test: all.descriptorset
 	@./node_modules/.bin/ts-node \
 		--project tsconfig.test.json \
 		--require tsconfig-paths/register \
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$(SPECS)
 
-${PROTO_PATH}/all.descriptorset: $(PROTOS)
+all.descriptorset: $(PROTOS)
 	@protoc \
 		--descriptor_set_out ${@} \
 		--proto_path ${PROTO_PATH} \
