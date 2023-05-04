@@ -68,6 +68,20 @@ files are used to test code generation and functionality of the generated code.
 All protobuf plugins work with `CodeGeneratorRequest` and `CodeGeneratorResponse`
 messages (defined in `google/protobuf/compiler/plugin.proto`).
 
+A protocol buffer compiler parses .proto files and creates a `CodeGeneratorRequest`,
+then passes it to a plugin. Because invoking a compiler during testing is difficult,
+we generate a `FileDescriptorSet` ahead of time. The `FileDescriptorSet`
+contains all information necessary to create the `CodeGeneratorRequest`s we need
+for testing the plugin.
+
+`packages/plugin` and `packages/plugin-framework` are both tested using the
+`FileDescriptorSet`. In `spec/helpers.ts`, the function `getCodeGeneratorRequest`
+can be used to create a `CodeGeneratorRequest` from the file descriptors.
+
+The plugin itself has only very basic test coverage. We generate TypeScript
+(in memory) for all .proto files in `packages/proto` and compile the
+generated code using the TypeScript Compiler API, checking for static errors.
+
 Adding a feature or fixing a bug in the plugin can be cumbersome. Instead of
 building the plugin and running it with protoc, you can let a test case spit
 out the generated code for you. `spec/protobufts-plugin.spec.ts` contains the
