@@ -4,3 +4,4 @@
 /build/**/*.js
 /build/**/*.ts.map
 /build/**/*.js.map
+*.codegenreq

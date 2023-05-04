@@ -78,15 +78,3 @@ generate-speed-bigint: $(PROTOS)
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"
-
-
-all.descriptorset: $(PROTOS)
-	@npx protoc \
-		--descriptor_set_out ${@} \
-		--proto_path $(PROTO_PATH) \
-		--proto_path ../plugin/ \
-		--include_source_info \
-		--include_imports \
-		--experimental_allow_proto3_optional \
-		$^
-	@echo "'${@}' done"

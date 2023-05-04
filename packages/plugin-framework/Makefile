@@ -16,11 +16,10 @@ build:
 clean:
 	@find build \( -name '*.js' -or -name '*.map' -or -name '*.ts' \) -delete;
 	@find build -type d ! -path build -delete
-	@rm -f all.descriptorset
 	@rm -f all.codegenreq
 	@echo "'${@}' done"
 
-test: all.descriptorset
+test:
 	@echo "'${@}' ..."
 	@./node_modules/.bin/ts-node \
 		--project tsconfig.test.json \
@@ -38,17 +37,6 @@ bootstrap:
 		--experimental_allow_proto3_optional \
 		google/protobuf/descriptor.proto \
 		google/protobuf/compiler/plugin.proto
-
-all.descriptorset: $(PROTOS)
-	@protoc \
-		--descriptor_set_out=${@} \
-		--proto_path=${PROTO_PATH} \
-		--proto_path ../plugin/ \
-		--include_source_info \
-		--include_imports \
-		--experimental_allow_proto3_optional \
-		$^
-	@echo "'${@}' done"
 
 all.codegenreq: $(PROTOS)
 	@protoc \
