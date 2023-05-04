@@ -2,9 +2,9 @@ protobuf-ts [![npm](https://img.shields.io/npm/v/@protobuf-ts/plugin?x)](https:/
 ===========
 
 
-[Protocol buffers](https://developers.google.com/protocol-buffers)
-and [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call)
-for Node.js and the Web Browser.
+[Protocol buffers](https://developers.google.com/protocol-buffers) 
+and [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) 
+for Node.js and the Web Browser. 
 Pure TypeScript.
 
 For the following `.proto` file:
@@ -23,7 +23,7 @@ message Person {
 
 ```typescript
 let pete: Person = {
-    name: "pete",
+    name: "pete", 
     id: 123n, // it's a bigint
     years: 30
     // data: new Uint8Array([0xDE, 0xAD, 0xBE, 0xEF]);
@@ -37,10 +37,10 @@ pete = Person.fromJsonString('{"name":"pete", "id":"123", "years": 30}')
 
 ### What are protocol buffers?
 
-Protocol buffers is an [interface definition language](https://en.wikipedia.org/wiki/Interface_description_language)
-and binary serialization format.
-Data structures defined in `.proto` files are platform-independent and can
-be used in many languages.
+Protocol buffers is an [interface definition language](https://en.wikipedia.org/wiki/Interface_description_language) 
+and binary serialization format.  
+Data structures defined in `.proto` files are platform-independent and can 
+be used in many languages.  
 To learn more about the capabilities, please check the
 official [language guide](https://developers.google.com/protocol-buffers/docs/overview).
 
@@ -48,12 +48,12 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 ### Quickstart
 
 - `npm install @protobuf-ts/plugin`
-  > installs the plugin and the compiler "protoc"
+  > installs the plugin and the compiler "protoc"  
 
-- download the example file [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/master/packages/proto/msg-readme.proto) and place it into a `protos/` directory
+- download the example file [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/main/packages/proto/msg-readme.proto) and place it into a `protos/` directory
 
 - `npx protoc --ts_out . --proto_path protos protos/msg-readme.proto`
-  > generates msg-readme.ts
+  > generates msg-readme.ts  
   > if your protoc version asks for it, add the flag "--experimental_allow_proto3_optional"
 
 
@@ -62,17 +62,17 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 - [x] implements the [canonical proto3 JSON format](MANUAL.md#json-format)
 - [x] implements the [binary format](MANUAL.md#binary-format) and respects [unknown fields](MANUAL.md#unknown-field-handling)
 - [x] strictly [conforms to the protobuf spec](MANUAL.md#conformance)
-- [x] generates clients that can be used with the [gRPC web](MANUAL.md#grpc-web-transport),
+- [x] generates clients that can be used with the [gRPC web](MANUAL.md#grpc-web-transport), 
       [Twirp](MANUAL.md#twirp-transport) or [gRPC](MANUAL.md#grpc-transport) protocol
-- [x] generates [native gRPC servers](MANUAL.md#native-grpc-server) and
+- [x] generates [native gRPC servers](MANUAL.md#native-grpc-server) and 
       [clients](MANUAL.md#native-grpc-client) for usage with `@grpc/grpc-js`
 - [x] supported by [Twirp-TS](https://github.com/hopin-team/twirp-ts) for Twirp servers running on Node.js
 - [x] automatically [installs protoc](./packages/protoc/README.md) (with Yarn berry, please use [node-protoc](https://www.npmjs.com/package/node-protoc))
-- [x] can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)
+- [x] can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
 - [x] supports [proto3 optionals](MANUAL.md#proto3-optionals)
 - [x] [supports bigint](MANUAL.md#bigint-support) for 64 bit integers
 - [x] every [message type](MANUAL.md#imessagetype) has methods to compare, clone, merge and type guard messages
-- [x] provides [reflection information](MANUAL.md#reflection),
+- [x] provides [reflection information](MANUAL.md#reflection), 
   including [custom options](MANUAL.md#custom-options)
 - [x] supports all [well-known-types](MANUAL.md#well-known-types) with custom JSON representation and helper methods
 - [x] uses standard [TypeScript enums](MANUAL.md#enum-representation)
@@ -96,7 +96,7 @@ Read the [MANUAL](MANUAL.md) to learn more.
 - The [gRPC status codes](./packages/grpcweb-transport/src/goog-grpc-status-code.ts) are Copyright 2016 gRPC authors, licensed under Apache-2.0.
 - The [Twirp error codes](./packages/twirp-transport/src/twitch-twirp-error-code.ts) are Copyright 2018 Twitch Interactive, Inc., licensed under Apache-2.0.
 - The proto files in [proto/google](./packages/proto/google) and [test-conformance/proto](./packages/test-conformance/proto) are Copyright Google Inc. / Google LLC, licensed under Apache-2.0 / BSD-3-Clause.
-- All other files are licensed under Apache-2.0, see [LICENSE](./LICENSE).
+- All other files are licensed under Apache-2.0, see [LICENSE](./LICENSE). 
 
 
 ### Support
