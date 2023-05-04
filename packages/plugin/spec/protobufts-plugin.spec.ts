@@ -1,4 +1,4 @@
-import {getFixtureCodeGeneratorRequest} from "./support/helpers";
+import {getCodeGeneratorRequest} from "./support/helpers";
 import {ProtobuftsPlugin} from "../src/protobufts-plugin";
 import * as ts from "typescript";
 import {setupCompiler} from "@protobuf-ts/plugin-framework";
@@ -7,7 +7,7 @@ import {OutFile} from "../src/out-file";
 
 describe('protobuftsPlugin', function () {
     let plugin = new ProtobuftsPlugin('test');
-    let request = getFixtureCodeGeneratorRequest({
+    let request = getCodeGeneratorRequest({
         parameter: 'long_type_string',
         // fileToGenerate: [
         //     'msg-annotated.proto',
@@ -52,11 +52,11 @@ describe('protobuftsPlugin', function () {
     // }
 
 
-    describe('generates valid typescript for every fixture .proto', function () {
+    describe('generates valid typescript for every .proto', function () {
 
         if (generatedFiles.length === 0) {
-            it('Fixture .protos available', function () {
-                pending('No fixture .proto available!');
+            it('.protos available', function () {
+                pending('No .proto available!');
             });
             return;
         }

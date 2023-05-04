@@ -16,10 +16,11 @@ build:
 clean:
 	@find build \( -name '*.js' -or -name '*.map' -or -name '*.ts' \) -delete;
 	@find build -type d ! -path build -delete
-	@find ../proto \( -name '*.codegenreq' -or -name '*.descriptorset' \) -delete;
+	@rm -f all.descriptorset
+	@rm -f all.codegenreq
 	@echo "'${@}' done"
 
-test: ${PROTO_PATH}/all.descriptorset
+test: all.descriptorset
 	@echo "'${@}' ..."
 	@./node_modules/.bin/ts-node \
 		--project tsconfig.test.json \
@@ -38,7 +39,7 @@ bootstrap:
 		google/protobuf/descriptor.proto \
 		google/protobuf/compiler/plugin.proto
 
-${PROTO_PATH}/all.descriptorset: $(PROTOS)
+all.descriptorset: $(PROTOS)
 	@protoc \
 		--descriptor_set_out=${@} \
 		--proto_path=${PROTO_PATH} \
@@ -49,7 +50,7 @@ ${PROTO_PATH}/all.descriptorset: $(PROTOS)
 		$^
 	@echo "'${@}' done"
 
-${PROTO_PATH}/all.codegenreq: $(PROTOS)
+all.codegenreq: $(PROTOS)
 	@protoc \
 		--dump_out=. \
 		--plugin=./bin/protoc-gen-dump \

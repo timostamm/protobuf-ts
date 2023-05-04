@@ -80,7 +80,7 @@ generate-speed-bigint: $(PROTOS)
 	@echo "'${@}' done"
 
 
-${PROTO_PATH}/all.descriptorset: $(PROTOS)
+all.descriptorset: $(PROTOS)
 	@npx protoc \
 		--descriptor_set_out ${@} \
 		--proto_path $(PROTO_PATH) \

@@ -14,6 +14,7 @@ clean:
 	@find build \( -name '*.js' -or -name '*.map' -or -name '*.ts' \) -delete;
 	@find build -type d ! -path build -delete
 	@rm -f all.descriptorset
+	@rm -f all.codegenreq
 	@echo "'${@}' done"
 
 test: all.descriptorset
@@ -34,7 +35,7 @@ all.descriptorset: $(PROTOS)
 		$^
 	@echo "'${@}' done"
 
-${PROTO_PATH}/all.codegenreq: $(PROTOS)
+all.codegenreq: $(PROTOS)
 	@protoc \
 		--dump_out=. \
 		--plugin=./bin/protoc-gen-dump \
