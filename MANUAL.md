@@ -2066,7 +2066,7 @@ For a working example, have a look at  [packages/example-node-grpc-server](https
 > yarn add @grpc/grpc-js
 > ```
 
-To generate a gRPC server, set the plugin option `client_grpc1` or
+To generate a gRPC client, set the plugin option `client_grpc1` or
 set the service option `(ts_client) = GRPC1_CLIENT`.
 
 
