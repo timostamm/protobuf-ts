@@ -1,9 +1,9 @@
-import {Any} from "../ts-out/google/protobuf/any";
-import {StructMessage} from "../ts-out/wkt-struct";
-import {Duration} from "../ts-out/google/protobuf/duration";
+import {Any} from "../ts-out/speed/google/protobuf/any";
+import {StructMessage} from "../ts-out/speed/wkt-struct";
+import {Duration} from "../ts-out/speed/google/protobuf/duration";
 import type {JsonObject} from "@protobuf-ts/runtime";
 import {makeDuration} from "./support/helpers";
-import {ScalarValuesMessage} from "../ts-out/msg-scalar";
+import {ScalarValuesMessage} from "../ts-out/speed/msg-scalar";
 
 
 describe('google.protobuf.Any', function () {

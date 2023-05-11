@@ -1,4 +1,4 @@
-import {Duration} from "../ts-out/google/protobuf/duration";
+import {Duration} from "../ts-out/speed/google/protobuf/duration";
 import {makeDuration} from "./support/helpers";
 
 

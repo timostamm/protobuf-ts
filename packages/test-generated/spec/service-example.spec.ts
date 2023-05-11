@@ -1,4 +1,4 @@
-import {ExampleRequest, ExampleResponse,} from "../ts-out/service-example";
+import {ExampleRequest, ExampleResponse,} from "../ts-out/speed/service-example";
 import {
     ClientStreamingCall,
     Deferred,
@@ -14,7 +14,7 @@ import {
     ServerStreamingCall,
     UnaryCall
 } from "@protobuf-ts/runtime-rpc";
-import {ExampleServiceClient, IExampleServiceClient} from "../ts-out/service-example.client";
+import {ExampleServiceClient, IExampleServiceClient} from "../ts-out/speed/service-example.client";
 
 
 describe('ExampleServiceClient', function () {

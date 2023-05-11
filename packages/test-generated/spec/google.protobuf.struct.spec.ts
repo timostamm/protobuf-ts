@@ -1,4 +1,4 @@
-import {NullValue, Struct} from "../ts-out/google/protobuf/struct";
+import {NullValue, Struct} from "../ts-out/speed/google/protobuf/struct";
 import type {JsonObject} from "@protobuf-ts/runtime";
 
 describe('google.protobuf.Struct', function () {

@@ -1,4 +1,4 @@
-import {FieldMask} from "../ts-out/google/protobuf/field_mask";
+import {FieldMask} from "../ts-out/speed/google/protobuf/field_mask";
 
 describe('google.protobuf.FieldMask', function () {
 

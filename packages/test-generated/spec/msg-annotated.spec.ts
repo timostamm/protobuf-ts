@@ -1,4 +1,4 @@
-import {AnnotatedMessage, FieldUiBehaviour} from "../ts-out/msg-annotated";
+import {AnnotatedMessage, FieldUiBehaviour} from "../ts-out/speed/msg-annotated";
 import {readFieldOption, readMessageOption} from "@protobuf-ts/runtime";
 
 

@@ -11,11 +11,14 @@
     "@types/jasmine": "^3.5.10",
     "@types/node": "^14.0.13",
     "abort-controller": "^3.0.0",
-    "jasmine": "^3.5.0",
+    "jasmine": "^3.9.0",
     "jasmine-spec-reporter": "^5.0.2",
     "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.10.1",
     "tslib": ">=1.6.1",
     "typescript": "3.8.3"
+  },
+  "dependencies": {
+    "prettier": "^2.8.8"
   }
 }

@@ -1,10 +1,10 @@
 import type {IMessageType} from "@protobuf-ts/runtime";
 import {reflectionCreate} from "@protobuf-ts/runtime";
-import {EnumFieldMessage} from "../ts-out/msg-enum";
-import {MessageMapMessage, ScalarMapsMessage} from "../ts-out/msg-maps";
-import {OneofMessageMemberMessage, OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
-import {TestAllTypesProto3} from "../ts-out/google/protobuf/test_messages_proto3";
-import {TestAllTypesProto2} from "../ts-out/google/protobuf/test_messages_proto2";
+import {EnumFieldMessage} from "../ts-out/speed/msg-enum";
+import {MessageMapMessage, ScalarMapsMessage} from "../ts-out/speed/msg-maps";
+import {OneofMessageMemberMessage, OneofScalarMemberMessage} from "../ts-out/speed/msg-oneofs";
+import {TestAllTypesProto3} from "../ts-out/speed/google/protobuf/test_messages_proto3";
+import {TestAllTypesProto2} from "../ts-out/speed/google/protobuf/test_messages_proto2";
 
 describe('reflectionCreate()', function () {
     const types: IMessageType<any>[] = [

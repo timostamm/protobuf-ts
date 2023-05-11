@@ -1,4 +1,4 @@
-import {Empty} from "../ts-out/google/protobuf/empty";
+import {Empty} from "../ts-out/speed/google/protobuf/empty";
 import type {JsonValue} from "@protobuf-ts/runtime";
 
 

@@ -1,4 +1,4 @@
-import {DateTime} from "../ts-out/google/type/datetime";
+import {DateTime} from "../ts-out/speed/google/type/datetime";
 import {makeDuration} from "./support/helpers";
 import {PbLong} from "@protobuf-ts/runtime";
 

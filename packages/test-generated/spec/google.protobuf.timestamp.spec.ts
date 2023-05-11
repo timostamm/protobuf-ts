@@ -1,4 +1,4 @@
-import {Timestamp} from "../ts-out/google/protobuf/timestamp";
+import {Timestamp} from "../ts-out/speed/google/protobuf/timestamp";
 import {makeTimestamp} from "./support/helpers";
 import {PbLong} from "@protobuf-ts/runtime";
 

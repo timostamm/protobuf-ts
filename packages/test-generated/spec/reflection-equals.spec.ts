@@ -4,8 +4,8 @@ import {
     reflectionEquals,
     ScalarType
 } from "@protobuf-ts/runtime";
-import {EnumFieldMessage} from "../ts-out/msg-enum";
-import {OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
+import {EnumFieldMessage} from "../ts-out/speed/msg-enum";
+import {OneofScalarMemberMessage} from "../ts-out/speed/msg-oneofs";
 
 
 enum TestEnum {

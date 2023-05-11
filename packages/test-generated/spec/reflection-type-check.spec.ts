@@ -10,8 +10,8 @@ import {
 import {
     RepeatedScalarValuesMessage,
     ScalarValuesMessage
-} from "../ts-out/msg-scalar";
-import {OneofScalarMemberMessage} from "../ts-out/msg-oneofs";
+} from "../ts-out/speed/msg-scalar";
+import {OneofScalarMemberMessage} from "../ts-out/speed/msg-oneofs";
 
 
 describe('ReflectionTypeCheck.is()', function () {

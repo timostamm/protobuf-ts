@@ -7,7 +7,7 @@ import {
     Int64Value,
     StringValue,
     UInt64Value
-} from "../ts-out/google/protobuf/wrappers";
+} from "../ts-out/speed/google/protobuf/wrappers";
 import {makeInt64Value, makeUInt64Value} from "./support/helpers";
 
 

@@ -6,16 +6,20 @@ SPECS := $(shell find spec -name '*.spec.ts')
 
 
 default:
-	make clean generate-speed 	     test-spec
-	make clean generate-size  	     test-spec
-	make clean generate-speed-bigint test-spec-bigint
-	make clean generate-size-bigint  test-spec-bigint
-
+	make clean generate-speed generate-size generate-speed-bigint generate-size-bigint
+	make test-spec
 
 clean:
 	@find ts-out \( -name '*.ts' -or -name '*.js' \) -delete
 	@echo "'${@}' done"
 
+testnew:
+	@./node_modules/.bin/ts-node \
+		--project tsconfig.json \
+		--require tsconfig-paths/register \
+		./node_modules/.bin/jasmine \
+		$(SPECS)
+	@echo "'${@}' done"
 
 test-spec:
 	@./node_modules/.bin/ts-node \
@@ -25,18 +29,9 @@ test-spec:
 		$(SPECS)
 	@echo "'${@}' done"
 
-test-spec-bigint:
-	@./node_modules/.bin/ts-node \
-		--project tsconfig.bigint.json \
-		--require tsconfig-paths/register \
-		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
-		$(SPECS)
-	@echo "'${@}' done"
-
-
 generate-speed: $(PROTOS)
 	@npx protoc \
-		--ts_out ./ts-out/ \
+		--ts_out ./ts-out/speed/ \
 		--ts_opt force_optimize_speed \
 		--ts_opt long_type_string \
 		--proto_path $(PROTO_PATH) \
@@ -48,7 +43,7 @@ generate-speed: $(PROTOS)
 
 generate-size: $(PROTOS)
 	@npx protoc \
-		--ts_out ./ts-out/ \
+		--ts_out ./ts-out/size/ \
 		--ts_opt force_optimize_code_size \
 		--ts_opt long_type_string \
 		--proto_path $(PROTO_PATH) \
@@ -60,7 +55,7 @@ generate-size: $(PROTOS)
 
 generate-size-bigint: $(PROTOS)
 	@npx protoc \
-		--ts_out ./ts-out/ \
+		--ts_out ./ts-out/size-bigint/ \
 		--ts_opt force_optimize_code_size \
 		--proto_path $(PROTO_PATH) \
 		--proto_path ../plugin/ \
@@ -71,7 +66,7 @@ generate-size-bigint: $(PROTOS)
 
 generate-speed-bigint: $(PROTOS)
 	@npx protoc \
-		--ts_out ./ts-out/ \
+		--ts_out ./ts-out/speed-bigint/ \
 		--ts_opt force_optimize_speed \
 		--proto_path $(PROTO_PATH) \
 		--proto_path ../plugin/ \

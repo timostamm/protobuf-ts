@@ -1,4 +1,4 @@
-import {TimeOfDay} from "../ts-out/google/type/timeofday";
+import {TimeOfDay} from "../ts-out/speed/google/type/timeofday";
 
 
 describe('google.type.TimeOfDay', function () {
