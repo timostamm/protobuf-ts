@@ -6,19 +6,11 @@ SPECS := $(shell find spec -name '*.spec.ts')
 
 
 default:
-	make clean generate-speed generate-size generate-speed-bigint generate-size-bigint
+	make clean generate
 	make test-spec
 
 clean:
 	@find ts-out \( -name '*.ts' -or -name '*.js' \) -delete
-	@echo "'${@}' done"
-
-testnew:
-	@./node_modules/.bin/ts-node \
-		--project tsconfig.json \
-		--require tsconfig-paths/register \
-		./node_modules/.bin/jasmine \
-		$(SPECS)
 	@echo "'${@}' done"
 
 test-spec:
@@ -28,6 +20,8 @@ test-spec:
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$(SPECS)
 	@echo "'${@}' done"
+
+generate: generate-speed generate-size generate-speed-bigint generate-size-bigint
 
 generate-speed: $(PROTOS)
 	@npx protoc \
@@ -40,7 +34,6 @@ generate-speed: $(PROTOS)
 		$^
 	@echo "'${@}' done"
 
-
 generate-size: $(PROTOS)
 	@npx protoc \
 		--ts_out ./ts-out/size/ \
@@ -52,7 +45,6 @@ generate-size: $(PROTOS)
 		$^
 	@echo "'${@}' done"
 
-
 generate-size-bigint: $(PROTOS)
 	@npx protoc \
 		--ts_out ./ts-out/size-bigint/ \
@@ -62,7 +54,6 @@ generate-size-bigint: $(PROTOS)
 		--experimental_allow_proto3_optional \
 		$^
 	@echo "'${@}' done"
-
 
 generate-speed-bigint: $(PROTOS)
 	@npx protoc \

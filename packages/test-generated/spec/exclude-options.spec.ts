@@ -1,20 +1,20 @@
 import { assert } from "@protobuf-ts/runtime";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
-import { MessageWithExcludedOptions as MWEOC_Speed } from "../ts-out/speed/exclude-options";
-import { MessageWithExcludedOptions as MWEOC_Size } from "../ts-out/size/exclude-options";
-import { MessageWithExcludedOptions as MWEOC_SpeedBigInt } from "../ts-out/speed-bigint/exclude-options";
-import { MessageWithExcludedOptions as MWEOC_SizeBigInt } from "../ts-out/size-bigint/exclude-options";
-import { ServiceWithExcludedOptionsClient as SWEOC_Speed } from "../ts-out/speed/exclude-options.client";
-import { ServiceWithExcludedOptionsClient as SWEOC_Size } from "../ts-out/size/exclude-options.client";
-import { ServiceWithExcludedOptionsClient as SWEOC_SpeedBigInt } from "../ts-out/speed-bigint/exclude-options.client";
-import { ServiceWithExcludedOptionsClient as SWEOC_SizeBigInt } from "../ts-out/size-bigint/exclude-options.client";
+import { MessageWithExcludedOptions as MessageWithExcludedOptions_Speed } from "../ts-out/speed/exclude-options";
+import { MessageWithExcludedOptions as MessageWithExcludedOptions_Size } from "../ts-out/size/exclude-options";
+import { MessageWithExcludedOptions as MessageWithExcludedOptions_SpeedBigInt } from "../ts-out/speed-bigint/exclude-options";
+import { MessageWithExcludedOptions as MessageWithExcludedOptions_SizeBigInt } from "../ts-out/size-bigint/exclude-options";
+import { ServiceWithExcludedOptionsClient as ServiceWithExcludedOptionsClient_Speed } from "../ts-out/speed/exclude-options.client";
+import { ServiceWithExcludedOptionsClient as ServiceWithExcludedOptionsClient_Size } from "../ts-out/size/exclude-options.client";
+import { ServiceWithExcludedOptionsClient as ServiceWithExcludedOptionsClient_SpeedBigInt } from "../ts-out/speed-bigint/exclude-options.client";
+import { ServiceWithExcludedOptionsClient as ServiceWithExcludedOptionsClient_SizeBigInt } from "../ts-out/size-bigint/exclude-options.client";
 
 describe("spec.MessageWithExcludedOptions", function () {
   const msgs = {
-    speed: MWEOC_Speed,
-    size: MWEOC_Size,
-    speedBigInt: MWEOC_SpeedBigInt,
-    sizeBigInt: MWEOC_SizeBigInt,
+    speed: MessageWithExcludedOptions_Speed,
+    size: MessageWithExcludedOptions_Size,
+    speedBigInt: MessageWithExcludedOptions_SpeedBigInt,
+    sizeBigInt: MessageWithExcludedOptions_SizeBigInt,
   };
 
   Object.entries(msgs).forEach(([name, messageType]) => {
@@ -50,10 +50,10 @@ describe("spec.MessageWithExcludedOptions", function () {
 
 describe("spec.ServiceWithExcludedOptions", function () {
   const msgs = {
-    speed: SWEOC_Speed,
-    size: SWEOC_Size,
-    speedBigInt: SWEOC_SpeedBigInt,
-    sizeBigInt: SWEOC_SizeBigInt,
+    speed: ServiceWithExcludedOptionsClient_Speed,
+    size: ServiceWithExcludedOptionsClient_Size,
+    speedBigInt: ServiceWithExcludedOptionsClient_SpeedBigInt,
+    sizeBigInt: ServiceWithExcludedOptionsClient_SizeBigInt,
   };
 
   Object.entries(msgs).forEach(([name, clientType]) => {

@@ -34,7 +34,7 @@ describe("google.type.Date", function () {
       });
     });
 
-    describe("fromJsDate()", function () {
+    describe("fromJsDate() " + name, function () {
       it("creates expected message", function () {
         let now = new globalThis.Date();
         let dt = messageType.fromJsDate(now);

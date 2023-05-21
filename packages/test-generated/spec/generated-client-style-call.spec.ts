@@ -9,19 +9,19 @@ import {
   Int32Value,
   StringValue,
 } from "../ts-out/speed/google/protobuf/wrappers";
-import { AllStyleServiceClient as ASSC_Speed } from "../ts-out/speed/service-style-all.client";
-import { AllStyleServiceClient as ASSC_Size } from "../ts-out/size/service-style-all.client";
-import { AllStyleServiceClient as ASSC_SpeedBigInt } from "../ts-out/speed-bigint/service-style-all.client";
-import { AllStyleServiceClient as ASSC_SizeBigInt } from "../ts-out/size-bigint/service-style-all.client";
+import { AllStyleServiceClient as AllStyleServicesClient_Speed } from "../ts-out/speed/service-style-all.client";
+import { AllStyleServiceClient as AllStyleServicesClient_Size } from "../ts-out/size/service-style-all.client";
+import { AllStyleServiceClient as AllStyleServicesClient_SpeedBigInt } from "../ts-out/speed-bigint/service-style-all.client";
+import { AllStyleServiceClient as AllStyleServicesClient_SizeBigInt } from "../ts-out/size-bigint/service-style-all.client";
 
 globalThis.AbortController = AbortController; // AbortController polyfill via https://github.com/mysticatea/abort-controller
 
 describe("generated client style call", () => {
   const msgs = {
-    speed: ASSC_Speed,
-    size: ASSC_Size,
-    speedBigInt: ASSC_SpeedBigInt,
-    sizeBigInt: ASSC_SizeBigInt,
+    speed: AllStyleServicesClient_Speed,
+    size: AllStyleServicesClient_Size,
+    speedBigInt: AllStyleServicesClient_SpeedBigInt,
+    sizeBigInt: AllStyleServicesClient_SizeBigInt,
   };
 
   Object.entries(msgs).forEach(([name, messageType]) => {

@@ -1,94 +1,94 @@
 import { IMessageType, MessageType } from "@protobuf-ts/runtime";
-import { EnumFieldMessage as Enum_Speed } from "../ts-out/speed/msg-enum";
-import { EnumFieldMessage as Enum_Size } from "../ts-out/size/msg-enum";
-import { EnumFieldMessage as Enum_SpeedBigInt } from "../ts-out/speed-bigint/msg-enum";
-import { EnumFieldMessage as Enum_SizeBigInt } from "../ts-out/size-bigint/msg-enum";
-import { JsonNamesMessage as JsonNames_Speed } from "../ts-out/speed/msg-json-names";
-import { JsonNamesMessage as JsonNames_Size } from "../ts-out/size/msg-json-names";
-import { JsonNamesMessage as JsonNames_SpeedBigInt } from "../ts-out/speed-bigint/msg-json-names";
-import { JsonNamesMessage as JsonNames_SizeBigInt } from "../ts-out/size-bigint/msg-json-names";
-import { MessageFieldMessage as Message_Speed } from "../ts-out/speed/msg-message";
-import { MessageFieldMessage as Message_Size } from "../ts-out/size/msg-message";
-import { MessageFieldMessage as Message_SpeedBigInt } from "../ts-out/speed-bigint/msg-message";
-import { MessageFieldMessage as Message_SizeBigInt } from "../ts-out/size-bigint/msg-message";
+import { EnumFieldMessage as EnumFieldMessage_Speed } from "../ts-out/speed/msg-enum";
+import { EnumFieldMessage as EnumFieldMessage_Size } from "../ts-out/size/msg-enum";
+import { EnumFieldMessage as EnumFieldMessage_SpeedBigInt } from "../ts-out/speed-bigint/msg-enum";
+import { EnumFieldMessage as EnumFieldMessage_SizeBigInt } from "../ts-out/size-bigint/msg-enum";
+import { JsonNamesMessage as JsonNamesMessage_Speed } from "../ts-out/speed/msg-json-names";
+import { JsonNamesMessage as JsonNamesMessage_Size } from "../ts-out/size/msg-json-names";
+import { JsonNamesMessage as JsonNamesMessage_SpeedBigInt } from "../ts-out/speed-bigint/msg-json-names";
+import { JsonNamesMessage as JsonNamesMessage_SizeBigInt } from "../ts-out/size-bigint/msg-json-names";
+import { MessageFieldMessage as MessageFieldMessage_Speed } from "../ts-out/speed/msg-message";
+import { MessageFieldMessage as MessageFieldMessage_Size } from "../ts-out/size/msg-message";
+import { MessageFieldMessage as MessageFieldMessage_SpeedBigInt } from "../ts-out/speed-bigint/msg-message";
+import { MessageFieldMessage as MessageFieldMessage_SizeBigInt } from "../ts-out/size-bigint/msg-message";
 import {
-  OneofMessageMemberMessage as OneofMessage_Speed,
-  OneofScalarMemberMessage as OneofScalar_Speed,
+  OneofMessageMemberMessage as OneofMessageMemberMessage_Speed,
+  OneofScalarMemberMessage as OneofScalarMemberMessage_Speed,
 } from "../ts-out/speed/msg-oneofs";
 import {
-  OneofMessageMemberMessage as OneofMessage_Size,
-  OneofScalarMemberMessage as OneofScalar_Size,
+  OneofMessageMemberMessage as OneofMessageMemberMessage_Size,
+  OneofScalarMemberMessage as OneofScalarMemberMessage_Size,
 } from "../ts-out/size/msg-oneofs";
 import {
-  OneofMessageMemberMessage as OneofMessage_SpeedBigInt,
-  OneofScalarMemberMessage as OneofScalar_SpeedBigInt,
+  OneofMessageMemberMessage as OneofMessageMemberMessage_SpeedBigInt,
+  OneofScalarMemberMessage as OneofScalarMemberMessage_SpeedBigInt,
 } from "../ts-out/speed-bigint/msg-oneofs";
 import {
-  OneofMessageMemberMessage as OneofMessage_SizeBigInt,
-  OneofScalarMemberMessage as OneofScalar_SizeBigInt,
+  OneofMessageMemberMessage as OneofMessageMemberMessage_SizeBigInt,
+  OneofScalarMemberMessage as OneofScalarMemberMessage_SizeBigInt,
 } from "../ts-out/size-bigint/msg-oneofs";
-import { Proto2OptionalsMessage as Proto2_Speed } from "../ts-out/speed/msg-proto2-optionals";
-import { Proto2OptionalsMessage as Proto2_Size } from "../ts-out/size/msg-proto2-optionals";
-import { Proto2OptionalsMessage as Proto2_SpeedBigInt } from "../ts-out/speed-bigint/msg-proto2-optionals";
-import { Proto2OptionalsMessage as Proto2_SizeBigInt } from "../ts-out/size-bigint/msg-proto2-optionals";
-import { Proto3OptionalsMessage as Proto3_Speed } from "../ts-out/speed/msg-proto3-optionals";
-import { Proto3OptionalsMessage as Proto3_Size } from "../ts-out/size/msg-proto3-optionals";
-import { Proto3OptionalsMessage as Proto3_SpeedBigInt } from "../ts-out/speed-bigint/msg-proto3-optionals";
-import { Proto3OptionalsMessage as Proto3_SizeBigInt } from "../ts-out/size-bigint/msg-proto3-optionals";
+import { Proto2OptionalsMessage as Proto2OptionalsMessage_Speed } from "../ts-out/speed/msg-proto2-optionals";
+import { Proto2OptionalsMessage as Proto2OptionalsMessage_Size } from "../ts-out/size/msg-proto2-optionals";
+import { Proto2OptionalsMessage as Proto2OptionalsMessage_SpeedBigInt } from "../ts-out/speed-bigint/msg-proto2-optionals";
+import { Proto2OptionalsMessage as Proto2OptionalsMessage_SizeBigInt } from "../ts-out/size-bigint/msg-proto2-optionals";
+import { Proto3OptionalsMessage as Proto3OptionalsMessage_Speed } from "../ts-out/speed/msg-proto3-optionals";
+import { Proto3OptionalsMessage as Proto3OptionalsMessage_Size } from "../ts-out/size/msg-proto3-optionals";
+import { Proto3OptionalsMessage as Proto3OptionalsMessage_SpeedBigInt } from "../ts-out/speed-bigint/msg-proto3-optionals";
+import { Proto3OptionalsMessage as Proto3OptionalsMessage_SizeBigInt } from "../ts-out/size-bigint/msg-proto3-optionals";
 import {
-  RepeatedScalarValuesMessage as RepeatedScalar_Speed,
-  ScalarValuesMessage as Scalar_Speed,
+  RepeatedScalarValuesMessage as RepeatedScalarValuesMessage_Speed,
+  ScalarValuesMessage as ScalarValuesMessage_Speed,
 } from "../ts-out/speed/msg-scalar";
 import {
-  RepeatedScalarValuesMessage as RepeatedScalar_Size,
-  ScalarValuesMessage as Scalar_Size,
+  RepeatedScalarValuesMessage as RepeatedScalarValuesMessage_Size,
+  ScalarValuesMessage as ScalarValuesMessage_Size,
 } from "../ts-out/size/msg-scalar";
 import {
-  RepeatedScalarValuesMessage as RepeatedScalar_SpeedBigInt,
-  ScalarValuesMessage as Scalar_SpeedBigInt,
+  RepeatedScalarValuesMessage as RepeatedScalarValuesMessage_SpeedBigInt,
+  ScalarValuesMessage as ScalarValuesMessage_SpeedBigInt,
 } from "../ts-out/speed-bigint/msg-scalar";
 import {
-  RepeatedScalarValuesMessage as RepeatedScalar_SizeBigInt,
-  ScalarValuesMessage as Scalar_SizeBigInt,
+  RepeatedScalarValuesMessage as RepeatedScalarValuesMessage_SizeBigInt,
+  ScalarValuesMessage as ScalarValuesMessage_SizeBigInt,
 } from "../ts-out/size-bigint/msg-scalar";
 
 let generatedRegistry: IMessageType<any>[] = [
-  Enum_Speed,
-  Enum_Size,
-  Enum_SpeedBigInt,
-  Enum_SizeBigInt,
-  JsonNames_Speed,
-  JsonNames_Size,
-  JsonNames_SpeedBigInt,
-  JsonNames_SizeBigInt,
-  Message_Speed,
-  Message_Size,
-  Message_SpeedBigInt,
-  Message_SizeBigInt,
-  OneofMessage_Speed,
-  OneofMessage_Size,
-  OneofMessage_SpeedBigInt,
-  OneofMessage_SizeBigInt,
-  OneofScalar_Speed,
-  OneofScalar_Size,
-  OneofScalar_SpeedBigInt,
-  OneofScalar_SizeBigInt,
-  Proto2_Speed,
-  Proto2_Size,
-  Proto2_SpeedBigInt,
-  Proto2_SizeBigInt,
-  Proto3_Speed,
-  Proto3_Size,
-  Proto3_SpeedBigInt,
-  Proto3_SizeBigInt,
-  RepeatedScalar_Speed,
-  RepeatedScalar_Size,
-  RepeatedScalar_SpeedBigInt,
-  RepeatedScalar_SizeBigInt,
-  Scalar_Speed,
-  Scalar_Size,
-  Scalar_SpeedBigInt,
-  Scalar_SizeBigInt,
+  EnumFieldMessage_Speed,
+  EnumFieldMessage_Size,
+  EnumFieldMessage_SpeedBigInt,
+  EnumFieldMessage_SizeBigInt,
+  JsonNamesMessage_Speed,
+  JsonNamesMessage_Size,
+  JsonNamesMessage_SpeedBigInt,
+  JsonNamesMessage_SizeBigInt,
+  MessageFieldMessage_Speed,
+  MessageFieldMessage_Size,
+  MessageFieldMessage_SpeedBigInt,
+  MessageFieldMessage_SizeBigInt,
+  OneofMessageMemberMessage_Speed,
+  OneofMessageMemberMessage_Size,
+  OneofMessageMemberMessage_SpeedBigInt,
+  OneofMessageMemberMessage_SizeBigInt,
+  OneofScalarMemberMessage_Speed,
+  OneofScalarMemberMessage_Size,
+  OneofScalarMemberMessage_SpeedBigInt,
+  OneofScalarMemberMessage_SizeBigInt,
+  Proto2OptionalsMessage_Speed,
+  Proto2OptionalsMessage_Size,
+  Proto2OptionalsMessage_SpeedBigInt,
+  Proto2OptionalsMessage_SizeBigInt,
+  Proto3OptionalsMessage_Speed,
+  Proto3OptionalsMessage_Size,
+  Proto3OptionalsMessage_SpeedBigInt,
+  Proto3OptionalsMessage_SizeBigInt,
+  RepeatedScalarValuesMessage_Speed,
+  RepeatedScalarValuesMessage_Size,
+  RepeatedScalarValuesMessage_SpeedBigInt,
+  RepeatedScalarValuesMessage_SizeBigInt,
+  ScalarValuesMessage_Speed,
+  ScalarValuesMessage_Size,
+  ScalarValuesMessage_SpeedBigInt,
+  ScalarValuesMessage_SizeBigInt,
 ];
 
 describe("generated code compatibility", () => {
