@@ -27,6 +27,10 @@ interface MessageMap {
     duration: MessageType<Duration_SizeBigInt>;
   };
 }
+type Entries<T> = {
+  [K in keyof T]: [K, T[K]];
+}[keyof T][];
+
 const msgs: MessageMap = {
   speed: {
     dateTime: DateTime_Speed,

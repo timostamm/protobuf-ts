@@ -1,8 +1,4 @@
 import {
-  ExampleRequest,
-  ExampleResponse,
-} from "../ts-out/speed/service-example";
-import {
   ClientStreamingCall,
   Deferred,
   DuplexStreamingCall,
@@ -18,120 +14,163 @@ import {
   UnaryCall,
 } from "@protobuf-ts/runtime-rpc";
 import {
-  ExampleServiceClient,
-  IExampleServiceClient,
-} from "../ts-out/speed/service-example.client";
+  ExampleRequest as ExampleRequest_Speed,
+  ExampleResponse as ExampleResponse_Speed,
+} from "../ts-out/speed/service-example";
+import {
+  ExampleRequest as ExampleRequest_Size,
+  ExampleResponse as ExampleResponse_Size,
+} from "../ts-out/size/service-example";
+import {
+  ExampleRequest as ExampleRequest_SpeedBigInt,
+  ExampleResponse as ExampleResponse_SpeedBigInt,
+} from "../ts-out/speed-bigint/service-example";
+import {
+  ExampleRequest as ExampleRequest_SizeBigInt,
+  ExampleResponse as ExampleResponse_SizeBigInt,
+} from "../ts-out/size-bigint/service-example";
+import { ExampleServiceClient as ExampleServiceClient_Speed } from "../ts-out/speed/service-example.client";
+import { ExampleServiceClient as ExampleServiceClient_Size } from "../ts-out/size/service-example.client";
+import { ExampleServiceClient as ExampleServiceClient_SpeedBigInt } from "../ts-out/speed-bigint/service-example.client";
+import { ExampleServiceClient as ExampleServiceClient_SizeBigInt } from "../ts-out/size-bigint/service-example.client";
 
-describe("ExampleServiceClient", function () {
-  describe("unary()", function () {
-    it("should invoke transport", async () => {
-      let transport = new MockTransport({});
-      let client: IExampleServiceClient = new ExampleServiceClient(transport);
-      let response = ExampleResponse.create({
-        answer: "world",
-      });
-      let call = client.unary(ExampleRequest.create());
-      transport.resolveUnary({}, response, { code: "OK", detail: "" }, {});
-      let finished = await call;
-      expect(finished.response).toEqual(response);
-    });
+const msgs = {
+  speed: {
+    exampleRequest: ExampleRequest_Speed,
+    exampleResponse: ExampleResponse_Speed,
+    exampleServiceClient: ExampleServiceClient_Speed,
+  },
+  size: {
+    exampleRequest: ExampleRequest_Size,
+    exampleResponse: ExampleResponse_Size,
+    exampleServiceClient: ExampleServiceClient_Size,
+  },
+  speedBigInt: {
+    exampleRequest: ExampleRequest_SpeedBigInt,
+    exampleResponse: ExampleResponse_SpeedBigInt,
+    exampleServiceClient: ExampleServiceClient_SpeedBigInt,
+  },
+  sizeBigInt: {
+    exampleRequest: ExampleRequest_SizeBigInt,
+    exampleResponse: ExampleResponse_SizeBigInt,
+    exampleServiceClient: ExampleServiceClient_SizeBigInt,
+  },
+};
 
-    it("should return transport response data", async () => {
-      let transport = new MockTransport({});
-      let client: IExampleServiceClient = new ExampleServiceClient(transport);
-      let call = client.unary(ExampleRequest.create());
-      transport.resolveUnary(
-        { i_am: "response header" },
-        ExampleResponse.create(),
-        { code: "foo", detail: "bar" },
-        { i_am: "response trailer" }
-      );
-      let { response, headers, trailers, status } = await call;
-      expect(response).toBe(response);
-      expect(headers).toEqual({
-        i_am: "response header",
-      });
-      expect(trailers).toEqual({
-        i_am: "response trailer",
-      });
-      expect(status).toEqual({
-        code: "foo",
-        detail: "bar",
-      });
-    });
+Object.entries(msgs).forEach(
+  ([name, { exampleRequest, exampleResponse, exampleServiceClient }]) => {
+    describe("ExampleServiceClient", function () {
+      describe("unary()", function () {
+        it("should invoke transport", async () => {
+          let transport = new MockTransport({});
+          let client = new exampleServiceClient(transport);
+          let response = exampleResponse.create({
+            answer: "world",
+          });
+          let call = client.unary(exampleRequest.create());
+          transport.resolveUnary({}, response, { code: "OK", detail: "" }, {});
+          let finished = await call;
+          expect(finished.response).toEqual(response);
+        });
 
-    it("should merge request meta", async () => {
-      let transport = new MockTransport({
-        meta: {
-          default_req_header: "yes",
-          overridden_header: "no",
-        },
-      });
-      let client: IExampleServiceClient = new ExampleServiceClient(transport);
-      let call = client.unary(ExampleRequest.create(), {
-        meta: {
-          call_req_header: "yes",
-          overridden_header: "yes",
-        },
-      });
-      transport.resolveUnary(
-        { i_am: "response header" },
-        ExampleResponse.create(),
-        { code: "OK", detail: "" },
-        { i_am: "response trailer" }
-      );
-      let finished = await call;
-      expect(finished.requestHeaders).toEqual({
-        default_req_header: "yes",
-        call_req_header: "yes",
-        overridden_header: "yes",
-      });
-    });
+        it("should return transport response data", async () => {
+          let transport = new MockTransport({});
+          let client = new exampleServiceClient(transport);
+          let call = client.unary(exampleRequest.create());
+          transport.resolveUnary(
+            { i_am: "response header" },
+            exampleResponse.create(),
+            { code: "foo", detail: "bar" },
+            { i_am: "response trailer" }
+          );
+          let { response, headers, trailers, status } = await call;
+          expect(response).toBe(response);
+          expect(headers).toEqual({
+            i_am: "response header",
+          });
+          expect(trailers).toEqual({
+            i_am: "response trailer",
+          });
+          expect(status).toEqual({
+            code: "foo",
+            detail: "bar",
+          });
+        });
 
-    it("should stack interceptors", async () => {
-      let calledIc: string[] = [];
-      let transport = new MockTransport({
-        interceptors: [
-          {
-            interceptUnary(
-              next: NextUnaryFn,
-              method: MethodInfo,
-              input: object,
-              options: RpcOptions
-            ): UnaryCall {
-              calledIc.push("a");
-              return next(method, input, options);
+        it("should merge request meta", async () => {
+          let transport = new MockTransport({
+            meta: {
+              default_req_header: "yes",
+              overridden_header: "no",
             },
-          },
-        ],
-      });
-      let client: IExampleServiceClient = new ExampleServiceClient(transport);
-      let call = client.unary(ExampleRequest.create(), {
-        interceptors: [
-          {
-            interceptUnary(
-              next: NextUnaryFn,
-              method: MethodInfo,
-              input: object,
-              options: RpcOptions
-            ): UnaryCall {
-              calledIc.push("b");
-              return next(method, input, options);
+          });
+          let client = new exampleServiceClient(transport);
+          let call = client.unary(exampleRequest.create(), {
+            meta: {
+              call_req_header: "yes",
+              overridden_header: "yes",
             },
-          },
-        ],
+          });
+          transport.resolveUnary(
+            { i_am: "response header" },
+            exampleResponse.create(),
+            { code: "OK", detail: "" },
+            { i_am: "response trailer" }
+          );
+          let finished = await call;
+          expect(finished.requestHeaders).toEqual({
+            default_req_header: "yes",
+            call_req_header: "yes",
+            overridden_header: "yes",
+          });
+        });
+
+        it("should stack interceptors", async () => {
+          let calledIc: string[] = [];
+          let transport = new MockTransport({
+            interceptors: [
+              {
+                interceptUnary(
+                  next: NextUnaryFn,
+                  method: MethodInfo,
+                  input: object,
+                  options: RpcOptions
+                ): UnaryCall {
+                  calledIc.push("a");
+                  return next(method, input, options);
+                },
+              },
+            ],
+          });
+          let client = new exampleServiceClient(transport);
+          let call = client.unary(exampleRequest.create(), {
+            interceptors: [
+              {
+                interceptUnary(
+                  next: NextUnaryFn,
+                  method: MethodInfo,
+                  input: object,
+                  options: RpcOptions
+                ): UnaryCall {
+                  calledIc.push("b");
+                  return next(method, input, options);
+                },
+              },
+            ],
+          });
+          transport.resolveUnary(
+            {},
+            exampleResponse.create(),
+            { code: "OK", detail: "" },
+            {}
+          );
+          await call;
+          expect(calledIc).toEqual(["a", "b"]);
+        });
       });
-      transport.resolveUnary(
-        {},
-        ExampleResponse.create(),
-        { code: "OK", detail: "" },
-        {}
-      );
-      await call;
-      expect(calledIc).toEqual(["a", "b"]);
     });
-  });
-});
+  }
+);
 
 class MockTransport implements RpcTransport {
   constructor(private readonly defaults: RpcOptions) {}

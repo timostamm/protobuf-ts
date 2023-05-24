@@ -52,65 +52,79 @@ import {
   ScalarValuesMessage as ScalarValuesMessage_SizeBigInt,
 } from "../ts-out/size-bigint/msg-scalar";
 
-let generatedRegistry: IMessageType<any>[] = [
-  EnumFieldMessage_Speed,
-  EnumFieldMessage_Size,
-  EnumFieldMessage_SpeedBigInt,
-  EnumFieldMessage_SizeBigInt,
-  JsonNamesMessage_Speed,
-  JsonNamesMessage_Size,
-  JsonNamesMessage_SpeedBigInt,
-  JsonNamesMessage_SizeBigInt,
-  MessageFieldMessage_Speed,
-  MessageFieldMessage_Size,
-  MessageFieldMessage_SpeedBigInt,
-  MessageFieldMessage_SizeBigInt,
-  OneofMessageMemberMessage_Speed,
-  OneofMessageMemberMessage_Size,
-  OneofMessageMemberMessage_SpeedBigInt,
-  OneofMessageMemberMessage_SizeBigInt,
-  OneofScalarMemberMessage_Speed,
-  OneofScalarMemberMessage_Size,
-  OneofScalarMemberMessage_SpeedBigInt,
-  OneofScalarMemberMessage_SizeBigInt,
-  Proto2OptionalsMessage_Speed,
-  Proto2OptionalsMessage_Size,
-  Proto2OptionalsMessage_SpeedBigInt,
-  Proto2OptionalsMessage_SizeBigInt,
-  Proto3OptionalsMessage_Speed,
-  Proto3OptionalsMessage_Size,
-  Proto3OptionalsMessage_SpeedBigInt,
-  Proto3OptionalsMessage_SizeBigInt,
-  RepeatedScalarValuesMessage_Speed,
-  RepeatedScalarValuesMessage_Size,
-  RepeatedScalarValuesMessage_SpeedBigInt,
-  RepeatedScalarValuesMessage_SizeBigInt,
-  ScalarValuesMessage_Speed,
-  ScalarValuesMessage_Size,
-  ScalarValuesMessage_SpeedBigInt,
-  ScalarValuesMessage_SizeBigInt,
-];
+const msgs: { [s: string]: IMessageType<any>[] } = {
+  speed: [
+    ScalarValuesMessage_Speed,
+    EnumFieldMessage_Speed,
+    JsonNamesMessage_Speed,
+    MessageFieldMessage_Speed,
+    OneofMessageMemberMessage_Speed,
+    OneofScalarMemberMessage_Speed,
+    Proto2OptionalsMessage_Speed,
+    Proto3OptionalsMessage_Speed,
+    RepeatedScalarValuesMessage_Speed,
+    ScalarValuesMessage_Speed,
+  ],
+  size: [
+    ScalarValuesMessage_Size,
+    EnumFieldMessage_Size,
+    JsonNamesMessage_Size,
+    MessageFieldMessage_Size,
+    OneofMessageMemberMessage_Size,
+    OneofScalarMemberMessage_Size,
+    Proto2OptionalsMessage_Size,
+    Proto3OptionalsMessage_Size,
+    RepeatedScalarValuesMessage_Size,
+    ScalarValuesMessage_Size,
+  ],
+  speedBigInt: [
+    ScalarValuesMessage_SpeedBigInt,
+    EnumFieldMessage_SpeedBigInt,
+    JsonNamesMessage_SpeedBigInt,
+    MessageFieldMessage_SpeedBigInt,
+    OneofMessageMemberMessage_SpeedBigInt,
+    OneofScalarMemberMessage_SpeedBigInt,
+    Proto2OptionalsMessage_SpeedBigInt,
+    Proto3OptionalsMessage_SpeedBigInt,
+    RepeatedScalarValuesMessage_SpeedBigInt,
+    ScalarValuesMessage_SpeedBigInt,
+  ],
+  sizeBigInt: [
+    ScalarValuesMessage_SizeBigInt,
+    EnumFieldMessage_SizeBigInt,
+    JsonNamesMessage_SizeBigInt,
+    MessageFieldMessage_SizeBigInt,
+    OneofMessageMemberMessage_SizeBigInt,
+    OneofScalarMemberMessage_SizeBigInt,
+    Proto2OptionalsMessage_SizeBigInt,
+    Proto3OptionalsMessage_SizeBigInt,
+    RepeatedScalarValuesMessage_SizeBigInt,
+    ScalarValuesMessage_SizeBigInt,
+  ],
+};
 
-describe("generated code compatibility", () => {
-  beforeEach(function () {
-    jasmine.addCustomEqualityTester((a, b) =>
-      a instanceof Uint8Array && b instanceof Uint8Array
-        ? a.byteLength === b.byteLength
-        : undefined
-    );
-  });
-
-  describe("generated create()", function () {
-    for (const generatedType of generatedRegistry) {
-      it(`should have same result as reflection for ${generatedType.typeName}`, function () {
-        const reflectionType = new MessageType(
-          generatedType.typeName,
-          generatedType.fields
+Object.entries(msgs).forEach(([name, types]) => {
+  types.forEach((generatedType) => {
+    describe("generated code compatibility " + name, () => {
+      beforeEach(function () {
+        jasmine.addCustomEqualityTester((a, b) =>
+          a instanceof Uint8Array && b instanceof Uint8Array
+            ? a.byteLength === b.byteLength
+            : undefined
         );
-        let reflectionMsg = reflectionType.create();
-        let generatedMsg = generatedType.create();
-        expect(generatedMsg).toEqual(reflectionMsg);
       });
-    }
+
+      describe("generated create()", function () {
+        it(`should have same result as reflection for ${generatedType.typeName}`, function () {
+          const reflectionType = new MessageType(
+            generatedType.typeName,
+            generatedType.fields
+          );
+          let reflectionMsg = reflectionType.create();
+          let generatedMsg = generatedType.create();
+          expect(generatedMsg).toEqual(reflectionMsg);
+        });
+      });
+    });
   });
 });
