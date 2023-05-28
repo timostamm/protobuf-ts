@@ -158,3 +158,11 @@ export function getSelectedOneofValue<T extends UnknownOneofGroup,
 }
 
 
+export function intoOneof<T, U extends { [key: string]: T} > (x: U): U & { oneofKind: keyof U} {
+  return {
+    ...x,
+    oneofKind: Object.keys(x)[0]
+  }
+}
+
+
