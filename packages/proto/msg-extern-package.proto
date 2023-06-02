@@ -1,0 +1,8 @@
+syntax = "proto3";
+package spec;
+
+import "io/foo/bar.proto";
+
+message Foo {
+  io.foo.Bar bar = 1;
+}

@@ -14,7 +14,14 @@ import {
 import {OutFile} from "./out-file";
 import {createLocalTypeName} from "./code-gen/local-type-name";
 import {Interpreter} from "./interpreter";
-import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
+import {
+    ClientStyle,
+    InternalOptions,
+    InternalParameters,
+    makeInternalOptions,
+    OptionResolver,
+    ServerStyle
+} from "./our-options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 import {CommentGenerator} from "./code-gen/comment-generator";
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
@@ -100,6 +107,11 @@ export class ProtobuftsPlugin extends PluginBase {
         add_pb_suffix: {
             description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
                          "default behaviour in the next major release.",
+        },
+        extern_path: {
+            description: "Set extern paths for importing external path or packages. Example usage: \n" +
+                "`extern_path=io/foo=@io/foo;io/bar=@io/bar` will translate `io/foo` protobuf path to \n" +
+                "`import { ...} from '@io/foo'` in generated codes. Multiple mappings are joined by semicolons.",
         },
 
         // output types
@@ -228,13 +240,13 @@ export class ProtobuftsPlugin extends PluginBase {
     generate(request: CodeGeneratorRequest): GeneratedFile[] {
         const
             options = makeInternalOptions(
-                this.parseOptions(this.parameters, request.parameter),
+                this.parseOptions(this.parameters, request.parameter) as InternalParameters,
                 `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
             ),
             registry = DescriptorRegistry.createFrom(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(),
-            imports = new TypeScriptImports(symbols),
+            imports = new TypeScriptImports(symbols, options.externPaths),
             comments = new CommentGenerator(registry),
             interpreter = new Interpreter(registry, options),
             optionResolver = new OptionResolver(interpreter, registry, options),

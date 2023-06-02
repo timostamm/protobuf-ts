@@ -19,7 +19,7 @@ export type OptionsSpec = {
 }
 
 export type ResolvedOptions<T extends OptionsSpec> = {
-    [P in keyof T]: boolean;
+    [P in keyof T]: boolean | string;
 }
 
 
@@ -109,27 +109,35 @@ export abstract class PluginBase<T extends GeneratedFile = GeneratedFile> {
 
     protected parseOptions<T extends OptionsSpec>(spec: T, parameter: string | undefined): ResolvedOptions<T> {
         this.validateOptionsSpec(spec);
-        let given = parameter ? parameter.split(',') : [];
+        let given: Map<string, boolean|string> = parameter ?
+            parameter.split(',').reduce((map, parameter) => {
+                const [key, value] = parameter.split('=', 2);
+                // Treat missing value as boolean flag as true.
+                return map.set(key, value ?? true);
+            }, new Map<string, boolean|string>()) :
+            new Map();
         let known = Object.keys(spec);
-        let excess = given.filter(i => !known.includes(i));
+        let excess = Array.from(given.keys()).filter(i => !known.includes(i));
         if (excess.length > 0) {
             this.throwOptionError(spec, `Option "${excess.join('", "')}" not recognized.`);
         }
         for (let [key, val] of Object.entries(spec)) {
-            if (given.includes(key)) {
-                let missing = val.requires?.filter(i => !given.includes(i)) ?? [];
+            if (given.has(key)) {
+                let missing = val.requires?.filter(i => !given.has(i)) ?? [];
                 if (missing.length > 0) {
                     this.throwOptionError(spec, `Option "${key}" requires option "${missing.join('", "')}" to be set.`);
                 }
-                let excess = val.excludes?.filter(i => given.includes(i)) ?? [];
+                let excess = val.excludes?.filter(i => given.has(i)) ?? [];
                 if (excess.length > 0) {
                     this.throwOptionError(spec, `If option "${key}" is set, option "${excess.join('", "')}" cannot be set.`);
                 }
             }
         }
-        let resolved: { [k: string]: boolean } = {};
-        for (let key of Object.keys(spec)) {
-            resolved[key] = given.includes(key);
+        let resolved: { [k: string]: boolean | string } = {};
+        for (let [key, value] of Object.entries(spec)) {
+            if (given.has(key)) {
+                resolved[key] = given.get(key)!;
+            }
         }
         return resolved as ResolvedOptions<T>;
     }

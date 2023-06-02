@@ -173,6 +173,39 @@ export enum ServerStyle {
 const emptyFileOptions = OurFileOptions.create();
 const emptyServiceOptions = OurServiceOptions.create();
 
+export interface InternalParameters {
+    generate_dependencies: boolean;
+    long_type_string: boolean;
+    long_type_number: boolean;
+    force_exclude_all_options: boolean;
+    keep_enum_prefix: boolean;
+    use_proto_field_name: boolean;
+    ts_nocheck: boolean;
+    eslint_disable: boolean;
+    force_optimize_code_size: boolean;
+    force_optimize_speed: boolean;
+    optimize_code_size: boolean;
+    force_server_none: boolean;
+    server_none: boolean;
+    server_generic: boolean
+    server_grpc1: boolean
+    force_client_none: boolean;
+    client_generic: boolean;
+    client_none: boolean;
+    client_grpc1: boolean;
+    add_pb_suffix: boolean;
+    force_disable_services: boolean;
+    output_typescript: boolean;
+    output_javascript: boolean;
+    output_javascript_es2015: boolean;
+    output_javascript_es2016: boolean;
+    output_javascript_es2017: boolean;
+    output_javascript_es2018: boolean;
+    output_javascript_es2019: boolean;
+    output_javascript_es2020: boolean;
+    output_legacy_commonjs: boolean;
+    extern_path: string;
+}
 
 /**
  * Internal settings for the file generation.
@@ -200,41 +233,11 @@ export interface InternalOptions {
     readonly transpileModule: ts.ModuleKind,
     readonly forceDisableServices: boolean;
     readonly addPbSuffix: boolean;
+    readonly externPaths: string[];
 }
 
 export function makeInternalOptions(
-    params?: {
-        generate_dependencies: boolean,
-        long_type_string: boolean,
-        long_type_number: boolean,
-        force_exclude_all_options: boolean,
-        keep_enum_prefix: boolean,
-        use_proto_field_name: boolean,
-        ts_nocheck: boolean,
-        eslint_disable: boolean,
-        force_optimize_code_size: boolean,
-        force_optimize_speed: boolean,
-        optimize_code_size: boolean,
-        force_server_none: boolean,
-        server_none: boolean,
-        server_generic: boolean
-        server_grpc1: boolean
-        force_client_none: boolean,
-        client_generic: boolean,
-        client_none: boolean,
-        client_grpc1: boolean,
-        add_pb_suffix: boolean,
-        force_disable_services: boolean;
-        output_typescript: boolean,
-        output_javascript: boolean,
-        output_javascript_es2015: boolean,
-        output_javascript_es2016: boolean,
-        output_javascript_es2017: boolean,
-        output_javascript_es2018: boolean,
-        output_javascript_es2019: boolean,
-        output_javascript_es2020: boolean,
-        output_legacy_commonjs: boolean,
-    },
+    params?: InternalParameters,
     pluginCredit?: string,
 ): InternalOptions {
     type Writeable<T> = { -readonly [P in keyof T]: T[P] };
@@ -262,6 +265,7 @@ export function makeInternalOptions(
             transpileModule: ts.ModuleKind.ES2015,
             forceDisableServices: false,
             addPbSuffix: false,
+            externPaths: [],
         },
     ) as Writeable<InternalOptions>;
     if (pluginCredit) {
@@ -347,6 +351,9 @@ export function makeInternalOptions(
     }
     if (params?.output_legacy_commonjs) {
         o.transpileModule = ts.ModuleKind.CommonJS;
+    }
+    if (params?.extern_path) {
+        o.externPaths = params.extern_path.split(';');
     }
     return o;
 }

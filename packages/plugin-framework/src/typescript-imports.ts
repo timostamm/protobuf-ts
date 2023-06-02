@@ -9,10 +9,17 @@ import {TypescriptFile} from "./typescript-file";
 export class TypeScriptImports {
 
     private readonly symbols: SymbolTable;
+    private externPathMap: Map<string, string> = new Map<string, string>();
 
 
-    constructor(symbols: SymbolTable) {
+    constructor(symbols: SymbolTable, externPaths?: string[]) {
         this.symbols = symbols;
+        if (externPaths) {
+            for (let externPath of externPaths) {
+                const [packageName, importFrom] = externPath.split(":", 2);
+                this.externPathMap.set(packageName, importFrom);
+            }
+        }
     }
 
 
@@ -75,10 +82,8 @@ export class TypeScriptImports {
 
         // symbol not in file
         // add an import statement
-        const importPath = createRelativeImportPath(
-            source.getSourceFile().fileName,
-            symbolReg.file.getFilename()
-        );
+        // If the symbol is in extern path mapping, use the mapped path instead of relative path.
+        const importPath = this.findImportPath(source.getFilename(), symbolReg.file.getFilename());
         const blackListedNames = this.symbols.list(source).map(e => e.name);
         return ensureNamedImportPresent(
             source.getSourceFile(),
@@ -91,6 +96,20 @@ export class TypeScriptImports {
     }
 
 
+    private findImportPath(currentPath: string, pathToImportFrom: string): string {
+        // Try matching the path to import from with the extern path mapping, by search parent directories.
+        let lookupPath = pathToImportFrom;
+        while (lookupPath != '.') {
+            if (this.externPathMap.has(lookupPath)) {
+                return this.externPathMap.get(lookupPath)!;
+            }
+            lookupPath = path.dirname(lookupPath);
+        }
+        return createRelativeImportPath(
+            currentPath,
+            pathToImportFrom
+        );
+    }
 }
 
 
