@@ -1654,9 +1654,6 @@ those types are untested. All four method types share the following properties:
   If the server replies with an error status, this promise will
   reject with a `RpcError` that contains the status code and meta data.
 
-- `cancel(): void`   
-  Cancel this call.
-
 
 
 A unary call simply does not use the `stream` keyword in `.proto`. The method 
