@@ -1,7 +1,9 @@
 import {
+    AnyDescriptorProto,
     DescriptorProto,
     DescriptorRegistry,
     EnumDescriptorProto,
+    EnumValueDescriptorProto,
     FieldDescriptorProto,
     FieldOptions_JSType,
     FileDescriptorProto,
@@ -15,11 +17,6 @@ import {assert} from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import { FieldInfoGenerator } from "./code-gen/field-info-generator";
 import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
-
-
-type JsonOptionsMap = {
-    [extensionName: string]: rt.JsonValue
-}
 
 
 /**
@@ -86,7 +83,19 @@ export class Interpreter {
      * Note that options on options (google.protobuf.*Options) are not
      * supported.
      */
-    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto | ServiceDescriptorProto | DescriptorProto, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
+    readOptions(descriptor: FileDescriptorProto, excludeOptions: readonly string[], knownOptionTypeName: 'FileOptions'): rt.JsonOptionsMap | undefined
+    readOptions(descriptor: DescriptorProto, excludeOptions: readonly string[], knownOptionTypeName: 'MessageOptions'): rt.JsonOptionsMap | undefined
+    readOptions(descriptor: FieldDescriptorProto, excludeOptions: readonly string[], knownOptionTypeName: 'FieldOptions'): rt.JsonOptionsMap | undefined
+    readOptions(descriptor: OneofDescriptorProto, excludeOptions: readonly string[], knownOptionTypeName: 'OneofOptions'): rt.JsonOptionsMap | undefined
+    readOptions(descriptor: EnumDescriptorProto, excludeOptions: readonly string[], knownOptionTypeName: 'EnumOptions'): rt.JsonOptionsMap | undefined
+    readOptions(descriptor: EnumValueDescriptorProto, excludeOptions: readonly string[], knownOptionTypeName: 'EnumValueOptions'): rt.JsonOptionsMap | undefined
+    readOptions(descriptor: ServiceDescriptorProto, excludeOptions: readonly string[], knownOptionTypeName: 'ServiceOptions'): rt.JsonOptionsMap | undefined
+    readOptions(descriptor: MethodDescriptorProto, excludeOptions: readonly string[], knownOptionTypeName: 'MethodOptions'): rt.JsonOptionsMap | undefined
+    readOptions(
+        descriptor: AnyDescriptorProto,
+        excludeOptions: readonly string[],
+        knownOptionTypeName?: 'FileOptions' | 'MessageOptions' | 'FieldOptions' | 'OneofOptions' | 'EnumOptions' | 'EnumValueOptions' | 'ServiceOptions' | 'MethodOptions'
+    ): rt.JsonOptionsMap | undefined {
 
         // the option to force exclude all options takes precedence
         if (this.options.forceExcludeAllOptions) {
@@ -105,7 +114,11 @@ export class Interpreter {
         }
 
         let optionsTypeName: string;
-        if (FieldDescriptorProto.is(descriptor) && DescriptorProto.is(this.registry.parentOf(descriptor))) {
+        if (knownOptionTypeName) {
+            optionsTypeName = `google.protobuf.${knownOptionTypeName}`;
+        } else if (OneofDescriptorProto.is(descriptor) && DescriptorProto.is(this.registry.parentOf(descriptor))) {
+            optionsTypeName = 'google.protobuf.OneofOptions';
+        } else if (FieldDescriptorProto.is(descriptor) && DescriptorProto.is(this.registry.parentOf(descriptor))) {
             optionsTypeName = 'google.protobuf.FieldOptions';
         } else if (MethodDescriptorProto.is(descriptor)) {
             optionsTypeName = 'google.protobuf.MethodOptions';
@@ -201,21 +214,33 @@ export class Interpreter {
         if (!type) {
 
             // Create and store the message type
-            const optionsPlaceholder: JsonOptionsMap = {};
+            const oneofOptions: {[oneof: string]: rt.JsonOptionsMap} = {};
+            const optionsPlaceholder: rt.JsonOptionsMap = {};
             type = new rt.MessageType(
                 typeName,
                 this.buildFieldInfos(descriptor.field),
-                optionsPlaceholder
+                optionsPlaceholder,
+                oneofOptions
             );
             this.messageTypes.set(typeName, type);
 
             const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
+            const excludeOptions = ourFileOptions["ts.exclude_options"];
 
             // add message options *after* storing, so that the option can refer to itself
-            const messageOptions = this.readOptions(descriptor, ourFileOptions["ts.exclude_options"]);
+            const messageOptions = this.readOptions(descriptor, excludeOptions, 'MessageOptions');
             if (messageOptions) {
                 for (let key of Object.keys(messageOptions)) {
                     optionsPlaceholder[key] = messageOptions[key];
+                }
+            }
+
+            // same for oneof options
+            for (let i = 0; i < descriptor.oneofDecl.length; i++) {
+                const od = descriptor.oneofDecl[i];
+                const oneofOpt = this.readOptions(od, excludeOptions, 'OneofOptions');
+                if (oneofOpt) {
+                    oneofOptions[this.createTypescriptNameForField(od)] = oneofOpt;
                 }
             }
 
@@ -223,7 +248,7 @@ export class Interpreter {
             for (let i = 0; i < type.fields.length; i++) {
                 const fd = descriptor.field[i];
                 const fi = type.fields[i];
-                fi.options = this.readOptions(fd, ourFileOptions["ts.exclude_options"]);
+                fi.options = this.readOptions(fd, excludeOptions, 'FieldOptions');
             }
 
         }
@@ -295,7 +320,7 @@ export class Interpreter {
         return new rpc.ServiceType(
             typeName,
             methods.map(m => this.buildMethodInfo(m, excludeOptions)),
-            this.readOptions(desc, excludeOptions)
+            this.readOptions(desc, excludeOptions, 'ServiceOptions')
         );
     }
 
@@ -340,7 +365,7 @@ export class Interpreter {
         info.O = this.getMessageType(methodDescriptor.outputType);
 
         // options: Contains custom method options from the .proto source in JSON format.
-        info.options = this.readOptions(methodDescriptor, excludeOptions);
+        info.options = this.readOptions(methodDescriptor, excludeOptions, 'MethodOptions');
 
         return info as rpc.PartialMethodInfo;
     }

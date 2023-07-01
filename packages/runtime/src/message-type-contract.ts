@@ -1,4 +1,4 @@
-import type {FieldInfo, MessageInfo} from "./reflection-info";
+import type {FieldInfo, MessageInfo, JsonOptionsMap, OneofOptions} from "./reflection-info";
 import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
 import type {JsonValue} from "./json-typings";
 import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
@@ -56,7 +56,13 @@ export interface IMessageType<T extends object> extends MessageInfo {
     /**
      * Contains custom message options from the .proto source in JSON format.
      */
-    readonly options: { [extensionName: string]: JsonValue };
+    readonly options: JsonOptionsMap;
+
+    /**
+     * Contains custom oneof options from the .proto source in JSON format
+     * indexed by oneof name.
+     */
+    readonly oneofOptions: OneofOptions;
 
 
     /**

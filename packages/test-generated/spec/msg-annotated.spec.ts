@@ -1,5 +1,5 @@
 import {AnnotatedMessage, FieldUiBehaviour} from "../ts-out/msg-annotated";
-import {readFieldOption, readMessageOption} from "@protobuf-ts/runtime";
+import {readFieldOption, readMessageOption, readOneofOption} from "@protobuf-ts/runtime";
 
 
 describe('readFieldOption', function () {
@@ -40,6 +40,13 @@ describe('readMessageOption', function () {
     });
 });
 
+describe('readOneofOption', function () {
+    it('should read scalar opt', function () {
+        let act = readOneofOption(AnnotatedMessage, "annOneof", "spec.opt_oneof");
+        expect(act).toBe(-99);
+    });
+});
+
 describe('spec.AnnotatedMessage', function () {
 
     it('should have message option "spec.opt_example"', function () {
@@ -47,6 +54,11 @@ describe('spec.AnnotatedMessage', function () {
         if (AnnotatedMessage.options) {
             expect(AnnotatedMessage.options["spec.opt_example"]).toBeTrue();
         }
+    });
+
+    it('should have oneof option "spec.opt_example" for "annOneof"', function () {
+        expect(AnnotatedMessage.oneofOptions.annOneof).toBeDefined();
+        expect(AnnotatedMessage.oneofOptions.annOneof?.["spec.opt_oneof"]).toBe(-99);
     });
 
     it('field ann_scalar should have scalar options', function () {

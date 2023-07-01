@@ -98,6 +98,7 @@ describe('reflectionMergePartial()', () => {
                     normalizeFieldInfo({kind: "message", T: () => childHandler, no: 1, name: 'child'}),
                     normalizeFieldInfo({kind: "message", T: () => childHandler, no: 2, name: 'children', repeat: RepeatType.UNPACKED}),
                 ],
+                oneofOptions: {},
                 options: {}
             };
         });

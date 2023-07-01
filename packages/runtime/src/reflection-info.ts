@@ -60,6 +60,21 @@ export type EnumInfo = readonly [
     string?
 ];
 
+/**
+ * Contains custom options from the .proto source in JSON format
+ * indexed by extension name.
+ */
+export interface JsonOptionsMap {
+    [extensionName: string]: JsonValue;
+}
+
+/**
+ * Contains custom oneof options from the .proto source in JSON format
+ * indexed by oneof name.
+ */
+export interface OneofOptions {
+    readonly [oneof: string]: JsonOptionsMap | undefined;
+}
 
 /**
  * Describes a protobuf message for runtime reflection.
@@ -89,7 +104,13 @@ export interface MessageInfo {
     /**
      * Contains custom message options from the .proto source in JSON format.
      */
-    readonly options: { [extensionName: string]: JsonValue };
+    readonly options: JsonOptionsMap;
+
+    /**
+     * Contains custom oneof options from the .proto source in JSON format
+     * indexed by oneof name.
+     */
+    readonly oneofOptions: OneofOptions;
 
 }
 
@@ -99,8 +120,9 @@ export interface MessageInfo {
  * to be omitted:
  * - "fields": omitting means the message has no fields
  * - "options": omitting means the message has no options
+ * - "oneofOptions": omitting means the message has no oneof options
  */
-export type PartialMessageInfo = PartialPartial<MessageInfo, "fields" | "options">;
+export type PartialMessageInfo = PartialPartial<MessageInfo, "fields" | "options" | "oneofOptions">;
 
 // Make all properties in T optional, except those whose keys are in the union K.
 type PartialPartial<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>;
@@ -193,7 +215,7 @@ interface fiShared {
     /**
      * Contains custom field options from the .proto source in JSON format.
      */
-    options?: { [extensionName: string]: JsonValue };
+    options?: JsonOptionsMap;
 
 }
 
@@ -488,6 +510,36 @@ export function readMessageOption<T extends object>(messageType: MessageInfo, ex
 export function readMessageOption<T extends object>(messageType: MessageInfo, extensionName: string, extensionType: IMessageType<T>): T | undefined
 export function readMessageOption<T extends object>(messageType: MessageInfo, extensionName: string, extensionType?: IMessageType<T>): T | JsonValue | undefined {
     const options = messageType.options;
+    const optionVal = options[extensionName];
+    if (optionVal === undefined) {
+        return optionVal;
+    }
+    return extensionType ? extensionType.fromJson(optionVal) : optionVal;
+}
+
+/**
+ * Read a custom oneof option.
+ *
+ * ```proto
+ * message MyMessage {
+ *   oneof my_oneof {
+ *     option (acme.oneof_opt) = true;
+ *     int32 my_field = 1;
+ *   }
+ * }
+ * ```
+ *
+ * ```typescript
+ * let val = readOneofOption(MyMessage, 'my_oneof', 'acme.oneof_opt')
+ * ```
+ */
+export function readOneofOption<T extends object>(messageType: MessageInfo, oneofName: string, extensionName: string): JsonValue | undefined;
+export function readOneofOption<T extends object>(messageType: MessageInfo, oneofName: string, extensionName: string, extensionType: IMessageType<T>): T | undefined;
+export function readOneofOption<T extends object>(messageType: MessageInfo, oneofName: string, extensionName: string, extensionType?: IMessageType<T>): T | JsonValue | undefined {
+    const options = messageType.oneofOptions[oneofName];
+    if (!options) {
+        return undefined;
+    }
     const optionVal = options[extensionName];
     if (optionVal === undefined) {
         return optionVal;

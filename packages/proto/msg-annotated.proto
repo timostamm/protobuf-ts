@@ -35,6 +35,10 @@ extend google.protobuf.MessageOptions {
 
 }
 
+extend google.protobuf.OneofOptions {
+    int32 opt_oneof = 1501;
+}
+
 
 // Used for options
 enum OptionEnum {
@@ -90,6 +94,13 @@ message AnnotatedMessage {
     }
     // annotated with a field option defined right in the message
     int32 ann_local = 10 [(spec.AnnotatedMessage.local_opt) = true];
+
+    oneof ann_oneof {
+
+        option (spec.opt_oneof) = -99;
+
+        bool example = 11;
+    }
 
 }
 

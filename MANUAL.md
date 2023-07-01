@@ -1030,7 +1030,7 @@ operations.
 
 ## Custom options
 
-`protobuf-ts` supports custom options for messages, fields, services 
+`protobuf-ts` supports custom options for messages, oneofs, fields, services 
 and methods and will add them to the reflection information. 
 
 For example, consider the following service definition in 
@@ -1110,6 +1110,7 @@ let rule: JsonValue | undefined = readMethodOption(AnnotatedService, "get", "goo
 | Options for | stored in                             | access with                                         |
 |-------------|---------------------------------------|-----------------------------------------------------|
 | Messages    | `AnnotatedMessage.options`            | `readMessageOption()` from @protobuf-ts/runtime     |
+| Oneofs      | `AnnotatedMessage.oneofOptions[name]` | `readOneofOption()` from @protobuf-ts/runtime       |
 | Fields      | `AnnotatedMessage.field[0].options`   | `readFieldOption()` from @protobuf-ts/runtime       |
 | Services    | `AnnotatedService.options`            | `readServiceOption()` from @protobuf-ts/runtime-rpc |
 | Methods     | `AnnotatedService.methods[0].options` | `readMethodOption()` from @protobuf-ts/runtime-rpc  |
