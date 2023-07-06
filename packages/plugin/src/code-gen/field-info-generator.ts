@@ -147,21 +147,13 @@ export class FieldInfoGenerator {
         );
     }
 
-    private createEnumT(source: TypescriptFile, ei: rt.EnumInfo): ts.ArrowFunction {
-        let [pbTypeName, , sharedPrefix] = ei,
-            descriptor = this.registry.resolveTypeName(pbTypeName),
-            generatedEnum = this.imports.type(source, descriptor),
-            enumInfoLiteral: ts.Expression[] = [
-                ts.createStringLiteral(pbTypeName),
-                ts.createIdentifier(generatedEnum),
-            ];
-        if (sharedPrefix) {
-            enumInfoLiteral.push(ts.createStringLiteral(sharedPrefix));
-        }
+    private createEnumT(source: TypescriptFile, [typeName]: rt.EnumInfo): ts.ArrowFunction {
+        let descriptor = this.registry.resolveTypeName(typeName),
+            generatedEnumInfo = this.imports.type(source, descriptor, 'info');
         return ts.createArrowFunction(
             undefined, undefined, [], undefined,
             ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-            ts.createArrayLiteral(enumInfoLiteral, false)
+            ts.createIdentifier(generatedEnumInfo)
         );
     }
 
