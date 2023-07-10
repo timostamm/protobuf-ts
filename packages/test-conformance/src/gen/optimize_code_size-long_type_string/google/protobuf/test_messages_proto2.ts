@@ -531,6 +531,68 @@ export interface TestAllTypesProto2 {
         oneofKind: undefined;
     };
     /**
+     * default values
+     *
+     * @generated from protobuf field: optional int32 default_int32 = 241;
+     */
+    defaultInt32?: number;
+    /**
+     * @generated from protobuf field: optional int64 default_int64 = 242;
+     */
+    defaultInt64?: string;
+    /**
+     * @generated from protobuf field: optional uint32 default_uint32 = 243;
+     */
+    defaultUint32?: number;
+    /**
+     * @generated from protobuf field: optional uint64 default_uint64 = 244;
+     */
+    defaultUint64?: string;
+    /**
+     * @generated from protobuf field: optional sint32 default_sint32 = 245;
+     */
+    defaultSint32?: number;
+    /**
+     * @generated from protobuf field: optional sint64 default_sint64 = 246;
+     */
+    defaultSint64?: string;
+    /**
+     * @generated from protobuf field: optional fixed32 default_fixed32 = 247;
+     */
+    defaultFixed32?: number;
+    /**
+     * @generated from protobuf field: optional fixed64 default_fixed64 = 248;
+     */
+    defaultFixed64?: string;
+    /**
+     * @generated from protobuf field: optional sfixed32 default_sfixed32 = 249;
+     */
+    defaultSfixed32?: number;
+    /**
+     * @generated from protobuf field: optional sfixed64 default_sfixed64 = 250;
+     */
+    defaultSfixed64?: string;
+    /**
+     * @generated from protobuf field: optional float default_float = 251;
+     */
+    defaultFloat?: number;
+    /**
+     * @generated from protobuf field: optional double default_double = 252;
+     */
+    defaultDouble?: number;
+    /**
+     * @generated from protobuf field: optional bool default_bool = 253;
+     */
+    defaultBool?: boolean;
+    /**
+     * @generated from protobuf field: optional string default_string = 254;
+     */
+    defaultString?: string;
+    /**
+     * @generated from protobuf field: optional bytes default_bytes = 255;
+     */
+    defaultBytes?: Uint8Array;
+    /**
      * Test field-name-to-JSON-name convention.
      * (protobuf says names can be any valid C/C++ identifier.)
      *
@@ -726,6 +788,55 @@ export interface UnknownToTestAllTypes_OptionalGroup {
     a?: number;
 }
 /**
+ * @generated from protobuf message protobuf_test_messages.proto2.NullHypothesisProto2
+ */
+export interface NullHypothesisProto2 {
+}
+/**
+ * @generated from protobuf message protobuf_test_messages.proto2.EnumOnlyProto2
+ */
+export interface EnumOnlyProto2 {
+}
+/**
+ * @generated from protobuf enum protobuf_test_messages.proto2.EnumOnlyProto2.Bool
+ */
+export enum EnumOnlyProto2_Bool {
+    /**
+     * @generated from protobuf enum value: kFalse = 0;
+     */
+    kFalse = 0,
+    /**
+     * @generated from protobuf enum value: kTrue = 1;
+     */
+    kTrue = 1
+}
+/**
+ * @generated from protobuf message protobuf_test_messages.proto2.OneStringProto2
+ */
+export interface OneStringProto2 {
+    /**
+     * @generated from protobuf field: optional string data = 1;
+     */
+    data?: string;
+}
+/**
+ * @generated from protobuf message protobuf_test_messages.proto2.ProtoWithKeywords
+ */
+export interface ProtoWithKeywords {
+    /**
+     * @generated from protobuf field: optional int32 inline = 1;
+     */
+    inline?: number;
+    /**
+     * @generated from protobuf field: optional string concept = 2;
+     */
+    concept?: string;
+    /**
+     * @generated from protobuf field: repeated string requires = 3;
+     */
+    requires: string[];
+}
+/**
  * @generated from protobuf enum protobuf_test_messages.proto2.ForeignEnumProto2
  */
 export enum ForeignEnumProto2 {
@@ -845,6 +956,21 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
             { no: 117, name: "oneof_float", kind: "scalar", oneof: "oneofField", T: 2 /*ScalarType.FLOAT*/ },
             { no: 118, name: "oneof_double", kind: "scalar", oneof: "oneofField", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 119, name: "oneof_enum", kind: "enum", oneof: "oneofField", T: () => ["protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum", TestAllTypesProto2_NestedEnum] },
+            { no: 241, name: "default_int32", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
+            { no: 242, name: "default_int64", kind: "scalar", opt: true, T: 3 /*ScalarType.INT64*/ },
+            { no: 243, name: "default_uint32", kind: "scalar", opt: true, T: 13 /*ScalarType.UINT32*/ },
+            { no: 244, name: "default_uint64", kind: "scalar", opt: true, T: 4 /*ScalarType.UINT64*/ },
+            { no: 245, name: "default_sint32", kind: "scalar", opt: true, T: 17 /*ScalarType.SINT32*/ },
+            { no: 246, name: "default_sint64", kind: "scalar", opt: true, T: 18 /*ScalarType.SINT64*/ },
+            { no: 247, name: "default_fixed32", kind: "scalar", opt: true, T: 7 /*ScalarType.FIXED32*/ },
+            { no: 248, name: "default_fixed64", kind: "scalar", opt: true, T: 6 /*ScalarType.FIXED64*/ },
+            { no: 249, name: "default_sfixed32", kind: "scalar", opt: true, T: 15 /*ScalarType.SFIXED32*/ },
+            { no: 250, name: "default_sfixed64", kind: "scalar", opt: true, T: 16 /*ScalarType.SFIXED64*/ },
+            { no: 251, name: "default_float", kind: "scalar", opt: true, T: 2 /*ScalarType.FLOAT*/ },
+            { no: 252, name: "default_double", kind: "scalar", opt: true, T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 253, name: "default_bool", kind: "scalar", opt: true, T: 8 /*ScalarType.BOOL*/ },
+            { no: 254, name: "default_string", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 255, name: "default_bytes", kind: "scalar", opt: true, T: 12 /*ScalarType.BYTES*/ },
             { no: 401, name: "fieldname1", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
             { no: 402, name: "field_name2", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
             { no: 403, name: "_field_name3", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
@@ -1372,6 +1498,51 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                         oneofKind: "oneofEnum",
                         oneofEnum: reader.int32()
                     };
+                    break;
+                case /* optional int32 default_int32 */ 241:
+                    message.defaultInt32 = reader.int32();
+                    break;
+                case /* optional int64 default_int64 */ 242:
+                    message.defaultInt64 = reader.int64().toString();
+                    break;
+                case /* optional uint32 default_uint32 */ 243:
+                    message.defaultUint32 = reader.uint32();
+                    break;
+                case /* optional uint64 default_uint64 */ 244:
+                    message.defaultUint64 = reader.uint64().toString();
+                    break;
+                case /* optional sint32 default_sint32 */ 245:
+                    message.defaultSint32 = reader.sint32();
+                    break;
+                case /* optional sint64 default_sint64 */ 246:
+                    message.defaultSint64 = reader.sint64().toString();
+                    break;
+                case /* optional fixed32 default_fixed32 */ 247:
+                    message.defaultFixed32 = reader.fixed32();
+                    break;
+                case /* optional fixed64 default_fixed64 */ 248:
+                    message.defaultFixed64 = reader.fixed64().toString();
+                    break;
+                case /* optional sfixed32 default_sfixed32 */ 249:
+                    message.defaultSfixed32 = reader.sfixed32();
+                    break;
+                case /* optional sfixed64 default_sfixed64 */ 250:
+                    message.defaultSfixed64 = reader.sfixed64().toString();
+                    break;
+                case /* optional float default_float */ 251:
+                    message.defaultFloat = reader.float();
+                    break;
+                case /* optional double default_double */ 252:
+                    message.defaultDouble = reader.double();
+                    break;
+                case /* optional bool default_bool */ 253:
+                    message.defaultBool = reader.bool();
+                    break;
+                case /* optional string default_string */ 254:
+                    message.defaultString = reader.string();
+                    break;
+                case /* optional bytes default_bytes */ 255:
+                    message.defaultBytes = reader.bytes();
                     break;
                 case /* optional int32 fieldname1 */ 401:
                     message.fieldname1 = reader.int32();
@@ -2104,6 +2275,51 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
         /* protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum oneof_enum = 119; */
         if (message.oneofField.oneofKind === "oneofEnum")
             writer.tag(119, WireType.Varint).int32(message.oneofField.oneofEnum);
+        /* optional int32 default_int32 = 241; */
+        if (message.defaultInt32 !== undefined)
+            writer.tag(241, WireType.Varint).int32(message.defaultInt32);
+        /* optional int64 default_int64 = 242; */
+        if (message.defaultInt64 !== undefined)
+            writer.tag(242, WireType.Varint).int64(message.defaultInt64);
+        /* optional uint32 default_uint32 = 243; */
+        if (message.defaultUint32 !== undefined)
+            writer.tag(243, WireType.Varint).uint32(message.defaultUint32);
+        /* optional uint64 default_uint64 = 244; */
+        if (message.defaultUint64 !== undefined)
+            writer.tag(244, WireType.Varint).uint64(message.defaultUint64);
+        /* optional sint32 default_sint32 = 245; */
+        if (message.defaultSint32 !== undefined)
+            writer.tag(245, WireType.Varint).sint32(message.defaultSint32);
+        /* optional sint64 default_sint64 = 246; */
+        if (message.defaultSint64 !== undefined)
+            writer.tag(246, WireType.Varint).sint64(message.defaultSint64);
+        /* optional fixed32 default_fixed32 = 247; */
+        if (message.defaultFixed32 !== undefined)
+            writer.tag(247, WireType.Bit32).fixed32(message.defaultFixed32);
+        /* optional fixed64 default_fixed64 = 248; */
+        if (message.defaultFixed64 !== undefined)
+            writer.tag(248, WireType.Bit64).fixed64(message.defaultFixed64);
+        /* optional sfixed32 default_sfixed32 = 249; */
+        if (message.defaultSfixed32 !== undefined)
+            writer.tag(249, WireType.Bit32).sfixed32(message.defaultSfixed32);
+        /* optional sfixed64 default_sfixed64 = 250; */
+        if (message.defaultSfixed64 !== undefined)
+            writer.tag(250, WireType.Bit64).sfixed64(message.defaultSfixed64);
+        /* optional float default_float = 251; */
+        if (message.defaultFloat !== undefined)
+            writer.tag(251, WireType.Bit32).float(message.defaultFloat);
+        /* optional double default_double = 252; */
+        if (message.defaultDouble !== undefined)
+            writer.tag(252, WireType.Bit64).double(message.defaultDouble);
+        /* optional bool default_bool = 253; */
+        if (message.defaultBool !== undefined)
+            writer.tag(253, WireType.Varint).bool(message.defaultBool);
+        /* optional string default_string = 254; */
+        if (message.defaultString !== undefined)
+            writer.tag(254, WireType.LengthDelimited).string(message.defaultString);
+        /* optional bytes default_bytes = 255; */
+        if (message.defaultBytes !== undefined)
+            writer.tag(255, WireType.LengthDelimited).bytes(message.defaultBytes);
         /* optional int32 fieldname1 = 401; */
         if (message.fieldname1 !== undefined)
             writer.tag(401, WireType.Varint).int32(message.fieldname1);
@@ -2569,3 +2785,163 @@ class UnknownToTestAllTypes_OptionalGroup$Type extends MessageType<UnknownToTest
  * @generated MessageType for protobuf message protobuf_test_messages.proto2.UnknownToTestAllTypes.OptionalGroup
  */
 export const UnknownToTestAllTypes_OptionalGroup = new UnknownToTestAllTypes_OptionalGroup$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class NullHypothesisProto2$Type extends MessageType<NullHypothesisProto2> {
+    constructor() {
+        super("protobuf_test_messages.proto2.NullHypothesisProto2", []);
+    }
+    create(value?: PartialMessage<NullHypothesisProto2>): NullHypothesisProto2 {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<NullHypothesisProto2>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: NullHypothesisProto2): NullHypothesisProto2 {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: NullHypothesisProto2, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_test_messages.proto2.NullHypothesisProto2
+ */
+export const NullHypothesisProto2 = new NullHypothesisProto2$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EnumOnlyProto2$Type extends MessageType<EnumOnlyProto2> {
+    constructor() {
+        super("protobuf_test_messages.proto2.EnumOnlyProto2", []);
+    }
+    create(value?: PartialMessage<EnumOnlyProto2>): EnumOnlyProto2 {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<EnumOnlyProto2>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EnumOnlyProto2): EnumOnlyProto2 {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: EnumOnlyProto2, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_test_messages.proto2.EnumOnlyProto2
+ */
+export const EnumOnlyProto2 = new EnumOnlyProto2$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class OneStringProto2$Type extends MessageType<OneStringProto2> {
+    constructor() {
+        super("protobuf_test_messages.proto2.OneStringProto2", [
+            { no: 1, name: "data", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<OneStringProto2>): OneStringProto2 {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<OneStringProto2>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: OneStringProto2): OneStringProto2 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* optional string data */ 1:
+                    message.data = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: OneStringProto2, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* optional string data = 1; */
+        if (message.data !== undefined)
+            writer.tag(1, WireType.LengthDelimited).string(message.data);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_test_messages.proto2.OneStringProto2
+ */
+export const OneStringProto2 = new OneStringProto2$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ProtoWithKeywords$Type extends MessageType<ProtoWithKeywords> {
+    constructor() {
+        super("protobuf_test_messages.proto2.ProtoWithKeywords", [
+            { no: 1, name: "inline", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "concept", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "requires", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ProtoWithKeywords>): ProtoWithKeywords {
+        const message = { requires: [] };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<ProtoWithKeywords>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ProtoWithKeywords): ProtoWithKeywords {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* optional int32 inline */ 1:
+                    message.inline = reader.int32();
+                    break;
+                case /* optional string concept */ 2:
+                    message.concept = reader.string();
+                    break;
+                case /* repeated string requires */ 3:
+                    message.requires.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ProtoWithKeywords, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* optional int32 inline = 1; */
+        if (message.inline !== undefined)
+            writer.tag(1, WireType.Varint).int32(message.inline);
+        /* optional string concept = 2; */
+        if (message.concept !== undefined)
+            writer.tag(2, WireType.LengthDelimited).string(message.concept);
+        /* repeated string requires = 3; */
+        for (let i = 0; i < message.requires.length; i++)
+            writer.tag(3, WireType.LengthDelimited).string(message.requires[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_test_messages.proto2.ProtoWithKeywords
+ */
+export const ProtoWithKeywords = new ProtoWithKeywords$Type();

@@ -169,11 +169,11 @@ export class ReflectionJsonWriter {
     }
 
     /**
-     * Returns `null` for google.protobuf.NullValue.
+     * Returns `null` as the default for google.protobuf.NullValue.
      */
     enum(type: EnumInfo, value: unknown, fieldName: string, optional: boolean, emitDefaultValues: boolean, enumAsInteger: boolean): JsonValue | undefined {
         if (type[0] == 'google.protobuf.NullValue')
-            return null;
+            return !emitDefaultValues && !optional ? undefined : null;
         if (value === undefined) {
             assert(optional);
             return undefined;
