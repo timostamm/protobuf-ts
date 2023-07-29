@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // activated for issue #3
+    // react sets this option, breaking const enum
+    "isolatedModules": true,
+
+
+    // activated for issue #94
+    // svelte requires this option
+    "importsNotUsedAsValues": "error",
+    "paths": {},
+  }
+}

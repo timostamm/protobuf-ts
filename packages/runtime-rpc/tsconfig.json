@@ -17,6 +17,9 @@
     // svelte requires this option
     "importsNotUsedAsValues": "error",
 
+    "paths": {
+      "@protobuf-ts/*": ["../*/src"]
+    },
     "lib": [
       "es2017",
       "dom",

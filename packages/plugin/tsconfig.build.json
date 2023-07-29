@@ -4,6 +4,9 @@
     "src/protobufts-plugin.ts",
     "src/dump-plugin.ts"
   ],
+  "compilerOptions": {
+    "paths": {},
+  },
   "include": [
     "src/**/*.d.ts"
   ],

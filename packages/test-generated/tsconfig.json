@@ -9,18 +9,6 @@
     "module": "CommonJS",
     "target": "ES2015",
     "baseUrl": "./",
-
-
-    // activated for issue #3
-    // react sets this option, breaking const enum
-    "isolatedModules": true,
-
-
-    // activated for issue #94
-    // svelte requires this option
-    "importsNotUsedAsValues": "error",
-
-
     "strict": true,
     "lib": [
       "es2017",
@@ -28,9 +16,7 @@
       "es2020.bigint"
     ],
     "paths": {
-      "@protobuf-ts/runtime": [
-        "../runtime"
-      ]
-    }
+      "@protobuf-ts/*": ["../*/src"]
+    },
   }
 }
