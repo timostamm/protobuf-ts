@@ -215,7 +215,11 @@ class Value$Type extends MessageType<Value> {
             case undefined: throw new globalThis.Error();
             case "boolValue": return message.kind.boolValue;
             case "nullValue": return null;
-            case "numberValue": return message.kind.numberValue;
+            case "numberValue":
+                let numberValue = message.kind.numberValue;
+                if (typeof numberValue == "number" && !Number.isFinite(numberValue))
+                    throw new globalThis.Error();
+                return numberValue;
             case "stringValue": return message.kind.stringValue;
             case "listValue":
                 let listValueField = this.fields.find(f => f.no === 6);

@@ -303,6 +303,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
                 if (s > 315576000000 || s < -315576000000)
                     throw new Error("Duration value out of range.");
                 let text = message.seconds.toString();
+                if (s === 0 && message.nanos < 0)
+                    text = "-" + text;
                 if (message.nanos !== 0) {
                     let nanosStr = Math.abs(message.nanos).toString();
                     nanosStr = "0".repeat(9 - nanosStr.length) + nanosStr;
@@ -321,21 +323,19 @@ export class WellKnownTypes implements CustomMethodGenerator {
             function internalJsonRead(json: ${JsonValue}, options: ${JsonReadOptions}, target?: ${Duration}): ${Duration} {
                 if (typeof json !== "string")
                     throw new Error("Unable to parse Duration from JSON " + ${typeofJsonValue}(json) + ". Expected string.");
-                let match = json.match(/^(-?[0-9]+)(?:\\.([0-9]+))?s/);
+                let match = json.match(/^(-?)([0-9]+)(?:\\.([0-9]+))?s/);
                 if (match === null)
                     throw new Error("Unable to parse Duration from JSON string. Invalid format.");
                 if (!target)
                     target = this.create();
-                let longSeconds = ${PbLong}.from(match[1]);
+                let [, sign, secs, nanos] = match;
+                let longSeconds = ${PbLong}.from(sign + secs);
                 if (longSeconds.toNumber() > 315576000000 || longSeconds.toNumber() < -315576000000)
                     throw new Error("Unable to parse Duration from JSON string. Value out of range.");
                 target.seconds = longSeconds.${longConvertMethod}();
-                if (typeof match[2] == "string") {
-                    let nanosStr = match[2] + "0".repeat(9 - match[2].length);
+                if (typeof nanos == "string") {
+                    let nanosStr = sign + nanos + "0".repeat(9 - nanos.length);
                     target.nanos = parseInt(nanosStr);
-                    if (longSeconds.isNegative()) {
-                        target.nanos = -target.nanos;
-                    }
                 }
                 return target;
             }
@@ -455,7 +455,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
                     case "${nullValueField}":
                         return null;
                     case "${numberValueField}":
-                        return message.kind.${numberValueField};
+                        let numberValue = message.kind.${numberValueField};
+                        if (typeof numberValue == "number" && !Number.isFinite(numberValue)) throw new globalThis.Error();
+                        return numberValue;
                     case "${stringValueField}":
                         return message.kind.${stringValueField};
                     case "${listValueField}":

@@ -65,6 +65,7 @@ import { UInt32Value } from "./wrappers";
 import { Int64Value } from "./wrappers";
 import { Int32Value } from "./wrappers";
 import { BoolValue } from "./wrappers";
+import { NullValue } from "./struct";
 /**
  * This proto includes every type of field in both singular and repeated
  * forms.
@@ -547,6 +548,12 @@ export interface TestAllTypesProto3 {
          */
         oneofEnum: TestAllTypesProto3_NestedEnum;
     } | {
+        oneofKind: "oneofNullValue";
+        /**
+         * @generated from protobuf field: google.protobuf.NullValue oneof_null_value = 120;
+         */
+        oneofNullValue: NullValue;
+    } | {
         oneofKind: undefined;
     };
     /**
@@ -647,6 +654,10 @@ export interface TestAllTypesProto3 {
      * @generated from protobuf field: google.protobuf.Value optional_value = 306;
      */
     optionalValue?: Value;
+    /**
+     * @generated from protobuf field: google.protobuf.NullValue optional_null_value = 307;
+     */
+    optionalNullValue: NullValue;
     /**
      * @generated from protobuf field: repeated google.protobuf.Duration repeated_duration = 311;
      */
@@ -806,11 +817,11 @@ export enum TestAllTypesProto3_AliasedEnum {
     /**
      * @generated from protobuf enum value: ALIAS_BAZ = 2;
      */
-    QUX = 2,
+    MOO = 2,
     /**
      * @generated from protobuf enum value: ALIAS_BAZ = 2;
      */
-    qux = 2,
+    moo = 2,
     /**
      * @generated from protobuf enum value: ALIAS_BAZ = 2;
      */
@@ -824,6 +835,29 @@ export interface ForeignMessage {
      * @generated from protobuf field: int32 c = 1;
      */
     c: number;
+}
+/**
+ * @generated from protobuf message protobuf_test_messages.proto3.NullHypothesisProto3
+ */
+export interface NullHypothesisProto3 {
+}
+/**
+ * @generated from protobuf message protobuf_test_messages.proto3.EnumOnlyProto3
+ */
+export interface EnumOnlyProto3 {
+}
+/**
+ * @generated from protobuf enum protobuf_test_messages.proto3.EnumOnlyProto3.Bool
+ */
+export enum EnumOnlyProto3_Bool {
+    /**
+     * @generated from protobuf enum value: kFalse = 0;
+     */
+    kFalse = 0,
+    /**
+     * @generated from protobuf enum value: kTrue = 1;
+     */
+    kTrue = 1
 }
 /**
  * @generated from protobuf enum protobuf_test_messages.proto3.ForeignEnum
@@ -946,6 +980,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
             { no: 117, name: "oneof_float", kind: "scalar", oneof: "oneofField", T: 2 /*ScalarType.FLOAT*/ },
             { no: 118, name: "oneof_double", kind: "scalar", oneof: "oneofField", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 119, name: "oneof_enum", kind: "enum", oneof: "oneofField", T: () => ["protobuf_test_messages.proto3.TestAllTypesProto3.NestedEnum", TestAllTypesProto3_NestedEnum] },
+            { no: 120, name: "oneof_null_value", kind: "enum", oneof: "oneofField", T: () => ["google.protobuf.NullValue", NullValue] },
             { no: 201, name: "optional_bool_wrapper", kind: "message", T: () => BoolValue },
             { no: 202, name: "optional_int32_wrapper", kind: "message", T: () => Int32Value },
             { no: 203, name: "optional_int64_wrapper", kind: "message", T: () => Int64Value },
@@ -970,6 +1005,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
             { no: 304, name: "optional_struct", kind: "message", T: () => Struct },
             { no: 305, name: "optional_any", kind: "message", T: () => Any },
             { no: 306, name: "optional_value", kind: "message", T: () => Value },
+            { no: 307, name: "optional_null_value", kind: "enum", T: () => ["google.protobuf.NullValue", NullValue] },
             { no: 311, name: "repeated_duration", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Duration },
             { no: 312, name: "repeated_timestamp", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Timestamp },
             { no: 313, name: "repeated_fieldmask", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => FieldMask },
@@ -998,7 +1034,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
         ]);
     }
     create(value?: PartialMessage<TestAllTypesProto3>): TestAllTypesProto3 {
-        const message = { optionalInt32: 0, optionalInt64: "0", optionalUint32: 0, optionalUint64: "0", optionalSint32: 0, optionalSint64: "0", optionalFixed32: 0, optionalFixed64: "0", optionalSfixed32: 0, optionalSfixed64: "0", optionalFloat: 0, optionalDouble: 0, optionalBool: false, optionalString: "", optionalBytes: new Uint8Array(0), optionalNestedEnum: 0, optionalForeignEnum: 0, optionalAliasedEnum: 0, optionalStringPiece: "", optionalCord: "", repeatedInt32: [], repeatedInt64: [], repeatedUint32: [], repeatedUint64: [], repeatedSint32: [], repeatedSint64: [], repeatedFixed32: [], repeatedFixed64: [], repeatedSfixed32: [], repeatedSfixed64: [], repeatedFloat: [], repeatedDouble: [], repeatedBool: [], repeatedString: [], repeatedBytes: [], repeatedNestedMessage: [], repeatedForeignMessage: [], repeatedNestedEnum: [], repeatedForeignEnum: [], repeatedStringPiece: [], repeatedCord: [], packedInt32: [], packedInt64: [], packedUint32: [], packedUint64: [], packedSint32: [], packedSint64: [], packedFixed32: [], packedFixed64: [], packedSfixed32: [], packedSfixed64: [], packedFloat: [], packedDouble: [], packedBool: [], packedNestedEnum: [], unpackedInt32: [], unpackedInt64: [], unpackedUint32: [], unpackedUint64: [], unpackedSint32: [], unpackedSint64: [], unpackedFixed32: [], unpackedFixed64: [], unpackedSfixed32: [], unpackedSfixed64: [], unpackedFloat: [], unpackedDouble: [], unpackedBool: [], unpackedNestedEnum: [], mapInt32Int32: {}, mapInt64Int64: {}, mapUint32Uint32: {}, mapUint64Uint64: {}, mapSint32Sint32: {}, mapSint64Sint64: {}, mapFixed32Fixed32: {}, mapFixed64Fixed64: {}, mapSfixed32Sfixed32: {}, mapSfixed64Sfixed64: {}, mapInt32Float: {}, mapInt32Double: {}, mapBoolBool: {}, mapStringString: {}, mapStringBytes: {}, mapStringNestedMessage: {}, mapStringForeignMessage: {}, mapStringNestedEnum: {}, mapStringForeignEnum: {}, oneofField: { oneofKind: undefined }, repeatedBoolWrapper: [], repeatedInt32Wrapper: [], repeatedInt64Wrapper: [], repeatedUint32Wrapper: [], repeatedUint64Wrapper: [], repeatedFloatWrapper: [], repeatedDoubleWrapper: [], repeatedStringWrapper: [], repeatedBytesWrapper: [], repeatedDuration: [], repeatedTimestamp: [], repeatedFieldmask: [], repeatedStruct: [], repeatedAny: [], repeatedValue: [], repeatedListValue: [], fieldname1: 0, fieldName2: 0, FieldName3: 0, fieldName4: 0, field0Name5: 0, field0Name6: 0, fieldName7: 0, fieldName8: 0, fieldName9: 0, fieldName10: 0, fIELDNAME11: 0, fIELDName12: 0, FieldName13: 0, FieldName14: 0, fieldName15: 0, fieldName16: 0, fieldName17: 0, fieldName18: 0 };
+        const message = { optionalInt32: 0, optionalInt64: "0", optionalUint32: 0, optionalUint64: "0", optionalSint32: 0, optionalSint64: "0", optionalFixed32: 0, optionalFixed64: "0", optionalSfixed32: 0, optionalSfixed64: "0", optionalFloat: 0, optionalDouble: 0, optionalBool: false, optionalString: "", optionalBytes: new Uint8Array(0), optionalNestedEnum: 0, optionalForeignEnum: 0, optionalAliasedEnum: 0, optionalStringPiece: "", optionalCord: "", repeatedInt32: [], repeatedInt64: [], repeatedUint32: [], repeatedUint64: [], repeatedSint32: [], repeatedSint64: [], repeatedFixed32: [], repeatedFixed64: [], repeatedSfixed32: [], repeatedSfixed64: [], repeatedFloat: [], repeatedDouble: [], repeatedBool: [], repeatedString: [], repeatedBytes: [], repeatedNestedMessage: [], repeatedForeignMessage: [], repeatedNestedEnum: [], repeatedForeignEnum: [], repeatedStringPiece: [], repeatedCord: [], packedInt32: [], packedInt64: [], packedUint32: [], packedUint64: [], packedSint32: [], packedSint64: [], packedFixed32: [], packedFixed64: [], packedSfixed32: [], packedSfixed64: [], packedFloat: [], packedDouble: [], packedBool: [], packedNestedEnum: [], unpackedInt32: [], unpackedInt64: [], unpackedUint32: [], unpackedUint64: [], unpackedSint32: [], unpackedSint64: [], unpackedFixed32: [], unpackedFixed64: [], unpackedSfixed32: [], unpackedSfixed64: [], unpackedFloat: [], unpackedDouble: [], unpackedBool: [], unpackedNestedEnum: [], mapInt32Int32: {}, mapInt64Int64: {}, mapUint32Uint32: {}, mapUint64Uint64: {}, mapSint32Sint32: {}, mapSint64Sint64: {}, mapFixed32Fixed32: {}, mapFixed64Fixed64: {}, mapSfixed32Sfixed32: {}, mapSfixed64Sfixed64: {}, mapInt32Float: {}, mapInt32Double: {}, mapBoolBool: {}, mapStringString: {}, mapStringBytes: {}, mapStringNestedMessage: {}, mapStringForeignMessage: {}, mapStringNestedEnum: {}, mapStringForeignEnum: {}, oneofField: { oneofKind: undefined }, repeatedBoolWrapper: [], repeatedInt32Wrapper: [], repeatedInt64Wrapper: [], repeatedUint32Wrapper: [], repeatedUint64Wrapper: [], repeatedFloatWrapper: [], repeatedDoubleWrapper: [], repeatedStringWrapper: [], repeatedBytesWrapper: [], optionalNullValue: 0, repeatedDuration: [], repeatedTimestamp: [], repeatedFieldmask: [], repeatedStruct: [], repeatedAny: [], repeatedValue: [], repeatedListValue: [], fieldname1: 0, fieldName2: 0, FieldName3: 0, fieldName4: 0, field0Name5: 0, field0Name6: 0, fieldName7: 0, fieldName8: 0, fieldName9: 0, fieldName10: 0, fIELDNAME11: 0, fIELDName12: 0, FieldName13: 0, FieldName14: 0, fieldName15: 0, fieldName16: 0, fieldName17: 0, fieldName18: 0 };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<TestAllTypesProto3>(this, message, value);
@@ -1508,6 +1544,12 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                         oneofEnum: reader.int32()
                     };
                     break;
+                case /* google.protobuf.NullValue oneof_null_value */ 120:
+                    message.oneofField = {
+                        oneofKind: "oneofNullValue",
+                        oneofNullValue: reader.int32()
+                    };
+                    break;
                 case /* google.protobuf.BoolValue optional_bool_wrapper */ 201:
                     message.optionalBoolWrapper = BoolValue.internalBinaryRead(reader, reader.uint32(), options, message.optionalBoolWrapper);
                     break;
@@ -1579,6 +1621,9 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                     break;
                 case /* google.protobuf.Value optional_value */ 306:
                     message.optionalValue = Value.internalBinaryRead(reader, reader.uint32(), options, message.optionalValue);
+                    break;
+                case /* google.protobuf.NullValue optional_null_value */ 307:
+                    message.optionalNullValue = reader.int32();
                     break;
                 case /* repeated google.protobuf.Duration repeated_duration */ 311:
                     message.repeatedDuration.push(Duration.internalBinaryRead(reader, reader.uint32(), options));
@@ -2395,6 +2440,9 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
         /* protobuf_test_messages.proto3.TestAllTypesProto3.NestedEnum oneof_enum = 119; */
         if (message.oneofField.oneofKind === "oneofEnum")
             writer.tag(119, WireType.Varint).int32(message.oneofField.oneofEnum);
+        /* google.protobuf.NullValue oneof_null_value = 120; */
+        if (message.oneofField.oneofKind === "oneofNullValue")
+            writer.tag(120, WireType.Varint).int32(message.oneofField.oneofNullValue);
         /* google.protobuf.BoolValue optional_bool_wrapper = 201; */
         if (message.optionalBoolWrapper)
             BoolValue.internalBinaryWrite(message.optionalBoolWrapper, writer.tag(201, WireType.LengthDelimited).fork(), options).join();
@@ -2467,6 +2515,9 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
         /* google.protobuf.Value optional_value = 306; */
         if (message.optionalValue)
             Value.internalBinaryWrite(message.optionalValue, writer.tag(306, WireType.LengthDelimited).fork(), options).join();
+        /* google.protobuf.NullValue optional_null_value = 307; */
+        if (message.optionalNullValue !== 0)
+            writer.tag(307, WireType.Varint).int32(message.optionalNullValue);
         /* repeated google.protobuf.Duration repeated_duration = 311; */
         for (let i = 0; i < message.repeatedDuration.length; i++)
             Duration.internalBinaryWrite(message.repeatedDuration[i], writer.tag(311, WireType.LengthDelimited).fork(), options).join();
@@ -2653,3 +2704,55 @@ class ForeignMessage$Type extends MessageType<ForeignMessage> {
  * @generated MessageType for protobuf message protobuf_test_messages.proto3.ForeignMessage
  */
 export const ForeignMessage = new ForeignMessage$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class NullHypothesisProto3$Type extends MessageType<NullHypothesisProto3> {
+    constructor() {
+        super("protobuf_test_messages.proto3.NullHypothesisProto3", []);
+    }
+    create(value?: PartialMessage<NullHypothesisProto3>): NullHypothesisProto3 {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<NullHypothesisProto3>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: NullHypothesisProto3): NullHypothesisProto3 {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: NullHypothesisProto3, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_test_messages.proto3.NullHypothesisProto3
+ */
+export const NullHypothesisProto3 = new NullHypothesisProto3$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EnumOnlyProto3$Type extends MessageType<EnumOnlyProto3> {
+    constructor() {
+        super("protobuf_test_messages.proto3.EnumOnlyProto3", []);
+    }
+    create(value?: PartialMessage<EnumOnlyProto3>): EnumOnlyProto3 {
+        const message = {};
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<EnumOnlyProto3>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EnumOnlyProto3): EnumOnlyProto3 {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: EnumOnlyProto3, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_test_messages.proto3.EnumOnlyProto3
+ */
+export const EnumOnlyProto3 = new EnumOnlyProto3$Type();
