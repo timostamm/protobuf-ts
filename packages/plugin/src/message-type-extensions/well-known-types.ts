@@ -358,8 +358,9 @@ export class WellKnownTypes implements CustomMethodGenerator {
              * Encode \`${descriptor.name}\` to JSON object. 
              */
             function internalJsonWrite(message: ${FieldMask}, options: ${JsonWriteOptions}): ${JsonValue} {
+                const invalidFieldMaskJsonRegex = /[A-Z]|(_([.0-9_]|$))/g;
                 return message.paths.map(p => {
-                    if (p.match(/_[0-9]?_/g) || p.match(/[A-Z]/g))
+                    if (invalidFieldMaskJsonRegex.test(p))
                         throw new Error("Unable to encode FieldMask to JSON. lowerCamelCase of path name \\""+p+"\\" is irreversible.");
                     return ${lowerCamelCase}(p);
                 }).join(",");
@@ -379,7 +380,7 @@ export class WellKnownTypes implements CustomMethodGenerator {
                     if (str.includes('_'))
                         throw new Error("Unable to parse FieldMask from JSON. Path names must be lowerCamelCase.");
                     let sc = str.replace(/[A-Z]/g, letter => "_" + letter.toLowerCase());
-                    return (sc[0] === "_") ? sc.substring(1) : sc;
+                    return sc;
                 };
                 target.paths = json.split(",").map(camelToSnake);
                 return target;
