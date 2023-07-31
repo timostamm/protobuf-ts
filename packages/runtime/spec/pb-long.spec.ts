@@ -1,8 +1,9 @@
 import {PbLong, PbULong} from "../src";
 import {int64toString} from "../src/goog-varint";
+import {detectBi} from '../src/pb-long';
 
 
-describe('PbULong', function () {
+describeWithAndWithoutBISupport('PbULong', function () {
 
     it('can be constructed with bits', function () {
         let bi = new PbULong(0, 1);
@@ -19,7 +20,7 @@ describe('PbULong', function () {
 
     it('should from() max unsigned int64 native bigint', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let uLong = PbULong.from(18446744073709551615n);
@@ -39,18 +40,27 @@ describe('PbULong', function () {
         expect(uLong.toString()).toBe('18446744073709551615');
     });
 
-    it('should toBigInt()', function () {
-        if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+    it('should toNumber()', function () {
+        let bi = new PbLong(4294967295, 2097151);
+        expect(bi.toNumber()).toBe(Number.MAX_SAFE_INTEGER);
 
+        // signed max value
+        bi = new PbLong(4294967295, 2097152);
+        expect(() => bi.toNumber()).toThrowError("cannot convert to safe number");
+    });
+
+    it('should toBigInt()', function () {
         let uLong = new PbULong(-1, -1);
-        // @ts-ignore
-        expect(uLong.toBigInt()).toBe(18446744073709551615n);
+        if (globalThis.BigInt === undefined)
+            expect(() => uLong.toBigInt()).toThrowError();
+        else
+            // @ts-ignore
+            expect(uLong.toBigInt()).toBe(18446744073709551615n);
     });
 
     it('should fail from() max unsigned int64 native bigint', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         expect(() => PbULong.from(18446744073709551615n + 10n)).toThrowError("ulong too large");
@@ -65,6 +75,7 @@ describe('PbULong', function () {
         expect(() => PbULong.from(-1)).toThrowError();
         expect(() => PbULong.from(Number.NaN)).toThrowError();
         expect(() => PbULong.from(Number.POSITIVE_INFINITY)).toThrowError();
+        expect(() => PbULong.from(true as unknown as number)).toThrowError();
     });
 
     it('0 has lo = 0, hi = 0', function () {
@@ -73,17 +84,24 @@ describe('PbULong', function () {
         expect(ulong.lo).toBe(0);
     });
 
-    it('int64toString should serialize the same was as BigInt.toString()', function () {
+    it('int64toString should serialize the same way as BigInt.toString()', function () {
         let ulong = PbULong.from(1661324400000);
         expect(ulong.hi).toBe(386);
         expect(ulong.lo).toBe(-827943552);
         expect(ulong.toString()).toBe('1661324400000')
         expect(int64toString(ulong.lo, ulong.hi)).toBe('1661324400000')
     });
+
+    it('should return ZERO for "0", 0, or 0n', function () {
+        expect(PbULong.from("0").isZero()).toBe(true);
+        expect(PbULong.from(0).isZero()).toBe(true);
+        if (globalThis.BigInt !== undefined)
+            // @ts-ignore
+            expect(PbULong.from(0n).isZero()).toBe(true);
+    });
 });
 
-
-describe('PbLong', function () {
+describeWithAndWithoutBISupport('PbLong', function () {
 
     it('can be constructed with bits', function () {
         let bi = new PbLong(0, 1);
@@ -93,36 +111,36 @@ describe('PbLong', function () {
 
     it('should from() max signed int64 string', function () {
         let str = '9223372036854775807';
-        let uLong = PbLong.from(str);
-        expect(uLong.lo).toBe(-1);
-        expect(uLong.hi).toBe(2147483647);
-        expect(uLong.toString()).toBe("9223372036854775807");
+        let long = PbLong.from(str);
+        expect(long.lo).toBe(-1);
+        expect(long.hi).toBe(2147483647);
+        expect(long.toString()).toBe("9223372036854775807");
     });
 
     it('should from() min signed int64 string', function () {
         let str = '-9223372036854775808';
-        let uLong = PbLong.from(str);
-        expect(uLong.lo).toBe(0);
-        expect(uLong.hi).toBe(-2147483648);
+        let long = PbLong.from(str);
+        expect(long.lo).toBe(0);
+        expect(long.hi).toBe(-2147483648);
     });
 
     it('should toString() min signed int64', function () {
-        let uLong = new PbLong(0, -2147483648);
-        expect(uLong.toString()).toBe('-9223372036854775808');
+        let long = new PbLong(0, -2147483648);
+        expect(long.toString()).toBe('-9223372036854775808');
     });
 
     it('should from() max safe integer number', function () {
-        let uLong = PbLong.from(Number.MAX_SAFE_INTEGER);
-        expect(uLong.lo).toBe(-1);
-        expect(uLong.hi).toBe(2097151);
-        expect(uLong.toNumber()).toBe(Number.MAX_SAFE_INTEGER);
+        let long = PbLong.from(Number.MAX_SAFE_INTEGER);
+        expect(long.lo).toBe(-1);
+        expect(long.hi).toBe(2097151);
+        expect(long.toNumber()).toBe(Number.MAX_SAFE_INTEGER);
     });
 
     it('should from() min safe integer number', function () {
-        let uLong = PbLong.from(Number.MIN_SAFE_INTEGER);
-        expect(uLong.lo).toBe(1);
-        expect(uLong.hi).toBe(-2097152);
-        expect(uLong.toNumber()).toBe(Number.MIN_SAFE_INTEGER);
+        let long = PbLong.from(Number.MIN_SAFE_INTEGER);
+        expect(long.lo).toBe(1);
+        expect(long.hi).toBe(-2097152);
+        expect(long.toNumber()).toBe(Number.MIN_SAFE_INTEGER);
     });
 
     it('should fail invalid from() value', function () {
@@ -130,17 +148,22 @@ describe('PbLong', function () {
         expect(() => PbLong.from("0.75")).toThrowError();
         expect(() => PbLong.from("1,000")).toThrowError();
         expect(() => PbLong.from("1-000")).toThrowError();
-        let maxSignedPlusOneStr = "9223372036854775808"
-        expect(() => PbLong.from(maxSignedPlusOneStr)).toThrowError();
+        let maxSignedPlusOneStr = "9223372036854775808";
+        expect(() => PbLong.from(maxSignedPlusOneStr)).toThrowError('signed long too large');
+        let minSignedMinusOneStr = "-9223372036854775809";
+        expect(() => PbLong.from(minSignedMinusOneStr)).toThrowError('signed long too small');
+        let minUnsignedStr = '-18446744073709551616';
+        expect(() => PbLong.from(minUnsignedStr)).toThrowError('signed long too small');
         expect(() => PbLong.from(Number.NaN)).toThrowError();
         expect(() => PbLong.from(Number.POSITIVE_INFINITY)).toThrowError();
+        expect(() => PbLong.from(true as unknown as number)).toThrowError();
     });
 
     it('should toBigInt()', function () {
-        if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
-
         let bi = new PbLong(-620756991, 53471156);
+        if (globalThis.BigInt === undefined)
+            return expect(() => bi.toBigInt()).toThrowError();
+
         // @ts-ignore
         expect(bi.toBigInt()).toBe(229656869973524481n);
 
@@ -152,7 +175,15 @@ describe('PbLong', function () {
         bi = new PbLong(-1, 2147483647);
         // @ts-ignore
         expect(bi.toBigInt()).toBe(9223372036854775807n);
+    });
 
+    it('should toNumber()', function () {
+        let bi = new PbLong(4294967295, 2097151);
+        expect(bi.toNumber()).toBe(Number.MAX_SAFE_INTEGER);
+
+        // signed max value
+        bi = new PbLong(4294967295, 2097152);
+        expect(() => bi.toNumber()).toThrowError("cannot convert to safe number");
     });
 
 
@@ -173,7 +204,7 @@ describe('PbLong', function () {
 
     it('should isNegative() with negative native bigint', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let long = PbLong.from(-9223372036854775808n)
@@ -187,7 +218,7 @@ describe('PbLong', function () {
 
     it('from(bigint) set expected bits', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let bi = PbLong.from(9223372036854775807n);
@@ -205,14 +236,21 @@ describe('PbLong', function () {
         expect(ulong.lo).toBe(0);
     });
 
+
+    it('should return ZERO for "0", 0, or 0n', function () {
+        expect(PbLong.from("0").isZero()).toBe(true);
+        expect(PbLong.from(0).isZero()).toBe(true);
+        if (globalThis.BigInt !== undefined)
+            // @ts-ignore
+            expect(PbLong.from(0n).isZero()).toBe(true);
+    });
+
 });
 
-
-describe('testing native bigint', function () {
-
+describeWithAndWithoutBISupport('native bigint', function () {
     it('max uint64 value should survive string conversion', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let m = 18446744073709551615n;
@@ -223,7 +261,7 @@ describe('testing native bigint', function () {
 
     it('min int64 value should survive string conversion', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let m = -9223372036854775808n;
@@ -234,7 +272,7 @@ describe('testing native bigint', function () {
 
     it('max int64 value should survive string conversion', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let m = 9223372036854775807n;
@@ -246,7 +284,7 @@ describe('testing native bigint', function () {
 
     it('max uint64 value should survive DataView round trip', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let expected = 18446744073709551615n;
@@ -268,7 +306,7 @@ describe('testing native bigint', function () {
 
     it('max int64 value should survive DataView round trip', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let expected = 9223372036854775807n;
@@ -290,7 +328,7 @@ describe('testing native bigint', function () {
 
     it('min int64 value should survive DataView round trip', function () {
         if (globalThis.BigInt === undefined)
-            pending('No BigInt support on current platform');
+            return expect().nothing();
 
         // @ts-ignore
         let expected = -9223372036854775808n;
@@ -310,4 +348,30 @@ describe('testing native bigint', function () {
     });
 
 });
+
+function describeWithAndWithoutBISupport(description: string, specDefinitions: () => void) {
+    describe(description, function () {
+        describe('(with BI support)', function () {
+            if (globalThis.BigInt === undefined)
+                return it('cannot be tested', function () {
+                    pending('No BigInt support on current platform');
+                });
+            specDefinitions();
+        });
+        describe('(without BI support)', function () {
+            specDefinitions();
+            let BICtor: typeof globalThis.BigInt;
+            beforeAll(() => {
+                BICtor = globalThis.BigInt;
+                // @ts-ignore
+                globalThis.BigInt = undefined;
+                detectBi();
+            });
+            afterAll(() => {
+                globalThis.BigInt = BICtor;
+                detectBi();
+            });
+        });
+    });
+}
 
