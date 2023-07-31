@@ -2,9 +2,8 @@ import {PbLong, PbULong} from "../src";
 import {int64toString} from "../src/goog-varint";
 import {detectBi} from '../src/pb-long';
 
-const BICtor = globalThis.BigInt;
 
-function testPbULong() {
+describeWithAndWithoutBISupport('PbULong', function () {
 
     it('can be constructed with bits', function () {
         let bi = new PbULong(0, 1);
@@ -100,9 +99,9 @@ function testPbULong() {
             // @ts-ignore
             expect(PbULong.from(0n).isZero()).toBe(true);
     });
-}
+});
 
-function testPbLong () {
+describeWithAndWithoutBISupport('PbLong', function () {
 
     it('can be constructed with bits', function () {
         let bi = new PbLong(0, 1);
@@ -237,7 +236,7 @@ function testPbLong () {
         expect(ulong.lo).toBe(0);
     });
 
-    
+
     it('should return ZERO for "0", 0, or 0n', function () {
         expect(PbLong.from("0").isZero()).toBe(true);
         expect(PbLong.from(0).isZero()).toBe(true);
@@ -246,10 +245,9 @@ function testPbLong () {
             expect(PbLong.from(0n).isZero()).toBe(true);
     });
 
-}
+});
 
-function testNativeBigInt() {
-
+describeWithAndWithoutBISupport('native bigint', function () {
     it('max uint64 value should survive string conversion', function () {
         if (globalThis.BigInt === undefined)
             return expect().nothing();
@@ -349,38 +347,31 @@ function testNativeBigInt() {
         expect(actual.toString()).toBe(expected.toString());
     });
 
-}
+});
 
-function supportBI() {
-    globalThis.BigInt = BICtor;
-    detectBi();
-}
-
-function unsupportBI() {
-    // @ts-ignore
-    globalThis.BigInt = undefined;
-    detectBi();
-}
-
-function withAndWithoutBISupport(testFn: () => void) {
-    return function () {
+function describeWithAndWithoutBISupport(description: string, specDefinitions: () => void) {
+    describe(description, function () {
         describe('(with BI support)', function () {
-            if (BICtor === undefined)
+            if (globalThis.BigInt === undefined)
                 return it('cannot be tested', function () {
                     pending('No BigInt support on current platform');
                 });
-            beforeEach(supportBI);
-            testFn();
+            specDefinitions();
         });
         describe('(without BI support)', function () {
-            beforeEach(unsupportBI);
-            testFn();
+            specDefinitions();
+            let BICtor: typeof globalThis.BigInt;
+            beforeAll(() => {
+                BICtor = globalThis.BigInt;
+                // @ts-ignore
+                globalThis.BigInt = undefined;
+                detectBi();
+            });
+            afterAll(() => {
+                globalThis.BigInt = BICtor;
+                detectBi();
+            });
         });
-    }
+    });
 }
-
-describe('PbULong', withAndWithoutBISupport(testPbULong));
-describe('PbLong', withAndWithoutBISupport(testPbLong));
-describe('native bigint', withAndWithoutBISupport(testNativeBigInt));
-afterAll(supportBI);
 
