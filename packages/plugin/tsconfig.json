@@ -12,6 +12,9 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": false,
+    "paths": {
+      "@protobuf-ts/*": ["../*/src"]
+    },
     "lib": [
       "es2017",
       "dom"

@@ -5,11 +5,11 @@
     "spec/support/*.ts"
   ],
   "compilerOptions": {
+    "skipLibCheck": true,
+    "sourceMap": true,
     "outDir": "/tmp",
     "paths": {
-      "@protobuf-ts/runtime": [
-        "../runtime"
-      ]
-    }
+      "@protobuf-ts/*": ["../*/src"]
+    },
   }
 }

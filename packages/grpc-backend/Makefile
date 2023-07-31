@@ -5,9 +5,9 @@ SPECS := $(shell find spec -name '*.spec.ts')
 default: clean build test
 
 build:
-	@./node_modules/.bin/tsc --project tsconfig.json --module es2015 --outDir build/es2015;
+	@./node_modules/.bin/tsc --project tsconfig.build.json --module es2015 --outDir build/es2015;
 	@echo "es6 done"
-	@./node_modules/.bin/tsc --project tsconfig.json --module commonjs --outDir build/commonjs \
+	@./node_modules/.bin/tsc --project tsconfig.build.json --module commonjs --outDir build/commonjs \
 		--declaration --declarationDir build/types;
 	@echo "cjs done"
 

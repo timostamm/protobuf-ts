@@ -19,7 +19,7 @@ clean:
 
 test-spec:
 	@./node_modules/.bin/ts-node \
-		--project tsconfig.json \
+		--project tsconfig.test.json \
 		--require tsconfig-paths/register \
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$(SPECS)
