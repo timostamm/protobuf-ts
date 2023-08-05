@@ -1709,7 +1709,7 @@ The `ServerStreamingCall` provides the following additional properties:
 - request: `Readonly<I>`   
   The request message being sent.
 
-- response: `RpcOutputStream<O>`   
+- responses: `RpcOutputStream<O>`   
   Response messages from the server. 
   This is an AsyncIterable that can be iterated with `await for .. of`.
 
