@@ -2,6 +2,7 @@ import type {FieldInfo, MessageInfo} from "./reflection-info";
 import type {BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter} from "./binary-format-contract";
 import type {JsonValue} from "./json-typings";
 import type {JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions} from "./json-format-contract";
+import type {MergeOptions} from "./merge-options";
 
 /**
  * The symbol used as a key on message objects to store the message type.
@@ -129,23 +130,23 @@ export interface IMessageType<T extends object> extends MessageInfo {
      * If a singular scalar or enum field is present in the source, it
      * replaces the field in the target.
      *
-     * If a singular message field is present in the source, it is merged
-     * with the target field by calling mergePartial() of the responsible
-     * message type.
+     * By default if a singular message field is present in the source,
+     * it is merged with the target field by calling mergePartial() of
+     * the responsible message type.
      *
-     * If a repeated field is present in the source, its values replace
-     * all values in the target array, removing extraneous values.
-     * Repeated message fields are copied, not merged.
+     * By default if a repeated field is present in the source, its values
+     * replace all values in the target array, removing extraneous values.
+     * By default repeated message fields are copied, not merged.
      *
-     * If a map field is present in the source, entries are added to the
-     * target map, replacing entries with the same key. Entries that only
-     * exist in the target remain. Entries with message values are copied,
-     * not merged.
+     * By default if a map field is present in the source, entries are added
+     * to the target map, replacing entries with the same key. Entries that
+     * only exist in the target remain. By default, entries with message
+     * values are copied, not merged.
      *
-     * Note that this function differs from protobuf merge semantics,
-     * which appends repeated fields.
+     * Note that this function's defaults differs from protobuf merge
+     * semantics, which appends repeated fields.
      */
-    mergePartial(target: T, source: PartialMessage<T>): void;
+    mergePartial(target: T, source: PartialMessage<T>, mergeOptions?: MergeOptions): void;
 
 
     /**

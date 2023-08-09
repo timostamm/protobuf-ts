@@ -1,3 +1,4 @@
+import type {MergeOptions} from "./merge-options";
 import type {IMessageType, PartialMessage} from "./message-type-contract";
 import type {FieldInfo, PartialFieldInfo} from "./reflection-info";
 import {normalizeFieldInfo} from "./reflection-info";
@@ -143,8 +144,8 @@ export class MessageType<T extends object> implements IMessageType<T> {
     /**
      * Copy partial data into the target message.
      */
-    mergePartial(target: T, source: PartialMessage<T>): void {
-        reflectionMergePartial<T>(this, target, source);
+    mergePartial(target: T, source: PartialMessage<T>, mergeOptions?: MergeOptions): void {
+        reflectionMergePartial<T>(this, target, source, mergeOptions);
     }
 
 
