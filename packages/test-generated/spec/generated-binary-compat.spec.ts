@@ -1,4 +1,4 @@
-import {IMessageType, MessageType} from "@protobuf-ts/runtime";
+import {IMessageType, MessageType, base64encode} from "@protobuf-ts/runtime";
 import {EnumFieldMessage} from "../ts-out/msg-enum";
 import {JsonNamesMessage} from "../ts-out/msg-json-names";
 import {MessageFieldMessage} from "../ts-out/msg-message";
@@ -6,6 +6,7 @@ import {OneofMessageMemberMessage, OneofScalarMemberMessage} from "../ts-out/msg
 import {Proto2OptionalsMessage} from "../ts-out/msg-proto2-optionals";
 import {Proto3OptionalsMessage} from "../ts-out/msg-proto3-optionals";
 import {RepeatedScalarValuesMessage, ScalarValuesMessage} from "../ts-out/msg-scalar";
+import {TestFieldOrderings} from "../ts-out/google/protobuf/unittest";
 
 let generatedRegistry: IMessageType<any>[] = [
     EnumFieldMessage,
@@ -38,6 +39,21 @@ describe('generated code compatibility', () => {
             });
         }
     });
+
+    it('should have same serialization order regardless of optimization options', function () {
+        const reflectionType = new MessageType<TestFieldOrderings>(TestFieldOrderings.typeName, [...TestFieldOrderings.fields].reverse());
+        const message = TestFieldOrderings.fromJson({
+            myFloat: 0.1,
+            myInt: "1",
+            myString: "1",
+            optionalNestedMessage: {
+                bb: 2,
+                oo: "2"
+            }
+        });
+        expect(base64encode(TestFieldOrderings.toBinary(message)))
+            .toBe(base64encode(reflectionType.toBinary(message)));
+    })
 
 });
 
