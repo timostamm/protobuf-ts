@@ -8,8 +8,9 @@ import {MESSAGE_TYPE} from './message-type-contract';
  * information.
  */
 export function reflectionCreate<T extends object>(type: IMessageType<T>): T {
-    const msg: UnknownMessage = {};
-    Object.defineProperty(msg, MESSAGE_TYPE, {enumerable: false, value: type});
+    const msg: UnknownMessage = type.messagePrototype
+        ? Object.create(type.messagePrototype)
+        : Object.defineProperty({}, MESSAGE_TYPE, {value: type});
     for (let field of type.fields) {
         let name = field.localName;
         if (field.opt)

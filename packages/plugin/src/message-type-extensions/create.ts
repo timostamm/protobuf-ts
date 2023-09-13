@@ -34,11 +34,14 @@ export class Create implements CustomMethodGenerator {
             source,
             descriptor,
 
-            // const message = { boolField: false, ... };
-            this.makeMessageVariable(source, descriptor),
+            // const message = globalThis.Object.create(this.messagePrototype);
+            this.makeMessageVariable(),
 
-            // Object.defineProperty(message, MESSAGE_TYPE, {enumerable: false, value: this});
-            this.makeDefineMessageTypeSymbolProperty(source),
+            // message.boolField = false;
+            // message.repeatedField = [];
+            // message.mapField = {};
+            // ...
+            ...this.makeMessagePropertyAssignments(source, descriptor),
 
             // if (value !== undefined)
             //     reflectionMergePartial<ScalarValuesMessage>(message, value, this);
@@ -73,16 +76,31 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMessageVariable(source: TypescriptFile, descriptor: DescriptorProto) {
-        let messageType = this.interpreter.getMessageType(descriptor);
-        let defaultMessage = messageType.create();
+    makeMessageVariable() {
         return ts.createVariableStatement(
             undefined,
             ts.createVariableDeclarationList(
                 [ts.createVariableDeclaration(
                     ts.createIdentifier("message"),
                     undefined,
-                    typescriptLiteralFromValue(defaultMessage)
+                    ts.createCall(
+                        ts.createPropertyAccess(
+                            ts.createPropertyAccess(
+                                ts.createIdentifier("globalThis"),
+                                ts.createIdentifier("Object")
+                            ),
+                            ts.createIdentifier("create")
+                        ),
+                        undefined,
+                        [
+                            ts.createNonNullExpression(
+                                ts.createPropertyAccess(
+                                    ts.createThis(),
+                                    ts.createIdentifier("messagePrototype")
+                                )
+                            )
+                        ]
+                    )
                 )],
                 ts.NodeFlags.Const
             )
@@ -90,35 +108,20 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeDefineMessageTypeSymbolProperty(source: TypescriptFile) {
-        const MESSAGE_TYPE = this.imports.name(source, 'MESSAGE_TYPE', this.options.runtimeImportPath);
-
-        return ts.createExpressionStatement(ts.createCall(
-            ts.createPropertyAccess(
-                ts.createPropertyAccess(
-                    ts.createIdentifier("globalThis"),
-                    ts.createIdentifier("Object")
-                ),
-                ts.createIdentifier("defineProperty")
-            ),
-            undefined,
-            [
-                ts.createIdentifier("message"),
-                ts.createIdentifier(MESSAGE_TYPE),
-                ts.createObjectLiteral(
-                    [
-                        ts.createPropertyAssignment(
-                            ts.createIdentifier("enumerable"),
-                            ts.createFalse()
-                        ),
-                        ts.createPropertyAssignment(
-                            ts.createIdentifier("value"),
-                            ts.createThis()
-                        )
-                    ],
-                    false
+    makeMessagePropertyAssignments(source: TypescriptFile, descriptor: DescriptorProto) {
+        let messageType = this.interpreter.getMessageType(descriptor);
+        let defaultMessage = messageType.create();
+        return Object.entries(defaultMessage).map(([key, value]): ts.ExpressionStatement => (
+            ts.createExpressionStatement(
+                ts.createBinary(
+                    ts.createPropertyAccess(
+                        ts.createIdentifier("message"),
+                        ts.createIdentifier(key)
+                    ),
+                    ts.createToken(ts.SyntaxKind.EqualsToken),
+                    typescriptLiteralFromValue(value)
                 )
-            ]
+            )
         ));
     }
 

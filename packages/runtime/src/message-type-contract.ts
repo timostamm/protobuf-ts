@@ -58,6 +58,12 @@ export interface IMessageType<T extends object> extends MessageInfo {
      */
     readonly options: { [extensionName: string]: JsonValue };
 
+    /**
+     * Contains the prototype for messages returned by create() which
+     * includes the `MESSAGE_TYPE` symbol pointing back to `this`.
+     */
+    readonly messagePrototype?: Readonly<{}>;
+
 
     /**
      * Create a new message with default values.
