@@ -778,7 +778,7 @@ myMessage.string = d.toString();
 In proto3, scalar fields always have a value, even if you did 
 not set one. If you read an `int32` field, you cannot determine 
 whether the creator of the message intended to write `0`, or 
-if he intentionally left the field out. Both look the same.
+if they intentionally left the field out. Both look the same.
 
 The proto3-optionals feature adds a convenient support for 
 optional fields by bringing back the `optional` label: 
