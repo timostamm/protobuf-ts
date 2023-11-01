@@ -48,13 +48,21 @@ export {
     LongType,
     RepeatType,
     MessageInfo,
+    JsonOptionsMap,
+    OneofOptions,
     EnumInfo,
+    EnumInfoOptions,
+    EnumValueOptions,
     FieldInfo,
     PartialFieldInfo,
     normalizeFieldInfo,
     readFieldOptions,
     readFieldOption,
-    readMessageOption
+    readMessageOption,
+    readOneofOption,
+    readEnumOption,
+    readEnumValueOption,
+    registerEnumOptions
 } from './reflection-info';
 
 // Types for messsage objects type at runtime, when concrete type is unknown.

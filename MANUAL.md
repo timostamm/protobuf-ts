@@ -1030,8 +1030,8 @@ operations.
 
 ## Custom options
 
-`protobuf-ts` supports custom options for messages, fields, services 
-and methods and will add them to the reflection information. 
+`protobuf-ts` supports custom options for messages, fields, oneofs, enums, enum
+values, services and methods and will add them to the reflection information. 
 
 For example, consider the following service definition in 
 [service-annotated.proto](./packages/proto/service-annotated.proto):
@@ -1105,12 +1105,78 @@ import {JsonValue} from "@protobuf-ts/runtime";
 let rule: JsonValue | undefined = readMethodOption(AnnotatedService, "get", "google.api.http");
 ```
 
+Because `protobuf-ts` uses TypeScript enums to represent protobuf enums the
+custom options for enums and enum options must be stored in a separate export.
+For example a protobuf enum like this:
+
+```proto
+enum MyEnum {
+    option allow_alias = true;
+    option (enum_opt) = -789;
+    MY_ENUM_ANY   = 0 [(enum_value_opt) = 0];
+    MY_ENUM_YES   = 1 [(enum_value_opt) = 123];
+    MY_ENUM_TRUE  = 1 [(enum_value_opt) = 456];
+    MY_ENUM_NO    = 2;
+    MY_ENUM_FALSE = 2;
+}
+```
+
+Will generate two exports: `MyEnum` (the TypeScript enum) and `MyEnumInfo` (the
+reflection information about the enum). Note that the latter is the same value
+returned for `MyMessage.field[0].T()` (assuming that field is an enum):
+
+```ts
+export enum MyEnum {
+    /**
+     * @generated from protobuf enum value: ANY = 0;
+     */
+    ANY = 0,
+    /**
+     * @generated from protobuf enum value: YES = 1;
+     */
+    YES = 1,
+    /**
+     * @generated from protobuf enum value: TRUE = 1;
+     */
+    TRUE = 1,
+    /**
+     * @generated from protobuf enum value: NO = 2;
+     */
+    NO = 2,
+    /**
+     * @generated from protobuf enum value: FALSE = 2;
+     */
+    FALSE = 2,
+}
+
+export const MyEnumInfo: EnumInfo = [
+    "package.MyEnum",
+    MyEnum,
+    "MY_ENUM_",
+    {allowAlias: true, options: {enum_opt: -789}, valueOptions: {ANY: {enum_value_opt: 0}, YES: {enum_value_opt: 123}, TRUE: {enum_value_opt: 456}}}
+];
+```
+
+Accessing the custom options for enums or enum options still uses the the
+actual TypeScript enum, not the enum info object:
+
+```ts
+let enumOption = readEnumOption(MyEnum, "enum_opt"); // -789
+let enumAnyOption = readEnumValueOption(MyEnum, MyEnum.ANY, "enum_value_opt"); // 0
+
+// Use string literal for aliased enum values
+let enumYesOption = readEnumValueOption(MyEnum, "YES", "enum_value_opt"); // 123
+let enumTrueOption = readEnumValueOption(MyEnum, "TRUE", "enum_value_opt"); // 456
+```
 
 
 | Options for | stored in                             | access with                                         |
 |-------------|---------------------------------------|-----------------------------------------------------|
 | Messages    | `AnnotatedMessage.options`            | `readMessageOption()` from @protobuf-ts/runtime     |
+| Oneofs      | `AnnotatedMessage.oneofOptions[name]` | `readOneofOption()` from @protobuf-ts/runtime       |
 | Fields      | `AnnotatedMessage.field[0].options`   | `readFieldOption()` from @protobuf-ts/runtime       |
+| Enums       | `AnnotatedEnumInfo.options`           | `readEnumOption()` from @protobuf-ts/runtime        |
+| Enum Values | `AnnotatedEnumInfo.valueOptions`      | `readEnumValueOption()` from @protobuf-ts/runtime   |
 | Services    | `AnnotatedService.options`            | `readServiceOption()` from @protobuf-ts/runtime-rpc |
 | Methods     | `AnnotatedService.methods[0].options` | `readMethodOption()` from @protobuf-ts/runtime-rpc  |
 

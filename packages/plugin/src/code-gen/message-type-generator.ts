@@ -92,10 +92,22 @@ export class MessageTypeGenerator extends GeneratorBase {
                 this.fieldInfoGenerator.createFieldInfoLiterals(source, interpreterType.fields)
             ];
 
-        // if present, add message options in json format to MessageType CTOR args
-        if (Object.keys(interpreterType.options).length) {
+        const hasMessageOptions = Object.keys(interpreterType.options).length;
+        const hasOneofOptions = Object.keys(interpreterType.oneofOptions).length;
+        // if present, add message/oneof options in json format to MessageType CTOR args
+        if (hasMessageOptions) {
             classDecSuperArgs.push(
                 typescriptLiteralFromValue(interpreterType.options)
+            );
+            if (hasOneofOptions) {
+                classDecSuperArgs.push(
+                    typescriptLiteralFromValue(interpreterType.oneofOptions)
+                );
+            }
+        } else if (hasOneofOptions) {
+            classDecSuperArgs.push(
+                typescriptLiteralFromValue({}),
+                typescriptLiteralFromValue(interpreterType.oneofOptions)
             );
         }
 

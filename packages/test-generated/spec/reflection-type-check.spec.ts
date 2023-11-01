@@ -20,6 +20,7 @@ describe('ReflectionTypeCheck.is()', function () {
         const mi = {
             typeName: OneofScalarMemberMessage.typeName,
             fields: OneofScalarMemberMessage.fields.map(normalizeFieldInfo),
+            oneofOptions: {},
             options: {}
         };
         const msg = {
@@ -59,6 +60,7 @@ describe('ReflectionTypeCheck.is()', function () {
             const mi = {
                 typeName: ScalarValuesMessage.typeName,
                 fields: ScalarValuesMessage.fields.map(normalizeFieldInfo),
+                oneofOptions: {},
                 options: {}
             };
             let m = {
@@ -92,6 +94,7 @@ describe('ReflectionTypeCheck.is()', function () {
             const mi = {
                 typeName: OneofScalarMemberMessage.typeName,
                 fields: OneofScalarMemberMessage.fields.map(normalizeFieldInfo),
+                oneofOptions: {},
                 options: {}
             };
             it('checks oneof group structure', function () {
@@ -128,6 +131,7 @@ describe('ReflectionTypeCheck.is()', function () {
             const mi = {
                 typeName: RepeatedScalarValuesMessage.typeName,
                 fields: RepeatedScalarValuesMessage.fields.map(normalizeFieldInfo),
+                oneofOptions: {},
                 options: {}
             };
             const m = {

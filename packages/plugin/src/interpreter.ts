@@ -1,4 +1,5 @@
 import {
+    AnyDescriptorProto,
     DescriptorProto,
     DescriptorRegistry,
     EnumDescriptorProto,
@@ -15,11 +16,6 @@ import {assert} from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import { FieldInfoGenerator } from "./code-gen/field-info-generator";
 import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
-
-
-type JsonOptionsMap = {
-    [extensionName: string]: rt.JsonValue
-}
 
 
 /**
@@ -86,7 +82,7 @@ export class Interpreter {
      * Note that options on options (google.protobuf.*Options) are not
      * supported.
      */
-    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto | ServiceDescriptorProto | DescriptorProto, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
+    readOptions(descriptor: AnyDescriptorProto, excludeOptions: readonly string[]): rt.JsonOptionsMap | undefined {
 
         // the option to force exclude all options takes precedence
         if (this.options.forceExcludeAllOptions) {
@@ -103,22 +99,12 @@ export class Interpreter {
         if (!unknownFields.length) {
             return undefined;
         }
-
-        let optionsTypeName: string;
-        if (FieldDescriptorProto.is(descriptor) && DescriptorProto.is(this.registry.parentOf(descriptor))) {
-            optionsTypeName = 'google.protobuf.FieldOptions';
-        } else if (MethodDescriptorProto.is(descriptor)) {
-            optionsTypeName = 'google.protobuf.MethodOptions';
-        } else if (this.registry.fileOf(descriptor) === descriptor) {
-            optionsTypeName = 'google.protobuf.FileOptions';
-        } else if (ServiceDescriptorProto.is(descriptor)) {
-            optionsTypeName = 'google.protobuf.ServiceOptions';
-        } else if (DescriptorProto.is(descriptor)) {
-            optionsTypeName = 'google.protobuf.MessageOptions';
-        } else {
-            throw new Error("interpreter expected field or method descriptor");
+        
+        if (!rt.containsMessageType(descriptor.options)) {
+            throw new Error("interpreter expected descriptor.options to contain MessageType");
         }
 
+        let optionsTypeName = descriptor.options[rt.MESSAGE_TYPE].typeName;
         // create a synthetic type that has all extension fields for field options
         const typeName = `$synthetic.${optionsTypeName}`;
         let type = this.messageTypes.get(typeName);
@@ -201,21 +187,33 @@ export class Interpreter {
         if (!type) {
 
             // Create and store the message type
-            const optionsPlaceholder: JsonOptionsMap = {};
+            const oneofOptions: {[oneof: string]: rt.JsonOptionsMap} = {};
+            const optionsPlaceholder: rt.JsonOptionsMap = {};
             type = new rt.MessageType(
                 typeName,
                 this.buildFieldInfos(descriptor.field),
-                optionsPlaceholder
+                optionsPlaceholder,
+                oneofOptions
             );
             this.messageTypes.set(typeName, type);
 
             const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
+            const excludeOptions = ourFileOptions["ts.exclude_options"];
 
             // add message options *after* storing, so that the option can refer to itself
-            const messageOptions = this.readOptions(descriptor, ourFileOptions["ts.exclude_options"]);
+            const messageOptions = this.readOptions(descriptor, excludeOptions);
             if (messageOptions) {
                 for (let key of Object.keys(messageOptions)) {
                     optionsPlaceholder[key] = messageOptions[key];
+                }
+            }
+
+            // same for oneof options
+            for (let i = 0; i < descriptor.oneofDecl.length; i++) {
+                const od = descriptor.oneofDecl[i];
+                const oneofOpt = this.readOptions(od, excludeOptions);
+                if (oneofOpt) {
+                    oneofOptions[this.createTypescriptNameForField(od)] = oneofOpt;
                 }
             }
 
@@ -223,7 +221,7 @@ export class Interpreter {
             for (let i = 0; i < type.fields.length; i++) {
                 const fd = descriptor.field[i];
                 const fi = type.fields[i];
-                fi.options = this.readOptions(fd, ourFileOptions["ts.exclude_options"]);
+                fi.options = this.readOptions(fd, excludeOptions);
             }
 
         }
@@ -263,8 +261,11 @@ export class Interpreter {
             : descriptorOrTypeName;
         let typeName = this.registry.makeTypeName(descriptor);
         assert(EnumDescriptorProto.is(descriptor));
-        let enumInfo = this.enumInfos.get(typeName) ?? this.buildEnumInfo(descriptor);
-        this.enumInfos.set(typeName, enumInfo);
+        let enumInfo = this.enumInfos.get(typeName);
+        if (!enumInfo) {
+            enumInfo = this.buildEnumInfo(descriptor);
+            this.enumInfos.set(typeName, enumInfo);
+        }
         return enumInfo;
     }
 
@@ -551,6 +552,11 @@ export class Interpreter {
             : this.registry.findEnumSharedPrefix(descriptor, `${descriptor.name}`);
         let hasZero = descriptor.value.some(v => v.number === 0);
         let builder = new RuntimeEnumBuilder();
+        let ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
+        let excludeOptions = ourFileOptions['ts.exclude_options'];
+        let {uninterpretedOption, deprecated, ...builtinOptions} = descriptor.options ?? {};
+        let enumOptions = this.readOptions(descriptor, excludeOptions);
+        let enumValueOptions: {[enumLabel: string]: rt.JsonOptionsMap} = {};
         if (!hasZero && typeof this.options.synthesizeEnumZeroValue == 'string') {
             builder.add(this.options.synthesizeEnumZeroValue, 0);
         }
@@ -561,16 +567,21 @@ export class Interpreter {
             if (sharedPrefix) {
                 name = name.substring(sharedPrefix.length);
             }
+            const options = this.readOptions(enumValueDescriptor, excludeOptions);
+            if (options) {
+                enumValueOptions[name] = options;
+            }
             builder.add(name, enumValueDescriptor.number);
         }
-        let enumInfo: rt.EnumInfo = [
-            this.registry.makeTypeName(descriptor),
-            builder.build(),
-        ];
-        if (sharedPrefix) {
-            enumInfo = [enumInfo[0], enumInfo[1], sharedPrefix];
-        }
-        return enumInfo;
+        
+        let typeName = this.registry.makeTypeName(descriptor),
+            tsEnum = builder.build(),
+            options = enumOptions || Object.keys(builtinOptions).length > 0 || Object.keys(enumValueOptions).length > 0
+                ? {options: enumOptions ?? {}, valueOptions: enumValueOptions, ...builtinOptions}
+                : undefined;
+        return sharedPrefix || options
+            ? [typeName, tsEnum, sharedPrefix, options]
+            : [typeName, tsEnum];
     }
 
 

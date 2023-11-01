@@ -316,7 +316,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
         let [enumTypeName] = ei;
         let enumDescriptor = this.registry.resolveTypeName(enumTypeName);
         assert(EnumDescriptorProto.is(enumDescriptor));
-        return ts.createTypeReferenceNode(this.imports.type(source, enumDescriptor), undefined);
+        return ts.createTypeReferenceNode(this.imports.type(source, enumDescriptor, undefined, true), undefined);
     }
 
 

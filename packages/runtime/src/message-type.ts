@@ -1,5 +1,5 @@
 import type {IMessageType, PartialMessage} from "./message-type-contract";
-import type {FieldInfo, PartialFieldInfo} from "./reflection-info";
+import type {JsonOptionsMap, OneofOptions, FieldInfo, PartialFieldInfo} from "./reflection-info";
 import {normalizeFieldInfo} from "./reflection-info";
 import {ReflectionTypeCheck} from "./reflection-type-check";
 import {ReflectionJsonReader} from "./reflection-json-reader";
@@ -45,9 +45,15 @@ export class MessageType<T extends object> implements IMessageType<T> {
     readonly fields: readonly FieldInfo[];
 
     /**
-     * Contains custom service options from the .proto source in JSON format.
+     * Contains custom message options from the .proto source in JSON format.
      */
     readonly options: JsonOptionsMap;
+
+    /**
+     * Contains custom oneof options from the .proto source in JSON format
+     * indexed by oneof name.
+     */
+    readonly oneofOptions: OneofOptions;
 
 
     protected readonly defaultCheckDepth = 16;
@@ -57,10 +63,11 @@ export class MessageType<T extends object> implements IMessageType<T> {
     protected readonly refBinReader: ReflectionBinaryReader;
     protected readonly refBinWriter: ReflectionBinaryWriter;
 
-    constructor(name: string, fields: readonly PartialFieldInfo[], options?: JsonOptionsMap) {
+    constructor(name: string, fields: readonly PartialFieldInfo[], options?: JsonOptionsMap, oneofOptions?: OneofOptions) {
         this.typeName = name;
         this.fields = fields.map(normalizeFieldInfo);
         this.options = options ?? {};
+        this.oneofOptions = oneofOptions ?? {};
         this.refTypeCheck = new ReflectionTypeCheck(this);
         this.refJsonReader = new ReflectionJsonReader(this);
         this.refJsonWriter = new ReflectionJsonWriter(this);
@@ -258,8 +265,3 @@ export class MessageType<T extends object> implements IMessageType<T> {
     }
 
 }
-
-
-type JsonOptionsMap = {
-    [extensionName: string]: JsonValue;
-};
