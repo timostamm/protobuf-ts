@@ -610,7 +610,13 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             undefined,
             ts.createVariableDeclarationList([ts.createVariableDeclaration(ts.createIdentifier("k"), undefined, undefined)], ts.NodeFlags.Let),
             ts.createCall(
-                ts.createPropertyAccess(ts.createIdentifier("Object"), ts.createIdentifier("keys")),
+                ts.createPropertyAccess(
+                    ts.createPropertyAccess(
+                        ts.createIdentifier("globalThis"),
+                        ts.createIdentifier("Object")
+                    ),
+                    ts.createIdentifier("keys")
+                ),
                 undefined,
                 [fieldPropertyAccess]
             ),
