@@ -231,7 +231,7 @@ export class WellKnownTypes implements CustomMethodGenerator {
              * In JSON format, the \`Timestamp\` type is encoded as a string 
              * in the RFC 3339 format.
              */
-            function internalJsonWrite(message: ${Timestamp}, options: ${JsonWriteOptions}): ${JsonValue} {
+            function internalJsonWrite(message: ${Timestamp}, _options: ${JsonWriteOptions}): ${JsonValue} {
                 let ms = PbLong.from(message.seconds).toNumber() * 1000;
                 if (ms < Date.parse("0001-01-01T00:00:00Z") || ms > Date.parse("9999-12-31T23:59:59Z"))
                     throw new Error("Unable to encode Timestamp to JSON. Must be from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59Z inclusive.");
@@ -254,7 +254,7 @@ export class WellKnownTypes implements CustomMethodGenerator {
              * In JSON format, the \`Timestamp\` type is encoded as a string 
              * in the RFC 3339 format.
              */
-            function internalJsonRead(json: ${JsonValue}, options: ${JsonReadOptions}, target?: ${Timestamp}): ${Timestamp} {
+            function internalJsonRead(json: ${JsonValue}, _options: ${JsonReadOptions}, target?: ${Timestamp}): ${Timestamp} {
                 if (typeof json !== "string")
                     throw new Error("Unable to parse Timestamp from JSON " + ${typeofJsonValue}(json) + ".");
                 // RFC 3339 with "Z" (UTC) or offset like "+08:00" and optional fractions
