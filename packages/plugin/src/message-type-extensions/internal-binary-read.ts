@@ -87,11 +87,12 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             MessageInterface = this.imports.type(source, descriptor),
             IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath, true),
             BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath, true);
+        const empty = descriptor.field.length === 0;
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("internalBinaryRead"), undefined, undefined,
             [
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("reader"), undefined, ts.createTypeReferenceNode(IBinaryReader, undefined), undefined),
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("length"), undefined, ts.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword), undefined),
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("options"), undefined,
+                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier(empty ? "_reader" : "reader"), undefined, ts.createTypeReferenceNode(IBinaryReader, undefined), undefined),
+                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier(empty ? "_length" : "length"), undefined, ts.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword), undefined),
+                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier(empty ? "_options" : "options"), undefined,
                     ts.createTypeReferenceNode(BinaryReadOptions, undefined), undefined
                 ),
                 ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("target"), ts.createToken(ts.SyntaxKind.QuestionToken),
