@@ -54,7 +54,7 @@ export class MessageType<T extends object> implements IMessageType<T> {
      * Contains the prototype for messages returned by create() which
      * includes the `MESSAGE_TYPE` symbol pointing back to `this`.
      */
-    readonly messagePrototype: Readonly<{}> | undefined;
+    readonly messagePrototype?: Readonly<{}> | undefined;
 
     protected readonly defaultCheckDepth = 16;
     protected readonly refTypeCheck: ReflectionTypeCheck;

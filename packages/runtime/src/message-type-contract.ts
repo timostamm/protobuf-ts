@@ -62,7 +62,7 @@ export interface IMessageType<T extends object> extends MessageInfo {
      * Contains the prototype for messages returned by create() which
      * includes the `MESSAGE_TYPE` symbol pointing back to `this`.
      */
-    readonly messagePrototype?: Readonly<{}>;
+    readonly messagePrototype?: Readonly<{}> | undefined;
 
 
     /**
