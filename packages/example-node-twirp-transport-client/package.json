@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/example-node-twirp-transport-client",
-  "version": "2.9.2",
+  "version": "2.9.3",
   "description": "",
   "private": true,
   "scripts": {
@@ -10,11 +10,11 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
-    "@protobuf-ts/plugin": "^2.9.2",
-    "@protobuf-ts/protoc": "^2.9.2",
-    "@protobuf-ts/runtime": "^2.9.2",
-    "@protobuf-ts/runtime-rpc": "^2.9.2",
-    "@protobuf-ts/twirp-transport": "^2.9.2",
+    "@protobuf-ts/plugin": "^2.9.3",
+    "@protobuf-ts/protoc": "^2.9.3",
+    "@protobuf-ts/runtime": "^2.9.3",
+    "@protobuf-ts/runtime-rpc": "^2.9.3",
+    "@protobuf-ts/twirp-transport": "^2.9.3",
     "@types/node-fetch": "^2.5.8",
     "abort-controller": "^3.0.0",
     "node-fetch": "^2.6.0",
