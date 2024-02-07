@@ -1316,7 +1316,7 @@ MyMessage.fromJsonString(jsonString);
 
 Both methods take an optional second argument "options" of type `JsonReadOptions`:
 
-- `ignoreUnknownFields `boolean`
+- `ignoreUnknownFields: boolean`
   
   Ignore unknown fields: Proto3 JSON parser should reject unknown fields
   by default. This option ignores unknown fields in parsing.
