@@ -778,7 +778,7 @@ myMessage.string = d.toString();
 In proto3, scalar fields always have a value, even if you did 
 not set one. If you read an `int32` field, you cannot determine 
 whether the creator of the message intended to write `0`, or 
-if he intentionally left the field out. Both look the same.
+if they intentionally left the field out. Both look the same.
 
 The proto3-optionals feature adds a convenient support for 
 optional fields by bringing back the `optional` label: 
@@ -1654,9 +1654,6 @@ those types are untested. All four method types share the following properties:
   If the server replies with an error status, this promise will
   reject with a `RpcError` that contains the status code and meta data.
 
-- `cancel(): void`   
-  Cancel this call.
-
 
 
 A unary call simply does not use the `stream` keyword in `.proto`. The method 
@@ -1712,7 +1709,7 @@ The `ServerStreamingCall` provides the following additional properties:
 - request: `Readonly<I>`   
   The request message being sent.
 
-- response: `RpcOutputStream<O>`   
+- responses: `RpcOutputStream<O>`   
   Response messages from the server. 
   This is an AsyncIterable that can be iterated with `await for .. of`.
 

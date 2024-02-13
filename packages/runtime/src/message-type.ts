@@ -1,4 +1,5 @@
 import type {IMessageType, PartialMessage} from "./message-type-contract";
+import {MESSAGE_TYPE} from "./message-type-contract";
 import type {FieldInfo, PartialFieldInfo} from "./reflection-info";
 import {normalizeFieldInfo} from "./reflection-info";
 import {ReflectionTypeCheck} from "./reflection-type-check";
@@ -49,6 +50,11 @@ export class MessageType<T extends object> implements IMessageType<T> {
      */
     readonly options: JsonOptionsMap;
 
+    /**
+     * Contains the prototype for messages returned by create() which
+     * includes the `MESSAGE_TYPE` symbol pointing back to `this`.
+     */
+    readonly messagePrototype?: Readonly<{}> | undefined;
 
     protected readonly defaultCheckDepth = 16;
     protected readonly refTypeCheck: ReflectionTypeCheck;
@@ -61,6 +67,7 @@ export class MessageType<T extends object> implements IMessageType<T> {
         this.typeName = name;
         this.fields = fields.map(normalizeFieldInfo);
         this.options = options ?? {};
+        this.messagePrototype = Object.defineProperty({}, MESSAGE_TYPE, { value: this });
         this.refTypeCheck = new ReflectionTypeCheck(this);
         this.refJsonReader = new ReflectionJsonReader(this);
         this.refJsonWriter = new ReflectionJsonWriter(this);

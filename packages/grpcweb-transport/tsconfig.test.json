@@ -7,7 +7,6 @@
   "compilerOptions": {
     "sourceMap": true,
     "module": "CommonJS",
-    "declaration": false,
-    "paths": {}
+    "declaration": false
   }
 }

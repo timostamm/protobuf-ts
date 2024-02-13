@@ -19,10 +19,8 @@
     ],
 
     "paths": {
-      "@protobuf-ts/runtime": [
-        "./src"
-      ]
-    }
+      "@protobuf-ts/*": ["../*/src"]
+    },
 
   }
 }

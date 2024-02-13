@@ -7,10 +7,7 @@
   "compilerOptions": {
     "module": "CommonJS",
     "declaration": false,
-    "paths": {
-      "@protobuf-ts/runtime": [
-        "../runtime"
-      ]
-    }
+    "sourceMap": true,
+    "paths": {}
   }
 }

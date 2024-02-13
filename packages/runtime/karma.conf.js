@@ -21,6 +21,11 @@ module.exports = function (config) {
         browsers: ["ChromeHeadless"],
         singleRun: true,
         karmaTypescriptConfig: {
+            coverageOptions: {
+                exclude: [
+                    /(^|\/)spec\//i,
+                ]
+            },
             tsconfig: './tsconfig.test.json'
         },
         client: {

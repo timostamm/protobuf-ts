@@ -78,6 +78,9 @@ export class ReflectionJsonReader {
             // handle oneof ADT
             let target: UnknownMessage | UnknownOneofGroup; // this will be the target for the field value, whether it is member of a oneof or not
             if (field.oneof) {
+                if (jsonValue === null && (field.kind !== 'enum' || field.T()[0] !== 'google.protobuf.NullValue')) {
+                    continue;
+                }
                 // since json objects are unordered by specification, it is not possible to take the last of multiple oneofs
                 if (oneofsHandled.includes(field.oneof)) throw new Error(`Multiple members of the oneof group "${field.oneof}" of ${this.info.typeName} are present in JSON.`);
                 oneofsHandled.push(field.oneof);
@@ -202,11 +205,11 @@ export class ReflectionJsonReader {
     /**
      * Returns `false` for unrecognized string representations.
      *
-     * google.protobuf.NullValue accepts only JSON `null`.
+     * google.protobuf.NullValue accepts only JSON `null` (or the old `"NULL_VALUE"`).
      */
     enum(type: EnumInfo, json: unknown, fieldName: string, ignoreUnknownFields: boolean): UnknownEnum | false {
         if (type[0] == 'google.protobuf.NullValue')
-            assert(json === null, `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
+            assert(json === null || json === "NULL_VALUE", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
         if (json === null)
             // we require 0 to be default value for all enums
             return 0;

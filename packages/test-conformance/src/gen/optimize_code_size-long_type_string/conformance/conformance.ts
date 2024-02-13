@@ -74,7 +74,7 @@ export interface ConformanceRequest {
     } | {
         oneofKind: "jspbPayload";
         /**
-         * Google internal only.  Opensource testees just skip it.
+         * Only used inside Google.  Opensource testees just skip it.
          *
          * @generated from protobuf field: string jspb_payload = 7;
          */
@@ -97,15 +97,15 @@ export interface ConformanceRequest {
     /**
      * The full name for the test message to use; for the moment, either:
      * protobuf_test_messages.proto3.TestAllTypesProto3 or
-     * protobuf_test_messages.proto2.TestAllTypesProto2.
+     * protobuf_test_messages.google.protobuf.TestAllTypesProto2.
      *
      * @generated from protobuf field: string message_type = 4;
      */
     messageType: string;
     /**
      * Each test is given a specific test category. Some category may need
-     * specific support in testee programs. Refer to the definition of TestCategory
-     * for more information.
+     * specific support in testee programs. Refer to the definition of
+     * TestCategory for more information.
      *
      * @generated from protobuf field: conformance.TestCategory test_category = 5;
      */
@@ -156,6 +156,16 @@ export interface ConformanceResponse {
          */
         serializeError: string;
     } | {
+        oneofKind: "timeoutError";
+        /**
+         * This should be set if the test program timed out.  The string should
+         * provide more information about what the child process was doing when it
+         * was killed.
+         *
+         * @generated from protobuf field: string timeout_error = 9;
+         */
+        timeoutError: string;
+    } | {
         oneofKind: "runtimeError";
         /**
          * This should be set if some other error occurred.  This will always
@@ -196,8 +206,8 @@ export interface ConformanceResponse {
         oneofKind: "jspbPayload";
         /**
          * If the input was successfully parsed and the requested output was JSPB,
-         * serialize to JSPB and set it in this field. JSPB is google internal only
-         * format. Opensource testees can just skip it.
+         * serialize to JSPB and set it in this field. JSPB is only used inside
+         * Google. Opensource testees can just skip it.
          *
          * @generated from protobuf field: string jspb_payload = 7;
          */
@@ -264,7 +274,7 @@ export enum WireFormat {
      */
     JSON = 2,
     /**
-     * Google internal only. Opensource testees just skip it.
+     * Only used inside Google. Opensource testees just skip it.
      *
      * @generated from protobuf enum value: JSPB = 3;
      */
@@ -305,7 +315,8 @@ export enum TestCategory {
      */
     JSON_IGNORE_UNKNOWN_PARSING_TEST = 3,
     /**
-     * Test jspb wire format. Google internal only. Opensource testees just skip it.
+     * Test jspb wire format. Only used inside Google. Opensource testees just
+     * skip it.
      *
      * @generated from protobuf enum value: JSPB_TEST = 4;
      */
@@ -356,6 +367,7 @@ class ConformanceResponse$Type extends MessageType<ConformanceResponse> {
         super("conformance.ConformanceResponse", [
             { no: 1, name: "parse_error", kind: "scalar", oneof: "result", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "serialize_error", kind: "scalar", oneof: "result", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "timeout_error", kind: "scalar", oneof: "result", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "runtime_error", kind: "scalar", oneof: "result", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "protobuf_payload", kind: "scalar", oneof: "result", T: 12 /*ScalarType.BYTES*/ },
             { no: 4, name: "json_payload", kind: "scalar", oneof: "result", T: 9 /*ScalarType.STRING*/ },

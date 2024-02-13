@@ -154,7 +154,7 @@ export function int64fromString(dec: string): [boolean, number, number] {
         const digit1e6 = Number(dec.slice(begin, end));
         highBits *= base;
         lowBits = lowBits * base + digit1e6;
-        // Carry bits from lowBits to
+        // Carry bits from lowBits to highBits
         if (lowBits >= TWO_PWR_32_DBL) {
             highBits = highBits + ((lowBits / TWO_PWR_32_DBL) | 0);
             lowBits = lowBits % TWO_PWR_32_DBL;
@@ -177,7 +177,7 @@ export function int64fromString(dec: string): [boolean, number, number] {
 export function int64toString(bitsLow: number, bitsHigh: number): string {
     // Skip the expensive conversion if the number is small enough to use the
     // built-in conversions.
-    if (bitsHigh <= 0x1FFFFF) {
+    if ((bitsHigh >>> 0) <= 0x1FFFFF) {
         return '' + (TWO_PWR_32_DBL * bitsHigh + (bitsLow >>> 0));
     }
 

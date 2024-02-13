@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/example-browser-grpcweb-transport-client",
-  "version": "2.9.0",
+  "version": "2.9.3",
   "description": "",
   "private": true,
   "scripts": {
@@ -10,13 +10,13 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
-    "@protobuf-ts/grpcweb-transport": "^2.9.0",
-    "@protobuf-ts/runtime": "^2.9.0",
-    "@protobuf-ts/runtime-rpc": "^2.9.0"
+    "@protobuf-ts/grpcweb-transport": "^2.9.3",
+    "@protobuf-ts/runtime": "^2.9.3",
+    "@protobuf-ts/runtime-rpc": "^2.9.3"
   },
   "devDependencies": {
-    "@protobuf-ts/plugin": "^2.9.0",
-    "@protobuf-ts/protoc": "^2.9.0",
+    "@protobuf-ts/plugin": "^2.9.3",
+    "@protobuf-ts/protoc": "^2.9.3",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5",
     "webpack": "^4.43.0",
