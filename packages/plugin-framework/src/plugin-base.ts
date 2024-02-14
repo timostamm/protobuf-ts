@@ -110,8 +110,8 @@ export abstract class PluginBase<T extends GeneratedFile = GeneratedFile> {
     protected parseOptions<T extends OptionsSpec>(spec: T, parameter: string | undefined): ResolvedOptions<T> {
         this.validateOptionsSpec(spec);
         let given: Map<string, boolean|string> = parameter ?
-            parameter.split(',').reduce((map, parameter) => {
-                const [key, value] = parameter.split('=', 2);
+            parameter.split(',').reduce((map, param) => {
+                const [key, value] = param.split('=', 2);
                 // Treat missing value as boolean flag as true.
                 return map.set(key, value ?? true);
             }, new Map<string, boolean|string>()) :
