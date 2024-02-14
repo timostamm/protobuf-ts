@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/test-conformance",
-  "version": "2.9.3-fork",
+  "version": "2.9.4-fork",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
@@ -15,8 +15,8 @@
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.15.0-1",
-    "@protobuf-ts/plugin": "^2.9.3-fork",
-    "@protobuf-ts/runtime": "^2.9.3-fork",
+    "@protobuf-ts/plugin": "^2.9.4-fork",
+    "@protobuf-ts/runtime": "^2.9.4-fork",
     "tsx": "^3.12.7",
     "typescript": "3.8.3"
   }
