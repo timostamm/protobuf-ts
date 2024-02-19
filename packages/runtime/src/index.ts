@@ -33,7 +33,13 @@ export {PbLong, PbULong} from './pb-long';
 
 // JSON format contracts, options for reading and writing, for example
 export {
-    JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions, jsonReadOptions, jsonWriteOptions, mergeJsonOptions
+    JsonReadOptions,
+    JsonWriteOptions,
+    JsonWriteStringOptions,
+    jsonReadOptions,
+    jsonWriteOptions,
+    mergeJsonOptions,
+    registerType,
 } from './json-format-contract';
 
 // Message type contract
