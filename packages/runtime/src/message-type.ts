@@ -69,7 +69,7 @@ export class MessageType<T extends object> implements IMessageType<T> {
         this.typeName = name;
         this.fields = fields.map(normalizeFieldInfo);
         this.options = options ?? {};
-        this.messagePrototype = Object.create(null, { ...baseDescriptors, [MESSAGE_TYPE]: { value: this } });;
+        this.messagePrototype = Object.create(null, { ...baseDescriptors, [MESSAGE_TYPE]: { value: this } });
         this.refTypeCheck = new ReflectionTypeCheck(this);
         this.refJsonReader = new ReflectionJsonReader(this);
         this.refJsonWriter = new ReflectionJsonWriter(this);
