@@ -20,7 +20,7 @@ jobs:
         if: success()
         uses: actions/setup-go@v3
         with:
-          go-version: 1.16.4
+          go-version: 1.17.13
 
       - name: Setup Node
         if: success()
