@@ -19,6 +19,8 @@ import type {UnknownMessage} from "./unknown-types";
 import {binaryWriteOptions} from "./binary-writer";
 import {binaryReadOptions} from "./binary-reader";
 
+const baseDescriptors = Object.getOwnPropertyDescriptors(Object.getPrototypeOf({}));
+
 /**
  * This standard message type provides reflection-based
  * operations to work with a message.
@@ -67,7 +69,7 @@ export class MessageType<T extends object> implements IMessageType<T> {
         this.typeName = name;
         this.fields = fields.map(normalizeFieldInfo);
         this.options = options ?? {};
-        this.messagePrototype = Object.defineProperty({}, MESSAGE_TYPE, { value: this });
+        this.messagePrototype = Object.create(null, { ...baseDescriptors, [MESSAGE_TYPE]: { value: this } });
         this.refTypeCheck = new ReflectionTypeCheck(this);
         this.refJsonReader = new ReflectionJsonReader(this);
         this.refJsonWriter = new ReflectionJsonWriter(this);
