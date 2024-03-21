@@ -591,16 +591,26 @@ enum Foo {
     FOO_BAR = 0;
     FOO_BAZ = 1;
 }
+enum MooFoo {
+    MOO_FOO_BAR = 0;
+    MOO_FOO_BAZ = 1;
+}
  ```
 
-The prefix "FOO_" is dropped in TypeScript (unless `keep_enum_prefix` option is provided to the plugin):
+The prefix "FOO_" and "MOO_FOO" are dropped in TypeScript (unless `keep_enum_prefix` option is provided to the plugin):
 
  ```typescript
 enum Foo {
     BAR = 0,
     BAZ = 1
 }
+enum MooFoo {
+    BAR = 0,
+    BAZ = 1
+}
  ```
+
+
 
 
 A quick reminder about TypeScript enums:
