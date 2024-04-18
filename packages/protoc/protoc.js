@@ -107,7 +107,17 @@ async function ensureInstalled(version) {
     try {
         archive = await httpDownload(`https://github.com/protocolbuffers/protobuf/releases/download/v${version}/${releaseName}.zip`);
     } catch (e) {
-        throw new Error(`@protobuf-ts/protoc failed to download protoc v${version}. \nDid you misspell the version number? The version number must look like "3.0.12", without a leading "v".\n${e}`);
+        if(releaseName.includes("rc")) {
+            // just in case the candidate version isn't in the "right" place
+            releaseName = releaseName.replace("rc", "rc-");
+            try {
+                archive = await httpDownload(`https://github.com/protocolbuffers/protobuf/releases/download/v${version}/${releaseName}.zip`);
+            } catch(ee) {
+                
+            }
+        }
+        if(!archive)
+            throw new Error(`@protobuf-ts/protoc failed to download protoc v${version}. \nDid you misspell the version number? The version number must look like "3.0.12", without a leading "v".\n${e}`);
     }
 
     // unzip the archive
