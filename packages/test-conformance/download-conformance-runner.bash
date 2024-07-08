@@ -4,7 +4,7 @@ if [ -f "bin/conformance_test_runner" ]; then
   exit 0;
 fi
 
-GOOGLE_PROTOBUF_VERSION=22.3
+GOOGLE_PROTOBUF_VERSION=27.2
 UNAME_OS=$(uname -s)
 if [[ "$UNAME_OS" == "Darwin" ]]; then
   PLATFORM=osx-x86_64
