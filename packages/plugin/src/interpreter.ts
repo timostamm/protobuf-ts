@@ -382,7 +382,7 @@ export class Interpreter {
                 result.push(fi);
             }
         }
-        return result;
+        return result.sort((a, b) => a.no - b.no);
     }
 
 
