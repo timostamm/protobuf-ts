@@ -78,11 +78,12 @@ async function main() {
 
 
 async function ensureInstalled(version) {
+    const releaseUrl = process.env.PROTOC_RELEASES_URL || "https://github.com/protocolbuffers/protobuf/releases";
     // resolve the latest release version number if necessary
     if (version === "latest" || version === undefined) {
         let latestLocation;
         try {
-            latestLocation = await httpGetRedirect("https://github.com/protocolbuffers/protobuf/releases/latest");
+            latestLocation = await httpGetRedirect(`${releaseUrl}/latest`);
         } catch (e) {
             throw new Error(`@protobuf-ts/protoc failed to retrieve latest protoc version number: ${e}`);
         }
@@ -105,7 +106,7 @@ async function ensureInstalled(version) {
     // download the release
     let archive;
     try {
-        archive = await httpDownload(`https://github.com/protocolbuffers/protobuf/releases/download/v${version}/${releaseName}.zip`);
+        archive = await httpDownload(`${releaseUrl}/download/v${version}/${releaseName}.zip`);
     } catch (e) {
         throw new Error(`@protobuf-ts/protoc failed to download protoc v${version}. \nDid you misspell the version number? The version number must look like "3.0.12", without a leading "v".\n${e}`);
     }
