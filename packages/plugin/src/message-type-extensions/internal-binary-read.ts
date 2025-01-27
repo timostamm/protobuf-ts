@@ -34,21 +34,6 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[] {
         const methods: ts.MethodDeclaration[] = [];
 
-        // if the message has no fields, we produce a much shorter body:
-        // return target ?? this.create();
-        if (descriptor.field.length === 0) {
-            return [this.makeMethod(source, descriptor,
-                ts.createReturn(ts.createBinary(
-                    ts.createIdentifier("target"),
-                    ts.createToken(ts.SyntaxKind.QuestionQuestionToken),
-                    ts.createCall(
-                        ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("create")),
-                        undefined, []
-                    )
-                ))
-            )];
-        }
-
         // internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ${messageInterfaceId}): ${messageInterfaceId} {
         let internalBinaryRead = this.makeMethod(
             source,
