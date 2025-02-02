@@ -79,19 +79,19 @@ describe('google.protobuf.Any', function () {
 
         let scalarMsgAny = Any.pack(scalarMsg, ScalarValuesMessage);
 
-        it('throws without type registry', function () {
-            expect(() => Any.toJson(scalarMsgAny)).toThrow();
-        });
-
-        it('throws when type not in registry', function () {
-            expect(
-                () => Any.toJson(scalarMsgAny, {typeRegistry: [StructMessage]})
-            ).toThrow();
-        });
-
         it('creates expected JSON', function () {
             let registry = [StructMessage, ScalarValuesMessage];
             let json = Any.toJson(scalarMsgAny, {typeRegistry: registry});
+            expect(json).toEqual({
+                "@type": "type.googleapis.com/spec.ScalarValuesMessage",
+                doubleField: 0.5,
+                stringField: "hello",
+                boolField: true,
+            });
+        });
+
+        it('creates expected JSON with global type registry', function () {
+            let json = Any.toJson(scalarMsgAny);
             expect(json).toEqual({
                 "@type": "type.googleapis.com/spec.ScalarValuesMessage",
                 doubleField: 0.5,
@@ -128,19 +128,14 @@ describe('google.protobuf.Any', function () {
             boolField: true,
         };
 
-        it('throws without type registry', function () {
-            expect(() => Any.fromJson(scalarMsgAnyJson)).toThrow();
-        });
-
-        it('throws when type not in registry', function () {
-            expect(
-                () => Any.fromJson(scalarMsgAnyJson, {typeRegistry: [StructMessage]})
-            ).toThrow();
-        });
-
         it('can read JSON', function () {
             let registry = [StructMessage, ScalarValuesMessage];
             let scalarMsgAny = Any.fromJson(scalarMsgAnyJson, {typeRegistry: registry});
+            expect(scalarMsgAny).toEqual(Any.pack(scalarMsg, ScalarValuesMessage));
+        });
+
+        it('can read JSON with global type registry', function () {
+            let scalarMsgAny = Any.fromJson(scalarMsgAnyJson);
             expect(scalarMsgAny).toEqual(Any.pack(scalarMsg, ScalarValuesMessage));
         });
 
