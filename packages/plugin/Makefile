@@ -7,14 +7,11 @@ SPECS := $(shell find spec -name '*.spec.ts')
 default: clean build test
 
 build:
-	@./node_modules/.bin/tsc --project tsconfig.build.json;
+	@npm run build
 	@echo "'${@}' done"
 
 clean:
-	@find build \( -name '*.js' -or -name '*.map' -or -name '*.ts' \) -delete;
-	@find build -type d ! -path build -delete
-	@rm -f all.descriptorset
-	@rm -f all.codegenreq
+	@npm run clean
 	@echo "'${@}' done"
 
 test: all.descriptorset
@@ -25,7 +22,7 @@ test: all.descriptorset
 		$(SPECS)
 
 all.descriptorset: $(PROTOS)
-	@protoc \
+	@npx protoc \
 		--descriptor_set_out ${@} \
 		--proto_path ${PROTO_PATH} \
 		--proto_path . \
@@ -36,7 +33,7 @@ all.descriptorset: $(PROTOS)
 	@echo "'${@}' done"
 
 all.codegenreq: $(PROTOS)
-	@protoc \
+	@npx protoc \
 		--dump_out=. \
 		--plugin=./bin/protoc-gen-dump \
 		--dump_opt "${@}" \
