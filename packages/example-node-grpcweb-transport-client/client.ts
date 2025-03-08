@@ -1,7 +1,6 @@
-import {FailRequest} from "./service-example";
-import {ExampleServiceClient, IExampleServiceClient} from "./service-example.client";
 import {GrpcWebFetchTransport} from "@protobuf-ts/grpcweb-transport";
 import {default as fetch, Headers} from "node-fetch";
+import {ElizaServiceClient, IElizaServiceClient} from "./eliza.client";
 
 
 // fetch polyfill via https://github.com/node-fetch/node-fetch
@@ -10,10 +9,12 @@ globalThis.Headers = Headers as any;
 
 
 const transport = new GrpcWebFetchTransport({
-    baseUrl: "http://localhost:5080"
+    baseUrl: "https://demo.connectrpc.com",
+    // The demo service does not support the gRPC-Web Text format
+    format: "binary",
 });
 
-const client = new ExampleServiceClient(transport);
+const client = new ElizaServiceClient(transport);
 
 async function main() {
 
@@ -24,13 +25,10 @@ async function main() {
 }
 
 
-async function callUnary(client: IExampleServiceClient) {
+async function callUnary(client: IElizaServiceClient) {
 
-    const call = client.unary({
-        question: 'whats up?',
-        pleaseDelayResponseMs: 50,
-        pleaseFail: FailRequest.FAIL_REQUEST_NONE,
-        disableSendingExampleResponseHeaders: false,
+    const call = client.say({
+        sentence: "hi",
     });
 
     console.log(`### calling method "${call.method.name}"...`)
@@ -51,13 +49,10 @@ async function callUnary(client: IExampleServiceClient) {
 }
 
 
-async function callServerStream(client: IExampleServiceClient) {
+async function callServerStream(client: IElizaServiceClient) {
 
-    const call = client.serverStream({
-        question: 'whats up?',
-        pleaseDelayResponseMs: 50,
-        pleaseFail: FailRequest.FAIL_REQUEST_NONE,
-        disableSendingExampleResponseHeaders: false,
+    const call = client.introduce({
+        name: 'Donald',
     });
 
     console.log(`### calling method "${call.method.name}"...`)

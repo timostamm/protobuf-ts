@@ -4,7 +4,10 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf build/*",
+    "build": "tsc --target ES2015 --module CommonJS --strict --outDir build client.ts",
+    "generate": "protoc -I . --ts_out . --ts_opt optimize_code_size eliza.proto",
+    "start": "ts-node client.ts"
   },
   "author": "Timo Stamm <ts@timostamm.com>",
   "license": "Apache-2.0",
