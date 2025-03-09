@@ -1,0 +1,69 @@
+// Copyright 2022-2023 The Connect Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package connectrpc.eliza.v1;
+
+// ElizaService provides a way to talk to Eliza, a port of the DOCTOR script
+// for Joseph Weizenbaum's original ELIZA program. Created in the mid-1960s at
+// the MIT Artificial Intelligence Laboratory, ELIZA demonstrates the
+// superficiality of human-computer communication. DOCTOR simulates a
+// psychotherapist, and is commonly found as an Easter egg in emacs
+// distributions.
+service ElizaService {
+  // Say is a unary RPC. Eliza responds to the prompt with a single sentence.
+  rpc Say(SayRequest) returns (SayResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  // Converse is a bidirectional RPC. The caller may exchange multiple
+  // back-and-forth messages with Eliza over a long-lived connection. Eliza
+  // responds to each ConverseRequest with a ConverseResponse.
+  rpc Converse(stream ConverseRequest) returns (stream ConverseResponse) {}
+  // Introduce is a server streaming RPC. Given the caller's name, Eliza
+  // returns a stream of sentences to introduce itself.
+  rpc Introduce(IntroduceRequest) returns (stream IntroduceResponse) {}
+}
+
+// SayRequest is a single-sentence request.
+message SayRequest {
+  string sentence = 1;
+}
+
+// SayResponse is a single-sentence response.
+message SayResponse {
+  string sentence = 1;
+}
+
+// ConverseRequest is a single sentence request sent as part of a
+// back-and-forth conversation.
+message ConverseRequest {
+  string sentence = 1;
+}
+
+// ConverseResponse is a single sentence response sent in answer to a
+// ConverseRequest.
+message ConverseResponse {
+  string sentence = 1;
+}
+
+// IntroduceRequest asks Eliza to introduce itself to the named user.
+message IntroduceRequest {
+  string name = 1;
+}
+
+// IntroduceResponse is one sentence of Eliza's introductory monologue.
+message IntroduceResponse {
+  string sentence = 1;
+}
