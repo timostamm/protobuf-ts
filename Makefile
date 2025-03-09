@@ -23,12 +23,22 @@ lerna-make:
 	--ignore @protobuf-ts/protoc \
 	-- make
 
-# release a new version in the "latest" (the stable) channel
-# when lerna asks for version number, you must *not* select a prerelease identifier
-lerna-publish-latest: lerna-bootstrap lerna-make
-	./node_modules/.bin/lerna publish --force-publish
+# update versions in all package.json files
+lerna-patch:
+	npx lerna version patch --no-changelog --no-git-tag-version --no-push --yes
 
-# release a new version in the "next" (the experimental) channel
-# when lerna asks for version number, you *must* select a prerelease identifier
-lerna-publish-next: lerna-bootstrap lerna-make
-	./node_modules/.bin/lerna publish --force-publish --dist-tag next
+# update versions in all package.json files
+lerna-minor:
+	npx lerna version minor --no-changelog --no-git-tag-version --no-push --yes
+
+publish:
+	make
+	cd packages/runtime; npm publish
+	cd packages/runtime-rpc; npm publish
+	cd packages/plugin; npm publish
+	cd packages/plugin-framework; npm publish
+	cd packages/protoc; npm publish
+	cd packages/twirp-transport; npm publish
+	cd packages/grpcweb-transport; npm publish
+	cd packages/grpc-transport; npm publish
+	cd packages/grpc-backend; npm publish
