@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/plugin-framework",
-  "version": "2.9.4",
+  "version": "2.9.5",
   "description": "framework to create protoc plugins",
   "scripts": {
     "clean": "rm -rf build/* *.descriptorset *.codegenreq",
@@ -39,7 +39,7 @@
     "tslib": ">=1.6.1"
   },
   "dependencies": {
-    "@protobuf-ts/runtime": "^2.9.4",
+    "@protobuf-ts/runtime": "^2.9.5",
     "typescript": "^3.9"
   },
   "gitHead": "2742e3995c14cab17e74be919b59b878c8383ad9"
