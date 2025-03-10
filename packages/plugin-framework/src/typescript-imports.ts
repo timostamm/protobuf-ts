@@ -9,10 +9,11 @@ import {TypescriptFile} from "./typescript-file";
 export class TypeScriptImports {
 
     private readonly symbols: SymbolTable;
+    private readonly enable_import_extensions: boolean;
 
-
-    constructor(symbols: SymbolTable) {
+    constructor(symbols: SymbolTable, enable_import_extensions: boolean) {
         this.symbols = symbols;
+        this.enable_import_extensions = enable_import_extensions;
     }
 
 
@@ -77,7 +78,8 @@ export class TypeScriptImports {
         // add an import statement
         const importPath = createRelativeImportPath(
             source.getSourceFile().fileName,
-            symbolReg.file.getFilename()
+            symbolReg.file.getFilename(),
+            this.enable_import_extensions
         );
         const blackListedNames = this.symbols.list(source).map(e => e.name);
         return ensureNamedImportPresent(
@@ -289,7 +291,7 @@ export function findNamedImports(sourceFile: ts.SourceFile): { name: string, as:
  * Create a relative path for an import statement like
  * `import {Foo} from "./foo"`
  */
-function createRelativeImportPath(currentPath: string, pathToImportFrom: string): string {
+function createRelativeImportPath(currentPath: string, pathToImportFrom: string, addExtension: boolean): string {
     // create relative path to the file to import
     let fromPath = path.relative(path.dirname(currentPath), pathToImportFrom);
 
@@ -305,6 +307,11 @@ function createRelativeImportPath(currentPath: string, pathToImportFrom: string)
     // make sure to start with './' to signal relative path to module resolution
     if (!fromPath.startsWith('../') && !fromPath.startsWith('./')) {
         fromPath = './' + fromPath;
+    }
+    
+    // add .js extensions on import statements for ESM compatibility with typescript and nodejs
+    if (addExtension === true) {
+        fromPath = fromPath + ".js";
     }
     return fromPath;
 }
