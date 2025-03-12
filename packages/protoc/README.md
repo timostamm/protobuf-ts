@@ -43,7 +43,7 @@ Add the following to your package json:
 
 ```
 "config": {
-   "protocVersion": "3.11.0"
+   "protocVersion": "29.2"
 }
 ``` 
 

@@ -4,33 +4,10 @@
 //
 // Protocol Buffers - Google's data interchange format
 // Copyright 2008 Google Inc.  All rights reserved.
-// https://developers.google.com/protocol-buffers/
 //
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file or at
+// https://developers.google.com/open-source/licenses/bsd
 //
 //
 // Author: kenton@google.com (Kenton Varda)
@@ -50,6 +27,40 @@ export interface TestMessageSetContainer {
      * @generated from protobuf field: optional proto2_wireformat_unittest.TestMessageSet message_set = 1;
      */
     messageSet?: TestMessageSet;
+}
+/**
+ * @generated from protobuf message protobuf_unittest.NestedTestMessageSetContainer
+ */
+export interface NestedTestMessageSetContainer {
+    /**
+     * @generated from protobuf field: optional protobuf_unittest.TestMessageSetContainer container = 1;
+     */
+    container?: TestMessageSetContainer;
+    /**
+     * @generated from protobuf field: optional protobuf_unittest.NestedTestMessageSetContainer child = 2;
+     */
+    child?: NestedTestMessageSetContainer;
+    /**
+     * @generated from protobuf field: optional protobuf_unittest.NestedTestMessageSetContainer lazy_child = 3;
+     */
+    lazyChild?: NestedTestMessageSetContainer;
+}
+/**
+ * @generated from protobuf message protobuf_unittest.NestedTestInt
+ */
+export interface NestedTestInt {
+    /**
+     * @generated from protobuf field: optional fixed32 a = 1;
+     */
+    a?: number;
+    /**
+     * @generated from protobuf field: optional int32 b = 3;
+     */
+    b?: number;
+    /**
+     * @generated from protobuf field: optional protobuf_unittest.NestedTestInt child = 2;
+     */
+    child?: NestedTestInt;
 }
 /**
  * @generated from protobuf message protobuf_unittest.TestMessageSetExtension1
@@ -76,6 +87,19 @@ export interface TestMessageSetExtension2 {
      * @generated from protobuf field: optional string str = 25;
      */
     str?: string;
+}
+/**
+ * @generated from protobuf message protobuf_unittest.TestMessageSetExtension3
+ */
+export interface TestMessageSetExtension3 {
+    /**
+     * @generated from protobuf field: optional protobuf_unittest.NestedTestInt msg = 35;
+     */
+    msg?: NestedTestInt;
+    /**
+     * @generated from protobuf field: int32 required_int = 36;
+     */
+    requiredInt: number;
 }
 // This message was used to generate
 // //net/proto2/python/internal/testdata/message_set_message, but is commented
@@ -121,6 +145,34 @@ class TestMessageSetContainer$Type extends MessageType<TestMessageSetContainer> 
  */
 export const TestMessageSetContainer = new TestMessageSetContainer$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class NestedTestMessageSetContainer$Type extends MessageType<NestedTestMessageSetContainer> {
+    constructor() {
+        super("protobuf_unittest.NestedTestMessageSetContainer", [
+            { no: 1, name: "container", kind: "message", T: () => TestMessageSetContainer },
+            { no: 2, name: "child", kind: "message", T: () => NestedTestMessageSetContainer },
+            { no: 3, name: "lazy_child", kind: "message", T: () => NestedTestMessageSetContainer }
+        ]);
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.NestedTestMessageSetContainer
+ */
+export const NestedTestMessageSetContainer = new NestedTestMessageSetContainer$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class NestedTestInt$Type extends MessageType<NestedTestInt> {
+    constructor() {
+        super("protobuf_unittest.NestedTestInt", [
+            { no: 1, name: "a", kind: "scalar", opt: true, T: 7 /*ScalarType.FIXED32*/ },
+            { no: 3, name: "b", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "child", kind: "message", T: () => NestedTestInt }
+        ]);
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.NestedTestInt
+ */
+export const NestedTestInt = new NestedTestInt$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class TestMessageSetExtension1$Type extends MessageType<TestMessageSetExtension1> {
     constructor() {
         super("protobuf_unittest.TestMessageSetExtension1", [
@@ -146,6 +198,19 @@ class TestMessageSetExtension2$Type extends MessageType<TestMessageSetExtension2
  * @generated MessageType for protobuf message protobuf_unittest.TestMessageSetExtension2
  */
 export const TestMessageSetExtension2 = new TestMessageSetExtension2$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TestMessageSetExtension3$Type extends MessageType<TestMessageSetExtension3> {
+    constructor() {
+        super("protobuf_unittest.TestMessageSetExtension3", [
+            { no: 35, name: "msg", kind: "message", T: () => NestedTestInt },
+            { no: 36, name: "required_int", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.TestMessageSetExtension3
+ */
+export const TestMessageSetExtension3 = new TestMessageSetExtension3$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class RawMessageSet$Type extends MessageType<RawMessageSet> {
     constructor() {

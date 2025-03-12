@@ -4,33 +4,10 @@
 //
 // Protocol Buffers - Google's data interchange format
 // Copyright 2008 Google Inc.  All rights reserved.
-// https://developers.google.com/protocol-buffers/
 //
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file or at
+// https://developers.google.com/open-source/licenses/bsd
 //
 import { MessageType } from "@protobuf-ts/runtime";
 /**
@@ -166,6 +143,33 @@ export enum TestProto3Optional_NestedEnum {
      */
     NEG = -1
 }
+/**
+ * @generated from protobuf message protobuf_unittest.TestProto3OptionalMessage
+ */
+export interface TestProto3OptionalMessage {
+    /**
+     * @generated from protobuf field: protobuf_unittest.TestProto3OptionalMessage.NestedMessage nested_message = 1;
+     */
+    nestedMessage?: TestProto3OptionalMessage_NestedMessage;
+    /**
+     * @generated from protobuf field: optional protobuf_unittest.TestProto3OptionalMessage.NestedMessage optional_nested_message = 2;
+     */
+    optionalNestedMessage?: TestProto3OptionalMessage_NestedMessage;
+}
+/**
+ * @generated from protobuf message protobuf_unittest.TestProto3OptionalMessage.NestedMessage
+ */
+export interface TestProto3OptionalMessage_NestedMessage {
+    /**
+     * @generated from protobuf field: string s = 1;
+     */
+    s: string;
+}
+/**
+ * @generated from protobuf message protobuf_unittest.Proto3OptionalExtensions
+ */
+export interface Proto3OptionalExtensions {
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class TestProto3Optional$Type extends MessageType<TestProto3Optional> {
     constructor() {
@@ -210,3 +214,38 @@ class TestProto3Optional_NestedMessage$Type extends MessageType<TestProto3Option
  * @generated MessageType for protobuf message protobuf_unittest.TestProto3Optional.NestedMessage
  */
 export const TestProto3Optional_NestedMessage = new TestProto3Optional_NestedMessage$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TestProto3OptionalMessage$Type extends MessageType<TestProto3OptionalMessage> {
+    constructor() {
+        super("protobuf_unittest.TestProto3OptionalMessage", [
+            { no: 1, name: "nested_message", kind: "message", T: () => TestProto3OptionalMessage_NestedMessage },
+            { no: 2, name: "optional_nested_message", kind: "message", T: () => TestProto3OptionalMessage_NestedMessage }
+        ]);
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.TestProto3OptionalMessage
+ */
+export const TestProto3OptionalMessage = new TestProto3OptionalMessage$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TestProto3OptionalMessage_NestedMessage$Type extends MessageType<TestProto3OptionalMessage_NestedMessage> {
+    constructor() {
+        super("protobuf_unittest.TestProto3OptionalMessage.NestedMessage", [
+            { no: 1, name: "s", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.TestProto3OptionalMessage.NestedMessage
+ */
+export const TestProto3OptionalMessage_NestedMessage = new TestProto3OptionalMessage_NestedMessage$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Proto3OptionalExtensions$Type extends MessageType<Proto3OptionalExtensions> {
+    constructor() {
+        super("protobuf_unittest.Proto3OptionalExtensions", [], { "protobuf_unittest.Proto3OptionalExtensions.ext_no_optional": 8, "protobuf_unittest.Proto3OptionalExtensions.ext_with_optional": 16 });
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.Proto3OptionalExtensions
+ */
+export const Proto3OptionalExtensions = new Proto3OptionalExtensions$Type();

@@ -1,6 +1,9 @@
 {
   "name": "root",
   "private": true,
+  "config": {
+    "protocVersion": "29.2"
+  },
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
     "lerna": "^3.22.1",

@@ -4,33 +4,10 @@
 //
 // Protocol Buffers - Google's data interchange format
 // Copyright 2008 Google Inc.  All rights reserved.
-// https://developers.google.com/protocol-buffers/
 //
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file or at
+// https://developers.google.com/open-source/licenses/bsd
 //
 import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
 import type { IBinaryWriter } from "@protobuf-ts/runtime";
@@ -118,7 +95,7 @@ export interface TestAllTypes {
     // }
 
     /**
-     * @generated from protobuf field: proto3_unittest.TestAllTypes.NestedMessage optional_nested_message = 18;
+     * @generated from protobuf field: optional proto3_unittest.TestAllTypes.NestedMessage optional_nested_message = 18;
      */
     optionalNestedMessage?: TestAllTypes_NestedMessage;
     /**
@@ -160,6 +137,10 @@ export interface TestAllTypes {
      * @generated from protobuf field: proto3_unittest.TestAllTypes.NestedMessage optional_lazy_message = 27;
      */
     optionalLazyMessage?: TestAllTypes_NestedMessage;
+    /**
+     * @generated from protobuf field: proto3_unittest.TestAllTypes.NestedMessage optional_unverified_lazy_message = 28;
+     */
+    optionalUnverifiedLazyMessage?: TestAllTypes_NestedMessage;
     /**
      * @generated from protobuf field: protobuf_unittest_import.ImportMessage optional_lazy_import_message = 115;
      */
@@ -555,6 +536,295 @@ export enum TestOneof2_NestedEnum {
     BAZ = 3
 }
 /**
+ * If bool fields are incorrectly assumed to have hasbits, InternalSwap would
+ * result in swapping N more 32bit hasbits incorrectly. Considering padding, we
+ * need many bool fields to stress this.
+ *
+ * @generated from protobuf message proto3_unittest.TestHasbits
+ */
+export interface TestHasbits {
+    /**
+     * @generated from protobuf field: bool b1 = 1;
+     */
+    b1: boolean;
+    /**
+     * @generated from protobuf field: bool b2 = 2;
+     */
+    b2: boolean;
+    /**
+     * @generated from protobuf field: bool b3 = 3;
+     */
+    b3: boolean;
+    /**
+     * @generated from protobuf field: bool b4 = 4;
+     */
+    b4: boolean;
+    /**
+     * @generated from protobuf field: bool b5 = 5;
+     */
+    b5: boolean;
+    /**
+     * @generated from protobuf field: bool b6 = 6;
+     */
+    b6: boolean;
+    /**
+     * @generated from protobuf field: bool b7 = 7;
+     */
+    b7: boolean;
+    /**
+     * @generated from protobuf field: bool b8 = 8;
+     */
+    b8: boolean;
+    /**
+     * @generated from protobuf field: bool b9 = 9;
+     */
+    b9: boolean;
+    /**
+     * @generated from protobuf field: bool b10 = 10;
+     */
+    b10: boolean;
+    /**
+     * @generated from protobuf field: bool b11 = 11;
+     */
+    b11: boolean;
+    /**
+     * @generated from protobuf field: bool b12 = 12;
+     */
+    b12: boolean;
+    /**
+     * @generated from protobuf field: bool b13 = 13;
+     */
+    b13: boolean;
+    /**
+     * @generated from protobuf field: bool b14 = 14;
+     */
+    b14: boolean;
+    /**
+     * @generated from protobuf field: bool b15 = 15;
+     */
+    b15: boolean;
+    /**
+     * @generated from protobuf field: bool b16 = 16;
+     */
+    b16: boolean;
+    /**
+     * @generated from protobuf field: bool b17 = 17;
+     */
+    b17: boolean;
+    /**
+     * @generated from protobuf field: bool b18 = 18;
+     */
+    b18: boolean;
+    /**
+     * @generated from protobuf field: bool b19 = 19;
+     */
+    b19: boolean;
+    /**
+     * @generated from protobuf field: bool b20 = 20;
+     */
+    b20: boolean;
+    /**
+     * @generated from protobuf field: bool b21 = 21;
+     */
+    b21: boolean;
+    /**
+     * @generated from protobuf field: bool b22 = 22;
+     */
+    b22: boolean;
+    /**
+     * @generated from protobuf field: bool b23 = 23;
+     */
+    b23: boolean;
+    /**
+     * @generated from protobuf field: bool b24 = 24;
+     */
+    b24: boolean;
+    /**
+     * @generated from protobuf field: bool b25 = 25;
+     */
+    b25: boolean;
+    /**
+     * @generated from protobuf field: bool b26 = 26;
+     */
+    b26: boolean;
+    /**
+     * @generated from protobuf field: bool b27 = 27;
+     */
+    b27: boolean;
+    /**
+     * @generated from protobuf field: bool b28 = 28;
+     */
+    b28: boolean;
+    /**
+     * @generated from protobuf field: bool b29 = 29;
+     */
+    b29: boolean;
+    /**
+     * @generated from protobuf field: bool b30 = 30;
+     */
+    b30: boolean;
+    /**
+     * @generated from protobuf field: bool b31 = 31;
+     */
+    b31: boolean;
+    /**
+     * @generated from protobuf field: bool b32 = 32;
+     */
+    b32: boolean;
+    /**
+     * @generated from protobuf field: bool b33 = 33;
+     */
+    b33: boolean;
+    /**
+     * @generated from protobuf field: bool b34 = 34;
+     */
+    b34: boolean;
+    /**
+     * @generated from protobuf field: bool b35 = 35;
+     */
+    b35: boolean;
+    /**
+     * @generated from protobuf field: bool b36 = 36;
+     */
+    b36: boolean;
+    /**
+     * @generated from protobuf field: bool b37 = 37;
+     */
+    b37: boolean;
+    /**
+     * @generated from protobuf field: bool b38 = 38;
+     */
+    b38: boolean;
+    /**
+     * @generated from protobuf field: bool b39 = 39;
+     */
+    b39: boolean;
+    /**
+     * @generated from protobuf field: bool b40 = 40;
+     */
+    b40: boolean;
+    /**
+     * @generated from protobuf field: bool b41 = 41;
+     */
+    b41: boolean;
+    /**
+     * @generated from protobuf field: bool b42 = 42;
+     */
+    b42: boolean;
+    /**
+     * @generated from protobuf field: bool b43 = 43;
+     */
+    b43: boolean;
+    /**
+     * @generated from protobuf field: bool b44 = 44;
+     */
+    b44: boolean;
+    /**
+     * @generated from protobuf field: bool b45 = 45;
+     */
+    b45: boolean;
+    /**
+     * @generated from protobuf field: bool b46 = 46;
+     */
+    b46: boolean;
+    /**
+     * @generated from protobuf field: bool b47 = 47;
+     */
+    b47: boolean;
+    /**
+     * @generated from protobuf field: bool b48 = 48;
+     */
+    b48: boolean;
+    /**
+     * @generated from protobuf field: bool b49 = 49;
+     */
+    b49: boolean;
+    /**
+     * @generated from protobuf field: bool b50 = 50;
+     */
+    b50: boolean;
+    /**
+     * @generated from protobuf field: bool b51 = 51;
+     */
+    b51: boolean;
+    /**
+     * @generated from protobuf field: bool b52 = 52;
+     */
+    b52: boolean;
+    /**
+     * @generated from protobuf field: bool b53 = 53;
+     */
+    b53: boolean;
+    /**
+     * @generated from protobuf field: bool b54 = 54;
+     */
+    b54: boolean;
+    /**
+     * @generated from protobuf field: bool b55 = 55;
+     */
+    b55: boolean;
+    /**
+     * @generated from protobuf field: bool b56 = 56;
+     */
+    b56: boolean;
+    /**
+     * @generated from protobuf field: bool b57 = 57;
+     */
+    b57: boolean;
+    /**
+     * @generated from protobuf field: bool b58 = 58;
+     */
+    b58: boolean;
+    /**
+     * @generated from protobuf field: bool b59 = 59;
+     */
+    b59: boolean;
+    /**
+     * @generated from protobuf field: bool b60 = 60;
+     */
+    b60: boolean;
+    /**
+     * @generated from protobuf field: bool b61 = 61;
+     */
+    b61: boolean;
+    /**
+     * @generated from protobuf field: bool b62 = 62;
+     */
+    b62: boolean;
+    /**
+     * @generated from protobuf field: bool b63 = 63;
+     */
+    b63: boolean;
+    /**
+     * @generated from protobuf field: bool b64 = 64;
+     */
+    b64: boolean;
+    /**
+     * @generated from protobuf field: bool b65 = 65;
+     */
+    b65: boolean;
+    /**
+     * @generated from protobuf field: bool b66 = 66;
+     */
+    b66: boolean;
+    /**
+     * @generated from protobuf field: bool b67 = 67;
+     */
+    b67: boolean;
+    /**
+     * @generated from protobuf field: bool b68 = 68;
+     */
+    b68: boolean;
+    /**
+     * @generated from protobuf field: bool b69 = 69;
+     */
+    b69: boolean;
+    /**
+     * @generated from protobuf field: proto3_unittest.TestAllTypes child = 100;
+     */
+    child?: TestAllTypes;
+}
+/**
  * @generated from protobuf enum proto3_unittest.ForeignEnum
  */
 export enum ForeignEnum {
@@ -573,7 +843,13 @@ export enum ForeignEnum {
     /**
      * @generated from protobuf enum value: FOREIGN_BAZ = 6;
      */
-    FOREIGN_BAZ = 6
+    FOREIGN_BAZ = 6,
+    /**
+     * Large enough to escape the Boxed Integer cache.
+     *
+     * @generated from protobuf enum value: FOREIGN_LARGE = 123456;
+     */
+    FOREIGN_LARGE = 123456
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class TestAllTypes$Type extends MessageType<TestAllTypes> {
@@ -603,6 +879,7 @@ class TestAllTypes$Type extends MessageType<TestAllTypes> {
             { no: 25, name: "optional_cord", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 26, name: "optional_public_import_message", kind: "message", T: () => PublicImportMessage },
             { no: 27, name: "optional_lazy_message", kind: "message", T: () => TestAllTypes_NestedMessage },
+            { no: 28, name: "optional_unverified_lazy_message", kind: "message", T: () => TestAllTypes_NestedMessage },
             { no: 115, name: "optional_lazy_import_message", kind: "message", T: () => ImportMessage },
             { no: 31, name: "repeated_int32", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
             { no: 32, name: "repeated_int64", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
@@ -732,7 +1009,7 @@ class TestAllTypes$Type extends MessageType<TestAllTypes> {
                 case /* bytes optional_bytes */ 15:
                     message.optionalBytes = reader.bytes();
                     break;
-                case /* proto3_unittest.TestAllTypes.NestedMessage optional_nested_message */ 18:
+                case /* optional proto3_unittest.TestAllTypes.NestedMessage optional_nested_message */ 18:
                     message.optionalNestedMessage = TestAllTypes_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.optionalNestedMessage);
                     break;
                 case /* proto3_unittest.ForeignMessage optional_foreign_message */ 19:
@@ -758,6 +1035,9 @@ class TestAllTypes$Type extends MessageType<TestAllTypes> {
                     break;
                 case /* proto3_unittest.TestAllTypes.NestedMessage optional_lazy_message */ 27:
                     message.optionalLazyMessage = TestAllTypes_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.optionalLazyMessage);
+                    break;
+                case /* proto3_unittest.TestAllTypes.NestedMessage optional_unverified_lazy_message */ 28:
+                    message.optionalUnverifiedLazyMessage = TestAllTypes_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.optionalUnverifiedLazyMessage);
                     break;
                 case /* protobuf_unittest_import.ImportMessage optional_lazy_import_message */ 115:
                     message.optionalLazyImportMessage = ImportMessage.internalBinaryRead(reader, reader.uint32(), options, message.optionalLazyImportMessage);
@@ -972,7 +1252,7 @@ class TestAllTypes$Type extends MessageType<TestAllTypes> {
         /* bytes optional_bytes = 15; */
         if (message.optionalBytes.length)
             writer.tag(15, WireType.LengthDelimited).bytes(message.optionalBytes);
-        /* proto3_unittest.TestAllTypes.NestedMessage optional_nested_message = 18; */
+        /* optional proto3_unittest.TestAllTypes.NestedMessage optional_nested_message = 18; */
         if (message.optionalNestedMessage)
             TestAllTypes_NestedMessage.internalBinaryWrite(message.optionalNestedMessage, writer.tag(18, WireType.LengthDelimited).fork(), options).join();
         /* proto3_unittest.ForeignMessage optional_foreign_message = 19; */
@@ -999,6 +1279,9 @@ class TestAllTypes$Type extends MessageType<TestAllTypes> {
         /* proto3_unittest.TestAllTypes.NestedMessage optional_lazy_message = 27; */
         if (message.optionalLazyMessage)
             TestAllTypes_NestedMessage.internalBinaryWrite(message.optionalLazyMessage, writer.tag(27, WireType.LengthDelimited).fork(), options).join();
+        /* proto3_unittest.TestAllTypes.NestedMessage optional_unverified_lazy_message = 28; */
+        if (message.optionalUnverifiedLazyMessage)
+            TestAllTypes_NestedMessage.internalBinaryWrite(message.optionalUnverifiedLazyMessage, writer.tag(28, WireType.LengthDelimited).fork(), options).join();
         /* protobuf_unittest_import.ImportMessage optional_lazy_import_message = 115; */
         if (message.optionalLazyImportMessage)
             ImportMessage.internalBinaryWrite(message.optionalLazyImportMessage, writer.tag(115, WireType.LengthDelimited).fork(), options).join();
@@ -1905,3 +2188,601 @@ class TestOneof2$Type extends MessageType<TestOneof2> {
  * @generated MessageType for protobuf message proto3_unittest.TestOneof2
  */
 export const TestOneof2 = new TestOneof2$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TestHasbits$Type extends MessageType<TestHasbits> {
+    constructor() {
+        super("proto3_unittest.TestHasbits", [
+            { no: 1, name: "b1", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "b2", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 3, name: "b3", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "b4", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 5, name: "b5", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 6, name: "b6", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 7, name: "b7", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 8, name: "b8", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 9, name: "b9", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 10, name: "b10", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 11, name: "b11", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 12, name: "b12", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 13, name: "b13", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 14, name: "b14", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 15, name: "b15", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 16, name: "b16", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 17, name: "b17", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 18, name: "b18", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 19, name: "b19", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 20, name: "b20", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 21, name: "b21", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 22, name: "b22", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 23, name: "b23", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 24, name: "b24", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 25, name: "b25", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 26, name: "b26", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 27, name: "b27", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 28, name: "b28", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 29, name: "b29", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 30, name: "b30", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 31, name: "b31", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 32, name: "b32", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 33, name: "b33", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 34, name: "b34", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 35, name: "b35", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 36, name: "b36", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 37, name: "b37", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 38, name: "b38", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 39, name: "b39", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 40, name: "b40", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 41, name: "b41", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 42, name: "b42", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 43, name: "b43", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 44, name: "b44", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 45, name: "b45", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 46, name: "b46", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 47, name: "b47", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 48, name: "b48", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 49, name: "b49", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 50, name: "b50", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 51, name: "b51", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 52, name: "b52", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 53, name: "b53", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 54, name: "b54", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 55, name: "b55", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 56, name: "b56", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 57, name: "b57", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 58, name: "b58", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 59, name: "b59", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 60, name: "b60", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 61, name: "b61", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 62, name: "b62", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 63, name: "b63", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 64, name: "b64", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 65, name: "b65", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 66, name: "b66", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 67, name: "b67", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 68, name: "b68", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 69, name: "b69", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 100, name: "child", kind: "message", T: () => TestAllTypes }
+        ]);
+    }
+    create(value?: PartialMessage<TestHasbits>): TestHasbits {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.b1 = false;
+        message.b2 = false;
+        message.b3 = false;
+        message.b4 = false;
+        message.b5 = false;
+        message.b6 = false;
+        message.b7 = false;
+        message.b8 = false;
+        message.b9 = false;
+        message.b10 = false;
+        message.b11 = false;
+        message.b12 = false;
+        message.b13 = false;
+        message.b14 = false;
+        message.b15 = false;
+        message.b16 = false;
+        message.b17 = false;
+        message.b18 = false;
+        message.b19 = false;
+        message.b20 = false;
+        message.b21 = false;
+        message.b22 = false;
+        message.b23 = false;
+        message.b24 = false;
+        message.b25 = false;
+        message.b26 = false;
+        message.b27 = false;
+        message.b28 = false;
+        message.b29 = false;
+        message.b30 = false;
+        message.b31 = false;
+        message.b32 = false;
+        message.b33 = false;
+        message.b34 = false;
+        message.b35 = false;
+        message.b36 = false;
+        message.b37 = false;
+        message.b38 = false;
+        message.b39 = false;
+        message.b40 = false;
+        message.b41 = false;
+        message.b42 = false;
+        message.b43 = false;
+        message.b44 = false;
+        message.b45 = false;
+        message.b46 = false;
+        message.b47 = false;
+        message.b48 = false;
+        message.b49 = false;
+        message.b50 = false;
+        message.b51 = false;
+        message.b52 = false;
+        message.b53 = false;
+        message.b54 = false;
+        message.b55 = false;
+        message.b56 = false;
+        message.b57 = false;
+        message.b58 = false;
+        message.b59 = false;
+        message.b60 = false;
+        message.b61 = false;
+        message.b62 = false;
+        message.b63 = false;
+        message.b64 = false;
+        message.b65 = false;
+        message.b66 = false;
+        message.b67 = false;
+        message.b68 = false;
+        message.b69 = false;
+        if (value !== undefined)
+            reflectionMergePartial<TestHasbits>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TestHasbits): TestHasbits {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* bool b1 */ 1:
+                    message.b1 = reader.bool();
+                    break;
+                case /* bool b2 */ 2:
+                    message.b2 = reader.bool();
+                    break;
+                case /* bool b3 */ 3:
+                    message.b3 = reader.bool();
+                    break;
+                case /* bool b4 */ 4:
+                    message.b4 = reader.bool();
+                    break;
+                case /* bool b5 */ 5:
+                    message.b5 = reader.bool();
+                    break;
+                case /* bool b6 */ 6:
+                    message.b6 = reader.bool();
+                    break;
+                case /* bool b7 */ 7:
+                    message.b7 = reader.bool();
+                    break;
+                case /* bool b8 */ 8:
+                    message.b8 = reader.bool();
+                    break;
+                case /* bool b9 */ 9:
+                    message.b9 = reader.bool();
+                    break;
+                case /* bool b10 */ 10:
+                    message.b10 = reader.bool();
+                    break;
+                case /* bool b11 */ 11:
+                    message.b11 = reader.bool();
+                    break;
+                case /* bool b12 */ 12:
+                    message.b12 = reader.bool();
+                    break;
+                case /* bool b13 */ 13:
+                    message.b13 = reader.bool();
+                    break;
+                case /* bool b14 */ 14:
+                    message.b14 = reader.bool();
+                    break;
+                case /* bool b15 */ 15:
+                    message.b15 = reader.bool();
+                    break;
+                case /* bool b16 */ 16:
+                    message.b16 = reader.bool();
+                    break;
+                case /* bool b17 */ 17:
+                    message.b17 = reader.bool();
+                    break;
+                case /* bool b18 */ 18:
+                    message.b18 = reader.bool();
+                    break;
+                case /* bool b19 */ 19:
+                    message.b19 = reader.bool();
+                    break;
+                case /* bool b20 */ 20:
+                    message.b20 = reader.bool();
+                    break;
+                case /* bool b21 */ 21:
+                    message.b21 = reader.bool();
+                    break;
+                case /* bool b22 */ 22:
+                    message.b22 = reader.bool();
+                    break;
+                case /* bool b23 */ 23:
+                    message.b23 = reader.bool();
+                    break;
+                case /* bool b24 */ 24:
+                    message.b24 = reader.bool();
+                    break;
+                case /* bool b25 */ 25:
+                    message.b25 = reader.bool();
+                    break;
+                case /* bool b26 */ 26:
+                    message.b26 = reader.bool();
+                    break;
+                case /* bool b27 */ 27:
+                    message.b27 = reader.bool();
+                    break;
+                case /* bool b28 */ 28:
+                    message.b28 = reader.bool();
+                    break;
+                case /* bool b29 */ 29:
+                    message.b29 = reader.bool();
+                    break;
+                case /* bool b30 */ 30:
+                    message.b30 = reader.bool();
+                    break;
+                case /* bool b31 */ 31:
+                    message.b31 = reader.bool();
+                    break;
+                case /* bool b32 */ 32:
+                    message.b32 = reader.bool();
+                    break;
+                case /* bool b33 */ 33:
+                    message.b33 = reader.bool();
+                    break;
+                case /* bool b34 */ 34:
+                    message.b34 = reader.bool();
+                    break;
+                case /* bool b35 */ 35:
+                    message.b35 = reader.bool();
+                    break;
+                case /* bool b36 */ 36:
+                    message.b36 = reader.bool();
+                    break;
+                case /* bool b37 */ 37:
+                    message.b37 = reader.bool();
+                    break;
+                case /* bool b38 */ 38:
+                    message.b38 = reader.bool();
+                    break;
+                case /* bool b39 */ 39:
+                    message.b39 = reader.bool();
+                    break;
+                case /* bool b40 */ 40:
+                    message.b40 = reader.bool();
+                    break;
+                case /* bool b41 */ 41:
+                    message.b41 = reader.bool();
+                    break;
+                case /* bool b42 */ 42:
+                    message.b42 = reader.bool();
+                    break;
+                case /* bool b43 */ 43:
+                    message.b43 = reader.bool();
+                    break;
+                case /* bool b44 */ 44:
+                    message.b44 = reader.bool();
+                    break;
+                case /* bool b45 */ 45:
+                    message.b45 = reader.bool();
+                    break;
+                case /* bool b46 */ 46:
+                    message.b46 = reader.bool();
+                    break;
+                case /* bool b47 */ 47:
+                    message.b47 = reader.bool();
+                    break;
+                case /* bool b48 */ 48:
+                    message.b48 = reader.bool();
+                    break;
+                case /* bool b49 */ 49:
+                    message.b49 = reader.bool();
+                    break;
+                case /* bool b50 */ 50:
+                    message.b50 = reader.bool();
+                    break;
+                case /* bool b51 */ 51:
+                    message.b51 = reader.bool();
+                    break;
+                case /* bool b52 */ 52:
+                    message.b52 = reader.bool();
+                    break;
+                case /* bool b53 */ 53:
+                    message.b53 = reader.bool();
+                    break;
+                case /* bool b54 */ 54:
+                    message.b54 = reader.bool();
+                    break;
+                case /* bool b55 */ 55:
+                    message.b55 = reader.bool();
+                    break;
+                case /* bool b56 */ 56:
+                    message.b56 = reader.bool();
+                    break;
+                case /* bool b57 */ 57:
+                    message.b57 = reader.bool();
+                    break;
+                case /* bool b58 */ 58:
+                    message.b58 = reader.bool();
+                    break;
+                case /* bool b59 */ 59:
+                    message.b59 = reader.bool();
+                    break;
+                case /* bool b60 */ 60:
+                    message.b60 = reader.bool();
+                    break;
+                case /* bool b61 */ 61:
+                    message.b61 = reader.bool();
+                    break;
+                case /* bool b62 */ 62:
+                    message.b62 = reader.bool();
+                    break;
+                case /* bool b63 */ 63:
+                    message.b63 = reader.bool();
+                    break;
+                case /* bool b64 */ 64:
+                    message.b64 = reader.bool();
+                    break;
+                case /* bool b65 */ 65:
+                    message.b65 = reader.bool();
+                    break;
+                case /* bool b66 */ 66:
+                    message.b66 = reader.bool();
+                    break;
+                case /* bool b67 */ 67:
+                    message.b67 = reader.bool();
+                    break;
+                case /* bool b68 */ 68:
+                    message.b68 = reader.bool();
+                    break;
+                case /* bool b69 */ 69:
+                    message.b69 = reader.bool();
+                    break;
+                case /* proto3_unittest.TestAllTypes child */ 100:
+                    message.child = TestAllTypes.internalBinaryRead(reader, reader.uint32(), options, message.child);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TestHasbits, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* bool b1 = 1; */
+        if (message.b1 !== false)
+            writer.tag(1, WireType.Varint).bool(message.b1);
+        /* bool b2 = 2; */
+        if (message.b2 !== false)
+            writer.tag(2, WireType.Varint).bool(message.b2);
+        /* bool b3 = 3; */
+        if (message.b3 !== false)
+            writer.tag(3, WireType.Varint).bool(message.b3);
+        /* bool b4 = 4; */
+        if (message.b4 !== false)
+            writer.tag(4, WireType.Varint).bool(message.b4);
+        /* bool b5 = 5; */
+        if (message.b5 !== false)
+            writer.tag(5, WireType.Varint).bool(message.b5);
+        /* bool b6 = 6; */
+        if (message.b6 !== false)
+            writer.tag(6, WireType.Varint).bool(message.b6);
+        /* bool b7 = 7; */
+        if (message.b7 !== false)
+            writer.tag(7, WireType.Varint).bool(message.b7);
+        /* bool b8 = 8; */
+        if (message.b8 !== false)
+            writer.tag(8, WireType.Varint).bool(message.b8);
+        /* bool b9 = 9; */
+        if (message.b9 !== false)
+            writer.tag(9, WireType.Varint).bool(message.b9);
+        /* bool b10 = 10; */
+        if (message.b10 !== false)
+            writer.tag(10, WireType.Varint).bool(message.b10);
+        /* bool b11 = 11; */
+        if (message.b11 !== false)
+            writer.tag(11, WireType.Varint).bool(message.b11);
+        /* bool b12 = 12; */
+        if (message.b12 !== false)
+            writer.tag(12, WireType.Varint).bool(message.b12);
+        /* bool b13 = 13; */
+        if (message.b13 !== false)
+            writer.tag(13, WireType.Varint).bool(message.b13);
+        /* bool b14 = 14; */
+        if (message.b14 !== false)
+            writer.tag(14, WireType.Varint).bool(message.b14);
+        /* bool b15 = 15; */
+        if (message.b15 !== false)
+            writer.tag(15, WireType.Varint).bool(message.b15);
+        /* bool b16 = 16; */
+        if (message.b16 !== false)
+            writer.tag(16, WireType.Varint).bool(message.b16);
+        /* bool b17 = 17; */
+        if (message.b17 !== false)
+            writer.tag(17, WireType.Varint).bool(message.b17);
+        /* bool b18 = 18; */
+        if (message.b18 !== false)
+            writer.tag(18, WireType.Varint).bool(message.b18);
+        /* bool b19 = 19; */
+        if (message.b19 !== false)
+            writer.tag(19, WireType.Varint).bool(message.b19);
+        /* bool b20 = 20; */
+        if (message.b20 !== false)
+            writer.tag(20, WireType.Varint).bool(message.b20);
+        /* bool b21 = 21; */
+        if (message.b21 !== false)
+            writer.tag(21, WireType.Varint).bool(message.b21);
+        /* bool b22 = 22; */
+        if (message.b22 !== false)
+            writer.tag(22, WireType.Varint).bool(message.b22);
+        /* bool b23 = 23; */
+        if (message.b23 !== false)
+            writer.tag(23, WireType.Varint).bool(message.b23);
+        /* bool b24 = 24; */
+        if (message.b24 !== false)
+            writer.tag(24, WireType.Varint).bool(message.b24);
+        /* bool b25 = 25; */
+        if (message.b25 !== false)
+            writer.tag(25, WireType.Varint).bool(message.b25);
+        /* bool b26 = 26; */
+        if (message.b26 !== false)
+            writer.tag(26, WireType.Varint).bool(message.b26);
+        /* bool b27 = 27; */
+        if (message.b27 !== false)
+            writer.tag(27, WireType.Varint).bool(message.b27);
+        /* bool b28 = 28; */
+        if (message.b28 !== false)
+            writer.tag(28, WireType.Varint).bool(message.b28);
+        /* bool b29 = 29; */
+        if (message.b29 !== false)
+            writer.tag(29, WireType.Varint).bool(message.b29);
+        /* bool b30 = 30; */
+        if (message.b30 !== false)
+            writer.tag(30, WireType.Varint).bool(message.b30);
+        /* bool b31 = 31; */
+        if (message.b31 !== false)
+            writer.tag(31, WireType.Varint).bool(message.b31);
+        /* bool b32 = 32; */
+        if (message.b32 !== false)
+            writer.tag(32, WireType.Varint).bool(message.b32);
+        /* bool b33 = 33; */
+        if (message.b33 !== false)
+            writer.tag(33, WireType.Varint).bool(message.b33);
+        /* bool b34 = 34; */
+        if (message.b34 !== false)
+            writer.tag(34, WireType.Varint).bool(message.b34);
+        /* bool b35 = 35; */
+        if (message.b35 !== false)
+            writer.tag(35, WireType.Varint).bool(message.b35);
+        /* bool b36 = 36; */
+        if (message.b36 !== false)
+            writer.tag(36, WireType.Varint).bool(message.b36);
+        /* bool b37 = 37; */
+        if (message.b37 !== false)
+            writer.tag(37, WireType.Varint).bool(message.b37);
+        /* bool b38 = 38; */
+        if (message.b38 !== false)
+            writer.tag(38, WireType.Varint).bool(message.b38);
+        /* bool b39 = 39; */
+        if (message.b39 !== false)
+            writer.tag(39, WireType.Varint).bool(message.b39);
+        /* bool b40 = 40; */
+        if (message.b40 !== false)
+            writer.tag(40, WireType.Varint).bool(message.b40);
+        /* bool b41 = 41; */
+        if (message.b41 !== false)
+            writer.tag(41, WireType.Varint).bool(message.b41);
+        /* bool b42 = 42; */
+        if (message.b42 !== false)
+            writer.tag(42, WireType.Varint).bool(message.b42);
+        /* bool b43 = 43; */
+        if (message.b43 !== false)
+            writer.tag(43, WireType.Varint).bool(message.b43);
+        /* bool b44 = 44; */
+        if (message.b44 !== false)
+            writer.tag(44, WireType.Varint).bool(message.b44);
+        /* bool b45 = 45; */
+        if (message.b45 !== false)
+            writer.tag(45, WireType.Varint).bool(message.b45);
+        /* bool b46 = 46; */
+        if (message.b46 !== false)
+            writer.tag(46, WireType.Varint).bool(message.b46);
+        /* bool b47 = 47; */
+        if (message.b47 !== false)
+            writer.tag(47, WireType.Varint).bool(message.b47);
+        /* bool b48 = 48; */
+        if (message.b48 !== false)
+            writer.tag(48, WireType.Varint).bool(message.b48);
+        /* bool b49 = 49; */
+        if (message.b49 !== false)
+            writer.tag(49, WireType.Varint).bool(message.b49);
+        /* bool b50 = 50; */
+        if (message.b50 !== false)
+            writer.tag(50, WireType.Varint).bool(message.b50);
+        /* bool b51 = 51; */
+        if (message.b51 !== false)
+            writer.tag(51, WireType.Varint).bool(message.b51);
+        /* bool b52 = 52; */
+        if (message.b52 !== false)
+            writer.tag(52, WireType.Varint).bool(message.b52);
+        /* bool b53 = 53; */
+        if (message.b53 !== false)
+            writer.tag(53, WireType.Varint).bool(message.b53);
+        /* bool b54 = 54; */
+        if (message.b54 !== false)
+            writer.tag(54, WireType.Varint).bool(message.b54);
+        /* bool b55 = 55; */
+        if (message.b55 !== false)
+            writer.tag(55, WireType.Varint).bool(message.b55);
+        /* bool b56 = 56; */
+        if (message.b56 !== false)
+            writer.tag(56, WireType.Varint).bool(message.b56);
+        /* bool b57 = 57; */
+        if (message.b57 !== false)
+            writer.tag(57, WireType.Varint).bool(message.b57);
+        /* bool b58 = 58; */
+        if (message.b58 !== false)
+            writer.tag(58, WireType.Varint).bool(message.b58);
+        /* bool b59 = 59; */
+        if (message.b59 !== false)
+            writer.tag(59, WireType.Varint).bool(message.b59);
+        /* bool b60 = 60; */
+        if (message.b60 !== false)
+            writer.tag(60, WireType.Varint).bool(message.b60);
+        /* bool b61 = 61; */
+        if (message.b61 !== false)
+            writer.tag(61, WireType.Varint).bool(message.b61);
+        /* bool b62 = 62; */
+        if (message.b62 !== false)
+            writer.tag(62, WireType.Varint).bool(message.b62);
+        /* bool b63 = 63; */
+        if (message.b63 !== false)
+            writer.tag(63, WireType.Varint).bool(message.b63);
+        /* bool b64 = 64; */
+        if (message.b64 !== false)
+            writer.tag(64, WireType.Varint).bool(message.b64);
+        /* bool b65 = 65; */
+        if (message.b65 !== false)
+            writer.tag(65, WireType.Varint).bool(message.b65);
+        /* bool b66 = 66; */
+        if (message.b66 !== false)
+            writer.tag(66, WireType.Varint).bool(message.b66);
+        /* bool b67 = 67; */
+        if (message.b67 !== false)
+            writer.tag(67, WireType.Varint).bool(message.b67);
+        /* bool b68 = 68; */
+        if (message.b68 !== false)
+            writer.tag(68, WireType.Varint).bool(message.b68);
+        /* bool b69 = 69; */
+        if (message.b69 !== false)
+            writer.tag(69, WireType.Varint).bool(message.b69);
+        /* proto3_unittest.TestAllTypes child = 100; */
+        if (message.child)
+            TestAllTypes.internalBinaryWrite(message.child, writer.tag(100, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message proto3_unittest.TestHasbits
+ */
+export const TestHasbits = new TestHasbits$Type();
