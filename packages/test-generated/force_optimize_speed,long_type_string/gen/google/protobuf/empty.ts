@@ -42,7 +42,6 @@ import { MessageType } from "@protobuf-ts/runtime";
  *       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
  *     }
  *
- * The JSON representation for `Empty` is empty JSON object `{}`.
  *
  * @generated from protobuf message google.protobuf.Empty
  */

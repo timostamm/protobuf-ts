@@ -85,6 +85,12 @@ export interface Type {
      * @generated from protobuf field: google.protobuf.Syntax syntax = 6;
      */
     syntax: Syntax;
+    /**
+     * The source edition string, only valid when syntax is SYNTAX_EDITIONS.
+     *
+     * @generated from protobuf field: string edition = 7;
+     */
+    edition: string;
 }
 /**
  * A single field of a message type.
@@ -343,6 +349,12 @@ export interface Enum {
      * @generated from protobuf field: google.protobuf.Syntax syntax = 5;
      */
     syntax: Syntax;
+    /**
+     * The source edition string, only valid when syntax is SYNTAX_EDITIONS.
+     *
+     * @generated from protobuf field: string edition = 6;
+     */
+    edition: string;
 }
 /**
  * Enum value definition.
@@ -412,7 +424,13 @@ export enum Syntax {
      *
      * @generated from protobuf enum value: SYNTAX_PROTO3 = 1;
      */
-    PROTO3 = 1
+    PROTO3 = 1,
+    /**
+     * Syntax `editions`.
+     *
+     * @generated from protobuf enum value: SYNTAX_EDITIONS = 2;
+     */
+    EDITIONS = 2
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class Type$Type extends MessageType<Type> {
@@ -423,7 +441,8 @@ class Type$Type extends MessageType<Type> {
             { no: 3, name: "oneofs", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
             { no: 5, name: "source_context", kind: "message", T: () => SourceContext },
-            { no: 6, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] }
+            { no: 6, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] },
+            { no: 7, name: "edition", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Type>): Type {
@@ -433,6 +452,7 @@ class Type$Type extends MessageType<Type> {
         message.oneofs = [];
         message.options = [];
         message.syntax = 0;
+        message.edition = "";
         if (value !== undefined)
             reflectionMergePartial<Type>(this, message, value);
         return message;
@@ -459,6 +479,9 @@ class Type$Type extends MessageType<Type> {
                     break;
                 case /* google.protobuf.Syntax syntax */ 6:
                     message.syntax = reader.int32();
+                    break;
+                case /* string edition */ 7:
+                    message.edition = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -490,6 +513,9 @@ class Type$Type extends MessageType<Type> {
         /* google.protobuf.Syntax syntax = 6; */
         if (message.syntax !== 0)
             writer.tag(6, WireType.Varint).int32(message.syntax);
+        /* string edition = 7; */
+        if (message.edition !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.edition);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -627,7 +653,8 @@ class Enum$Type extends MessageType<Enum> {
             { no: 2, name: "enumvalue", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => EnumValue },
             { no: 3, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
             { no: 4, name: "source_context", kind: "message", T: () => SourceContext },
-            { no: 5, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] }
+            { no: 5, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] },
+            { no: 6, name: "edition", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Enum>): Enum {
@@ -636,6 +663,7 @@ class Enum$Type extends MessageType<Enum> {
         message.enumvalue = [];
         message.options = [];
         message.syntax = 0;
+        message.edition = "";
         if (value !== undefined)
             reflectionMergePartial<Enum>(this, message, value);
         return message;
@@ -659,6 +687,9 @@ class Enum$Type extends MessageType<Enum> {
                     break;
                 case /* google.protobuf.Syntax syntax */ 5:
                     message.syntax = reader.int32();
+                    break;
+                case /* string edition */ 6:
+                    message.edition = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -687,6 +718,9 @@ class Enum$Type extends MessageType<Enum> {
         /* google.protobuf.Syntax syntax = 5; */
         if (message.syntax !== 0)
             writer.tag(5, WireType.Varint).int32(message.syntax);
+        /* string edition = 6; */
+        if (message.edition !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.edition);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

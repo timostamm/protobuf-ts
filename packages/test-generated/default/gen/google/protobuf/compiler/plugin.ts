@@ -4,39 +4,13 @@
 //
 // Protocol Buffers - Google's data interchange format
 // Copyright 2008 Google Inc.  All rights reserved.
-// https://developers.google.com/protocol-buffers/
 //
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file or at
+// https://developers.google.com/open-source/licenses/bsd
 //
 //
 // Author: kenton@google.com (Kenton Varda)
-//
-// WARNING:  The plugin interface is currently EXPERIMENTAL and is subject to
-//   change.
 //
 // protoc (aka the Protocol Compiler) can be extended via plugins.  A plugin is
 // just a program that reads a CodeGeneratorRequest from stdin and writes a
@@ -58,6 +32,7 @@ import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
+import { GeneratedCodeInfo } from "../descriptor";
 import { FileDescriptorProto } from "../descriptor";
 /**
  * The version number of protocol compiler.
@@ -110,6 +85,11 @@ export interface CodeGeneratorRequest {
      * they import.  The files will appear in topological order, so each file
      * appears before any file that imports it.
      *
+     * Note: the files listed in files_to_generate will include runtime-retention
+     * options only, but all other files will include source-retention options.
+     * The source_file_descriptors field below is available in case you need
+     * source-retention options for files_to_generate.
+     *
      * protoc guarantees that all proto_files will be written after
      * the fields above, even though this is not technically guaranteed by the
      * protobuf wire format.  This theoretically could allow a plugin to stream
@@ -124,6 +104,14 @@ export interface CodeGeneratorRequest {
      * @generated from protobuf field: repeated google.protobuf.FileDescriptorProto proto_file = 15;
      */
     protoFile: FileDescriptorProto[];
+    /**
+     * File descriptors with all options, including source-retention options.
+     * These descriptors are only provided for the files listed in
+     * files_to_generate.
+     *
+     * @generated from protobuf field: repeated google.protobuf.FileDescriptorProto source_file_descriptors = 17;
+     */
+    sourceFileDescriptors: FileDescriptorProto[];
     /**
      * The version number of protocol compiler.
      *
@@ -157,6 +145,24 @@ export interface CodeGeneratorResponse {
      * @generated from protobuf field: optional uint64 supported_features = 2;
      */
     supportedFeatures?: bigint;
+    /**
+     * The minimum edition this plugin supports.  This will be treated as an
+     * Edition enum, but we want to allow unknown values.  It should be specified
+     * according the edition enum value, *not* the edition number.  Only takes
+     * effect for plugins that have FEATURE_SUPPORTS_EDITIONS set.
+     *
+     * @generated from protobuf field: optional int32 minimum_edition = 3;
+     */
+    minimumEdition?: number;
+    /**
+     * The maximum edition this plugin supports.  This will be treated as an
+     * Edition enum, but we want to allow unknown values.  It should be specified
+     * according the edition enum value, *not* the edition number.  Only takes
+     * effect for plugins that have FEATURE_SUPPORTS_EDITIONS set.
+     *
+     * @generated from protobuf field: optional int32 maximum_edition = 4;
+     */
+    maximumEdition?: number;
     /**
      * @generated from protobuf field: repeated google.protobuf.compiler.CodeGeneratorResponse.File file = 15;
      */
@@ -232,6 +238,14 @@ export interface CodeGeneratorResponse_File {
      * @generated from protobuf field: optional string content = 15;
      */
     content?: string;
+    /**
+     * Information describing the file content being inserted. If an insertion
+     * point is used, this information will be appropriately offset and inserted
+     * into the code generation metadata for the generated files.
+     *
+     * @generated from protobuf field: optional google.protobuf.GeneratedCodeInfo generated_code_info = 16;
+     */
+    generatedCodeInfo?: GeneratedCodeInfo;
 }
 /**
  * Sync with code_generator.h.
@@ -246,7 +260,11 @@ export enum CodeGeneratorResponse_Feature {
     /**
      * @generated from protobuf enum value: FEATURE_PROTO3_OPTIONAL = 1;
      */
-    PROTO3_OPTIONAL = 1
+    PROTO3_OPTIONAL = 1,
+    /**
+     * @generated from protobuf enum value: FEATURE_SUPPORTS_EDITIONS = 2;
+     */
+    SUPPORTS_EDITIONS = 2
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class Version$Type extends MessageType<Version> {
@@ -322,6 +340,7 @@ class CodeGeneratorRequest$Type extends MessageType<CodeGeneratorRequest> {
             { no: 1, name: "file_to_generate", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "parameter", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 15, name: "proto_file", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => FileDescriptorProto },
+            { no: 17, name: "source_file_descriptors", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => FileDescriptorProto },
             { no: 3, name: "compiler_version", kind: "message", T: () => Version }
         ]);
     }
@@ -329,6 +348,7 @@ class CodeGeneratorRequest$Type extends MessageType<CodeGeneratorRequest> {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.fileToGenerate = [];
         message.protoFile = [];
+        message.sourceFileDescriptors = [];
         if (value !== undefined)
             reflectionMergePartial<CodeGeneratorRequest>(this, message, value);
         return message;
@@ -346,6 +366,9 @@ class CodeGeneratorRequest$Type extends MessageType<CodeGeneratorRequest> {
                     break;
                 case /* repeated google.protobuf.FileDescriptorProto proto_file */ 15:
                     message.protoFile.push(FileDescriptorProto.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated google.protobuf.FileDescriptorProto source_file_descriptors */ 17:
+                    message.sourceFileDescriptors.push(FileDescriptorProto.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 case /* optional google.protobuf.compiler.Version compiler_version */ 3:
                     message.compilerVersion = Version.internalBinaryRead(reader, reader.uint32(), options, message.compilerVersion);
@@ -371,6 +394,9 @@ class CodeGeneratorRequest$Type extends MessageType<CodeGeneratorRequest> {
         /* repeated google.protobuf.FileDescriptorProto proto_file = 15; */
         for (let i = 0; i < message.protoFile.length; i++)
             FileDescriptorProto.internalBinaryWrite(message.protoFile[i], writer.tag(15, WireType.LengthDelimited).fork(), options).join();
+        /* repeated google.protobuf.FileDescriptorProto source_file_descriptors = 17; */
+        for (let i = 0; i < message.sourceFileDescriptors.length; i++)
+            FileDescriptorProto.internalBinaryWrite(message.sourceFileDescriptors[i], writer.tag(17, WireType.LengthDelimited).fork(), options).join();
         /* optional google.protobuf.compiler.Version compiler_version = 3; */
         if (message.compilerVersion)
             Version.internalBinaryWrite(message.compilerVersion, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
@@ -390,6 +416,8 @@ class CodeGeneratorResponse$Type extends MessageType<CodeGeneratorResponse> {
         super("google.protobuf.compiler.CodeGeneratorResponse", [
             { no: 1, name: "error", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "supported_features", kind: "scalar", opt: true, T: 4 /*ScalarType.UINT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 3, name: "minimum_edition", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "maximum_edition", kind: "scalar", opt: true, T: 5 /*ScalarType.INT32*/ },
             { no: 15, name: "file", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => CodeGeneratorResponse_File }
         ]);
     }
@@ -410,6 +438,12 @@ class CodeGeneratorResponse$Type extends MessageType<CodeGeneratorResponse> {
                     break;
                 case /* optional uint64 supported_features */ 2:
                     message.supportedFeatures = reader.uint64().toBigInt();
+                    break;
+                case /* optional int32 minimum_edition */ 3:
+                    message.minimumEdition = reader.int32();
+                    break;
+                case /* optional int32 maximum_edition */ 4:
+                    message.maximumEdition = reader.int32();
                     break;
                 case /* repeated google.protobuf.compiler.CodeGeneratorResponse.File file */ 15:
                     message.file.push(CodeGeneratorResponse_File.internalBinaryRead(reader, reader.uint32(), options));
@@ -432,6 +466,12 @@ class CodeGeneratorResponse$Type extends MessageType<CodeGeneratorResponse> {
         /* optional uint64 supported_features = 2; */
         if (message.supportedFeatures !== undefined)
             writer.tag(2, WireType.Varint).uint64(message.supportedFeatures);
+        /* optional int32 minimum_edition = 3; */
+        if (message.minimumEdition !== undefined)
+            writer.tag(3, WireType.Varint).int32(message.minimumEdition);
+        /* optional int32 maximum_edition = 4; */
+        if (message.maximumEdition !== undefined)
+            writer.tag(4, WireType.Varint).int32(message.maximumEdition);
         /* repeated google.protobuf.compiler.CodeGeneratorResponse.File file = 15; */
         for (let i = 0; i < message.file.length; i++)
             CodeGeneratorResponse_File.internalBinaryWrite(message.file[i], writer.tag(15, WireType.LengthDelimited).fork(), options).join();
@@ -451,7 +491,8 @@ class CodeGeneratorResponse_File$Type extends MessageType<CodeGeneratorResponse_
         super("google.protobuf.compiler.CodeGeneratorResponse.File", [
             { no: 1, name: "name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "insertion_point", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
-            { no: 15, name: "content", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+            { no: 15, name: "content", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 16, name: "generated_code_info", kind: "message", T: () => GeneratedCodeInfo }
         ]);
     }
     create(value?: PartialMessage<CodeGeneratorResponse_File>): CodeGeneratorResponse_File {
@@ -474,6 +515,9 @@ class CodeGeneratorResponse_File$Type extends MessageType<CodeGeneratorResponse_
                 case /* optional string content */ 15:
                     message.content = reader.string();
                     break;
+                case /* optional google.protobuf.GeneratedCodeInfo generated_code_info */ 16:
+                    message.generatedCodeInfo = GeneratedCodeInfo.internalBinaryRead(reader, reader.uint32(), options, message.generatedCodeInfo);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -495,6 +539,9 @@ class CodeGeneratorResponse_File$Type extends MessageType<CodeGeneratorResponse_
         /* optional string content = 15; */
         if (message.content !== undefined)
             writer.tag(15, WireType.LengthDelimited).string(message.content);
+        /* optional google.protobuf.GeneratedCodeInfo generated_code_info = 16; */
+        if (message.generatedCodeInfo)
+            GeneratedCodeInfo.internalBinaryWrite(message.generatedCodeInfo, writer.tag(16, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

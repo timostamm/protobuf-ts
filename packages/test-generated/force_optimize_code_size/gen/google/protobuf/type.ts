@@ -77,6 +77,12 @@ export interface Type {
      * @generated from protobuf field: google.protobuf.Syntax syntax = 6;
      */
     syntax: Syntax;
+    /**
+     * The source edition string, only valid when syntax is SYNTAX_EDITIONS.
+     *
+     * @generated from protobuf field: string edition = 7;
+     */
+    edition: string;
 }
 /**
  * A single field of a message type.
@@ -335,6 +341,12 @@ export interface Enum {
      * @generated from protobuf field: google.protobuf.Syntax syntax = 5;
      */
     syntax: Syntax;
+    /**
+     * The source edition string, only valid when syntax is SYNTAX_EDITIONS.
+     *
+     * @generated from protobuf field: string edition = 6;
+     */
+    edition: string;
 }
 /**
  * Enum value definition.
@@ -404,7 +416,13 @@ export enum Syntax {
      *
      * @generated from protobuf enum value: SYNTAX_PROTO3 = 1;
      */
-    PROTO3 = 1
+    PROTO3 = 1,
+    /**
+     * Syntax `editions`.
+     *
+     * @generated from protobuf enum value: SYNTAX_EDITIONS = 2;
+     */
+    EDITIONS = 2
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class Type$Type extends MessageType<Type> {
@@ -415,7 +433,8 @@ class Type$Type extends MessageType<Type> {
             { no: 3, name: "oneofs", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
             { no: 5, name: "source_context", kind: "message", T: () => SourceContext },
-            { no: 6, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] }
+            { no: 6, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] },
+            { no: 7, name: "edition", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
 }
@@ -452,7 +471,8 @@ class Enum$Type extends MessageType<Enum> {
             { no: 2, name: "enumvalue", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => EnumValue },
             { no: 3, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
             { no: 4, name: "source_context", kind: "message", T: () => SourceContext },
-            { no: 5, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] }
+            { no: 5, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] },
+            { no: 6, name: "edition", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
 }

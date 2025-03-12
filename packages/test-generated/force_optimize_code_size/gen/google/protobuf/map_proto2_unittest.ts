@@ -4,33 +4,10 @@
 //
 // Protocol Buffers - Google's data interchange format
 // Copyright 2008 Google Inc.  All rights reserved.
-// https://developers.google.com/protocol-buffers/
 //
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file or at
+// https://developers.google.com/open-source/licenses/bsd
 //
 import { MessageType } from "@protobuf-ts/runtime";
 import { ImportEnumForMap } from "./unittest_import";
@@ -50,6 +27,80 @@ export interface TestEnumMap {
     unknownMapField: {
         [key: number]: Proto2MapEnum;
     };
+    /**
+     * Other maps with all key types to test the unknown entry serialization
+     *
+     * @generated from protobuf field: map<int64, protobuf_unittest.Proto2MapEnum> unknown_map_field_int64 = 200;
+     */
+    unknownMapFieldInt64: {
+        [key: string]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<uint64, protobuf_unittest.Proto2MapEnum> unknown_map_field_uint64 = 201;
+     */
+    unknownMapFieldUint64: {
+        [key: string]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnum> unknown_map_field_int32 = 202;
+     */
+    unknownMapFieldInt32: {
+        [key: number]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<uint32, protobuf_unittest.Proto2MapEnum> unknown_map_field_uint32 = 203;
+     */
+    unknownMapFieldUint32: {
+        [key: number]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<fixed32, protobuf_unittest.Proto2MapEnum> unknown_map_field_fixed32 = 204;
+     */
+    unknownMapFieldFixed32: {
+        [key: number]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<fixed64, protobuf_unittest.Proto2MapEnum> unknown_map_field_fixed64 = 205;
+     */
+    unknownMapFieldFixed64: {
+        [key: string]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<bool, protobuf_unittest.Proto2MapEnum> unknown_map_field_bool = 206;
+     */
+    unknownMapFieldBool: {
+        [key: string]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<string, protobuf_unittest.Proto2MapEnum> unknown_map_field_string = 207;
+     */
+    unknownMapFieldString: {
+        [key: string]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<sint32, protobuf_unittest.Proto2MapEnum> unknown_map_field_sint32 = 208;
+     */
+    unknownMapFieldSint32: {
+        [key: number]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<sint64, protobuf_unittest.Proto2MapEnum> unknown_map_field_sint64 = 209;
+     */
+    unknownMapFieldSint64: {
+        [key: string]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<sfixed32, protobuf_unittest.Proto2MapEnum> unknown_map_field_sfixed32 = 210;
+     */
+    unknownMapFieldSfixed32: {
+        [key: number]: Proto2MapEnum;
+    };
+    /**
+     * @generated from protobuf field: map<sfixed64, protobuf_unittest.Proto2MapEnum> unknown_map_field_sfixed64 = 211;
+     */
+    unknownMapFieldSfixed64: {
+        [key: string]: Proto2MapEnum;
+    };
 }
 /**
  * @generated from protobuf message protobuf_unittest.TestEnumMapPlusExtra
@@ -66,6 +117,80 @@ export interface TestEnumMapPlusExtra {
      */
     unknownMapField: {
         [key: number]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * Other maps with all key types to test the unknown entry serialization
+     *
+     * @generated from protobuf field: map<int64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_int64 = 200;
+     */
+    unknownMapFieldInt64: {
+        [key: string]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<uint64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_uint64 = 201;
+     */
+    unknownMapFieldUint64: {
+        [key: string]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_int32 = 202;
+     */
+    unknownMapFieldInt32: {
+        [key: number]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<uint32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_uint32 = 203;
+     */
+    unknownMapFieldUint32: {
+        [key: number]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<fixed32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_fixed32 = 204;
+     */
+    unknownMapFieldFixed32: {
+        [key: number]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<fixed64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_fixed64 = 205;
+     */
+    unknownMapFieldFixed64: {
+        [key: string]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<bool, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_bool = 206;
+     */
+    unknownMapFieldBool: {
+        [key: string]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<string, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_string = 207;
+     */
+    unknownMapFieldString: {
+        [key: string]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<sint32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_sint32 = 208;
+     */
+    unknownMapFieldSint32: {
+        [key: number]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<sint64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_sint64 = 209;
+     */
+    unknownMapFieldSint64: {
+        [key: string]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<sfixed32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_sfixed32 = 210;
+     */
+    unknownMapFieldSfixed32: {
+        [key: number]: Proto2MapEnumPlusExtra;
+    };
+    /**
+     * @generated from protobuf field: map<sfixed64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_sfixed64 = 211;
+     */
+    unknownMapFieldSfixed64: {
+        [key: string]: Proto2MapEnumPlusExtra;
     };
 }
 /**
@@ -181,6 +306,23 @@ export interface TestSubmessageMaps {
     m?: TestMaps;
 }
 /**
+ * @generated from protobuf message protobuf_unittest.TestProto2BytesMap
+ */
+export interface TestProto2BytesMap {
+    /**
+     * @generated from protobuf field: map<int32, bytes> map_bytes = 1;
+     */
+    mapBytes: {
+        [key: number]: Uint8Array;
+    };
+    /**
+     * @generated from protobuf field: map<int32, string> map_string = 2;
+     */
+    mapString: {
+        [key: number]: string;
+    };
+}
+/**
  * @generated from protobuf enum protobuf_unittest.Proto2MapEnum
  */
 export enum Proto2MapEnum {
@@ -223,7 +365,19 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
     constructor() {
         super("protobuf_unittest.TestEnumMap", [
             { no: 101, name: "known_map_field", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
-            { no: 102, name: "unknown_map_field", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } }
+            { no: 102, name: "unknown_map_field", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 200, name: "unknown_map_field_int64", kind: "map", K: 3 /*ScalarType.INT64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 201, name: "unknown_map_field_uint64", kind: "map", K: 4 /*ScalarType.UINT64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 202, name: "unknown_map_field_int32", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 203, name: "unknown_map_field_uint32", kind: "map", K: 13 /*ScalarType.UINT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 204, name: "unknown_map_field_fixed32", kind: "map", K: 7 /*ScalarType.FIXED32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 205, name: "unknown_map_field_fixed64", kind: "map", K: 6 /*ScalarType.FIXED64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 206, name: "unknown_map_field_bool", kind: "map", K: 8 /*ScalarType.BOOL*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 207, name: "unknown_map_field_string", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 208, name: "unknown_map_field_sint32", kind: "map", K: 17 /*ScalarType.SINT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 209, name: "unknown_map_field_sint64", kind: "map", K: 18 /*ScalarType.SINT64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 210, name: "unknown_map_field_sfixed32", kind: "map", K: 15 /*ScalarType.SFIXED32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } },
+            { no: 211, name: "unknown_map_field_sfixed64", kind: "map", K: 16 /*ScalarType.SFIXED64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnum", Proto2MapEnum, "PROTO2_MAP_ENUM_"] } }
         ]);
     }
 }
@@ -236,7 +390,19 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
     constructor() {
         super("protobuf_unittest.TestEnumMapPlusExtra", [
             { no: 101, name: "known_map_field", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
-            { no: 102, name: "unknown_map_field", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } }
+            { no: 102, name: "unknown_map_field", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 200, name: "unknown_map_field_int64", kind: "map", K: 3 /*ScalarType.INT64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 201, name: "unknown_map_field_uint64", kind: "map", K: 4 /*ScalarType.UINT64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 202, name: "unknown_map_field_int32", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 203, name: "unknown_map_field_uint32", kind: "map", K: 13 /*ScalarType.UINT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 204, name: "unknown_map_field_fixed32", kind: "map", K: 7 /*ScalarType.FIXED32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 205, name: "unknown_map_field_fixed64", kind: "map", K: 6 /*ScalarType.FIXED64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 206, name: "unknown_map_field_bool", kind: "map", K: 8 /*ScalarType.BOOL*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 207, name: "unknown_map_field_string", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 208, name: "unknown_map_field_sint32", kind: "map", K: 17 /*ScalarType.SINT32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 209, name: "unknown_map_field_sint64", kind: "map", K: 18 /*ScalarType.SINT64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 210, name: "unknown_map_field_sfixed32", kind: "map", K: 15 /*ScalarType.SFIXED32*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } },
+            { no: 211, name: "unknown_map_field_sfixed64", kind: "map", K: 16 /*ScalarType.SFIXED64*/, V: { kind: "enum", T: () => ["protobuf_unittest.Proto2MapEnumPlusExtra", Proto2MapEnumPlusExtra] } }
         ]);
     }
 }
@@ -303,3 +469,16 @@ class TestSubmessageMaps$Type extends MessageType<TestSubmessageMaps> {
  * @generated MessageType for protobuf message protobuf_unittest.TestSubmessageMaps
  */
 export const TestSubmessageMaps = new TestSubmessageMaps$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TestProto2BytesMap$Type extends MessageType<TestProto2BytesMap> {
+    constructor() {
+        super("protobuf_unittest.TestProto2BytesMap", [
+            { no: 1, name: "map_bytes", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "scalar", T: 12 /*ScalarType.BYTES*/ } },
+            { no: 2, name: "map_string", kind: "map", K: 5 /*ScalarType.INT32*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+        ]);
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.TestProto2BytesMap
+ */
+export const TestProto2BytesMap = new TestProto2BytesMap$Type();

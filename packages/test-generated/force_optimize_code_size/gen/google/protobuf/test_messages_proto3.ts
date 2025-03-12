@@ -4,33 +4,10 @@
 //
 // Protocol Buffers - Google's data interchange format
 // Copyright 2008 Google Inc.  All rights reserved.
-// https://developers.google.com/protocol-buffers/
 //
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file or at
+// https://developers.google.com/open-source/licenses/bsd
 //
 // Test schema for proto3 messages.  This test schema is used by:
 //
@@ -56,6 +33,7 @@ import { UInt32Value } from "./wrappers";
 import { Int64Value } from "./wrappers";
 import { Int32Value } from "./wrappers";
 import { BoolValue } from "./wrappers";
+import { NullValue } from "./struct";
 /**
  * This proto includes every type of field in both singular and repeated
  * forms.
@@ -538,6 +516,12 @@ export interface TestAllTypesProto3 {
          */
         oneofEnum: TestAllTypesProto3_NestedEnum;
     } | {
+        oneofKind: "oneofNullValue";
+        /**
+         * @generated from protobuf field: google.protobuf.NullValue oneof_null_value = 120;
+         */
+        oneofNullValue: NullValue;
+    } | {
         oneofKind: undefined;
     };
     /**
@@ -638,6 +622,10 @@ export interface TestAllTypesProto3 {
      * @generated from protobuf field: google.protobuf.Value optional_value = 306;
      */
     optionalValue?: Value;
+    /**
+     * @generated from protobuf field: google.protobuf.NullValue optional_null_value = 307;
+     */
+    optionalNullValue: NullValue;
     /**
      * @generated from protobuf field: repeated google.protobuf.Duration repeated_duration = 311;
      */
@@ -797,11 +785,11 @@ export enum TestAllTypesProto3_AliasedEnum {
     /**
      * @generated from protobuf enum value: ALIAS_BAZ = 2;
      */
-    QUX = 2,
+    MOO = 2,
     /**
      * @generated from protobuf enum value: ALIAS_BAZ = 2;
      */
-    qux = 2,
+    moo = 2,
     /**
      * @generated from protobuf enum value: ALIAS_BAZ = 2;
      */
@@ -815,6 +803,29 @@ export interface ForeignMessage {
      * @generated from protobuf field: int32 c = 1;
      */
     c: number;
+}
+/**
+ * @generated from protobuf message protobuf_test_messages.proto3.NullHypothesisProto3
+ */
+export interface NullHypothesisProto3 {
+}
+/**
+ * @generated from protobuf message protobuf_test_messages.proto3.EnumOnlyProto3
+ */
+export interface EnumOnlyProto3 {
+}
+/**
+ * @generated from protobuf enum protobuf_test_messages.proto3.EnumOnlyProto3.Bool
+ */
+export enum EnumOnlyProto3_Bool {
+    /**
+     * @generated from protobuf enum value: kFalse = 0;
+     */
+    kFalse = 0,
+    /**
+     * @generated from protobuf enum value: kTrue = 1;
+     */
+    kTrue = 1
 }
 /**
  * @generated from protobuf enum protobuf_test_messages.proto3.ForeignEnum
@@ -937,6 +948,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
             { no: 117, name: "oneof_float", kind: "scalar", oneof: "oneofField", T: 2 /*ScalarType.FLOAT*/ },
             { no: 118, name: "oneof_double", kind: "scalar", oneof: "oneofField", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 119, name: "oneof_enum", kind: "enum", oneof: "oneofField", T: () => ["protobuf_test_messages.proto3.TestAllTypesProto3.NestedEnum", TestAllTypesProto3_NestedEnum] },
+            { no: 120, name: "oneof_null_value", kind: "enum", oneof: "oneofField", T: () => ["google.protobuf.NullValue", NullValue] },
             { no: 201, name: "optional_bool_wrapper", kind: "message", T: () => BoolValue },
             { no: 202, name: "optional_int32_wrapper", kind: "message", T: () => Int32Value },
             { no: 203, name: "optional_int64_wrapper", kind: "message", T: () => Int64Value },
@@ -961,6 +973,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
             { no: 304, name: "optional_struct", kind: "message", T: () => Struct },
             { no: 305, name: "optional_any", kind: "message", T: () => Any },
             { no: 306, name: "optional_value", kind: "message", T: () => Value },
+            { no: 307, name: "optional_null_value", kind: "enum", T: () => ["google.protobuf.NullValue", NullValue] },
             { no: 311, name: "repeated_duration", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Duration },
             { no: 312, name: "repeated_timestamp", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Timestamp },
             { no: 313, name: "repeated_fieldmask", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => FieldMask },
@@ -1018,3 +1031,23 @@ class ForeignMessage$Type extends MessageType<ForeignMessage> {
  * @generated MessageType for protobuf message protobuf_test_messages.proto3.ForeignMessage
  */
 export const ForeignMessage = new ForeignMessage$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class NullHypothesisProto3$Type extends MessageType<NullHypothesisProto3> {
+    constructor() {
+        super("protobuf_test_messages.proto3.NullHypothesisProto3", []);
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_test_messages.proto3.NullHypothesisProto3
+ */
+export const NullHypothesisProto3 = new NullHypothesisProto3$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EnumOnlyProto3$Type extends MessageType<EnumOnlyProto3> {
+    constructor() {
+        super("protobuf_test_messages.proto3.EnumOnlyProto3", []);
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_test_messages.proto3.EnumOnlyProto3
+ */
+export const EnumOnlyProto3 = new EnumOnlyProto3$Type();

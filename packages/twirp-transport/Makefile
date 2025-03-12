@@ -27,7 +27,7 @@ test-browser:
 clientcompat: clientcompat7
 
 clientcompat7: build
-	protoc \
+	npx protoc \
 		--ts_out=clientcompat \
 		--plugin=../plugin/bin/protoc-gen-ts \
 		--proto_path=clientcompat/ \
@@ -37,7 +37,7 @@ clientcompat7: build
 	${HOME}/go/bin/clientcompat -client clientcompat/client-runner.js
 
 clientcompat8: build
-	protoc \
+	npx protoc \
 		--ts_out=clientcompat \
 		--plugin=../plugin/bin/protoc-gen-ts \
 		--proto_path=clientcompat/ \

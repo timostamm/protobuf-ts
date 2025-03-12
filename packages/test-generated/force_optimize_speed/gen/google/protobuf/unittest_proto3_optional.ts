@@ -4,33 +4,10 @@
 //
 // Protocol Buffers - Google's data interchange format
 // Copyright 2008 Google Inc.  All rights reserved.
-// https://developers.google.com/protocol-buffers/
 //
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file or at
+// https://developers.google.com/open-source/licenses/bsd
 //
 import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
 import type { IBinaryWriter } from "@protobuf-ts/runtime";
@@ -173,6 +150,33 @@ export enum TestProto3Optional_NestedEnum {
      * @generated from protobuf enum value: NEG = -1;
      */
     NEG = -1
+}
+/**
+ * @generated from protobuf message protobuf_unittest.TestProto3OptionalMessage
+ */
+export interface TestProto3OptionalMessage {
+    /**
+     * @generated from protobuf field: protobuf_unittest.TestProto3OptionalMessage.NestedMessage nested_message = 1;
+     */
+    nestedMessage?: TestProto3OptionalMessage_NestedMessage;
+    /**
+     * @generated from protobuf field: optional protobuf_unittest.TestProto3OptionalMessage.NestedMessage optional_nested_message = 2;
+     */
+    optionalNestedMessage?: TestProto3OptionalMessage_NestedMessage;
+}
+/**
+ * @generated from protobuf message protobuf_unittest.TestProto3OptionalMessage.NestedMessage
+ */
+export interface TestProto3OptionalMessage_NestedMessage {
+    /**
+     * @generated from protobuf field: string s = 1;
+     */
+    s: string;
+}
+/**
+ * @generated from protobuf message protobuf_unittest.Proto3OptionalExtensions
+ */
+export interface Proto3OptionalExtensions {
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class TestProto3Optional$Type extends MessageType<TestProto3Optional> {
@@ -408,3 +412,141 @@ class TestProto3Optional_NestedMessage$Type extends MessageType<TestProto3Option
  * @generated MessageType for protobuf message protobuf_unittest.TestProto3Optional.NestedMessage
  */
 export const TestProto3Optional_NestedMessage = new TestProto3Optional_NestedMessage$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TestProto3OptionalMessage$Type extends MessageType<TestProto3OptionalMessage> {
+    constructor() {
+        super("protobuf_unittest.TestProto3OptionalMessage", [
+            { no: 1, name: "nested_message", kind: "message", T: () => TestProto3OptionalMessage_NestedMessage },
+            { no: 2, name: "optional_nested_message", kind: "message", T: () => TestProto3OptionalMessage_NestedMessage }
+        ]);
+    }
+    create(value?: PartialMessage<TestProto3OptionalMessage>): TestProto3OptionalMessage {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<TestProto3OptionalMessage>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TestProto3OptionalMessage): TestProto3OptionalMessage {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* protobuf_unittest.TestProto3OptionalMessage.NestedMessage nested_message */ 1:
+                    message.nestedMessage = TestProto3OptionalMessage_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.nestedMessage);
+                    break;
+                case /* optional protobuf_unittest.TestProto3OptionalMessage.NestedMessage optional_nested_message */ 2:
+                    message.optionalNestedMessage = TestProto3OptionalMessage_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.optionalNestedMessage);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TestProto3OptionalMessage, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* protobuf_unittest.TestProto3OptionalMessage.NestedMessage nested_message = 1; */
+        if (message.nestedMessage)
+            TestProto3OptionalMessage_NestedMessage.internalBinaryWrite(message.nestedMessage, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* optional protobuf_unittest.TestProto3OptionalMessage.NestedMessage optional_nested_message = 2; */
+        if (message.optionalNestedMessage)
+            TestProto3OptionalMessage_NestedMessage.internalBinaryWrite(message.optionalNestedMessage, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.TestProto3OptionalMessage
+ */
+export const TestProto3OptionalMessage = new TestProto3OptionalMessage$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TestProto3OptionalMessage_NestedMessage$Type extends MessageType<TestProto3OptionalMessage_NestedMessage> {
+    constructor() {
+        super("protobuf_unittest.TestProto3OptionalMessage.NestedMessage", [
+            { no: 1, name: "s", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<TestProto3OptionalMessage_NestedMessage>): TestProto3OptionalMessage_NestedMessage {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.s = "";
+        if (value !== undefined)
+            reflectionMergePartial<TestProto3OptionalMessage_NestedMessage>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TestProto3OptionalMessage_NestedMessage): TestProto3OptionalMessage_NestedMessage {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string s */ 1:
+                    message.s = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TestProto3OptionalMessage_NestedMessage, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string s = 1; */
+        if (message.s !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.s);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.TestProto3OptionalMessage.NestedMessage
+ */
+export const TestProto3OptionalMessage_NestedMessage = new TestProto3OptionalMessage_NestedMessage$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Proto3OptionalExtensions$Type extends MessageType<Proto3OptionalExtensions> {
+    constructor() {
+        super("protobuf_unittest.Proto3OptionalExtensions", [], { "protobuf_unittest.Proto3OptionalExtensions.ext_no_optional": 8, "protobuf_unittest.Proto3OptionalExtensions.ext_with_optional": 16 });
+    }
+    create(value?: PartialMessage<Proto3OptionalExtensions>): Proto3OptionalExtensions {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<Proto3OptionalExtensions>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Proto3OptionalExtensions): Proto3OptionalExtensions {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: Proto3OptionalExtensions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protobuf_unittest.Proto3OptionalExtensions
+ */
+export const Proto3OptionalExtensions = new Proto3OptionalExtensions$Type();
