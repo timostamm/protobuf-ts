@@ -6,7 +6,7 @@ default: npm-install lerna-bootstrap lerna-make
 
 # installs lerna
 npm-install:
-	npm i
+	npm ci
 
 # link packages and install their dependencies
 lerna-bootstrap:
