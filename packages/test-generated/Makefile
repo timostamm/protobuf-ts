@@ -1,80 +1,66 @@
-.PHONY: default clean test-runner test-spec test-spec-bigint generate-size generate-speed generate-speed-bigint generate-size-bigint
+.PHONY: default clean test
 
 PROTO_PATH = ../proto
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
-SPECS := $(shell find spec -name '*.spec.ts')
+SPECS := $(shell find . -name '*.spec.ts')
 
 
 default:
-	make clean generate-speed 	     test-spec
-	make clean generate-size  	     test-spec
-	make clean generate-speed-bigint test-spec-bigint
-	make clean generate-size-bigint  test-spec-bigint
-
+	make clean
+	make generate
+	make test
 
 clean:
-	@find ts-out \( -name '*.ts' -or -name '*.js' \) -delete
+	rm -rf */gen/*
 	@echo "'${@}' done"
 
-
-test-spec:
+test:
 	@./node_modules/.bin/ts-node \
-		--project tsconfig.test.json \
+		--project tsconfig.json \
 		--require tsconfig-paths/register \
-		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
+		./node_modules/.bin/jasmine --helper="jasmine-reporter.ts" \
 		$(SPECS)
 	@echo "'${@}' done"
 
-test-spec-bigint:
-	@./node_modules/.bin/ts-node \
-		--project tsconfig.bigint.json \
-		--require tsconfig-paths/register \
-		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
-		$(SPECS)
-	@echo "'${@}' done"
+generate:
+	make gen-spec
+	make gen-default
+	make gen-force_optimize_code_size
+	make gen-force_optimize_code_size,long_type_string
+	make gen-force_optimize_speed
+	make gen-force_optimize_speed,long_type_string
 
+gen-spec:
+	node scripts/sync-specs.js
 
-generate-speed: $(PROTOS)
+gen-default: $(PROTOS)
 	@npx protoc \
-		--ts_out ./ts-out/ \
-		--ts_opt force_optimize_speed \
-		--ts_opt long_type_string \
-		--proto_path $(PROTO_PATH) \
-		--proto_path ../plugin/ \
-		--experimental_allow_proto3_optional \
-		$^
-	@echo "'${@}' done"
+		--ts_out default/gen \
+		--proto_path $(PROTO_PATH) --proto_path ../plugin/ --experimental_allow_proto3_optional $^
 
-
-generate-size: $(PROTOS)
+gen-force_optimize_code_size: $(PROTOS)
 	@npx protoc \
-		--ts_out ./ts-out/ \
+		--ts_out force_optimize_code_size/gen \
+		--ts_opt force_optimize_code_size \
+		--proto_path $(PROTO_PATH) --proto_path ../plugin/ --experimental_allow_proto3_optional $^
+
+gen-force_optimize_code_size,long_type_string: $(PROTOS)
+	@npx protoc \
+		--ts_out force_optimize_code_size,long_type_string/gen \
 		--ts_opt force_optimize_code_size \
 		--ts_opt long_type_string \
-		--proto_path $(PROTO_PATH) \
-		--proto_path ../plugin/ \
-		--experimental_allow_proto3_optional \
-		$^
-	@echo "'${@}' done"
+		--proto_path $(PROTO_PATH) --proto_path ../plugin/ --experimental_allow_proto3_optional $^
 
-
-generate-size-bigint: $(PROTOS)
+gen-force_optimize_speed: $(PROTOS)
 	@npx protoc \
-		--ts_out ./ts-out/ \
-		--ts_opt force_optimize_code_size \
-		--proto_path $(PROTO_PATH) \
-		--proto_path ../plugin/ \
-		--experimental_allow_proto3_optional \
-		$^
-	@echo "'${@}' done"
-
-
-generate-speed-bigint: $(PROTOS)
-	@npx protoc \
-		--ts_out ./ts-out/ \
+		--ts_out force_optimize_speed/gen \
 		--ts_opt force_optimize_speed \
-		--proto_path $(PROTO_PATH) \
-		--proto_path ../plugin/ \
-		--experimental_allow_proto3_optional \
-		$^
-	@echo "'${@}' done"
+		--ts_opt long_type_string \
+		--proto_path $(PROTO_PATH) --proto_path ../plugin/ --experimental_allow_proto3_optional $^
+
+gen-force_optimize_speed,long_type_string: $(PROTOS)
+	@npx protoc \
+		--ts_out force_optimize_speed,long_type_string/gen \
+		--ts_opt force_optimize_code_size \
+		--ts_opt long_type_string \
+		--proto_path $(PROTO_PATH) --proto_path ../plugin/ --experimental_allow_proto3_optional $^

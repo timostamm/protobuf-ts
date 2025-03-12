@@ -1,22 +1,20 @@
 {
   "include": [
-    "spec/*.ts",
-    "spec/**/*.ts",
-    "conformance_ts.ts",
-    "ts-out/**/*.ts"
+    "*/gen/**/*.ts",
+    "*/spec/**/*.ts",
+    "*.ts",
   ],
   "compilerOptions": {
     "module": "CommonJS",
-    "target": "ES2015",
+
+    // compiler requires this target for bigint
+    "target": "ES2020",
+
     "baseUrl": "./",
     "strict": true,
-    "lib": [
-      "es2017",
-      "dom",
-      "es2020.bigint"
-    ],
-    "paths": {
-      "@protobuf-ts/*": ["../*/src"]
-    },
+
+    // activated for issue #3
+    // react sets this option, breaking const enum
+    "isolatedModules": true
   }
 }
