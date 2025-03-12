@@ -29,7 +29,7 @@ testees-webpack: $(TESTEES)
 	done
 
 all.descriptorset: $(PROTOS)
-	@protoc \
+	npx protoc \
 		--descriptor_set_out=${@} \
 		--proto_path=${PROTO_PATH} \
 		--proto_path=../plugin/ \

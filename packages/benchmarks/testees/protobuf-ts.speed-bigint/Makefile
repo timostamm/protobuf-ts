@@ -8,7 +8,7 @@ generate: $(PROTOS)
 	@rm -rf .plugin-out
 	@mkdir .plugin-out
 	@echo > .plugin-out/parameters.txt "$(OPTIONS)"
-	@protoc \
+	npx protoc \
 		--ts_out .plugin-out \
 		--ts_opt "${OPTIONS}" \
 		--plugin ../../node_modules/@protobuf-ts/plugin/bin/protoc-gen-ts \
