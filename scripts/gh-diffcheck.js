@@ -4,6 +4,9 @@ if (gitUncommitted()) {
     process.stdout.write(
         "Uncommitted changes found:\n",
     );
+    execSync("git status --porcelain", {
+        stdio: "inherit",
+    });
     execSync("git --no-pager diff", {
         stdio: "inherit",
     });
@@ -19,3 +22,4 @@ function gitUncommitted() {
     });
     return out.trim().length > 0;
 }
+
