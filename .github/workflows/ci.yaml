@@ -33,3 +33,5 @@ jobs:
             ${{ runner.os }}-protobuf-ts-ci-
 
       - run: make
+
+      - run: node scripts/gh-diffcheck.js
