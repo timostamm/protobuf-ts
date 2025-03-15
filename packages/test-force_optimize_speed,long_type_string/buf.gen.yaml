@@ -1,0 +1,10 @@
+version: v2
+clean: true
+inputs:
+  - directory: ../proto
+plugins:
+  - local: protoc-gen-ts
+    out: gen
+    opt:
+      - force_optimize_speed
+      - long_type_string
