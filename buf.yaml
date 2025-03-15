@@ -1,0 +1,10 @@
+version: v2
+modules:
+  - path: packages/proto
+    # test files - some import protobuf-ts.proto
+    excludes:
+      - packages/proto/node_modules
+  - path: packages/plugin
+    # protobuf-ts.proto defines options to control how code is generated
+    excludes:
+      - packages/plugin/node_modules

@@ -1,0 +1,18 @@
+{
+  "include": [
+    "*/gen/**/*.ts",
+    "*/spec/**/*.ts",
+    "*.ts",
+  ],
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2015",
+
+    "baseUrl": "./",
+    "strict": true,
+
+    // activated for issue #3
+    // react sets this option, breaking const enum
+    "isolatedModules": true
+  }
+}

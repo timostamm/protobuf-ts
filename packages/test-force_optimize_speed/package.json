@@ -1,0 +1,28 @@
+{
+  "name": "@protobuf-ts/test-force_optimize_speed",
+  "version": "2.9.5",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "test": "ts-node --project tsconfig.json --require tsconfig-paths/register node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts",
+    "generate": "buf generate",
+    "sync-default-specs": "sync-default-specs"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.50.1",
+    "@protobuf-ts/test-default": "^2.9.5",
+    "@protobuf-ts/plugin": "^2.9.5",
+    "@protobuf-ts/protoc": "^2.9.5",
+    "@protobuf-ts/runtime": "^2.9.5",
+    "@protobuf-ts/runtime-rpc": "^2.9.5",
+    "@types/jasmine": "^3.5.10",
+    "@types/node": "^14.0.13",
+    "abort-controller": "^3.0.0",
+    "jasmine": "^3.5.0",
+    "jasmine-spec-reporter": "^5.0.2",
+    "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.10.1",
+    "tslib": ">=1.6.1",
+    "typescript": "3.8.3"
+  }
+}

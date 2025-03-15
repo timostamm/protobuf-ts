@@ -1,0 +1,20 @@
+{
+  "include": [
+    "*/gen/**/*.ts",
+    "*/spec/**/*.ts",
+    "*.ts",
+  ],
+  "compilerOptions": {
+    "module": "CommonJS",
+
+    // compiler requires this target for bigint
+    "target": "ES2020",
+
+    "baseUrl": "./",
+    "strict": true,
+
+    // activated for issue #3
+    // react sets this option, breaking const enum
+    "isolatedModules": true
+  }
+}

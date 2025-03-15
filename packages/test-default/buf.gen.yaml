@@ -1,0 +1,7 @@
+version: v2
+clean: true
+inputs:
+  - directory: ../proto
+plugins:
+  - local: protoc-gen-ts
+    out: gen
