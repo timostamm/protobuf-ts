@@ -2,6 +2,11 @@ version: v2
 clean: true
 inputs:
   - directory: ../proto
+  - directory: ../protobuf-conformance/proto
+    exclude_paths:
+      - ../protobuf-conformance/proto/google/protobuf/test_messages_edition2023.proto
+      - ../protobuf-conformance/proto/google/protobuf/test_messages_proto2_editions.proto
+      - ../protobuf-conformance/proto/google/protobuf/test_messages_proto3_editions.proto
 plugins:
   - local: protoc-gen-ts
     out: gen

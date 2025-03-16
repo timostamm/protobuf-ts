@@ -6,9 +6,11 @@
   "scripts": {
     "test": "ts-node --project tsconfig.json --require tsconfig-paths/register node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts",
     "generate": "buf generate",
+    "conformance": "conformance_test_runner --enforce_recommended --failure_list conformance_failing.txt conformance.ts",
     "sync-default-specs": "sync-default-specs"
   },
   "devDependencies": {
+    "@protobuf-ts/protobuf-conformance": "^2.9.5",
     "@bufbuild/buf": "^1.50.1",
     "@protobuf-ts/test-default": "^2.9.5",
     "@protobuf-ts/plugin": "^2.9.5",
