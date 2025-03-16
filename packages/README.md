@@ -21,16 +21,3 @@
 - [@protobuf-ts/plugin-framework](./plugin-framework) - a framework for writing `protoc` plugins in TypeScript  
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/plugin-framework?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/plugin-framework)
 
-
-
-#### Other packages
-
-- [example-dotnet-grpcweb-server](./example-dotnet-grpcweb-server) - gRPC-web server in dotnet
-- [example-chat-system](./example-chat-system) - a gRPC chat server and a gRCP terminal client
-- [example-go-twirp-server](example-go-twirp-server) - a Twirp server in go
-- [example-dotnet-grpc-client](./example-dotnet-grpc-client) - a gRPC client in dotnet
-- [example-node-grpc-transport-client](./example-node-grpc-transport-client) - a gRPC client using @protobuf-ts/grpc-transport, running in Node.JS
-- [example-node-twirp-transport-client](./example-node-twirp-transport-client) - a Twirp client using @protobuf-ts/twirp-transport, running in Node.JS
-- [example-browser-grpcweb-transport-client](example-browser-grpcweb-transport-client) - a gRPC-web client using @protobuf-ts/grpcweb-transport, running in the web browser
-- [proto](./proto) - example .proto files
-- [benchmarks](./benchmarks) - code size and performance benchmarks
