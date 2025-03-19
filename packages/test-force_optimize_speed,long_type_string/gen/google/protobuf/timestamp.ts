@@ -190,7 +190,7 @@ class Timestamp$Type extends MessageType<Timestamp> {
         const msg = this.create();
         const ms = date.getTime();
         msg.seconds = PbLong.from(Math.floor(ms / 1000)).toString();
-        msg.nanos = (ms % 1000) * 1000000;
+        msg.nanos = ((ms % 1000) + (ms < 0 && ms % 1000 !== 0 ? 1000 : 0)) * 1000000;
         return msg;
     }
     /**
