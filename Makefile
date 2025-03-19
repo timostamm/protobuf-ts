@@ -2,26 +2,21 @@
 
 
 # build from scratch
-default: npm-install lerna-bootstrap lerna-make
+default: npm-install lerna-make
 
 # installs lerna
 npm-install:
 	npm ci
 
-# link packages and install their dependencies
-lerna-bootstrap:
-	./node_modules/.bin/lerna bootstrap
+# TODO
 
 # clear the node_modules folder of each package
 lerna-clean:
-	./node_modules/.bin/lerna clean --yes
+	npm run clean
 
 # run `make` for every package (with a few exceptions)
 lerna-make:
-	./node_modules/.bin/lerna exec --stream \
-	--ignore @protobuf-ts/example-* \
-	--ignore @protobuf-ts/protoc \
-	-- make
+	npx turbo run build test conformance
 
 # update versions in all package.json files
 lerna-patch:

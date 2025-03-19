@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf build/*",
-    "build": "tsc --target ES2015 --module CommonJS --strict --outDir build client.ts",
+    "build": "tsc --project tsconfig.json",
     "generate": "protoc -I . --ts_out . --ts_opt optimize_code_size eliza.proto",
     "start": "ts-node client.ts"
   },

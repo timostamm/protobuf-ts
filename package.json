@@ -4,10 +4,43 @@
   "config": {
     "protocVersion": "29.2"
   },
+  "scripts": {
+    "clean": "git clean -Xdf"
+  },
+  "workspaces": [
+    "packages/benchmarks",
+    "packages/example-browser-grpcweb-transport-client",
+    "packages/example-buf",
+    "packages/example-chat-system",
+    "packages/example-go-twirp-server",
+    "packages/example-node-grpc-backend-server",
+    "packages/example-node-grpc-client",
+    "packages/example-node-grpc-server",
+    "packages/example-node-grpc-transport-client",
+    "packages/example-node-grpcweb-transport-client",
+    "packages/example-node-twirp-transport-client",
+    "packages/grpc-backend",
+    "packages/grpc-transport",
+    "packages/grpcweb-transport",
+    "packages/plugin",
+    "packages/plugin-framework",
+    "packages/proto",
+    "packages/protobuf-conformance",
+    "packages/protoc",
+    "packages/runtime",
+    "packages/runtime-rpc",
+    "packages/test-default",
+    "packages/test-force_optimize_code_size",
+    "packages/test-force_optimize_speed",
+    "packages/test-long_type_string",
+    "packages/test-force_optimize_speed-long_type_string",
+    "packages/twirp-transport"
+  ],
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
-    "lerna": "^3.22.1",
+    "turbo": "^2.4.4",
     "typescript": ">=3.8.3 <4"
   },
-  "license": "(Apache-2.0 AND BSD-3-Clause)"
+  "license": "(Apache-2.0 AND BSD-3-Clause)",
+  "packageManager": "npm@8.19.4"
 }

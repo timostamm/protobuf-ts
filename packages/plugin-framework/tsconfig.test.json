@@ -8,6 +8,5 @@
     "module": "CommonJS",
     "declaration": false,
     "sourceMap": true,
-    "paths": {}
   }
 }
