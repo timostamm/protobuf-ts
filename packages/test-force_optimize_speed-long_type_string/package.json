@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/test-force_optimize_speed-long_type_string",
-  "version": "2.9.5",
+  "version": "2.9.6",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
@@ -11,12 +11,12 @@
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.50.1",
-    "@protobuf-ts/plugin": "^2.9.5",
-    "@protobuf-ts/protobuf-conformance": "^2.9.5",
-    "@protobuf-ts/protoc": "^2.9.5",
-    "@protobuf-ts/runtime": "^2.9.5",
-    "@protobuf-ts/runtime-rpc": "^2.9.5",
-    "@protobuf-ts/test-default": "^2.9.5",
+    "@protobuf-ts/plugin": "^2.9.6",
+    "@protobuf-ts/protobuf-conformance": "^2.9.6",
+    "@protobuf-ts/protoc": "^2.9.6",
+    "@protobuf-ts/runtime": "^2.9.6",
+    "@protobuf-ts/runtime-rpc": "^2.9.6",
+    "@protobuf-ts/test-default": "^2.9.6",
     "@types/jasmine": "^3.5.10",
     "@types/node": "^14.0.13",
     "abort-controller": "^3.0.0",

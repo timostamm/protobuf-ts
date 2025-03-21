@@ -36,6 +36,30 @@ describe('google.protobuf.Timestamp', function () {
             expect(ts).toEqual(makeTimestamp(1484443815, 600000000));
         });
 
+        it('1000 ms', function () {
+            const ts = Timestamp.fromDate(new Date(1000));
+            expect(Number(ts.seconds)).toBe(1);
+            expect(ts.nanos).toBe(0);
+        });
+
+        it('1020 ms', function () {
+            const ts = Timestamp.fromDate(new Date(1020));
+            expect(Number(ts.seconds)).toBe(1);
+            expect(ts.nanos).toBe(20 * 1000000);
+        });
+
+        it('-1070 ms', function () {
+            const ts = Timestamp.fromDate(new Date(-1070));
+            expect(Number(ts.seconds)).toBe(-2);
+            expect(ts.nanos).toBe(930 * 1000000);
+        });
+
+        it('-1000 ms', function () {
+            const ts = Timestamp.fromDate(new Date(-1000));
+            expect(Number(ts.seconds)).toBe(-1);
+            expect(ts.nanos).toBe(0);
+        });
+
     });
 
 
