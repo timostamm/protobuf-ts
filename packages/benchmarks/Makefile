@@ -4,6 +4,7 @@ PROTO_PATH = ../proto
 PROTOS	:= $(shell find ${PROTO_PATH} -name '*.proto')
 TESTEES := $(shell find ./testees -type d -maxdepth 1 -mindepth 1)
 
+# TODO
 
 default: code-size
 

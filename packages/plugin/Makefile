@@ -21,6 +21,7 @@ test: all.descriptorset
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$(SPECS)
 
+# TODO
 all.descriptorset: $(PROTOS)
 	@npx protoc \
 		--descriptor_set_out ${@} \
@@ -32,6 +33,7 @@ all.descriptorset: $(PROTOS)
 		$^
 	@echo "'${@}' done"
 
+# TODO
 all.codegenreq: $(PROTOS)
 	@npx protoc \
 		--dump_out=. \

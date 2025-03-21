@@ -1,0 +1,29 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "generate": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "buf.gen.yaml",
+        "../../buf.yaml",
+        "../proto/**/*.proto",
+        "../plugin/protobuf-ts.proto"
+      ],
+      "outputs": ["gen/**"]
+    },
+    "test": {
+      "dependsOn": ["build", "sync-default-specs"],
+      "cache": false
+    },
+    "sync-default-specs": {
+      "dependsOn": ["^build"],
+      "inputs": ["../test-default/spec/**/*.ts"],
+      "outputs": ["spec/**/*.ts"]
+    },
+    "conformance": {
+      "dependsOn": ["generate", "^build"],
+      "cache": false
+    }
+  }
+}

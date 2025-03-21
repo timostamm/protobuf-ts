@@ -1,6 +1,7 @@
 .PHONY: server install generate
 PROTO_PATH = ../proto
 
+# TODO
 
 server:
 	go run ./cmd/server/main.go

@@ -13,6 +13,7 @@ clean:
 	@npm run clean
 	@echo "'${@}' done"
 
+# TODO
 test:
 	@echo "'${@}' ..."
 	@./node_modules/.bin/ts-node \
@@ -21,6 +22,7 @@ test:
 		./node_modules/.bin/jasmine --helper="spec/support/reporter.ts" \
 		$(SPECS)
 
+# TODO
 bootstrap:
 	protoc \
 		--ts_out=src \
@@ -32,6 +34,7 @@ bootstrap:
 		google/protobuf/descriptor.proto \
 		google/protobuf/compiler/plugin.proto
 
+# TODO
 all.codegenreq: $(PROTOS)
 	@protoc \
 		--dump_out=. \
