@@ -10,6 +10,7 @@ build:
 clean:
 	@npm run clean
 
+# TODO
 test: test-node test-browser
 
 test-node: $(SPECS)
@@ -24,6 +25,7 @@ test-browser:
 	@./node_modules/.bin/karma start karma.conf.js
 
 
+# TODO
 clientcompat: clientcompat7
 
 clientcompat7: build

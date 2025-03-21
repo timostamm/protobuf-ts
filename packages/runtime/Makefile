@@ -10,6 +10,7 @@ build:
 clean:
 	@npm run clean
 
+# TODO
 test: test-node test-browser
 
 test-node: $(SPECS)

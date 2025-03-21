@@ -1,6 +1,7 @@
 .PHONY: default npm-install generate run-client
 PROTO_PATH = ../proto
 
+# TODO
 
 default: npm-install generate run-client
 

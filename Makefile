@@ -1,22 +1,5 @@
-.PHONY: default lerna-make npm-install lerna-bootstrap
-
-
-# build from scratch
-default: npm-install lerna-make
-
-# installs lerna
-npm-install:
-	npm ci
 
 # TODO
-
-# clear the node_modules folder of each package
-lerna-clean:
-	npm run clean
-
-# run `make` for every package (with a few exceptions)
-lerna-make:
-	npx turbo run build test conformance
 
 # update versions in all package.json files
 lerna-patch:

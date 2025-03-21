@@ -6,9 +6,15 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+
 # Prevent writing to the repository using the CI token.
 # Ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#permissions
 permissions: read-all
+
+env:
+  # https://consoledonottrack.com/
+  DO_NOT_TRACK: 1
+
 jobs:
   ci:
     runs-on: ubuntu-24.04
@@ -32,6 +38,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-protobuf-ts-ci-
 
-      - run: make
-
+      - run: npm ci
+      - run: npm run all
       - run: node scripts/gh-diffcheck.js

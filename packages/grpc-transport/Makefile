@@ -10,6 +10,7 @@ build:
 clean:
 	@npm run clean
 
+# TODO
 test: $(SPECS)
 	@echo "'${@}' ..."
 	@./node_modules/.bin/ts-node \
