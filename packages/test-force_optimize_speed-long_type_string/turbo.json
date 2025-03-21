@@ -22,7 +22,7 @@
       "outputs": ["spec/**/*.ts"]
     },
     "conformance": {
-      "dependsOn": ["build"],
+      "dependsOn": ["generate", "^build"],
       "cache": false
     }
   }

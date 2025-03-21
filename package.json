@@ -5,7 +5,8 @@
     "protocVersion": "29.2"
   },
   "scripts": {
-    "clean": "git clean -Xdf"
+    "clean": "git clean -Xdf",
+    "all": "turbo run --ui tui build generate test conformance"
   },
   "workspaces": [
     "packages/benchmarks",
