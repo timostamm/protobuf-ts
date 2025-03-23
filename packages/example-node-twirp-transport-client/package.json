@@ -11,8 +11,6 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
-    "@protobuf-ts/plugin": "^2.9.6",
-    "@protobuf-ts/protoc": "^2.9.6",
     "@protobuf-ts/runtime": "^2.9.6",
     "@protobuf-ts/runtime-rpc": "^2.9.6",
     "@protobuf-ts/twirp-transport": "^2.9.6",
@@ -21,5 +19,9 @@
     "node-fetch": "^2.6.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.50.1",
+    "@protobuf-ts/plugin": "^2.9.6"
   }
 }

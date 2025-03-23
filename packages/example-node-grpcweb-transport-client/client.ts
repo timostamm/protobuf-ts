@@ -1,6 +1,6 @@
 import {GrpcWebFetchTransport} from "@protobuf-ts/grpcweb-transport";
 import {default as fetch, Headers} from "node-fetch";
-import {ElizaServiceClient, IElizaServiceClient} from "./eliza.client";
+import {ElizaServiceClient, IElizaServiceClient} from "./gen/eliza.client";
 
 
 // fetch polyfill via https://github.com/node-fetch/node-fetch

@@ -5,7 +5,7 @@
     "generate": {
       "dependsOn": ["^build"],
       "inputs": ["eliza.proto"],
-      "outputs": ["eliza.ts", "eliza.client.ts"]
+      "outputs": ["gen/**"]
     }
   }
 }
