@@ -47,5 +47,6 @@ jobs:
           key: protobuf-ts-ci/bootstrap/${{ github.sha }}
           restore-keys: protobuf-ts-ci/bootstrap
       - run: npm ci
+      - run: npx turbo run @protobuf-ts/plugin#build
       - run: npx turbo run bootstrap
       - run: node scripts/gh-diffcheck.js
