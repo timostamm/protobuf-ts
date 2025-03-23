@@ -5,10 +5,7 @@
     "bootstrap": {
       "dependsOn": ["^build"],
       "inputs": [
-        "package.json",
-        "../../buf.yaml",
-        "../proto/**/*.proto",
-        "../plugin/protobuf-ts.proto"
+        "package.json"
       ],
       "outputs": ["src/google/**"]
     }
