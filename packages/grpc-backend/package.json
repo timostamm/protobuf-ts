@@ -6,7 +6,8 @@
     "clean": "rm -rf build/* *.descriptorset *.codegenreq",
     "build": "npm run build:es6 && npm run build:cjs",
     "build:es6": "tsc --project tsconfig.build.json --module es2015 --outDir build/es2015",
-    "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir build/commonjs --declaration --declarationDir build/types"
+    "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir build/commonjs --declaration --declarationDir build/types",
+    "test": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts"
   },
   "license": "Apache-2.0",
   "author": "Timo Stamm <ts@timostamm.com>",
