@@ -4,6 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
+    "start": "ts-node client.ts",
+    "generate": "buf generate"
   },
   "author": "Timo Stamm <ts@timostamm.com>",
   "license": "Apache-2.0",
