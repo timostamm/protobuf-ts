@@ -1,6 +1,6 @@
 import {ChannelCredentials} from "@grpc/grpc-js";
-import {FailRequest} from "./service-example";
-import {ExampleServiceClient, IExampleServiceClient} from "./service-example.grpc-client";
+import {FailRequest} from "./gen/service-example";
+import {ExampleServiceClient, IExampleServiceClient} from "./gen/service-example.grpc-client";
 
 
 const client = new ExampleServiceClient(

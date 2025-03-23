@@ -5,10 +5,10 @@
     "generate": {
       "dependsOn": ["^build"],
       "inputs": [
-        "eliza.proto",
+        "service-example.proto",
         "buf.gen.yaml"
       ],
-      "outputs": ["eliza.ts", "eliza.client.ts"]
+      "outputs": ["gen/**"]
     }
   }
 }

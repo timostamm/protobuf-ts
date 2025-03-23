@@ -4,7 +4,10 @@
   "tasks": {
     "generate": {
       "dependsOn": ["^build"],
-      "inputs": ["eliza.proto"],
+      "inputs": [
+        "eliza.proto",
+        "buf.gen.yaml"
+      ],
       "outputs": ["gen/**"]
     }
   }
