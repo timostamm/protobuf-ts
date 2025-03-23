@@ -16,7 +16,20 @@ env:
   DO_NOT_TRACK: 1
 
 jobs:
-  ci:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: protobuf-ts-ci/build/${{ github.sha }}
+          restore-keys: protobuf-ts-ci/build
+      - run: npm ci
+      - run: npx turbo run generate build
+      - run: node scripts/gh-diffcheck.js
+
+  test:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -29,8 +42,25 @@ jobs:
           key: protobuf-ts-ci/test/${{ github.sha }}
           restore-keys: protobuf-ts-ci/test
       - run: npm ci
-      - run: npm run all
+      - run: npx turbo run test
       - run: node scripts/gh-diffcheck.js
+
+  conformance:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.17.13
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: protobuf-ts-ci/conformance/${{ github.sha }}
+          restore-keys: protobuf-ts-ci/conformance
+      - run: npm ci
+      - run: npx turbo run conformance
+      - run: node scripts/gh-diffcheck.js
+
   bootstrap:
     runs-on: ubuntu-24.04
     steps:
