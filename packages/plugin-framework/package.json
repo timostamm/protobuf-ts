@@ -4,7 +4,7 @@
   "description": "framework to create protoc plugins",
   "scripts": {
     "clean": "rm -rf build/* *.descriptorset *.codegenreq",
-    "generate": "protoc --ts_out src --ts_opt=force_optimize_code_size,long_type_string google/protobuf/descriptor.proto google/protobuf/compiler/plugin.proto",
+    "bootstrap": "protoc --ts_out src --ts_opt=force_optimize_code_size,long_type_string google/protobuf/descriptor.proto google/protobuf/compiler/plugin.proto",
     "build": "npm run build:es6 && npm run build:cjs",
     "build:es6": "tsc --project tsconfig.build.json --module es2015 --outDir build/es2015",
     "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir build/commonjs --declaration --declarationDir build/types",
