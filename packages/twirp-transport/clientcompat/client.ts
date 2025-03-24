@@ -1,17 +1,29 @@
+#!/usr/bin/env ts-node
+
 import {ReadStream} from "tty";
-import {ClientCompatMessage, ClientCompatMessage_CompatServiceMethod, Empty, Req, Resp} from "./clientcompat";
+import {ClientCompatMessage, ClientCompatMessage_CompatServiceMethod, Empty, Req, Resp} from "./gen/clientcompat";
 import {TwirpFetchTransport} from "../";
 import {RpcError} from "@protobuf-ts/runtime-rpc";
 import {default as fetch, Headers} from "node-fetch";
-import {CompatServiceClient, ICompatServiceClient} from "./clientcompat.client";
+import {CompatServiceClient, ICompatServiceClient} from "./gen/clientcompat.client";
 import * as fs from "fs";
 import * as path from "path";
 
 
 // fetch polyfill via https://github.com/node-fetch/node-fetch
+// @ts-expect-error
 globalThis.fetch = fetch;
+// @ts-expect-error
 globalThis.Headers = Headers;
 
+client().catch(reason => {
+    if (reason instanceof Error) {
+        process.stderr.write(`${reason.name}: ${reason.message}`);
+    } else {
+        process.stderr.write('failed to run: ' + reason);
+    }
+    process.exit(1);
+});
 
 /**
  * Testing compatibility of our Twirp transport with the protocol by using

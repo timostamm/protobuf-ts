@@ -1,0 +1,7 @@
+version: v2
+clean: true
+inputs:
+  - proto_file: clientcompat/clientcompat.proto
+plugins:
+  - local: protoc-gen-ts
+    out: clientcompat/gen
