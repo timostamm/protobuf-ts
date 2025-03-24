@@ -10,7 +10,7 @@
     "skipLibCheck": false,
 
     // ignore node_modules/@types - express typings raise errors
-    "typeRoots": [],
+    "types": [],
 
     // activated for issue #94
     // svelte requires this option
