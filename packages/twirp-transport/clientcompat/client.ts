@@ -2,7 +2,7 @@
 
 import {ReadStream} from "tty";
 import {ClientCompatMessage, ClientCompatMessage_CompatServiceMethod, Empty, Req, Resp} from "./gen/clientcompat";
-import {TwirpFetchTransport} from "../";
+import {TwirpFetchTransport} from "../src/index";
 import {RpcError} from "@protobuf-ts/runtime-rpc";
 import {default as fetch, Headers} from "node-fetch";
 import {CompatServiceClient, ICompatServiceClient} from "./gen/clientcompat.client";
