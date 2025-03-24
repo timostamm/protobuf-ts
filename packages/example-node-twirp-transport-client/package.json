@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "ts-node client.ts",
+    "client": "ts-node client.ts",
+    "server": "ts-node server.ts",
     "generate": "buf generate"
   },
   "author": "Timo Stamm <ts@timostamm.com>",
