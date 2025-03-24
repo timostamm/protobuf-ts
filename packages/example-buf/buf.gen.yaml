@@ -1,0 +1,7 @@
+version: v2
+clean: true
+plugins:
+  - local: protoc-gen-ts
+    out: src/gen
+    opt:
+      - long_type_string
