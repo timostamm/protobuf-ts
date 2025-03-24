@@ -3,7 +3,7 @@ import {normalize} from "path";
 import {existsSync, readFileSync} from "fs";
 
 
-const descriptorSetPath = normalize('./all.descriptorset');
+const descriptorSetPath = normalize('./descriptors.binpb');
 let descriptorSet: FileDescriptorSet;
 
 
