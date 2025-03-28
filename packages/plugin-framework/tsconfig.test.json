@@ -8,6 +8,6 @@
     "module": "CommonJS",
     "declaration": false,
     "sourceMap": true,
-    "paths": {}
+    "types": ["node", "jasmine"]
   }
 }

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "generate": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "../proto/**/*.proto",
+        "package.json"
+      ],
+      "outputs": ["descriptors.binpb"]
+    }
+  }
+}

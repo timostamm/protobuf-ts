@@ -3,6 +3,7 @@
     "*.ts"
   ],
   "compilerOptions": {
+    "outDir": "build",
     "target": "ES2015",
     "declaration": false,
     "sourceMap": false,
@@ -12,9 +13,8 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": false,
 
-    // activated for issue #94
-    // svelte requires this option
-    "importsNotUsedAsValues": "error",
+    // ignore node_modules/@types - express typings raise errors
+    "types": [],
 
     "lib": [
       "es2017",

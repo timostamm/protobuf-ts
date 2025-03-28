@@ -4,6 +4,5 @@
 /build/**/*.js
 /build/**/*.ts.map
 /build/**/*.js.map
-*.descriptorset
-*.codegenreq
+descriptors.binpb
 

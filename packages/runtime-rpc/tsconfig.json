@@ -13,13 +13,13 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": false,
 
+    // ignore node_modules/@types - express typings raise errors
+    "types": [],
+
     // activated for issue #94
     // svelte requires this option
     "importsNotUsedAsValues": "error",
 
-    "paths": {
-      "@protobuf-ts/*": ["../*/src"]
-    },
     "lib": [
       "es2017",
       "dom",

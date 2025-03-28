@@ -1,5 +1,5 @@
 import {TwirpFetchTransport} from "@protobuf-ts/twirp-transport";
-import {HaberdasherClient} from "./service-twirp-example.client";
+import {HaberdasherClient} from "./gen/service-twirp-example.client";
 import {default as fetch, Headers} from "node-fetch";
 
 // fetch polyfill via https://github.com/node-fetch/node-fetch

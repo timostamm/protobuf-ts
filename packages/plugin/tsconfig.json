@@ -12,9 +12,10 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": false,
-    "paths": {
-      "@protobuf-ts/*": ["../*/src"]
-    },
+
+    // ignore node_modules/@types - express typings raise errors
+    "types": [],
+
     "lib": [
       "es2017",
       "dom"

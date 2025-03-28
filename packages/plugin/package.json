@@ -4,7 +4,9 @@
   "description": "The protocol buffer compiler plugin \"protobuf-ts\" generates TypeScript, gRPC-web, Twirp, and more.",
   "scripts": {
     "clean": "rm -rf build/* *.descriptorset *.codegenreq",
-    "build": "tsc --project tsconfig.build.json"
+    "generate": "buf build ../proto --as-file-descriptor-set --output \"descriptors.binpb\"",
+    "build": "tsc --project tsconfig.build.json",
+    "test": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts"
   },
   "bin": {
     "protoc-gen-ts": "./bin/protoc-gen-ts",
@@ -38,7 +40,6 @@
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^5.0.2",
     "ts-node": "^8.10.2",
-    "tsconfig-paths": "^3.9.0",
     "tslib": ">=1.6.1"
   },
   "dependencies": {
@@ -47,6 +48,5 @@
     "@protobuf-ts/runtime": "^2.9.6",
     "@protobuf-ts/runtime-rpc": "^2.9.6",
     "typescript": "^3.9"
-  },
-  "gitHead": "2742e3995c14cab17e74be919b59b878c8383ad9"
+  }
 }

@@ -82,6 +82,7 @@ describe('protobuftsPlugin', function () {
                     "ES2020.bigint", // for bigint in generated code
                     "ES2018.AsyncIterable" // for runtime-rpc
                 ],
+                types: [],
                 module: ts.ModuleKind.CommonJS,
                 // ES2020 is required for bigint support
                 target: ts.ScriptTarget.ES2020,

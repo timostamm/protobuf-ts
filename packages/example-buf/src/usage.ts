@@ -1,5 +1,5 @@
-import {GetResponse} from "../src-gen/foo/v1/api";
-import {Timestamp} from "../src-gen/google/protobuf/timestamp";
+import {GetResponse} from "./gen/foo/v1/api";
+import {Timestamp} from "./gen/google/protobuf/timestamp";
 
 
 const fooGetResponse: GetResponse = {

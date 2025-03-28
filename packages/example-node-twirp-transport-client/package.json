@@ -4,14 +4,14 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client": "ts-node client.ts",
+    "server": "ts-node server.ts",
+    "generate": "buf generate"
   },
   "author": "Timo Stamm <ts@timostamm.com>",
   "license": "Apache-2.0",
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
-    "@protobuf-ts/plugin": "^2.9.6",
-    "@protobuf-ts/protoc": "^2.9.6",
     "@protobuf-ts/runtime": "^2.9.6",
     "@protobuf-ts/runtime-rpc": "^2.9.6",
     "@protobuf-ts/twirp-transport": "^2.9.6",
@@ -20,5 +20,9 @@
     "node-fetch": "^2.6.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.50.1",
+    "@protobuf-ts/plugin": "^2.9.6"
   }
 }
