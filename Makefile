@@ -1,14 +1,6 @@
 
 # TODO
 
-# update versions in all package.json files
-lerna-patch:
-	npx lerna version patch --no-changelog --no-git-tag-version --no-push --yes
-
-# update versions in all package.json files
-lerna-minor:
-	npx lerna version minor --no-changelog --no-git-tag-version --no-push --yes
-
 publish:
 	make
 	cd packages/runtime; npm publish
