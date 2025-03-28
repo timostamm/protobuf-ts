@@ -2076,6 +2076,7 @@ For a working example, have a look at  [packages/example-node-grpc-server](https
 To generate a gRPC client, set the plugin option `client_grpc1` or
 set the service option `(ts_client) = GRPC1_CLIENT`.
 
+For usage, see [/packages/example-node-grpc-client/](./packages/example-node-grpc-client/).
 
 
 ## Generic RPC servers
@@ -2085,5 +2086,5 @@ for services for the server side.
 
 Note that this feature is experimental and may change with minor releases.
 
-For usage, see [/packages/example-chat-system/](./packages/example-chat-system/).
+For usage, see [/packages/example-node-grpc-backend-server/](./packages/example-node-grpc-backend-server/).
 
