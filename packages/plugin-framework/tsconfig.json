@@ -11,9 +11,10 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": false,
-    "paths": {
-      "@protobuf-ts/*": ["../*/src"]
-    },
+
+    // ignore node_modules/@types - express typings raise errors
+    "types": ["node"],
+
     "lib": [
       "es2017",
       "dom"

@@ -8,8 +8,6 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "/tmp",
-    "paths": {
-      "@protobuf-ts/*": ["../*/src"]
-    },
+    "types": ["jasmine"],
   }
 }

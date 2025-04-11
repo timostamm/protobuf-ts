@@ -1,0 +1,40 @@
+version: v2
+clean: true
+inputs:
+  - directory: ../proto
+    paths:
+      - ../proto/google/protobuf/descriptor.proto
+plugins:
+  - local: protoc-gen-ts
+    out: ./gen/protobuf-ts.speed-bigint
+    opt:
+      - force_optimize_speed
+      - long_type_bigint
+
+  - local: protoc-gen-ts
+    out: ./gen/protobuf-ts.speed
+    opt:
+      - force_optimize_speed
+      - long_type_string
+
+  - local: protoc-gen-ts
+    out: ./gen/protobuf-ts.size
+    opt:
+      - force_optimize_code_size
+      - long_type_string
+
+  - local: protoc-gen-ts
+    out: ./gen/protobuf-ts.size-bigint
+    opt:
+      - force_optimize_code_size
+      - long_type_bigint
+
+  - local: protoc-gen-ts_proto
+    out: ./gen/ts-proto.default
+    opt:
+      - forceLong=string
+  - local: protoc-gen-ts_proto
+    out: ./gen/ts-proto.no-json
+    opt:
+      - forceLong=string
+      - outputJsonMethods=false

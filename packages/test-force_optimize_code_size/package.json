@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "test": "ts-node --project tsconfig.json --require tsconfig-paths/register node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts",
+    "test": "ts-node --project tsconfig.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts",
     "generate": "buf generate",
     "conformance": "conformance_test_runner --enforce_recommended --failure_list conformance_failing.txt conformance.ts",
     "sync-default-specs": "sync-default-specs"
@@ -23,7 +23,6 @@
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^5.0.2",
     "ts-node": "^8.10.2",
-    "tsconfig-paths": "^3.10.1",
     "tslib": ">=1.6.1",
     "typescript": "3.8.3"
   }

@@ -1,8 +1,9 @@
 {
-  "files": [
-    "client.ts"
+  "include": [
+    "*.ts"
   ],
   "compilerOptions": {
+    "outDir": "build",
     "target": "ES2015",
     "declaration": false,
     "sourceMap": false,
@@ -11,9 +12,14 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": false,
+
+    // ignore node_modules/@types - express typings raise errors
+    "types": [],
+
     "lib": [
       "es2017",
-      "dom"
+      "dom",
+      "ES2018.AsyncIterable"
     ]
   }
 }

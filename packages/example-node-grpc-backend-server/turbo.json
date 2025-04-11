@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "generate": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "service-example.proto",
+        "buf.gen.yaml"
+      ],
+      "outputs": ["gen/**"]
+    }
+  }
+}

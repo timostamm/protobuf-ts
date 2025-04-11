@@ -6,32 +6,71 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+
 # Prevent writing to the repository using the CI token.
 # Ref: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#permissions
 permissions: read-all
+
+env:
+  # https://consoledonottrack.com/
+  DO_NOT_TRACK: 1
+
 jobs:
-  ci:
+  build:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: protobuf-ts-ci/build/${{ github.sha }}
+          restore-keys: protobuf-ts-ci/build
+      - run: npm ci
+      - run: npx turbo run generate build
+      - run: node scripts/gh-diffcheck.js
 
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version: 1.17.13
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-
       - uses: actions/cache@v4
         with:
-          path: |
-            ~/.tmp
-            .tmp
-          key: ${{ runner.os }}-protobuf-ts-ci-${{ hashFiles('Makefile') }}
-          restore-keys: |
-            ${{ runner.os }}-protobuf-ts-ci-
+          path: .turbo
+          key: protobuf-ts-ci/test/${{ github.sha }}
+          restore-keys: protobuf-ts-ci/test
+      - run: npm ci
+      - run: npx turbo run test
+      - run: node scripts/gh-diffcheck.js
 
-      - run: make
+  conformance:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.17.13
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: protobuf-ts-ci/conformance/${{ github.sha }}
+          restore-keys: protobuf-ts-ci/conformance
+      - run: npm ci
+      - run: npx turbo run conformance
+      - run: node scripts/gh-diffcheck.js
 
+  bootstrap:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: protobuf-ts-ci/bootstrap/${{ github.sha }}
+          restore-keys: protobuf-ts-ci/bootstrap
+      - run: npm ci
+      - run: npx turbo run @protobuf-ts/plugin#build
+      - run: npx turbo run bootstrap
       - run: node scripts/gh-diffcheck.js

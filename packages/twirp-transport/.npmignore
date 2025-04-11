@@ -1,4 +1,5 @@
 /coverage
+/clientcompat.log
 /node_modules
 /spec
 /src
@@ -7,3 +8,4 @@
 /tsconfig.*
 /package-lock.json
 /clientcompat
+/.turbo

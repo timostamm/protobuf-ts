@@ -1,0 +1,10 @@
+version: v2
+clean: true
+inputs:
+  - proto_file: service-example.proto
+plugins:
+  - local: protoc-gen-ts
+    out: gen
+    opt:
+      - client_grpc1
+      - optimize_code_size

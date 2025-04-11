@@ -4,7 +4,10 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf build/*",
+    "build": "tsc --project tsconfig.json",
+    "generate": "buf generate",
+    "start": "ts-node client.ts"
   },
   "author": "Timo Stamm <ts@timostamm.com>",
   "license": "Apache-2.0",
@@ -17,5 +20,9 @@
     "@protobuf-ts/runtime-rpc": "^2.9.6",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.50.1",
+    "@protobuf-ts/plugin": "^2.9.6"
   }
 }
