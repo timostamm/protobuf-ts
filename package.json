@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "git clean -Xdf",
     "all": "turbo run --ui tui build generate test conformance",
+    "affected": "turbo run --affected --ui tui build generate test conformance",
     "setversion": "node scripts/set-version.mjs"
   },
   "workspaces": [

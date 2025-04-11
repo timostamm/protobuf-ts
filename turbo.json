@@ -3,15 +3,18 @@
   "tasks": {
     "test": {
       "dependsOn": ["build"],
-      "cache": false
+      "cache": false,
+      "outputLogs": "new-only"
     },
     "build": {
       "dependsOn": ["^build", "generate"],
-      "outputs": ["build/**"]
+      "outputs": ["build/**"],
+      "outputLogs": "new-only"
     },
     "generate": {
       "dependsOn": ["^build"],
-      "outputs": ["src/gen/**", "gen/**"]
+      "outputs": ["src/gen/**", "gen/**"],
+      "outputLogs": "new-only"
     }
   }
 }

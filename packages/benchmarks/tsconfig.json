@@ -8,6 +8,7 @@
     "baseUrl": "./",
     "strict": true,
     "moduleResolution": "node",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "skipLibCheck": true
   }
 }
