@@ -2,7 +2,6 @@
 /node_modules
 /spec
 /src
-/karma.conf.js
 /Makefile
 /tsconfig.*
 /package-lock.json
