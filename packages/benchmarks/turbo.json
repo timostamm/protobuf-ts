@@ -6,19 +6,6 @@
       "dependsOn": ["generate"],
       "cache": false,
       "outputLogs": "new-only"
-    },
-    "generate": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "buf.gen.yaml",
-        "../../buf.yaml",
-        "../proto/**/*.proto"
-      ],
-      "outputs": [
-        "gen/**",
-        "testees/*/.plugin-out"
-      ],
-      "outputLogs": "new-only"
     }
   }
 }

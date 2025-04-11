@@ -1,14 +1,14 @@
 import {performance} from "perf_hooks";
 import {readFileSync} from "fs";
-import {FileDescriptorSet as tsProtoType} from "./testees/ts-proto.default/.plugin-out/google/protobuf/descriptor";
-import {FileDescriptorSet as sizeType} from "./testees/protobuf-ts.size/.plugin-out/google/protobuf/descriptor";
-import {FileDescriptorSet as speedType} from "./testees/protobuf-ts.speed/.plugin-out/google/protobuf/descriptor";
+import {FileDescriptorSet as tsProtoType} from "./gen/ts-proto.default/google/protobuf/descriptor";
+import {FileDescriptorSet as sizeType} from "./gen/protobuf-ts.size/google/protobuf/descriptor";
+import {FileDescriptorSet as speedType} from "./gen/protobuf-ts.speed/google/protobuf/descriptor";
 import {
     FileDescriptorSet as sizeBigintType
-} from "./testees/protobuf-ts.size-bigint/.plugin-out/google/protobuf/descriptor";
+} from "./gen/protobuf-ts.size-bigint/google/protobuf/descriptor";
 import {
     FileDescriptorSet as speedBigintType
-} from "./testees/protobuf-ts.speed-bigint/.plugin-out/google/protobuf/descriptor";
+} from "./gen/protobuf-ts.speed-bigint/google/protobuf/descriptor";
 import {BinaryReader} from "@protobuf-ts/runtime";
 
 function bench(name: string, fn: () => void, durationSeconds = 5) {
