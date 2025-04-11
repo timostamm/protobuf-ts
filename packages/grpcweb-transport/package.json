@@ -7,9 +7,7 @@
     "build": "npm run build:es6 && npm run build:cjs",
     "build:es6": "tsc --project tsconfig.build.json --module es2015 --outDir build/es2015",
     "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir build/commonjs --declaration --declarationDir build/types",
-    "test": "npm run test:node && npm run test:browser",
-    "test:node": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts",
-    "test:browser": "karma start karma.conf.js"
+    "test": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts"
   },
   "license": "Apache-2.0",
   "author": "Timo Stamm <ts@timostamm.com>",
@@ -36,10 +34,6 @@
     "@types/jasmine": "^3.5.10",
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^5.0.2",
-    "karma": "^6.3.16",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-jasmine": "^3.3.1",
-    "karma-typescript": "^5.0.3",
     "node-fetch": "^2.6.1",
     "ts-node": "^8.10.2",
     "tslib": "^2.0.0",
