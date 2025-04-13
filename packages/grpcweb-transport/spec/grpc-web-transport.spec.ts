@@ -174,6 +174,72 @@ describe('GrpcWebFetchTransport', () => {
             globalThis.fetch = fetch;
         });
 
+        describe('with custom fetch() function', () => {
+            describe('in the call options', () => {
+                it('calls the custom fetch function instead of globalThis.fetch()', async () => {
+                    const optFetch = jasmine.createSpy('optFetch', (((...args: any[]): any => Promise.resolve() as any) as typeof originalFetch));
+                    const { next, body } = makeWhatWgStream();
+                    const res = getResponse({ body });
+                    const ret = new Deferred<typeof res>(true);
+                    fetch.and.returnValue(ret.promise);
+                    optFetch.and.returnValue(ret.promise);
+                    const call = transport.unary(methodInfo, callInput, { ...callOptions, fetch: optFetch });
+
+                    // Attach promise handlers
+                    const spy = {
+                        headers: jasmine.createSpy('call.headers'),
+                        response: jasmine.createSpy('call.response'),
+                        status: jasmine.createSpy('call.status'),
+                        trailers: jasmine.createSpy('call.trailers'),
+                    };
+
+                    for (let k in spy) {
+                        // @ts-ignore
+                        call[k].then(spy[k]);
+                    }
+
+                    const callPromiseSpy = jasmine.createSpy('call.then');
+                    call.then(callPromiseSpy);
+
+                    // custom fetch called with expected parameters
+                    expect(fetch).toHaveBeenCalledTimes(0);
+                    expect(optFetch).toHaveBeenCalledTimes(1);
+                });
+            });
+            describe('in the GrpcWebFetchTransport constructor options', () => {
+                it('calls the custom fetch function instead of globalThis.fetch()', async () => {
+                    const optFetch = jasmine.createSpy('optFetch', (((...args: any[]): any => Promise.resolve() as any) as typeof originalFetch));
+                    const transport = new GrpcWebFetchTransport({...base, fetch: optFetch});
+                    const { next, body } = makeWhatWgStream();
+                    const res = getResponse({ body });
+                    const ret = new Deferred<typeof res>(true);
+                    fetch.and.returnValue(ret.promise);
+                    optFetch.and.returnValue(ret.promise);
+                    const call = transport.unary(methodInfo, callInput, transport.mergeOptions(callOptions));
+
+                    // Attach promise handlers
+                    const spy = {
+                        headers: jasmine.createSpy('call.headers'),
+                        response: jasmine.createSpy('call.response'),
+                        status: jasmine.createSpy('call.status'),
+                        trailers: jasmine.createSpy('call.trailers'),
+                    };
+
+                    for (let k in spy) {
+                        // @ts-ignore
+                        call[k].then(spy[k]);
+                    }
+
+                    const callPromiseSpy = jasmine.createSpy('call.then');
+                    call.then(callPromiseSpy);
+
+                    // custom fetch called with expected parameters
+                    expect(fetch).toHaveBeenCalledTimes(0);
+                    expect(optFetch).toHaveBeenCalledTimes(1);
+                });
+            });
+        });
+
         it('handles a successful response', async () => {
             const { next, body } = makeWhatWgStream();
             const res = getResponse({ body });
@@ -457,6 +523,90 @@ describe('GrpcWebFetchTransport', () => {
         beforeEach(() => {
             fetch = jasmine.createSpy('fetch', originalFetch);
             globalThis.fetch = fetch;
+        });
+
+        describe('with custom fetch() function', () => {
+            describe('in the call options', () => {
+                it('calls the custom fetch function instead of globalThis.fetch()', async () => {
+                    const optFetch = jasmine.createSpy('optFetch', (((...args: any[]): any => Promise.resolve() as any) as typeof originalFetch));
+                    const { next, body } = makeWhatWgStream();
+                    const res = getResponse({ body });
+                    const ret = new Deferred<typeof res>(true);
+                    fetch.and.returnValue(ret.promise);
+                    optFetch.and.returnValue(ret.promise);
+                    const call = transport.serverStreaming(methodInfo, callInput, { ...callOptions, fetch: optFetch });
+
+                    const responseIterator = call.responses[Symbol.asyncIterator]();
+
+                    // Attach promise handlers
+                    const spy = {
+                        headers: jasmine.createSpy('call.headers'),
+                        status: jasmine.createSpy('call.status'),
+                        trailers: jasmine.createSpy('call.trailers'),
+                    };
+
+                    for (let k in spy) {
+                        // @ts-ignore
+                        call[k].then(spy[k]);
+                    }
+
+                    const responsesIteratorSpy = jasmine.createSpy<(res: IteratorResult<ResponseMessage>) => void>('call.responses.iterator');
+
+                    let nextIteratorResult = responseIterator.next().then(function chunkThen(res) {
+                        responsesIteratorSpy(res);
+                        nextIteratorResult = responseIterator.next().then(chunkThen);
+                        return res;
+                    });
+
+                    const callPromiseSpy = jasmine.createSpy('call.then');
+                    call.then(callPromiseSpy);
+
+                    // Fetch called with expected parameters
+                    expect(fetch).toHaveBeenCalledTimes(0);
+                    expect(optFetch).toHaveBeenCalledTimes(1);
+                });
+            });
+            describe('in the GrpcWebFetchTransport constructor options', () => {
+                it('calls the custom fetch function instead of globalThis.fetch()', async () => {
+                    const optFetch = jasmine.createSpy('optFetch', (((...args: any[]): any => Promise.resolve() as any) as typeof originalFetch));
+                    const transport = new GrpcWebFetchTransport({...base, fetch: optFetch});
+                    const { next, body } = makeWhatWgStream();
+                    const res = getResponse({ body });
+                    const ret = new Deferred<typeof res>(true);
+                    fetch.and.returnValue(ret.promise);
+                    optFetch.and.returnValue(ret.promise);
+                    const call = transport.serverStreaming(methodInfo, callInput, transport.mergeOptions(callOptions));
+
+                    const responseIterator = call.responses[Symbol.asyncIterator]();
+
+                    // Attach promise handlers
+                    const spy = {
+                        headers: jasmine.createSpy('call.headers'),
+                        status: jasmine.createSpy('call.status'),
+                        trailers: jasmine.createSpy('call.trailers'),
+                    };
+
+                    for (let k in spy) {
+                        // @ts-ignore
+                        call[k].then(spy[k]);
+                    }
+
+                    const responsesIteratorSpy = jasmine.createSpy<(res: IteratorResult<ResponseMessage>) => void>('call.responses.iterator');
+
+                    let nextIteratorResult = responseIterator.next().then(function chunkThen(res) {
+                        responsesIteratorSpy(res);
+                        nextIteratorResult = responseIterator.next().then(chunkThen);
+                        return res;
+                    });
+
+                    const callPromiseSpy = jasmine.createSpy('call.then');
+                    call.then(callPromiseSpy);
+
+                    // Fetch called with expected parameters
+                    expect(fetch).toHaveBeenCalledTimes(0);
+                    expect(optFetch).toHaveBeenCalledTimes(1);
+                });
+            });
         });
 
         it('handles a successful serverStreaming call', async () => {

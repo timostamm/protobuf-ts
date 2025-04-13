@@ -33,4 +33,8 @@ export interface GrpcWebOptions extends RpcOptions {
      */
 	fetchInit?: Omit<RequestInit, 'body' | 'headers' | 'method' | 'signal'>;
 
+    /**
+     * A `fetch` function to use in place of `globalThis.fetch`
+     */
+    fetch?: typeof fetch;
 }

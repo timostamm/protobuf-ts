@@ -89,6 +89,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
         let
             opt = options as GrpcWebOptions,
             format = opt.format ?? 'text',
+            fetch = opt.fetch ?? globalThis.fetch,
             fetchInit = opt.fetchInit ?? {},
             url = this.makeUrl(method, opt),
             inputBytes = method.I.toBinary(input, opt.binaryOptions),
@@ -100,7 +101,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             maybeTrailer: RpcMetadata | undefined,
             defTrailer = new Deferred<RpcMetadata>();
 
-        globalThis.fetch(url, {
+        fetch(url, {
             ...fetchInit,
             method: 'POST',
             headers: createGrpcWebRequestHeader(new globalThis.Headers(), format, opt.timeout, opt.meta),
@@ -197,6 +198,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
         let
             opt = options as GrpcWebOptions,
             format = opt.format ?? 'text',
+            fetch = opt.fetch ?? globalThis.fetch,
             fetchInit = opt.fetchInit ?? {},
             url = this.makeUrl(method, opt),
             inputBytes = method.I.toBinary(input, opt.binaryOptions),
@@ -208,7 +210,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             maybeTrailer: RpcMetadata | undefined,
             defTrailer = new Deferred<RpcMetadata>();
 
-        globalThis.fetch(url, {
+        fetch(url, {
             ...fetchInit,
             method: 'POST',
             headers: createGrpcWebRequestHeader(new globalThis.Headers(), format, opt.timeout, opt.meta),
