@@ -2249,12 +2249,6 @@ class FileDescriptorProto$Type extends MessageType<FileDescriptorProto> {
         /* repeated string dependency = 3; */
         for (let i = 0; i < message.dependency.length; i++)
             writer.tag(3, WireType.LengthDelimited).string(message.dependency[i]);
-        /* repeated int32 public_dependency = 10; */
-        for (let i = 0; i < message.publicDependency.length; i++)
-            writer.tag(10, WireType.Varint).int32(message.publicDependency[i]);
-        /* repeated int32 weak_dependency = 11; */
-        for (let i = 0; i < message.weakDependency.length; i++)
-            writer.tag(11, WireType.Varint).int32(message.weakDependency[i]);
         /* repeated google.protobuf.DescriptorProto message_type = 4; */
         for (let i = 0; i < message.messageType.length; i++)
             DescriptorProto.internalBinaryWrite(message.messageType[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
@@ -2273,6 +2267,12 @@ class FileDescriptorProto$Type extends MessageType<FileDescriptorProto> {
         /* optional google.protobuf.SourceCodeInfo source_code_info = 9; */
         if (message.sourceCodeInfo)
             SourceCodeInfo.internalBinaryWrite(message.sourceCodeInfo, writer.tag(9, WireType.LengthDelimited).fork(), options).join();
+        /* repeated int32 public_dependency = 10; */
+        for (let i = 0; i < message.publicDependency.length; i++)
+            writer.tag(10, WireType.Varint).int32(message.publicDependency[i]);
+        /* repeated int32 weak_dependency = 11; */
+        for (let i = 0; i < message.weakDependency.length; i++)
+            writer.tag(11, WireType.Varint).int32(message.weakDependency[i]);
         /* optional string syntax = 12; */
         if (message.syntax !== undefined)
             writer.tag(12, WireType.LengthDelimited).string(message.syntax);
@@ -2372,9 +2372,6 @@ class DescriptorProto$Type extends MessageType<DescriptorProto> {
         /* repeated google.protobuf.FieldDescriptorProto field = 2; */
         for (let i = 0; i < message.field.length; i++)
             FieldDescriptorProto.internalBinaryWrite(message.field[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        /* repeated google.protobuf.FieldDescriptorProto extension = 6; */
-        for (let i = 0; i < message.extension.length; i++)
-            FieldDescriptorProto.internalBinaryWrite(message.extension[i], writer.tag(6, WireType.LengthDelimited).fork(), options).join();
         /* repeated google.protobuf.DescriptorProto nested_type = 3; */
         for (let i = 0; i < message.nestedType.length; i++)
             DescriptorProto.internalBinaryWrite(message.nestedType[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
@@ -2384,12 +2381,15 @@ class DescriptorProto$Type extends MessageType<DescriptorProto> {
         /* repeated google.protobuf.DescriptorProto.ExtensionRange extension_range = 5; */
         for (let i = 0; i < message.extensionRange.length; i++)
             DescriptorProto_ExtensionRange.internalBinaryWrite(message.extensionRange[i], writer.tag(5, WireType.LengthDelimited).fork(), options).join();
-        /* repeated google.protobuf.OneofDescriptorProto oneof_decl = 8; */
-        for (let i = 0; i < message.oneofDecl.length; i++)
-            OneofDescriptorProto.internalBinaryWrite(message.oneofDecl[i], writer.tag(8, WireType.LengthDelimited).fork(), options).join();
+        /* repeated google.protobuf.FieldDescriptorProto extension = 6; */
+        for (let i = 0; i < message.extension.length; i++)
+            FieldDescriptorProto.internalBinaryWrite(message.extension[i], writer.tag(6, WireType.LengthDelimited).fork(), options).join();
         /* optional google.protobuf.MessageOptions options = 7; */
         if (message.options)
             MessageOptions.internalBinaryWrite(message.options, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
+        /* repeated google.protobuf.OneofDescriptorProto oneof_decl = 8; */
+        for (let i = 0; i < message.oneofDecl.length; i++)
+            OneofDescriptorProto.internalBinaryWrite(message.oneofDecl[i], writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         /* repeated google.protobuf.DescriptorProto.ReservedRange reserved_range = 9; */
         for (let i = 0; i < message.reservedRange.length; i++)
             DescriptorProto_ReservedRange.internalBinaryWrite(message.reservedRange[i], writer.tag(9, WireType.LengthDelimited).fork(), options).join();
@@ -2566,18 +2566,18 @@ class ExtensionRangeOptions$Type extends MessageType<ExtensionRangeOptions> {
         return message;
     }
     internalBinaryWrite(message: ExtensionRangeOptions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated google.protobuf.UninterpretedOption uninterpreted_option = 999; */
-        for (let i = 0; i < message.uninterpretedOption.length; i++)
-            UninterpretedOption.internalBinaryWrite(message.uninterpretedOption[i], writer.tag(999, WireType.LengthDelimited).fork(), options).join();
         /* repeated google.protobuf.ExtensionRangeOptions.Declaration declaration = 2; */
         for (let i = 0; i < message.declaration.length; i++)
             ExtensionRangeOptions_Declaration.internalBinaryWrite(message.declaration[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        /* optional google.protobuf.FeatureSet features = 50; */
-        if (message.features)
-            FeatureSet.internalBinaryWrite(message.features, writer.tag(50, WireType.LengthDelimited).fork(), options).join();
         /* optional google.protobuf.ExtensionRangeOptions.VerificationState verification = 3; */
         if (message.verification !== undefined)
             writer.tag(3, WireType.Varint).int32(message.verification);
+        /* optional google.protobuf.FeatureSet features = 50; */
+        if (message.features)
+            FeatureSet.internalBinaryWrite(message.features, writer.tag(50, WireType.LengthDelimited).fork(), options).join();
+        /* repeated google.protobuf.UninterpretedOption uninterpreted_option = 999; */
+        for (let i = 0; i < message.uninterpretedOption.length; i++)
+            UninterpretedOption.internalBinaryWrite(message.uninterpretedOption[i], writer.tag(999, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -2738,6 +2738,9 @@ class FieldDescriptorProto$Type extends MessageType<FieldDescriptorProto> {
         /* optional string name = 1; */
         if (message.name !== undefined)
             writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* optional string extendee = 2; */
+        if (message.extendee !== undefined)
+            writer.tag(2, WireType.LengthDelimited).string(message.extendee);
         /* optional int32 number = 3; */
         if (message.number !== undefined)
             writer.tag(3, WireType.Varint).int32(message.number);
@@ -2750,21 +2753,18 @@ class FieldDescriptorProto$Type extends MessageType<FieldDescriptorProto> {
         /* optional string type_name = 6; */
         if (message.typeName !== undefined)
             writer.tag(6, WireType.LengthDelimited).string(message.typeName);
-        /* optional string extendee = 2; */
-        if (message.extendee !== undefined)
-            writer.tag(2, WireType.LengthDelimited).string(message.extendee);
         /* optional string default_value = 7; */
         if (message.defaultValue !== undefined)
             writer.tag(7, WireType.LengthDelimited).string(message.defaultValue);
+        /* optional google.protobuf.FieldOptions options = 8; */
+        if (message.options)
+            FieldOptions.internalBinaryWrite(message.options, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         /* optional int32 oneof_index = 9; */
         if (message.oneofIndex !== undefined)
             writer.tag(9, WireType.Varint).int32(message.oneofIndex);
         /* optional string json_name = 10; */
         if (message.jsonName !== undefined)
             writer.tag(10, WireType.LengthDelimited).string(message.jsonName);
-        /* optional google.protobuf.FieldOptions options = 8; */
-        if (message.options)
-            FieldOptions.internalBinaryWrite(message.options, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         /* optional bool proto3_optional = 17; */
         if (message.proto3Optional !== undefined)
             writer.tag(17, WireType.Varint).bool(message.proto3Optional);
@@ -3283,18 +3283,12 @@ class FileOptions$Type extends MessageType<FileOptions> {
         /* optional string java_outer_classname = 8; */
         if (message.javaOuterClassname !== undefined)
             writer.tag(8, WireType.LengthDelimited).string(message.javaOuterClassname);
-        /* optional bool java_multiple_files = 10; */
-        if (message.javaMultipleFiles !== undefined)
-            writer.tag(10, WireType.Varint).bool(message.javaMultipleFiles);
-        /* optional bool java_generate_equals_and_hash = 20 [deprecated = true]; */
-        if (message.javaGenerateEqualsAndHash !== undefined)
-            writer.tag(20, WireType.Varint).bool(message.javaGenerateEqualsAndHash);
-        /* optional bool java_string_check_utf8 = 27; */
-        if (message.javaStringCheckUtf8 !== undefined)
-            writer.tag(27, WireType.Varint).bool(message.javaStringCheckUtf8);
         /* optional google.protobuf.FileOptions.OptimizeMode optimize_for = 9; */
         if (message.optimizeFor !== undefined)
             writer.tag(9, WireType.Varint).int32(message.optimizeFor);
+        /* optional bool java_multiple_files = 10; */
+        if (message.javaMultipleFiles !== undefined)
+            writer.tag(10, WireType.Varint).bool(message.javaMultipleFiles);
         /* optional string go_package = 11; */
         if (message.goPackage !== undefined)
             writer.tag(11, WireType.LengthDelimited).string(message.goPackage);
@@ -3307,9 +3301,15 @@ class FileOptions$Type extends MessageType<FileOptions> {
         /* optional bool py_generic_services = 18; */
         if (message.pyGenericServices !== undefined)
             writer.tag(18, WireType.Varint).bool(message.pyGenericServices);
+        /* optional bool java_generate_equals_and_hash = 20 [deprecated = true]; */
+        if (message.javaGenerateEqualsAndHash !== undefined)
+            writer.tag(20, WireType.Varint).bool(message.javaGenerateEqualsAndHash);
         /* optional bool deprecated = 23; */
         if (message.deprecated !== undefined)
             writer.tag(23, WireType.Varint).bool(message.deprecated);
+        /* optional bool java_string_check_utf8 = 27; */
+        if (message.javaStringCheckUtf8 !== undefined)
+            writer.tag(27, WireType.Varint).bool(message.javaStringCheckUtf8);
         /* optional bool cc_enable_arenas = 31; */
         if (message.ccEnableArenas !== undefined)
             writer.tag(31, WireType.Varint).bool(message.ccEnableArenas);
@@ -3537,21 +3537,21 @@ class FieldOptions$Type extends MessageType<FieldOptions> {
         /* optional bool packed = 2; */
         if (message.packed !== undefined)
             writer.tag(2, WireType.Varint).bool(message.packed);
-        /* optional google.protobuf.FieldOptions.JSType jstype = 6; */
-        if (message.jstype !== undefined)
-            writer.tag(6, WireType.Varint).int32(message.jstype);
-        /* optional bool lazy = 5; */
-        if (message.lazy !== undefined)
-            writer.tag(5, WireType.Varint).bool(message.lazy);
-        /* optional bool unverified_lazy = 15; */
-        if (message.unverifiedLazy !== undefined)
-            writer.tag(15, WireType.Varint).bool(message.unverifiedLazy);
         /* optional bool deprecated = 3; */
         if (message.deprecated !== undefined)
             writer.tag(3, WireType.Varint).bool(message.deprecated);
+        /* optional bool lazy = 5; */
+        if (message.lazy !== undefined)
+            writer.tag(5, WireType.Varint).bool(message.lazy);
+        /* optional google.protobuf.FieldOptions.JSType jstype = 6; */
+        if (message.jstype !== undefined)
+            writer.tag(6, WireType.Varint).int32(message.jstype);
         /* optional bool weak = 10; */
         if (message.weak !== undefined)
             writer.tag(10, WireType.Varint).bool(message.weak);
+        /* optional bool unverified_lazy = 15; */
+        if (message.unverifiedLazy !== undefined)
+            writer.tag(15, WireType.Varint).bool(message.unverifiedLazy);
         /* optional bool debug_redact = 16; */
         if (message.debugRedact !== undefined)
             writer.tag(16, WireType.Varint).bool(message.debugRedact);
@@ -3620,12 +3620,12 @@ class FieldOptions_EditionDefault$Type extends MessageType<FieldOptions_EditionD
         return message;
     }
     internalBinaryWrite(message: FieldOptions_EditionDefault, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* optional google.protobuf.Edition edition = 3; */
-        if (message.edition !== undefined)
-            writer.tag(3, WireType.Varint).int32(message.edition);
         /* optional string value = 2; */
         if (message.value !== undefined)
             writer.tag(2, WireType.LengthDelimited).string(message.value);
+        /* optional google.protobuf.Edition edition = 3; */
+        if (message.edition !== undefined)
+            writer.tag(3, WireType.Varint).int32(message.edition);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3949,12 +3949,12 @@ class ServiceOptions$Type extends MessageType<ServiceOptions> {
         return message;
     }
     internalBinaryWrite(message: ServiceOptions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* optional google.protobuf.FeatureSet features = 34; */
-        if (message.features)
-            FeatureSet.internalBinaryWrite(message.features, writer.tag(34, WireType.LengthDelimited).fork(), options).join();
         /* optional bool deprecated = 33; */
         if (message.deprecated !== undefined)
             writer.tag(33, WireType.Varint).bool(message.deprecated);
+        /* optional google.protobuf.FeatureSet features = 34; */
+        if (message.features)
+            FeatureSet.internalBinaryWrite(message.features, writer.tag(34, WireType.LengthDelimited).fork(), options).join();
         /* repeated google.protobuf.UninterpretedOption uninterpreted_option = 999; */
         for (let i = 0; i < message.uninterpretedOption.length; i++)
             UninterpretedOption.internalBinaryWrite(message.uninterpretedOption[i], writer.tag(999, WireType.LengthDelimited).fork(), options).join();

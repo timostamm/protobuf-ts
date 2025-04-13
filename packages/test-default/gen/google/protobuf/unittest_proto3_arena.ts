@@ -973,9 +973,6 @@ class TestAllTypes$Type extends MessageType<TestAllTypes> {
         /* proto3_arena_unittest.TestAllTypes.NestedMessage optional_lazy_message = 27; */
         if (message.optionalLazyMessage)
             TestAllTypes_NestedMessage.internalBinaryWrite(message.optionalLazyMessage, writer.tag(27, WireType.LengthDelimited).fork(), options).join();
-        /* protobuf_unittest_import.ImportMessage optional_lazy_import_message = 115; */
-        if (message.optionalLazyImportMessage)
-            ImportMessage.internalBinaryWrite(message.optionalLazyImportMessage, writer.tag(115, WireType.LengthDelimited).fork(), options).join();
         /* repeated int32 repeated_int32 = 31; */
         if (message.repeatedInt32.length) {
             writer.tag(31, WireType.LengthDelimited).fork();
@@ -1117,6 +1114,9 @@ class TestAllTypes$Type extends MessageType<TestAllTypes> {
         /* bytes oneof_bytes = 114; */
         if (message.oneofField.oneofKind === "oneofBytes")
             writer.tag(114, WireType.LengthDelimited).bytes(message.oneofField.oneofBytes);
+        /* protobuf_unittest_import.ImportMessage optional_lazy_import_message = 115; */
+        if (message.optionalLazyImportMessage)
+            ImportMessage.internalBinaryWrite(message.optionalLazyImportMessage, writer.tag(115, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

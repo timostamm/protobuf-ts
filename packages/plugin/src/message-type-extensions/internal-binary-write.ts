@@ -124,7 +124,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             interpreterType = this.interpreter.getMessageType(descriptor),
             statements: ts.Statement[] = [];
 
-        for (let fieldInfo of interpreterType.fields) {
+        for (let fieldInfo of interpreterType.fields.concat().sort((a, b) => a.no - b.no)) {
 
             let fieldDescriptor = descriptor.field.find(fd => fd.number === fieldInfo.no);
             assert(fieldDescriptor !== undefined);

@@ -608,18 +608,18 @@ class HttpRule$Type extends MessageType<HttpRule> {
         /* string patch = 6; */
         if (message.pattern.oneofKind === "patch")
             writer.tag(6, WireType.LengthDelimited).string(message.pattern.patch);
-        /* google.api.CustomHttpPattern custom = 8; */
-        if (message.pattern.oneofKind === "custom")
-            CustomHttpPattern.internalBinaryWrite(message.pattern.custom, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         /* string body = 7; */
         if (message.body !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.body);
-        /* string response_body = 12; */
-        if (message.responseBody !== "")
-            writer.tag(12, WireType.LengthDelimited).string(message.responseBody);
+        /* google.api.CustomHttpPattern custom = 8; */
+        if (message.pattern.oneofKind === "custom")
+            CustomHttpPattern.internalBinaryWrite(message.pattern.custom, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         /* repeated google.api.HttpRule additional_bindings = 11; */
         for (let i = 0; i < message.additionalBindings.length; i++)
             HttpRule.internalBinaryWrite(message.additionalBindings[i], writer.tag(11, WireType.LengthDelimited).fork(), options).join();
+        /* string response_body = 12; */
+        if (message.responseBody !== "")
+            writer.tag(12, WireType.LengthDelimited).string(message.responseBody);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

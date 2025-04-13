@@ -539,12 +539,6 @@ class ConformanceRequest$Type extends MessageType<ConformanceRequest> {
         /* string json_payload = 2; */
         if (message.payload.oneofKind === "jsonPayload")
             writer.tag(2, WireType.LengthDelimited).string(message.payload.jsonPayload);
-        /* string jspb_payload = 7; */
-        if (message.payload.oneofKind === "jspbPayload")
-            writer.tag(7, WireType.LengthDelimited).string(message.payload.jspbPayload);
-        /* string text_payload = 8; */
-        if (message.payload.oneofKind === "textPayload")
-            writer.tag(8, WireType.LengthDelimited).string(message.payload.textPayload);
         /* conformance.WireFormat requested_output_format = 3; */
         if (message.requestedOutputFormat !== 0)
             writer.tag(3, WireType.Varint).int32(message.requestedOutputFormat);
@@ -557,6 +551,12 @@ class ConformanceRequest$Type extends MessageType<ConformanceRequest> {
         /* conformance.JspbEncodingConfig jspb_encoding_options = 6; */
         if (message.jspbEncodingOptions)
             JspbEncodingConfig.internalBinaryWrite(message.jspbEncodingOptions, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* string jspb_payload = 7; */
+        if (message.payload.oneofKind === "jspbPayload")
+            writer.tag(7, WireType.LengthDelimited).string(message.payload.jspbPayload);
+        /* string text_payload = 8; */
+        if (message.payload.oneofKind === "textPayload")
+            writer.tag(8, WireType.LengthDelimited).string(message.payload.textPayload);
         /* bool print_unknown_fields = 9; */
         if (message.printUnknownFields !== false)
             writer.tag(9, WireType.Varint).bool(message.printUnknownFields);
@@ -666,12 +666,6 @@ class ConformanceResponse$Type extends MessageType<ConformanceResponse> {
         /* string parse_error = 1; */
         if (message.result.oneofKind === "parseError")
             writer.tag(1, WireType.LengthDelimited).string(message.result.parseError);
-        /* string serialize_error = 6; */
-        if (message.result.oneofKind === "serializeError")
-            writer.tag(6, WireType.LengthDelimited).string(message.result.serializeError);
-        /* string timeout_error = 9; */
-        if (message.result.oneofKind === "timeoutError")
-            writer.tag(9, WireType.LengthDelimited).string(message.result.timeoutError);
         /* string runtime_error = 2; */
         if (message.result.oneofKind === "runtimeError")
             writer.tag(2, WireType.LengthDelimited).string(message.result.runtimeError);
@@ -684,12 +678,18 @@ class ConformanceResponse$Type extends MessageType<ConformanceResponse> {
         /* string skipped = 5; */
         if (message.result.oneofKind === "skipped")
             writer.tag(5, WireType.LengthDelimited).string(message.result.skipped);
+        /* string serialize_error = 6; */
+        if (message.result.oneofKind === "serializeError")
+            writer.tag(6, WireType.LengthDelimited).string(message.result.serializeError);
         /* string jspb_payload = 7; */
         if (message.result.oneofKind === "jspbPayload")
             writer.tag(7, WireType.LengthDelimited).string(message.result.jspbPayload);
         /* string text_payload = 8; */
         if (message.result.oneofKind === "textPayload")
             writer.tag(8, WireType.LengthDelimited).string(message.result.textPayload);
+        /* string timeout_error = 9; */
+        if (message.result.oneofKind === "timeoutError")
+            writer.tag(9, WireType.LengthDelimited).string(message.result.timeoutError);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
