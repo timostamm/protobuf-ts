@@ -391,15 +391,15 @@ class CodeGeneratorRequest$Type extends MessageType<CodeGeneratorRequest> {
         /* optional string parameter = 2; */
         if (message.parameter !== undefined)
             writer.tag(2, WireType.LengthDelimited).string(message.parameter);
+        /* optional google.protobuf.compiler.Version compiler_version = 3; */
+        if (message.compilerVersion)
+            Version.internalBinaryWrite(message.compilerVersion, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
         /* repeated google.protobuf.FileDescriptorProto proto_file = 15; */
         for (let i = 0; i < message.protoFile.length; i++)
             FileDescriptorProto.internalBinaryWrite(message.protoFile[i], writer.tag(15, WireType.LengthDelimited).fork(), options).join();
         /* repeated google.protobuf.FileDescriptorProto source_file_descriptors = 17; */
         for (let i = 0; i < message.sourceFileDescriptors.length; i++)
             FileDescriptorProto.internalBinaryWrite(message.sourceFileDescriptors[i], writer.tag(17, WireType.LengthDelimited).fork(), options).join();
-        /* optional google.protobuf.compiler.Version compiler_version = 3; */
-        if (message.compilerVersion)
-            Version.internalBinaryWrite(message.compilerVersion, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

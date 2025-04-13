@@ -290,12 +290,12 @@ class NestedTestInt$Type extends MessageType<NestedTestInt> {
         /* optional fixed32 a = 1; */
         if (message.a !== undefined)
             writer.tag(1, WireType.Bit32).fixed32(message.a);
-        /* optional int32 b = 3; */
-        if (message.b !== undefined)
-            writer.tag(3, WireType.Varint).int32(message.b);
         /* optional protobuf_unittest.NestedTestInt child = 2; */
         if (message.child)
             NestedTestInt.internalBinaryWrite(message.child, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* optional int32 b = 3; */
+        if (message.b !== undefined)
+            writer.tag(3, WireType.Varint).int32(message.b);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

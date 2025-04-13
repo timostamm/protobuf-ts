@@ -504,9 +504,6 @@ class AttributeContext$Type extends MessageType<AttributeContext> {
         return message;
     }
     internalBinaryWrite(message: AttributeContext, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* google.rpc.context.AttributeContext.Peer origin = 7; */
-        if (message.origin)
-            AttributeContext_Peer.internalBinaryWrite(message.origin, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
         /* google.rpc.context.AttributeContext.Peer source = 1; */
         if (message.source)
             AttributeContext_Peer.internalBinaryWrite(message.source, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
@@ -525,6 +522,9 @@ class AttributeContext$Type extends MessageType<AttributeContext> {
         /* google.rpc.context.AttributeContext.Api api = 6; */
         if (message.api)
             AttributeContext_Api.internalBinaryWrite(message.api, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* google.rpc.context.AttributeContext.Peer origin = 7; */
+        if (message.origin)
+            AttributeContext_Peer.internalBinaryWrite(message.origin, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
