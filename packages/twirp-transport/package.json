@@ -8,8 +8,9 @@
     "build": "npm run build:es6 && npm run build:cjs",
     "build:es6": "tsc --project tsconfig.build.json --module es2015 --outDir build/es2015",
     "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir build/commonjs --declaration --declarationDir build/types",
-    "test": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts",
-    "conformance": "bash clientcompat/run.bash"
+    "test": "tsx ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts",
+    "preconformance": "go install github.com/twitchtv/twirp/clientcompat@v7.0.0",
+    "conformance": "${HOME}/go/bin/clientcompat -client clientcompat/client.ts"
   },
   "license": "Apache-2.0",
   "author": "Timo Stamm <ts@timostamm.com>",
@@ -41,8 +42,8 @@
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^5.0.2",
     "node-fetch": "^2.6.0",
-    "ts-node": "^8.10.2",
     "tslib": ">=1.6.1",
+    "tsx": "^4.19.3",
     "typescript": ">=3.8.3 <4"
   },
   "dependencies": {
