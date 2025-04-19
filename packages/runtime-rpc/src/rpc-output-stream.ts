@@ -61,7 +61,7 @@ type RemoveListenerFn = () => void;
 /**
  * A `RpcOutputStream` that you control.
  */
-export class RpcOutputStreamController<T extends object = object> {
+export class RpcOutputStreamController<T extends object = object> implements RpcOutputStream<T> {
 
 
     constructor() {
@@ -181,14 +181,14 @@ export class RpcOutputStreamController<T extends object = object> {
 
     // iterator state.
     // is undefined when no iterator has been acquired yet.
-    private _itState: undefined | {
+    private _itState: {
         // a pending result. we yielded that because we were
         // waiting for messages at the time.
         p?: Deferred<IteratorResult<T, null>>,
 
         // a queue of results that we produced faster that the iterator consumed
         q: Array<IteratorResult<T, null> | Error>,
-    };
+    } = {q: []};
 
 
     /**
@@ -205,12 +205,6 @@ export class RpcOutputStreamController<T extends object = object> {
      *   messages are queued.
      */
     [Symbol.asyncIterator](): AsyncIterator<T> {
-
-        // init the iterator state, enabling pushIt()
-        if (!this._itState) {
-            this._itState = {q: []};
-        }
-
         // if we are closed, we are definitely not receiving any more messages.
         // but we can't let the iterator get stuck. we want to either:
         // a) finish the new iterator immediately, because we are completed
@@ -249,8 +243,6 @@ export class RpcOutputStreamController<T extends object = object> {
     // this either resolves a pending promise, or enqueues the result.
     private pushIt(result: IteratorResult<T, null> | Error): void {
         let state = this._itState;
-        if (!state)
-            return;
 
         // is the consumer waiting for us?
         if (state.p) {
