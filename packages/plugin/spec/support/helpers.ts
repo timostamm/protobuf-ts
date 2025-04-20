@@ -1,16 +1,24 @@
-import {CodeGeneratorRequest, FileDescriptorProto, FileDescriptorSet} from "@protobuf-ts/plugin-framework";
+import * as legacy_framework from "@protobuf-ts/plugin-framework";
 import {normalize} from "path";
 import {existsSync, readFileSync} from "fs";
+import {CodeGeneratorRequest, CodeGeneratorRequestSchema} from "@bufbuild/protobuf/wkt";
+import {fromBinary} from "@bufbuild/protobuf";
 
 
 const descriptorSetPath = normalize('./descriptors.binpb');
-let descriptorSet: FileDescriptorSet;
+let descriptorSet: legacy_framework.FileDescriptorSet;
 
 
 interface MakeCodeGeneratorRequestOptions {
     parameter?: string;
     includeFiles?: string[]; // defaults to all files
     fileToGenerate?: string[]; // defaults to includeFiles
+}
+
+export function getCodeGeneratorRequest(options: MakeCodeGeneratorRequestOptions): CodeGeneratorRequest {
+    const legacyRequest = getCodeGeneratorRequestLegacy(options);
+    const legacyRequestBytes = legacy_framework.CodeGeneratorRequest.toBinary(legacyRequest);
+    return fromBinary(CodeGeneratorRequestSchema, legacyRequestBytes) as CodeGeneratorRequest;
 }
 
 /**
@@ -21,14 +29,14 @@ interface MakeCodeGeneratorRequestOptions {
  * To work correctly, the descriptor set must be generated with the protoc
  * options --include_source_info and --include_imports.
  */
-export function getCodeGeneratorRequest(options: MakeCodeGeneratorRequestOptions): CodeGeneratorRequest {
+export function getCodeGeneratorRequestLegacy(options: MakeCodeGeneratorRequestOptions): legacy_framework.CodeGeneratorRequest {
 
     // read the pre-generated descriptor set
     let allFiles = readDescriptorSet();
     const availableFilenames = allFiles.map(x => x.name).filter(x => x !== undefined) as string[];
 
     // create request
-    let request = CodeGeneratorRequest.create();
+    let request = legacy_framework.CodeGeneratorRequest.create();
     request.parameter = options.parameter ?? '';
     request.fileToGenerate = options.fileToGenerate ?? options.includeFiles ?? availableFilenames;
     request.protoFile =
@@ -52,23 +60,24 @@ export function getCodeGeneratorRequest(options: MakeCodeGeneratorRequestOptions
     }
 
     // make sure to clone so that our cached descriptors stay unchanged
-    return CodeGeneratorRequest.create(request);
+    return legacy_framework.CodeGeneratorRequest.create(request);
 }
+
 
 /**
  * Get a FileDescriptorProto from a pre-generated descriptor set.
  */
-export function getFileDescriptor(protoFile: string): FileDescriptorProto {
+export function getFileDescriptor(protoFile: string): legacy_framework.FileDescriptorProto {
     let allFiles = readDescriptorSet();
     const file = allFiles.find(f => protoFile === f.name);
     if (file === undefined) {
         throw new Error(`Missing file: ${protoFile} in ${descriptorSetPath}`);
     }
-    return FileDescriptorProto.create(file);
+    return legacy_framework.FileDescriptorProto.create(file);
 }
 
 
-function readDescriptorSet(): FileDescriptorProto[] {
+function readDescriptorSet(): legacy_framework.FileDescriptorProto[] {
     if (!descriptorSet) {
         if (!existsSync(descriptorSetPath)) {
             const reason = `Did not find '${descriptorSetPath}'. \n`
@@ -77,7 +86,7 @@ function readDescriptorSet(): FileDescriptorProto[] {
             throw reason;
         }
         const bytes = readFileSync(descriptorSetPath);
-        descriptorSet = FileDescriptorSet.fromBinary(bytes);
+        descriptorSet = legacy_framework.FileDescriptorSet.fromBinary(bytes);
     }
-    return FileDescriptorSet.create(descriptorSet).file;
+    return legacy_framework.FileDescriptorSet.create(descriptorSet).file;
 }

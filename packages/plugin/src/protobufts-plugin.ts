@@ -1,11 +1,8 @@
 import {
-    CodeGeneratorRequest,
     CodeGeneratorResponse_Feature,
     DescriptorProto,
-    DescriptorRegistry,
     EnumDescriptorProto,
     GeneratedFile,
-    PluginBase,
     ServiceDescriptorProto,
     setupCompiler,
     SymbolTable,
@@ -28,9 +25,11 @@ import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-gr
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {WellKnownTypes} from "./message-type-extensions/well-known-types";
+import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
+import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
 
 
-export class ProtobuftsPlugin extends PluginBase {
+export class ProtobuftsPlugin extends PluginBaseProtobufES {
 
     parameters = {
         // @formatter:off
@@ -231,7 +230,8 @@ export class ProtobuftsPlugin extends PluginBase {
                 this.parseOptions(this.parameters, request.parameter),
                 `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
             ),
-            registry = DescriptorRegistry.createFrom(request),
+            registry = createLegacyRegistryFromRequest(request),
+            registryEs = createFileRegistryFromRequest(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(),
             imports = new TypeScriptImports(symbols),
