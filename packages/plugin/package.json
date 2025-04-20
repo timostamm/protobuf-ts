@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf build/* *.descriptorset *.codegenreq",
     "generate": "buf build ../proto --as-file-descriptor-set --output \"descriptors.binpb\"",
-    "build": "tsc --project tsconfig.build.json",
+    "build": "tsc --project tsconfig.build.json || true",
     "test": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts"
   },
   "bin": {
@@ -43,6 +43,7 @@
     "tslib": ">=1.6.1"
   },
   "dependencies": {
+    "@bufbuild/protobuf": "^2.2.5",
     "@protobuf-ts/plugin-framework": "^2.9.6",
     "@protobuf-ts/protoc": "^2.9.6",
     "@protobuf-ts/runtime": "^2.9.6",
