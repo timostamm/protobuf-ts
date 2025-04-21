@@ -155,8 +155,8 @@ export class MessageTypeGenerator extends GeneratorBase {
         ts.addSyntheticLeadingComment(classDec, ts.SyntaxKind.SingleLineCommentTrivia,
             " @generated message type with reflection information, may provide speed optimized methods",
             false);
-        let comment = this.comments.makeDeprecatedTag(descriptor);
-        comment += this.comments.makeGeneratedTag(descriptor).replace("@generated from ", "@generated MessageType for ");
+        let comment = this.comments.legacyMakeDeprecatedTag(descriptor);
+        comment += this.comments.legacyMakeGeneratedTag(descriptor).replace("@generated from ", "@generated MessageType for ");
         addCommentBlockAsJsDoc(exportConst, comment);
 
         return;

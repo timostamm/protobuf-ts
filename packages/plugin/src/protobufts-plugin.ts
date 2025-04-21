@@ -230,35 +230,34 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                 this.parseOptions(this.parameters, request.parameter),
                 `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
             ),
-            registry = createLegacyRegistryFromRequest(request),
+            legacyRegistry = createLegacyRegistryFromRequest(request),
             registryEs = createFileRegistryFromRequest(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(),
             imports = new TypeScriptImports(symbols),
-            comments = new CommentGenerator(registry),
-            interpreter = new Interpreter(registry, options),
-            optionResolver = new OptionResolver(interpreter, registry, options),
-            genMessageInterface = new MessageInterfaceGenerator(symbols, registry, imports, comments, interpreter, options),
-            genEnum = new EnumGenerator(symbols, registry, imports, comments, interpreter, options),
-            genMessageType = new MessageTypeGenerator(symbols, registry, imports, comments, interpreter, options),
-            genServiceType = new ServiceTypeGenerator(symbols, registry, imports, comments, interpreter, options),
-            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
-            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, registry, imports, comments, interpreter, options),
-            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
-            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registry, imports, comments, interpreter, options)
+            comments = new CommentGenerator(legacyRegistry),
+            interpreter = new Interpreter(legacyRegistry, options),
+            optionResolver = new OptionResolver(interpreter, legacyRegistry, options),
+            genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genEnum = new EnumGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genMessageType = new MessageTypeGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genServiceType = new ServiceTypeGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, options)
         ;
 
 
         let tsFiles: OutFile[] = [];
 
-
         // ensure unique file names
-        for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
+        for (let fileDescriptor of registryEs.files) {
+            const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.ts', fileDescriptor);
         }
-        for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
+        for (let fileDescriptor of registryEs.files) {
+            const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
             fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc1-server');
             fileTable.register(base + '.client.ts', fileDescriptor, 'client');
@@ -268,23 +267,23 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         }
 
 
-        for (let fileDescriptor of registry.allFiles()) {
+        for (let fileDescriptor of legacyRegistry.allFiles()) {
             const
-                outMain = new OutFile(fileTable.get(fileDescriptor).name, fileDescriptor, registry, options),
-                outServerGeneric = new OutFile(fileTable.get(fileDescriptor, 'generic-server').name, fileDescriptor, registry, options),
-                outServerGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-server').name, fileDescriptor, registry, options),
-                outClientCall = new OutFile(fileTable.get(fileDescriptor, 'client').name, fileDescriptor, registry, options),
-                outClientPromise = new OutFile(fileTable.get(fileDescriptor, 'promise-client').name, fileDescriptor, registry, options),
-                outClientRx = new OutFile(fileTable.get(fileDescriptor, 'rx-client').name, fileDescriptor, registry, options),
-                outClientGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-client').name, fileDescriptor, registry, options);
+                outMain = new OutFile(fileTable.get(fileDescriptor).name, fileDescriptor, legacyRegistry, options),
+                outServerGeneric = new OutFile(fileTable.get(fileDescriptor, 'generic-server').name, fileDescriptor, legacyRegistry, options),
+                outServerGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-server').name, fileDescriptor, legacyRegistry, options),
+                outClientCall = new OutFile(fileTable.get(fileDescriptor, 'client').name, fileDescriptor, legacyRegistry, options),
+                outClientPromise = new OutFile(fileTable.get(fileDescriptor, 'promise-client').name, fileDescriptor, legacyRegistry, options),
+                outClientRx = new OutFile(fileTable.get(fileDescriptor, 'rx-client').name, fileDescriptor, legacyRegistry, options),
+                outClientGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-client').name, fileDescriptor, legacyRegistry, options);
             tsFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
 
-            registry.visitTypes(fileDescriptor, descriptor => {
+            legacyRegistry.visitTypes(fileDescriptor, descriptor => {
                 // we are not interested in synthetic types like map entry messages
-                if (registry.isSyntheticElement(descriptor)) return;
+                if (legacyRegistry.isSyntheticElement(descriptor)) return;
 
                 // register all symbols, regardless whether they are going to be used - we want stable behaviour
-                symbols.register(createLocalTypeName(descriptor, registry), descriptor, outMain);
+                symbols.register(createLocalTypeName(descriptor, legacyRegistry), descriptor, outMain);
                 if (ServiceDescriptorProto.is(descriptor)) {
                     genClientGeneric.registerSymbols(outClientCall, descriptor);
                     genClientGrpc.registerSymbols(outClientGrpc, descriptor);
@@ -293,9 +292,9 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                 }
             });
 
-            registry.visitTypes(fileDescriptor, descriptor => {
+            legacyRegistry.visitTypes(fileDescriptor, descriptor => {
                 // we are not interested in synthetic types like map entry messages
-                if (registry.isSyntheticElement(descriptor)) return;
+                if (legacyRegistry.isSyntheticElement(descriptor)) return;
 
                 if (DescriptorProto.is(descriptor)) {
                     genMessageInterface.generateMessageInterface(outMain, descriptor)
@@ -305,9 +304,9 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                 }
             });
 
-            registry.visitTypes(fileDescriptor, descriptor => {
+            legacyRegistry.visitTypes(fileDescriptor, descriptor => {
                 // still not interested in synthetic types like map entry messages
-                if (registry.isSyntheticElement(descriptor)) return;
+                if (legacyRegistry.isSyntheticElement(descriptor)) return;
 
                 if (DescriptorProto.is(descriptor)) {
                     genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
@@ -369,7 +368,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         const outFileDescriptors = tsFiles.map(of => of.fileDescriptor);
         tsFiles = tsFiles.filter(of =>
             request.fileToGenerate.includes(of.fileDescriptor.name!)
-            || registry.isFileUsed(of.fileDescriptor, outFileDescriptors)
+            || legacyRegistry.isFileUsed(of.fileDescriptor, outFileDescriptors)
         );
 
         return this.transpile(tsFiles, options);

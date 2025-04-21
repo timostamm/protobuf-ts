@@ -70,8 +70,8 @@ export class ServiceTypeGenerator extends GeneratorBase {
         source.addStatement(exportConst);
 
         // add comments
-        let comment = this.comments.makeDeprecatedTag(descriptor);
-        comment += this.comments.makeGeneratedTag(descriptor).replace("@generated from ", "@generated ServiceType for ");
+        let comment = this.comments.legacyMakeDeprecatedTag(descriptor);
+        comment += this.comments.legacyMakeGeneratedTag(descriptor).replace("@generated from ", "@generated ServiceType for ");
         addCommentBlockAsJsDoc(exportConst, comment);
 
         return;
