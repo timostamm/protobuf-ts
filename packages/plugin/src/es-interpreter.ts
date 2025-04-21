@@ -1,20 +1,27 @@
-import {
-    DescriptorProto,
-    DescriptorRegistry,
-    EnumDescriptorProto,
-    FieldDescriptorProto,
-    FieldOptions_JSType,
-    FileDescriptorProto,
-    MethodDescriptorProto,
-    MethodOptions_IdempotencyLevel,
-    OneofDescriptorProto,
-    ServiceDescriptorProto,
-} from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
 import {assert} from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
-import { FieldInfoGenerator } from "./code-gen/field-info-generator";
-import {OurFileOptions, OurServiceOptions, readOurFileOptions, readOurServiceOptions} from "./our-options";
+import {FieldInfoGenerator} from "./code-gen/field-info-generator";
+import {OurFileOptions, OurServiceOptions} from "./our-options";
+import {
+    DescEnum, DescExtension,
+    DescField,
+    DescFile,
+    DescMessage,
+    DescMethod,
+    DescOneof,
+    DescService,
+    FileRegistry, getOption
+} from "@bufbuild/protobuf";
+import {
+    Edition,
+    FieldOptions_JSType,
+    FieldOptionsSchema, FileOptionsSchema, MessageOptionsSchema,
+    MethodOptions_IdempotencyLevel,
+    FieldDescriptorProto_Label, FieldDescriptorProto_Type,
+    MethodOptionsSchema, ServiceOptionsSchema
+} from "@bufbuild/protobuf/wkt";
+import {client, exclude_options, server} from "./gen/protobuf-ts_pb";
 
 
 type JsonOptionsMap = {
@@ -38,7 +45,7 @@ type JsonOptionsMap = {
  * single source of truth for generating message interfaces and reflection
  * information.
  */
-export class Interpreter {
+export class ESInterpreter {
 
 
     private readonly serviceTypes = new Map<string, rpc.ServiceType>();
@@ -47,7 +54,7 @@ export class Interpreter {
 
 
     constructor(
-        private readonly registry: DescriptorRegistry,
+        private readonly registry: FileRegistry,
         private readonly options: {
             normalLongType: rt.LongType,
             oneofKindDiscriminator: string,
@@ -86,7 +93,7 @@ export class Interpreter {
      * Note that options on options (google.protobuf.*Options) are not
      * supported.
      */
-    readOptions(descriptor: FieldDescriptorProto | MethodDescriptorProto | FileDescriptorProto | ServiceDescriptorProto | DescriptorProto, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
+    readOptions(descriptor: DescField | DescMethod | DescFile | DescService | DescMessage, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
 
         // the option to force exclude all options takes precedence
         if (this.options.forceExcludeAllOptions) {
@@ -94,38 +101,49 @@ export class Interpreter {
         }
 
         // if options message not present, there cannot be any extension options
-        if (!descriptor.options) {
+        if (!descriptor.proto.options) {
             return undefined;
         }
 
         // if no unknown fields present, can exit early
-        let unknownFields = rt.UnknownFieldHandler.list(descriptor.options);
+        let unknownFields = rt.UnknownFieldHandler.list(descriptor.proto.options);
         if (!unknownFields.length) {
             return undefined;
         }
 
-        let optionsTypeName: string;
-        if (FieldDescriptorProto.is(descriptor) && DescriptorProto.is(this.registry.parentOf(descriptor))) {
-            optionsTypeName = 'google.protobuf.FieldOptions';
-        } else if (MethodDescriptorProto.is(descriptor)) {
-            optionsTypeName = 'google.protobuf.MethodOptions';
-        } else if (this.registry.fileOf(descriptor) === descriptor) {
-            optionsTypeName = 'google.protobuf.FileOptions';
-        } else if (ServiceDescriptorProto.is(descriptor)) {
-            optionsTypeName = 'google.protobuf.ServiceOptions';
-        } else if (DescriptorProto.is(descriptor)) {
-            optionsTypeName = 'google.protobuf.MessageOptions';
-        } else {
-            throw new Error("interpreter expected field or method descriptor");
+        let optionsSchema: DescMessage;
+        switch (descriptor.kind) {
+            case "field":
+                optionsSchema = FieldOptionsSchema;
+                break;
+            case "rpc":
+                optionsSchema = MethodOptionsSchema;
+                break;
+            case "file":
+                optionsSchema = FileOptionsSchema;
+                break;
+            case "service":
+                optionsSchema = ServiceOptionsSchema;
+                break;
+            case "message":
+                optionsSchema = MessageOptionsSchema;
+                break;
         }
 
         // create a synthetic type that has all extension fields for field options
-        const typeName = `$synthetic.${optionsTypeName}`;
+        const typeName = `$synthetic.${optionsSchema.typeName}`;
         let type = this.messageTypes.get(typeName);
         if (!type) {
+            const extensions: DescExtension[] = [];
+            for (let {no} of unknownFields) {
+                const ext = this.registry.getExtensionFor(optionsSchema, no);
+                if (ext) {
+                    extensions.push(ext);
+                }
+            }
             type = new rt.MessageType(
                 typeName,
-                this.buildFieldInfos(this.registry.extensionsFor(optionsTypeName)),
+                this.buildFieldInfos(extensions),
                 {}
             );
             this.messageTypes.set(typeName, type);
@@ -172,16 +190,21 @@ export class Interpreter {
     /**
      * Read the custom file options declared in protobuf-ts.proto
      */
-    readOurFileOptions(file: FileDescriptorProto): OurFileOptions {
-        return readOurFileOptions(file);
+    readOurFileOptions(file: DescFile): OurFileOptions {
+        return {
+            ["ts.exclude_options"]: getOption(file, exclude_options),
+        };
     }
 
 
     /**
      * Read the custom service options declared in protobuf-ts.proto
      */
-    readOurServiceOptions(service: ServiceDescriptorProto): OurServiceOptions {
-        return readOurServiceOptions(service);
+    readOurServiceOptions(service: DescService): OurServiceOptions {
+        return {
+            ["ts.client"]: getOption(service, client),
+            ["ts.server"]: getOption(service, server),
+        };
     }
 
 
@@ -191,25 +214,24 @@ export class Interpreter {
      *
      * Honors our file option "ts.exclude_options".
      */
-    getMessageType(descriptorOrTypeName: string | DescriptorProto): rt.IMessageType<rt.UnknownMessage> {
+    getMessageType(descriptorOrTypeName: string | DescMessage): rt.IMessageType<rt.UnknownMessage> {
         let descriptor = typeof descriptorOrTypeName === "string"
-            ? this.registry.resolveTypeName(descriptorOrTypeName)
+            ? this.registry.getMessage(descriptorOrTypeName)
             : descriptorOrTypeName;
-        let typeName = this.registry.makeTypeName(descriptor);
-        assert(DescriptorProto.is(descriptor));
-        let type = this.messageTypes.get(typeName);
+        assert(descriptor);
+        let type = this.messageTypes.get(descriptor.typeName);
         if (!type) {
 
             // Create and store the message type
             const optionsPlaceholder: JsonOptionsMap = {};
             type = new rt.MessageType(
-                typeName,
-                this.buildFieldInfos(descriptor.field),
+                descriptor.typeName,
+                this.buildFieldInfos(descriptor.fields),
                 optionsPlaceholder
             );
-            this.messageTypes.set(typeName, type);
+            this.messageTypes.set(descriptor.typeName, type);
 
-            const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
+            const ourFileOptions = this.readOurFileOptions(descriptor.file);
 
             // add message options *after* storing, so that the option can refer to itself
             const messageOptions = this.readOptions(descriptor, ourFileOptions["ts.exclude_options"]);
@@ -237,17 +259,16 @@ export class Interpreter {
      *
      * Honors our file option "ts.exclude_options".
      */
-    getServiceType(descriptorOrTypeName: string | ServiceDescriptorProto): rpc.ServiceType {
+    getServiceType(descriptorOrTypeName: string | DescService): rpc.ServiceType {
         let descriptor = typeof descriptorOrTypeName === "string"
-            ? this.registry.resolveTypeName(descriptorOrTypeName)
+            ? this.registry.getService(descriptorOrTypeName)
             : descriptorOrTypeName;
-        let typeName = this.registry.makeTypeName(descriptor);
-        assert(ServiceDescriptorProto.is(descriptor));
-        let type = this.serviceTypes.get(typeName);
+        assert(descriptor);
+        let type = this.serviceTypes.get(descriptor.typeName);
         if (!type) {
-            const ourFileOptions = this.readOurFileOptions(this.registry.fileOf(descriptor));
-            type = this.buildServiceType(typeName, descriptor.method, ourFileOptions["ts.exclude_options"].concat("ts.client"));
-            this.serviceTypes.set(typeName, type);
+            const ourFileOptions = this.readOurFileOptions(descriptor.file);
+            type = this.buildServiceType(descriptor.typeName, descriptor.methods, ourFileOptions["ts.exclude_options"].concat("ts.client"));
+            this.serviceTypes.set(descriptor.typeName, type);
         }
         return type;
     }
@@ -257,19 +278,16 @@ export class Interpreter {
      * Get runtime information for an enum.
      * Creates the info if not created previously.
      */
-    getEnumInfo(descriptorOrTypeName: string | EnumDescriptorProto): rt.EnumInfo {
-        let descriptor = typeof descriptorOrTypeName === "string"
-            ? this.registry.resolveTypeName(descriptorOrTypeName)
-            : descriptorOrTypeName;
-        let typeName = this.registry.makeTypeName(descriptor);
-        assert(EnumDescriptorProto.is(descriptor));
-        let enumInfo = this.enumInfos.get(typeName) ?? this.buildEnumInfo(descriptor);
-        this.enumInfos.set(typeName, enumInfo);
+    getEnumInfo(descriptorOrTypeName: string | DescEnum): rt.EnumInfo {
+        const descriptor = typeof descriptorOrTypeName == "string" ? this.registry.getEnum(descriptorOrTypeName) : descriptorOrTypeName;
+        assert(descriptor);
+        let enumInfo = this.enumInfos.get(descriptor.typeName) ?? this.buildEnumInfo(descriptor);
+        this.enumInfos.set(descriptor.typeName, enumInfo);
         return enumInfo;
     }
 
 
-    private static createTypescriptNameForMethod(descriptor: MethodDescriptorProto): string {
+    private static createTypescriptNameForMethod(descriptor: DescMethod): string {
         let escapeCharacter = '$';
         let reservedClassProperties = [
             // js built in
@@ -289,9 +307,9 @@ export class Interpreter {
     }
 
 
-    private buildServiceType(typeName: string, methods: MethodDescriptorProto[], excludeOptions: readonly string[]): rpc.ServiceType {
-        let desc = this.registry.resolveTypeName(typeName);
-        assert(ServiceDescriptorProto.is(desc));
+    private buildServiceType(typeName: string, methods: DescMethod[], excludeOptions: readonly string[]): rpc.ServiceType {
+        let desc = this.registry.getService(typeName);
+        assert(desc);
         return new rpc.ServiceType(
             typeName,
             methods.map(m => this.buildMethodInfo(m, excludeOptions)),
@@ -300,44 +318,45 @@ export class Interpreter {
     }
 
 
-    private buildMethodInfo(methodDescriptor: MethodDescriptorProto, excludeOptions: readonly string[]): rpc.PartialMethodInfo {
-        assert(methodDescriptor.name);
-        assert(methodDescriptor.inputType);
-        assert(methodDescriptor.outputType);
+    private buildMethodInfo(methodDescriptor: DescMethod, excludeOptions: readonly string[]): rpc.PartialMethodInfo {
         let info: { [k: string]: any } = {};
 
         // name: The name of the method as declared in .proto
         info.name = methodDescriptor.name;
 
         // localName: The name of the method in the runtime.
-        let localName = Interpreter.createTypescriptNameForMethod(methodDescriptor);
+        let localName = ESInterpreter.createTypescriptNameForMethod(methodDescriptor);
         if (localName !== rt.lowerCamelCase(methodDescriptor.name)) {
             info.localName = localName;
         }
 
         // idempotency: The idempotency level as specified in .proto.
-        if (methodDescriptor.options) {
-            let idem = methodDescriptor.options.idempotencyLevel;
-            if (idem !== undefined && idem !== MethodOptions_IdempotencyLevel.IDEMPOTENCY_UNKNOWN) {
-                info.idempotency = MethodOptions_IdempotencyLevel[idem];
-            }
+        switch (methodDescriptor.idempotency) {
+            case MethodOptions_IdempotencyLevel.IDEMPOTENCY_UNKNOWN:
+                break;
+            case MethodOptions_IdempotencyLevel.IDEMPOTENT:
+                info.idempotency = "IDEMPOTENT";
+                break;
+            case MethodOptions_IdempotencyLevel.NO_SIDE_EFFECTS:
+                info.idempotency = "NO_SIDE_EFFECTS";
+                break;
         }
 
         // serverStreaming: Was the rpc declared with server streaming?
-        if (methodDescriptor.serverStreaming) {
+        if (methodDescriptor.proto.serverStreaming) {
             info.serverStreaming = true;
         }
 
         // clientStreaming: Was the rpc declared with client streaming?
-        if (methodDescriptor.clientStreaming) {
+        if (methodDescriptor.proto.clientStreaming) {
             info.clientStreaming = true;
         }
 
         // I: The generated type handler for the input message.
-        info.I = this.getMessageType(methodDescriptor.inputType);
+        info.I = this.getMessageType(methodDescriptor.input);
 
         // O: The generated type handler for the output message.
-        info.O = this.getMessageType(methodDescriptor.outputType);
+        info.O = this.getMessageType(methodDescriptor.output);
 
         // options: Contains custom method options from the .proto source in JSON format.
         info.options = this.readOptions(methodDescriptor, excludeOptions);
@@ -353,7 +372,7 @@ export class Interpreter {
      *   adding '$' at the end
      * - don't have to escape reserved keywords
      */
-    private createTypescriptNameForField(descriptor: FieldDescriptorProto | OneofDescriptorProto, escapeCharacter = '$'): string {
+    private createTypescriptNameForField(descriptor: DescField | DescExtension | DescOneof, escapeCharacter = '$'): string {
         const reservedObjectProperties = '__proto__,toString'.split(',');
         let name = descriptor.name;
         assert(name !== undefined);
@@ -369,10 +388,10 @@ export class Interpreter {
 
 
     // skips GROUP field type
-    private buildFieldInfos(fieldDescriptors: readonly FieldDescriptorProto[]): rt.PartialFieldInfo[] {
+    private buildFieldInfos(fieldDescriptors: readonly (DescField | DescExtension)[]): rt.PartialFieldInfo[] {
         const result: rt.PartialFieldInfo[] = [];
         for (const fd of fieldDescriptors) {
-            if (this.registry.isGroupField(fd)) {
+            if (fd.proto.type == FieldDescriptorProto_Type.GROUP) {
                 // We ignore groups.
                 // Note that groups are deprecated and not supported in proto3.
                 continue;
@@ -387,9 +406,7 @@ export class Interpreter {
 
 
     // throws on unexpected field types, notably GROUP
-    private buildFieldInfo(fieldDescriptor: FieldDescriptorProto): undefined | rt.PartialFieldInfo {
-        assert(fieldDescriptor.number);
-        assert(fieldDescriptor.name);
+    private buildFieldInfo(fieldDescriptor: DescField | DescExtension): undefined | rt.PartialFieldInfo {
         let info: { [k: string]: any } = {};
 
 
@@ -413,130 +430,114 @@ export class Interpreter {
 
 
         // jsonName: The name of the field in JSON.
-        const jsonName = this.registry.getFieldCustomJsonName(fieldDescriptor);
-        if (jsonName !== undefined) {
-            info.jsonName = jsonName;
+        if (fieldDescriptor.proto.jsonName !== rt.lowerCamelCase(fieldDescriptor.name)) {
+            info.jsonName = fieldDescriptor.proto.jsonName;
         }
 
 
         // oneof: The name of the `oneof` group, if this field belongs to one.
-        if (this.registry.isUserDeclaredOneof(fieldDescriptor)) {
-            assert(fieldDescriptor.oneofIndex !== undefined);
-            const parentDescriptor = this.registry.parentOf(fieldDescriptor);
-            assert(DescriptorProto.is(parentDescriptor));
-            const ooDecl = parentDescriptor.oneofDecl[fieldDescriptor.oneofIndex];
-            info.oneof = this.createTypescriptNameForField(ooDecl);
+        if (fieldDescriptor.oneof) {
+            info.oneof = this.createTypescriptNameForField(fieldDescriptor.oneof);
         }
 
 
         // repeat: Is the field repeated?
-        if (this.registry.isUserDeclaredRepeated(fieldDescriptor)) {
-            let packed = this.registry.shouldBePackedRepeated(fieldDescriptor);
-            info.repeat = packed ? rt.RepeatType.PACKED : rt.RepeatType.UNPACKED;
+        if (fieldDescriptor.fieldKind == "list") {
+            info.repeat = fieldDescriptor.packed ? rt.RepeatType.PACKED : rt.RepeatType.UNPACKED;
         }
 
 
         // opt: Is the field optional?
-        if (this.registry.isScalarField(fieldDescriptor) || this.registry.isEnumField(fieldDescriptor)) {
-            if (this.registry.isUserDeclaredOptional(fieldDescriptor)) {
+        if ((fieldDescriptor.fieldKind == "scalar" || fieldDescriptor.fieldKind == "enum") && !fieldDescriptor.oneof) {
+            const proto3Optional = fieldDescriptor.proto.proto3Optional;
+            const proto2Optional = fieldDescriptor.parent?.file.edition === Edition.EDITION_PROTO2 && fieldDescriptor.proto.label === FieldDescriptorProto_Label.OPTIONAL;
+            if (proto2Optional || proto3Optional) {
                 info.opt = true;
             }
         }
 
-
-        // jsonName: The name for JSON serialization / deserialization.
-        if (fieldDescriptor.jsonName) {
-            info.jsonName = fieldDescriptor.jsonName;
-        }
-
-
-        if (this.registry.isScalarField(fieldDescriptor)) {
-
+        if (fieldDescriptor.fieldKind == "scalar" || (fieldDescriptor.fieldKind == "list" && fieldDescriptor.listKind == "scalar")) {
             // kind:
             info.kind = "scalar";
 
             // T: Scalar field type.
-            info.T = this.registry.getScalarFieldType(fieldDescriptor) as number as rt.ScalarType;
+            info.T = fieldDescriptor.scalar as number as rt.ScalarType;
 
             // L?: JavaScript long type
-            let L = this.determineNonDefaultLongType(info.T, fieldDescriptor.options?.jstype);
+            let L = this.determineNonDefaultLongType(info.T, fieldDescriptor.proto.options?.jstype);
             if (L !== undefined) {
                 info.L = L;
             }
 
 
-        } else if (this.registry.isEnumField(fieldDescriptor)) {
+        } else if (fieldDescriptor.fieldKind == "enum" || (fieldDescriptor.fieldKind == "list" && fieldDescriptor.listKind == "enum")) {
 
             // kind:
             info.kind = "enum";
 
             // T: Return enum field type info.
             info.T = () => this.getEnumInfo(
-                this.registry.getEnumFieldEnum(fieldDescriptor)
+                fieldDescriptor.enum,
             );
 
 
-        } else if (this.registry.isMessageField(fieldDescriptor)) {
+        } else if (fieldDescriptor.fieldKind == "message" || (fieldDescriptor.fieldKind == "list" && fieldDescriptor.listKind == "message")) {
 
             // kind:
             info.kind = "message";
 
             // T: Return message field type handler.
             info.T = () => this.getMessageType(
-                this.registry.getMessageFieldMessage(fieldDescriptor)
+                fieldDescriptor.message,
             );
 
 
-        } else if (this.registry.isMapField(fieldDescriptor)) {
+        } else if (fieldDescriptor.fieldKind == "map") {
 
             // kind:
             info.kind = "map";
 
             // K: Map field key type.
-            info.K = this.registry.getMapKeyType(fieldDescriptor) as number as rt.ScalarType;
+            info.K = fieldDescriptor.mapKey as number as rt.ScalarType;
 
             // V: Map field value type.
             info.V = {} as { [k: string]: any };
 
-            let mapV = this.registry.getMapValueType(fieldDescriptor);
-            if (typeof mapV === "number") {
-                info.V = {
-                    kind: "scalar",
-                    T: mapV as number as rt.ScalarType
-                }
-                let L = this.determineNonDefaultLongType(info.V.T, fieldDescriptor.options?.jstype);
-                if (L !== undefined) {
-                    info.V.L = L;
-                }
-            } else if (DescriptorProto.is(mapV)) {
-                const messageDescriptor = mapV;
-                info.V = {
-                    kind: "message",
-                    T: () => this.getMessageType(messageDescriptor)
-                }
-            } else {
-                const enumDescriptor = mapV;
-                info.V = {
-                    kind: "enum",
-                    T: () => this.getEnumInfo(enumDescriptor)
-                }
+            switch (fieldDescriptor.mapKind) {
+                case "scalar":
+                    info.V = {
+                        kind: "scalar",
+                        T: fieldDescriptor.scalar as number as rt.ScalarType
+                    }
+                    let L = this.determineNonDefaultLongType(info.V.T, fieldDescriptor.proto.options?.jstype);
+                    if (L !== undefined) {
+                        info.V.L = L;
+                    }
+                    break;
+                case "message":
+                    info.V = {
+                        kind: "message",
+                        T: () => this.getMessageType(fieldDescriptor.message),
+                    }
+                    break;
+                case "enum":
+                    info.V = {
+                        kind: "enum",
+                        T: () => this.getEnumInfo(fieldDescriptor.enum),
+                    }
+                    break;
             }
-
-        } else {
-            throw new Error(`Unexpected field type for ${this.registry.formatQualifiedName(fieldDescriptor)}`);
         }
 
 
         // extension fields are treated differently
-        if (this.registry.isExtension(fieldDescriptor)) {
-            let extensionName = this.registry.getExtensionName(fieldDescriptor);
-
+        if (fieldDescriptor.kind == "extension") {
             // always optional (unless repeated...)
             info.opt = info.repeat === undefined || info.repeat === rt.RepeatType.NO;
 
-            info.name = extensionName;
-            info.localName = extensionName;
-            info.jsonName = extensionName;
+            info.name = fieldDescriptor.typeName;
+            info.localName = fieldDescriptor.typeName;
+            info.jsonName = fieldDescriptor.typeName;
             info.oneof = undefined;
 
         }
@@ -545,37 +546,32 @@ export class Interpreter {
     }
 
 
-    protected buildEnumInfo(descriptor: EnumDescriptorProto): rt.EnumInfo {
-        let sharedPrefix = this.options.keepEnumPrefix
-            ? undefined
-            : this.registry.findEnumSharedPrefix(descriptor, `${descriptor.name}`);
-        let hasZero = descriptor.value.some(v => v.number === 0);
-        let builder = new RuntimeEnumBuilder();
+    protected buildEnumInfo(descriptor: DescEnum): rt.EnumInfo {
+        const hasZero = descriptor.values.some(v => v.number === 0);
+        const builder = new RuntimeEnumBuilder();
         if (!hasZero && typeof this.options.synthesizeEnumZeroValue == 'string') {
             builder.add(this.options.synthesizeEnumZeroValue, 0);
         }
-        for (let enumValueDescriptor of descriptor.value) {
+        for (let enumValueDescriptor of descriptor.values) {
             let name = enumValueDescriptor.name;
-            assert(name !== undefined);
-            assert(enumValueDescriptor.number !== undefined);
-            if (sharedPrefix) {
-                name = name.substring(sharedPrefix.length);
+            if (descriptor.sharedPrefix !== undefined) {
+                name = name.substring(descriptor.sharedPrefix.length);
             }
             builder.add(name, enumValueDescriptor.number);
         }
         let enumInfo: rt.EnumInfo = [
-            this.registry.makeTypeName(descriptor),
+            descriptor.typeName,
             builder.build(),
         ];
-        if (sharedPrefix) {
-            enumInfo = [enumInfo[0], enumInfo[1], sharedPrefix];
+        if (descriptor.sharedPrefix !== undefined) {
+            enumInfo = [enumInfo[0], enumInfo[1], descriptor.sharedPrefix];
         }
         return enumInfo;
     }
 
 
     protected determineNonDefaultLongType(scalarType: rt.ScalarType, jsTypeOption?: FieldOptions_JSType): rt.LongType | undefined {
-        if (!Interpreter.isLongValueType(scalarType)) {
+        if (!ESInterpreter.isLongValueType(scalarType)) {
             return undefined;
         }
         if (jsTypeOption !== undefined) {

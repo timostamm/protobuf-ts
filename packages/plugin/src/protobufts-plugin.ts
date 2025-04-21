@@ -10,7 +10,7 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import {OutFile} from "./out-file";
 import {createLocalTypeName} from "./code-gen/local-type-name";
-import {Interpreter} from "./interpreter";
+import {LegacyInterpreter} from "./legacy-interpreter";
 import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 import {CommentGenerator} from "./code-gen/comment-generator";
@@ -27,6 +27,7 @@ import {assert} from "@protobuf-ts/runtime";
 import {WellKnownTypes} from "./message-type-extensions/well-known-types";
 import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
+import { ESInterpreter } from "./es-interpreter";
 
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {
@@ -236,16 +237,17 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             fileTable = new FileTable(),
             imports = new TypeScriptImports(symbols),
             comments = new CommentGenerator(legacyRegistry),
-            interpreter = new Interpreter(legacyRegistry, options),
-            optionResolver = new OptionResolver(interpreter, legacyRegistry, options),
-            genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genEnum = new EnumGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genMessageType = new MessageTypeGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genServiceType = new ServiceTypeGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, options)
+            legacyInterpreter = new LegacyInterpreter(legacyRegistry, options),
+            interpreter = new ESInterpreter(registryEs, options),
+            optionResolver = new OptionResolver(legacyInterpreter, legacyRegistry, options),
+            genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genEnum = new EnumGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genMessageType = new MessageTypeGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genServiceType = new ServiceTypeGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, legacyInterpreter, options)
         ;
 
 

@@ -8,7 +8,7 @@ import {
 import * as ts from "typescript";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
-import {Interpreter} from "../interpreter";
+import {LegacyInterpreter} from "../legacy-interpreter";
 import {GeneratorBase} from "./generator-base";
 import {createLocalTypeName} from "./local-type-name";
 import {assert} from "@protobuf-ts/runtime";
@@ -21,7 +21,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
     abstract readonly symbolKindImplementation: string;
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
                 protected readonly options: {
                     runtimeImportPath: string;
                     runtimeRpcImportPath: string;

@@ -1,0 +1,9 @@
+version: v2
+clean: true
+inputs:
+  - proto_file: protobuf-ts.proto
+plugins:
+  - local: protoc-gen-es
+    out: src/gen
+    opt:
+      - target=ts

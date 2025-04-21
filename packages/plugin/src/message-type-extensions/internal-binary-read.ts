@@ -11,7 +11,7 @@ import {
 import * as rt from "@protobuf-ts/runtime";
 import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
-import {Interpreter} from "../interpreter";
+import {LegacyInterpreter} from "../legacy-interpreter";
 
 
 /**
@@ -23,7 +23,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     constructor(
         private readonly registry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
-        private readonly interpreter: Interpreter,
+        private readonly interpreter: LegacyInterpreter,
         private readonly options: { normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }
@@ -930,7 +930,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             readerMethodProp,
             undefined, []
         );
-        if (!Interpreter.isLongValueType(type)) {
+        if (!LegacyInterpreter.isLongValueType(type)) {
             return readerMethodCall;
         }
         let convertMethodProp;

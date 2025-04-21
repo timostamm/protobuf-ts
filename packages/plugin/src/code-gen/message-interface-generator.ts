@@ -12,7 +12,7 @@ import {
     TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
-import {Interpreter} from "../interpreter";
+import {LegacyInterpreter} from "../legacy-interpreter";
 import {GeneratorBase} from "./generator-base";
 import {createLocalTypeName} from "./local-type-name";
 
@@ -20,7 +20,7 @@ import {createLocalTypeName} from "./local-type-name";
 export class MessageInterfaceGenerator extends GeneratorBase {
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
                 private readonly options: {
                     oneofKindDiscriminator: string;
                     normalLongType: rt.LongType;

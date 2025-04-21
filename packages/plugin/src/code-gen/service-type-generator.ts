@@ -7,7 +7,7 @@ import {
     TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
-import {Interpreter} from "../interpreter";
+import {LegacyInterpreter} from "../legacy-interpreter";
 import {CommentGenerator} from "./comment-generator";
 import * as ts from "typescript";
 import {MethodInfoGenerator} from "./method-info-generator";
@@ -19,7 +19,7 @@ export class ServiceTypeGenerator extends GeneratorBase {
     private readonly methodInfoGenerator: MethodInfoGenerator;
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
                 private readonly options: {
                     runtimeRpcImportPath: string;
                 }) {

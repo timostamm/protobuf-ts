@@ -11,7 +11,7 @@ import {
     ServiceDescriptorProto,
     ServiceOptions
 } from "@protobuf-ts/plugin-framework";
-import {Interpreter} from "./interpreter";
+import {LegacyInterpreter} from "./legacy-interpreter";
 import * as ts from "typescript";
 
 
@@ -59,6 +59,7 @@ export interface OurServiceOptions {
 
 
 /**
+ * @deprecated
  * Read the custom file options declared in protobuf-ts.proto
  */
 export function readOurFileOptions(file: FileDescriptorProto): OurFileOptions {
@@ -66,6 +67,7 @@ export function readOurFileOptions(file: FileDescriptorProto): OurFileOptions {
 }
 
 /**
+ * @deprecated
  * Read the custom service options declared in protobuf-ts.proto
  */
 export function readOurServiceOptions(service: ServiceDescriptorProto): OurServiceOptions {
@@ -356,7 +358,7 @@ export class OptionResolver {
 
 
     constructor(
-        private readonly interpreter: Interpreter,
+        private readonly interpreter: LegacyInterpreter,
         private readonly stringFormat: IStringFormat,
         private readonly options: InternalOptions,
     ) {

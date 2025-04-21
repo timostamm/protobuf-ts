@@ -1,5 +1,5 @@
 import {isEnumObject} from "@protobuf-ts/runtime";
-import {RuntimeEnumBuilder} from "../src/interpreter";
+import {RuntimeEnumBuilder} from "../src/legacy-interpreter";
 
 
 describe('RuntimeEnumBuilder', function () {

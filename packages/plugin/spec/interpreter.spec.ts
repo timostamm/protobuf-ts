@@ -1,6 +1,6 @@
 import {getFileDescriptor} from "./support/helpers";
 import {DescriptorRegistry} from "@protobuf-ts/plugin-framework";
-import {Interpreter} from "../src/interpreter";
+import {LegacyInterpreter} from "../src/legacy-interpreter";
 import * as rt from "@protobuf-ts/runtime";
 
 
@@ -9,7 +9,7 @@ describe('interpreter', function () {
         [rt.LongType.NUMBER, rt.LongType.STRING, rt.LongType.BIGINT].forEach(normalLongType => {
 
             const registry = DescriptorRegistry.createFrom(getFileDescriptor("msg-longs.proto"));
-            const interpreter = new Interpreter(registry, {
+            const interpreter = new LegacyInterpreter(registry, {
                 normalLongType,
                 synthesizeEnumZeroValue: 'UNSPECIFIED$',
                 oneofKindDiscriminator: 'oneofKind',

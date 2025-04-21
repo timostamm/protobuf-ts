@@ -10,7 +10,7 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
-import {Interpreter} from "../interpreter";
+import {LegacyInterpreter} from "../legacy-interpreter";
 import {assert} from "@protobuf-ts/runtime";
 
 
@@ -28,7 +28,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     constructor(
         private readonly registry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
-        private readonly interpreter: Interpreter,
+        private readonly interpreter: LegacyInterpreter,
         private readonly options: { oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }

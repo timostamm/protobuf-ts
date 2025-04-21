@@ -15,7 +15,7 @@ import {GoogleTypes} from "../message-type-extensions/google-types";
 import {Create} from "../message-type-extensions/create";
 import {InternalBinaryRead} from "../message-type-extensions/internal-binary-read";
 import {InternalBinaryWrite} from "../message-type-extensions/internal-binary-write";
-import {Interpreter} from "../interpreter";
+import {LegacyInterpreter} from "../legacy-interpreter";
 import {FieldInfoGenerator} from "./field-info-generator";
 import {GeneratorBase} from "./generator-base";
 
@@ -36,7 +36,7 @@ export class MessageTypeGenerator extends GeneratorBase {
     private readonly fieldInfoGenerator: FieldInfoGenerator;
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
+    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
                 private readonly options: {
                     runtimeImportPath: string;
                     normalLongType: LongType;
