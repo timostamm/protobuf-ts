@@ -6,12 +6,10 @@ import {
     FileDescriptorProto,
     FileOptions,
     FileOptions_OptimizeMode as OptimizeMode,
-    IStringFormat,
     MethodOptions,
     ServiceDescriptorProto,
     ServiceOptions
 } from "@protobuf-ts/plugin-framework";
-import {LegacyInterpreter} from "./legacy-interpreter";
 import * as ts from "typescript";
 import {DescFile, DescService} from "@bufbuild/protobuf";
 import {ESInterpreter} from "./es-interpreter";
@@ -361,8 +359,6 @@ export class OptionResolver {
 
     constructor(
         private readonly interpreter: ESInterpreter,
-        private readonly legacyInterpreter: LegacyInterpreter,
-        private readonly stringFormat: IStringFormat,
         private readonly options: InternalOptions,
     ) {
     }
@@ -376,20 +372,6 @@ export class OptionResolver {
         }
         return this.options.normalOptimizeMode;
     }
-
-    /**
-     * @deprecated
-     */
-    legacy_getOptimizeMode(file: FileDescriptorProto): OptimizeMode {
-        if (this.options.forcedOptimizeMode !== undefined) {
-            return this.options.forcedOptimizeMode;
-        }
-        if (file.options?.optimizeFor !== undefined) {
-            return file.options.optimizeFor;
-        }
-        return this.options.normalOptimizeMode;
-    }
-
 
     getClientStyles(descriptor: DescService): ClientStyle[] {
         const opt = this.interpreter.readOurServiceOptions(descriptor)["ts.client"];
@@ -417,63 +399,6 @@ export class OptionResolver {
 
         // fall back to normal style set by option
         return [this.options.normalClientStyle];
-    }
-
-    /**
-     * @deprecated
-     */
-    legacy_getClientStyles(descriptor: ServiceDescriptorProto): ClientStyle[] {
-        const opt = this.legacyInterpreter.readOurServiceOptions(descriptor)["ts.client"];
-
-        // always check service options valid
-        if (opt.includes(ClientStyle.NO_CLIENT) && opt.some(s => s !== ClientStyle.NO_CLIENT)) {
-            let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NO_CLIENT, you cannot set additional client styles.`);
-            err.name = `PluginMessageError`;
-            throw err;
-        }
-
-        if (this.options.forcedClientStyle !== undefined) {
-            return [this.options.forcedClientStyle];
-        }
-
-        // look for service options
-        if (opt.length) {
-            return opt
-                .filter(s => s !== ClientStyle.NO_CLIENT)
-                .filter((value, index, array) => array.indexOf(value) === index);
-        }
-
-        // fall back to normal style set by option
-        return [this.options.normalClientStyle];
-    }
-
-
-    /**
-     * @deprecated
-     */
-    legacy_getServerStyles(descriptor: ServiceDescriptorProto): ServerStyle[] {
-        const opt = this.legacyInterpreter.readOurServiceOptions(descriptor)["ts.server"];
-
-        // always check service options valid
-        if (opt.includes(ServerStyle.NO_SERVER) && opt.some(s => s !== ServerStyle.NO_SERVER)) {
-            let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.server) = NO_SERVER, you cannot set additional server styles.`);
-            err.name = `PluginMessageError`;
-            throw err;
-        }
-
-        if (this.options.forcedServerStyle !== undefined) {
-            return [this.options.forcedServerStyle];
-        }
-
-        // look for service options
-        if (opt.length) {
-            return opt
-                .filter(s => s !== ServerStyle.NO_SERVER)
-                .filter((value, index, array) => array.indexOf(value) === index);
-        }
-
-        // fall back to normal style set by option
-        return [this.options.normalServerStyle];
     }
 
     getServerStyles(descriptor: DescService): ServerStyle[] {
