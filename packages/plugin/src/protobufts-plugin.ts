@@ -239,7 +239,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             comments = new CommentGenerator(legacyRegistry),
             legacyInterpreter = new LegacyInterpreter(legacyRegistry, options),
             interpreter = new ESInterpreter(registryEs, options),
-            optionResolver = new OptionResolver(legacyInterpreter, legacyRegistry, options),
+            optionResolver = new OptionResolver(interpreter, legacyInterpreter, legacyRegistry, options),
             genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
             genEnum = new EnumGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
             genMessageType = new MessageTypeGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
@@ -311,7 +311,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                 if (legacyRegistry.isSyntheticElement(descriptor)) return;
 
                 if (DescriptorProto.is(descriptor)) {
-                    genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
+                    genMessageType.generateMessageType(outMain, descriptor, optionResolver.legacy_getOptimizeMode(legacyFileDescriptor));
                 }
 
                 if (!options.forceDisableServices) {
@@ -320,7 +320,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                         genServiceType.generateServiceType(outMain, descriptor);
 
                         // clients
-                        const clientStyles = optionResolver.getClientStyles(descriptor);
+                        const clientStyles = optionResolver.legacy_getClientStyles(descriptor);
                         if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
                             genClientGeneric.generateInterface(outClientCall, descriptor);
                             genClientGeneric.generateImplementationClass(outClientCall, descriptor);
@@ -331,7 +331,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                         }
 
                         // servers
-                        const serverStyles = optionResolver.getServerStyles(descriptor);
+                        const serverStyles = optionResolver.legacy_getServerStyles(descriptor);
                         if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
                             genServerGeneric.generateInterface(outServerGeneric, descriptor);
                         }
