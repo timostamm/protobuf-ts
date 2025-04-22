@@ -25,9 +25,11 @@ import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-gr
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {WellKnownTypes} from "./message-type-extensions/well-known-types";
+import {nestedTypes} from "@bufbuild/protobuf/reflect";
 import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
 import { ESInterpreter } from "./es-interpreter";
+import {FileDescriptorProto} from "@protobuf-ts/plugin-framework/src";
 
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {
@@ -250,14 +252,18 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, legacyInterpreter, options)
         ;
 
+        const legacyFileDescriptorsByName = new Map<string, FileDescriptorProto>(
+            legacyRegistry.allFiles().map(f => [f.name ?? "", f]),
+        );
 
         let tsFiles: OutFile[] = [];
 
-        // ensure unique file names
+        // in first pass, register standard file names
         for (let fileDescriptor of registryEs.files) {
             const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.ts', fileDescriptor);
         }
+        // in second pass, register client and server file names
         for (let fileDescriptor of registryEs.files) {
             const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
@@ -268,80 +274,91 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             fileTable.register(base + '.grpc-client.ts', fileDescriptor, 'grpc1-client');
         }
 
-
-        for (let fileDescriptor of legacyRegistry.allFiles()) {
+        // in third pass, generate files
+        for (let descFile of registryEs.files) {
+            const legacyFileDescriptor = legacyFileDescriptorsByName.get(descFile.proto.name);
+            assert(legacyFileDescriptor);
             const
-                outMain = new OutFile(fileTable.get(fileDescriptor).name, fileDescriptor, legacyRegistry, options),
-                outServerGeneric = new OutFile(fileTable.get(fileDescriptor, 'generic-server').name, fileDescriptor, legacyRegistry, options),
-                outServerGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-server').name, fileDescriptor, legacyRegistry, options),
-                outClientCall = new OutFile(fileTable.get(fileDescriptor, 'client').name, fileDescriptor, legacyRegistry, options),
-                outClientPromise = new OutFile(fileTable.get(fileDescriptor, 'promise-client').name, fileDescriptor, legacyRegistry, options),
-                outClientRx = new OutFile(fileTable.get(fileDescriptor, 'rx-client').name, fileDescriptor, legacyRegistry, options),
-                outClientGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-client').name, fileDescriptor, legacyRegistry, options);
+                outMain = new OutFile(fileTable.get(legacyFileDescriptor).name, legacyFileDescriptor, legacyRegistry, options),
+                outServerGeneric = new OutFile(fileTable.get(legacyFileDescriptor, 'generic-server').name, legacyFileDescriptor, legacyRegistry, options),
+                outServerGrpc = new OutFile(fileTable.get(legacyFileDescriptor, 'grpc1-server').name, legacyFileDescriptor, legacyRegistry, options),
+                outClientCall = new OutFile(fileTable.get(legacyFileDescriptor, 'client').name, legacyFileDescriptor, legacyRegistry, options),
+                outClientPromise = new OutFile(fileTable.get(legacyFileDescriptor, 'promise-client').name, legacyFileDescriptor, legacyRegistry, options),
+                outClientRx = new OutFile(fileTable.get(legacyFileDescriptor, 'rx-client').name, legacyFileDescriptor, legacyRegistry, options),
+                outClientGrpc = new OutFile(fileTable.get(legacyFileDescriptor, 'grpc1-client').name, legacyFileDescriptor, legacyRegistry, options);
             tsFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
 
-            legacyRegistry.visitTypes(fileDescriptor, descriptor => {
-                // we are not interested in synthetic types like map entry messages
-                if (legacyRegistry.isSyntheticElement(descriptor)) return;
-
-                // register all symbols, regardless whether they are going to be used - we want stable behaviour
-                symbols.register(createLocalTypeName(descriptor, legacyRegistry), descriptor, outMain);
-                if (ServiceDescriptorProto.is(descriptor)) {
-                    genClientGeneric.registerSymbols(outClientCall, descriptor);
-                    genClientGrpc.registerSymbols(outClientGrpc, descriptor);
-                    genServerGeneric.registerSymbols(outServerGeneric, descriptor);
-                    genServerGrpc.registerSymbols(outServerGrpc, descriptor);
+            // in first pass over types, register all symbols, regardless whether they are going to be used
+            for (const desc of nestedTypes(descFile)) {
+                if (desc.kind == "extension") {
+                    continue;
                 }
-            });
-
-            legacyRegistry.visitTypes(fileDescriptor, descriptor => {
-                // we are not interested in synthetic types like map entry messages
-                if (legacyRegistry.isSyntheticElement(descriptor)) return;
-
-                if (DescriptorProto.is(descriptor)) {
-                    genMessageInterface.generateMessageInterface(outMain, descriptor)
+                const legacyDescriptor = legacyRegistry.resolveTypeName(desc.typeName);
+                symbols.register(createLocalTypeName(desc), legacyDescriptor, outMain);
+                if (desc.kind == "service") {
+                    assert(ServiceDescriptorProto.is(legacyDescriptor));
+                    genClientGeneric.registerSymbols(outClientCall, legacyDescriptor);
+                    genClientGrpc.registerSymbols(outClientGrpc, legacyDescriptor);
+                    genServerGeneric.registerSymbols(outServerGeneric, legacyDescriptor);
+                    genServerGrpc.registerSymbols(outServerGrpc, legacyDescriptor);
                 }
-                if (EnumDescriptorProto.is(descriptor)) {
-                    genEnum.generateEnum(outMain, descriptor);
+            }
+
+            // in second pass over types, generate message interfaces and enums
+            for (const desc of nestedTypes(descFile)) {
+                switch (desc.kind) {
+                    case "message":
+                        const legacyMessageDescriptor = legacyRegistry.resolveTypeName(desc.typeName);
+                        assert(DescriptorProto.is(legacyMessageDescriptor));
+                        genMessageInterface.generateMessageInterface(outMain, legacyMessageDescriptor)
+                        break;
+                    case "enum":
+                        const legacyEnumDescriptor = legacyRegistry.resolveTypeName(desc.typeName);
+                        assert(EnumDescriptorProto.is(legacyEnumDescriptor));
+                        genEnum.generateEnum(outMain, legacyEnumDescriptor);
+                        break;
                 }
-            });
+            }
 
-            legacyRegistry.visitTypes(fileDescriptor, descriptor => {
-                // still not interested in synthetic types like map entry messages
-                if (legacyRegistry.isSyntheticElement(descriptor)) return;
+            // in third pass over types, generate message and service types
+            for (const desc of nestedTypes(descFile)) {
+                switch (desc.kind) {
+                    case "message":
+                        const legacyMessageDescriptor = legacyRegistry.resolveTypeName(desc.typeName);
+                        assert(DescriptorProto.is(legacyMessageDescriptor));
+                        genMessageType.generateMessageType(outMain, legacyMessageDescriptor, optionResolver.legacy_getOptimizeMode(legacyFileDescriptor));
+                        break;
+                    case "service":
+                        const legacyServiceDescriptor = legacyRegistry.resolveTypeName(desc.typeName);
+                        assert(ServiceDescriptorProto.is(legacyServiceDescriptor));
+                        if (!options.forceDisableServices) {
+                            // service type
+                            genServiceType.generateServiceType(outMain, legacyServiceDescriptor);
 
-                if (DescriptorProto.is(descriptor)) {
-                    genMessageType.generateMessageType(outMain, descriptor, optionResolver.legacy_getOptimizeMode(legacyFileDescriptor));
-                }
+                            // clients
+                            const clientStyles = optionResolver.legacy_getClientStyles(legacyServiceDescriptor);
+                            if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
+                                genClientGeneric.generateInterface(outClientCall, legacyServiceDescriptor);
+                                genClientGeneric.generateImplementationClass(outClientCall, legacyServiceDescriptor);
+                            }
+                            if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
+                                genClientGrpc.generateInterface(outClientGrpc, legacyServiceDescriptor);
+                                genClientGrpc.generateImplementationClass(outClientGrpc, legacyServiceDescriptor);
+                            }
 
-                if (!options.forceDisableServices) {
-                    if (ServiceDescriptorProto.is(descriptor)) {
-                        // service type
-                        genServiceType.generateServiceType(outMain, descriptor);
-
-                        // clients
-                        const clientStyles = optionResolver.legacy_getClientStyles(descriptor);
-                        if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
-                            genClientGeneric.generateInterface(outClientCall, descriptor);
-                            genClientGeneric.generateImplementationClass(outClientCall, descriptor);
+                            // servers
+                            const serverStyles = optionResolver.legacy_getServerStyles(legacyServiceDescriptor);
+                            if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
+                                genServerGeneric.generateInterface(outServerGeneric, legacyServiceDescriptor);
+                            }
+                            if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
+                                genServerGrpc.generateInterface(outServerGrpc, legacyServiceDescriptor);
+                                genServerGrpc.generateDefinition(outServerGrpc, legacyServiceDescriptor);
+                            }
                         }
-                        if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
-                            genClientGrpc.generateInterface(outClientGrpc, descriptor);
-                            genClientGrpc.generateImplementationClass(outClientGrpc, descriptor);
-                        }
-
-                        // servers
-                        const serverStyles = optionResolver.legacy_getServerStyles(descriptor);
-                        if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
-                            genServerGeneric.generateInterface(outServerGeneric, descriptor);
-                        }
-                        if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
-                            genServerGrpc.generateInterface(outServerGrpc, descriptor);
-                            genServerGrpc.generateDefinition(outServerGrpc, descriptor);
-                        }
-                    }
+                        break;
                 }
-            });
+            }
 
         }
 

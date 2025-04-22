@@ -13,7 +13,7 @@ import {LegacyInterpreter} from "../legacy-interpreter";
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
-import {createLocalTypeName} from "./local-type-name";
+import {legacy_createLocalTypeName} from "./local-type-name";
 
 
 export class ServiceServerGeneratorGrpc extends GeneratorBase {
@@ -30,7 +30,7 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
 
 
     registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
-        const basename = createLocalTypeName(descriptor, this.registry);
+        const basename = legacy_createLocalTypeName(descriptor, this.registry);
         const interfaceName = `I${basename}`;
         const definitionName = `${basename[0].toLowerCase()}${basename.substring(1)}Definition`;
         this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);

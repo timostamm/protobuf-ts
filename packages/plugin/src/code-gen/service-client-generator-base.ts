@@ -10,7 +10,7 @@ import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
 import {LegacyInterpreter} from "../legacy-interpreter";
 import {GeneratorBase} from "./generator-base";
-import {createLocalTypeName} from "./local-type-name";
+import {legacy_createLocalTypeName} from "./local-type-name";
 import {assert} from "@protobuf-ts/runtime";
 
 
@@ -31,7 +31,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
 
 
     registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
-        const basename = createLocalTypeName(descriptor, this.registry);
+        const basename = legacy_createLocalTypeName(descriptor, this.registry);
         const interfaceName = `I${basename}Client`;
         const implementationName = `${basename}Client`;
         this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);

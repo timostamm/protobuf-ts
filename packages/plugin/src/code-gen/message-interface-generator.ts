@@ -14,7 +14,7 @@ import {
 import {CommentGenerator} from "./comment-generator";
 import {LegacyInterpreter} from "../legacy-interpreter";
 import {GeneratorBase} from "./generator-base";
-import {createLocalTypeName} from "./local-type-name";
+import {legacy_createLocalTypeName} from "./local-type-name";
 
 
 export class MessageInterfaceGenerator extends GeneratorBase {
@@ -30,7 +30,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
 
 
     registerSymbols(source: TypescriptFile, descriptor: DescriptorProto): void {
-        const name = createLocalTypeName(descriptor, this.registry);
+        const name = legacy_createLocalTypeName(descriptor, this.registry);
         this.symbols.register(name, descriptor, source);
     }
 
