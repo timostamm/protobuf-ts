@@ -149,7 +149,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
                 const declaration = this.createMethod(source, mi);
                 const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
                 assert(methodDescriptor);
-                this.comments.addCommentsForDescriptor(declaration, methodDescriptor, 'appendToLeadingBlock');
+                this.comments.legacy_addCommentsForDescriptor(declaration, methodDescriptor, 'appendToLeadingBlock');
                 return declaration;
             })
 
@@ -185,7 +185,7 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
         );
 
         source.addStatement(statement);
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.legacy_addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         return statement;
     }
 

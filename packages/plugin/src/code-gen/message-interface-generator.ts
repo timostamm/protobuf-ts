@@ -89,7 +89,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
 
         // add to our file
         source.addStatement(statement);
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.legacy_addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         return statement;
     }
 
@@ -171,7 +171,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
             type,
             undefined
         );
-        this.comments.addCommentsForDescriptor(property, fieldDescriptor, 'trailingLines');
+        this.comments.legacy_addCommentsForDescriptor(property, fieldDescriptor, 'trailingLines');
         return property;
     }
 
@@ -246,7 +246,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
         );
 
         // add comments
-        this.comments.addCommentsForDescriptor(property, oneofDescriptor, 'appendToLeadingBlock');
+        this.comments.legacy_addCommentsForDescriptor(property, oneofDescriptor, 'appendToLeadingBlock');
         return property;
     }
 

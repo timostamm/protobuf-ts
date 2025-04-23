@@ -70,13 +70,13 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                 } else {
                     signature = this.createUnary(source, mi);
                 }
-                this.comments.addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
+                this.comments.legacy_addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
                 return signature;
             })
         );
 
         // add to our file
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.legacy_addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         source.addStatement(statement);
         return statement;
     }

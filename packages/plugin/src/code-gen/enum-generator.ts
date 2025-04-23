@@ -72,7 +72,7 @@ export class EnumGenerator {
         for (let ev of rt.listEnumValues(enumObject)) {
             let evDescriptor = descriptor.values.find(v => v.number === ev.number);
             let comments = evDescriptor
-                ? this.comments.getCommentBlock2(evDescriptor, true)
+                ? this.comments.getCommentBlock(evDescriptor, true)
                 : "@generated synthetic value - protobuf-ts requires all enums to have a 0 value";
             builder.add(ev.name, ev.number, comments);
         }
@@ -82,7 +82,7 @@ export class EnumGenerator {
         );
         // add to our file
         source.addStatement(statement);
-        this.comments.addCommentsForDescriptor2(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         return statement;
     }
 

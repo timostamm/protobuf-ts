@@ -16,14 +16,14 @@ export class CommentGenerator {
     /**
      * @deprecated
      */
-    addCommentsForDescriptor(node: ts.Node, descriptor: legacy_framework.AnyDescriptorProto, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
+    legacy_addCommentsForDescriptor(node: ts.Node, descriptor: legacy_framework.AnyDescriptorProto, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
         const source = this.registry.sourceCodeComments(descriptor);
 
         // add leading detached comments as line comments
         legacy_framework.addCommentBlocksAsLeadingDetachedLines(node, ...source.leadingDetached);
 
         // start with leading block
-        let leading = this.getCommentBlock(descriptor, trailingCommentsMode === "appendToLeadingBlock");
+        let leading = this.legacy_getCommentBlock(descriptor, trailingCommentsMode === "appendToLeadingBlock");
 
         // add leading block as jsdoc comment block
         legacy_framework.addCommentBlockAsJsDoc(node, leading);
@@ -64,7 +64,7 @@ export class CommentGenerator {
      * be appended to the leading block so that the
      * information is not discarded.
      */
-    addCommentsForDescriptor2(node: ts.Node, descriptor: AnyDesc, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
+    addCommentsForDescriptor(node: ts.Node, descriptor: AnyDesc, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
         if (descriptor.kind == "file") {
             return;
         }
@@ -74,7 +74,7 @@ export class CommentGenerator {
         legacy_framework.addCommentBlocksAsLeadingDetachedLines(node, ...source.leadingDetached);
 
         // start with leading block
-        let leading = this.getCommentBlock2(descriptor, trailingCommentsMode === "appendToLeadingBlock");
+        let leading = this.getCommentBlock(descriptor, trailingCommentsMode === "appendToLeadingBlock");
 
         // add leading block as jsdoc comment block
         legacy_framework.addCommentBlockAsJsDoc(node, leading);
@@ -111,7 +111,7 @@ export class CommentGenerator {
     /**
      * @deprecated
      */
-    getCommentBlock(descriptor: legacy_framework.AnyDescriptorProto, appendTrailingComments = false): string {
+    legacy_getCommentBlock(descriptor: legacy_framework.AnyDescriptorProto, appendTrailingComments = false): string {
         const source = this.registry.sourceCodeComments(descriptor);
 
         // start with leading block
@@ -143,7 +143,7 @@ export class CommentGenerator {
      * Returns a block of source comments (no leading detached!),
      * with @generated tags and @deprecated tag (if applicable).
      */
-    getCommentBlock2(descriptor: AnyDesc, appendTrailingComments = false): string {
+    getCommentBlock(descriptor: AnyDesc, appendTrailingComments = false): string {
         if (descriptor.kind == "file") {
             return "";
         }

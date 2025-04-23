@@ -67,7 +67,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
             if (sig.length > 0) {
                 const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
                 assert(methodDescriptor);
-                this.comments.addCommentsForDescriptor(sig[0], methodDescriptor, 'appendToLeadingBlock');
+                this.comments.legacy_addCommentsForDescriptor(sig[0], methodDescriptor, 'appendToLeadingBlock');
             }
 
             signatures.push(...sig);
@@ -80,7 +80,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
         );
 
         // add to our file
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.legacy_addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         source.addStatement(statement);
 
         return statement;
@@ -225,7 +225,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
                 const declaration = this.createMethod(source, mi);
                 const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
                 assert(methodDescriptor);
-                this.comments.addCommentsForDescriptor(declaration, methodDescriptor, 'appendToLeadingBlock');
+                this.comments.legacy_addCommentsForDescriptor(declaration, methodDescriptor, 'appendToLeadingBlock');
                 return declaration;
             })
 
@@ -247,7 +247,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
         );
 
         source.addStatement(statement);
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.legacy_addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         return statement;
     }
 
