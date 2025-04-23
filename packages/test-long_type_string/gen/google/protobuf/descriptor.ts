@@ -2551,7 +2551,7 @@ class ExtensionRangeOptions$Type extends MessageType<ExtensionRangeOptions> {
                 case /* optional google.protobuf.FeatureSet features */ 50:
                     message.features = FeatureSet.internalBinaryRead(reader, reader.uint32(), options, message.features);
                     break;
-                case /* optional google.protobuf.ExtensionRangeOptions.VerificationState verification */ 3:
+                case /* optional google.protobuf.ExtensionRangeOptions.VerificationState verification = 3 [default = UNVERIFIED] */ 3:
                     message.verification = reader.int32();
                     break;
                 default:
@@ -2569,7 +2569,7 @@ class ExtensionRangeOptions$Type extends MessageType<ExtensionRangeOptions> {
         /* repeated google.protobuf.ExtensionRangeOptions.Declaration declaration = 2; */
         for (let i = 0; i < message.declaration.length; i++)
             ExtensionRangeOptions_Declaration.internalBinaryWrite(message.declaration[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        /* optional google.protobuf.ExtensionRangeOptions.VerificationState verification = 3; */
+        /* optional google.protobuf.ExtensionRangeOptions.VerificationState verification = 3 [default = UNVERIFIED]; */
         if (message.verification !== undefined)
             writer.tag(3, WireType.Varint).int32(message.verification);
         /* optional google.protobuf.FeatureSet features = 50; */
@@ -3117,10 +3117,10 @@ class MethodDescriptorProto$Type extends MessageType<MethodDescriptorProto> {
                 case /* optional google.protobuf.MethodOptions options */ 4:
                     message.options = MethodOptions.internalBinaryRead(reader, reader.uint32(), options, message.options);
                     break;
-                case /* optional bool client_streaming */ 5:
+                case /* optional bool client_streaming = 5 [default = false] */ 5:
                     message.clientStreaming = reader.bool();
                     break;
-                case /* optional bool server_streaming */ 6:
+                case /* optional bool server_streaming = 6 [default = false] */ 6:
                     message.serverStreaming = reader.bool();
                     break;
                 default:
@@ -3147,10 +3147,10 @@ class MethodDescriptorProto$Type extends MessageType<MethodDescriptorProto> {
         /* optional google.protobuf.MethodOptions options = 4; */
         if (message.options)
             MethodOptions.internalBinaryWrite(message.options, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
-        /* optional bool client_streaming = 5; */
+        /* optional bool client_streaming = 5 [default = false]; */
         if (message.clientStreaming !== undefined)
             writer.tag(5, WireType.Varint).bool(message.clientStreaming);
-        /* optional bool server_streaming = 6; */
+        /* optional bool server_streaming = 6 [default = false]; */
         if (message.serverStreaming !== undefined)
             writer.tag(6, WireType.Varint).bool(message.serverStreaming);
         let u = options.writeUnknownFields;
@@ -3208,34 +3208,34 @@ class FileOptions$Type extends MessageType<FileOptions> {
                 case /* optional string java_outer_classname */ 8:
                     message.javaOuterClassname = reader.string();
                     break;
-                case /* optional bool java_multiple_files */ 10:
+                case /* optional bool java_multiple_files = 10 [default = false] */ 10:
                     message.javaMultipleFiles = reader.bool();
                     break;
-                case /* optional bool java_generate_equals_and_hash = 20 [deprecated = true];*/ 20:
+                case /* optional bool java_generate_equals_and_hash = 20 [deprecated = true] */ 20:
                     message.javaGenerateEqualsAndHash = reader.bool();
                     break;
-                case /* optional bool java_string_check_utf8 */ 27:
+                case /* optional bool java_string_check_utf8 = 27 [default = false] */ 27:
                     message.javaStringCheckUtf8 = reader.bool();
                     break;
-                case /* optional google.protobuf.FileOptions.OptimizeMode optimize_for */ 9:
+                case /* optional google.protobuf.FileOptions.OptimizeMode optimize_for = 9 [default = SPEED] */ 9:
                     message.optimizeFor = reader.int32();
                     break;
                 case /* optional string go_package */ 11:
                     message.goPackage = reader.string();
                     break;
-                case /* optional bool cc_generic_services */ 16:
+                case /* optional bool cc_generic_services = 16 [default = false] */ 16:
                     message.ccGenericServices = reader.bool();
                     break;
-                case /* optional bool java_generic_services */ 17:
+                case /* optional bool java_generic_services = 17 [default = false] */ 17:
                     message.javaGenericServices = reader.bool();
                     break;
-                case /* optional bool py_generic_services */ 18:
+                case /* optional bool py_generic_services = 18 [default = false] */ 18:
                     message.pyGenericServices = reader.bool();
                     break;
-                case /* optional bool deprecated */ 23:
+                case /* optional bool deprecated = 23 [default = false] */ 23:
                     message.deprecated = reader.bool();
                     break;
-                case /* optional bool cc_enable_arenas */ 31:
+                case /* optional bool cc_enable_arenas = 31 [default = true] */ 31:
                     message.ccEnableArenas = reader.bool();
                     break;
                 case /* optional string objc_class_prefix */ 36:
@@ -3283,34 +3283,34 @@ class FileOptions$Type extends MessageType<FileOptions> {
         /* optional string java_outer_classname = 8; */
         if (message.javaOuterClassname !== undefined)
             writer.tag(8, WireType.LengthDelimited).string(message.javaOuterClassname);
-        /* optional google.protobuf.FileOptions.OptimizeMode optimize_for = 9; */
+        /* optional google.protobuf.FileOptions.OptimizeMode optimize_for = 9 [default = SPEED]; */
         if (message.optimizeFor !== undefined)
             writer.tag(9, WireType.Varint).int32(message.optimizeFor);
-        /* optional bool java_multiple_files = 10; */
+        /* optional bool java_multiple_files = 10 [default = false]; */
         if (message.javaMultipleFiles !== undefined)
             writer.tag(10, WireType.Varint).bool(message.javaMultipleFiles);
         /* optional string go_package = 11; */
         if (message.goPackage !== undefined)
             writer.tag(11, WireType.LengthDelimited).string(message.goPackage);
-        /* optional bool cc_generic_services = 16; */
+        /* optional bool cc_generic_services = 16 [default = false]; */
         if (message.ccGenericServices !== undefined)
             writer.tag(16, WireType.Varint).bool(message.ccGenericServices);
-        /* optional bool java_generic_services = 17; */
+        /* optional bool java_generic_services = 17 [default = false]; */
         if (message.javaGenericServices !== undefined)
             writer.tag(17, WireType.Varint).bool(message.javaGenericServices);
-        /* optional bool py_generic_services = 18; */
+        /* optional bool py_generic_services = 18 [default = false]; */
         if (message.pyGenericServices !== undefined)
             writer.tag(18, WireType.Varint).bool(message.pyGenericServices);
         /* optional bool java_generate_equals_and_hash = 20 [deprecated = true]; */
         if (message.javaGenerateEqualsAndHash !== undefined)
             writer.tag(20, WireType.Varint).bool(message.javaGenerateEqualsAndHash);
-        /* optional bool deprecated = 23; */
+        /* optional bool deprecated = 23 [default = false]; */
         if (message.deprecated !== undefined)
             writer.tag(23, WireType.Varint).bool(message.deprecated);
-        /* optional bool java_string_check_utf8 = 27; */
+        /* optional bool java_string_check_utf8 = 27 [default = false]; */
         if (message.javaStringCheckUtf8 !== undefined)
             writer.tag(27, WireType.Varint).bool(message.javaStringCheckUtf8);
-        /* optional bool cc_enable_arenas = 31; */
+        /* optional bool cc_enable_arenas = 31 [default = true]; */
         if (message.ccEnableArenas !== undefined)
             writer.tag(31, WireType.Varint).bool(message.ccEnableArenas);
         /* optional string objc_class_prefix = 36; */
@@ -3375,19 +3375,19 @@ class MessageOptions$Type extends MessageType<MessageOptions> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* optional bool message_set_wire_format */ 1:
+                case /* optional bool message_set_wire_format = 1 [default = false] */ 1:
                     message.messageSetWireFormat = reader.bool();
                     break;
-                case /* optional bool no_standard_descriptor_accessor */ 2:
+                case /* optional bool no_standard_descriptor_accessor = 2 [default = false] */ 2:
                     message.noStandardDescriptorAccessor = reader.bool();
                     break;
-                case /* optional bool deprecated */ 3:
+                case /* optional bool deprecated = 3 [default = false] */ 3:
                     message.deprecated = reader.bool();
                     break;
                 case /* optional bool map_entry */ 7:
                     message.mapEntry = reader.bool();
                     break;
-                case /* optional bool deprecated_legacy_json_field_conflicts = 11 [deprecated = true];*/ 11:
+                case /* optional bool deprecated_legacy_json_field_conflicts = 11 [deprecated = true] */ 11:
                     message.deprecatedLegacyJsonFieldConflicts = reader.bool();
                     break;
                 case /* optional google.protobuf.FeatureSet features */ 12:
@@ -3408,13 +3408,13 @@ class MessageOptions$Type extends MessageType<MessageOptions> {
         return message;
     }
     internalBinaryWrite(message: MessageOptions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* optional bool message_set_wire_format = 1; */
+        /* optional bool message_set_wire_format = 1 [default = false]; */
         if (message.messageSetWireFormat !== undefined)
             writer.tag(1, WireType.Varint).bool(message.messageSetWireFormat);
-        /* optional bool no_standard_descriptor_accessor = 2; */
+        /* optional bool no_standard_descriptor_accessor = 2 [default = false]; */
         if (message.noStandardDescriptorAccessor !== undefined)
             writer.tag(2, WireType.Varint).bool(message.noStandardDescriptorAccessor);
-        /* optional bool deprecated = 3; */
+        /* optional bool deprecated = 3 [default = false]; */
         if (message.deprecated !== undefined)
             writer.tag(3, WireType.Varint).bool(message.deprecated);
         /* optional bool map_entry = 7; */
@@ -3473,28 +3473,28 @@ class FieldOptions$Type extends MessageType<FieldOptions> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* optional google.protobuf.FieldOptions.CType ctype */ 1:
+                case /* optional google.protobuf.FieldOptions.CType ctype = 1 [default = STRING] */ 1:
                     message.ctype = reader.int32();
                     break;
                 case /* optional bool packed */ 2:
                     message.packed = reader.bool();
                     break;
-                case /* optional google.protobuf.FieldOptions.JSType jstype */ 6:
+                case /* optional google.protobuf.FieldOptions.JSType jstype = 6 [default = JS_NORMAL] */ 6:
                     message.jstype = reader.int32();
                     break;
-                case /* optional bool lazy */ 5:
+                case /* optional bool lazy = 5 [default = false] */ 5:
                     message.lazy = reader.bool();
                     break;
-                case /* optional bool unverified_lazy */ 15:
+                case /* optional bool unverified_lazy = 15 [default = false] */ 15:
                     message.unverifiedLazy = reader.bool();
                     break;
-                case /* optional bool deprecated */ 3:
+                case /* optional bool deprecated = 3 [default = false] */ 3:
                     message.deprecated = reader.bool();
                     break;
-                case /* optional bool weak */ 10:
+                case /* optional bool weak = 10 [default = false] */ 10:
                     message.weak = reader.bool();
                     break;
-                case /* optional bool debug_redact */ 16:
+                case /* optional bool debug_redact = 16 [default = false] */ 16:
                     message.debugRedact = reader.bool();
                     break;
                 case /* optional google.protobuf.FieldOptions.OptionRetention retention */ 17:
@@ -3531,28 +3531,28 @@ class FieldOptions$Type extends MessageType<FieldOptions> {
         return message;
     }
     internalBinaryWrite(message: FieldOptions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* optional google.protobuf.FieldOptions.CType ctype = 1; */
+        /* optional google.protobuf.FieldOptions.CType ctype = 1 [default = STRING]; */
         if (message.ctype !== undefined)
             writer.tag(1, WireType.Varint).int32(message.ctype);
         /* optional bool packed = 2; */
         if (message.packed !== undefined)
             writer.tag(2, WireType.Varint).bool(message.packed);
-        /* optional bool deprecated = 3; */
+        /* optional bool deprecated = 3 [default = false]; */
         if (message.deprecated !== undefined)
             writer.tag(3, WireType.Varint).bool(message.deprecated);
-        /* optional bool lazy = 5; */
+        /* optional bool lazy = 5 [default = false]; */
         if (message.lazy !== undefined)
             writer.tag(5, WireType.Varint).bool(message.lazy);
-        /* optional google.protobuf.FieldOptions.JSType jstype = 6; */
+        /* optional google.protobuf.FieldOptions.JSType jstype = 6 [default = JS_NORMAL]; */
         if (message.jstype !== undefined)
             writer.tag(6, WireType.Varint).int32(message.jstype);
-        /* optional bool weak = 10; */
+        /* optional bool weak = 10 [default = false]; */
         if (message.weak !== undefined)
             writer.tag(10, WireType.Varint).bool(message.weak);
-        /* optional bool unverified_lazy = 15; */
+        /* optional bool unverified_lazy = 15 [default = false]; */
         if (message.unverifiedLazy !== undefined)
             writer.tag(15, WireType.Varint).bool(message.unverifiedLazy);
-        /* optional bool debug_redact = 16; */
+        /* optional bool debug_redact = 16 [default = false]; */
         if (message.debugRedact !== undefined)
             writer.tag(16, WireType.Varint).bool(message.debugRedact);
         /* optional google.protobuf.FieldOptions.OptionRetention retention = 17; */
@@ -3783,10 +3783,10 @@ class EnumOptions$Type extends MessageType<EnumOptions> {
                 case /* optional bool allow_alias */ 2:
                     message.allowAlias = reader.bool();
                     break;
-                case /* optional bool deprecated */ 3:
+                case /* optional bool deprecated = 3 [default = false] */ 3:
                     message.deprecated = reader.bool();
                     break;
-                case /* optional bool deprecated_legacy_json_field_conflicts = 6 [deprecated = true];*/ 6:
+                case /* optional bool deprecated_legacy_json_field_conflicts = 6 [deprecated = true] */ 6:
                     message.deprecatedLegacyJsonFieldConflicts = reader.bool();
                     break;
                 case /* optional google.protobuf.FeatureSet features */ 7:
@@ -3810,7 +3810,7 @@ class EnumOptions$Type extends MessageType<EnumOptions> {
         /* optional bool allow_alias = 2; */
         if (message.allowAlias !== undefined)
             writer.tag(2, WireType.Varint).bool(message.allowAlias);
-        /* optional bool deprecated = 3; */
+        /* optional bool deprecated = 3 [default = false]; */
         if (message.deprecated !== undefined)
             writer.tag(3, WireType.Varint).bool(message.deprecated);
         /* optional bool deprecated_legacy_json_field_conflicts = 6 [deprecated = true]; */
@@ -3855,13 +3855,13 @@ class EnumValueOptions$Type extends MessageType<EnumValueOptions> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* optional bool deprecated */ 1:
+                case /* optional bool deprecated = 1 [default = false] */ 1:
                     message.deprecated = reader.bool();
                     break;
                 case /* optional google.protobuf.FeatureSet features */ 2:
                     message.features = FeatureSet.internalBinaryRead(reader, reader.uint32(), options, message.features);
                     break;
-                case /* optional bool debug_redact */ 3:
+                case /* optional bool debug_redact = 3 [default = false] */ 3:
                     message.debugRedact = reader.bool();
                     break;
                 case /* optional google.protobuf.FieldOptions.FeatureSupport feature_support */ 4:
@@ -3882,13 +3882,13 @@ class EnumValueOptions$Type extends MessageType<EnumValueOptions> {
         return message;
     }
     internalBinaryWrite(message: EnumValueOptions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* optional bool deprecated = 1; */
+        /* optional bool deprecated = 1 [default = false]; */
         if (message.deprecated !== undefined)
             writer.tag(1, WireType.Varint).bool(message.deprecated);
         /* optional google.protobuf.FeatureSet features = 2; */
         if (message.features)
             FeatureSet.internalBinaryWrite(message.features, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        /* optional bool debug_redact = 3; */
+        /* optional bool debug_redact = 3 [default = false]; */
         if (message.debugRedact !== undefined)
             writer.tag(3, WireType.Varint).bool(message.debugRedact);
         /* optional google.protobuf.FieldOptions.FeatureSupport feature_support = 4; */
@@ -3931,7 +3931,7 @@ class ServiceOptions$Type extends MessageType<ServiceOptions> {
                 case /* optional google.protobuf.FeatureSet features */ 34:
                     message.features = FeatureSet.internalBinaryRead(reader, reader.uint32(), options, message.features);
                     break;
-                case /* optional bool deprecated */ 33:
+                case /* optional bool deprecated = 33 [default = false] */ 33:
                     message.deprecated = reader.bool();
                     break;
                 case /* repeated google.protobuf.UninterpretedOption uninterpreted_option */ 999:
@@ -3949,7 +3949,7 @@ class ServiceOptions$Type extends MessageType<ServiceOptions> {
         return message;
     }
     internalBinaryWrite(message: ServiceOptions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* optional bool deprecated = 33; */
+        /* optional bool deprecated = 33 [default = false]; */
         if (message.deprecated !== undefined)
             writer.tag(33, WireType.Varint).bool(message.deprecated);
         /* optional google.protobuf.FeatureSet features = 34; */
@@ -3990,10 +3990,10 @@ class MethodOptions$Type extends MessageType<MethodOptions> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* optional bool deprecated */ 33:
+                case /* optional bool deprecated = 33 [default = false] */ 33:
                     message.deprecated = reader.bool();
                     break;
-                case /* optional google.protobuf.MethodOptions.IdempotencyLevel idempotency_level */ 34:
+                case /* optional google.protobuf.MethodOptions.IdempotencyLevel idempotency_level = 34 [default = IDEMPOTENCY_UNKNOWN] */ 34:
                     message.idempotencyLevel = reader.int32();
                     break;
                 case /* optional google.protobuf.FeatureSet features */ 35:
@@ -4014,10 +4014,10 @@ class MethodOptions$Type extends MessageType<MethodOptions> {
         return message;
     }
     internalBinaryWrite(message: MethodOptions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* optional bool deprecated = 33; */
+        /* optional bool deprecated = 33 [default = false]; */
         if (message.deprecated !== undefined)
             writer.tag(33, WireType.Varint).bool(message.deprecated);
-        /* optional google.protobuf.MethodOptions.IdempotencyLevel idempotency_level = 34; */
+        /* optional google.protobuf.MethodOptions.IdempotencyLevel idempotency_level = 34 [default = IDEMPOTENCY_UNKNOWN]; */
         if (message.idempotencyLevel !== undefined)
             writer.tag(34, WireType.Varint).int32(message.idempotencyLevel);
         /* optional google.protobuf.FeatureSet features = 35; */
@@ -4146,10 +4146,10 @@ class UninterpretedOption_NamePart$Type extends MessageType<UninterpretedOption_
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string name_part */ 1:
+                case /* required string name_part */ 1:
                     message.namePart = reader.string();
                     break;
-                case /* bool is_extension */ 2:
+                case /* required bool is_extension */ 2:
                     message.isExtension = reader.bool();
                     break;
                 default:
@@ -4164,10 +4164,10 @@ class UninterpretedOption_NamePart$Type extends MessageType<UninterpretedOption_
         return message;
     }
     internalBinaryWrite(message: UninterpretedOption_NamePart, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name_part = 1; */
+        /* required string name_part = 1; */
         if (message.namePart !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.namePart);
-        /* bool is_extension = 2; */
+        /* required bool is_extension = 2; */
         if (message.isExtension !== false)
             writer.tag(2, WireType.Varint).bool(message.isExtension);
         let u = options.writeUnknownFields;
@@ -4454,14 +4454,14 @@ class SourceCodeInfo_Location$Type extends MessageType<SourceCodeInfo_Location> 
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated int32 path = 1 [packed = true];*/ 1:
+                case /* repeated int32 path = 1 [packed = true] */ 1:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.path.push(reader.int32());
                     else
                         message.path.push(reader.int32());
                     break;
-                case /* repeated int32 span = 2 [packed = true];*/ 2:
+                case /* repeated int32 span = 2 [packed = true] */ 2:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.span.push(reader.int32());
@@ -4592,7 +4592,7 @@ class GeneratedCodeInfo_Annotation$Type extends MessageType<GeneratedCodeInfo_An
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated int32 path = 1 [packed = true];*/ 1:
+                case /* repeated int32 path = 1 [packed = true] */ 1:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.path.push(reader.int32());

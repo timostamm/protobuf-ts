@@ -143,7 +143,7 @@ class DeprecatedFieldMessage$Type extends MessageType<DeprecatedFieldMessage> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string deprecated_field = 1 [deprecated = true];*/ 1:
+                case /* string deprecated_field = 1 [deprecated = true] */ 1:
                     message.deprecatedField = reader.string();
                     break;
                 case /* string current_field */ 2:

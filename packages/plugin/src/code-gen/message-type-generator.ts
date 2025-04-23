@@ -21,7 +21,7 @@ import {DescMessage} from "@bufbuild/protobuf";
 
 
 export interface CustomMethodGenerator {
-    make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[];
+    make(source: TypescriptFile, descMessage: DescMessage): ts.MethodDeclaration[];
 }
 
 
@@ -52,9 +52,9 @@ export class MessageTypeGenerator {
         this.fieldInfoGenerator = new FieldInfoGenerator(this.legacyRegistry, this.imports, this.options);
         this.wellKnown = new WellKnownTypes(this.legacyRegistry, this.imports, this.options);
         this.googleTypes = new GoogleTypes(this.legacyRegistry, this.imports, this.options);
-        this.typeMethodCreate = new Create(this.legacyRegistry, this.imports, this.legacyInterpreter, this.options);
-        this.typeMethodInternalBinaryRead = new InternalBinaryRead(this.legacyRegistry, this.imports, this.legacyInterpreter, this.options);
-        this.typeMethodInternalBinaryWrite = new InternalBinaryWrite(this.legacyRegistry, this.imports, this.legacyInterpreter, this.options);
+        this.typeMethodCreate = new Create(this.legacyRegistry, this.imports, this.interpreter, this.options);
+        this.typeMethodInternalBinaryRead = new InternalBinaryRead(this.legacyRegistry, this.imports, this.interpreter, this.options);
+        this.typeMethodInternalBinaryWrite = new InternalBinaryWrite(this.legacyRegistry, this.imports, this.interpreter, this.options);
     }
 
 
@@ -120,15 +120,15 @@ export class MessageTypeGenerator {
         );
 
         // "MyMessage$Type" members for supported standard types
-        classDecMembers.push(...this.wellKnown.make(source, legacyDescriptor));
-        classDecMembers.push(...this.googleTypes.make(source, legacyDescriptor));
+        classDecMembers.push(...this.wellKnown.make(source, descMessage));
+        classDecMembers.push(...this.googleTypes.make(source, descMessage));
 
         // "MyMessage$Type" members for optimized binary format
         if (optimizeFor === OptimizeMode.SPEED) {
             classDecMembers.push(
-                ...this.typeMethodCreate.make(source, legacyDescriptor),
-                ...this.typeMethodInternalBinaryRead.make(source, legacyDescriptor),
-                ...this.typeMethodInternalBinaryWrite.make(source, legacyDescriptor),
+                ...this.typeMethodCreate.make(source, descMessage),
+                ...this.typeMethodInternalBinaryRead.make(source, descMessage),
+                ...this.typeMethodInternalBinaryWrite.make(source, descMessage),
             );
         }
 

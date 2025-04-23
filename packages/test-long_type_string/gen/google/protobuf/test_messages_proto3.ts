@@ -1336,196 +1336,196 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case /* repeated string repeated_cord */ 55:
                     message.repeatedCord.push(reader.string());
                     break;
-                case /* repeated int32 packed_int32 = 75 [packed = true];*/ 75:
+                case /* repeated int32 packed_int32 = 75 [packed = true] */ 75:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt32.push(reader.int32());
                     else
                         message.packedInt32.push(reader.int32());
                     break;
-                case /* repeated int64 packed_int64 = 76 [packed = true];*/ 76:
+                case /* repeated int64 packed_int64 = 76 [packed = true] */ 76:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt64.push(reader.int64().toString());
                     else
                         message.packedInt64.push(reader.int64().toString());
                     break;
-                case /* repeated uint32 packed_uint32 = 77 [packed = true];*/ 77:
+                case /* repeated uint32 packed_uint32 = 77 [packed = true] */ 77:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint32.push(reader.uint32());
                     else
                         message.packedUint32.push(reader.uint32());
                     break;
-                case /* repeated uint64 packed_uint64 = 78 [packed = true];*/ 78:
+                case /* repeated uint64 packed_uint64 = 78 [packed = true] */ 78:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint64.push(reader.uint64().toString());
                     else
                         message.packedUint64.push(reader.uint64().toString());
                     break;
-                case /* repeated sint32 packed_sint32 = 79 [packed = true];*/ 79:
+                case /* repeated sint32 packed_sint32 = 79 [packed = true] */ 79:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSint32.push(reader.sint32());
                     else
                         message.packedSint32.push(reader.sint32());
                     break;
-                case /* repeated sint64 packed_sint64 = 80 [packed = true];*/ 80:
+                case /* repeated sint64 packed_sint64 = 80 [packed = true] */ 80:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSint64.push(reader.sint64().toString());
                     else
                         message.packedSint64.push(reader.sint64().toString());
                     break;
-                case /* repeated fixed32 packed_fixed32 = 81 [packed = true];*/ 81:
+                case /* repeated fixed32 packed_fixed32 = 81 [packed = true] */ 81:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFixed32.push(reader.fixed32());
                     else
                         message.packedFixed32.push(reader.fixed32());
                     break;
-                case /* repeated fixed64 packed_fixed64 = 82 [packed = true];*/ 82:
+                case /* repeated fixed64 packed_fixed64 = 82 [packed = true] */ 82:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFixed64.push(reader.fixed64().toString());
                     else
                         message.packedFixed64.push(reader.fixed64().toString());
                     break;
-                case /* repeated sfixed32 packed_sfixed32 = 83 [packed = true];*/ 83:
+                case /* repeated sfixed32 packed_sfixed32 = 83 [packed = true] */ 83:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSfixed32.push(reader.sfixed32());
                     else
                         message.packedSfixed32.push(reader.sfixed32());
                     break;
-                case /* repeated sfixed64 packed_sfixed64 = 84 [packed = true];*/ 84:
+                case /* repeated sfixed64 packed_sfixed64 = 84 [packed = true] */ 84:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSfixed64.push(reader.sfixed64().toString());
                     else
                         message.packedSfixed64.push(reader.sfixed64().toString());
                     break;
-                case /* repeated float packed_float = 85 [packed = true];*/ 85:
+                case /* repeated float packed_float = 85 [packed = true] */ 85:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFloat.push(reader.float());
                     else
                         message.packedFloat.push(reader.float());
                     break;
-                case /* repeated double packed_double = 86 [packed = true];*/ 86:
+                case /* repeated double packed_double = 86 [packed = true] */ 86:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedDouble.push(reader.double());
                     else
                         message.packedDouble.push(reader.double());
                     break;
-                case /* repeated bool packed_bool = 87 [packed = true];*/ 87:
+                case /* repeated bool packed_bool = 87 [packed = true] */ 87:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedBool.push(reader.bool());
                     else
                         message.packedBool.push(reader.bool());
                     break;
-                case /* repeated protobuf_test_messages.proto3.TestAllTypesProto3.NestedEnum packed_nested_enum = 88 [packed = true];*/ 88:
+                case /* repeated protobuf_test_messages.proto3.TestAllTypesProto3.NestedEnum packed_nested_enum = 88 [packed = true] */ 88:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedNestedEnum.push(reader.int32());
                     else
                         message.packedNestedEnum.push(reader.int32());
                     break;
-                case /* repeated int32 unpacked_int32 = 89 [packed = false];*/ 89:
+                case /* repeated int32 unpacked_int32 = 89 [packed = false] */ 89:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedInt32.push(reader.int32());
                     else
                         message.unpackedInt32.push(reader.int32());
                     break;
-                case /* repeated int64 unpacked_int64 = 90 [packed = false];*/ 90:
+                case /* repeated int64 unpacked_int64 = 90 [packed = false] */ 90:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedInt64.push(reader.int64().toString());
                     else
                         message.unpackedInt64.push(reader.int64().toString());
                     break;
-                case /* repeated uint32 unpacked_uint32 = 91 [packed = false];*/ 91:
+                case /* repeated uint32 unpacked_uint32 = 91 [packed = false] */ 91:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedUint32.push(reader.uint32());
                     else
                         message.unpackedUint32.push(reader.uint32());
                     break;
-                case /* repeated uint64 unpacked_uint64 = 92 [packed = false];*/ 92:
+                case /* repeated uint64 unpacked_uint64 = 92 [packed = false] */ 92:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedUint64.push(reader.uint64().toString());
                     else
                         message.unpackedUint64.push(reader.uint64().toString());
                     break;
-                case /* repeated sint32 unpacked_sint32 = 93 [packed = false];*/ 93:
+                case /* repeated sint32 unpacked_sint32 = 93 [packed = false] */ 93:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedSint32.push(reader.sint32());
                     else
                         message.unpackedSint32.push(reader.sint32());
                     break;
-                case /* repeated sint64 unpacked_sint64 = 94 [packed = false];*/ 94:
+                case /* repeated sint64 unpacked_sint64 = 94 [packed = false] */ 94:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedSint64.push(reader.sint64().toString());
                     else
                         message.unpackedSint64.push(reader.sint64().toString());
                     break;
-                case /* repeated fixed32 unpacked_fixed32 = 95 [packed = false];*/ 95:
+                case /* repeated fixed32 unpacked_fixed32 = 95 [packed = false] */ 95:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedFixed32.push(reader.fixed32());
                     else
                         message.unpackedFixed32.push(reader.fixed32());
                     break;
-                case /* repeated fixed64 unpacked_fixed64 = 96 [packed = false];*/ 96:
+                case /* repeated fixed64 unpacked_fixed64 = 96 [packed = false] */ 96:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedFixed64.push(reader.fixed64().toString());
                     else
                         message.unpackedFixed64.push(reader.fixed64().toString());
                     break;
-                case /* repeated sfixed32 unpacked_sfixed32 = 97 [packed = false];*/ 97:
+                case /* repeated sfixed32 unpacked_sfixed32 = 97 [packed = false] */ 97:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedSfixed32.push(reader.sfixed32());
                     else
                         message.unpackedSfixed32.push(reader.sfixed32());
                     break;
-                case /* repeated sfixed64 unpacked_sfixed64 = 98 [packed = false];*/ 98:
+                case /* repeated sfixed64 unpacked_sfixed64 = 98 [packed = false] */ 98:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedSfixed64.push(reader.sfixed64().toString());
                     else
                         message.unpackedSfixed64.push(reader.sfixed64().toString());
                     break;
-                case /* repeated float unpacked_float = 99 [packed = false];*/ 99:
+                case /* repeated float unpacked_float = 99 [packed = false] */ 99:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedFloat.push(reader.float());
                     else
                         message.unpackedFloat.push(reader.float());
                     break;
-                case /* repeated double unpacked_double = 100 [packed = false];*/ 100:
+                case /* repeated double unpacked_double = 100 [packed = false] */ 100:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedDouble.push(reader.double());
                     else
                         message.unpackedDouble.push(reader.double());
                     break;
-                case /* repeated bool unpacked_bool = 101 [packed = false];*/ 101:
+                case /* repeated bool unpacked_bool = 101 [packed = false] */ 101:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedBool.push(reader.bool());
                     else
                         message.unpackedBool.push(reader.bool());
                     break;
-                case /* repeated protobuf_test_messages.proto3.TestAllTypesProto3.NestedEnum unpacked_nested_enum = 102 [packed = false];*/ 102:
+                case /* repeated protobuf_test_messages.proto3.TestAllTypesProto3.NestedEnum unpacked_nested_enum = 102 [packed = false] */ 102:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedNestedEnum.push(reader.int32());
@@ -1757,7 +1757,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case /* int32 field__name4_ */ 404:
                     message.fieldName4 = reader.int32();
                     break;
-                case /* int32 field0name5 = 405 [json_name = "field0name5"];*/ 405:
+                case /* int32 field0name5 */ 405:
                     message.field0Name5 = reader.int32();
                     break;
                 case /* int32 field_0_name6 */ 406:
@@ -1766,19 +1766,19 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case /* int32 fieldName7 */ 407:
                     message.fieldName7 = reader.int32();
                     break;
-                case /* int32 FieldName8 = 408 [json_name = "FieldName8"];*/ 408:
+                case /* int32 FieldName8 */ 408:
                     message.fieldName8 = reader.int32();
                     break;
                 case /* int32 field_Name9 */ 409:
                     message.fieldName9 = reader.int32();
                     break;
-                case /* int32 Field_Name10 = 410 [json_name = "FieldName10"];*/ 410:
+                case /* int32 Field_Name10 */ 410:
                     message.fieldName10 = reader.int32();
                     break;
-                case /* int32 FIELD_NAME11 = 411 [json_name = "FIELDNAME11"];*/ 411:
+                case /* int32 FIELD_NAME11 */ 411:
                     message.fIELDNAME11 = reader.int32();
                     break;
-                case /* int32 FIELD_name12 = 412 [json_name = "FIELDName12"];*/ 412:
+                case /* int32 FIELD_name12 */ 412:
                     message.fIELDName12 = reader.int32();
                     break;
                 case /* int32 __field_name13 */ 413:
@@ -1796,7 +1796,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case /* int32 field_name17__ */ 417:
                     message.fieldName17 = reader.int32();
                     break;
-                case /* int32 Field_name18__ = 418 [json_name = "FieldName18"];*/ 418:
+                case /* int32 Field_name18__ */ 418:
                     message.fieldName18 = reader.int32();
                     break;
                 default:
@@ -1821,7 +1821,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_int32_int32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_int32_int32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1837,7 +1837,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.int64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_int64_int64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_int64_int64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -1853,7 +1853,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.uint32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_uint32_uint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_uint32_uint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1869,7 +1869,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.uint64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_uint64_uint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_uint64_uint64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -1885,7 +1885,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.sint32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_sint32_sint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_sint32_sint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1901,7 +1901,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.sint64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_sint64_sint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_sint64_sint64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -1917,7 +1917,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.fixed32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_fixed32_fixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_fixed32_fixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1933,7 +1933,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.fixed64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_fixed64_fixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_fixed64_fixed64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -1949,7 +1949,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.sfixed32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_sfixed32_sfixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_sfixed32_sfixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1965,7 +1965,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.sfixed64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_sfixed64_sfixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_sfixed64_sfixed64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -1981,7 +1981,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.float();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_int32_float");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_int32_float");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1997,7 +1997,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.double();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_int32_double");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_int32_double");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -2013,7 +2013,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.bool();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_bool_bool");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_bool_bool");
             }
         }
         map[key ?? "false"] = val ?? false;
@@ -2029,7 +2029,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_string_string");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_string_string");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -2045,7 +2045,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.bytes();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_string_bytes");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_string_bytes");
             }
         }
         map[key ?? ""] = val ?? new Uint8Array(0);
@@ -2061,7 +2061,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = TestAllTypesProto3_NestedMessage.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_string_nested_message");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_string_nested_message");
             }
         }
         map[key ?? ""] = val ?? TestAllTypesProto3_NestedMessage.create();
@@ -2077,7 +2077,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = ForeignMessage.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_string_foreign_message");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_string_foreign_message");
             }
         }
         map[key ?? ""] = val ?? ForeignMessage.create();
@@ -2093,7 +2093,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_string_nested_enum");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_string_nested_enum");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -2109,7 +2109,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto3.TestAllTypesProto3.map_string_foreign_enum");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto3.TestAllTypesProto3.map_string_foreign_enum");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -2650,7 +2650,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
         /* int32 field__name4_ = 404; */
         if (message.fieldName4 !== 0)
             writer.tag(404, WireType.Varint).int32(message.fieldName4);
-        /* int32 field0name5 = 405 [json_name = "field0name5"]; */
+        /* int32 field0name5 = 405; */
         if (message.field0Name5 !== 0)
             writer.tag(405, WireType.Varint).int32(message.field0Name5);
         /* int32 field_0_name6 = 406; */
@@ -2659,19 +2659,19 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
         /* int32 fieldName7 = 407; */
         if (message.fieldName7 !== 0)
             writer.tag(407, WireType.Varint).int32(message.fieldName7);
-        /* int32 FieldName8 = 408 [json_name = "FieldName8"]; */
+        /* int32 FieldName8 = 408; */
         if (message.fieldName8 !== 0)
             writer.tag(408, WireType.Varint).int32(message.fieldName8);
         /* int32 field_Name9 = 409; */
         if (message.fieldName9 !== 0)
             writer.tag(409, WireType.Varint).int32(message.fieldName9);
-        /* int32 Field_Name10 = 410 [json_name = "FieldName10"]; */
+        /* int32 Field_Name10 = 410; */
         if (message.fieldName10 !== 0)
             writer.tag(410, WireType.Varint).int32(message.fieldName10);
-        /* int32 FIELD_NAME11 = 411 [json_name = "FIELDNAME11"]; */
+        /* int32 FIELD_NAME11 = 411; */
         if (message.fIELDNAME11 !== 0)
             writer.tag(411, WireType.Varint).int32(message.fIELDNAME11);
-        /* int32 FIELD_name12 = 412 [json_name = "FIELDName12"]; */
+        /* int32 FIELD_name12 = 412; */
         if (message.fIELDName12 !== 0)
             writer.tag(412, WireType.Varint).int32(message.fIELDName12);
         /* int32 __field_name13 = 413; */
@@ -2689,7 +2689,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
         /* int32 field_name17__ = 417; */
         if (message.fieldName17 !== 0)
             writer.tag(417, WireType.Varint).int32(message.fieldName17);
-        /* int32 Field_name18__ = 418 [json_name = "FieldName18"]; */
+        /* int32 Field_name18__ = 418; */
         if (message.fieldName18 !== 0)
             writer.tag(418, WireType.Varint).int32(message.fieldName18);
         let u = options.writeUnknownFields;

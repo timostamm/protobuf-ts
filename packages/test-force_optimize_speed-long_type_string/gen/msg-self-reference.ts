@@ -82,7 +82,7 @@ class SelfReferencingMessage$Type extends MessageType<SelfReferencingMessage> {
                 case 2:
                     val = SelfReferencingMessage.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.SelfReferencingMessage.self_map");
+                default: throw new globalThis.Error("unknown map entry field for spec.SelfReferencingMessage.self_map");
             }
         }
         map[key ?? ""] = val ?? SelfReferencingMessage.create();

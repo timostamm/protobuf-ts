@@ -143,7 +143,7 @@ class Proto2OptionalsMessage_TestMessage$Type extends MessageType<Proto2Optional
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string field */ 1:
+                case /* required string field */ 1:
                     message.field = reader.string();
                     break;
                 default:
@@ -158,7 +158,7 @@ class Proto2OptionalsMessage_TestMessage$Type extends MessageType<Proto2Optional
         return message;
     }
     internalBinaryWrite(message: Proto2OptionalsMessage_TestMessage, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string field = 1; */
+        /* required string field = 1; */
         if (message.field !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.field);
         let u = options.writeUnknownFields;

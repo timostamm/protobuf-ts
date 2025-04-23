@@ -1,15 +1,15 @@
 import {
     DescriptorProto,
     DescriptorRegistry,
-    FileOptions_OptimizeMode,
     TypescriptFile,
     TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
-import {LongType} from "@protobuf-ts/runtime";
-import {LegacyInterpreter} from "../legacy-interpreter";
+import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
+import {ESInterpreter} from "../es-interpreter";
+import {DescMessage} from "@bufbuild/protobuf";
 
 
 /**
@@ -19,20 +19,20 @@ export class Create implements CustomMethodGenerator {
 
 
     constructor(
-        private readonly registry: DescriptorRegistry,
+        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
-        private readonly interpreter: LegacyInterpreter,
+        private readonly interpreter: ESInterpreter,
         private readonly options: { normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }
 
 
     // create(value?: PartialMessage<ScalarValuesMessage>): ScalarValuesMessage {
-    make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[] {
+    make(source: TypescriptFile, descMessage: DescMessage): ts.MethodDeclaration[] {
         // create(value?: PartialMessage<ScalarValuesMessage>): ScalarValuesMessage {
         let methodDeclaration = this.makeMethod(
             source,
-            descriptor,
+            descMessage,
 
             // const message = globalThis.Object.create(this.messagePrototype);
             this.makeMessageVariable(),
@@ -41,11 +41,11 @@ export class Create implements CustomMethodGenerator {
             // message.repeatedField = [];
             // message.mapField = {};
             // ...
-            ...this.makeMessagePropertyAssignments(source, descriptor),
+            ...this.makeMessagePropertyAssignments(source, descMessage),
 
             // if (value !== undefined)
             //     reflectionMergePartial<ScalarValuesMessage>(message, value, this);
-            this.makeMergeIf(source, descriptor),
+            this.makeMergeIf(source, descMessage),
 
             // return message;
             ts.createReturn(ts.createIdentifier("message"))
@@ -54,9 +54,12 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMethod(source: TypescriptFile, descriptor: DescriptorProto, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+    makeMethod(source: TypescriptFile, descMessage: DescMessage, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
+        assert(DescriptorProto.is(legacyDescriptor));
+
         const
-            MessageInterface = this.imports.type(source, descriptor),
+            MessageInterface = this.imports.type(source, legacyDescriptor),
             PartialMessage = this.imports.name(source,'PartialMessage', this.options.runtimeImportPath, true)
         ;
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("create"), undefined, undefined,
@@ -108,8 +111,8 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMessagePropertyAssignments(source: TypescriptFile, descriptor: DescriptorProto) {
-        let messageType = this.interpreter.getMessageType(descriptor);
+    makeMessagePropertyAssignments(source: TypescriptFile, descMessage: DescMessage) {
+        let messageType = this.interpreter.getMessageType(descMessage);
         let defaultMessage = messageType.create();
         return Object.entries(defaultMessage).map(([key, value]): ts.ExpressionStatement => (
             ts.createExpressionStatement(
@@ -126,8 +129,11 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMergeIf(source: TypescriptFile, descriptor: DescriptorProto) {
-        const MessageInterface = this.imports.type(source, descriptor);
+    makeMergeIf(source: TypescriptFile, descMessage: DescMessage) {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
+        assert(DescriptorProto.is(legacyDescriptor));
+
+        const MessageInterface = this.imports.type(source, legacyDescriptor);
         return ts.createIf(
             ts.createBinary(
                 ts.createIdentifier("value"),

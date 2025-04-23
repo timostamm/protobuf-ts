@@ -643,7 +643,7 @@ class ErrorInfo$Type extends MessageType<ErrorInfo> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field google.rpc.ErrorInfo.metadata");
+                default: throw new globalThis.Error("unknown map entry field for google.rpc.ErrorInfo.metadata");
             }
         }
         map[key ?? ""] = val ?? "";

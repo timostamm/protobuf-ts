@@ -219,7 +219,7 @@ class MessageWithComments$Type extends MessageType<MessageWithComments> {
                 case /* string this_field_has_an_empty_comment */ 4:
                     message.thisFieldHasAnEmptyComment = reader.string();
                     break;
-                case /* string this_field_is_deprecated = 5 [deprecated = true, json_name = "sdf"];*/ 5:
+                case /* string this_field_is_deprecated = 5 [json_name = "sdf", deprecated = true] */ 5:
                     message.thisFieldIsDeprecated = reader.string();
                     break;
                 default:
@@ -246,7 +246,7 @@ class MessageWithComments$Type extends MessageType<MessageWithComments> {
         /* string this_field_has_an_empty_comment = 4; */
         if (message.thisFieldHasAnEmptyComment !== "")
             writer.tag(4, WireType.LengthDelimited).string(message.thisFieldHasAnEmptyComment);
-        /* string this_field_is_deprecated = 5 [deprecated = true, json_name = "sdf"]; */
+        /* string this_field_is_deprecated = 5 [json_name = "sdf", deprecated = true]; */
         if (message.thisFieldIsDeprecated !== "")
             writer.tag(5, WireType.LengthDelimited).string(message.thisFieldIsDeprecated);
         let u = options.writeUnknownFields;

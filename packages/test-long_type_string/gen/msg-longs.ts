@@ -216,16 +216,16 @@ class LongsMessage$Type extends MessageType<LongsMessage> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL];*/ 1:
+                case /* fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL] */ 1:
                     message.fixed64FieldMin = reader.fixed64().toBigInt();
                     break;
-                case /* fixed64 fixed64_field_max = 2 [jstype = JS_NORMAL];*/ 2:
+                case /* fixed64 fixed64_field_max = 2 [jstype = JS_NORMAL] */ 2:
                     message.fixed64FieldMax = reader.fixed64().toBigInt();
                     break;
-                case /* int64 int64_field_min = 3 [jstype = JS_NORMAL];*/ 3:
+                case /* int64 int64_field_min = 3 [jstype = JS_NORMAL] */ 3:
                     message.int64FieldMin = reader.int64().toBigInt();
                     break;
-                case /* int64 int64_field_max = 4 [jstype = JS_NORMAL];*/ 4:
+                case /* int64 int64_field_max = 4 [jstype = JS_NORMAL] */ 4:
                     message.int64FieldMax = reader.int64().toBigInt();
                     break;
                 case /* sfixed64 sfixed64_field_min */ 5:
@@ -246,64 +246,64 @@ class LongsMessage$Type extends MessageType<LongsMessage> {
                 case /* uint64 uint64_field_max */ 10:
                     message.uint64FieldMax = reader.uint64().toString();
                     break;
-                case /* fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING];*/ 11:
+                case /* fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING] */ 11:
                     message.fixed64FieldMinStr = reader.fixed64().toString();
                     break;
-                case /* fixed64 fixed64_field_max_str = 12 [jstype = JS_STRING];*/ 12:
+                case /* fixed64 fixed64_field_max_str = 12 [jstype = JS_STRING] */ 12:
                     message.fixed64FieldMaxStr = reader.fixed64().toString();
                     break;
-                case /* int64 int64_field_min_str = 13 [jstype = JS_STRING];*/ 13:
+                case /* int64 int64_field_min_str = 13 [jstype = JS_STRING] */ 13:
                     message.int64FieldMinStr = reader.int64().toString();
                     break;
-                case /* int64 int64_field_max_str = 14 [jstype = JS_STRING];*/ 14:
+                case /* int64 int64_field_max_str = 14 [jstype = JS_STRING] */ 14:
                     message.int64FieldMaxStr = reader.int64().toString();
                     break;
-                case /* sfixed64 sfixed64_field_min_str = 15 [jstype = JS_STRING];*/ 15:
+                case /* sfixed64 sfixed64_field_min_str = 15 [jstype = JS_STRING] */ 15:
                     message.sfixed64FieldMinStr = reader.sfixed64().toString();
                     break;
-                case /* sfixed64 sfixed64_field_max_str = 16 [jstype = JS_STRING];*/ 16:
+                case /* sfixed64 sfixed64_field_max_str = 16 [jstype = JS_STRING] */ 16:
                     message.sfixed64FieldMaxStr = reader.sfixed64().toString();
                     break;
-                case /* sint64 sint64_field_min_str = 17 [jstype = JS_STRING];*/ 17:
+                case /* sint64 sint64_field_min_str = 17 [jstype = JS_STRING] */ 17:
                     message.sint64FieldMinStr = reader.sint64().toString();
                     break;
-                case /* sint64 sint64_field_max_str = 18 [jstype = JS_STRING];*/ 18:
+                case /* sint64 sint64_field_max_str = 18 [jstype = JS_STRING] */ 18:
                     message.sint64FieldMaxStr = reader.sint64().toString();
                     break;
-                case /* uint64 uint64_field_min_str = 19 [jstype = JS_STRING];*/ 19:
+                case /* uint64 uint64_field_min_str = 19 [jstype = JS_STRING] */ 19:
                     message.uint64FieldMinStr = reader.uint64().toString();
                     break;
-                case /* uint64 uint64_field_max_str = 20 [jstype = JS_STRING];*/ 20:
+                case /* uint64 uint64_field_max_str = 20 [jstype = JS_STRING] */ 20:
                     message.uint64FieldMaxStr = reader.uint64().toString();
                     break;
-                case /* fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER];*/ 21:
+                case /* fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER] */ 21:
                     message.fixed64FieldMinNum = reader.fixed64().toNumber();
                     break;
-                case /* fixed64 fixed64_field_max_num = 22 [jstype = JS_NUMBER];*/ 22:
+                case /* fixed64 fixed64_field_max_num = 22 [jstype = JS_NUMBER] */ 22:
                     message.fixed64FieldMaxNum = reader.fixed64().toNumber();
                     break;
-                case /* int64 int64_field_min_num = 23 [jstype = JS_NUMBER];*/ 23:
+                case /* int64 int64_field_min_num = 23 [jstype = JS_NUMBER] */ 23:
                     message.int64FieldMinNum = reader.int64().toNumber();
                     break;
-                case /* int64 int64_field_max_num = 24 [jstype = JS_NUMBER];*/ 24:
+                case /* int64 int64_field_max_num = 24 [jstype = JS_NUMBER] */ 24:
                     message.int64FieldMaxNum = reader.int64().toNumber();
                     break;
-                case /* sfixed64 sfixed64_field_min_num = 25 [jstype = JS_NUMBER];*/ 25:
+                case /* sfixed64 sfixed64_field_min_num = 25 [jstype = JS_NUMBER] */ 25:
                     message.sfixed64FieldMinNum = reader.sfixed64().toNumber();
                     break;
-                case /* sfixed64 sfixed64_field_max_num = 26 [jstype = JS_NUMBER];*/ 26:
+                case /* sfixed64 sfixed64_field_max_num = 26 [jstype = JS_NUMBER] */ 26:
                     message.sfixed64FieldMaxNum = reader.sfixed64().toNumber();
                     break;
-                case /* sint64 sint64_field_min_num = 27 [jstype = JS_NUMBER];*/ 27:
+                case /* sint64 sint64_field_min_num = 27 [jstype = JS_NUMBER] */ 27:
                     message.sint64FieldMinNum = reader.sint64().toNumber();
                     break;
-                case /* sint64 sint64_field_max_num = 28 [jstype = JS_NUMBER];*/ 28:
+                case /* sint64 sint64_field_max_num = 28 [jstype = JS_NUMBER] */ 28:
                     message.sint64FieldMaxNum = reader.sint64().toNumber();
                     break;
-                case /* uint64 uint64_field_min_num = 29 [jstype = JS_NUMBER];*/ 29:
+                case /* uint64 uint64_field_min_num = 29 [jstype = JS_NUMBER] */ 29:
                     message.uint64FieldMinNum = reader.uint64().toNumber();
                     break;
-                case /* uint64 uint64_field_max_num = 30 [jstype = JS_NUMBER];*/ 30:
+                case /* uint64 uint64_field_max_num = 30 [jstype = JS_NUMBER] */ 30:
                     message.uint64FieldMaxNum = reader.uint64().toNumber();
                     break;
                 default:

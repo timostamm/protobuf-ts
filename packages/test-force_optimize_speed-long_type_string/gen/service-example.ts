@@ -224,7 +224,7 @@ class ExampleResponse$Type extends MessageType<ExampleResponse> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ExampleResponse.your_request_headers");
+                default: throw new globalThis.Error("unknown map entry field for spec.ExampleResponse.your_request_headers");
             }
         }
         map[key ?? ""] = val ?? "";

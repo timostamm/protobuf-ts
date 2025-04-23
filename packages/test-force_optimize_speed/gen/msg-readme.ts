@@ -65,7 +65,7 @@ class Person$Type extends MessageType<Person> {
                 case /* uint64 id */ 2:
                     message.id = reader.uint64().toBigInt();
                     break;
-                case /* int32 years = 3 [json_name = "baz"];*/ 3:
+                case /* int32 years = 3 [json_name = "baz"] */ 3:
                     message.years = reader.int32();
                     break;
                 case /* optional bytes data */ 5:

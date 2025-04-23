@@ -1179,98 +1179,98 @@ class TestPackedTypes$Type extends MessageType<TestPackedTypes> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated int32 packed_int32 = 90 [packed = true];*/ 90:
+                case /* repeated int32 packed_int32 = 90 [packed = true] */ 90:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt32.push(reader.int32());
                     else
                         message.packedInt32.push(reader.int32());
                     break;
-                case /* repeated int64 packed_int64 = 91 [packed = true];*/ 91:
+                case /* repeated int64 packed_int64 = 91 [packed = true] */ 91:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt64.push(reader.int64().toBigInt());
                     else
                         message.packedInt64.push(reader.int64().toBigInt());
                     break;
-                case /* repeated uint32 packed_uint32 = 92 [packed = true];*/ 92:
+                case /* repeated uint32 packed_uint32 = 92 [packed = true] */ 92:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint32.push(reader.uint32());
                     else
                         message.packedUint32.push(reader.uint32());
                     break;
-                case /* repeated uint64 packed_uint64 = 93 [packed = true];*/ 93:
+                case /* repeated uint64 packed_uint64 = 93 [packed = true] */ 93:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint64.push(reader.uint64().toBigInt());
                     else
                         message.packedUint64.push(reader.uint64().toBigInt());
                     break;
-                case /* repeated sint32 packed_sint32 = 94 [packed = true];*/ 94:
+                case /* repeated sint32 packed_sint32 = 94 [packed = true] */ 94:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSint32.push(reader.sint32());
                     else
                         message.packedSint32.push(reader.sint32());
                     break;
-                case /* repeated sint64 packed_sint64 = 95 [packed = true];*/ 95:
+                case /* repeated sint64 packed_sint64 = 95 [packed = true] */ 95:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSint64.push(reader.sint64().toBigInt());
                     else
                         message.packedSint64.push(reader.sint64().toBigInt());
                     break;
-                case /* repeated fixed32 packed_fixed32 = 96 [packed = true];*/ 96:
+                case /* repeated fixed32 packed_fixed32 = 96 [packed = true] */ 96:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFixed32.push(reader.fixed32());
                     else
                         message.packedFixed32.push(reader.fixed32());
                     break;
-                case /* repeated fixed64 packed_fixed64 = 97 [packed = true];*/ 97:
+                case /* repeated fixed64 packed_fixed64 = 97 [packed = true] */ 97:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFixed64.push(reader.fixed64().toBigInt());
                     else
                         message.packedFixed64.push(reader.fixed64().toBigInt());
                     break;
-                case /* repeated sfixed32 packed_sfixed32 = 98 [packed = true];*/ 98:
+                case /* repeated sfixed32 packed_sfixed32 = 98 [packed = true] */ 98:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSfixed32.push(reader.sfixed32());
                     else
                         message.packedSfixed32.push(reader.sfixed32());
                     break;
-                case /* repeated sfixed64 packed_sfixed64 = 99 [packed = true];*/ 99:
+                case /* repeated sfixed64 packed_sfixed64 = 99 [packed = true] */ 99:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSfixed64.push(reader.sfixed64().toBigInt());
                     else
                         message.packedSfixed64.push(reader.sfixed64().toBigInt());
                     break;
-                case /* repeated float packed_float = 100 [packed = true];*/ 100:
+                case /* repeated float packed_float = 100 [packed = true] */ 100:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFloat.push(reader.float());
                     else
                         message.packedFloat.push(reader.float());
                     break;
-                case /* repeated double packed_double = 101 [packed = true];*/ 101:
+                case /* repeated double packed_double = 101 [packed = true] */ 101:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedDouble.push(reader.double());
                     else
                         message.packedDouble.push(reader.double());
                     break;
-                case /* repeated bool packed_bool = 102 [packed = true];*/ 102:
+                case /* repeated bool packed_bool = 102 [packed = true] */ 102:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedBool.push(reader.bool());
                     else
                         message.packedBool.push(reader.bool());
                     break;
-                case /* repeated proto3_lite_unittest.ForeignEnum packed_enum = 103 [packed = true];*/ 103:
+                case /* repeated proto3_lite_unittest.ForeignEnum packed_enum = 103 [packed = true] */ 103:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedEnum.push(reader.int32());
@@ -1442,98 +1442,98 @@ class TestUnpackedTypes$Type extends MessageType<TestUnpackedTypes> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated int32 repeated_int32 = 1 [packed = false];*/ 1:
+                case /* repeated int32 repeated_int32 = 1 [packed = false] */ 1:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedInt32.push(reader.int32());
                     else
                         message.repeatedInt32.push(reader.int32());
                     break;
-                case /* repeated int64 repeated_int64 = 2 [packed = false];*/ 2:
+                case /* repeated int64 repeated_int64 = 2 [packed = false] */ 2:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedInt64.push(reader.int64().toBigInt());
                     else
                         message.repeatedInt64.push(reader.int64().toBigInt());
                     break;
-                case /* repeated uint32 repeated_uint32 = 3 [packed = false];*/ 3:
+                case /* repeated uint32 repeated_uint32 = 3 [packed = false] */ 3:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedUint32.push(reader.uint32());
                     else
                         message.repeatedUint32.push(reader.uint32());
                     break;
-                case /* repeated uint64 repeated_uint64 = 4 [packed = false];*/ 4:
+                case /* repeated uint64 repeated_uint64 = 4 [packed = false] */ 4:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedUint64.push(reader.uint64().toBigInt());
                     else
                         message.repeatedUint64.push(reader.uint64().toBigInt());
                     break;
-                case /* repeated sint32 repeated_sint32 = 5 [packed = false];*/ 5:
+                case /* repeated sint32 repeated_sint32 = 5 [packed = false] */ 5:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedSint32.push(reader.sint32());
                     else
                         message.repeatedSint32.push(reader.sint32());
                     break;
-                case /* repeated sint64 repeated_sint64 = 6 [packed = false];*/ 6:
+                case /* repeated sint64 repeated_sint64 = 6 [packed = false] */ 6:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedSint64.push(reader.sint64().toBigInt());
                     else
                         message.repeatedSint64.push(reader.sint64().toBigInt());
                     break;
-                case /* repeated fixed32 repeated_fixed32 = 7 [packed = false];*/ 7:
+                case /* repeated fixed32 repeated_fixed32 = 7 [packed = false] */ 7:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedFixed32.push(reader.fixed32());
                     else
                         message.repeatedFixed32.push(reader.fixed32());
                     break;
-                case /* repeated fixed64 repeated_fixed64 = 8 [packed = false];*/ 8:
+                case /* repeated fixed64 repeated_fixed64 = 8 [packed = false] */ 8:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedFixed64.push(reader.fixed64().toBigInt());
                     else
                         message.repeatedFixed64.push(reader.fixed64().toBigInt());
                     break;
-                case /* repeated sfixed32 repeated_sfixed32 = 9 [packed = false];*/ 9:
+                case /* repeated sfixed32 repeated_sfixed32 = 9 [packed = false] */ 9:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedSfixed32.push(reader.sfixed32());
                     else
                         message.repeatedSfixed32.push(reader.sfixed32());
                     break;
-                case /* repeated sfixed64 repeated_sfixed64 = 10 [packed = false];*/ 10:
+                case /* repeated sfixed64 repeated_sfixed64 = 10 [packed = false] */ 10:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedSfixed64.push(reader.sfixed64().toBigInt());
                     else
                         message.repeatedSfixed64.push(reader.sfixed64().toBigInt());
                     break;
-                case /* repeated float repeated_float = 11 [packed = false];*/ 11:
+                case /* repeated float repeated_float = 11 [packed = false] */ 11:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedFloat.push(reader.float());
                     else
                         message.repeatedFloat.push(reader.float());
                     break;
-                case /* repeated double repeated_double = 12 [packed = false];*/ 12:
+                case /* repeated double repeated_double = 12 [packed = false] */ 12:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedDouble.push(reader.double());
                     else
                         message.repeatedDouble.push(reader.double());
                     break;
-                case /* repeated bool repeated_bool = 13 [packed = false];*/ 13:
+                case /* repeated bool repeated_bool = 13 [packed = false] */ 13:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedBool.push(reader.bool());
                     else
                         message.repeatedBool.push(reader.bool());
                     break;
-                case /* repeated proto3_lite_unittest.TestAllTypes.NestedEnum repeated_nested_enum = 14 [packed = false];*/ 14:
+                case /* repeated proto3_lite_unittest.TestAllTypes.NestedEnum repeated_nested_enum = 14 [packed = false] */ 14:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedNestedEnum.push(reader.int32());

@@ -12,6 +12,9 @@ import * as rt from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {LegacyInterpreter} from "../legacy-interpreter";
 import {assert} from "@protobuf-ts/runtime";
+import {ESInterpreter} from "../es-interpreter";
+import {DescMessage} from "@bufbuild/protobuf";
+import {getDeclarationString} from "@bufbuild/protoplugin";
 
 
 /**
@@ -26,21 +29,21 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
 
     constructor(
-        private readonly registry: DescriptorRegistry,
+        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
-        private readonly interpreter: LegacyInterpreter,
+        private readonly interpreter: ESInterpreter,
         private readonly options: { oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }
 
 
-    make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[] {
+    make(source: TypescriptFile, descMessage: DescMessage): ts.MethodDeclaration[] {
         // internalBinaryWrite(message: ScalarValuesMessage, writer: IBinaryWriter, options: BinaryWriteOptions): void {
         let internalBinaryWrite = this.makeMethod(
             source,
-            descriptor,
+            descMessage,
             [
-                ...this.makeStatementsForEveryField(source, descriptor),
+                ...this.makeStatementsForEveryField(source, descMessage),
                 ...this.makeUnknownFieldsHandler(source),
                 // return writer;
                 ts.createReturn(ts.createIdentifier("writer"))
@@ -50,9 +53,10 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    makeMethod(source: TypescriptFile, descriptor: DescriptorProto, bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+    makeMethod(source: TypescriptFile, descMessage: DescMessage, bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            MessageInterface = this.imports.type(source, descriptor),
+            MessageInterface = this.imports.type(source, legacyDescriptor),
             IBinaryWriter = this.imports.name(source, 'IBinaryWriter', this.options.runtimeImportPath, true),
             BinaryWriteOptions = this.imports.name(source, 'BinaryWriteOptions', this.options.runtimeImportPath, true);
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("internalBinaryWrite"), undefined, undefined,
@@ -119,16 +123,17 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    makeStatementsForEveryField(source: TypescriptFile, descriptor: DescriptorProto): ts.Statement[] {
+    makeStatementsForEveryField(source: TypescriptFile, descMessage: DescMessage): ts.Statement[] {
         const
-            interpreterType = this.interpreter.getMessageType(descriptor),
+            interpreterType = this.interpreter.getMessageType(descMessage),
             statements: ts.Statement[] = [];
 
         for (let fieldInfo of interpreterType.fields.concat().sort((a, b) => a.no - b.no)) {
 
-            let fieldDescriptor = descriptor.field.find(fd => fd.number === fieldInfo.no);
-            assert(fieldDescriptor !== undefined);
-            let fieldDeclarationComment = this.registry.formatFieldDeclaration(fieldDescriptor);
+            let descField = descMessage.fields.find(descField => descField.number === fieldInfo.no);
+            assert(descField !== undefined);
+            // TODO drop semicolon added for BC
+            let fieldDeclarationComment = getDeclarationString(descField) + ";";
 
             let fieldPropertyAccess = ts.createPropertyAccess(ts.createIdentifier("message"), fieldInfo.localName);
             switch (fieldInfo.kind) {
@@ -324,7 +329,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
     message(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
 
-        let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
+        let messageDescriptor = this.legacyRegistry.resolveTypeName(field.T().typeName);
         assert(DescriptorProto.is(messageDescriptor));
 
         // writer.tag(<field no>, WireType.LengthDelimited).fork();
@@ -362,7 +367,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
     messageRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
 
-        let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
+        let messageDescriptor = this.legacyRegistry.resolveTypeName(field.T().typeName);
         assert(DescriptorProto.is(messageDescriptor));
 
         // message.repeatedMessageField[i]
@@ -407,7 +412,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
     messageOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }, fieldDeclarationComment: string): ts.Statement[] {
 
-        let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
+        let messageDescriptor = this.legacyRegistry.resolveTypeName(field.T().typeName);
         assert(DescriptorProto.is(messageDescriptor));
 
         // message.<oneof name>
@@ -499,7 +504,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         let forBody;
         if (field.V.kind == "message") {
 
-            let messageDescriptor = this.registry.resolveTypeName(field.V.T().typeName);
+            let messageDescriptor = this.legacyRegistry.resolveTypeName(field.V.T().typeName);
             assert(DescriptorProto.is(messageDescriptor));
 
             forBody = ts.createBlock(

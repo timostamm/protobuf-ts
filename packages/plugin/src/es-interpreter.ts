@@ -4,22 +4,28 @@ import * as rpc from "@protobuf-ts/runtime-rpc";
 import {FieldInfoGenerator} from "./code-gen/field-info-generator";
 import {OurFileOptions, OurServiceOptions} from "./our-options";
 import {
-    DescEnum, DescExtension,
+    DescEnum,
+    DescExtension,
     DescField,
     DescFile,
     DescMessage,
     DescMethod,
     DescOneof,
     DescService,
-    FileRegistry, getOption
+    FileRegistry,
+    getOption, isFieldSet
 } from "@bufbuild/protobuf";
 import {
     Edition,
+    FieldDescriptorProto_Label,
+    FieldDescriptorProto_Type,
     FieldOptions_JSType,
-    FieldOptionsSchema, FileOptionsSchema, MessageOptionsSchema,
+    FieldOptionsSchema,
+    FileOptionsSchema,
+    MessageOptionsSchema,
     MethodOptions_IdempotencyLevel,
-    FieldDescriptorProto_Label, FieldDescriptorProto_Type,
-    MethodOptionsSchema, ServiceOptionsSchema
+    MethodOptionsSchema,
+    ServiceOptionsSchema
 } from "@bufbuild/protobuf/wkt";
 import {client, exclude_options, server} from "./gen/protobuf-ts_pb";
 
@@ -459,7 +465,7 @@ export class ESInterpreter {
             info.T = fieldDescriptor.scalar as number as rt.ScalarType;
 
             // L?: JavaScript long type
-            let L = this.determineNonDefaultLongType(info.T, fieldDescriptor.proto.options?.jstype);
+            let L = this.getL(fieldDescriptor);
             if (L !== undefined) {
                 info.L = L;
             }
@@ -504,7 +510,7 @@ export class ESInterpreter {
                         kind: "scalar",
                         T: fieldDescriptor.scalar as number as rt.ScalarType
                     }
-                    let L = this.determineNonDefaultLongType(info.V.T, fieldDescriptor.proto.options?.jstype);
+                    let L = this.getL(fieldDescriptor);
                     if (L !== undefined) {
                         info.V.L = L;
                     }
@@ -593,10 +599,13 @@ export class ESInterpreter {
     }
 
 
-    protected determineNonDefaultLongType(scalarType: rt.ScalarType, jsTypeOption?: FieldOptions_JSType): rt.LongType | undefined {
-        if (!ESInterpreter.isLongValueType(scalarType)) {
+    protected getL(descField: DescField | DescExtension): rt.LongType | undefined {
+        if (!this.isLong(descField)) {
             return undefined;
         }
+        const jsTypeOption = (descField.proto.options !== undefined && isFieldSet(descField.proto.options, FieldOptionsSchema.field.jstype))
+            ? descField.proto.options.jstype
+            : undefined;
         if (jsTypeOption !== undefined) {
             switch (jsTypeOption) {
                 case FieldOptions_JSType.JS_STRING:
@@ -617,6 +626,12 @@ export class ESInterpreter {
         return this.options.normalLongType;
     }
 
+    private isLong(descField: DescField | DescExtension): boolean {
+        if (descField.scalar === undefined) {
+            return false;
+        }
+        return ESInterpreter.isLongValueType(descField.scalar);
+    }
 
     /**
      * Is this a 64 bit integral or fixed type?

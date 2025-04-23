@@ -477,7 +477,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.known_map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.known_map_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -493,7 +493,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -509,7 +509,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_int64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_int64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -525,7 +525,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_uint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_uint64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -541,7 +541,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_int32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_int32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -557,7 +557,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_uint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_uint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -573,7 +573,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_fixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_fixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -589,7 +589,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_fixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_fixed64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -605,7 +605,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_bool");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_bool");
             }
         }
         map[key ?? "false"] = val ?? 0;
@@ -621,7 +621,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_string");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_string");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -637,7 +637,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_sint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_sint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -653,7 +653,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_sint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_sint64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -669,7 +669,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_sfixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_sfixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -685,7 +685,7 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMap.unknown_map_field_sfixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMap.unknown_map_field_sfixed64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -852,7 +852,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.known_map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.known_map_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -868,7 +868,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -884,7 +884,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_int64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_int64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -900,7 +900,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_uint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_uint64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -916,7 +916,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_int32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_int32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -932,7 +932,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_uint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_uint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -948,7 +948,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_fixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_fixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -964,7 +964,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_fixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_fixed64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -980,7 +980,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_bool");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_bool");
             }
         }
         map[key ?? "false"] = val ?? 0;
@@ -996,7 +996,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_string");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_string");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -1012,7 +1012,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_sint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_sint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1028,7 +1028,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_sint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_sint64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -1044,7 +1044,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_sfixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_sfixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1060,7 +1060,7 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_sfixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtra.unknown_map_field_sfixed64");
             }
         }
         map[key ?? "0"] = val ?? 0;
@@ -1162,7 +1162,7 @@ class TestImportEnumMap$Type extends MessageType<TestImportEnumMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestImportEnumMap.import_enum_amp");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestImportEnumMap.import_enum_amp");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1225,7 +1225,7 @@ class TestIntIntMap$Type extends MessageType<TestIntIntMap> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestIntIntMap.m");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestIntIntMap.m");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1343,7 +1343,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_int32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_int32");
             }
         }
         map[key ?? 0] = val ?? TestIntIntMap.create();
@@ -1359,7 +1359,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_int64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_int64");
             }
         }
         map[key ?? "0"] = val ?? TestIntIntMap.create();
@@ -1375,7 +1375,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_uint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_uint32");
             }
         }
         map[key ?? 0] = val ?? TestIntIntMap.create();
@@ -1391,7 +1391,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_uint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_uint64");
             }
         }
         map[key ?? "0"] = val ?? TestIntIntMap.create();
@@ -1407,7 +1407,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_sint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_sint32");
             }
         }
         map[key ?? 0] = val ?? TestIntIntMap.create();
@@ -1423,7 +1423,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_sint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_sint64");
             }
         }
         map[key ?? "0"] = val ?? TestIntIntMap.create();
@@ -1439,7 +1439,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_fixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_fixed32");
             }
         }
         map[key ?? 0] = val ?? TestIntIntMap.create();
@@ -1455,7 +1455,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_fixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_fixed64");
             }
         }
         map[key ?? "0"] = val ?? TestIntIntMap.create();
@@ -1471,7 +1471,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_sfixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_sfixed32");
             }
         }
         map[key ?? 0] = val ?? TestIntIntMap.create();
@@ -1487,7 +1487,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_sfixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_sfixed64");
             }
         }
         map[key ?? "0"] = val ?? TestIntIntMap.create();
@@ -1503,7 +1503,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_bool");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_bool");
             }
         }
         map[key ?? "false"] = val ?? TestIntIntMap.create();
@@ -1519,7 +1519,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
                 case 2:
                     val = TestIntIntMap.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMaps.m_string");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMaps.m_string");
             }
         }
         map[key ?? ""] = val ?? TestIntIntMap.create();
@@ -1714,7 +1714,7 @@ class TestProto2BytesMap$Type extends MessageType<TestProto2BytesMap> {
                 case 2:
                     val = reader.bytes();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestProto2BytesMap.map_bytes");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestProto2BytesMap.map_bytes");
             }
         }
         map[key ?? 0] = val ?? new Uint8Array(0);
@@ -1730,7 +1730,7 @@ class TestProto2BytesMap$Type extends MessageType<TestProto2BytesMap> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestProto2BytesMap.map_string");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestProto2BytesMap.map_string");
             }
         }
         map[key ?? 0] = val ?? "";

@@ -1145,7 +1145,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Any.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.any_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.any_field");
             }
         }
         map[key ?? 0] = val ?? Any.create();
@@ -1161,7 +1161,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Api.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.api_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.api_field");
             }
         }
         map[key ?? 0] = val ?? Api.create();
@@ -1177,7 +1177,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Duration.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.duration_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.duration_field");
             }
         }
         map[key ?? 0] = val ?? Duration.create();
@@ -1193,7 +1193,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Empty.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.empty_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.empty_field");
             }
         }
         map[key ?? 0] = val ?? Empty.create();
@@ -1209,7 +1209,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = FieldMask.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.field_mask_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.field_mask_field");
             }
         }
         map[key ?? 0] = val ?? FieldMask.create();
@@ -1225,7 +1225,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = SourceContext.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.source_context_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.source_context_field");
             }
         }
         map[key ?? 0] = val ?? SourceContext.create();
@@ -1241,7 +1241,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Struct.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.struct_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.struct_field");
             }
         }
         map[key ?? 0] = val ?? Struct.create();
@@ -1257,7 +1257,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Timestamp.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.timestamp_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.timestamp_field");
             }
         }
         map[key ?? 0] = val ?? Timestamp.create();
@@ -1273,7 +1273,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Type.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.type_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.type_field");
             }
         }
         map[key ?? 0] = val ?? Type.create();
@@ -1289,7 +1289,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = DoubleValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.double_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.double_field");
             }
         }
         map[key ?? 0] = val ?? DoubleValue.create();
@@ -1305,7 +1305,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = FloatValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.float_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.float_field");
             }
         }
         map[key ?? 0] = val ?? FloatValue.create();
@@ -1321,7 +1321,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Int64Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.int64_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.int64_field");
             }
         }
         map[key ?? 0] = val ?? Int64Value.create();
@@ -1337,7 +1337,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = UInt64Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.uint64_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.uint64_field");
             }
         }
         map[key ?? 0] = val ?? UInt64Value.create();
@@ -1353,7 +1353,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Int32Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.int32_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.int32_field");
             }
         }
         map[key ?? 0] = val ?? Int32Value.create();
@@ -1369,7 +1369,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = UInt32Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.uint32_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.uint32_field");
             }
         }
         map[key ?? 0] = val ?? UInt32Value.create();
@@ -1385,7 +1385,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = BoolValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.bool_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.bool_field");
             }
         }
         map[key ?? 0] = val ?? BoolValue.create();
@@ -1401,7 +1401,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = StringValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.string_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.string_field");
             }
         }
         map[key ?? 0] = val ?? StringValue.create();
@@ -1417,7 +1417,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = BytesValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.bytes_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.bytes_field");
             }
         }
         map[key ?? 0] = val ?? BytesValue.create();

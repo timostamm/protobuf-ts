@@ -195,7 +195,7 @@ class MyMessage$Type extends MessageType<MyMessage> {
                     else
                         message.repeatedE.push(reader.int32());
                     break;
-                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnum repeated_packed_e = 3 [packed = true];*/ 3:
+                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnum repeated_packed_e = 3 [packed = true] */ 3:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedPackedE.push(reader.int32());
@@ -311,14 +311,14 @@ class MyMessagePlusExtra$Type extends MessageType<MyMessagePlusExtra> {
                     else
                         message.repeatedE.push(reader.int32());
                     break;
-                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_e = 3 [packed = true];*/ 3:
+                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_e = 3 [packed = true] */ 3:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedPackedE.push(reader.int32());
                     else
                         message.repeatedPackedE.push(reader.int32());
                     break;
-                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_unexpected_e = 4 [packed = true];*/ 4:
+                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_unexpected_e = 4 [packed = true] */ 4:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedPackedUnexpectedE.push(reader.int32());

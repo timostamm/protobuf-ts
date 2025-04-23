@@ -233,7 +233,7 @@ class Struct$Type extends MessageType<Struct> {
                 case 2:
                     val = Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field google.protobuf.Struct.fields");
+                default: throw new globalThis.Error("unknown map entry field for google.protobuf.Struct.fields");
             }
         }
         map[key ?? ""] = val ?? Value.create();

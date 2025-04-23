@@ -214,7 +214,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_str_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_str_field");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -230,7 +230,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_int32_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_int32_field");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -246,7 +246,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.int64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_int64_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_int64_field");
             }
         }
         map[key ?? ""] = val ?? 0n;
@@ -262,7 +262,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.bool();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_bool_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_bool_field");
             }
         }
         map[key ?? ""] = val ?? false;
@@ -278,7 +278,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.bytes();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_bytes_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_bytes_field");
             }
         }
         map[key ?? ""] = val ?? new Uint8Array(0);
@@ -294,7 +294,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.int32_str_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.int32_str_field");
             }
         }
         map[key ?? 0] = val ?? "";
@@ -310,7 +310,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.int64_str_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.int64_str_field");
             }
         }
         map[key ?? "0"] = val ?? "";
@@ -326,7 +326,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.bool_str_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.bool_str_field");
             }
         }
         map[key ?? "false"] = val ?? "";
@@ -420,7 +420,7 @@ class MessageMapMessage$Type extends MessageType<MessageMapMessage> {
                 case 2:
                     val = MessageMapMessage_MyItem.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.MessageMapMessage.str_msg_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.MessageMapMessage.str_msg_field");
             }
         }
         map[key ?? ""] = val ?? MessageMapMessage_MyItem.create();
@@ -436,7 +436,7 @@ class MessageMapMessage$Type extends MessageType<MessageMapMessage> {
                 case 2:
                     val = MessageMapMessage_MyItem.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.MessageMapMessage.int32_msg_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.MessageMapMessage.int32_msg_field");
             }
         }
         map[key ?? 0] = val ?? MessageMapMessage_MyItem.create();
@@ -452,7 +452,7 @@ class MessageMapMessage$Type extends MessageType<MessageMapMessage> {
                 case 2:
                     val = MessageMapMessage_MyItem.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.MessageMapMessage.int64_msg_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.MessageMapMessage.int64_msg_field");
             }
         }
         map[key ?? "0"] = val ?? MessageMapMessage_MyItem.create();
@@ -590,7 +590,7 @@ class EnumMapMessage$Type extends MessageType<EnumMapMessage> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.EnumMapMessage.str_enu_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.EnumMapMessage.str_enu_field");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -606,7 +606,7 @@ class EnumMapMessage$Type extends MessageType<EnumMapMessage> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.EnumMapMessage.int32_enu_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.EnumMapMessage.int32_enu_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -622,7 +622,7 @@ class EnumMapMessage$Type extends MessageType<EnumMapMessage> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.EnumMapMessage.int64_enu_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.EnumMapMessage.int64_enu_field");
             }
         }
         map[key ?? "0"] = val ?? 0;

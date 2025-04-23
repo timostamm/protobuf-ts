@@ -1288,64 +1288,64 @@ class TestAllTypesLite$Type extends MessageType<TestAllTypesLite> {
                 case /* repeated protobuf_unittest.TestAllTypesLite.NestedMessage repeated_lazy_message */ 57:
                     message.repeatedLazyMessage.push(TestAllTypesLite_NestedMessage.internalBinaryRead(reader, reader.uint32(), options));
                     break;
-                case /* optional int32 default_int32 */ 61:
+                case /* optional int32 default_int32 = 61 [default = 41] */ 61:
                     message.defaultInt32 = reader.int32();
                     break;
-                case /* optional int64 default_int64 */ 62:
+                case /* optional int64 default_int64 = 62 [default = 42] */ 62:
                     message.defaultInt64 = reader.int64().toString();
                     break;
-                case /* optional uint32 default_uint32 */ 63:
+                case /* optional uint32 default_uint32 = 63 [default = 43] */ 63:
                     message.defaultUint32 = reader.uint32();
                     break;
-                case /* optional uint64 default_uint64 */ 64:
+                case /* optional uint64 default_uint64 = 64 [default = 44] */ 64:
                     message.defaultUint64 = reader.uint64().toString();
                     break;
-                case /* optional sint32 default_sint32 */ 65:
+                case /* optional sint32 default_sint32 = 65 [default = -45] */ 65:
                     message.defaultSint32 = reader.sint32();
                     break;
-                case /* optional sint64 default_sint64 */ 66:
+                case /* optional sint64 default_sint64 = 66 [default = 46] */ 66:
                     message.defaultSint64 = reader.sint64().toString();
                     break;
-                case /* optional fixed32 default_fixed32 */ 67:
+                case /* optional fixed32 default_fixed32 = 67 [default = 47] */ 67:
                     message.defaultFixed32 = reader.fixed32();
                     break;
-                case /* optional fixed64 default_fixed64 */ 68:
+                case /* optional fixed64 default_fixed64 = 68 [default = 48] */ 68:
                     message.defaultFixed64 = reader.fixed64().toString();
                     break;
-                case /* optional sfixed32 default_sfixed32 */ 69:
+                case /* optional sfixed32 default_sfixed32 = 69 [default = 49] */ 69:
                     message.defaultSfixed32 = reader.sfixed32();
                     break;
-                case /* optional sfixed64 default_sfixed64 */ 70:
+                case /* optional sfixed64 default_sfixed64 = 70 [default = -50] */ 70:
                     message.defaultSfixed64 = reader.sfixed64().toString();
                     break;
-                case /* optional float default_float */ 71:
+                case /* optional float default_float = 71 [default = 51.5] */ 71:
                     message.defaultFloat = reader.float();
                     break;
-                case /* optional double default_double */ 72:
+                case /* optional double default_double = 72 [default = 52000] */ 72:
                     message.defaultDouble = reader.double();
                     break;
-                case /* optional bool default_bool */ 73:
+                case /* optional bool default_bool = 73 [default = true] */ 73:
                     message.defaultBool = reader.bool();
                     break;
-                case /* optional string default_string */ 74:
+                case /* optional string default_string = 74 [default = "hello"] */ 74:
                     message.defaultString = reader.string();
                     break;
-                case /* optional bytes default_bytes */ 75:
+                case /* optional bytes default_bytes = 75 [default = "world"] */ 75:
                     message.defaultBytes = reader.bytes();
                     break;
-                case /* optional protobuf_unittest.TestAllTypesLite.NestedEnum default_nested_enum */ 81:
+                case /* optional protobuf_unittest.TestAllTypesLite.NestedEnum default_nested_enum = 81 [default = BAR] */ 81:
                     message.defaultNestedEnum = reader.int32();
                     break;
-                case /* optional protobuf_unittest.ForeignEnumLite default_foreign_enum */ 82:
+                case /* optional protobuf_unittest.ForeignEnumLite default_foreign_enum = 82 [default = FOREIGN_LITE_BAR] */ 82:
                     message.defaultForeignEnum = reader.int32();
                     break;
-                case /* optional protobuf_unittest_import.ImportEnumLite default_import_enum */ 83:
+                case /* optional protobuf_unittest_import.ImportEnumLite default_import_enum = 83 [default = IMPORT_LITE_BAR] */ 83:
                     message.defaultImportEnum = reader.int32();
                     break;
-                case /* optional string default_string_piece */ 84:
+                case /* optional string default_string_piece = 84 [default = "abc"] */ 84:
                     message.defaultStringPiece = reader.string();
                     break;
-                case /* optional string default_cord */ 85:
+                case /* optional string default_cord = 85 [default = "123"] */ 85:
                     message.defaultCord = reader.string();
                     break;
                 case /* uint32 oneof_uint32 */ 111:
@@ -1540,64 +1540,64 @@ class TestAllTypesLite$Type extends MessageType<TestAllTypesLite> {
         /* repeated protobuf_unittest.TestAllTypesLite.NestedMessage repeated_lazy_message = 57; */
         for (let i = 0; i < message.repeatedLazyMessage.length; i++)
             TestAllTypesLite_NestedMessage.internalBinaryWrite(message.repeatedLazyMessage[i], writer.tag(57, WireType.LengthDelimited).fork(), options).join();
-        /* optional int32 default_int32 = 61; */
+        /* optional int32 default_int32 = 61 [default = 41]; */
         if (message.defaultInt32 !== undefined)
             writer.tag(61, WireType.Varint).int32(message.defaultInt32);
-        /* optional int64 default_int64 = 62; */
+        /* optional int64 default_int64 = 62 [default = 42]; */
         if (message.defaultInt64 !== undefined)
             writer.tag(62, WireType.Varint).int64(message.defaultInt64);
-        /* optional uint32 default_uint32 = 63; */
+        /* optional uint32 default_uint32 = 63 [default = 43]; */
         if (message.defaultUint32 !== undefined)
             writer.tag(63, WireType.Varint).uint32(message.defaultUint32);
-        /* optional uint64 default_uint64 = 64; */
+        /* optional uint64 default_uint64 = 64 [default = 44]; */
         if (message.defaultUint64 !== undefined)
             writer.tag(64, WireType.Varint).uint64(message.defaultUint64);
-        /* optional sint32 default_sint32 = 65; */
+        /* optional sint32 default_sint32 = 65 [default = -45]; */
         if (message.defaultSint32 !== undefined)
             writer.tag(65, WireType.Varint).sint32(message.defaultSint32);
-        /* optional sint64 default_sint64 = 66; */
+        /* optional sint64 default_sint64 = 66 [default = 46]; */
         if (message.defaultSint64 !== undefined)
             writer.tag(66, WireType.Varint).sint64(message.defaultSint64);
-        /* optional fixed32 default_fixed32 = 67; */
+        /* optional fixed32 default_fixed32 = 67 [default = 47]; */
         if (message.defaultFixed32 !== undefined)
             writer.tag(67, WireType.Bit32).fixed32(message.defaultFixed32);
-        /* optional fixed64 default_fixed64 = 68; */
+        /* optional fixed64 default_fixed64 = 68 [default = 48]; */
         if (message.defaultFixed64 !== undefined)
             writer.tag(68, WireType.Bit64).fixed64(message.defaultFixed64);
-        /* optional sfixed32 default_sfixed32 = 69; */
+        /* optional sfixed32 default_sfixed32 = 69 [default = 49]; */
         if (message.defaultSfixed32 !== undefined)
             writer.tag(69, WireType.Bit32).sfixed32(message.defaultSfixed32);
-        /* optional sfixed64 default_sfixed64 = 70; */
+        /* optional sfixed64 default_sfixed64 = 70 [default = -50]; */
         if (message.defaultSfixed64 !== undefined)
             writer.tag(70, WireType.Bit64).sfixed64(message.defaultSfixed64);
-        /* optional float default_float = 71; */
+        /* optional float default_float = 71 [default = 51.5]; */
         if (message.defaultFloat !== undefined)
             writer.tag(71, WireType.Bit32).float(message.defaultFloat);
-        /* optional double default_double = 72; */
+        /* optional double default_double = 72 [default = 52000]; */
         if (message.defaultDouble !== undefined)
             writer.tag(72, WireType.Bit64).double(message.defaultDouble);
-        /* optional bool default_bool = 73; */
+        /* optional bool default_bool = 73 [default = true]; */
         if (message.defaultBool !== undefined)
             writer.tag(73, WireType.Varint).bool(message.defaultBool);
-        /* optional string default_string = 74; */
+        /* optional string default_string = 74 [default = "hello"]; */
         if (message.defaultString !== undefined)
             writer.tag(74, WireType.LengthDelimited).string(message.defaultString);
-        /* optional bytes default_bytes = 75; */
+        /* optional bytes default_bytes = 75 [default = "world"]; */
         if (message.defaultBytes !== undefined)
             writer.tag(75, WireType.LengthDelimited).bytes(message.defaultBytes);
-        /* optional protobuf_unittest.TestAllTypesLite.NestedEnum default_nested_enum = 81; */
+        /* optional protobuf_unittest.TestAllTypesLite.NestedEnum default_nested_enum = 81 [default = BAR]; */
         if (message.defaultNestedEnum !== undefined)
             writer.tag(81, WireType.Varint).int32(message.defaultNestedEnum);
-        /* optional protobuf_unittest.ForeignEnumLite default_foreign_enum = 82; */
+        /* optional protobuf_unittest.ForeignEnumLite default_foreign_enum = 82 [default = FOREIGN_LITE_BAR]; */
         if (message.defaultForeignEnum !== undefined)
             writer.tag(82, WireType.Varint).int32(message.defaultForeignEnum);
-        /* optional protobuf_unittest_import.ImportEnumLite default_import_enum = 83; */
+        /* optional protobuf_unittest_import.ImportEnumLite default_import_enum = 83 [default = IMPORT_LITE_BAR]; */
         if (message.defaultImportEnum !== undefined)
             writer.tag(83, WireType.Varint).int32(message.defaultImportEnum);
-        /* optional string default_string_piece = 84; */
+        /* optional string default_string_piece = 84 [default = "abc"]; */
         if (message.defaultStringPiece !== undefined)
             writer.tag(84, WireType.LengthDelimited).string(message.defaultStringPiece);
-        /* optional string default_cord = 85; */
+        /* optional string default_cord = 85 [default = "123"]; */
         if (message.defaultCord !== undefined)
             writer.tag(85, WireType.LengthDelimited).string(message.defaultCord);
         /* uint32 oneof_uint32 = 111; */
@@ -1864,98 +1864,98 @@ class TestPackedTypesLite$Type extends MessageType<TestPackedTypesLite> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated int32 packed_int32 = 90 [packed = true];*/ 90:
+                case /* repeated int32 packed_int32 = 90 [packed = true] */ 90:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt32.push(reader.int32());
                     else
                         message.packedInt32.push(reader.int32());
                     break;
-                case /* repeated int64 packed_int64 = 91 [packed = true];*/ 91:
+                case /* repeated int64 packed_int64 = 91 [packed = true] */ 91:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt64.push(reader.int64().toString());
                     else
                         message.packedInt64.push(reader.int64().toString());
                     break;
-                case /* repeated uint32 packed_uint32 = 92 [packed = true];*/ 92:
+                case /* repeated uint32 packed_uint32 = 92 [packed = true] */ 92:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint32.push(reader.uint32());
                     else
                         message.packedUint32.push(reader.uint32());
                     break;
-                case /* repeated uint64 packed_uint64 = 93 [packed = true];*/ 93:
+                case /* repeated uint64 packed_uint64 = 93 [packed = true] */ 93:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint64.push(reader.uint64().toString());
                     else
                         message.packedUint64.push(reader.uint64().toString());
                     break;
-                case /* repeated sint32 packed_sint32 = 94 [packed = true];*/ 94:
+                case /* repeated sint32 packed_sint32 = 94 [packed = true] */ 94:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSint32.push(reader.sint32());
                     else
                         message.packedSint32.push(reader.sint32());
                     break;
-                case /* repeated sint64 packed_sint64 = 95 [packed = true];*/ 95:
+                case /* repeated sint64 packed_sint64 = 95 [packed = true] */ 95:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSint64.push(reader.sint64().toString());
                     else
                         message.packedSint64.push(reader.sint64().toString());
                     break;
-                case /* repeated fixed32 packed_fixed32 = 96 [packed = true];*/ 96:
+                case /* repeated fixed32 packed_fixed32 = 96 [packed = true] */ 96:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFixed32.push(reader.fixed32());
                     else
                         message.packedFixed32.push(reader.fixed32());
                     break;
-                case /* repeated fixed64 packed_fixed64 = 97 [packed = true];*/ 97:
+                case /* repeated fixed64 packed_fixed64 = 97 [packed = true] */ 97:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFixed64.push(reader.fixed64().toString());
                     else
                         message.packedFixed64.push(reader.fixed64().toString());
                     break;
-                case /* repeated sfixed32 packed_sfixed32 = 98 [packed = true];*/ 98:
+                case /* repeated sfixed32 packed_sfixed32 = 98 [packed = true] */ 98:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSfixed32.push(reader.sfixed32());
                     else
                         message.packedSfixed32.push(reader.sfixed32());
                     break;
-                case /* repeated sfixed64 packed_sfixed64 = 99 [packed = true];*/ 99:
+                case /* repeated sfixed64 packed_sfixed64 = 99 [packed = true] */ 99:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSfixed64.push(reader.sfixed64().toString());
                     else
                         message.packedSfixed64.push(reader.sfixed64().toString());
                     break;
-                case /* repeated float packed_float = 100 [packed = true];*/ 100:
+                case /* repeated float packed_float = 100 [packed = true] */ 100:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFloat.push(reader.float());
                     else
                         message.packedFloat.push(reader.float());
                     break;
-                case /* repeated double packed_double = 101 [packed = true];*/ 101:
+                case /* repeated double packed_double = 101 [packed = true] */ 101:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedDouble.push(reader.double());
                     else
                         message.packedDouble.push(reader.double());
                     break;
-                case /* repeated bool packed_bool = 102 [packed = true];*/ 102:
+                case /* repeated bool packed_bool = 102 [packed = true] */ 102:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedBool.push(reader.bool());
                     else
                         message.packedBool.push(reader.bool());
                     break;
-                case /* repeated protobuf_unittest.ForeignEnumLite packed_enum = 103 [packed = true];*/ 103:
+                case /* repeated protobuf_unittest.ForeignEnumLite packed_enum = 103 [packed = true] */ 103:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedEnum.push(reader.int32());
@@ -2310,16 +2310,16 @@ class TestDeprecatedLite$Type extends MessageType<TestDeprecatedLite> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* optional int32 deprecated_field = 1 [deprecated = true];*/ 1:
+                case /* optional int32 deprecated_field = 1 [deprecated = true] */ 1:
                     message.deprecatedField = reader.int32();
                     break;
-                case /* int32 deprecated_field2 = 2 [deprecated = true];*/ 2:
+                case /* required int32 deprecated_field2 = 2 [deprecated = true] */ 2:
                     message.deprecatedField2 = reader.int32();
                     break;
-                case /* optional string deprecated_field3 = 3 [deprecated = true];*/ 3:
+                case /* optional string deprecated_field3 = 3 [deprecated = true] */ 3:
                     message.deprecatedField3 = reader.string();
                     break;
-                case /* optional protobuf_unittest.TestDeprecatedLite deprecated_field4 = 4 [deprecated = true];*/ 4:
+                case /* optional protobuf_unittest.TestDeprecatedLite deprecated_field4 = 4 [deprecated = true] */ 4:
                     message.deprecatedField4 = TestDeprecatedLite.internalBinaryRead(reader, reader.uint32(), options, message.deprecatedField4);
                     break;
                 default:
@@ -2337,7 +2337,7 @@ class TestDeprecatedLite$Type extends MessageType<TestDeprecatedLite> {
         /* optional int32 deprecated_field = 1 [deprecated = true]; */
         if (message.deprecatedField !== undefined)
             writer.tag(1, WireType.Varint).int32(message.deprecatedField);
-        /* int32 deprecated_field2 = 2 [deprecated = true]; */
+        /* required int32 deprecated_field2 = 2 [deprecated = true]; */
         if (message.deprecatedField2 !== 0)
             writer.tag(2, WireType.Varint).int32(message.deprecatedField2);
         /* optional string deprecated_field3 = 3 [deprecated = true]; */
@@ -2377,7 +2377,7 @@ class TestParsingMergeLite$Type extends MessageType<TestParsingMergeLite> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* protobuf_unittest.TestAllTypesLite required_all_types */ 1:
+                case /* required protobuf_unittest.TestAllTypesLite required_all_types */ 1:
                     message.requiredAllTypes = TestAllTypesLite.internalBinaryRead(reader, reader.uint32(), options, message.requiredAllTypes);
                     break;
                 case /* optional protobuf_unittest.TestAllTypesLite optional_all_types */ 2:
@@ -2398,7 +2398,7 @@ class TestParsingMergeLite$Type extends MessageType<TestParsingMergeLite> {
         return message;
     }
     internalBinaryWrite(message: TestParsingMergeLite, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* protobuf_unittest.TestAllTypesLite required_all_types = 1; */
+        /* required protobuf_unittest.TestAllTypesLite required_all_types = 1; */
         if (message.requiredAllTypes)
             TestAllTypesLite.internalBinaryWrite(message.requiredAllTypes, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
         /* optional protobuf_unittest.TestAllTypesLite optional_all_types = 2; */
@@ -2776,10 +2776,10 @@ class V1MessageLite$Type extends MessageType<V1MessageLite> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 int_field */ 1:
+                case /* required int32 int_field */ 1:
                     message.intField = reader.int32();
                     break;
-                case /* optional protobuf_unittest.V1EnumLite enum_field */ 2:
+                case /* optional protobuf_unittest.V1EnumLite enum_field = 2 [default = V1_FIRST] */ 2:
                     message.enumField = reader.int32();
                     break;
                 default:
@@ -2794,10 +2794,10 @@ class V1MessageLite$Type extends MessageType<V1MessageLite> {
         return message;
     }
     internalBinaryWrite(message: V1MessageLite, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 int_field = 1; */
+        /* required int32 int_field = 1; */
         if (message.intField !== 0)
             writer.tag(1, WireType.Varint).int32(message.intField);
-        /* optional protobuf_unittest.V1EnumLite enum_field = 2; */
+        /* optional protobuf_unittest.V1EnumLite enum_field = 2 [default = V1_FIRST]; */
         if (message.enumField !== undefined)
             writer.tag(2, WireType.Varint).int32(message.enumField);
         let u = options.writeUnknownFields;
@@ -2830,10 +2830,10 @@ class V2MessageLite$Type extends MessageType<V2MessageLite> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 int_field */ 1:
+                case /* required int32 int_field */ 1:
                     message.intField = reader.int32();
                     break;
-                case /* optional protobuf_unittest.V2EnumLite enum_field */ 2:
+                case /* optional protobuf_unittest.V2EnumLite enum_field = 2 [default = V2_FIRST] */ 2:
                     message.enumField = reader.int32();
                     break;
                 default:
@@ -2848,10 +2848,10 @@ class V2MessageLite$Type extends MessageType<V2MessageLite> {
         return message;
     }
     internalBinaryWrite(message: V2MessageLite, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 int_field = 1; */
+        /* required int32 int_field = 1; */
         if (message.intField !== 0)
             writer.tag(1, WireType.Varint).int32(message.intField);
-        /* optional protobuf_unittest.V2EnumLite enum_field = 2; */
+        /* optional protobuf_unittest.V2EnumLite enum_field = 2 [default = V2_FIRST]; */
         if (message.enumField !== undefined)
             writer.tag(2, WireType.Varint).int32(message.enumField);
         let u = options.writeUnknownFields;
@@ -2904,14 +2904,14 @@ class TestHugeFieldNumbersLite$Type extends MessageType<TestHugeFieldNumbersLite
                 case /* optional int32 fixed_32 */ 536870001:
                     message.fixed32 = reader.int32();
                     break;
-                case /* repeated int32 repeated_int32 = 536870002 [packed = false];*/ 536870002:
+                case /* repeated int32 repeated_int32 = 536870002 [packed = false] */ 536870002:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedInt32.push(reader.int32());
                     else
                         message.repeatedInt32.push(reader.int32());
                     break;
-                case /* repeated int32 packed_int32 = 536870003 [packed = true];*/ 536870003:
+                case /* repeated int32 packed_int32 = 536870003 [packed = true] */ 536870003:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt32.push(reader.int32());
@@ -2979,7 +2979,7 @@ class TestHugeFieldNumbersLite$Type extends MessageType<TestHugeFieldNumbersLite
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestHugeFieldNumbersLite.string_string_map");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestHugeFieldNumbersLite.string_string_map");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -3129,13 +3129,13 @@ class TestOneofParsingLite$Type extends MessageType<TestOneofParsingLite> {
                         oneofString: reader.string()
                     };
                     break;
-                case /* bytes oneof_bytes */ 4:
+                case /* bytes oneof_bytes = 4 [default = "default bytes"] */ 4:
                     message.oneofField = {
                         oneofKind: "oneofBytes",
                         oneofBytes: reader.bytes()
                     };
                     break;
-                case /* string oneof_string_cord */ 5:
+                case /* string oneof_string_cord = 5 [default = "default Cord"] */ 5:
                     message.oneofField = {
                         oneofKind: "oneofStringCord",
                         oneofStringCord: reader.string()
@@ -3153,7 +3153,7 @@ class TestOneofParsingLite$Type extends MessageType<TestOneofParsingLite> {
                         oneofStringStringPiece: reader.string()
                     };
                     break;
-                case /* bytes oneof_bytes_string_piece */ 8:
+                case /* bytes oneof_bytes_string_piece = 8 [default = "default StringPiece"] */ 8:
                     message.oneofField = {
                         oneofKind: "oneofBytesStringPiece",
                         oneofBytesStringPiece: reader.bytes()
@@ -3186,10 +3186,10 @@ class TestOneofParsingLite$Type extends MessageType<TestOneofParsingLite> {
         /* string oneof_string = 3; */
         if (message.oneofField.oneofKind === "oneofString")
             writer.tag(3, WireType.LengthDelimited).string(message.oneofField.oneofString);
-        /* bytes oneof_bytes = 4; */
+        /* bytes oneof_bytes = 4 [default = "default bytes"]; */
         if (message.oneofField.oneofKind === "oneofBytes")
             writer.tag(4, WireType.LengthDelimited).bytes(message.oneofField.oneofBytes);
-        /* string oneof_string_cord = 5; */
+        /* string oneof_string_cord = 5 [default = "default Cord"]; */
         if (message.oneofField.oneofKind === "oneofStringCord")
             writer.tag(5, WireType.LengthDelimited).string(message.oneofField.oneofStringCord);
         /* bytes oneof_bytes_cord = 6; */
@@ -3198,7 +3198,7 @@ class TestOneofParsingLite$Type extends MessageType<TestOneofParsingLite> {
         /* string oneof_string_string_piece = 7; */
         if (message.oneofField.oneofKind === "oneofStringStringPiece")
             writer.tag(7, WireType.LengthDelimited).string(message.oneofField.oneofStringStringPiece);
-        /* bytes oneof_bytes_string_piece = 8; */
+        /* bytes oneof_bytes_string_piece = 8 [default = "default StringPiece"]; */
         if (message.oneofField.oneofKind === "oneofBytesStringPiece")
             writer.tag(8, WireType.LengthDelimited).bytes(message.oneofField.oneofBytesStringPiece);
         /* protobuf_unittest.V2EnumLite oneof_enum = 9; */
@@ -3233,7 +3233,7 @@ class PackedInt32$Type extends MessageType<PackedInt32> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated int32 repeated_int32 = 2048 [packed = true];*/ 2048:
+                case /* repeated int32 repeated_int32 = 2048 [packed = true] */ 2048:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedInt32.push(reader.int32());
@@ -3339,7 +3339,7 @@ class PackedFixed32$Type extends MessageType<PackedFixed32> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated fixed32 repeated_fixed32 = 2048 [packed = true];*/ 2048:
+                case /* repeated fixed32 repeated_fixed32 = 2048 [packed = true] */ 2048:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedFixed32.push(reader.fixed32());

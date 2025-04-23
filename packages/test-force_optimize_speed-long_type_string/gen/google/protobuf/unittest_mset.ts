@@ -435,7 +435,7 @@ class TestMessageSetExtension3$Type extends MessageType<TestMessageSetExtension3
                 case /* optional protobuf_unittest.NestedTestInt msg */ 35:
                     message.msg = NestedTestInt.internalBinaryRead(reader, reader.uint32(), options, message.msg);
                     break;
-                case /* int32 required_int */ 36:
+                case /* required int32 required_int */ 36:
                     message.requiredInt = reader.int32();
                     break;
                 default:
@@ -453,7 +453,7 @@ class TestMessageSetExtension3$Type extends MessageType<TestMessageSetExtension3
         /* optional protobuf_unittest.NestedTestInt msg = 35; */
         if (message.msg)
             NestedTestInt.internalBinaryWrite(message.msg, writer.tag(35, WireType.LengthDelimited).fork(), options).join();
-        /* int32 required_int = 36; */
+        /* required int32 required_int = 36; */
         if (message.requiredInt !== 0)
             writer.tag(36, WireType.Varint).int32(message.requiredInt);
         let u = options.writeUnknownFields;
@@ -525,10 +525,10 @@ class RawMessageSet_Item$Type extends MessageType<RawMessageSet_Item> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 type_id */ 2:
+                case /* required int32 type_id */ 2:
                     message.typeId = reader.int32();
                     break;
-                case /* bytes message */ 3:
+                case /* required bytes message */ 3:
                     message.message = reader.bytes();
                     break;
                 default:
@@ -543,10 +543,10 @@ class RawMessageSet_Item$Type extends MessageType<RawMessageSet_Item> {
         return message;
     }
     internalBinaryWrite(message: RawMessageSet_Item, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 type_id = 2; */
+        /* required int32 type_id = 2; */
         if (message.typeId !== 0)
             writer.tag(2, WireType.Varint).int32(message.typeId);
-        /* bytes message = 3; */
+        /* required bytes message = 3; */
         if (message.message.length)
             writer.tag(3, WireType.LengthDelimited).bytes(message.message);
         let u = options.writeUnknownFields;

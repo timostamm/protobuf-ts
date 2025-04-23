@@ -599,7 +599,7 @@ class AttributeContext_Peer$Type extends MessageType<AttributeContext_Peer> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field google.rpc.context.AttributeContext.Peer.labels");
+                default: throw new globalThis.Error("unknown map entry field for google.rpc.context.AttributeContext.Peer.labels");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -876,7 +876,7 @@ class AttributeContext_Request$Type extends MessageType<AttributeContext_Request
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field google.rpc.context.AttributeContext.Request.headers");
+                default: throw new globalThis.Error("unknown map entry field for google.rpc.context.AttributeContext.Request.headers");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -986,7 +986,7 @@ class AttributeContext_Response$Type extends MessageType<AttributeContext_Respon
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field google.rpc.context.AttributeContext.Response.headers");
+                default: throw new globalThis.Error("unknown map entry field for google.rpc.context.AttributeContext.Response.headers");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -1073,7 +1073,7 @@ class AttributeContext_Resource$Type extends MessageType<AttributeContext_Resour
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field google.rpc.context.AttributeContext.Resource.labels");
+                default: throw new globalThis.Error("unknown map entry field for google.rpc.context.AttributeContext.Resource.labels");
             }
         }
         map[key ?? ""] = val ?? "";
