@@ -1,7 +1,7 @@
 import * as ts from "typescript";
 import * as legacy_framework from "@protobuf-ts/plugin-framework";
 import {AnyDesc, DescComments} from "@bufbuild/protobuf";
-import {getComments, getSyntaxComments, getPackageComments, getDeclarationString} from "@bufbuild/protoplugin";
+import {getComments, getDeclarationString} from "@bufbuild/protoplugin";
 
 
 export class CommentGenerator {
@@ -171,10 +171,47 @@ export class CommentGenerator {
         }
 
         // add source info to the leading block
-        commentBlock += CommentGenerator.getGeneratedTag(descriptor);
+        commentBlock += this.makeGeneratedTag(descriptor);
 
         return commentBlock;
     }
+
+    /**
+     * Creates string like "@generated from protobuf field: string foo = 1;"
+     */
+    makeGeneratedTag(desc: AnyDesc) {
+        switch (desc.kind) {
+            case "oneof":
+                return `@generated from protobuf oneof: ${desc.name}`;
+            case "enum_value":
+                return `@generated from protobuf enum value: ${getDeclarationString(desc)};`;
+            case "field":
+                return `@generated from protobuf field: ${getDeclarationString(desc)}`;
+            case "extension":
+                return `@generated from protobuf extension: ${getDeclarationString(desc)}`;
+            case "rpc":
+                // TODO see StringFormat.formatRpcDeclaration
+                return `@generated from protobuf rpc: ${desc.name}`;
+            case "message":
+            case "enum":
+            case "service":
+            case "file":
+                return `@generated from protobuf ${desc.toString()}`;
+        }
+    }
+
+    /**
+     * Returns "@deprecated\n" if explicitly deprecated.
+     * For top level types, also returns "@deprecated\n" if entire file is deprecated.
+     * Otherwise, returns "".
+     */
+    makeDeprecatedTag(desc: AnyDesc) {
+        if (CommentGenerator.isDeprecated(desc)) {
+            return '@deprecated\n';
+        }
+        return '';
+    }
+
 
     private static isDeprecated(desc: AnyDesc) {
         if (desc.kind == "file") {
@@ -194,27 +231,6 @@ export class CommentGenerator {
             case "enum_value":
             case "oneof":
                 return desc.parent.file.deprecated;
-        }
-    }
-
-    private static getGeneratedTag(desc: AnyDesc) {
-        switch (desc.kind) {
-            case "oneof":
-                return `@generated from protobuf oneof: ${desc.name}`;
-            case "enum_value":
-                return `@generated from protobuf enum value: ${getDeclarationString(desc)};`;
-            case "field":
-                return `@generated from protobuf field: ${getDeclarationString(desc)}`;
-            case "extension":
-                return `@generated from protobuf extension: ${getDeclarationString(desc)}`;
-            case "rpc":
-                // TODO see StringFormat.formatRpcDeclaration
-                return `@generated from protobuf rpc: ${desc.name}`;
-            case "message":
-            case "enum":
-            case "service":
-            case "file":
-                return `@generated from protobuf ${desc.toString()}`;
         }
     }
 
