@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "generate"],
+      "outputs": [],
+      "outputLogs": "new-only"
+    },
+    "generate": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "buf.gen.yaml",
+        "../../buf.yaml",
+        "../proto/**/*.proto",
+        "../plugin/protobuf-ts.proto"
+      ],
+      "outputs": ["gen/**"]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+version: v2
+clean: true
+inputs:
+  - proto_file: ../proto/service-annotated.proto
+  - proto_file: ../proto/service-clash.client.proto
+  - proto_file: ../proto/service-clash.proto
+  - proto_file: ../proto/service-empty.proto
+  - proto_file: ../proto/service-example.proto
+  - proto_file: ../proto/service-style-all.proto
+  - proto_file: ../proto/service-style-none.proto
+  - proto_file: ../proto/service-twirp-example.proto
+plugins:
+  - local: protoc-gen-ts
+    out: gen
+    opt:
+      - server_generic
+      # Just to minimize repository size
+      - optimize_code_size

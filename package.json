@@ -36,7 +36,9 @@
     "packages/test-force_optimize_speed",
     "packages/test-long_type_string",
     "packages/test-force_optimize_speed-long_type_string",
-    "packages/twirp-transport"
+    "packages/twirp-transport",
+    "packages/test-server_generic",
+    "packages/test-server_grpc1-client_grpc1"
   ],
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
