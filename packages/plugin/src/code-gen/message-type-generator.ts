@@ -1,11 +1,10 @@
 import * as ts from "typescript";
-import {LongType} from "@protobuf-ts/runtime";
+import {assert, LongType} from "@protobuf-ts/runtime";
 import {
     addCommentBlockAsJsDoc,
     DescriptorProto,
     DescriptorRegistry,
     FileOptions_OptimizeMode as OptimizeMode,
-    SymbolTable,
     TypescriptFile,
     TypeScriptImports, typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
@@ -17,7 +16,8 @@ import {InternalBinaryRead} from "../message-type-extensions/internal-binary-rea
 import {InternalBinaryWrite} from "../message-type-extensions/internal-binary-write";
 import {LegacyInterpreter} from "../legacy-interpreter";
 import {FieldInfoGenerator} from "./field-info-generator";
-import {GeneratorBase} from "./generator-base";
+import {ESInterpreter} from "../es-interpreter";
+import {DescMessage} from "@bufbuild/protobuf";
 
 
 export interface CustomMethodGenerator {
@@ -25,7 +25,7 @@ export interface CustomMethodGenerator {
 }
 
 
-export class MessageTypeGenerator extends GeneratorBase {
+export class MessageTypeGenerator {
 
 
     private readonly wellKnown: WellKnownTypes;
@@ -36,20 +36,25 @@ export class MessageTypeGenerator extends GeneratorBase {
     private readonly fieldInfoGenerator: FieldInfoGenerator;
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
-                private readonly options: {
-                    runtimeImportPath: string;
-                    normalLongType: LongType;
-                    oneofKindDiscriminator: string;
-                    useProtoFieldName: boolean;
-                }) {
-        super(symbols, registry, imports, comments, interpreter);
-        this.fieldInfoGenerator = new FieldInfoGenerator(this.registry, this.imports, this.options);
-        this.wellKnown = new WellKnownTypes(this.registry, this.imports, this.options);
-        this.googleTypes = new GoogleTypes(this.registry, this.imports, this.options);
-        this.typeMethodCreate = new Create(this.registry, this.imports, this.interpreter, this.options);
-        this.typeMethodInternalBinaryRead = new InternalBinaryRead(this.registry, this.imports, this.interpreter, this.options);
-        this.typeMethodInternalBinaryWrite = new InternalBinaryWrite(this.registry, this.imports, this.interpreter, this.options);
+    constructor(
+        private readonly legacyRegistry: DescriptorRegistry,
+        private readonly imports: TypeScriptImports,
+        private readonly comments: CommentGenerator,
+        private readonly interpreter: ESInterpreter,
+        private readonly legacyInterpreter: LegacyInterpreter,
+        private readonly options: {
+            runtimeImportPath: string;
+            normalLongType: LongType;
+            oneofKindDiscriminator: string;
+            useProtoFieldName: boolean;
+        },
+    ) {
+        this.fieldInfoGenerator = new FieldInfoGenerator(this.legacyRegistry, this.imports, this.options);
+        this.wellKnown = new WellKnownTypes(this.legacyRegistry, this.imports, this.options);
+        this.googleTypes = new GoogleTypes(this.legacyRegistry, this.imports, this.options);
+        this.typeMethodCreate = new Create(this.legacyRegistry, this.imports, this.legacyInterpreter, this.options);
+        this.typeMethodInternalBinaryRead = new InternalBinaryRead(this.legacyRegistry, this.imports, this.legacyInterpreter, this.options);
+        this.typeMethodInternalBinaryWrite = new InternalBinaryWrite(this.legacyRegistry, this.imports, this.legacyInterpreter, this.options);
     }
 
 
@@ -77,17 +82,22 @@ export class MessageTypeGenerator extends GeneratorBase {
      * Some field information is passed to the handler's
      * constructor.
      */
-    generateMessageType(source: TypescriptFile, descriptor: DescriptorProto, optimizeFor: OptimizeMode): void {
+    generateMessageType(source: TypescriptFile, descMessage: DescMessage, optimizeFor: OptimizeMode): void {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
+        assert(DescriptorProto.is(legacyDescriptor));
+
         const
             // identifier for the message
-            MyMessage = this.imports.type(source, descriptor),
-            Message$Type = ts.createIdentifier(this.imports.type(source, descriptor) + '$Type'),
+            MyMessage = this.imports.type(source, legacyDescriptor),
+            Message$Type = ts.createIdentifier(this.imports.type(source, legacyDescriptor) + '$Type'),
             MessageType = ts.createIdentifier(this.imports.name(source, "MessageType", this.options.runtimeImportPath)),
-            interpreterType = this.interpreter.getMessageType(descriptor),
+            // TODO
+            //interpreterType = this.interpreter.getMessageType(descMessage),
+            interpreterType = this.legacyInterpreter.getMessageType(descMessage.typeName),
             classDecMembers: ts.ClassElement[] = [],
             classDecSuperArgs: ts.Expression[] = [ // arguments to the MessageType CTOR
                 // arg 0: type name
-                ts.createStringLiteral(this.registry.makeTypeName(descriptor)),
+                ts.createStringLiteral(this.legacyRegistry.makeTypeName(legacyDescriptor)),
                 // arg 1: field infos
                 this.fieldInfoGenerator.createFieldInfoLiterals(source, interpreterType.fields)
             ];
@@ -110,15 +120,15 @@ export class MessageTypeGenerator extends GeneratorBase {
         );
 
         // "MyMessage$Type" members for supported standard types
-        classDecMembers.push(...this.wellKnown.make(source, descriptor));
-        classDecMembers.push(...this.googleTypes.make(source, descriptor));
+        classDecMembers.push(...this.wellKnown.make(source, legacyDescriptor));
+        classDecMembers.push(...this.googleTypes.make(source, legacyDescriptor));
 
         // "MyMessage$Type" members for optimized binary format
         if (optimizeFor === OptimizeMode.SPEED) {
             classDecMembers.push(
-                ...this.typeMethodCreate.make(source, descriptor),
-                ...this.typeMethodInternalBinaryRead.make(source, descriptor),
-                ...this.typeMethodInternalBinaryWrite.make(source, descriptor),
+                ...this.typeMethodCreate.make(source, legacyDescriptor),
+                ...this.typeMethodInternalBinaryRead.make(source, legacyDescriptor),
+                ...this.typeMethodInternalBinaryWrite.make(source, legacyDescriptor),
             );
         }
 
@@ -155,8 +165,8 @@ export class MessageTypeGenerator extends GeneratorBase {
         ts.addSyntheticLeadingComment(classDec, ts.SyntaxKind.SingleLineCommentTrivia,
             " @generated message type with reflection information, may provide speed optimized methods",
             false);
-        let comment = this.comments.legacyMakeDeprecatedTag(descriptor);
-        comment += this.comments.legacyMakeGeneratedTag(descriptor).replace("@generated from ", "@generated MessageType for ");
+        let comment = this.comments.makeDeprecatedTag(descMessage);
+        comment += this.comments.makeGeneratedTag(descMessage).replace("@generated from ", "@generated MessageType for ");
         addCommentBlockAsJsDoc(exportConst, comment);
 
         return;
