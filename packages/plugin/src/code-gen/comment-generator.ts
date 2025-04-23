@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import * as legacy_framework from "@protobuf-ts/plugin-framework";
-import {AnyDesc} from "@bufbuild/protobuf";
+import {AnyDesc, DescComments} from "@bufbuild/protobuf";
 import {getComments, getSyntaxComments, getPackageComments, getDeclarationString} from "@bufbuild/protoplugin";
 
 
@@ -15,6 +15,30 @@ export class CommentGenerator {
 
     /**
      * @deprecated
+     */
+    addCommentsForDescriptor(node: ts.Node, descriptor: legacy_framework.AnyDescriptorProto, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
+        const source = this.registry.sourceCodeComments(descriptor);
+
+        // add leading detached comments as line comments
+        legacy_framework.addCommentBlocksAsLeadingDetachedLines(node, ...source.leadingDetached);
+
+        // start with leading block
+        let leading = this.getCommentBlock(descriptor, trailingCommentsMode === "appendToLeadingBlock");
+
+        // add leading block as jsdoc comment block
+        legacy_framework.addCommentBlockAsJsDoc(node, leading);
+
+        // add trailing comments as trailing line comments
+        if (source.trailing && trailingCommentsMode === 'trailingLines') {
+            let lines = source.trailing.split('\n').map(l => l[0] !== ' ' ? ` ${l}` : l);
+            for (let line of lines) {
+                ts.addSyntheticTrailingComment(node, ts.SyntaxKind.SingleLineCommentTrivia, line, true);
+            }
+        }
+    }
+
+
+    /**
      * Adds comments from the .proto as a JSDoc block.
      *
      * Looks up comments for the given descriptor in
@@ -40,32 +64,11 @@ export class CommentGenerator {
      * be appended to the leading block so that the
      * information is not discarded.
      */
-    addCommentsForDescriptor(node: ts.Node, descriptor: legacy_framework.AnyDescriptorProto, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
-        const source = this.registry.sourceCodeComments(descriptor);
-
-        // add leading detached comments as line comments
-        legacy_framework.addCommentBlocksAsLeadingDetachedLines(node, ...source.leadingDetached);
-
-        // start with leading block
-        let leading = this.getCommentBlock(descriptor, trailingCommentsMode === "appendToLeadingBlock");
-
-        // add leading block as jsdoc comment block
-        legacy_framework.addCommentBlockAsJsDoc(node, leading);
-
-        // add trailing comments as trailing line comments
-        if (source.trailing && trailingCommentsMode === 'trailingLines') {
-            let lines = source.trailing.split('\n').map(l => l[0] !== ' ' ? ` ${l}` : l);
-            for (let line of lines) {
-                ts.addSyntheticTrailingComment(node, ts.SyntaxKind.SingleLineCommentTrivia, line, true);
-            }
-        }
-    }
-
     addCommentsForDescriptor2(node: ts.Node, descriptor: AnyDesc, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
         if (descriptor.kind == "file") {
             return;
         }
-        const source = getComments(descriptor);
+        const source = this.getComments(descriptor);
 
         // add leading detached comments as line comments
         legacy_framework.addCommentBlocksAsLeadingDetachedLines(node, ...source.leadingDetached);
@@ -85,10 +88,28 @@ export class CommentGenerator {
         }
     }
 
+    private getComments(desc: AnyDesc): Omit<DescComments, "sourcePath"> {
+        if (desc.kind == "file") {
+            return {
+                leadingDetached: [],
+            };
+        }
+        const comments = getComments(desc);
+        return {
+            leading: comments.leading !== undefined ? this.stripTrailingNewlines(comments.leading) : comments.leading,
+            trailing: comments.trailing !== undefined ? this.stripTrailingNewlines(comments.trailing) : comments.trailing,
+            leadingDetached: comments.leadingDetached.map(t => this.stripTrailingNewlines(t)),
+        }
+    }
+
+    private stripTrailingNewlines(block: string): string {
+        return block.endsWith('\n')
+            ? block.slice(0, -1)
+            : block;
+    }
+
     /**
      * @deprecated
-     * Returns a block of source comments (no leading detached!),
-     * with @generated tags and @deprecated tag (if applicable).
      */
     getCommentBlock(descriptor: legacy_framework.AnyDescriptorProto, appendTrailingComments = false): string {
         const source = this.registry.sourceCodeComments(descriptor);
@@ -126,7 +147,7 @@ export class CommentGenerator {
         if (descriptor.kind == "file") {
             return "";
         }
-        const source = getComments(descriptor);
+        const source = this.getComments(descriptor);
 
         // start with leading block
         let commentBlock = source.leading ?? '';
@@ -181,7 +202,7 @@ export class CommentGenerator {
             case "oneof":
                 return `@generated from protobuf oneof: ${desc.name}`;
             case "enum_value":
-                return `@generated from protobuf enum value: ${getDeclarationString(desc)}`;
+                return `@generated from protobuf enum value: ${getDeclarationString(desc)};`;
             case "field":
                 return `@generated from protobuf field: ${getDeclarationString(desc)}`;
             case "extension":

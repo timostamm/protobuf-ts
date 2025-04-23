@@ -547,6 +547,9 @@ export class ESInterpreter {
 
 
     protected buildEnumInfo(descriptor: DescEnum): rt.EnumInfo {
+        let sharedPrefix = this.options.keepEnumPrefix
+            ? undefined
+            : this.findEnumSharedPrefix(descriptor);
         const hasZero = descriptor.values.some(v => v.number === 0);
         const builder = new RuntimeEnumBuilder();
         if (!hasZero && typeof this.options.synthesizeEnumZeroValue == 'string') {
@@ -554,8 +557,8 @@ export class ESInterpreter {
         }
         for (let enumValueDescriptor of descriptor.values) {
             let name = enumValueDescriptor.name;
-            if (descriptor.sharedPrefix !== undefined) {
-                name = name.substring(descriptor.sharedPrefix.length);
+            if (sharedPrefix) {
+                name = name.substring(sharedPrefix.length);
             }
             builder.add(name, enumValueDescriptor.number);
         }
@@ -563,10 +566,35 @@ export class ESInterpreter {
             descriptor.typeName,
             builder.build(),
         ];
-        if (descriptor.sharedPrefix !== undefined) {
-            enumInfo = [enumInfo[0], enumInfo[1], descriptor.sharedPrefix];
+        if (sharedPrefix) {
+            enumInfo = [enumInfo[0], enumInfo[1], sharedPrefix];
         }
         return enumInfo;
+    }
+
+    private findEnumSharedPrefix(enumDescriptor: DescEnum, enumLocalName?: string): string | undefined {
+        if (enumLocalName === undefined) {
+            enumLocalName = `${enumDescriptor.name}`;
+        }
+
+        // create possible prefix from local enum name
+        // for example, "MyEnum" => "MY_ENUM_"
+        let enumPrefix = enumLocalName;
+        enumPrefix = enumPrefix.replace(/[A-Z]/g, letter => "_" + letter.toLowerCase());
+        enumPrefix = (enumPrefix[0] === "_") ? enumPrefix.substring(1) : enumPrefix;
+        enumPrefix = enumPrefix.toUpperCase();
+        enumPrefix += '_';
+
+        // do all members share the prefix?
+        let names = enumDescriptor.values.map(enumValue => `${enumValue.name}`);
+        let allNamesSharePrefix = names.every(name => name.startsWith(enumPrefix));
+
+        // are the names with stripped prefix still valid?
+        // (start with uppercase letter, at least 2 chars long)
+        let strippedNames = names.map(name => name.substring(enumPrefix.length));
+        let strippedNamesAreValid = strippedNames.every(name => name.length > 0 && /^[A-Z].+/.test(name));
+
+        return (allNamesSharePrefix && strippedNamesAreValid) ? enumPrefix : undefined;
     }
 
 
