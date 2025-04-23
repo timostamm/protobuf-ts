@@ -14,7 +14,6 @@ import {GoogleTypes} from "../message-type-extensions/google-types";
 import {Create} from "../message-type-extensions/create";
 import {InternalBinaryRead} from "../message-type-extensions/internal-binary-read";
 import {InternalBinaryWrite} from "../message-type-extensions/internal-binary-write";
-import {LegacyInterpreter} from "../legacy-interpreter";
 import {FieldInfoGenerator} from "./field-info-generator";
 import {ESInterpreter} from "../es-interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
@@ -41,7 +40,6 @@ export class MessageTypeGenerator {
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: ESInterpreter,
-        private readonly legacyInterpreter: LegacyInterpreter,
         private readonly options: {
             runtimeImportPath: string;
             normalLongType: LongType;
@@ -91,9 +89,7 @@ export class MessageTypeGenerator {
             MyMessage = this.imports.type(source, legacyDescriptor),
             Message$Type = ts.createIdentifier(this.imports.type(source, legacyDescriptor) + '$Type'),
             MessageType = ts.createIdentifier(this.imports.name(source, "MessageType", this.options.runtimeImportPath)),
-            // TODO
-            //interpreterType = this.interpreter.getMessageType(descMessage),
-            interpreterType = this.legacyInterpreter.getMessageType(descMessage.typeName),
+            interpreterType = this.interpreter.getMessageType(descMessage),
             classDecMembers: ts.ClassElement[] = [],
             classDecSuperArgs: ts.Expression[] = [ // arguments to the MessageType CTOR
                 // arg 0: type name

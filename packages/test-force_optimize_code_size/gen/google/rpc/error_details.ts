@@ -407,7 +407,7 @@ export const DebugInfo = new DebugInfo$Type();
 class QuotaFailure$Type extends MessageType<QuotaFailure> {
     constructor() {
         super("google.rpc.QuotaFailure", [
-            { no: 1, name: "violations", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QuotaFailure_Violation }
+            { no: 1, name: "violations", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => QuotaFailure_Violation }
         ]);
     }
 }
@@ -446,7 +446,7 @@ export const ErrorInfo = new ErrorInfo$Type();
 class PreconditionFailure$Type extends MessageType<PreconditionFailure> {
     constructor() {
         super("google.rpc.PreconditionFailure", [
-            { no: 1, name: "violations", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => PreconditionFailure_Violation }
+            { no: 1, name: "violations", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => PreconditionFailure_Violation }
         ]);
     }
 }
@@ -472,7 +472,7 @@ export const PreconditionFailure_Violation = new PreconditionFailure_Violation$T
 class BadRequest$Type extends MessageType<BadRequest> {
     constructor() {
         super("google.rpc.BadRequest", [
-            { no: 1, name: "field_violations", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => BadRequest_FieldViolation }
+            { no: 1, name: "field_violations", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => BadRequest_FieldViolation }
         ]);
     }
 }
@@ -525,7 +525,7 @@ export const ResourceInfo = new ResourceInfo$Type();
 class Help$Type extends MessageType<Help> {
     constructor() {
         super("google.rpc.Help", [
-            { no: 1, name: "links", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Help_Link }
+            { no: 1, name: "links", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Help_Link }
         ]);
     }
 }
