@@ -2,42 +2,46 @@ import {
     addCommentBlockAsJsDoc,
     DescriptorRegistry,
     ServiceDescriptorProto,
-    SymbolTable,
     TypescriptFile,
     TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
-import {LegacyInterpreter} from "../legacy-interpreter";
 import {CommentGenerator} from "./comment-generator";
 import * as ts from "typescript";
 import {MethodInfoGenerator} from "./method-info-generator";
-import {GeneratorBase} from "./generator-base";
+import {DescService} from "@bufbuild/protobuf";
+import {ESInterpreter} from "../es-interpreter";
+import {assert} from "@protobuf-ts/runtime";
 
 
-export class ServiceTypeGenerator extends GeneratorBase {
+export class ServiceTypeGenerator {
 
     private readonly methodInfoGenerator: MethodInfoGenerator;
 
-
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
-                private readonly options: {
-                    runtimeRpcImportPath: string;
-                }) {
-        super(symbols, registry, imports, comments, interpreter);
-        this.methodInfoGenerator = new MethodInfoGenerator(this.registry, this.imports)
+    constructor(
+        private readonly legacyRegistry: DescriptorRegistry,
+        private readonly imports: TypeScriptImports,
+        private readonly comments: CommentGenerator,
+        private readonly interpreter: ESInterpreter,
+        private readonly options: { runtimeRpcImportPath: string; },
+    ) {
+        this.methodInfoGenerator = new MethodInfoGenerator(legacyRegistry, this.imports)
     }
 
 
     // export const Haberdasher = new ServiceType("spec.haberdasher.Haberdasher", [
     //     { name: "MakeHat", localName: "makeHat", I: Size, O: Hat },
     // ], {});
-    generateServiceType(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
+    generateServiceType(source: TypescriptFile, descService: DescService): void {
+
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
+        assert(ServiceDescriptorProto.is(legacyDescriptor));
 
         const
             // identifier for the service
-            MyService = this.imports.type(source, descriptor),
+            MyService = this.imports.type(source, legacyDescriptor),
             ServiceType = this.imports.name(source, "ServiceType", this.options.runtimeRpcImportPath),
-            interpreterType = this.interpreter.getServiceType(descriptor);
+            interpreterType = this.interpreter.getServiceType(descService);
 
         const args: ts.Expression[] = [
             ts.createStringLiteral(interpreterType.typeName),
@@ -70,8 +74,8 @@ export class ServiceTypeGenerator extends GeneratorBase {
         source.addStatement(exportConst);
 
         // add comments
-        let comment = this.comments.legacyMakeDeprecatedTag(descriptor);
-        comment += this.comments.legacyMakeGeneratedTag(descriptor).replace("@generated from ", "@generated ServiceType for ");
+        let comment = this.comments.legacyMakeDeprecatedTag(legacyDescriptor);
+        comment += this.comments.legacyMakeGeneratedTag(legacyDescriptor).replace("@generated from ", "@generated ServiceType for ");
         addCommentBlockAsJsDoc(exportConst, comment);
 
         return;

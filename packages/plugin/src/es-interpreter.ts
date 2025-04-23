@@ -101,13 +101,9 @@ export class ESInterpreter {
         }
 
         // if options message not present, there cannot be any extension options
-        if (!descriptor.proto.options) {
-            return undefined;
-        }
-
         // if no unknown fields present, can exit early
-        let unknownFields = rt.UnknownFieldHandler.list(descriptor.proto.options);
-        if (!unknownFields.length) {
+        let unknownFields = descriptor.proto.options?.$unknown;
+        if (unknownFields === undefined || unknownFields.length === 0) {
             return undefined;
         }
 
@@ -135,10 +131,9 @@ export class ESInterpreter {
         let type = this.messageTypes.get(typeName);
         if (!type) {
             const extensions: DescExtension[] = [];
-            for (let {no} of unknownFields) {
-                const ext = this.registry.getExtensionFor(optionsSchema, no);
-                if (ext) {
-                    extensions.push(ext);
+            for (const desc of this.registry) {
+                if (desc.kind == "extension" && desc.extendee.typeName === optionsSchema.typeName) {
+                    extensions.push(desc);
                 }
             }
             type = new rt.MessageType(
@@ -243,7 +238,7 @@ export class ESInterpreter {
 
             // same for field options
             for (let i = 0; i < type.fields.length; i++) {
-                const fd = descriptor.field[i];
+                const fd = descriptor.fields[i];
                 const fi = type.fields[i];
                 fi.options = this.readOptions(fd, ourFileOptions["ts.exclude_options"]);
             }

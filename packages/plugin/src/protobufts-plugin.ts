@@ -245,7 +245,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
             genEnum = new EnumGenerator(legacyRegistry, imports, comments, interpreter),
             genMessageType = new MessageTypeGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
-            genServiceType = new ServiceTypeGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genServiceType = new ServiceTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
             genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
             genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
             genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
@@ -331,7 +331,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                         assert(ServiceDescriptorProto.is(legacyServiceDescriptor));
                         if (!options.forceDisableServices) {
                             // service type
-                            genServiceType.generateServiceType(outMain, legacyServiceDescriptor);
+                            genServiceType.generateServiceType(outMain, desc);
 
                             // clients
                             const clientStyles = optionResolver.getClientStyles(desc);
