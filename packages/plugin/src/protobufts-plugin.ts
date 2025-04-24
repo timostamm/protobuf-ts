@@ -246,10 +246,10 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             genEnum = new EnumGenerator(legacyRegistry, imports, comments, interpreter),
             genMessageType = new MessageTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
             genServiceType = new ServiceTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
-            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
-            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
-            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
-            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, legacyInterpreter, options)
+            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
+            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
+            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
+            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options)
         ;
 
         const legacyFileDescriptorsByName = new Map<string, FileDescriptorProto>(

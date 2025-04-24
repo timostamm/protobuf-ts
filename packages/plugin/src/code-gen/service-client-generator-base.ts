@@ -12,6 +12,7 @@ import {LegacyInterpreter} from "../legacy-interpreter";
 import {GeneratorBase} from "./generator-base";
 import {legacy_createLocalTypeName} from "./local-type-name";
 import {assert} from "@protobuf-ts/runtime";
+import {ESInterpreter} from "../es-interpreter";
 
 
 export abstract class ServiceClientGeneratorBase extends GeneratorBase {
@@ -21,12 +22,19 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
     abstract readonly symbolKindImplementation: string;
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
-                protected readonly options: {
-                    runtimeImportPath: string;
-                    runtimeRpcImportPath: string;
-                }) {
-        super(symbols, registry, imports, comments, interpreter);
+    constructor(
+        symbols: SymbolTable,
+        legacyRegistry: DescriptorRegistry,
+        imports: TypeScriptImports,
+        comments: CommentGenerator,
+        interpreter: ESInterpreter,
+        legacyInterpreter: LegacyInterpreter,
+        protected readonly options: {
+            runtimeImportPath: string;
+            runtimeRpcImportPath: string;
+        },
+    ) {
+        super(symbols, legacyRegistry, imports, comments, legacyInterpreter);
     }
 
 

@@ -14,23 +14,30 @@ import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {legacy_createLocalTypeName} from "./local-type-name";
+import {ESInterpreter} from "../es-interpreter";
 
 
-export class ServiceServerGeneratorGrpc extends GeneratorBase {
+export class ServiceServerGeneratorGrpc {
 
 
     private readonly symbolKindInterface = 'grpc-server-interface';
     private readonly symbolKindDefinition = 'grpc-server-definition';
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
-                private readonly options: {}) {
-        super(symbols, registry, imports, comments, interpreter);
+    constructor(
+        private readonly symbols: SymbolTable,
+        private readonly legacyRegistry: DescriptorRegistry,
+        private readonly imports: TypeScriptImports,
+        private readonly comments: CommentGenerator,
+        private readonly interpreter: ESInterpreter,
+        private readonly legacyInterpreter: LegacyInterpreter,
+        private readonly options: {},
+    ) {
     }
 
 
     registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
-        const basename = legacy_createLocalTypeName(descriptor, this.registry);
+        const basename = legacy_createLocalTypeName(descriptor, this.legacyRegistry);
         const interfaceName = `I${basename}`;
         const definitionName = `${basename[0].toLowerCase()}${basename.substring(1)}Definition`;
         this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);
@@ -40,7 +47,7 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
 
     generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto) {
         const
-            interpreterType = this.interpreter.getServiceType(descriptor),
+            interpreterType = this.legacyInterpreter.getServiceType(descriptor),
             IGrpcServer = this.imports.type(source, descriptor, this.symbolKindInterface),
             grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true)
         ;
@@ -101,11 +108,11 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
                 [
                     ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                         source,
-                        this.registry.resolveTypeName(methodInfo.I.typeName)
+                        this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
                     )), undefined),
                     ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                         source,
-                        this.registry.resolveTypeName(methodInfo.O.typeName)
+                        this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
                     )), undefined),
                 ]
             ),
@@ -122,7 +129,7 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
         const
             grpcServerDefinition = this.imports.type(source, descriptor, this.symbolKindDefinition),
             IGrpcServer = this.imports.type(source, descriptor, this.symbolKindInterface),
-            interpreterType = this.interpreter.getServiceType(descriptor),
+            interpreterType = this.legacyInterpreter.getServiceType(descriptor),
             grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true);
 
         const statement = ts.createVariableStatement(
@@ -151,7 +158,7 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
 
         // add to our file
         const doc =
-            `@grpc/grpc-js definition for the protobuf ${this.registry.formatQualifiedName(descriptor)}.\n` +
+            `@grpc/grpc-js definition for the protobuf ${this.legacyRegistry.formatQualifiedName(descriptor)}.\n` +
             `\n` +
             `Usage: Implement the interface ${IGrpcServer} and add to a grpc server.\n` +
             `\n` +
@@ -168,8 +175,8 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
 
 
     private makeDefinitionProperty(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.PropertyAssignment {
-        const I = this.imports.type(source, this.registry.resolveTypeName(methodInfo.I.typeName));
-        const O = this.imports.type(source, this.registry.resolveTypeName(methodInfo.O.typeName));
+        const I = this.imports.type(source, this.legacyRegistry.resolveTypeName(methodInfo.I.typeName));
+        const O = this.imports.type(source, this.legacyRegistry.resolveTypeName(methodInfo.O.typeName));
 
         return ts.createPropertyAssignment(
             ts.createIdentifier(methodInfo.localName),

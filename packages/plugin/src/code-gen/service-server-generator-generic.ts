@@ -1,4 +1,3 @@
-import {GeneratorBase} from "./generator-base";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {
     DescriptorRegistry,
@@ -12,24 +11,29 @@ import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {legacy_createLocalTypeName} from "./local-type-name";
+import {ESInterpreter} from "../es-interpreter";
 
 
-export class ServiceServerGeneratorGeneric extends GeneratorBase {
+export class ServiceServerGeneratorGeneric {
 
 
     private readonly symbolKindInterface = 'generic-server-interface';
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: LegacyInterpreter,
-                private readonly options: {
-                    runtimeRpcImportPath: string;
-                }) {
-        super(symbols, registry, imports, comments, interpreter);
+    constructor(
+        private readonly symbols: SymbolTable,
+        private readonly legacyRegistry: DescriptorRegistry,
+        private readonly imports: TypeScriptImports,
+        private readonly comments: CommentGenerator,
+        private readonly interpreter: ESInterpreter,
+        private readonly legacyInterpreter: LegacyInterpreter,
+        private readonly options: { runtimeRpcImportPath: string; },
+    ) {
     }
 
 
     registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
-        const basename = legacy_createLocalTypeName(descriptor, this.registry);
+        const basename = legacy_createLocalTypeName(descriptor, this.legacyRegistry);
         const interfaceName = `I${basename}`;
         this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);
     }
@@ -37,7 +41,7 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
 
     generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto) {
         const
-            interpreterType = this.interpreter.getServiceType(descriptor),
+            interpreterType = this.legacyInterpreter.getServiceType(descriptor),
             IGenericServer = this.imports.type(source, descriptor, this.symbolKindInterface),
             ServerCallContext = this.imports.name(source, "ServerCallContext", this.options.runtimeRpcImportPath)
         ;
@@ -86,11 +90,11 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
         const
             I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.registry.resolveTypeName(methodInfo.I.typeName)
+                this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
             )), undefined),
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.registry.resolveTypeName(methodInfo.O.typeName)
+                this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
             )), undefined);
         return ts.createMethodSignature(
             undefined,
@@ -131,11 +135,11 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
         const
             I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.registry.resolveTypeName(methodInfo.I.typeName)
+                this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
             )), undefined),
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.registry.resolveTypeName(methodInfo.O.typeName)
+                this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
             )), undefined),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -190,11 +194,11 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
         const
             I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.registry.resolveTypeName(methodInfo.I.typeName)
+                this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
             )), undefined),
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.registry.resolveTypeName(methodInfo.O.typeName)
+                this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -239,11 +243,11 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
         const
             I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.registry.resolveTypeName(methodInfo.I.typeName)
+                this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
             )), undefined),
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.registry.resolveTypeName(methodInfo.O.typeName)
+                this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
