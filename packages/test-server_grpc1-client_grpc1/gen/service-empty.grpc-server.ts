@@ -8,7 +8,7 @@ import type * as grpc from "@grpc/grpc-js";
  */
 export interface IEmptyService extends grpc.UntypedServiceImplementation {
     /**
-     * @generated from protobuf rpc: Get(google.protobuf.Empty) returns (google.protobuf.Empty);
+     * @generated from protobuf rpc: Get
      */
     get: grpc.handleUnaryCall<Empty, Empty>;
 }

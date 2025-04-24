@@ -9,7 +9,7 @@ import type * as grpc from "@grpc/grpc-js";
  */
 export interface IAnnotatedService extends grpc.UntypedServiceImplementation {
     /**
-     * @generated from protobuf rpc: Get(spec.AnnoGetRequest) returns (spec.AnnoGetResponse);
+     * @generated from protobuf rpc: Get
      */
     get: grpc.handleUnaryCall<AnnoGetRequest, AnnoGetResponse>;
 }

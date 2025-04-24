@@ -247,7 +247,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             genMessageType = new MessageTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
             genServiceType = new ServiceTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
             genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
+            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter),
             genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
             genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options)
         ;
@@ -300,7 +300,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                     genClientGeneric.registerSymbols(outClientCall, legacyDescriptor);
                     genClientGrpc.registerSymbols(outClientGrpc, legacyDescriptor);
                     genServerGeneric.registerSymbols(outServerGeneric, desc);
-                    genServerGrpc.registerSymbols(outServerGrpc, legacyDescriptor);
+                    genServerGrpc.registerSymbols(outServerGrpc, desc);
                 }
             }
 
@@ -346,8 +346,8 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                                 genServerGeneric.generateInterface(outServerGeneric, desc);
                             }
                             if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
-                                genServerGrpc.generateInterface(outServerGrpc, legacyServiceDescriptor);
-                                genServerGrpc.generateDefinition(outServerGrpc, legacyServiceDescriptor);
+                                genServerGrpc.generateInterface(outServerGrpc, desc);
+                                genServerGrpc.generateDefinition(outServerGrpc, desc);
                             }
                         }
                         break;
