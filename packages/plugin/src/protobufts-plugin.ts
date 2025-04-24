@@ -246,7 +246,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             genEnum = new EnumGenerator(legacyRegistry, imports, comments, interpreter),
             genMessageType = new MessageTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
             genServiceType = new ServiceTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
-            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
+            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
             genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
             genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
             genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options)
@@ -299,7 +299,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                     assert(ServiceDescriptorProto.is(legacyDescriptor));
                     genClientGeneric.registerSymbols(outClientCall, legacyDescriptor);
                     genClientGrpc.registerSymbols(outClientGrpc, legacyDescriptor);
-                    genServerGeneric.registerSymbols(outServerGeneric, legacyDescriptor);
+                    genServerGeneric.registerSymbols(outServerGeneric, desc);
                     genServerGrpc.registerSymbols(outServerGrpc, legacyDescriptor);
                 }
             }
@@ -343,7 +343,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                             // servers
                             const serverStyles = optionResolver.getServerStyles(desc);
                             if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
-                                genServerGeneric.generateInterface(outServerGeneric, legacyServiceDescriptor);
+                                genServerGeneric.generateInterface(outServerGeneric, desc);
                             }
                             if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
                                 genServerGrpc.generateInterface(outServerGrpc, legacyServiceDescriptor);

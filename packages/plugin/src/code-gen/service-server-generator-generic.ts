@@ -1,17 +1,16 @@
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {
     DescriptorRegistry,
-    ServiceDescriptorProto,
     SymbolTable,
     TypescriptFile,
     TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
-import {LegacyInterpreter} from "../legacy-interpreter";
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
-import {legacy_createLocalTypeName} from "./local-type-name";
+import {createLocalTypeName} from "./local-type-name";
 import {ESInterpreter} from "../es-interpreter";
+import {DescService} from "@bufbuild/protobuf";
 
 
 export class ServiceServerGeneratorGeneric {
@@ -26,23 +25,24 @@ export class ServiceServerGeneratorGeneric {
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: ESInterpreter,
-        private readonly legacyInterpreter: LegacyInterpreter,
         private readonly options: { runtimeRpcImportPath: string; },
     ) {
     }
 
 
-    registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
-        const basename = legacy_createLocalTypeName(descriptor, this.legacyRegistry);
+    registerSymbols(source: TypescriptFile, descService: DescService): void {
+        const basename = createLocalTypeName(descService);
         const interfaceName = `I${basename}`;
-        this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
+        this.symbols.register(interfaceName, legacyDescriptor, source, this.symbolKindInterface);
     }
 
 
-    generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto) {
+    generateInterface(source: TypescriptFile, descService: DescService) {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const
-            interpreterType = this.legacyInterpreter.getServiceType(descriptor),
-            IGenericServer = this.imports.type(source, descriptor, this.symbolKindInterface),
+            interpreterType = this.interpreter.getServiceType(descService),
+            IGenericServer = this.imports.type(source, legacyDescriptor, this.symbolKindInterface),
             ServerCallContext = this.imports.name(source, "ServerCallContext", this.options.runtimeRpcImportPath)
         ;
 
@@ -62,8 +62,6 @@ export class ServiceServerGeneratorGeneric {
             ],
             undefined,
             interpreterType.methods.map(mi => {
-                const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
-                assert(methodDescriptor);
                 let signature: ts.MethodSignature;
                 if (mi.serverStreaming && mi.clientStreaming) {
                     signature = this.createBidi(source, mi);
@@ -74,13 +72,15 @@ export class ServiceServerGeneratorGeneric {
                 } else {
                     signature = this.createUnary(source, mi);
                 }
-                this.comments.legacy_addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
+                const descMethod = descService.methods.find(descMethod => descMethod.name === mi.name);
+                assert(descMethod);
+                this.comments.addCommentsForDescriptor(signature, descMethod, 'appendToLeadingBlock');
                 return signature;
             })
         );
 
         // add to our file
-        this.comments.legacy_addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descService, 'appendToLeadingBlock');
         source.addStatement(statement);
         return statement;
     }

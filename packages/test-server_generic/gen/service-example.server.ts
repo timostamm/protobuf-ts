@@ -13,25 +13,25 @@ export interface IExampleService<T = ServerCallContext> {
     /**
      * An example unary call.
      *
-     * @generated from protobuf rpc: Unary(spec.ExampleRequest) returns (spec.ExampleResponse);
+     * @generated from protobuf rpc: Unary
      */
     unary(request: ExampleRequest, context: T): Promise<ExampleResponse>;
     /**
      * An example server-streaming call.
      *
-     * @generated from protobuf rpc: ServerStream(spec.ExampleRequest) returns (stream spec.ExampleResponse);
+     * @generated from protobuf rpc: ServerStream
      */
     serverStream(request: ExampleRequest, responses: RpcInputStream<ExampleResponse>, context: T): Promise<void>;
     /**
      * An example client-streaming call.
      *
-     * @generated from protobuf rpc: ClientStream(stream spec.ExampleRequest) returns (spec.ExampleResponse);
+     * @generated from protobuf rpc: ClientStream
      */
     clientStream(requests: RpcOutputStream<ExampleRequest>, context: T): Promise<ExampleResponse>;
     /**
      * An example bidi-streaming call.
      *
-     * @generated from protobuf rpc: Bidi(stream spec.ExampleRequest) returns (stream spec.ExampleResponse);
+     * @generated from protobuf rpc: Bidi
      */
     bidi(requests: RpcOutputStream<ExampleRequest>, responses: RpcInputStream<ExampleResponse>, context: T): Promise<void>;
 }

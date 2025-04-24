@@ -8,7 +8,7 @@ import { ServerCallContext } from "@protobuf-ts/runtime-rpc";
  */
 export interface IEmptyService<T = ServerCallContext> {
     /**
-     * @generated from protobuf rpc: Get(google.protobuf.Empty) returns (google.protobuf.Empty);
+     * @generated from protobuf rpc: Get
      */
     get(request: Empty, context: T): Promise<Empty>;
 }

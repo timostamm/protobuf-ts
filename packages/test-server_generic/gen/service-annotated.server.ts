@@ -9,7 +9,7 @@ import { ServerCallContext } from "@protobuf-ts/runtime-rpc";
  */
 export interface IAnnotatedService<T = ServerCallContext> {
     /**
-     * @generated from protobuf rpc: Get(spec.AnnoGetRequest) returns (spec.AnnoGetResponse);
+     * @generated from protobuf rpc: Get
      */
     get(request: AnnoGetRequest, context: T): Promise<AnnoGetResponse>;
 }

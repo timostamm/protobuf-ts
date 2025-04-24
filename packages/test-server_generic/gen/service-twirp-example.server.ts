@@ -17,7 +17,7 @@ export interface IHaberdasher<T = ServerCallContext> {
     /**
      * MakeHat produces a hat of mysterious, randomly-selected color!
      *
-     * @generated from protobuf rpc: MakeHat(spec.haberdasher.Size) returns (spec.haberdasher.Hat);
+     * @generated from protobuf rpc: MakeHat
      */
     makeHat(request: Size, context: T): Promise<Hat>;
 }
