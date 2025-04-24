@@ -24,20 +24,20 @@ export interface Hat {
     /**
      * The size of a hat should always be in inches.
      *
-     * @generated from protobuf field: int32 size = 1;
+     * @generated from protobuf field: int32 size = 1
      */
     size: number;
     /**
      * The color of a hat will never be 'invisible', but other than
      * that, anything is fair game.
      *
-     * @generated from protobuf field: string color = 2;
+     * @generated from protobuf field: string color = 2
      */
     color: string;
     /**
      * The name of a hat is it's type. Like, 'bowler', or something.
      *
-     * @generated from protobuf field: string name = 3;
+     * @generated from protobuf field: string name = 3
      */
     name: string;
 }
@@ -49,7 +49,7 @@ export interface Hat {
  */
 export interface Size {
     /**
-     * @generated from protobuf field: int32 inches = 1;
+     * @generated from protobuf field: int32 inches = 1
      */
     inches: number;
 }

@@ -54,7 +54,7 @@ export interface AttributeContext {
      * the origin represents the sender of the first hop. For the first hop,
      * the `source` and the `origin` must have the same content.
      *
-     * @generated from protobuf field: google.rpc.context.AttributeContext.Peer origin = 7;
+     * @generated from protobuf field: google.rpc.context.AttributeContext.Peer origin = 7
      */
     origin?: AttributeContext_Peer;
     /**
@@ -62,7 +62,7 @@ export interface AttributeContext {
      * In a multi hop network activity, the source represents the sender of the
      * last hop.
      *
-     * @generated from protobuf field: google.rpc.context.AttributeContext.Peer source = 1;
+     * @generated from protobuf field: google.rpc.context.AttributeContext.Peer source = 1
      */
     source?: AttributeContext_Peer;
     /**
@@ -70,19 +70,19 @@ export interface AttributeContext {
      * In a multi hop network activity, the destination represents the receiver of
      * the last hop.
      *
-     * @generated from protobuf field: google.rpc.context.AttributeContext.Peer destination = 2;
+     * @generated from protobuf field: google.rpc.context.AttributeContext.Peer destination = 2
      */
     destination?: AttributeContext_Peer;
     /**
      * Represents a network request, such as an HTTP request.
      *
-     * @generated from protobuf field: google.rpc.context.AttributeContext.Request request = 3;
+     * @generated from protobuf field: google.rpc.context.AttributeContext.Request request = 3
      */
     request?: AttributeContext_Request;
     /**
      * Represents a network response, such as an HTTP response.
      *
-     * @generated from protobuf field: google.rpc.context.AttributeContext.Response response = 4;
+     * @generated from protobuf field: google.rpc.context.AttributeContext.Response response = 4
      */
     response?: AttributeContext_Response;
     /**
@@ -90,13 +90,13 @@ export interface AttributeContext {
      * If multiple resources are involved with an activity, this must be the
      * primary one.
      *
-     * @generated from protobuf field: google.rpc.context.AttributeContext.Resource resource = 5;
+     * @generated from protobuf field: google.rpc.context.AttributeContext.Resource resource = 5
      */
     resource?: AttributeContext_Resource;
     /**
      * Represents an API operation that is involved to a network activity.
      *
-     * @generated from protobuf field: google.rpc.context.AttributeContext.Api api = 6;
+     * @generated from protobuf field: google.rpc.context.AttributeContext.Api api = 6
      */
     api?: AttributeContext_Api;
 }
@@ -112,19 +112,19 @@ export interface AttributeContext_Peer {
     /**
      * The IP address of the peer.
      *
-     * @generated from protobuf field: string ip = 1;
+     * @generated from protobuf field: string ip = 1
      */
     ip: string;
     /**
      * The network port of the peer.
      *
-     * @generated from protobuf field: int64 port = 2;
+     * @generated from protobuf field: int64 port = 2
      */
     port: bigint;
     /**
      * The labels associated with the peer.
      *
-     * @generated from protobuf field: map<string, string> labels = 6;
+     * @generated from protobuf field: map<string, string> labels = 6
      */
     labels: {
         [key: string]: string;
@@ -134,7 +134,7 @@ export interface AttributeContext_Peer {
      * relative to the peer instead of the request. For example, the
      * idenity associated with a load balancer that forwared the request.
      *
-     * @generated from protobuf field: string principal = 7;
+     * @generated from protobuf field: string principal = 7
      */
     principal: string;
     /**
@@ -142,7 +142,7 @@ export interface AttributeContext_Peer {
      * If the IP address is private, the `region_code` should reflect the
      * physical location where this peer is running.
      *
-     * @generated from protobuf field: string region_code = 8;
+     * @generated from protobuf field: string region_code = 8
      */
     regionCode: string;
 }
@@ -159,7 +159,7 @@ export interface AttributeContext_Api {
      * such as "pubsub.googleapis.com". The naming syntax depends on the
      * API management system being used for handling the request.
      *
-     * @generated from protobuf field: string service = 1;
+     * @generated from protobuf field: string service = 1
      */
     service: string;
     /**
@@ -167,21 +167,21 @@ export interface AttributeContext_Api {
      * method name, such as "google.pubsub.v1.Publisher.Publish". For OpenAPI
      * requests, it is the `operationId`, such as "getPet".
      *
-     * @generated from protobuf field: string operation = 2;
+     * @generated from protobuf field: string operation = 2
      */
     operation: string;
     /**
      * The API protocol used for sending the request, such as "http", "https",
      * "grpc", or "internal".
      *
-     * @generated from protobuf field: string protocol = 3;
+     * @generated from protobuf field: string protocol = 3
      */
     protocol: string;
     /**
      * The API version associated with the API operation above, such as "v1" or
      * "v1alpha1".
      *
-     * @generated from protobuf field: string version = 4;
+     * @generated from protobuf field: string version = 4
      */
     version: string;
 }
@@ -200,7 +200,7 @@ export interface AttributeContext_Auth {
      * Google accounts, the principal format is:
      * "https://accounts.google.com/{id}"
      *
-     * @generated from protobuf field: string principal = 1;
+     * @generated from protobuf field: string principal = 1
      */
     principal: string;
     /**
@@ -219,7 +219,7 @@ export interface AttributeContext_Auth {
      * Consult the documentation for the credential issuer to determine the
      * information provided.
      *
-     * @generated from protobuf field: repeated string audiences = 2;
+     * @generated from protobuf field: repeated string audiences = 2
      */
     audiences: string[];
     /**
@@ -228,7 +228,7 @@ export interface AttributeContext_Auth {
      * OAuth client id. For example, a Google Cloud Platform client id looks
      * as follows: "123456789012.apps.googleusercontent.com".
      *
-     * @generated from protobuf field: string presenter = 3;
+     * @generated from protobuf field: string presenter = 3
      */
     presenter: string;
     /**
@@ -248,7 +248,7 @@ export interface AttributeContext_Auth {
      * SAML assertions are similarly specified, but with an identity provider
      * dependent structure.
      *
-     * @generated from protobuf field: google.protobuf.Struct claims = 4;
+     * @generated from protobuf field: google.protobuf.Struct claims = 4
      */
     claims?: Struct;
     /**
@@ -260,7 +260,7 @@ export interface AttributeContext_Auth {
      * Example:
      * "//accesscontextmanager.googleapis.com/accessPolicies/MY_POLICY_ID/accessLevels/MY_LEVEL"
      *
-     * @generated from protobuf field: repeated string access_levels = 5;
+     * @generated from protobuf field: repeated string access_levels = 5
      */
     accessLevels: string[];
 }
@@ -277,13 +277,13 @@ export interface AttributeContext_Request {
      * systems. The ID should have low probability of collision
      * within a single day for a specific service.
      *
-     * @generated from protobuf field: string id = 1;
+     * @generated from protobuf field: string id = 1
      */
     id: string;
     /**
      * The HTTP request method, such as `GET`, `POST`.
      *
-     * @generated from protobuf field: string method = 2;
+     * @generated from protobuf field: string method = 2
      */
     method: string;
     /**
@@ -291,7 +291,7 @@ export interface AttributeContext_Request {
      * must be merged according to the HTTP spec. All header keys must be
      * lowercased, because HTTP header keys are case-insensitive.
      *
-     * @generated from protobuf field: map<string, string> headers = 3;
+     * @generated from protobuf field: map<string, string> headers = 3
      */
     headers: {
         [key: string]: string;
@@ -299,39 +299,39 @@ export interface AttributeContext_Request {
     /**
      * The HTTP URL path.
      *
-     * @generated from protobuf field: string path = 4;
+     * @generated from protobuf field: string path = 4
      */
     path: string;
     /**
      * The HTTP request `Host` header value.
      *
-     * @generated from protobuf field: string host = 5;
+     * @generated from protobuf field: string host = 5
      */
     host: string;
     /**
      * The HTTP URL scheme, such as `http` and `https`.
      *
-     * @generated from protobuf field: string scheme = 6;
+     * @generated from protobuf field: string scheme = 6
      */
     scheme: string;
     /**
      * The HTTP URL query in the format of `name1=value1&name2=value2`, as it
      * appears in the first line of the HTTP request. No decoding is performed.
      *
-     * @generated from protobuf field: string query = 7;
+     * @generated from protobuf field: string query = 7
      */
     query: string;
     /**
      * The timestamp when the `destination` service receives the first byte of
      * the request.
      *
-     * @generated from protobuf field: google.protobuf.Timestamp time = 9;
+     * @generated from protobuf field: google.protobuf.Timestamp time = 9
      */
     time?: Timestamp;
     /**
      * The HTTP request size in bytes. If unknown, it must be -1.
      *
-     * @generated from protobuf field: int64 size = 10;
+     * @generated from protobuf field: int64 size = 10
      */
     size: bigint;
     /**
@@ -340,21 +340,21 @@ export interface AttributeContext_Request {
      * https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids
      * for details.
      *
-     * @generated from protobuf field: string protocol = 11;
+     * @generated from protobuf field: string protocol = 11
      */
     protocol: string;
     /**
      * A special parameter for request reason. It is used by security systems
      * to associate auditing information with a request.
      *
-     * @generated from protobuf field: string reason = 12;
+     * @generated from protobuf field: string reason = 12
      */
     reason: string;
     /**
      * The request authentication. May be absent for unauthenticated requests.
      * Derived from the HTTP request `Authorization` header or equivalent.
      *
-     * @generated from protobuf field: google.rpc.context.AttributeContext.Auth auth = 13;
+     * @generated from protobuf field: google.rpc.context.AttributeContext.Auth auth = 13
      */
     auth?: AttributeContext_Auth;
 }
@@ -368,13 +368,13 @@ export interface AttributeContext_Response {
     /**
      * The HTTP response status code, such as `200` and `404`.
      *
-     * @generated from protobuf field: int64 code = 1;
+     * @generated from protobuf field: int64 code = 1
      */
     code: bigint;
     /**
      * The HTTP response size in bytes. If unknown, it must be -1.
      *
-     * @generated from protobuf field: int64 size = 2;
+     * @generated from protobuf field: int64 size = 2
      */
     size: bigint;
     /**
@@ -382,7 +382,7 @@ export interface AttributeContext_Response {
      * must be merged according to HTTP spec. All header keys must be
      * lowercased, because HTTP header keys are case-insensitive.
      *
-     * @generated from protobuf field: map<string, string> headers = 3;
+     * @generated from protobuf field: map<string, string> headers = 3
      */
     headers: {
         [key: string]: string;
@@ -391,7 +391,7 @@ export interface AttributeContext_Response {
      * The timestamp when the `destination` service generates the first byte of
      * the response.
      *
-     * @generated from protobuf field: google.protobuf.Timestamp time = 4;
+     * @generated from protobuf field: google.protobuf.Timestamp time = 4
      */
     time?: Timestamp;
 }
@@ -408,7 +408,7 @@ export interface AttributeContext_Resource {
      * `pubsub.googleapis.com`. The service may be different from the DNS
      * hostname that actually serves the request.
      *
-     * @generated from protobuf field: string service = 1;
+     * @generated from protobuf field: string service = 1
      */
     service: string;
     /**
@@ -425,7 +425,7 @@ export interface AttributeContext_Resource {
      *
      * See https://cloud.google.com/apis/design/resource_names for details.
      *
-     * @generated from protobuf field: string name = 2;
+     * @generated from protobuf field: string name = 2
      */
     name: string;
     /**
@@ -434,14 +434,14 @@ export interface AttributeContext_Resource {
      *
      * For Google APIs, the type format must be "{service}/{kind}".
      *
-     * @generated from protobuf field: string type = 3;
+     * @generated from protobuf field: string type = 3
      */
     type: string;
     /**
      * The labels or tags on the resource, such as AWS resource tags and
      * Kubernetes resource labels.
      *
-     * @generated from protobuf field: map<string, string> labels = 4;
+     * @generated from protobuf field: map<string, string> labels = 4
      */
     labels: {
         [key: string]: string;

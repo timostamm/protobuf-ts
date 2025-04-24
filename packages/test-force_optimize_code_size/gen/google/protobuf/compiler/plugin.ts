@@ -33,22 +33,22 @@ import { FileDescriptorProto } from "../descriptor";
  */
 export interface Version {
     /**
-     * @generated from protobuf field: optional int32 major = 1;
+     * @generated from protobuf field: optional int32 major = 1
      */
     major?: number;
     /**
-     * @generated from protobuf field: optional int32 minor = 2;
+     * @generated from protobuf field: optional int32 minor = 2
      */
     minor?: number;
     /**
-     * @generated from protobuf field: optional int32 patch = 3;
+     * @generated from protobuf field: optional int32 patch = 3
      */
     patch?: number;
     /**
      * A suffix for alpha, beta or rc release, e.g., "alpha-1", "rc2". It should
      * be empty for mainline stable releases.
      *
-     * @generated from protobuf field: optional string suffix = 4;
+     * @generated from protobuf field: optional string suffix = 4
      */
     suffix?: string;
 }
@@ -63,13 +63,13 @@ export interface CodeGeneratorRequest {
      * code generator should generate code only for these files.  Each file's
      * descriptor will be included in proto_file, below.
      *
-     * @generated from protobuf field: repeated string file_to_generate = 1;
+     * @generated from protobuf field: repeated string file_to_generate = 1
      */
     fileToGenerate: string[];
     /**
      * The generator parameter passed on the command-line.
      *
-     * @generated from protobuf field: optional string parameter = 2;
+     * @generated from protobuf field: optional string parameter = 2
      */
     parameter?: string;
     /**
@@ -93,7 +93,7 @@ export interface CodeGeneratorRequest {
      * Type names of fields and extensions in the FileDescriptorProto are always
      * fully qualified.
      *
-     * @generated from protobuf field: repeated google.protobuf.FileDescriptorProto proto_file = 15;
+     * @generated from protobuf field: repeated google.protobuf.FileDescriptorProto proto_file = 15
      */
     protoFile: FileDescriptorProto[];
     /**
@@ -101,13 +101,13 @@ export interface CodeGeneratorRequest {
      * These descriptors are only provided for the files listed in
      * files_to_generate.
      *
-     * @generated from protobuf field: repeated google.protobuf.FileDescriptorProto source_file_descriptors = 17;
+     * @generated from protobuf field: repeated google.protobuf.FileDescriptorProto source_file_descriptors = 17
      */
     sourceFileDescriptors: FileDescriptorProto[];
     /**
      * The version number of protocol compiler.
      *
-     * @generated from protobuf field: optional google.protobuf.compiler.Version compiler_version = 3;
+     * @generated from protobuf field: optional google.protobuf.compiler.Version compiler_version = 3
      */
     compilerVersion?: Version;
 }
@@ -127,14 +127,14 @@ export interface CodeGeneratorResponse {
      * unparseable -- should be reported by writing a message to stderr and
      * exiting with a non-zero status code.
      *
-     * @generated from protobuf field: optional string error = 1;
+     * @generated from protobuf field: optional string error = 1
      */
     error?: string;
     /**
      * A bitmask of supported features that the code generator supports.
      * This is a bitwise "or" of values from the Feature enum.
      *
-     * @generated from protobuf field: optional uint64 supported_features = 2;
+     * @generated from protobuf field: optional uint64 supported_features = 2
      */
     supportedFeatures?: bigint;
     /**
@@ -143,7 +143,7 @@ export interface CodeGeneratorResponse {
      * according the edition enum value, *not* the edition number.  Only takes
      * effect for plugins that have FEATURE_SUPPORTS_EDITIONS set.
      *
-     * @generated from protobuf field: optional int32 minimum_edition = 3;
+     * @generated from protobuf field: optional int32 minimum_edition = 3
      */
     minimumEdition?: number;
     /**
@@ -152,11 +152,11 @@ export interface CodeGeneratorResponse {
      * according the edition enum value, *not* the edition number.  Only takes
      * effect for plugins that have FEATURE_SUPPORTS_EDITIONS set.
      *
-     * @generated from protobuf field: optional int32 maximum_edition = 4;
+     * @generated from protobuf field: optional int32 maximum_edition = 4
      */
     maximumEdition?: number;
     /**
-     * @generated from protobuf field: repeated google.protobuf.compiler.CodeGeneratorResponse.File file = 15;
+     * @generated from protobuf field: repeated google.protobuf.compiler.CodeGeneratorResponse.File file = 15
      */
     file: CodeGeneratorResponse_File[];
 }
@@ -179,7 +179,7 @@ export interface CodeGeneratorResponse_File {
      * this writing protoc does not optimize for this -- it will read the entire
      * CodeGeneratorResponse before writing files to disk.
      *
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string;
     /**
@@ -221,13 +221,13 @@ export interface CodeGeneratorResponse_File {
      *
      * If |insertion_point| is present, |name| must also be present.
      *
-     * @generated from protobuf field: optional string insertion_point = 2;
+     * @generated from protobuf field: optional string insertion_point = 2
      */
     insertionPoint?: string;
     /**
      * The file contents.
      *
-     * @generated from protobuf field: optional string content = 15;
+     * @generated from protobuf field: optional string content = 15
      */
     content?: string;
     /**
@@ -235,7 +235,7 @@ export interface CodeGeneratorResponse_File {
      * point is used, this information will be appropriately offset and inserted
      * into the code generation metadata for the generated files.
      *
-     * @generated from protobuf field: optional google.protobuf.GeneratedCodeInfo generated_code_info = 16;
+     * @generated from protobuf field: optional google.protobuf.GeneratedCodeInfo generated_code_info = 16
      */
     generatedCodeInfo?: GeneratedCodeInfo;
 }

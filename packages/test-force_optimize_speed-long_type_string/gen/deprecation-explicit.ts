@@ -18,7 +18,7 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface DeprecatedMessage {
     /**
-     * @generated from protobuf field: string field = 1;
+     * @generated from protobuf field: string field = 1
      */
     field: string;
 }
@@ -32,13 +32,13 @@ export interface DeprecatedFieldMessage {
      * This field is deprecated
      *
      * @deprecated
-     * @generated from protobuf field: string deprecated_field = 1 [deprecated = true];
+     * @generated from protobuf field: string deprecated_field = 1 [deprecated = true]
      */
     deprecatedField: string;
     /**
      * This field is not deprecated
      *
-     * @generated from protobuf field: string current_field = 2;
+     * @generated from protobuf field: string current_field = 2
      */
     currentField: string;
 }

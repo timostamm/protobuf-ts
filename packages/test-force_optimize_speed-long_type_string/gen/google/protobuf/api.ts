@@ -62,19 +62,19 @@ export interface Api {
      * The fully qualified name of this interface, including package name
      * followed by the interface's simple name.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
      * The methods of this interface, in unspecified order.
      *
-     * @generated from protobuf field: repeated google.protobuf.Method methods = 2;
+     * @generated from protobuf field: repeated google.protobuf.Method methods = 2
      */
     methods: Method[];
     /**
      * Any metadata attached to the interface.
      *
-     * @generated from protobuf field: repeated google.protobuf.Option options = 3;
+     * @generated from protobuf field: repeated google.protobuf.Option options = 3
      */
     options: Option[];
     /**
@@ -99,26 +99,26 @@ export interface Api {
      * experimental, non-GA interfaces.
      *
      *
-     * @generated from protobuf field: string version = 4;
+     * @generated from protobuf field: string version = 4
      */
     version: string;
     /**
      * Source context for the protocol buffer service represented by this
      * message.
      *
-     * @generated from protobuf field: google.protobuf.SourceContext source_context = 5;
+     * @generated from protobuf field: google.protobuf.SourceContext source_context = 5
      */
     sourceContext?: SourceContext;
     /**
      * Included interfaces. See [Mixin][].
      *
-     * @generated from protobuf field: repeated google.protobuf.Mixin mixins = 6;
+     * @generated from protobuf field: repeated google.protobuf.Mixin mixins = 6
      */
     mixins: Mixin[];
     /**
      * The source syntax of the service.
      *
-     * @generated from protobuf field: google.protobuf.Syntax syntax = 7;
+     * @generated from protobuf field: google.protobuf.Syntax syntax = 7
      */
     syntax: Syntax;
 }
@@ -131,43 +131,43 @@ export interface Method {
     /**
      * The simple name of this method.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
      * A URL of the input message type.
      *
-     * @generated from protobuf field: string request_type_url = 2;
+     * @generated from protobuf field: string request_type_url = 2
      */
     requestTypeUrl: string;
     /**
      * If true, the request is streamed.
      *
-     * @generated from protobuf field: bool request_streaming = 3;
+     * @generated from protobuf field: bool request_streaming = 3
      */
     requestStreaming: boolean;
     /**
      * The URL of the output message type.
      *
-     * @generated from protobuf field: string response_type_url = 4;
+     * @generated from protobuf field: string response_type_url = 4
      */
     responseTypeUrl: string;
     /**
      * If true, the response is streamed.
      *
-     * @generated from protobuf field: bool response_streaming = 5;
+     * @generated from protobuf field: bool response_streaming = 5
      */
     responseStreaming: boolean;
     /**
      * Any metadata attached to the method.
      *
-     * @generated from protobuf field: repeated google.protobuf.Option options = 6;
+     * @generated from protobuf field: repeated google.protobuf.Option options = 6
      */
     options: Option[];
     /**
      * The source syntax of this method.
      *
-     * @generated from protobuf field: google.protobuf.Syntax syntax = 7;
+     * @generated from protobuf field: google.protobuf.Syntax syntax = 7
      */
     syntax: Syntax;
 }
@@ -257,14 +257,14 @@ export interface Mixin {
     /**
      * The fully qualified name of the interface which is included.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
      * If non-empty specifies a path under which inherited HTTP paths
      * are rooted.
      *
-     * @generated from protobuf field: string root = 2;
+     * @generated from protobuf field: string root = 2
      */
     root: string;
 }

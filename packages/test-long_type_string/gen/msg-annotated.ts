@@ -18,15 +18,15 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface FieldUiBehaviour {
     /**
-     * @generated from protobuf field: string label = 2;
+     * @generated from protobuf field: string label = 2
      */
     label: string;
     /**
-     * @generated from protobuf field: bool required = 3;
+     * @generated from protobuf field: bool required = 3
      */
     required: boolean;
     /**
-     * @generated from protobuf field: spec.FieldUiBehaviour.DataSource autocomplete = 4;
+     * @generated from protobuf field: spec.FieldUiBehaviour.DataSource autocomplete = 4
      */
     autocomplete?: FieldUiBehaviour_DataSource;
 }
@@ -35,15 +35,15 @@ export interface FieldUiBehaviour {
  */
 export interface FieldUiBehaviour_DataSource {
     /**
-     * @generated from protobuf field: string service_name = 1;
+     * @generated from protobuf field: string service_name = 1
      */
     serviceName: string;
     /**
-     * @generated from protobuf field: string method_name = 2;
+     * @generated from protobuf field: string method_name = 2
      */
     methodName: string;
     /**
-     * @generated from protobuf field: string request_field_name = 3;
+     * @generated from protobuf field: string request_field_name = 3
      */
     requestFieldName: string;
 }
@@ -54,43 +54,43 @@ export interface FieldUiBehaviour_DataSource {
  */
 export interface AnnotatedMessage {
     /**
-     * @generated from protobuf field: int32 not_annotated = 1;
+     * @generated from protobuf field: int32 not_annotated = 1
      */
     notAnnotated: number;
     /**
      * annotated with the "spec.field_ui" field option
      *
-     * @generated from protobuf field: string user_name = 2;
+     * @generated from protobuf field: string user_name = 2
      */
     userName: string;
     /**
      * scalar annotations
      *
-     * @generated from protobuf field: int32 ann_scalar = 3;
+     * @generated from protobuf field: int32 ann_scalar = 3
      */
     annScalar: number;
     /**
-     * @generated from protobuf field: int32 ann_repeated_scalar = 4;
+     * @generated from protobuf field: int32 ann_repeated_scalar = 4
      */
     annRepeatedScalar: number;
     /**
      * enum annotations
      *
-     * @generated from protobuf field: int32 ann_enum = 5;
+     * @generated from protobuf field: int32 ann_enum = 5
      */
     annEnum: number;
     /**
-     * @generated from protobuf field: int32 ann_enum_zero = 6;
+     * @generated from protobuf field: int32 ann_enum_zero = 6
      */
     annEnumZero: number;
     /**
-     * @generated from protobuf field: int32 ann_repeated_enum = 7;
+     * @generated from protobuf field: int32 ann_repeated_enum = 7
      */
     annRepeatedEnum: number;
     /**
      * annotated with a field option defined right in the message
      *
-     * @generated from protobuf field: int32 ann_local = 10;
+     * @generated from protobuf field: int32 ann_local = 10
      */
     annLocal: number;
 }

@@ -77,7 +77,7 @@ export interface DoubleValue {
     /**
      * The double value.
      *
-     * @generated from protobuf field: double value = 1;
+     * @generated from protobuf field: double value = 1
      */
     value: number;
 }
@@ -95,7 +95,7 @@ export interface FloatValue {
     /**
      * The float value.
      *
-     * @generated from protobuf field: float value = 1;
+     * @generated from protobuf field: float value = 1
      */
     value: number;
 }
@@ -113,7 +113,7 @@ export interface Int64Value {
     /**
      * The int64 value.
      *
-     * @generated from protobuf field: int64 value = 1;
+     * @generated from protobuf field: int64 value = 1
      */
     value: bigint;
 }
@@ -131,7 +131,7 @@ export interface UInt64Value {
     /**
      * The uint64 value.
      *
-     * @generated from protobuf field: uint64 value = 1;
+     * @generated from protobuf field: uint64 value = 1
      */
     value: bigint;
 }
@@ -149,7 +149,7 @@ export interface Int32Value {
     /**
      * The int32 value.
      *
-     * @generated from protobuf field: int32 value = 1;
+     * @generated from protobuf field: int32 value = 1
      */
     value: number;
 }
@@ -167,7 +167,7 @@ export interface UInt32Value {
     /**
      * The uint32 value.
      *
-     * @generated from protobuf field: uint32 value = 1;
+     * @generated from protobuf field: uint32 value = 1
      */
     value: number;
 }
@@ -185,7 +185,7 @@ export interface BoolValue {
     /**
      * The bool value.
      *
-     * @generated from protobuf field: bool value = 1;
+     * @generated from protobuf field: bool value = 1
      */
     value: boolean;
 }
@@ -203,7 +203,7 @@ export interface StringValue {
     /**
      * The string value.
      *
-     * @generated from protobuf field: string value = 1;
+     * @generated from protobuf field: string value = 1
      */
     value: string;
 }
@@ -221,7 +221,7 @@ export interface BytesValue {
     /**
      * The bytes value.
      *
-     * @generated from protobuf field: bytes value = 1;
+     * @generated from protobuf field: bytes value = 1
      */
     value: Uint8Array;
 }

@@ -18,19 +18,19 @@ export interface ReservedFieldNames {
     /**
      * not allowed as object property, should be escaped
      *
-     * @generated from protobuf field: string __proto__ = 1;
+     * @generated from protobuf field: string __proto__ = 1
      */
     Proto: string;
     /**
      * not allowed as object property, should be escaped
      *
-     * @generated from protobuf field: string to_string = 2;
+     * @generated from protobuf field: string to_string = 2
      */
     toString$: string;
     /**
      * reserved for our ADT discriminator, should be escaped
      *
-     * @generated from protobuf field: string oneofKind = 3;
+     * @generated from protobuf field: string oneofKind = 3
      */
     oneofKind$: string;
 }
@@ -46,7 +46,7 @@ export interface ReservedFieldNamesInOneof {
         /**
          * reserved for our ADT discriminator, should be escaped
          *
-         * @generated from protobuf field: string oneofKind = 1;
+         * @generated from protobuf field: string oneofKind = 1
          */
         oneofKind$: string;
     } | {
@@ -54,7 +54,7 @@ export interface ReservedFieldNamesInOneof {
         /**
          * not allowed as object property, should be escaped
          *
-         * @generated from protobuf field: string __proto__ = 2;
+         * @generated from protobuf field: string __proto__ = 2
          */
         Proto: string;
     } | {
@@ -62,7 +62,7 @@ export interface ReservedFieldNamesInOneof {
         /**
          * not allowed as object property, should be escaped
          *
-         * @generated from protobuf field: string to_string = 3;
+         * @generated from protobuf field: string to_string = 3
          */
         toString$: string;
     } | {
@@ -128,11 +128,11 @@ export interface MessageType {
  */
 export interface Error {
     /**
-     * @generated from protobuf field: string field_name = 1;
+     * @generated from protobuf field: string field_name = 1
      */
     fieldName: string;
     /**
-     * @generated from protobuf field: string message = 2;
+     * @generated from protobuf field: string message = 2
      */
     message: string;
 }
@@ -251,37 +251,37 @@ export interface NoClashFields {
     /**
      * ok as object property
      *
-     * @generated from protobuf field: string const = 1;
+     * @generated from protobuf field: string const = 1
      */
     const: string;
     /**
      * ok as object property
      *
-     * @generated from protobuf field: string switch = 2;
+     * @generated from protobuf field: string switch = 2
      */
     switch: string;
     /**
      * ok as object property
      *
-     * @generated from protobuf field: string case = 3;
+     * @generated from protobuf field: string case = 3
      */
     case: string;
     /**
      * ok as object property
      *
-     * @generated from protobuf field: string function = 4;
+     * @generated from protobuf field: string function = 4
      */
     function: string;
     /**
      * ok as object property
      *
-     * @generated from protobuf field: string interface = 5;
+     * @generated from protobuf field: string interface = 5
      */
     interface: string;
     /**
      * ok as object property
      *
-     * @generated from protobuf field: string return = 6;
+     * @generated from protobuf field: string return = 6
      */
     return: string;
 }
@@ -297,7 +297,7 @@ export interface NoClashOneof {
         /**
          * ok as object property
          *
-         * @generated from protobuf field: string const = 1;
+         * @generated from protobuf field: string const = 1
          */
         const: string;
     } | {
@@ -305,7 +305,7 @@ export interface NoClashOneof {
         /**
          * ok as object property
          *
-         * @generated from protobuf field: string switch = 2;
+         * @generated from protobuf field: string switch = 2
          */
         switch: string;
     } | {
@@ -313,7 +313,7 @@ export interface NoClashOneof {
         /**
          * ok as object property
          *
-         * @generated from protobuf field: string case = 3;
+         * @generated from protobuf field: string case = 3
          */
         case: string;
     } | {
@@ -321,7 +321,7 @@ export interface NoClashOneof {
         /**
          * ok as object property
          *
-         * @generated from protobuf field: string function = 4;
+         * @generated from protobuf field: string function = 4
          */
         function: string;
     } | {
@@ -329,7 +329,7 @@ export interface NoClashOneof {
         /**
          * ok as object property
          *
-         * @generated from protobuf field: string interface = 5;
+         * @generated from protobuf field: string interface = 5
          */
         interface: string;
     } | {
@@ -337,7 +337,7 @@ export interface NoClashOneof {
         /**
          * ok as object property
          *
-         * @generated from protobuf field: string return = 6;
+         * @generated from protobuf field: string return = 6
          */
         return: string;
     } | {

@@ -242,7 +242,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             legacyInterpreter = new LegacyInterpreter(legacyRegistry, options),
             interpreter = new ESInterpreter(registryEs, options),
             optionResolver = new OptionResolver(interpreter, options),
-            genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, legacyInterpreter, options),
+            genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
             genEnum = new EnumGenerator(legacyRegistry, imports, comments, interpreter),
             genMessageType = new MessageTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
             genServiceType = new ServiceTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
@@ -308,9 +308,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             for (const desc of nestedTypes(descFile)) {
                 switch (desc.kind) {
                     case "message":
-                        const legacyMessageDescriptor = legacyRegistry.resolveTypeName(desc.typeName);
-                        assert(DescriptorProto.is(legacyMessageDescriptor));
-                        genMessageInterface.generateMessageInterface(outMain, legacyMessageDescriptor)
+                        genMessageInterface.generateMessageInterface(outMain, desc)
                         break;
                     case "enum":
                         genEnum.generateEnum(outMain, desc);

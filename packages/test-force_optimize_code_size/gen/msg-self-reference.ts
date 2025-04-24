@@ -7,15 +7,15 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface SelfReferencingMessage {
     /**
-     * @generated from protobuf field: spec.SelfReferencingMessage self = 1;
+     * @generated from protobuf field: spec.SelfReferencingMessage self = 1
      */
     self?: SelfReferencingMessage;
     /**
-     * @generated from protobuf field: repeated spec.SelfReferencingMessage self_list = 2;
+     * @generated from protobuf field: repeated spec.SelfReferencingMessage self_list = 2
      */
     selfList: SelfReferencingMessage[];
     /**
-     * @generated from protobuf field: map<string, spec.SelfReferencingMessage> self_map = 3;
+     * @generated from protobuf field: map<string, spec.SelfReferencingMessage> self_map = 3
      */
     selfMap: {
         [key: string]: SelfReferencingMessage;

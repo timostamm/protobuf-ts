@@ -45,63 +45,63 @@ export interface TestAllTypes {
     /**
      * Singular
      *
-     * @generated from protobuf field: int32 optional_int32 = 1;
+     * @generated from protobuf field: int32 optional_int32 = 1
      */
     optionalInt32: number;
     /**
-     * @generated from protobuf field: int64 optional_int64 = 2;
+     * @generated from protobuf field: int64 optional_int64 = 2
      */
     optionalInt64: bigint;
     /**
-     * @generated from protobuf field: uint32 optional_uint32 = 3;
+     * @generated from protobuf field: uint32 optional_uint32 = 3
      */
     optionalUint32: number;
     /**
-     * @generated from protobuf field: uint64 optional_uint64 = 4;
+     * @generated from protobuf field: uint64 optional_uint64 = 4
      */
     optionalUint64: bigint;
     /**
-     * @generated from protobuf field: sint32 optional_sint32 = 5;
+     * @generated from protobuf field: sint32 optional_sint32 = 5
      */
     optionalSint32: number;
     /**
-     * @generated from protobuf field: sint64 optional_sint64 = 6;
+     * @generated from protobuf field: sint64 optional_sint64 = 6
      */
     optionalSint64: bigint;
     /**
-     * @generated from protobuf field: fixed32 optional_fixed32 = 7;
+     * @generated from protobuf field: fixed32 optional_fixed32 = 7
      */
     optionalFixed32: number;
     /**
-     * @generated from protobuf field: fixed64 optional_fixed64 = 8;
+     * @generated from protobuf field: fixed64 optional_fixed64 = 8
      */
     optionalFixed64: bigint;
     /**
-     * @generated from protobuf field: sfixed32 optional_sfixed32 = 9;
+     * @generated from protobuf field: sfixed32 optional_sfixed32 = 9
      */
     optionalSfixed32: number;
     /**
-     * @generated from protobuf field: sfixed64 optional_sfixed64 = 10;
+     * @generated from protobuf field: sfixed64 optional_sfixed64 = 10
      */
     optionalSfixed64: bigint;
     /**
-     * @generated from protobuf field: float optional_float = 11;
+     * @generated from protobuf field: float optional_float = 11
      */
     optionalFloat: number;
     /**
-     * @generated from protobuf field: double optional_double = 12;
+     * @generated from protobuf field: double optional_double = 12
      */
     optionalDouble: number;
     /**
-     * @generated from protobuf field: bool optional_bool = 13;
+     * @generated from protobuf field: bool optional_bool = 13
      */
     optionalBool: boolean;
     /**
-     * @generated from protobuf field: string optional_string = 14;
+     * @generated from protobuf field: string optional_string = 14
      */
     optionalString: string;
     /**
-     * @generated from protobuf field: bytes optional_bytes = 15;
+     * @generated from protobuf field: bytes optional_bytes = 15
      */
     optionalBytes: Uint8Array;
     // Groups are not allowed in proto3.
@@ -110,23 +110,23 @@ export interface TestAllTypes {
     // }
 
     /**
-     * @generated from protobuf field: proto3_arena_unittest.TestAllTypes.NestedMessage optional_nested_message = 18;
+     * @generated from protobuf field: proto3_arena_unittest.TestAllTypes.NestedMessage optional_nested_message = 18
      */
     optionalNestedMessage?: TestAllTypes_NestedMessage;
     /**
-     * @generated from protobuf field: proto3_arena_unittest.ForeignMessage optional_foreign_message = 19;
+     * @generated from protobuf field: proto3_arena_unittest.ForeignMessage optional_foreign_message = 19
      */
     optionalForeignMessage?: ForeignMessage;
     /**
-     * @generated from protobuf field: protobuf_unittest_import.ImportMessage optional_import_message = 20;
+     * @generated from protobuf field: protobuf_unittest_import.ImportMessage optional_import_message = 20
      */
     optionalImportMessage?: ImportMessage;
     /**
-     * @generated from protobuf field: proto3_arena_unittest.TestAllTypes.NestedEnum optional_nested_enum = 21;
+     * @generated from protobuf field: proto3_arena_unittest.TestAllTypes.NestedEnum optional_nested_enum = 21
      */
     optionalNestedEnum: TestAllTypes_NestedEnum;
     /**
-     * @generated from protobuf field: proto3_arena_unittest.ForeignEnum optional_foreign_enum = 22;
+     * @generated from protobuf field: proto3_arena_unittest.ForeignEnum optional_foreign_enum = 22
      */
     optionalForeignEnum: ForeignEnum;
     // Omitted (compared to unittest.proto) because proto2 enums are not allowed
@@ -135,87 +135,87 @@ export interface TestAllTypes {
     // optional protobuf_unittest_import.ImportEnum    optional_import_enum  = 23;
 
     /**
-     * @generated from protobuf field: string optional_string_piece = 24;
+     * @generated from protobuf field: string optional_string_piece = 24
      */
     optionalStringPiece: string;
     /**
-     * @generated from protobuf field: string optional_cord = 25;
+     * @generated from protobuf field: string optional_cord = 25
      */
     optionalCord: string;
     /**
      * Defined in unittest_import_public.proto
      *
-     * @generated from protobuf field: protobuf_unittest_import.PublicImportMessage optional_public_import_message = 26;
+     * @generated from protobuf field: protobuf_unittest_import.PublicImportMessage optional_public_import_message = 26
      */
     optionalPublicImportMessage?: PublicImportMessage;
     /**
-     * @generated from protobuf field: proto3_arena_unittest.TestAllTypes.NestedMessage optional_lazy_message = 27;
+     * @generated from protobuf field: proto3_arena_unittest.TestAllTypes.NestedMessage optional_lazy_message = 27
      */
     optionalLazyMessage?: TestAllTypes_NestedMessage;
     /**
-     * @generated from protobuf field: protobuf_unittest_import.ImportMessage optional_lazy_import_message = 115;
+     * @generated from protobuf field: protobuf_unittest_import.ImportMessage optional_lazy_import_message = 115
      */
     optionalLazyImportMessage?: ImportMessage;
     /**
      * Repeated
      *
-     * @generated from protobuf field: repeated int32 repeated_int32 = 31;
+     * @generated from protobuf field: repeated int32 repeated_int32 = 31
      */
     repeatedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 repeated_int64 = 32;
+     * @generated from protobuf field: repeated int64 repeated_int64 = 32
      */
     repeatedInt64: bigint[];
     /**
-     * @generated from protobuf field: repeated uint32 repeated_uint32 = 33;
+     * @generated from protobuf field: repeated uint32 repeated_uint32 = 33
      */
     repeatedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 repeated_uint64 = 34;
+     * @generated from protobuf field: repeated uint64 repeated_uint64 = 34
      */
     repeatedUint64: bigint[];
     /**
-     * @generated from protobuf field: repeated sint32 repeated_sint32 = 35;
+     * @generated from protobuf field: repeated sint32 repeated_sint32 = 35
      */
     repeatedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 repeated_sint64 = 36;
+     * @generated from protobuf field: repeated sint64 repeated_sint64 = 36
      */
     repeatedSint64: bigint[];
     /**
-     * @generated from protobuf field: repeated fixed32 repeated_fixed32 = 37;
+     * @generated from protobuf field: repeated fixed32 repeated_fixed32 = 37
      */
     repeatedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 repeated_fixed64 = 38;
+     * @generated from protobuf field: repeated fixed64 repeated_fixed64 = 38
      */
     repeatedFixed64: bigint[];
     /**
-     * @generated from protobuf field: repeated sfixed32 repeated_sfixed32 = 39;
+     * @generated from protobuf field: repeated sfixed32 repeated_sfixed32 = 39
      */
     repeatedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 repeated_sfixed64 = 40;
+     * @generated from protobuf field: repeated sfixed64 repeated_sfixed64 = 40
      */
     repeatedSfixed64: bigint[];
     /**
-     * @generated from protobuf field: repeated float repeated_float = 41;
+     * @generated from protobuf field: repeated float repeated_float = 41
      */
     repeatedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double repeated_double = 42;
+     * @generated from protobuf field: repeated double repeated_double = 42
      */
     repeatedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool repeated_bool = 43;
+     * @generated from protobuf field: repeated bool repeated_bool = 43
      */
     repeatedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated string repeated_string = 44;
+     * @generated from protobuf field: repeated string repeated_string = 44
      */
     repeatedString: string[];
     /**
-     * @generated from protobuf field: repeated bytes repeated_bytes = 45;
+     * @generated from protobuf field: repeated bytes repeated_bytes = 45
      */
     repeatedBytes: Uint8Array[];
     // Groups are not allowed in proto3.
@@ -224,23 +224,23 @@ export interface TestAllTypes {
     // }
 
     /**
-     * @generated from protobuf field: repeated proto3_arena_unittest.TestAllTypes.NestedMessage repeated_nested_message = 48;
+     * @generated from protobuf field: repeated proto3_arena_unittest.TestAllTypes.NestedMessage repeated_nested_message = 48
      */
     repeatedNestedMessage: TestAllTypes_NestedMessage[];
     /**
-     * @generated from protobuf field: repeated proto3_arena_unittest.ForeignMessage repeated_foreign_message = 49;
+     * @generated from protobuf field: repeated proto3_arena_unittest.ForeignMessage repeated_foreign_message = 49
      */
     repeatedForeignMessage: ForeignMessage[];
     /**
-     * @generated from protobuf field: repeated protobuf_unittest_import.ImportMessage repeated_import_message = 50;
+     * @generated from protobuf field: repeated protobuf_unittest_import.ImportMessage repeated_import_message = 50
      */
     repeatedImportMessage: ImportMessage[];
     /**
-     * @generated from protobuf field: repeated proto3_arena_unittest.TestAllTypes.NestedEnum repeated_nested_enum = 51;
+     * @generated from protobuf field: repeated proto3_arena_unittest.TestAllTypes.NestedEnum repeated_nested_enum = 51
      */
     repeatedNestedEnum: TestAllTypes_NestedEnum[];
     /**
-     * @generated from protobuf field: repeated proto3_arena_unittest.ForeignEnum repeated_foreign_enum = 52;
+     * @generated from protobuf field: repeated proto3_arena_unittest.ForeignEnum repeated_foreign_enum = 52
      */
     repeatedForeignEnum: ForeignEnum[];
     // Omitted (compared to unittest.proto) because proto2 enums are not allowed
@@ -249,15 +249,15 @@ export interface TestAllTypes {
     // repeated protobuf_unittest_import.ImportEnum    repeated_import_enum  = 53;
 
     /**
-     * @generated from protobuf field: repeated string repeated_string_piece = 54;
+     * @generated from protobuf field: repeated string repeated_string_piece = 54
      */
     repeatedStringPiece: string[];
     /**
-     * @generated from protobuf field: repeated string repeated_cord = 55;
+     * @generated from protobuf field: repeated string repeated_cord = 55
      */
     repeatedCord: string[];
     /**
-     * @generated from protobuf field: repeated proto3_arena_unittest.TestAllTypes.NestedMessage repeated_lazy_message = 57;
+     * @generated from protobuf field: repeated proto3_arena_unittest.TestAllTypes.NestedMessage repeated_lazy_message = 57
      */
     repeatedLazyMessage: TestAllTypes_NestedMessage[];
     /**
@@ -266,25 +266,25 @@ export interface TestAllTypes {
     oneofField: {
         oneofKind: "oneofUint32";
         /**
-         * @generated from protobuf field: uint32 oneof_uint32 = 111;
+         * @generated from protobuf field: uint32 oneof_uint32 = 111
          */
         oneofUint32: number;
     } | {
         oneofKind: "oneofNestedMessage";
         /**
-         * @generated from protobuf field: proto3_arena_unittest.TestAllTypes.NestedMessage oneof_nested_message = 112;
+         * @generated from protobuf field: proto3_arena_unittest.TestAllTypes.NestedMessage oneof_nested_message = 112
          */
         oneofNestedMessage: TestAllTypes_NestedMessage;
     } | {
         oneofKind: "oneofString";
         /**
-         * @generated from protobuf field: string oneof_string = 113;
+         * @generated from protobuf field: string oneof_string = 113
          */
         oneofString: string;
     } | {
         oneofKind: "oneofBytes";
         /**
-         * @generated from protobuf field: bytes oneof_bytes = 114;
+         * @generated from protobuf field: bytes oneof_bytes = 114
          */
         oneofBytes: Uint8Array;
     } | {
@@ -300,7 +300,7 @@ export interface TestAllTypes_NestedMessage {
      * a local variable named "b" in one of the generated methods.  Doh.
      * This file needs to compile in proto1 to test backwards-compatibility.
      *
-     * @generated from protobuf field: int32 bb = 1;
+     * @generated from protobuf field: int32 bb = 1
      */
     bb: number;
 }
@@ -338,59 +338,59 @@ export enum TestAllTypes_NestedEnum {
  */
 export interface TestPackedTypes {
     /**
-     * @generated from protobuf field: repeated int32 packed_int32 = 90 [packed = true];
+     * @generated from protobuf field: repeated int32 packed_int32 = 90 [packed = true]
      */
     packedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 packed_int64 = 91 [packed = true];
+     * @generated from protobuf field: repeated int64 packed_int64 = 91 [packed = true]
      */
     packedInt64: bigint[];
     /**
-     * @generated from protobuf field: repeated uint32 packed_uint32 = 92 [packed = true];
+     * @generated from protobuf field: repeated uint32 packed_uint32 = 92 [packed = true]
      */
     packedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 packed_uint64 = 93 [packed = true];
+     * @generated from protobuf field: repeated uint64 packed_uint64 = 93 [packed = true]
      */
     packedUint64: bigint[];
     /**
-     * @generated from protobuf field: repeated sint32 packed_sint32 = 94 [packed = true];
+     * @generated from protobuf field: repeated sint32 packed_sint32 = 94 [packed = true]
      */
     packedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 packed_sint64 = 95 [packed = true];
+     * @generated from protobuf field: repeated sint64 packed_sint64 = 95 [packed = true]
      */
     packedSint64: bigint[];
     /**
-     * @generated from protobuf field: repeated fixed32 packed_fixed32 = 96 [packed = true];
+     * @generated from protobuf field: repeated fixed32 packed_fixed32 = 96 [packed = true]
      */
     packedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 packed_fixed64 = 97 [packed = true];
+     * @generated from protobuf field: repeated fixed64 packed_fixed64 = 97 [packed = true]
      */
     packedFixed64: bigint[];
     /**
-     * @generated from protobuf field: repeated sfixed32 packed_sfixed32 = 98 [packed = true];
+     * @generated from protobuf field: repeated sfixed32 packed_sfixed32 = 98 [packed = true]
      */
     packedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 packed_sfixed64 = 99 [packed = true];
+     * @generated from protobuf field: repeated sfixed64 packed_sfixed64 = 99 [packed = true]
      */
     packedSfixed64: bigint[];
     /**
-     * @generated from protobuf field: repeated float packed_float = 100 [packed = true];
+     * @generated from protobuf field: repeated float packed_float = 100 [packed = true]
      */
     packedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double packed_double = 101 [packed = true];
+     * @generated from protobuf field: repeated double packed_double = 101 [packed = true]
      */
     packedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool packed_bool = 102 [packed = true];
+     * @generated from protobuf field: repeated bool packed_bool = 102 [packed = true]
      */
     packedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated proto3_arena_unittest.ForeignEnum packed_enum = 103 [packed = true];
+     * @generated from protobuf field: repeated proto3_arena_unittest.ForeignEnum packed_enum = 103 [packed = true]
      */
     packedEnum: ForeignEnum[];
 }
@@ -401,59 +401,59 @@ export interface TestPackedTypes {
  */
 export interface TestUnpackedTypes {
     /**
-     * @generated from protobuf field: repeated int32 repeated_int32 = 1 [packed = false];
+     * @generated from protobuf field: repeated int32 repeated_int32 = 1 [packed = false]
      */
     repeatedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 repeated_int64 = 2 [packed = false];
+     * @generated from protobuf field: repeated int64 repeated_int64 = 2 [packed = false]
      */
     repeatedInt64: bigint[];
     /**
-     * @generated from protobuf field: repeated uint32 repeated_uint32 = 3 [packed = false];
+     * @generated from protobuf field: repeated uint32 repeated_uint32 = 3 [packed = false]
      */
     repeatedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 repeated_uint64 = 4 [packed = false];
+     * @generated from protobuf field: repeated uint64 repeated_uint64 = 4 [packed = false]
      */
     repeatedUint64: bigint[];
     /**
-     * @generated from protobuf field: repeated sint32 repeated_sint32 = 5 [packed = false];
+     * @generated from protobuf field: repeated sint32 repeated_sint32 = 5 [packed = false]
      */
     repeatedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 repeated_sint64 = 6 [packed = false];
+     * @generated from protobuf field: repeated sint64 repeated_sint64 = 6 [packed = false]
      */
     repeatedSint64: bigint[];
     /**
-     * @generated from protobuf field: repeated fixed32 repeated_fixed32 = 7 [packed = false];
+     * @generated from protobuf field: repeated fixed32 repeated_fixed32 = 7 [packed = false]
      */
     repeatedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 repeated_fixed64 = 8 [packed = false];
+     * @generated from protobuf field: repeated fixed64 repeated_fixed64 = 8 [packed = false]
      */
     repeatedFixed64: bigint[];
     /**
-     * @generated from protobuf field: repeated sfixed32 repeated_sfixed32 = 9 [packed = false];
+     * @generated from protobuf field: repeated sfixed32 repeated_sfixed32 = 9 [packed = false]
      */
     repeatedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 repeated_sfixed64 = 10 [packed = false];
+     * @generated from protobuf field: repeated sfixed64 repeated_sfixed64 = 10 [packed = false]
      */
     repeatedSfixed64: bigint[];
     /**
-     * @generated from protobuf field: repeated float repeated_float = 11 [packed = false];
+     * @generated from protobuf field: repeated float repeated_float = 11 [packed = false]
      */
     repeatedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double repeated_double = 12 [packed = false];
+     * @generated from protobuf field: repeated double repeated_double = 12 [packed = false]
      */
     repeatedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool repeated_bool = 13 [packed = false];
+     * @generated from protobuf field: repeated bool repeated_bool = 13 [packed = false]
      */
     repeatedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated proto3_arena_unittest.TestAllTypes.NestedEnum repeated_nested_enum = 14 [packed = false];
+     * @generated from protobuf field: repeated proto3_arena_unittest.TestAllTypes.NestedEnum repeated_nested_enum = 14 [packed = false]
      */
     repeatedNestedEnum: TestAllTypes_NestedEnum[];
 }
@@ -464,15 +464,15 @@ export interface TestUnpackedTypes {
  */
 export interface NestedTestAllTypes {
     /**
-     * @generated from protobuf field: proto3_arena_unittest.NestedTestAllTypes child = 1;
+     * @generated from protobuf field: proto3_arena_unittest.NestedTestAllTypes child = 1
      */
     child?: NestedTestAllTypes;
     /**
-     * @generated from protobuf field: proto3_arena_unittest.TestAllTypes payload = 2;
+     * @generated from protobuf field: proto3_arena_unittest.TestAllTypes payload = 2
      */
     payload?: TestAllTypes;
     /**
-     * @generated from protobuf field: repeated proto3_arena_unittest.NestedTestAllTypes repeated_child = 3;
+     * @generated from protobuf field: repeated proto3_arena_unittest.NestedTestAllTypes repeated_child = 3
      */
     repeatedChild: NestedTestAllTypes[];
 }
@@ -484,7 +484,7 @@ export interface NestedTestAllTypes {
  */
 export interface ForeignMessage {
     /**
-     * @generated from protobuf field: int32 c = 1;
+     * @generated from protobuf field: int32 c = 1
      */
     c: number;
 }
@@ -507,7 +507,7 @@ export interface TestPickleNestedMessage {
  */
 export interface TestPickleNestedMessage_NestedMessage {
     /**
-     * @generated from protobuf field: int32 bb = 1;
+     * @generated from protobuf field: int32 bb = 1
      */
     bb: number;
 }
@@ -516,7 +516,7 @@ export interface TestPickleNestedMessage_NestedMessage {
  */
 export interface TestPickleNestedMessage_NestedMessage_NestedNestedMessage {
     /**
-     * @generated from protobuf field: int32 cc = 1;
+     * @generated from protobuf field: int32 cc = 1
      */
     cc: number;
 }

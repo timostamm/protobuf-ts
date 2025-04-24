@@ -115,7 +115,7 @@ export interface Duration {
      * to +315,576,000,000 inclusive. Note: these bounds are computed from:
      * 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
      *
-     * @generated from protobuf field: int64 seconds = 1;
+     * @generated from protobuf field: int64 seconds = 1
      */
     seconds: bigint;
     /**
@@ -126,7 +126,7 @@ export interface Duration {
      * of the same sign as the `seconds` field. Must be from -999,999,999
      * to +999,999,999 inclusive.
      *
-     * @generated from protobuf field: int32 nanos = 2;
+     * @generated from protobuf field: int32 nanos = 2
      */
     nanos: number;
 }

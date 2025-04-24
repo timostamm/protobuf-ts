@@ -35,7 +35,7 @@ export interface Expr {
      * The application context of the containing message determines which
      * well-known feature set of CEL is supported.
      *
-     * @generated from protobuf field: string expression = 1;
+     * @generated from protobuf field: string expression = 1
      */
     expression: string;
     /**
@@ -43,21 +43,21 @@ export interface Expr {
      * its purpose. This can be used e.g. in UIs which allow to enter the
      * expression.
      *
-     * @generated from protobuf field: string title = 2;
+     * @generated from protobuf field: string title = 2
      */
     title: string;
     /**
      * An optional description of the expression. This is a longer text which
      * describes the expression, e.g. when hovered over it in a UI.
      *
-     * @generated from protobuf field: string description = 3;
+     * @generated from protobuf field: string description = 3
      */
     description: string;
     /**
      * An optional string indicating the location of the expression for error
      * reporting, e.g. a file name and a position in the file.
      *
-     * @generated from protobuf field: string location = 4;
+     * @generated from protobuf field: string location = 4
      */
     location: string;
 }

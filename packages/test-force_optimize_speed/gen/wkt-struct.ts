@@ -16,7 +16,7 @@ import { Struct } from "./google/protobuf/struct";
  */
 export interface StructMessage {
     /**
-     * @generated from protobuf field: google.protobuf.Struct struct_field = 1;
+     * @generated from protobuf field: google.protobuf.Struct struct_field = 1
      */
     structField?: Struct;
 }

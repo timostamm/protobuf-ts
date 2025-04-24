@@ -18,7 +18,7 @@ const stringSnippets = [
 
 const bigintSnippets = [
     // Message
-    '@generated from protobuf field: fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL];',
+    '@generated from protobuf field: fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL]',
     'fixed64FieldMin: bigint;',
     // MessageType
     '{ no: 1, name: "fixed64_field_min", kind: "scalar", T: 6 /*ScalarType.FIXED64*/, L: 0 /*LongType.BIGINT*/ },',
@@ -32,7 +32,7 @@ const bigintSnippets = [
 
 const numberSnippets = [
     // Message
-    '@generated from protobuf field: fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER];',
+    '@generated from protobuf field: fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER]',
     'fixed64FieldMinNum: number;',
     // MessageType
     '{ no: 21, name: "fixed64_field_min_num", kind: "scalar", T: 6 /*ScalarType.FIXED64*/, L: 2 /*LongType.NUMBER*/ },',
@@ -55,7 +55,7 @@ describe('Generated code for long type', function () {
         it('should set the default type to string', () => {
             expectContainAll(file, [
                 // Message
-                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
+                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5',
                 'sfixed64FieldMin: string;',
                 // MessageType
                 'case /* sfixed64 sfixed64_field_min */ 5:',
@@ -85,7 +85,7 @@ describe('Generated code for long type', function () {
         it('should set the default type to bigint', () => {
             expectContainAll(file, [
                 // Message
-                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
+                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5',
                 'sfixed64FieldMin: bigint;',
                 // MessageType
                 'case /* sfixed64 sfixed64_field_min */ 5:',
@@ -115,7 +115,7 @@ describe('Generated code for long type', function () {
         it('should set the default type to number', () => {
             expectContainAll(file, [
                 // Message
-                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
+                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5',
                 'sfixed64FieldMin: number;',
                 // MessageType
                 'case /* sfixed64 sfixed64_field_min */ 5:',

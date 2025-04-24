@@ -9,11 +9,11 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface MsgOptSelf {
     /**
-     * @generated from protobuf field: bool a = 1;
+     * @generated from protobuf field: bool a = 1
      */
     a: boolean;
     /**
-     * @generated from protobuf field: spec.MsgOptSelf b = 3;
+     * @generated from protobuf field: spec.MsgOptSelf b = 3
      */
     b?: MsgOptSelf;
 }

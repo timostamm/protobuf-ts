@@ -39,34 +39,40 @@ export interface MessageWithComments {
      * line 4, next is empty
      *
      *
-     * @generated from protobuf field: string foo = 1;
+     * @generated from protobuf field: string foo = 1
      */
     foo: string; // Comment next to field.
+    // Comment after field.
+
     /**
+     * Comment before oneof.
+     *
+     * Comment after start of oneof.
+     *
      * @generated from protobuf oneof: result
      */
     result: {
         oneofKind: "value";
         /**
-         * @generated from protobuf field: int32 value = 2;
+         * @generated from protobuf field: int32 value = 2
          */
         value: number;
     } | {
         oneofKind: "error";
         /**
-         * @generated from protobuf field: string error = 3;
+         * @generated from protobuf field: string error = 3
          */
         error: string;
     } | {
         oneofKind: undefined;
     };
     /**
-     * @generated from protobuf field: string this_field_has_an_empty_comment = 4;
+     * @generated from protobuf field: string this_field_has_an_empty_comment = 4
      */
     thisFieldHasAnEmptyComment: string;
     /**
      * @deprecated
-     * @generated from protobuf field: string this_field_is_deprecated = 5 [deprecated = true, json_name = "sdf"];
+     * @generated from protobuf field: string this_field_is_deprecated = 5 [json_name = "sdf", deprecated = true]
      */
     thisFieldIsDeprecated: string;
 }
@@ -84,17 +90,17 @@ export interface EmptyMessageWithComment {
  */
 export interface GoogleCommentExample {
     /**
-     * @generated from protobuf field: int32 foo = 1;
+     * @generated from protobuf field: int32 foo = 1
      */
     foo: number; // Comment attached to foo.
     /**
      * Comment attached to bar.
      *
-     * @generated from protobuf field: int32 bar = 2;
+     * @generated from protobuf field: int32 bar = 2
      */
     bar: number;
     /**
-     * @generated from protobuf field: string baz = 3;
+     * @generated from protobuf field: string baz = 3
      */
     baz: string; // Comment attached to baz.
     // Another line attached to baz.
@@ -103,7 +109,7 @@ export interface GoogleCommentExample {
      *
      * Another line attached to qux.
      *
-     * @generated from protobuf field: double qux = 4;
+     * @generated from protobuf field: double qux = 4
      */
     qux: number;
     // Detached comment for corge. This is not leading or trailing comments
@@ -113,7 +119,7 @@ export interface GoogleCommentExample {
     // Detached comment for corge paragraph 2.
 
     /**
-     * @generated from protobuf field: string corge = 5;
+     * @generated from protobuf field: string corge = 5
      */
     corge: string; // Block comment attached
     // to corge.  Leading asterisks
@@ -122,7 +128,7 @@ export interface GoogleCommentExample {
      * Block comment attached to
      * grault.
      *
-     * @generated from protobuf field: int32 grault = 6;
+     * @generated from protobuf field: int32 grault = 6
      */
     grault: number;
 }

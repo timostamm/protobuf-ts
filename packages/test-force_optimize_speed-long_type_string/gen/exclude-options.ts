@@ -17,7 +17,7 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface MessageWithExcludedOptions {
     /**
-     * @generated from protobuf field: int32 field = 1;
+     * @generated from protobuf field: int32 field = 1
      */
     field: number;
 }

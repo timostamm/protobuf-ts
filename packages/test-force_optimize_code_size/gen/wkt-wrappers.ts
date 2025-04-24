@@ -18,39 +18,39 @@ import { DoubleValue } from "./google/protobuf/wrappers";
  */
 export interface WrappersMessage {
     /**
-     * @generated from protobuf field: google.protobuf.DoubleValue double_value_field = 1;
+     * @generated from protobuf field: google.protobuf.DoubleValue double_value_field = 1
      */
     doubleValueField?: DoubleValue;
     /**
-     * @generated from protobuf field: google.protobuf.BoolValue bool_value_field = 2;
+     * @generated from protobuf field: google.protobuf.BoolValue bool_value_field = 2
      */
     boolValueField?: BoolValue;
     /**
-     * @generated from protobuf field: google.protobuf.FloatValue float_value_field = 3;
+     * @generated from protobuf field: google.protobuf.FloatValue float_value_field = 3
      */
     floatValueField?: FloatValue;
     /**
-     * @generated from protobuf field: google.protobuf.Int64Value int64_value_field = 4;
+     * @generated from protobuf field: google.protobuf.Int64Value int64_value_field = 4
      */
     int64ValueField?: Int64Value;
     /**
-     * @generated from protobuf field: google.protobuf.UInt64Value uint64_value_field = 5;
+     * @generated from protobuf field: google.protobuf.UInt64Value uint64_value_field = 5
      */
     uint64ValueField?: UInt64Value;
     /**
-     * @generated from protobuf field: google.protobuf.Int32Value int32_value_field = 6;
+     * @generated from protobuf field: google.protobuf.Int32Value int32_value_field = 6
      */
     int32ValueField?: Int32Value;
     /**
-     * @generated from protobuf field: google.protobuf.UInt32Value uint32_value_field = 7;
+     * @generated from protobuf field: google.protobuf.UInt32Value uint32_value_field = 7
      */
     uint32ValueField?: UInt32Value;
     /**
-     * @generated from protobuf field: google.protobuf.StringValue string_value_field = 8;
+     * @generated from protobuf field: google.protobuf.StringValue string_value_field = 8
      */
     stringValueField?: StringValue;
     /**
-     * @generated from protobuf field: google.protobuf.BytesValue bytes_value_field = 9;
+     * @generated from protobuf field: google.protobuf.BytesValue bytes_value_field = 9
      */
     bytesValueField?: BytesValue;
 }

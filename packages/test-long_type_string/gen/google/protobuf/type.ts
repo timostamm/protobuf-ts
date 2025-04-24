@@ -52,43 +52,43 @@ export interface Type {
     /**
      * The fully qualified message name.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
      * The list of fields.
      *
-     * @generated from protobuf field: repeated google.protobuf.Field fields = 2;
+     * @generated from protobuf field: repeated google.protobuf.Field fields = 2
      */
     fields: Field[];
     /**
      * The list of types appearing in `oneof` definitions in this type.
      *
-     * @generated from protobuf field: repeated string oneofs = 3;
+     * @generated from protobuf field: repeated string oneofs = 3
      */
     oneofs: string[];
     /**
      * The protocol buffer options.
      *
-     * @generated from protobuf field: repeated google.protobuf.Option options = 4;
+     * @generated from protobuf field: repeated google.protobuf.Option options = 4
      */
     options: Option[];
     /**
      * The source context.
      *
-     * @generated from protobuf field: google.protobuf.SourceContext source_context = 5;
+     * @generated from protobuf field: google.protobuf.SourceContext source_context = 5
      */
     sourceContext?: SourceContext;
     /**
      * The source syntax.
      *
-     * @generated from protobuf field: google.protobuf.Syntax syntax = 6;
+     * @generated from protobuf field: google.protobuf.Syntax syntax = 6
      */
     syntax: Syntax;
     /**
      * The source edition string, only valid when syntax is SYNTAX_EDITIONS.
      *
-     * @generated from protobuf field: string edition = 7;
+     * @generated from protobuf field: string edition = 7
      */
     edition: string;
 }
@@ -101,63 +101,63 @@ export interface Field {
     /**
      * The field type.
      *
-     * @generated from protobuf field: google.protobuf.Field.Kind kind = 1;
+     * @generated from protobuf field: google.protobuf.Field.Kind kind = 1
      */
     kind: Field_Kind;
     /**
      * The field cardinality.
      *
-     * @generated from protobuf field: google.protobuf.Field.Cardinality cardinality = 2;
+     * @generated from protobuf field: google.protobuf.Field.Cardinality cardinality = 2
      */
     cardinality: Field_Cardinality;
     /**
      * The field number.
      *
-     * @generated from protobuf field: int32 number = 3;
+     * @generated from protobuf field: int32 number = 3
      */
     number: number;
     /**
      * The field name.
      *
-     * @generated from protobuf field: string name = 4;
+     * @generated from protobuf field: string name = 4
      */
     name: string;
     /**
      * The field type URL, without the scheme, for message or enumeration
      * types. Example: `"type.googleapis.com/google.protobuf.Timestamp"`.
      *
-     * @generated from protobuf field: string type_url = 6;
+     * @generated from protobuf field: string type_url = 6
      */
     typeUrl: string;
     /**
      * The index of the field type in `Type.oneofs`, for message or enumeration
      * types. The first type has index 1; zero means the type is not in the list.
      *
-     * @generated from protobuf field: int32 oneof_index = 7;
+     * @generated from protobuf field: int32 oneof_index = 7
      */
     oneofIndex: number;
     /**
      * Whether to use alternative packed wire representation.
      *
-     * @generated from protobuf field: bool packed = 8;
+     * @generated from protobuf field: bool packed = 8
      */
     packed: boolean;
     /**
      * The protocol buffer options.
      *
-     * @generated from protobuf field: repeated google.protobuf.Option options = 9;
+     * @generated from protobuf field: repeated google.protobuf.Option options = 9
      */
     options: Option[];
     /**
      * The field JSON name.
      *
-     * @generated from protobuf field: string json_name = 10;
+     * @generated from protobuf field: string json_name = 10
      */
     jsonName: string;
     /**
      * The string value of the default value of this field. Proto2 syntax only.
      *
-     * @generated from protobuf field: string default_value = 11;
+     * @generated from protobuf field: string default_value = 11
      */
     defaultValue: string;
 }
@@ -322,37 +322,37 @@ export interface Enum {
     /**
      * Enum type name.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
      * Enum value definitions.
      *
-     * @generated from protobuf field: repeated google.protobuf.EnumValue enumvalue = 2;
+     * @generated from protobuf field: repeated google.protobuf.EnumValue enumvalue = 2
      */
     enumvalue: EnumValue[];
     /**
      * Protocol buffer options.
      *
-     * @generated from protobuf field: repeated google.protobuf.Option options = 3;
+     * @generated from protobuf field: repeated google.protobuf.Option options = 3
      */
     options: Option[];
     /**
      * The source context.
      *
-     * @generated from protobuf field: google.protobuf.SourceContext source_context = 4;
+     * @generated from protobuf field: google.protobuf.SourceContext source_context = 4
      */
     sourceContext?: SourceContext;
     /**
      * The source syntax.
      *
-     * @generated from protobuf field: google.protobuf.Syntax syntax = 5;
+     * @generated from protobuf field: google.protobuf.Syntax syntax = 5
      */
     syntax: Syntax;
     /**
      * The source edition string, only valid when syntax is SYNTAX_EDITIONS.
      *
-     * @generated from protobuf field: string edition = 6;
+     * @generated from protobuf field: string edition = 6
      */
     edition: string;
 }
@@ -365,19 +365,19 @@ export interface EnumValue {
     /**
      * Enum value name.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
      * Enum value number.
      *
-     * @generated from protobuf field: int32 number = 2;
+     * @generated from protobuf field: int32 number = 2
      */
     number: number;
     /**
      * Protocol buffer options.
      *
-     * @generated from protobuf field: repeated google.protobuf.Option options = 3;
+     * @generated from protobuf field: repeated google.protobuf.Option options = 3
      */
     options: Option[];
 }
@@ -394,7 +394,7 @@ export interface Option {
      * For custom options, it should be the fully-qualified name. For example,
      * `"google.api.http"`.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
@@ -403,7 +403,7 @@ export interface Option {
      * should be used. If the value is an enum, it should be stored as an int32
      * value using the google.protobuf.Int32Value type.
      *
-     * @generated from protobuf field: google.protobuf.Any value = 2;
+     * @generated from protobuf field: google.protobuf.Any value = 2
      */
     value?: Any;
 }

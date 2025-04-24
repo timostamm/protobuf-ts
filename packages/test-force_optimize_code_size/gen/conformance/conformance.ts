@@ -19,18 +19,18 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface TestStatus {
     /**
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
-     * @generated from protobuf field: string failure_message = 2;
+     * @generated from protobuf field: string failure_message = 2
      */
     failureMessage: string;
     /**
      * What an actual test name matched to in a failure list. Can be wildcarded or
      * an exact match without wildcards.
      *
-     * @generated from protobuf field: string matched_name = 3;
+     * @generated from protobuf field: string matched_name = 3
      */
     matchedName: string;
 }
@@ -43,7 +43,7 @@ export interface TestStatus {
  */
 export interface FailureSet {
     /**
-     * @generated from protobuf field: repeated conformance.TestStatus test = 2;
+     * @generated from protobuf field: repeated conformance.TestStatus test = 2
      */
     test: TestStatus[];
 }
@@ -58,18 +58,22 @@ export interface FailureSet {
  */
 export interface ConformanceRequest {
     /**
+     * The payload (whether protobuf of JSON) is always for a
+     * protobuf_test_messages.proto3.TestAllTypes proto (as defined in
+     * src/google/protobuf/proto3_test_messages.proto).
+     *
      * @generated from protobuf oneof: payload
      */
     payload: {
         oneofKind: "protobufPayload";
         /**
-         * @generated from protobuf field: bytes protobuf_payload = 1;
+         * @generated from protobuf field: bytes protobuf_payload = 1
          */
         protobufPayload: Uint8Array;
     } | {
         oneofKind: "jsonPayload";
         /**
-         * @generated from protobuf field: string json_payload = 2;
+         * @generated from protobuf field: string json_payload = 2
          */
         jsonPayload: string;
     } | {
@@ -77,13 +81,13 @@ export interface ConformanceRequest {
         /**
          * Only used inside Google.  Opensource testees just skip it.
          *
-         * @generated from protobuf field: string jspb_payload = 7;
+         * @generated from protobuf field: string jspb_payload = 7
          */
         jspbPayload: string;
     } | {
         oneofKind: "textPayload";
         /**
-         * @generated from protobuf field: string text_payload = 8;
+         * @generated from protobuf field: string text_payload = 8
          */
         textPayload: string;
     } | {
@@ -92,7 +96,7 @@ export interface ConformanceRequest {
     /**
      * Which format should the testee serialize its message to?
      *
-     * @generated from protobuf field: conformance.WireFormat requested_output_format = 3;
+     * @generated from protobuf field: conformance.WireFormat requested_output_format = 3
      */
     requestedOutputFormat: WireFormat;
     /**
@@ -103,7 +107,7 @@ export interface ConformanceRequest {
      * protobuf_test_messages.editions.proto3.TestAllTypesProto3 or
      * protobuf_test_messages.editions.TestAllTypesEdition2023.
      *
-     * @generated from protobuf field: string message_type = 4;
+     * @generated from protobuf field: string message_type = 4
      */
     messageType: string;
     /**
@@ -111,20 +115,20 @@ export interface ConformanceRequest {
      * specific support in testee programs. Refer to the definition of
      * TestCategory for more information.
      *
-     * @generated from protobuf field: conformance.TestCategory test_category = 5;
+     * @generated from protobuf field: conformance.TestCategory test_category = 5
      */
     testCategory: TestCategory;
     /**
      * Specify details for how to encode jspb.
      *
-     * @generated from protobuf field: conformance.JspbEncodingConfig jspb_encoding_options = 6;
+     * @generated from protobuf field: conformance.JspbEncodingConfig jspb_encoding_options = 6
      */
     jspbEncodingOptions?: JspbEncodingConfig;
     /**
      * This can be used in json and text format. If true, testee should print
      * unknown fields instead of ignore. This feature is optional.
      *
-     * @generated from protobuf field: bool print_unknown_fields = 9;
+     * @generated from protobuf field: bool print_unknown_fields = 9
      */
     printUnknownFields: boolean;
 }
@@ -146,7 +150,7 @@ export interface ConformanceResponse {
          * Setting this string does not necessarily mean the testee failed the
          * test.  Some of the test cases are intentionally invalid input.
          *
-         * @generated from protobuf field: string parse_error = 1;
+         * @generated from protobuf field: string parse_error = 1
          */
         parseError: string;
     } | {
@@ -156,7 +160,7 @@ export interface ConformanceResponse {
          * serializing it to the requested output format, set the error message in
          * this field.
          *
-         * @generated from protobuf field: string serialize_error = 6;
+         * @generated from protobuf field: string serialize_error = 6
          */
         serializeError: string;
     } | {
@@ -166,7 +170,7 @@ export interface ConformanceResponse {
          * provide more information about what the child process was doing when it
          * was killed.
          *
-         * @generated from protobuf field: string timeout_error = 9;
+         * @generated from protobuf field: string timeout_error = 9
          */
         timeoutError: string;
     } | {
@@ -176,7 +180,7 @@ export interface ConformanceResponse {
          * indicate that the test failed.  The string can provide more information
          * about the failure.
          *
-         * @generated from protobuf field: string runtime_error = 2;
+         * @generated from protobuf field: string runtime_error = 2
          */
         runtimeError: string;
     } | {
@@ -185,7 +189,7 @@ export interface ConformanceResponse {
          * If the input was successfully parsed and the requested output was
          * protobuf, serialize it to protobuf and set it in this field.
          *
-         * @generated from protobuf field: bytes protobuf_payload = 3;
+         * @generated from protobuf field: bytes protobuf_payload = 3
          */
         protobufPayload: Uint8Array;
     } | {
@@ -194,7 +198,7 @@ export interface ConformanceResponse {
          * If the input was successfully parsed and the requested output was JSON,
          * serialize to JSON and set it in this field.
          *
-         * @generated from protobuf field: string json_payload = 4;
+         * @generated from protobuf field: string json_payload = 4
          */
         jsonPayload: string;
     } | {
@@ -203,7 +207,7 @@ export interface ConformanceResponse {
          * For when the testee skipped the test, likely because a certain feature
          * wasn't supported, like JSON input/output.
          *
-         * @generated from protobuf field: string skipped = 5;
+         * @generated from protobuf field: string skipped = 5
          */
         skipped: string;
     } | {
@@ -213,7 +217,7 @@ export interface ConformanceResponse {
          * serialize to JSPB and set it in this field. JSPB is only used inside
          * Google. Opensource testees can just skip it.
          *
-         * @generated from protobuf field: string jspb_payload = 7;
+         * @generated from protobuf field: string jspb_payload = 7
          */
         jspbPayload: string;
     } | {
@@ -222,7 +226,7 @@ export interface ConformanceResponse {
          * If the input was successfully parsed and the requested output was
          * TEXT_FORMAT, serialize to TEXT_FORMAT and set it in this field.
          *
-         * @generated from protobuf field: string text_payload = 8;
+         * @generated from protobuf field: string text_payload = 8
          */
         textPayload: string;
     } | {
@@ -238,7 +242,7 @@ export interface JspbEncodingConfig {
     /**
      * Encode the value field of Any as jspb array if true, otherwise binary.
      *
-     * @generated from protobuf field: bool use_jspb_array_any_format = 1;
+     * @generated from protobuf field: bool use_jspb_array_any_format = 1
      */
     useJspbArrayAnyFormat: boolean;
 }

@@ -32,7 +32,7 @@ import { TestMessageSet } from "./unittest_mset_wire_format";
  */
 export interface TestMessageSetContainer {
     /**
-     * @generated from protobuf field: optional proto2_wireformat_unittest.TestMessageSet message_set = 1;
+     * @generated from protobuf field: optional proto2_wireformat_unittest.TestMessageSet message_set = 1
      */
     messageSet?: TestMessageSet;
 }
@@ -41,15 +41,15 @@ export interface TestMessageSetContainer {
  */
 export interface NestedTestMessageSetContainer {
     /**
-     * @generated from protobuf field: optional protobuf_unittest.TestMessageSetContainer container = 1;
+     * @generated from protobuf field: optional protobuf_unittest.TestMessageSetContainer container = 1
      */
     container?: TestMessageSetContainer;
     /**
-     * @generated from protobuf field: optional protobuf_unittest.NestedTestMessageSetContainer child = 2;
+     * @generated from protobuf field: optional protobuf_unittest.NestedTestMessageSetContainer child = 2
      */
     child?: NestedTestMessageSetContainer;
     /**
-     * @generated from protobuf field: optional protobuf_unittest.NestedTestMessageSetContainer lazy_child = 3;
+     * @generated from protobuf field: optional protobuf_unittest.NestedTestMessageSetContainer lazy_child = 3
      */
     lazyChild?: NestedTestMessageSetContainer;
 }
@@ -58,15 +58,15 @@ export interface NestedTestMessageSetContainer {
  */
 export interface NestedTestInt {
     /**
-     * @generated from protobuf field: optional fixed32 a = 1;
+     * @generated from protobuf field: optional fixed32 a = 1
      */
     a?: number;
     /**
-     * @generated from protobuf field: optional int32 b = 3;
+     * @generated from protobuf field: optional int32 b = 3
      */
     b?: number;
     /**
-     * @generated from protobuf field: optional protobuf_unittest.NestedTestInt child = 2;
+     * @generated from protobuf field: optional protobuf_unittest.NestedTestInt child = 2
      */
     child?: NestedTestInt;
 }
@@ -75,15 +75,15 @@ export interface NestedTestInt {
  */
 export interface TestMessageSetExtension1 {
     /**
-     * @generated from protobuf field: optional int32 i = 15;
+     * @generated from protobuf field: optional int32 i = 15
      */
     i?: number;
     /**
-     * @generated from protobuf field: optional proto2_wireformat_unittest.TestMessageSet recursive = 16;
+     * @generated from protobuf field: optional proto2_wireformat_unittest.TestMessageSet recursive = 16
      */
     recursive?: TestMessageSet;
     /**
-     * @generated from protobuf field: optional string test_aliasing = 17;
+     * @generated from protobuf field: optional string test_aliasing = 17
      */
     testAliasing?: string;
 }
@@ -92,7 +92,7 @@ export interface TestMessageSetExtension1 {
  */
 export interface TestMessageSetExtension2 {
     /**
-     * @generated from protobuf field: optional string str = 25;
+     * @generated from protobuf field: optional string str = 25
      */
     str?: string;
 }
@@ -101,11 +101,11 @@ export interface TestMessageSetExtension2 {
  */
 export interface TestMessageSetExtension3 {
     /**
-     * @generated from protobuf field: optional protobuf_unittest.NestedTestInt msg = 35;
+     * @generated from protobuf field: optional protobuf_unittest.NestedTestInt msg = 35
      */
     msg?: NestedTestInt;
     /**
-     * @generated from protobuf field: int32 required_int = 36;
+     * @generated from protobuf field: required int32 required_int = 36
      */
     requiredInt: number;
 }
@@ -132,11 +132,11 @@ export interface RawMessageSet {
  */
 export interface RawMessageSet_Item {
     /**
-     * @generated from protobuf field: int32 type_id = 2;
+     * @generated from protobuf field: required int32 type_id = 2
      */
     typeId: number;
     /**
-     * @generated from protobuf field: bytes message = 3;
+     * @generated from protobuf field: required bytes message = 3
      */
     message: Uint8Array;
 }

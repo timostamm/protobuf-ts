@@ -18,25 +18,25 @@ export interface ExampleRequest {
     /**
      * any text
      *
-     * @generated from protobuf field: string question = 1;
+     * @generated from protobuf field: string question = 1
      */
     question: string;
     /**
      * the server should simulate an error in the requested way
      *
-     * @generated from protobuf field: spec.FailRequest please_fail = 2;
+     * @generated from protobuf field: spec.FailRequest please_fail = 2
      */
     pleaseFail: FailRequest;
     /**
      * the server should delay it's response for this amount of milliseconds
      *
-     * @generated from protobuf field: int32 please_delay_response_ms = 3;
+     * @generated from protobuf field: int32 please_delay_response_ms = 3
      */
     pleaseDelayResponseMs: number;
     /**
      * by default, the server always writes some custom response headers
      *
-     * @generated from protobuf field: bool disable_sending_example_response_headers = 4;
+     * @generated from protobuf field: bool disable_sending_example_response_headers = 4
      */
     disableSendingExampleResponseHeaders: boolean;
 }
@@ -47,13 +47,13 @@ export interface ExampleResponse {
     /**
      * any text
      *
-     * @generated from protobuf field: string answer = 1;
+     * @generated from protobuf field: string answer = 1
      */
     answer: string;
     /**
      * contains the request headers that the server received
      *
-     * @generated from protobuf field: map<string, string> your_request_headers = 2;
+     * @generated from protobuf field: map<string, string> your_request_headers = 2
      */
     yourRequestHeaders: {
         [key: string]: string;
@@ -61,13 +61,13 @@ export interface ExampleResponse {
     /**
      * contains the deadline that the server received
      *
-     * @generated from protobuf field: string your_deadline = 3;
+     * @generated from protobuf field: string your_deadline = 3
      */
     yourDeadline: string;
     /**
      * the failure requested
      *
-     * @generated from protobuf field: spec.FailRequest your_fail_request = 4;
+     * @generated from protobuf field: spec.FailRequest your_fail_request = 4
      */
     yourFailRequest: FailRequest;
 }

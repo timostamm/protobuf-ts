@@ -40,109 +40,109 @@ import { ForeignMessageLite } from "./unittest_lite";
  */
 export interface TestMapLite {
     /**
-     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 1;
+     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 1
      */
     mapInt32Int32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 2;
+     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 2
      */
     mapInt64Int64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 3;
+     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 3
      */
     mapUint32Uint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 4;
+     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 4
      */
     mapUint64Uint64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 5;
+     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 5
      */
     mapSint32Sint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 6;
+     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 6
      */
     mapSint64Sint64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 7;
+     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 7
      */
     mapFixed32Fixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 8;
+     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 8
      */
     mapFixed64Fixed64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9;
+     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9
      */
     mapSfixed32Sfixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10;
+     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10
      */
     mapSfixed64Sfixed64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<int32, float> map_int32_float = 11;
+     * @generated from protobuf field: map<int32, float> map_int32_float = 11
      */
     mapInt32Float: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int32, double> map_int32_double = 12;
+     * @generated from protobuf field: map<int32, double> map_int32_double = 12
      */
     mapInt32Double: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<bool, bool> map_bool_bool = 13;
+     * @generated from protobuf field: map<bool, bool> map_bool_bool = 13
      */
     mapBoolBool: {
         [key: string]: boolean;
     };
     /**
-     * @generated from protobuf field: map<string, string> map_string_string = 14;
+     * @generated from protobuf field: map<string, string> map_string_string = 14
      */
     mapStringString: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<int32, bytes> map_int32_bytes = 15;
+     * @generated from protobuf field: map<int32, bytes> map_int32_bytes = 15
      */
     mapInt32Bytes: {
         [key: number]: Uint8Array;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16;
+     * @generated from protobuf field: map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16
      */
     mapInt32Enum: {
         [key: number]: MapEnumLite;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.ForeignMessageLite> map_int32_foreign_message = 17;
+     * @generated from protobuf field: map<int32, protobuf_unittest.ForeignMessageLite> map_int32_foreign_message = 17
      */
     mapInt32ForeignMessage: {
         [key: number]: ForeignMessageLite;
     };
     /**
-     * @generated from protobuf field: map<int32, int32> teboring = 18;
+     * @generated from protobuf field: map<int32, int32> teboring = 18
      */
     teboring: {
         [key: number]: number;
@@ -153,103 +153,103 @@ export interface TestMapLite {
  */
 export interface TestArenaMapLite {
     /**
-     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 1;
+     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 1
      */
     mapInt32Int32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 2;
+     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 2
      */
     mapInt64Int64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 3;
+     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 3
      */
     mapUint32Uint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 4;
+     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 4
      */
     mapUint64Uint64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 5;
+     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 5
      */
     mapSint32Sint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 6;
+     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 6
      */
     mapSint64Sint64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 7;
+     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 7
      */
     mapFixed32Fixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 8;
+     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 8
      */
     mapFixed64Fixed64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9;
+     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9
      */
     mapSfixed32Sfixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10;
+     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10
      */
     mapSfixed64Sfixed64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<int32, float> map_int32_float = 11;
+     * @generated from protobuf field: map<int32, float> map_int32_float = 11
      */
     mapInt32Float: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int32, double> map_int32_double = 12;
+     * @generated from protobuf field: map<int32, double> map_int32_double = 12
      */
     mapInt32Double: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<bool, bool> map_bool_bool = 13;
+     * @generated from protobuf field: map<bool, bool> map_bool_bool = 13
      */
     mapBoolBool: {
         [key: string]: boolean;
     };
     /**
-     * @generated from protobuf field: map<string, string> map_string_string = 14;
+     * @generated from protobuf field: map<string, string> map_string_string = 14
      */
     mapStringString: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<int32, bytes> map_int32_bytes = 15;
+     * @generated from protobuf field: map<int32, bytes> map_int32_bytes = 15
      */
     mapInt32Bytes: {
         [key: number]: Uint8Array;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16;
+     * @generated from protobuf field: map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16
      */
     mapInt32Enum: {
         [key: number]: MapEnumLite;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.ForeignMessageArenaLite> map_int32_foreign_message = 17;
+     * @generated from protobuf field: map<int32, protobuf_unittest.ForeignMessageArenaLite> map_int32_foreign_message = 17
      */
     mapInt32ForeignMessage: {
         [key: number]: ForeignMessageArenaLite;
@@ -262,7 +262,7 @@ export interface TestArenaMapLite {
  */
 export interface TestRequiredMessageMapLite {
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.TestRequiredLite> map_field = 1;
+     * @generated from protobuf field: map<int32, protobuf_unittest.TestRequiredLite> map_field = 1
      */
     mapField: {
         [key: number]: TestRequiredLite;
@@ -273,13 +273,13 @@ export interface TestRequiredMessageMapLite {
  */
 export interface TestEnumMapLite {
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumLite> known_map_field = 101;
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumLite> known_map_field = 101
      */
     knownMapField: {
         [key: number]: Proto2MapEnumLite;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumLite> unknown_map_field = 102;
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumLite> unknown_map_field = 102
      */
     unknownMapField: {
         [key: number]: Proto2MapEnumLite;
@@ -290,13 +290,13 @@ export interface TestEnumMapLite {
  */
 export interface TestEnumMapPlusExtraLite {
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> known_map_field = 101;
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> known_map_field = 101
      */
     knownMapField: {
         [key: number]: Proto2MapEnumPlusExtraLite;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> unknown_map_field = 102;
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> unknown_map_field = 102
      */
     unknownMapField: {
         [key: number]: Proto2MapEnumPlusExtraLite;
@@ -307,7 +307,7 @@ export interface TestEnumMapPlusExtraLite {
  */
 export interface TestMessageMapLite {
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.TestAllTypesLite> map_int32_message = 1;
+     * @generated from protobuf field: map<int32, protobuf_unittest.TestAllTypesLite> map_int32_message = 1
      */
     mapInt32Message: {
         [key: number]: TestAllTypesLite;
@@ -318,15 +318,15 @@ export interface TestMessageMapLite {
  */
 export interface TestRequiredLite {
     /**
-     * @generated from protobuf field: int32 a = 1;
+     * @generated from protobuf field: required int32 a = 1
      */
     a: number;
     /**
-     * @generated from protobuf field: int32 b = 2;
+     * @generated from protobuf field: required int32 b = 2
      */
     b: number;
     /**
-     * @generated from protobuf field: int32 c = 3;
+     * @generated from protobuf field: required int32 c = 3
      */
     c: number;
 }
@@ -335,7 +335,7 @@ export interface TestRequiredLite {
  */
 export interface ForeignMessageArenaLite {
     /**
-     * @generated from protobuf field: optional int32 c = 1;
+     * @generated from protobuf field: optional int32 c = 1
      */
     c?: number;
 }

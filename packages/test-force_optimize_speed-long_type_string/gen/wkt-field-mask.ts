@@ -18,7 +18,7 @@ export interface FieldMaskMessage {
     /**
      * https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto
      *
-     * @generated from protobuf field: google.protobuf.FieldMask field_mask_field = 1;
+     * @generated from protobuf field: google.protobuf.FieldMask field_mask_field = 1
      */
     fieldMaskField?: FieldMask;
 }

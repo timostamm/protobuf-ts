@@ -15,127 +15,127 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface LongsMessage {
     /**
-     * @generated from protobuf field: fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL];
+     * @generated from protobuf field: fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL]
      */
     fixed64FieldMin: bigint;
     /**
-     * @generated from protobuf field: fixed64 fixed64_field_max = 2 [jstype = JS_NORMAL];
+     * @generated from protobuf field: fixed64 fixed64_field_max = 2 [jstype = JS_NORMAL]
      */
     fixed64FieldMax: bigint;
     /**
-     * @generated from protobuf field: int64 int64_field_min = 3 [jstype = JS_NORMAL];
+     * @generated from protobuf field: int64 int64_field_min = 3 [jstype = JS_NORMAL]
      */
     int64FieldMin: bigint;
     /**
-     * @generated from protobuf field: int64 int64_field_max = 4 [jstype = JS_NORMAL];
+     * @generated from protobuf field: int64 int64_field_max = 4 [jstype = JS_NORMAL]
      */
     int64FieldMax: bigint;
     /**
-     * @generated from protobuf field: sfixed64 sfixed64_field_min = 5;
+     * @generated from protobuf field: sfixed64 sfixed64_field_min = 5
      */
     sfixed64FieldMin: string;
     /**
-     * @generated from protobuf field: sfixed64 sfixed64_field_max = 6;
+     * @generated from protobuf field: sfixed64 sfixed64_field_max = 6
      */
     sfixed64FieldMax: string;
     /**
-     * @generated from protobuf field: sint64 sint64_field_min = 7;
+     * @generated from protobuf field: sint64 sint64_field_min = 7
      */
     sint64FieldMin: string;
     /**
-     * @generated from protobuf field: sint64 sint64_field_max = 8;
+     * @generated from protobuf field: sint64 sint64_field_max = 8
      */
     sint64FieldMax: string;
     /**
-     * @generated from protobuf field: uint64 uint64_field_min = 9;
+     * @generated from protobuf field: uint64 uint64_field_min = 9
      */
     uint64FieldMin: string;
     /**
-     * @generated from protobuf field: uint64 uint64_field_max = 10;
+     * @generated from protobuf field: uint64 uint64_field_max = 10
      */
     uint64FieldMax: string;
     // 
 
     /**
-     * @generated from protobuf field: fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING];
+     * @generated from protobuf field: fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING]
      */
     fixed64FieldMinStr: string;
     /**
-     * @generated from protobuf field: fixed64 fixed64_field_max_str = 12 [jstype = JS_STRING];
+     * @generated from protobuf field: fixed64 fixed64_field_max_str = 12 [jstype = JS_STRING]
      */
     fixed64FieldMaxStr: string;
     /**
-     * @generated from protobuf field: int64 int64_field_min_str = 13 [jstype = JS_STRING];
+     * @generated from protobuf field: int64 int64_field_min_str = 13 [jstype = JS_STRING]
      */
     int64FieldMinStr: string;
     /**
-     * @generated from protobuf field: int64 int64_field_max_str = 14 [jstype = JS_STRING];
+     * @generated from protobuf field: int64 int64_field_max_str = 14 [jstype = JS_STRING]
      */
     int64FieldMaxStr: string;
     /**
-     * @generated from protobuf field: sfixed64 sfixed64_field_min_str = 15 [jstype = JS_STRING];
+     * @generated from protobuf field: sfixed64 sfixed64_field_min_str = 15 [jstype = JS_STRING]
      */
     sfixed64FieldMinStr: string;
     /**
-     * @generated from protobuf field: sfixed64 sfixed64_field_max_str = 16 [jstype = JS_STRING];
+     * @generated from protobuf field: sfixed64 sfixed64_field_max_str = 16 [jstype = JS_STRING]
      */
     sfixed64FieldMaxStr: string;
     /**
-     * @generated from protobuf field: sint64 sint64_field_min_str = 17 [jstype = JS_STRING];
+     * @generated from protobuf field: sint64 sint64_field_min_str = 17 [jstype = JS_STRING]
      */
     sint64FieldMinStr: string;
     /**
-     * @generated from protobuf field: sint64 sint64_field_max_str = 18 [jstype = JS_STRING];
+     * @generated from protobuf field: sint64 sint64_field_max_str = 18 [jstype = JS_STRING]
      */
     sint64FieldMaxStr: string;
     /**
-     * @generated from protobuf field: uint64 uint64_field_min_str = 19 [jstype = JS_STRING];
+     * @generated from protobuf field: uint64 uint64_field_min_str = 19 [jstype = JS_STRING]
      */
     uint64FieldMinStr: string;
     /**
-     * @generated from protobuf field: uint64 uint64_field_max_str = 20 [jstype = JS_STRING];
+     * @generated from protobuf field: uint64 uint64_field_max_str = 20 [jstype = JS_STRING]
      */
     uint64FieldMaxStr: string;
     // 
 
     /**
-     * @generated from protobuf field: fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER];
+     * @generated from protobuf field: fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER]
      */
     fixed64FieldMinNum: number;
     /**
-     * @generated from protobuf field: fixed64 fixed64_field_max_num = 22 [jstype = JS_NUMBER];
+     * @generated from protobuf field: fixed64 fixed64_field_max_num = 22 [jstype = JS_NUMBER]
      */
     fixed64FieldMaxNum: number;
     /**
-     * @generated from protobuf field: int64 int64_field_min_num = 23 [jstype = JS_NUMBER];
+     * @generated from protobuf field: int64 int64_field_min_num = 23 [jstype = JS_NUMBER]
      */
     int64FieldMinNum: number;
     /**
-     * @generated from protobuf field: int64 int64_field_max_num = 24 [jstype = JS_NUMBER];
+     * @generated from protobuf field: int64 int64_field_max_num = 24 [jstype = JS_NUMBER]
      */
     int64FieldMaxNum: number;
     /**
-     * @generated from protobuf field: sfixed64 sfixed64_field_min_num = 25 [jstype = JS_NUMBER];
+     * @generated from protobuf field: sfixed64 sfixed64_field_min_num = 25 [jstype = JS_NUMBER]
      */
     sfixed64FieldMinNum: number;
     /**
-     * @generated from protobuf field: sfixed64 sfixed64_field_max_num = 26 [jstype = JS_NUMBER];
+     * @generated from protobuf field: sfixed64 sfixed64_field_max_num = 26 [jstype = JS_NUMBER]
      */
     sfixed64FieldMaxNum: number;
     /**
-     * @generated from protobuf field: sint64 sint64_field_min_num = 27 [jstype = JS_NUMBER];
+     * @generated from protobuf field: sint64 sint64_field_min_num = 27 [jstype = JS_NUMBER]
      */
     sint64FieldMinNum: number;
     /**
-     * @generated from protobuf field: sint64 sint64_field_max_num = 28 [jstype = JS_NUMBER];
+     * @generated from protobuf field: sint64 sint64_field_max_num = 28 [jstype = JS_NUMBER]
      */
     sint64FieldMaxNum: number;
     /**
-     * @generated from protobuf field: uint64 uint64_field_min_num = 29 [jstype = JS_NUMBER];
+     * @generated from protobuf field: uint64 uint64_field_min_num = 29 [jstype = JS_NUMBER]
      */
     uint64FieldMinNum: number;
     /**
-     * @generated from protobuf field: uint64 uint64_field_max_num = 30 [jstype = JS_NUMBER];
+     * @generated from protobuf field: uint64 uint64_field_max_num = 30 [jstype = JS_NUMBER]
      */
     uint64FieldMaxNum: number;
 }

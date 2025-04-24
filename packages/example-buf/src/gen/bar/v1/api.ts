@@ -17,7 +17,7 @@ import { CommonMessage } from "../../common/v1/common";
  */
 export interface GetRequest {
     /**
-     * @generated from protobuf field: int32 a = 1;
+     * @generated from protobuf field: int32 a = 1
      */
     a: number;
 }
@@ -26,7 +26,7 @@ export interface GetRequest {
  */
 export interface GetResponse {
     /**
-     * @generated from protobuf field: common.v1.CommonMessage a = 1;
+     * @generated from protobuf field: common.v1.CommonMessage a = 1
      */
     a?: CommonMessage;
 }

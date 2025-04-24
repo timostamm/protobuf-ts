@@ -33,7 +33,7 @@ export interface Status {
     /**
      * The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
      *
-     * @generated from protobuf field: int32 code = 1;
+     * @generated from protobuf field: int32 code = 1
      */
     code: number;
     /**
@@ -41,14 +41,14 @@ export interface Status {
      * user-facing error message should be localized and sent in the
      * [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
      *
-     * @generated from protobuf field: string message = 2;
+     * @generated from protobuf field: string message = 2
      */
     message: string;
     /**
      * A list of messages that carry the error details.  There is a common set of
      * message types for APIs to use.
      *
-     * @generated from protobuf field: repeated google.protobuf.Any details = 3;
+     * @generated from protobuf field: repeated google.protobuf.Any details = 3
      */
     details: Any[];
 }

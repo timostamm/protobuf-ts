@@ -58,7 +58,7 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface FileDescriptorSet {
     /**
-     * @generated from protobuf field: repeated google.protobuf.FileDescriptorProto file = 1;
+     * @generated from protobuf field: repeated google.protobuf.FileDescriptorProto file = 1
      */
     file: FileDescriptorProto[];
 }
@@ -69,52 +69,52 @@ export interface FileDescriptorSet {
  */
 export interface FileDescriptorProto {
     /**
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string; // file name, relative to root of source tree
     /**
-     * @generated from protobuf field: optional string package = 2;
+     * @generated from protobuf field: optional string package = 2
      */
     package?: string; // e.g. "foo", "foo.bar", etc.
     /**
      * Names of files imported by this file.
      *
-     * @generated from protobuf field: repeated string dependency = 3;
+     * @generated from protobuf field: repeated string dependency = 3
      */
     dependency: string[];
     /**
      * Indexes of the public imported files in the dependency list above.
      *
-     * @generated from protobuf field: repeated int32 public_dependency = 10;
+     * @generated from protobuf field: repeated int32 public_dependency = 10
      */
     publicDependency: number[];
     /**
      * Indexes of the weak imported files in the dependency list.
      * For Google-internal migration only. Do not use.
      *
-     * @generated from protobuf field: repeated int32 weak_dependency = 11;
+     * @generated from protobuf field: repeated int32 weak_dependency = 11
      */
     weakDependency: number[];
     /**
      * All top-level definitions in this file.
      *
-     * @generated from protobuf field: repeated google.protobuf.DescriptorProto message_type = 4;
+     * @generated from protobuf field: repeated google.protobuf.DescriptorProto message_type = 4
      */
     messageType: DescriptorProto[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.EnumDescriptorProto enum_type = 5;
+     * @generated from protobuf field: repeated google.protobuf.EnumDescriptorProto enum_type = 5
      */
     enumType: EnumDescriptorProto[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.ServiceDescriptorProto service = 6;
+     * @generated from protobuf field: repeated google.protobuf.ServiceDescriptorProto service = 6
      */
     service: ServiceDescriptorProto[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.FieldDescriptorProto extension = 7;
+     * @generated from protobuf field: repeated google.protobuf.FieldDescriptorProto extension = 7
      */
     extension: FieldDescriptorProto[];
     /**
-     * @generated from protobuf field: optional google.protobuf.FileOptions options = 8;
+     * @generated from protobuf field: optional google.protobuf.FileOptions options = 8
      */
     options?: FileOptions;
     /**
@@ -123,7 +123,7 @@ export interface FileDescriptorProto {
      * functionality of the descriptors -- the information is needed only by
      * development tools.
      *
-     * @generated from protobuf field: optional google.protobuf.SourceCodeInfo source_code_info = 9;
+     * @generated from protobuf field: optional google.protobuf.SourceCodeInfo source_code_info = 9
      */
     sourceCodeInfo?: SourceCodeInfo;
     /**
@@ -132,13 +132,13 @@ export interface FileDescriptorProto {
      *
      * If `edition` is present, this value must be "editions".
      *
-     * @generated from protobuf field: optional string syntax = 12;
+     * @generated from protobuf field: optional string syntax = 12
      */
     syntax?: string;
     /**
      * The edition of the proto file.
      *
-     * @generated from protobuf field: optional google.protobuf.Edition edition = 14;
+     * @generated from protobuf field: optional google.protobuf.Edition edition = 14
      */
     edition?: Edition;
 }
@@ -149,46 +149,46 @@ export interface FileDescriptorProto {
  */
 export interface DescriptorProto {
     /**
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string;
     /**
-     * @generated from protobuf field: repeated google.protobuf.FieldDescriptorProto field = 2;
+     * @generated from protobuf field: repeated google.protobuf.FieldDescriptorProto field = 2
      */
     field: FieldDescriptorProto[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.FieldDescriptorProto extension = 6;
+     * @generated from protobuf field: repeated google.protobuf.FieldDescriptorProto extension = 6
      */
     extension: FieldDescriptorProto[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.DescriptorProto nested_type = 3;
+     * @generated from protobuf field: repeated google.protobuf.DescriptorProto nested_type = 3
      */
     nestedType: DescriptorProto[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.EnumDescriptorProto enum_type = 4;
+     * @generated from protobuf field: repeated google.protobuf.EnumDescriptorProto enum_type = 4
      */
     enumType: EnumDescriptorProto[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.DescriptorProto.ExtensionRange extension_range = 5;
+     * @generated from protobuf field: repeated google.protobuf.DescriptorProto.ExtensionRange extension_range = 5
      */
     extensionRange: DescriptorProto_ExtensionRange[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.OneofDescriptorProto oneof_decl = 8;
+     * @generated from protobuf field: repeated google.protobuf.OneofDescriptorProto oneof_decl = 8
      */
     oneofDecl: OneofDescriptorProto[];
     /**
-     * @generated from protobuf field: optional google.protobuf.MessageOptions options = 7;
+     * @generated from protobuf field: optional google.protobuf.MessageOptions options = 7
      */
     options?: MessageOptions;
     /**
-     * @generated from protobuf field: repeated google.protobuf.DescriptorProto.ReservedRange reserved_range = 9;
+     * @generated from protobuf field: repeated google.protobuf.DescriptorProto.ReservedRange reserved_range = 9
      */
     reservedRange: DescriptorProto_ReservedRange[];
     /**
      * Reserved field names, which may not be used by fields in the same message.
      * A given name may only be reserved once.
      *
-     * @generated from protobuf field: repeated string reserved_name = 10;
+     * @generated from protobuf field: repeated string reserved_name = 10
      */
     reservedName: string[];
 }
@@ -197,15 +197,15 @@ export interface DescriptorProto {
  */
 export interface DescriptorProto_ExtensionRange {
     /**
-     * @generated from protobuf field: optional int32 start = 1;
+     * @generated from protobuf field: optional int32 start = 1
      */
     start?: number; // Inclusive.
     /**
-     * @generated from protobuf field: optional int32 end = 2;
+     * @generated from protobuf field: optional int32 end = 2
      */
     end?: number; // Exclusive.
     /**
-     * @generated from protobuf field: optional google.protobuf.ExtensionRangeOptions options = 3;
+     * @generated from protobuf field: optional google.protobuf.ExtensionRangeOptions options = 3
      */
     options?: ExtensionRangeOptions;
 }
@@ -218,11 +218,11 @@ export interface DescriptorProto_ExtensionRange {
  */
 export interface DescriptorProto_ReservedRange {
     /**
-     * @generated from protobuf field: optional int32 start = 1;
+     * @generated from protobuf field: optional int32 start = 1
      */
     start?: number; // Inclusive.
     /**
-     * @generated from protobuf field: optional int32 end = 2;
+     * @generated from protobuf field: optional int32 end = 2
      */
     end?: number; // Exclusive.
 }
@@ -233,7 +233,7 @@ export interface ExtensionRangeOptions {
     /**
      * The parser stores options it doesn't recognize here. See above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
     /**
@@ -241,13 +241,13 @@ export interface ExtensionRangeOptions {
      * extension declaration and executing internal cleanups before it can be
      * used externally.
      *
-     * @generated from protobuf field: repeated google.protobuf.ExtensionRangeOptions.Declaration declaration = 2;
+     * @generated from protobuf field: repeated google.protobuf.ExtensionRangeOptions.Declaration declaration = 2
      */
     declaration: ExtensionRangeOptions_Declaration[];
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 50;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 50
      */
     features?: FeatureSet;
     /**
@@ -255,7 +255,7 @@ export interface ExtensionRangeOptions {
      * TODO: flip the default to DECLARATION once all empty ranges
      * are marked as UNVERIFIED.
      *
-     * @generated from protobuf field: optional google.protobuf.ExtensionRangeOptions.VerificationState verification = 3;
+     * @generated from protobuf field: optional google.protobuf.ExtensionRangeOptions.VerificationState verification = 3 [default = UNVERIFIED]
      */
     verification?: ExtensionRangeOptions_VerificationState;
 }
@@ -266,14 +266,14 @@ export interface ExtensionRangeOptions_Declaration {
     /**
      * The extension number declared within the extension range.
      *
-     * @generated from protobuf field: optional int32 number = 1;
+     * @generated from protobuf field: optional int32 number = 1
      */
     number?: number;
     /**
      * The fully-qualified name of the extension field. There must be a leading
      * dot in front of the full name.
      *
-     * @generated from protobuf field: optional string full_name = 2;
+     * @generated from protobuf field: optional string full_name = 2
      */
     fullName?: string;
     /**
@@ -281,7 +281,7 @@ export interface ExtensionRangeOptions_Declaration {
      * Metadata.type, Declaration.type must have a leading dot for messages
      * and enums.
      *
-     * @generated from protobuf field: optional string type = 3;
+     * @generated from protobuf field: optional string type = 3
      */
     type?: string;
     /**
@@ -289,14 +289,14 @@ export interface ExtensionRangeOptions_Declaration {
      * and any extension field with the number will fail to compile. Set this
      * when a declared extension field is deleted.
      *
-     * @generated from protobuf field: optional bool reserved = 5;
+     * @generated from protobuf field: optional bool reserved = 5
      */
     reserved?: boolean;
     /**
      * If true, indicates that the extension must be defined as repeated.
      * Otherwise the extension must be defined as optional.
      *
-     * @generated from protobuf field: optional bool repeated = 6;
+     * @generated from protobuf field: optional bool repeated = 6
      */
     repeated?: boolean;
 }
@@ -324,22 +324,22 @@ export enum ExtensionRangeOptions_VerificationState {
  */
 export interface FieldDescriptorProto {
     /**
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string;
     /**
-     * @generated from protobuf field: optional int32 number = 3;
+     * @generated from protobuf field: optional int32 number = 3
      */
     number?: number;
     /**
-     * @generated from protobuf field: optional google.protobuf.FieldDescriptorProto.Label label = 4;
+     * @generated from protobuf field: optional google.protobuf.FieldDescriptorProto.Label label = 4
      */
     label?: FieldDescriptorProto_Label;
     /**
      * If type_name is set, this need not be set.  If both this and type_name
      * are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP.
      *
-     * @generated from protobuf field: optional google.protobuf.FieldDescriptorProto.Type type = 5;
+     * @generated from protobuf field: optional google.protobuf.FieldDescriptorProto.Type type = 5
      */
     type?: FieldDescriptorProto_Type;
     /**
@@ -349,14 +349,14 @@ export interface FieldDescriptorProto {
      * message are searched, then within the parent, on up to the root
      * namespace).
      *
-     * @generated from protobuf field: optional string type_name = 6;
+     * @generated from protobuf field: optional string type_name = 6
      */
     typeName?: string;
     /**
      * For extensions, this is the name of the type being extended.  It is
      * resolved in the same manner as type_name.
      *
-     * @generated from protobuf field: optional string extendee = 2;
+     * @generated from protobuf field: optional string extendee = 2
      */
     extendee?: string;
     /**
@@ -365,14 +365,14 @@ export interface FieldDescriptorProto {
      * For strings, contains the default text contents (not escaped in any way).
      * For bytes, contains the C escaped value.  All bytes >= 128 are escaped.
      *
-     * @generated from protobuf field: optional string default_value = 7;
+     * @generated from protobuf field: optional string default_value = 7
      */
     defaultValue?: string;
     /**
      * If set, gives the index of a oneof in the containing type's oneof_decl
      * list.  This field is a member of that oneof.
      *
-     * @generated from protobuf field: optional int32 oneof_index = 9;
+     * @generated from protobuf field: optional int32 oneof_index = 9
      */
     oneofIndex?: number;
     /**
@@ -381,11 +381,11 @@ export interface FieldDescriptorProto {
      * will be used. Otherwise, it's deduced from the field's name by converting
      * it to camelCase.
      *
-     * @generated from protobuf field: optional string json_name = 10;
+     * @generated from protobuf field: optional string json_name = 10
      */
     jsonName?: string;
     /**
-     * @generated from protobuf field: optional google.protobuf.FieldOptions options = 8;
+     * @generated from protobuf field: optional google.protobuf.FieldOptions options = 8
      */
     options?: FieldOptions;
     /**
@@ -411,7 +411,7 @@ export interface FieldDescriptorProto {
      * Proto2 optional fields do not set this flag, because they already indicate
      * optional with `LABEL_OPTIONAL`.
      *
-     * @generated from protobuf field: optional bool proto3_optional = 17;
+     * @generated from protobuf field: optional bool proto3_optional = 17
      */
     proto3Optional?: boolean;
 }
@@ -553,11 +553,11 @@ export enum FieldDescriptorProto_Label {
  */
 export interface OneofDescriptorProto {
     /**
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string;
     /**
-     * @generated from protobuf field: optional google.protobuf.OneofOptions options = 2;
+     * @generated from protobuf field: optional google.protobuf.OneofOptions options = 2
      */
     options?: OneofOptions;
 }
@@ -568,15 +568,15 @@ export interface OneofDescriptorProto {
  */
 export interface EnumDescriptorProto {
     /**
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string;
     /**
-     * @generated from protobuf field: repeated google.protobuf.EnumValueDescriptorProto value = 2;
+     * @generated from protobuf field: repeated google.protobuf.EnumValueDescriptorProto value = 2
      */
     value: EnumValueDescriptorProto[];
     /**
-     * @generated from protobuf field: optional google.protobuf.EnumOptions options = 3;
+     * @generated from protobuf field: optional google.protobuf.EnumOptions options = 3
      */
     options?: EnumOptions;
     /**
@@ -584,14 +584,14 @@ export interface EnumDescriptorProto {
      * by enum values in the same enum declaration. Reserved ranges may not
      * overlap.
      *
-     * @generated from protobuf field: repeated google.protobuf.EnumDescriptorProto.EnumReservedRange reserved_range = 4;
+     * @generated from protobuf field: repeated google.protobuf.EnumDescriptorProto.EnumReservedRange reserved_range = 4
      */
     reservedRange: EnumDescriptorProto_EnumReservedRange[];
     /**
      * Reserved enum value names, which may not be reused. A given name may only
      * be reserved once.
      *
-     * @generated from protobuf field: repeated string reserved_name = 5;
+     * @generated from protobuf field: repeated string reserved_name = 5
      */
     reservedName: string[];
 }
@@ -607,11 +607,11 @@ export interface EnumDescriptorProto {
  */
 export interface EnumDescriptorProto_EnumReservedRange {
     /**
-     * @generated from protobuf field: optional int32 start = 1;
+     * @generated from protobuf field: optional int32 start = 1
      */
     start?: number; // Inclusive.
     /**
-     * @generated from protobuf field: optional int32 end = 2;
+     * @generated from protobuf field: optional int32 end = 2
      */
     end?: number; // Inclusive.
 }
@@ -622,15 +622,15 @@ export interface EnumDescriptorProto_EnumReservedRange {
  */
 export interface EnumValueDescriptorProto {
     /**
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string;
     /**
-     * @generated from protobuf field: optional int32 number = 2;
+     * @generated from protobuf field: optional int32 number = 2
      */
     number?: number;
     /**
-     * @generated from protobuf field: optional google.protobuf.EnumValueOptions options = 3;
+     * @generated from protobuf field: optional google.protobuf.EnumValueOptions options = 3
      */
     options?: EnumValueOptions;
 }
@@ -641,15 +641,15 @@ export interface EnumValueDescriptorProto {
  */
 export interface ServiceDescriptorProto {
     /**
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string;
     /**
-     * @generated from protobuf field: repeated google.protobuf.MethodDescriptorProto method = 2;
+     * @generated from protobuf field: repeated google.protobuf.MethodDescriptorProto method = 2
      */
     method: MethodDescriptorProto[];
     /**
-     * @generated from protobuf field: optional google.protobuf.ServiceOptions options = 3;
+     * @generated from protobuf field: optional google.protobuf.ServiceOptions options = 3
      */
     options?: ServiceOptions;
 }
@@ -660,34 +660,34 @@ export interface ServiceDescriptorProto {
  */
 export interface MethodDescriptorProto {
     /**
-     * @generated from protobuf field: optional string name = 1;
+     * @generated from protobuf field: optional string name = 1
      */
     name?: string;
     /**
      * Input and output type names.  These are resolved in the same way as
      * FieldDescriptorProto.type_name, but must refer to a message type.
      *
-     * @generated from protobuf field: optional string input_type = 2;
+     * @generated from protobuf field: optional string input_type = 2
      */
     inputType?: string;
     /**
-     * @generated from protobuf field: optional string output_type = 3;
+     * @generated from protobuf field: optional string output_type = 3
      */
     outputType?: string;
     /**
-     * @generated from protobuf field: optional google.protobuf.MethodOptions options = 4;
+     * @generated from protobuf field: optional google.protobuf.MethodOptions options = 4
      */
     options?: MethodOptions;
     /**
      * Identifies if client streams multiple client messages
      *
-     * @generated from protobuf field: optional bool client_streaming = 5;
+     * @generated from protobuf field: optional bool client_streaming = 5 [default = false]
      */
     clientStreaming?: boolean;
     /**
      * Identifies if server streams multiple server messages
      *
-     * @generated from protobuf field: optional bool server_streaming = 6;
+     * @generated from protobuf field: optional bool server_streaming = 6 [default = false]
      */
     serverStreaming?: boolean;
 }
@@ -733,7 +733,7 @@ export interface FileOptions {
      * inappropriate because proto packages do not normally start with backwards
      * domain names.
      *
-     * @generated from protobuf field: optional string java_package = 1;
+     * @generated from protobuf field: optional string java_package = 1
      */
     javaPackage?: string;
     /**
@@ -743,7 +743,7 @@ export interface FileOptions {
      * If java_multiple_files is disabled, then all the other classes from the
      * .proto file will be nested inside the single wrapper outer class.
      *
-     * @generated from protobuf field: optional string java_outer_classname = 8;
+     * @generated from protobuf field: optional string java_outer_classname = 8
      */
     javaOuterClassname?: string;
     /**
@@ -754,14 +754,14 @@ export interface FileOptions {
      * generated to contain the file's getDescriptor() method as well as any
      * top-level extensions defined in the file.
      *
-     * @generated from protobuf field: optional bool java_multiple_files = 10;
+     * @generated from protobuf field: optional bool java_multiple_files = 10 [default = false]
      */
     javaMultipleFiles?: boolean;
     /**
      * This option does nothing.
      *
      * @deprecated
-     * @generated from protobuf field: optional bool java_generate_equals_and_hash = 20 [deprecated = true];
+     * @generated from protobuf field: optional bool java_generate_equals_and_hash = 20 [deprecated = true]
      */
     javaGenerateEqualsAndHash?: boolean;
     /**
@@ -776,11 +776,11 @@ export interface FileOptions {
      * false has no effect: it cannot be used to opt proto3 files out of UTF-8
      * checks.
      *
-     * @generated from protobuf field: optional bool java_string_check_utf8 = 27;
+     * @generated from protobuf field: optional bool java_string_check_utf8 = 27 [default = false]
      */
     javaStringCheckUtf8?: boolean;
     /**
-     * @generated from protobuf field: optional google.protobuf.FileOptions.OptimizeMode optimize_for = 9;
+     * @generated from protobuf field: optional google.protobuf.FileOptions.OptimizeMode optimize_for = 9 [default = SPEED]
      */
     optimizeFor?: FileOptions_OptimizeMode;
     /**
@@ -790,7 +790,7 @@ export interface FileOptions {
      *   - Otherwise, the package statement in the .proto file, if present.
      *   - Otherwise, the basename of the .proto file, without extension.
      *
-     * @generated from protobuf field: optional string go_package = 11;
+     * @generated from protobuf field: optional string go_package = 11
      */
     goPackage?: string;
     /**
@@ -805,15 +805,15 @@ export interface FileOptions {
      * these default to false.  Old code which depends on generic services should
      * explicitly set them to true.
      *
-     * @generated from protobuf field: optional bool cc_generic_services = 16;
+     * @generated from protobuf field: optional bool cc_generic_services = 16 [default = false]
      */
     ccGenericServices?: boolean;
     /**
-     * @generated from protobuf field: optional bool java_generic_services = 17;
+     * @generated from protobuf field: optional bool java_generic_services = 17 [default = false]
      */
     javaGenericServices?: boolean;
     /**
-     * @generated from protobuf field: optional bool py_generic_services = 18;
+     * @generated from protobuf field: optional bool py_generic_services = 18 [default = false]
      */
     pyGenericServices?: boolean;
     /**
@@ -822,27 +822,27 @@ export interface FileOptions {
      * for everything in the file, or it will be completely ignored; in the very
      * least, this is a formalization for deprecating files.
      *
-     * @generated from protobuf field: optional bool deprecated = 23;
+     * @generated from protobuf field: optional bool deprecated = 23 [default = false]
      */
     deprecated?: boolean;
     /**
      * Enables the use of arenas for the proto messages in this file. This applies
      * only to generated classes for C++.
      *
-     * @generated from protobuf field: optional bool cc_enable_arenas = 31;
+     * @generated from protobuf field: optional bool cc_enable_arenas = 31 [default = true]
      */
     ccEnableArenas?: boolean;
     /**
      * Sets the objective c class prefix which is prepended to all objective c
      * generated classes from this .proto. There is no default.
      *
-     * @generated from protobuf field: optional string objc_class_prefix = 36;
+     * @generated from protobuf field: optional string objc_class_prefix = 36
      */
     objcClassPrefix?: string;
     /**
      * Namespace for generated classes; defaults to the package.
      *
-     * @generated from protobuf field: optional string csharp_namespace = 37;
+     * @generated from protobuf field: optional string csharp_namespace = 37
      */
     csharpNamespace?: string;
     /**
@@ -851,14 +851,14 @@ export interface FileOptions {
      * defined. When this options is provided, they will use this value instead
      * to prefix the types/symbols defined.
      *
-     * @generated from protobuf field: optional string swift_prefix = 39;
+     * @generated from protobuf field: optional string swift_prefix = 39
      */
     swiftPrefix?: string;
     /**
      * Sets the php class prefix which is prepended to all php generated classes
      * from this .proto. Default is empty.
      *
-     * @generated from protobuf field: optional string php_class_prefix = 40;
+     * @generated from protobuf field: optional string php_class_prefix = 40
      */
     phpClassPrefix?: string;
     /**
@@ -866,7 +866,7 @@ export interface FileOptions {
      * is empty. When this option is empty, the package name will be used for
      * determining the namespace.
      *
-     * @generated from protobuf field: optional string php_namespace = 41;
+     * @generated from protobuf field: optional string php_namespace = 41
      */
     phpNamespace?: string;
     /**
@@ -874,7 +874,7 @@ export interface FileOptions {
      * Default is empty. When this option is empty, the proto file name will be
      * used for determining the namespace.
      *
-     * @generated from protobuf field: optional string php_metadata_namespace = 44;
+     * @generated from protobuf field: optional string php_metadata_namespace = 44
      */
     phpMetadataNamespace?: string;
     /**
@@ -882,20 +882,20 @@ export interface FileOptions {
      * is empty. When this option is not set, the package name will be used for
      * determining the ruby package.
      *
-     * @generated from protobuf field: optional string ruby_package = 45;
+     * @generated from protobuf field: optional string ruby_package = 45
      */
     rubyPackage?: string;
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 50;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 50
      */
     features?: FeatureSet;
     /**
      * The parser stores options it doesn't recognize here.
      * See the documentation for the "Options" section above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
 }
@@ -954,7 +954,7 @@ export interface MessageOptions {
      * Because this is an option, the above two restrictions are not enforced by
      * the protocol compiler.
      *
-     * @generated from protobuf field: optional bool message_set_wire_format = 1;
+     * @generated from protobuf field: optional bool message_set_wire_format = 1 [default = false]
      */
     messageSetWireFormat?: boolean;
     /**
@@ -962,7 +962,7 @@ export interface MessageOptions {
      * conflict with a field of the same name.  This is meant to make migration
      * from proto1 easier; new code should avoid fields named "descriptor".
      *
-     * @generated from protobuf field: optional bool no_standard_descriptor_accessor = 2;
+     * @generated from protobuf field: optional bool no_standard_descriptor_accessor = 2 [default = false]
      */
     noStandardDescriptorAccessor?: boolean;
     /**
@@ -971,7 +971,7 @@ export interface MessageOptions {
      * for the message, or it will be completely ignored; in the very least,
      * this is a formalization for deprecating messages.
      *
-     * @generated from protobuf field: optional bool deprecated = 3;
+     * @generated from protobuf field: optional bool deprecated = 3 [default = false]
      */
     deprecated?: boolean;
     /**
@@ -997,7 +997,7 @@ export interface MessageOptions {
      * instead. The option should only be implicitly set by the proto compiler
      * parser.
      *
-     * @generated from protobuf field: optional bool map_entry = 7;
+     * @generated from protobuf field: optional bool map_entry = 7
      */
     mapEntry?: boolean;
     /**
@@ -1013,19 +1013,19 @@ export interface MessageOptions {
      * teams have had time to migrate.
      *
      * @deprecated
-     * @generated from protobuf field: optional bool deprecated_legacy_json_field_conflicts = 11 [deprecated = true];
+     * @generated from protobuf field: optional bool deprecated_legacy_json_field_conflicts = 11 [deprecated = true]
      */
     deprecatedLegacyJsonFieldConflicts?: boolean;
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 12;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 12
      */
     features?: FeatureSet;
     /**
      * The parser stores options it doesn't recognize here. See above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
 }
@@ -1042,7 +1042,7 @@ export interface FieldOptions {
      * type "bytes" in the open source release.
      * TODO: make ctype actually deprecated.
      *
-     * @generated from protobuf field: optional google.protobuf.FieldOptions.CType ctype = 1;
+     * @generated from protobuf field: optional google.protobuf.FieldOptions.CType ctype = 1 [default = STRING]
      */
     ctype?: FieldOptions_CType;
     /**
@@ -1054,7 +1054,7 @@ export interface FieldOptions {
      * Editions, but the `repeated_field_encoding` feature can be used to control
      * the behavior.
      *
-     * @generated from protobuf field: optional bool packed = 2;
+     * @generated from protobuf field: optional bool packed = 2
      */
     packed?: boolean;
     /**
@@ -1070,7 +1070,7 @@ export interface FieldOptions {
      * This option is an enum to permit additional types to be added, e.g.
      * goog.math.Integer.
      *
-     * @generated from protobuf field: optional google.protobuf.FieldOptions.JSType jstype = 6;
+     * @generated from protobuf field: optional google.protobuf.FieldOptions.JSType jstype = 6 [default = JS_NORMAL]
      */
     jstype?: FieldOptions_JSType;
     /**
@@ -1097,7 +1097,7 @@ export interface FieldOptions {
      * fields. Failed verification would result in parsing failure (except when
      * uninitialized messages are acceptable).
      *
-     * @generated from protobuf field: optional bool lazy = 5;
+     * @generated from protobuf field: optional bool lazy = 5 [default = false]
      */
     lazy?: boolean;
     /**
@@ -1105,7 +1105,7 @@ export interface FieldOptions {
      * only be used where lazy with verification is prohibitive for performance
      * reasons.
      *
-     * @generated from protobuf field: optional bool unverified_lazy = 15;
+     * @generated from protobuf field: optional bool unverified_lazy = 15 [default = false]
      */
     unverifiedLazy?: boolean;
     /**
@@ -1114,48 +1114,48 @@ export interface FieldOptions {
      * for accessors, or it will be completely ignored; in the very least, this
      * is a formalization for deprecating fields.
      *
-     * @generated from protobuf field: optional bool deprecated = 3;
+     * @generated from protobuf field: optional bool deprecated = 3 [default = false]
      */
     deprecated?: boolean;
     /**
      * For Google-internal migration only. Do not use.
      *
-     * @generated from protobuf field: optional bool weak = 10;
+     * @generated from protobuf field: optional bool weak = 10 [default = false]
      */
     weak?: boolean;
     /**
      * Indicate that the field value should not be printed out when using debug
      * formats, e.g. when the field contains sensitive credentials.
      *
-     * @generated from protobuf field: optional bool debug_redact = 16;
+     * @generated from protobuf field: optional bool debug_redact = 16 [default = false]
      */
     debugRedact?: boolean;
     /**
-     * @generated from protobuf field: optional google.protobuf.FieldOptions.OptionRetention retention = 17;
+     * @generated from protobuf field: optional google.protobuf.FieldOptions.OptionRetention retention = 17
      */
     retention?: FieldOptions_OptionRetention;
     /**
-     * @generated from protobuf field: repeated google.protobuf.FieldOptions.OptionTargetType targets = 19;
+     * @generated from protobuf field: repeated google.protobuf.FieldOptions.OptionTargetType targets = 19
      */
     targets: FieldOptions_OptionTargetType[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.FieldOptions.EditionDefault edition_defaults = 20;
+     * @generated from protobuf field: repeated google.protobuf.FieldOptions.EditionDefault edition_defaults = 20
      */
     editionDefaults: FieldOptions_EditionDefault[];
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 21;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 21
      */
     features?: FeatureSet;
     /**
-     * @generated from protobuf field: optional google.protobuf.FieldOptions.FeatureSupport feature_support = 22;
+     * @generated from protobuf field: optional google.protobuf.FieldOptions.FeatureSupport feature_support = 22
      */
     featureSupport?: FieldOptions_FeatureSupport;
     /**
      * The parser stores options it doesn't recognize here. See above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
 }
@@ -1164,11 +1164,11 @@ export interface FieldOptions {
  */
 export interface FieldOptions_EditionDefault {
     /**
-     * @generated from protobuf field: optional google.protobuf.Edition edition = 3;
+     * @generated from protobuf field: optional google.protobuf.Edition edition = 3
      */
     edition?: Edition;
     /**
-     * @generated from protobuf field: optional string value = 2;
+     * @generated from protobuf field: optional string value = 2
      */
     value?: string; // Textproto value.
 }
@@ -1183,21 +1183,21 @@ export interface FieldOptions_FeatureSupport {
      * earlier than this one, the default assigned to EDITION_LEGACY will be
      * used, and proto files will not be able to override it.
      *
-     * @generated from protobuf field: optional google.protobuf.Edition edition_introduced = 1;
+     * @generated from protobuf field: optional google.protobuf.Edition edition_introduced = 1
      */
     editionIntroduced?: Edition;
     /**
      * The edition this feature becomes deprecated in.  Using this after this
      * edition may trigger warnings.
      *
-     * @generated from protobuf field: optional google.protobuf.Edition edition_deprecated = 2;
+     * @generated from protobuf field: optional google.protobuf.Edition edition_deprecated = 2
      */
     editionDeprecated?: Edition;
     /**
      * The deprecation warning text if this feature is used after the edition it
      * was marked deprecated in.
      *
-     * @generated from protobuf field: optional string deprecation_warning = 3;
+     * @generated from protobuf field: optional string deprecation_warning = 3
      */
     deprecationWarning?: string;
     /**
@@ -1205,7 +1205,7 @@ export interface FieldOptions_FeatureSupport {
      * this one, the last default assigned will be used, and proto files will
      * not be able to override it.
      *
-     * @generated from protobuf field: optional google.protobuf.Edition edition_removed = 4;
+     * @generated from protobuf field: optional google.protobuf.Edition edition_removed = 4
      */
     editionRemoved?: Edition;
 }
@@ -1333,13 +1333,13 @@ export interface OneofOptions {
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 1;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 1
      */
     features?: FeatureSet;
     /**
      * The parser stores options it doesn't recognize here. See above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
 }
@@ -1351,7 +1351,7 @@ export interface EnumOptions {
      * Set this option to true to allow mapping different tag names to the same
      * value.
      *
-     * @generated from protobuf field: optional bool allow_alias = 2;
+     * @generated from protobuf field: optional bool allow_alias = 2
      */
     allowAlias?: boolean;
     /**
@@ -1360,7 +1360,7 @@ export interface EnumOptions {
      * for the enum, or it will be completely ignored; in the very least, this
      * is a formalization for deprecating enums.
      *
-     * @generated from protobuf field: optional bool deprecated = 3;
+     * @generated from protobuf field: optional bool deprecated = 3 [default = false]
      */
     deprecated?: boolean;
     /**
@@ -1372,19 +1372,19 @@ export interface EnumOptions {
      * had time to migrate.
      *
      * @deprecated
-     * @generated from protobuf field: optional bool deprecated_legacy_json_field_conflicts = 6 [deprecated = true];
+     * @generated from protobuf field: optional bool deprecated_legacy_json_field_conflicts = 6 [deprecated = true]
      */
     deprecatedLegacyJsonFieldConflicts?: boolean;
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 7;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 7
      */
     features?: FeatureSet;
     /**
      * The parser stores options it doesn't recognize here. See above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
 }
@@ -1398,13 +1398,13 @@ export interface EnumValueOptions {
      * for the enum value, or it will be completely ignored; in the very least,
      * this is a formalization for deprecating enum values.
      *
-     * @generated from protobuf field: optional bool deprecated = 1;
+     * @generated from protobuf field: optional bool deprecated = 1 [default = false]
      */
     deprecated?: boolean;
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 2;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 2
      */
     features?: FeatureSet;
     /**
@@ -1412,19 +1412,19 @@ export interface EnumValueOptions {
      * out when using debug formats, e.g. when the field contains sensitive
      * credentials.
      *
-     * @generated from protobuf field: optional bool debug_redact = 3;
+     * @generated from protobuf field: optional bool debug_redact = 3 [default = false]
      */
     debugRedact?: boolean;
     /**
      * Information about the support window of a feature value.
      *
-     * @generated from protobuf field: optional google.protobuf.FieldOptions.FeatureSupport feature_support = 4;
+     * @generated from protobuf field: optional google.protobuf.FieldOptions.FeatureSupport feature_support = 4
      */
     featureSupport?: FieldOptions_FeatureSupport;
     /**
      * The parser stores options it doesn't recognize here. See above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
 }
@@ -1435,7 +1435,7 @@ export interface ServiceOptions {
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 34;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 34
      */
     features?: FeatureSet;
     // Note:  Field numbers 1 through 32 are reserved for Google's internal RPC
@@ -1449,13 +1449,13 @@ export interface ServiceOptions {
      * for the service, or it will be completely ignored; in the very least,
      * this is a formalization for deprecating services.
      *
-     * @generated from protobuf field: optional bool deprecated = 33;
+     * @generated from protobuf field: optional bool deprecated = 33 [default = false]
      */
     deprecated?: boolean;
     /**
      * The parser stores options it doesn't recognize here. See above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
 }
@@ -1474,23 +1474,23 @@ export interface MethodOptions {
      * for the method, or it will be completely ignored; in the very least,
      * this is a formalization for deprecating methods.
      *
-     * @generated from protobuf field: optional bool deprecated = 33;
+     * @generated from protobuf field: optional bool deprecated = 33 [default = false]
      */
     deprecated?: boolean;
     /**
-     * @generated from protobuf field: optional google.protobuf.MethodOptions.IdempotencyLevel idempotency_level = 34;
+     * @generated from protobuf field: optional google.protobuf.MethodOptions.IdempotencyLevel idempotency_level = 34 [default = IDEMPOTENCY_UNKNOWN]
      */
     idempotencyLevel?: MethodOptions_IdempotencyLevel;
     /**
      * Any features defined in the specific edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 35;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet features = 35
      */
     features?: FeatureSet;
     /**
      * The parser stores options it doesn't recognize here. See above.
      *
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption uninterpreted_option = 999
      */
     uninterpretedOption: UninterpretedOption[];
 }
@@ -1531,34 +1531,34 @@ export enum MethodOptions_IdempotencyLevel {
  */
 export interface UninterpretedOption {
     /**
-     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption.NamePart name = 2;
+     * @generated from protobuf field: repeated google.protobuf.UninterpretedOption.NamePart name = 2
      */
     name: UninterpretedOption_NamePart[];
     /**
      * The value of the uninterpreted option, in whatever type the tokenizer
      * identified it as during parsing. Exactly one of these should be set.
      *
-     * @generated from protobuf field: optional string identifier_value = 3;
+     * @generated from protobuf field: optional string identifier_value = 3
      */
     identifierValue?: string;
     /**
-     * @generated from protobuf field: optional uint64 positive_int_value = 4;
+     * @generated from protobuf field: optional uint64 positive_int_value = 4
      */
     positiveIntValue?: bigint;
     /**
-     * @generated from protobuf field: optional int64 negative_int_value = 5;
+     * @generated from protobuf field: optional int64 negative_int_value = 5
      */
     negativeIntValue?: bigint;
     /**
-     * @generated from protobuf field: optional double double_value = 6;
+     * @generated from protobuf field: optional double double_value = 6
      */
     doubleValue?: number;
     /**
-     * @generated from protobuf field: optional bytes string_value = 7;
+     * @generated from protobuf field: optional bytes string_value = 7
      */
     stringValue?: Uint8Array;
     /**
-     * @generated from protobuf field: optional string aggregate_value = 8;
+     * @generated from protobuf field: optional string aggregate_value = 8
      */
     aggregateValue?: string;
 }
@@ -1573,11 +1573,11 @@ export interface UninterpretedOption {
  */
 export interface UninterpretedOption_NamePart {
     /**
-     * @generated from protobuf field: string name_part = 1;
+     * @generated from protobuf field: required string name_part = 1
      */
     namePart: string;
     /**
-     * @generated from protobuf field: bool is_extension = 2;
+     * @generated from protobuf field: required bool is_extension = 2
      */
     isExtension: boolean;
 }
@@ -1596,27 +1596,27 @@ export interface UninterpretedOption_NamePart {
  */
 export interface FeatureSet {
     /**
-     * @generated from protobuf field: optional google.protobuf.FeatureSet.FieldPresence field_presence = 1;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet.FieldPresence field_presence = 1
      */
     fieldPresence?: FeatureSet_FieldPresence;
     /**
-     * @generated from protobuf field: optional google.protobuf.FeatureSet.EnumType enum_type = 2;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet.EnumType enum_type = 2
      */
     enumType?: FeatureSet_EnumType;
     /**
-     * @generated from protobuf field: optional google.protobuf.FeatureSet.RepeatedFieldEncoding repeated_field_encoding = 3;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet.RepeatedFieldEncoding repeated_field_encoding = 3
      */
     repeatedFieldEncoding?: FeatureSet_RepeatedFieldEncoding;
     /**
-     * @generated from protobuf field: optional google.protobuf.FeatureSet.Utf8Validation utf8_validation = 4;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet.Utf8Validation utf8_validation = 4
      */
     utf8Validation?: FeatureSet_Utf8Validation;
     /**
-     * @generated from protobuf field: optional google.protobuf.FeatureSet.MessageEncoding message_encoding = 5;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet.MessageEncoding message_encoding = 5
      */
     messageEncoding?: FeatureSet_MessageEncoding;
     /**
-     * @generated from protobuf field: optional google.protobuf.FeatureSet.JsonFormat json_format = 6;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet.JsonFormat json_format = 6
      */
     jsonFormat?: FeatureSet_JsonFormat;
 }
@@ -1736,21 +1736,21 @@ export enum FeatureSet_JsonFormat {
  */
 export interface FeatureSetDefaults {
     /**
-     * @generated from protobuf field: repeated google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault defaults = 1;
+     * @generated from protobuf field: repeated google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault defaults = 1
      */
     defaults: FeatureSetDefaults_FeatureSetEditionDefault[];
     /**
      * The minimum supported edition (inclusive) when this was constructed.
      * Editions before this will not have defaults.
      *
-     * @generated from protobuf field: optional google.protobuf.Edition minimum_edition = 4;
+     * @generated from protobuf field: optional google.protobuf.Edition minimum_edition = 4
      */
     minimumEdition?: Edition;
     /**
      * The maximum known edition (inclusive) when this was constructed. Editions
      * after this will not have reliable defaults.
      *
-     * @generated from protobuf field: optional google.protobuf.Edition maximum_edition = 5;
+     * @generated from protobuf field: optional google.protobuf.Edition maximum_edition = 5
      */
     maximumEdition?: Edition;
 }
@@ -1764,19 +1764,19 @@ export interface FeatureSetDefaults {
  */
 export interface FeatureSetDefaults_FeatureSetEditionDefault {
     /**
-     * @generated from protobuf field: optional google.protobuf.Edition edition = 3;
+     * @generated from protobuf field: optional google.protobuf.Edition edition = 3
      */
     edition?: Edition;
     /**
      * Defaults of features that can be overridden in this edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet overridable_features = 4;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet overridable_features = 4
      */
     overridableFeatures?: FeatureSet;
     /**
      * Defaults of features that can't be overridden in this edition.
      *
-     * @generated from protobuf field: optional google.protobuf.FeatureSet fixed_features = 5;
+     * @generated from protobuf field: optional google.protobuf.FeatureSet fixed_features = 5
      */
     fixedFeatures?: FeatureSet;
 }
@@ -1835,7 +1835,7 @@ export interface SourceCodeInfo {
      *   ignore those that it doesn't understand, as more types of locations could
      *   be recorded in the future.
      *
-     * @generated from protobuf field: repeated google.protobuf.SourceCodeInfo.Location location = 1;
+     * @generated from protobuf field: repeated google.protobuf.SourceCodeInfo.Location location = 1
      */
     location: SourceCodeInfo_Location[];
 }
@@ -1868,7 +1868,7 @@ export interface SourceCodeInfo_Location {
      * this path refers to the whole field declaration (from the beginning
      * of the label to the terminating semicolon).
      *
-     * @generated from protobuf field: repeated int32 path = 1 [packed = true];
+     * @generated from protobuf field: repeated int32 path = 1 [packed = true]
      */
     path: number[];
     /**
@@ -1878,7 +1878,7 @@ export interface SourceCodeInfo_Location {
      * and column numbers are zero-based -- typically you will want to add
      * 1 to each before displaying to a user.
      *
-     * @generated from protobuf field: repeated int32 span = 2 [packed = true];
+     * @generated from protobuf field: repeated int32 span = 2 [packed = true]
      */
     span: number[];
     /**
@@ -1930,15 +1930,15 @@ export interface SourceCodeInfo_Location {
      *
      *   // ignored detached comments.
      *
-     * @generated from protobuf field: optional string leading_comments = 3;
+     * @generated from protobuf field: optional string leading_comments = 3
      */
     leadingComments?: string;
     /**
-     * @generated from protobuf field: optional string trailing_comments = 4;
+     * @generated from protobuf field: optional string trailing_comments = 4
      */
     trailingComments?: string;
     /**
-     * @generated from protobuf field: repeated string leading_detached_comments = 6;
+     * @generated from protobuf field: repeated string leading_detached_comments = 6
      */
     leadingDetachedComments: string[];
 }
@@ -1954,7 +1954,7 @@ export interface GeneratedCodeInfo {
      * An Annotation connects some span of text in generated code to an element
      * of its generating .proto file.
      *
-     * @generated from protobuf field: repeated google.protobuf.GeneratedCodeInfo.Annotation annotation = 1;
+     * @generated from protobuf field: repeated google.protobuf.GeneratedCodeInfo.Annotation annotation = 1
      */
     annotation: GeneratedCodeInfo_Annotation[];
 }
@@ -1966,20 +1966,20 @@ export interface GeneratedCodeInfo_Annotation {
      * Identifies the element in the original source .proto file. This field
      * is formatted the same as SourceCodeInfo.Location.path.
      *
-     * @generated from protobuf field: repeated int32 path = 1 [packed = true];
+     * @generated from protobuf field: repeated int32 path = 1 [packed = true]
      */
     path: number[];
     /**
      * Identifies the filesystem path to the original source .proto.
      *
-     * @generated from protobuf field: optional string source_file = 2;
+     * @generated from protobuf field: optional string source_file = 2
      */
     sourceFile?: string;
     /**
      * Identifies the starting offset in bytes in the generated code
      * that relates to the identified object.
      *
-     * @generated from protobuf field: optional int32 begin = 3;
+     * @generated from protobuf field: optional int32 begin = 3
      */
     begin?: number;
     /**
@@ -1987,11 +1987,11 @@ export interface GeneratedCodeInfo_Annotation {
      * relates to the identified object. The end offset should be one past
      * the last relevant byte (so the length of the text = end - begin).
      *
-     * @generated from protobuf field: optional int32 end = 4;
+     * @generated from protobuf field: optional int32 end = 4
      */
     end?: number;
     /**
-     * @generated from protobuf field: optional google.protobuf.GeneratedCodeInfo.Annotation.Semantic semantic = 5;
+     * @generated from protobuf field: optional google.protobuf.GeneratedCodeInfo.Annotation.Semantic semantic = 5
      */
     semantic?: GeneratedCodeInfo_Annotation_Semantic;
 }

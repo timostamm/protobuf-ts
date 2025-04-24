@@ -19,11 +19,11 @@ import { ParentMessage_ChildMessage_GrandChildMessage } from "./msg-nesting";
  */
 export interface NoPackageMessage {
     /**
-     * @generated from protobuf field: spec.ParentMessage.ChildMessage.GrandChildMessage grand_child = 1;
+     * @generated from protobuf field: spec.ParentMessage.ChildMessage.GrandChildMessage grand_child = 1
      */
     grandChild?: ParentMessage_ChildMessage_GrandChildMessage;
     /**
-     * @generated from protobuf field: spec.sub_package.SubPackageMessage sub_package_message = 2;
+     * @generated from protobuf field: spec.sub_package.SubPackageMessage sub_package_message = 2
      */
     subPackageMessage?: SubPackageMessage;
 }

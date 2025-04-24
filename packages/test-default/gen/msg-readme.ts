@@ -9,21 +9,21 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface Person {
     /**
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
     /**
-     * @generated from protobuf field: uint64 id = 2;
+     * @generated from protobuf field: uint64 id = 2
      */
     id: bigint;
     /**
-     * @generated from protobuf field: int32 years = 3 [json_name = "baz"];
+     * @generated from protobuf field: int32 years = 3 [json_name = "baz"]
      */
     years: number;
     /**
      * maybe a jpeg?
      *
-     * @generated from protobuf field: optional bytes data = 5;
+     * @generated from protobuf field: optional bytes data = 5
      */
     data?: Uint8Array;
 }

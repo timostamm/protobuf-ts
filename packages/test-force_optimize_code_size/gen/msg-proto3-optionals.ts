@@ -7,19 +7,19 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface Proto3OptionalsMessage {
     /**
-     * @generated from protobuf field: optional string string_field = 1;
+     * @generated from protobuf field: optional string string_field = 1
      */
     stringField?: string;
     /**
-     * @generated from protobuf field: optional bytes bytes_field = 2;
+     * @generated from protobuf field: optional bytes bytes_field = 2
      */
     bytesField?: Uint8Array;
     /**
-     * @generated from protobuf field: optional spec.Proto3OptionalsMessage.TestEnum enum_field = 3;
+     * @generated from protobuf field: optional spec.Proto3OptionalsMessage.TestEnum enum_field = 3
      */
     enumField?: Proto3OptionalsMessage_TestEnum;
     /**
-     * @generated from protobuf field: spec.Proto3OptionalsMessage.TestMessage message_field = 4;
+     * @generated from protobuf field: spec.Proto3OptionalsMessage.TestMessage message_field = 4
      */
     messageField?: Proto3OptionalsMessage_TestMessage;
 }
@@ -28,7 +28,7 @@ export interface Proto3OptionalsMessage {
  */
 export interface Proto3OptionalsMessage_TestMessage {
     /**
-     * @generated from protobuf field: string field = 1;
+     * @generated from protobuf field: string field = 1
      */
     field: string;
 }

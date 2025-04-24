@@ -163,13 +163,13 @@ export interface Any {
      * used with implementation specific semantics.
      *
      *
-     * @generated from protobuf field: string type_url = 1;
+     * @generated from protobuf field: string type_url = 1
      */
     typeUrl: string;
     /**
      * Must be a valid serialized protocol buffer of the above specified type.
      *
-     * @generated from protobuf field: bytes value = 2;
+     * @generated from protobuf field: bytes value = 2
      */
     value: Uint8Array;
 }

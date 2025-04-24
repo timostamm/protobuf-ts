@@ -35,14 +35,14 @@ export interface Fraction {
     /**
      * The portion of the denominator in the faction, e.g. 2 in 2/3.
      *
-     * @generated from protobuf field: int64 numerator = 1;
+     * @generated from protobuf field: int64 numerator = 1
      */
     numerator: string;
     /**
      * The value by which the numerator is divided, e.g. 3 in 2/3. Must be
      * positive.
      *
-     * @generated from protobuf field: int64 denominator = 2;
+     * @generated from protobuf field: int64 denominator = 2
      */
     denominator: string;
 }

@@ -11,7 +11,7 @@ export interface EmptyMessage {
      * https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/empty.proto
      * https://github.com/Microsoft/TypeScript/issues/8032
      *
-     * @generated from protobuf field: google.protobuf.Empty empty_field = 1;
+     * @generated from protobuf field: google.protobuf.Empty empty_field = 1
      */
     emptyField?: Empty;
 }

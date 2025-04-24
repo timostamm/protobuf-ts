@@ -7,23 +7,23 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface ParentMessage {
     /**
-     * @generated from protobuf field: spec.ParentMessage.ChildMessage child = 1;
+     * @generated from protobuf field: spec.ParentMessage.ChildMessage child = 1
      */
     child?: ParentMessage_ChildMessage;
     /**
-     * @generated from protobuf field: repeated spec.ParentMessage.ChildMessage children = 2;
+     * @generated from protobuf field: repeated spec.ParentMessage.ChildMessage children = 2
      */
     children: ParentMessage_ChildMessage[];
     /**
-     * @generated from protobuf field: spec.ParentMessage.ChildMessage.ChildEnum child_enum = 3;
+     * @generated from protobuf field: spec.ParentMessage.ChildMessage.ChildEnum child_enum = 3
      */
     childEnum: ParentMessage_ChildMessage_ChildEnum;
     /**
-     * @generated from protobuf field: spec.ParentMessage.ChildMessage.GrandChildMessage grand_child = 4;
+     * @generated from protobuf field: spec.ParentMessage.ChildMessage.GrandChildMessage grand_child = 4
      */
     grandChild?: ParentMessage_ChildMessage_GrandChildMessage;
     /**
-     * @generated from protobuf field: spec.ParentMessage.ChildMessage.GrandChildMessage other_grand_child = 5;
+     * @generated from protobuf field: spec.ParentMessage.ChildMessage.GrandChildMessage other_grand_child = 5
      */
     otherGrandChild?: ParentMessage_ChildMessage_GrandChildMessage;
 }
@@ -32,7 +32,7 @@ export interface ParentMessage {
  */
 export interface ParentMessage_ChildMessage {
     /**
-     * @generated from protobuf field: string child = 1;
+     * @generated from protobuf field: string child = 1
      */
     child: string;
 }
@@ -41,7 +41,7 @@ export interface ParentMessage_ChildMessage {
  */
 export interface ParentMessage_ChildMessage_GrandChildMessage {
     /**
-     * @generated from protobuf field: string grand_child = 1;
+     * @generated from protobuf field: string grand_child = 1
      */
     grandChild: string;
 }

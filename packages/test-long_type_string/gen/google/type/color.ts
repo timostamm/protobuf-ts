@@ -154,19 +154,19 @@ export interface Color {
     /**
      * The amount of red in the color as a value in the interval [0, 1].
      *
-     * @generated from protobuf field: float red = 1;
+     * @generated from protobuf field: float red = 1
      */
     red: number;
     /**
      * The amount of green in the color as a value in the interval [0, 1].
      *
-     * @generated from protobuf field: float green = 2;
+     * @generated from protobuf field: float green = 2
      */
     green: number;
     /**
      * The amount of blue in the color as a value in the interval [0, 1].
      *
-     * @generated from protobuf field: float blue = 3;
+     * @generated from protobuf field: float blue = 3
      */
     blue: number;
     /**
@@ -182,7 +182,7 @@ export interface Color {
      * If omitted, this color object is to be rendered as a solid color
      * (as if the alpha value had been explicitly given with a value of 1.0).
      *
-     * @generated from protobuf field: google.protobuf.FloatValue alpha = 4;
+     * @generated from protobuf field: google.protobuf.FloatValue alpha = 4
      */
     alpha?: FloatValue;
 }

@@ -15,19 +15,19 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface EnumFieldMessage {
     /**
-     * @generated from protobuf field: spec.SimpleEnum enum_field = 1;
+     * @generated from protobuf field: spec.SimpleEnum enum_field = 1
      */
     enumField: SimpleEnum;
     /**
-     * @generated from protobuf field: repeated spec.SimpleEnum repeated_enum_field = 2;
+     * @generated from protobuf field: repeated spec.SimpleEnum repeated_enum_field = 2
      */
     repeatedEnumField: SimpleEnum[];
     /**
-     * @generated from protobuf field: spec.AliasEnum alias_enum_field = 3;
+     * @generated from protobuf field: spec.AliasEnum alias_enum_field = 3
      */
     aliasEnumField: AliasEnum;
     /**
-     * @generated from protobuf field: spec.PrefixEnum prefix_enum_field = 4;
+     * @generated from protobuf field: spec.PrefixEnum prefix_enum_field = 4
      */
     prefixEnumField: PrefixEnum;
 }

@@ -7,11 +7,11 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface JsonNamesMessage {
     /**
-     * @generated from protobuf field: string scalar_field = 1 [json_name = "scalarFieldJsonName"];
+     * @generated from protobuf field: string scalar_field = 1 [json_name = "scalarFieldJsonName"]
      */
     scalarField: string;
     /**
-     * @generated from protobuf field: repeated string repeated_scalar_field = 2 [json_name = "repeatedScalarFieldJsonName"];
+     * @generated from protobuf field: repeated string repeated_scalar_field = 2 [json_name = "repeatedScalarFieldJsonName"]
      */
     repeatedScalarField: string[];
 }

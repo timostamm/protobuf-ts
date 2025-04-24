@@ -7,11 +7,11 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface OptimizeForCodeSizeMessage {
     /**
-     * @generated from protobuf field: double double_field = 1;
+     * @generated from protobuf field: double double_field = 1
      */
     doubleField: number;
     /**
-     * @generated from protobuf field: float float_field = 2;
+     * @generated from protobuf field: float float_field = 2
      */
     floatField: number;
 }

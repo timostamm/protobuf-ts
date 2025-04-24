@@ -41,407 +41,407 @@ export interface TestAllTypesProto2 {
     /**
      * Singular
      *
-     * @generated from protobuf field: optional int32 optional_int32 = 1;
+     * @generated from protobuf field: optional int32 optional_int32 = 1
      */
     optionalInt32?: number;
     /**
-     * @generated from protobuf field: optional int64 optional_int64 = 2;
+     * @generated from protobuf field: optional int64 optional_int64 = 2
      */
     optionalInt64?: string;
     /**
-     * @generated from protobuf field: optional uint32 optional_uint32 = 3;
+     * @generated from protobuf field: optional uint32 optional_uint32 = 3
      */
     optionalUint32?: number;
     /**
-     * @generated from protobuf field: optional uint64 optional_uint64 = 4;
+     * @generated from protobuf field: optional uint64 optional_uint64 = 4
      */
     optionalUint64?: string;
     /**
-     * @generated from protobuf field: optional sint32 optional_sint32 = 5;
+     * @generated from protobuf field: optional sint32 optional_sint32 = 5
      */
     optionalSint32?: number;
     /**
-     * @generated from protobuf field: optional sint64 optional_sint64 = 6;
+     * @generated from protobuf field: optional sint64 optional_sint64 = 6
      */
     optionalSint64?: string;
     /**
-     * @generated from protobuf field: optional fixed32 optional_fixed32 = 7;
+     * @generated from protobuf field: optional fixed32 optional_fixed32 = 7
      */
     optionalFixed32?: number;
     /**
-     * @generated from protobuf field: optional fixed64 optional_fixed64 = 8;
+     * @generated from protobuf field: optional fixed64 optional_fixed64 = 8
      */
     optionalFixed64?: string;
     /**
-     * @generated from protobuf field: optional sfixed32 optional_sfixed32 = 9;
+     * @generated from protobuf field: optional sfixed32 optional_sfixed32 = 9
      */
     optionalSfixed32?: number;
     /**
-     * @generated from protobuf field: optional sfixed64 optional_sfixed64 = 10;
+     * @generated from protobuf field: optional sfixed64 optional_sfixed64 = 10
      */
     optionalSfixed64?: string;
     /**
-     * @generated from protobuf field: optional float optional_float = 11;
+     * @generated from protobuf field: optional float optional_float = 11
      */
     optionalFloat?: number;
     /**
-     * @generated from protobuf field: optional double optional_double = 12;
+     * @generated from protobuf field: optional double optional_double = 12
      */
     optionalDouble?: number;
     /**
-     * @generated from protobuf field: optional bool optional_bool = 13;
+     * @generated from protobuf field: optional bool optional_bool = 13
      */
     optionalBool?: boolean;
     /**
-     * @generated from protobuf field: optional string optional_string = 14;
+     * @generated from protobuf field: optional string optional_string = 14
      */
     optionalString?: string;
     /**
-     * @generated from protobuf field: optional bytes optional_bytes = 15;
+     * @generated from protobuf field: optional bytes optional_bytes = 15
      */
     optionalBytes?: Uint8Array;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage optional_nested_message = 18;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage optional_nested_message = 18
      */
     optionalNestedMessage?: TestAllTypesProto2_NestedMessage;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignMessageProto2 optional_foreign_message = 19;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignMessageProto2 optional_foreign_message = 19
      */
     optionalForeignMessage?: ForeignMessageProto2;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum optional_nested_enum = 21;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum optional_nested_enum = 21
      */
     optionalNestedEnum?: TestAllTypesProto2_NestedEnum;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignEnumProto2 optional_foreign_enum = 22;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignEnumProto2 optional_foreign_enum = 22
      */
     optionalForeignEnum?: ForeignEnumProto2;
     /**
-     * @generated from protobuf field: optional string optional_string_piece = 24;
+     * @generated from protobuf field: optional string optional_string_piece = 24
      */
     optionalStringPiece?: string;
     /**
-     * @generated from protobuf field: optional string optional_cord = 25;
+     * @generated from protobuf field: optional string optional_cord = 25
      */
     optionalCord?: string;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2 recursive_message = 27;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2 recursive_message = 27
      */
     recursiveMessage?: TestAllTypesProto2;
     /**
      * Repeated
      *
-     * @generated from protobuf field: repeated int32 repeated_int32 = 31;
+     * @generated from protobuf field: repeated int32 repeated_int32 = 31
      */
     repeatedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 repeated_int64 = 32;
+     * @generated from protobuf field: repeated int64 repeated_int64 = 32
      */
     repeatedInt64: string[];
     /**
-     * @generated from protobuf field: repeated uint32 repeated_uint32 = 33;
+     * @generated from protobuf field: repeated uint32 repeated_uint32 = 33
      */
     repeatedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 repeated_uint64 = 34;
+     * @generated from protobuf field: repeated uint64 repeated_uint64 = 34
      */
     repeatedUint64: string[];
     /**
-     * @generated from protobuf field: repeated sint32 repeated_sint32 = 35;
+     * @generated from protobuf field: repeated sint32 repeated_sint32 = 35
      */
     repeatedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 repeated_sint64 = 36;
+     * @generated from protobuf field: repeated sint64 repeated_sint64 = 36
      */
     repeatedSint64: string[];
     /**
-     * @generated from protobuf field: repeated fixed32 repeated_fixed32 = 37;
+     * @generated from protobuf field: repeated fixed32 repeated_fixed32 = 37
      */
     repeatedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 repeated_fixed64 = 38;
+     * @generated from protobuf field: repeated fixed64 repeated_fixed64 = 38
      */
     repeatedFixed64: string[];
     /**
-     * @generated from protobuf field: repeated sfixed32 repeated_sfixed32 = 39;
+     * @generated from protobuf field: repeated sfixed32 repeated_sfixed32 = 39
      */
     repeatedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 repeated_sfixed64 = 40;
+     * @generated from protobuf field: repeated sfixed64 repeated_sfixed64 = 40
      */
     repeatedSfixed64: string[];
     /**
-     * @generated from protobuf field: repeated float repeated_float = 41;
+     * @generated from protobuf field: repeated float repeated_float = 41
      */
     repeatedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double repeated_double = 42;
+     * @generated from protobuf field: repeated double repeated_double = 42
      */
     repeatedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool repeated_bool = 43;
+     * @generated from protobuf field: repeated bool repeated_bool = 43
      */
     repeatedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated string repeated_string = 44;
+     * @generated from protobuf field: repeated string repeated_string = 44
      */
     repeatedString: string[];
     /**
-     * @generated from protobuf field: repeated bytes repeated_bytes = 45;
+     * @generated from protobuf field: repeated bytes repeated_bytes = 45
      */
     repeatedBytes: Uint8Array[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage repeated_nested_message = 48;
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage repeated_nested_message = 48
      */
     repeatedNestedMessage: TestAllTypesProto2_NestedMessage[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.ForeignMessageProto2 repeated_foreign_message = 49;
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.ForeignMessageProto2 repeated_foreign_message = 49
      */
     repeatedForeignMessage: ForeignMessageProto2[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum repeated_nested_enum = 51;
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum repeated_nested_enum = 51
      */
     repeatedNestedEnum: TestAllTypesProto2_NestedEnum[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.ForeignEnumProto2 repeated_foreign_enum = 52;
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.ForeignEnumProto2 repeated_foreign_enum = 52
      */
     repeatedForeignEnum: ForeignEnumProto2[];
     /**
-     * @generated from protobuf field: repeated string repeated_string_piece = 54;
+     * @generated from protobuf field: repeated string repeated_string_piece = 54
      */
     repeatedStringPiece: string[];
     /**
-     * @generated from protobuf field: repeated string repeated_cord = 55;
+     * @generated from protobuf field: repeated string repeated_cord = 55
      */
     repeatedCord: string[];
     /**
      * Packed
      *
-     * @generated from protobuf field: repeated int32 packed_int32 = 75 [packed = true];
+     * @generated from protobuf field: repeated int32 packed_int32 = 75 [packed = true]
      */
     packedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 packed_int64 = 76 [packed = true];
+     * @generated from protobuf field: repeated int64 packed_int64 = 76 [packed = true]
      */
     packedInt64: string[];
     /**
-     * @generated from protobuf field: repeated uint32 packed_uint32 = 77 [packed = true];
+     * @generated from protobuf field: repeated uint32 packed_uint32 = 77 [packed = true]
      */
     packedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 packed_uint64 = 78 [packed = true];
+     * @generated from protobuf field: repeated uint64 packed_uint64 = 78 [packed = true]
      */
     packedUint64: string[];
     /**
-     * @generated from protobuf field: repeated sint32 packed_sint32 = 79 [packed = true];
+     * @generated from protobuf field: repeated sint32 packed_sint32 = 79 [packed = true]
      */
     packedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 packed_sint64 = 80 [packed = true];
+     * @generated from protobuf field: repeated sint64 packed_sint64 = 80 [packed = true]
      */
     packedSint64: string[];
     /**
-     * @generated from protobuf field: repeated fixed32 packed_fixed32 = 81 [packed = true];
+     * @generated from protobuf field: repeated fixed32 packed_fixed32 = 81 [packed = true]
      */
     packedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 packed_fixed64 = 82 [packed = true];
+     * @generated from protobuf field: repeated fixed64 packed_fixed64 = 82 [packed = true]
      */
     packedFixed64: string[];
     /**
-     * @generated from protobuf field: repeated sfixed32 packed_sfixed32 = 83 [packed = true];
+     * @generated from protobuf field: repeated sfixed32 packed_sfixed32 = 83 [packed = true]
      */
     packedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 packed_sfixed64 = 84 [packed = true];
+     * @generated from protobuf field: repeated sfixed64 packed_sfixed64 = 84 [packed = true]
      */
     packedSfixed64: string[];
     /**
-     * @generated from protobuf field: repeated float packed_float = 85 [packed = true];
+     * @generated from protobuf field: repeated float packed_float = 85 [packed = true]
      */
     packedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double packed_double = 86 [packed = true];
+     * @generated from protobuf field: repeated double packed_double = 86 [packed = true]
      */
     packedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool packed_bool = 87 [packed = true];
+     * @generated from protobuf field: repeated bool packed_bool = 87 [packed = true]
      */
     packedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum packed_nested_enum = 88 [packed = true];
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum packed_nested_enum = 88 [packed = true]
      */
     packedNestedEnum: TestAllTypesProto2_NestedEnum[];
     /**
      * Unpacked
      *
-     * @generated from protobuf field: repeated int32 unpacked_int32 = 89 [packed = false];
+     * @generated from protobuf field: repeated int32 unpacked_int32 = 89 [packed = false]
      */
     unpackedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 unpacked_int64 = 90 [packed = false];
+     * @generated from protobuf field: repeated int64 unpacked_int64 = 90 [packed = false]
      */
     unpackedInt64: string[];
     /**
-     * @generated from protobuf field: repeated uint32 unpacked_uint32 = 91 [packed = false];
+     * @generated from protobuf field: repeated uint32 unpacked_uint32 = 91 [packed = false]
      */
     unpackedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 unpacked_uint64 = 92 [packed = false];
+     * @generated from protobuf field: repeated uint64 unpacked_uint64 = 92 [packed = false]
      */
     unpackedUint64: string[];
     /**
-     * @generated from protobuf field: repeated sint32 unpacked_sint32 = 93 [packed = false];
+     * @generated from protobuf field: repeated sint32 unpacked_sint32 = 93 [packed = false]
      */
     unpackedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 unpacked_sint64 = 94 [packed = false];
+     * @generated from protobuf field: repeated sint64 unpacked_sint64 = 94 [packed = false]
      */
     unpackedSint64: string[];
     /**
-     * @generated from protobuf field: repeated fixed32 unpacked_fixed32 = 95 [packed = false];
+     * @generated from protobuf field: repeated fixed32 unpacked_fixed32 = 95 [packed = false]
      */
     unpackedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 unpacked_fixed64 = 96 [packed = false];
+     * @generated from protobuf field: repeated fixed64 unpacked_fixed64 = 96 [packed = false]
      */
     unpackedFixed64: string[];
     /**
-     * @generated from protobuf field: repeated sfixed32 unpacked_sfixed32 = 97 [packed = false];
+     * @generated from protobuf field: repeated sfixed32 unpacked_sfixed32 = 97 [packed = false]
      */
     unpackedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 unpacked_sfixed64 = 98 [packed = false];
+     * @generated from protobuf field: repeated sfixed64 unpacked_sfixed64 = 98 [packed = false]
      */
     unpackedSfixed64: string[];
     /**
-     * @generated from protobuf field: repeated float unpacked_float = 99 [packed = false];
+     * @generated from protobuf field: repeated float unpacked_float = 99 [packed = false]
      */
     unpackedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double unpacked_double = 100 [packed = false];
+     * @generated from protobuf field: repeated double unpacked_double = 100 [packed = false]
      */
     unpackedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool unpacked_bool = 101 [packed = false];
+     * @generated from protobuf field: repeated bool unpacked_bool = 101 [packed = false]
      */
     unpackedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum unpacked_nested_enum = 102 [packed = false];
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum unpacked_nested_enum = 102 [packed = false]
      */
     unpackedNestedEnum: TestAllTypesProto2_NestedEnum[];
     /**
      * Map
      *
-     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 56;
+     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 56
      */
     mapInt32Int32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 57;
+     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 57
      */
     mapInt64Int64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 58;
+     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 58
      */
     mapUint32Uint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 59;
+     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 59
      */
     mapUint64Uint64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 60;
+     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 60
      */
     mapSint32Sint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 61;
+     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 61
      */
     mapSint64Sint64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 62;
+     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 62
      */
     mapFixed32Fixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 63;
+     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 63
      */
     mapFixed64Fixed64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 64;
+     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 64
      */
     mapSfixed32Sfixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 65;
+     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 65
      */
     mapSfixed64Sfixed64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<int32, float> map_int32_float = 66;
+     * @generated from protobuf field: map<int32, float> map_int32_float = 66
      */
     mapInt32Float: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int32, double> map_int32_double = 67;
+     * @generated from protobuf field: map<int32, double> map_int32_double = 67
      */
     mapInt32Double: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<bool, bool> map_bool_bool = 68;
+     * @generated from protobuf field: map<bool, bool> map_bool_bool = 68
      */
     mapBoolBool: {
         [key: string]: boolean;
     };
     /**
-     * @generated from protobuf field: map<string, string> map_string_string = 69;
+     * @generated from protobuf field: map<string, string> map_string_string = 69
      */
     mapStringString: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<string, bytes> map_string_bytes = 70;
+     * @generated from protobuf field: map<string, bytes> map_string_bytes = 70
      */
     mapStringBytes: {
         [key: string]: Uint8Array;
     };
     /**
-     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage> map_string_nested_message = 71;
+     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage> map_string_nested_message = 71
      */
     mapStringNestedMessage: {
         [key: string]: TestAllTypesProto2_NestedMessage;
     };
     /**
-     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.ForeignMessageProto2> map_string_foreign_message = 72;
+     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.ForeignMessageProto2> map_string_foreign_message = 72
      */
     mapStringForeignMessage: {
         [key: string]: ForeignMessageProto2;
     };
     /**
-     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum> map_string_nested_enum = 73;
+     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum> map_string_nested_enum = 73
      */
     mapStringNestedEnum: {
         [key: string]: TestAllTypesProto2_NestedEnum;
     };
     /**
-     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.ForeignEnumProto2> map_string_foreign_enum = 74;
+     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.ForeignEnumProto2> map_string_foreign_enum = 74
      */
     mapStringForeignEnum: {
         [key: string]: ForeignEnumProto2;
@@ -452,55 +452,55 @@ export interface TestAllTypesProto2 {
     oneofField: {
         oneofKind: "oneofUint32";
         /**
-         * @generated from protobuf field: uint32 oneof_uint32 = 111;
+         * @generated from protobuf field: uint32 oneof_uint32 = 111
          */
         oneofUint32: number;
     } | {
         oneofKind: "oneofNestedMessage";
         /**
-         * @generated from protobuf field: protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage oneof_nested_message = 112;
+         * @generated from protobuf field: protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage oneof_nested_message = 112
          */
         oneofNestedMessage: TestAllTypesProto2_NestedMessage;
     } | {
         oneofKind: "oneofString";
         /**
-         * @generated from protobuf field: string oneof_string = 113;
+         * @generated from protobuf field: string oneof_string = 113
          */
         oneofString: string;
     } | {
         oneofKind: "oneofBytes";
         /**
-         * @generated from protobuf field: bytes oneof_bytes = 114;
+         * @generated from protobuf field: bytes oneof_bytes = 114
          */
         oneofBytes: Uint8Array;
     } | {
         oneofKind: "oneofBool";
         /**
-         * @generated from protobuf field: bool oneof_bool = 115;
+         * @generated from protobuf field: bool oneof_bool = 115
          */
         oneofBool: boolean;
     } | {
         oneofKind: "oneofUint64";
         /**
-         * @generated from protobuf field: uint64 oneof_uint64 = 116;
+         * @generated from protobuf field: uint64 oneof_uint64 = 116
          */
         oneofUint64: string;
     } | {
         oneofKind: "oneofFloat";
         /**
-         * @generated from protobuf field: float oneof_float = 117;
+         * @generated from protobuf field: float oneof_float = 117
          */
         oneofFloat: number;
     } | {
         oneofKind: "oneofDouble";
         /**
-         * @generated from protobuf field: double oneof_double = 118;
+         * @generated from protobuf field: double oneof_double = 118
          */
         oneofDouble: number;
     } | {
         oneofKind: "oneofEnum";
         /**
-         * @generated from protobuf field: protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum oneof_enum = 119;
+         * @generated from protobuf field: protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum oneof_enum = 119
          */
         oneofEnum: TestAllTypesProto2_NestedEnum;
     } | {
@@ -509,138 +509,138 @@ export interface TestAllTypesProto2 {
     /**
      * default values
      *
-     * @generated from protobuf field: optional int32 default_int32 = 241;
+     * @generated from protobuf field: optional int32 default_int32 = 241 [default = -123456789]
      */
     defaultInt32?: number;
     /**
-     * @generated from protobuf field: optional int64 default_int64 = 242;
+     * @generated from protobuf field: optional int64 default_int64 = 242 [default = -9123456789123456789]
      */
     defaultInt64?: string;
     /**
-     * @generated from protobuf field: optional uint32 default_uint32 = 243;
+     * @generated from protobuf field: optional uint32 default_uint32 = 243 [default = 2123456789]
      */
     defaultUint32?: number;
     /**
-     * @generated from protobuf field: optional uint64 default_uint64 = 244;
+     * @generated from protobuf field: optional uint64 default_uint64 = 244 [default = 10123456789123456789]
      */
     defaultUint64?: string;
     /**
-     * @generated from protobuf field: optional sint32 default_sint32 = 245;
+     * @generated from protobuf field: optional sint32 default_sint32 = 245 [default = -123456789]
      */
     defaultSint32?: number;
     /**
-     * @generated from protobuf field: optional sint64 default_sint64 = 246;
+     * @generated from protobuf field: optional sint64 default_sint64 = 246 [default = -9123456789123456789]
      */
     defaultSint64?: string;
     /**
-     * @generated from protobuf field: optional fixed32 default_fixed32 = 247;
+     * @generated from protobuf field: optional fixed32 default_fixed32 = 247 [default = 2123456789]
      */
     defaultFixed32?: number;
     /**
-     * @generated from protobuf field: optional fixed64 default_fixed64 = 248;
+     * @generated from protobuf field: optional fixed64 default_fixed64 = 248 [default = 10123456789123456789]
      */
     defaultFixed64?: string;
     /**
-     * @generated from protobuf field: optional sfixed32 default_sfixed32 = 249;
+     * @generated from protobuf field: optional sfixed32 default_sfixed32 = 249 [default = -123456789]
      */
     defaultSfixed32?: number;
     /**
-     * @generated from protobuf field: optional sfixed64 default_sfixed64 = 250;
+     * @generated from protobuf field: optional sfixed64 default_sfixed64 = 250 [default = -9123456789123456789]
      */
     defaultSfixed64?: string;
     /**
-     * @generated from protobuf field: optional float default_float = 251;
+     * @generated from protobuf field: optional float default_float = 251 [default = 9e+09]
      */
     defaultFloat?: number;
     /**
-     * @generated from protobuf field: optional double default_double = 252;
+     * @generated from protobuf field: optional double default_double = 252 [default = 7e+22]
      */
     defaultDouble?: number;
     /**
-     * @generated from protobuf field: optional bool default_bool = 253;
+     * @generated from protobuf field: optional bool default_bool = 253 [default = true]
      */
     defaultBool?: boolean;
     /**
-     * @generated from protobuf field: optional string default_string = 254;
+     * @generated from protobuf field: optional string default_string = 254 [default = "Rosebud"]
      */
     defaultString?: string;
     /**
-     * @generated from protobuf field: optional bytes default_bytes = 255;
+     * @generated from protobuf field: optional bytes default_bytes = 255 [default = "joshua"]
      */
     defaultBytes?: Uint8Array;
     /**
      * Test field-name-to-JSON-name convention.
      * (protobuf says names can be any valid C/C++ identifier.)
      *
-     * @generated from protobuf field: optional int32 fieldname1 = 401;
+     * @generated from protobuf field: optional int32 fieldname1 = 401
      */
     fieldname1?: number;
     /**
-     * @generated from protobuf field: optional int32 field_name2 = 402;
+     * @generated from protobuf field: optional int32 field_name2 = 402
      */
     fieldName2?: number;
     /**
-     * @generated from protobuf field: optional int32 _field_name3 = 403;
+     * @generated from protobuf field: optional int32 _field_name3 = 403
      */
     FieldName3?: number;
     /**
-     * @generated from protobuf field: optional int32 field__name4_ = 404;
+     * @generated from protobuf field: optional int32 field__name4_ = 404
      */
     fieldName4?: number;
     /**
-     * @generated from protobuf field: optional int32 field0name5 = 405 [json_name = "field0name5"];
+     * @generated from protobuf field: optional int32 field0name5 = 405
      */
     field0Name5?: number;
     /**
-     * @generated from protobuf field: optional int32 field_0_name6 = 406;
+     * @generated from protobuf field: optional int32 field_0_name6 = 406
      */
     field0Name6?: number;
     /**
-     * @generated from protobuf field: optional int32 fieldName7 = 407;
+     * @generated from protobuf field: optional int32 fieldName7 = 407
      */
     fieldName7?: number;
     /**
-     * @generated from protobuf field: optional int32 FieldName8 = 408 [json_name = "FieldName8"];
+     * @generated from protobuf field: optional int32 FieldName8 = 408
      */
     fieldName8?: number;
     /**
-     * @generated from protobuf field: optional int32 field_Name9 = 409;
+     * @generated from protobuf field: optional int32 field_Name9 = 409
      */
     fieldName9?: number;
     /**
-     * @generated from protobuf field: optional int32 Field_Name10 = 410 [json_name = "FieldName10"];
+     * @generated from protobuf field: optional int32 Field_Name10 = 410
      */
     fieldName10?: number;
     /**
-     * @generated from protobuf field: optional int32 FIELD_NAME11 = 411 [json_name = "FIELDNAME11"];
+     * @generated from protobuf field: optional int32 FIELD_NAME11 = 411
      */
     fIELDNAME11?: number;
     /**
-     * @generated from protobuf field: optional int32 FIELD_name12 = 412 [json_name = "FIELDName12"];
+     * @generated from protobuf field: optional int32 FIELD_name12 = 412
      */
     fIELDName12?: number;
     /**
-     * @generated from protobuf field: optional int32 __field_name13 = 413;
+     * @generated from protobuf field: optional int32 __field_name13 = 413
      */
     FieldName13?: number;
     /**
-     * @generated from protobuf field: optional int32 __Field_name14 = 414;
+     * @generated from protobuf field: optional int32 __Field_name14 = 414
      */
     FieldName14?: number;
     /**
-     * @generated from protobuf field: optional int32 field__name15 = 415;
+     * @generated from protobuf field: optional int32 field__name15 = 415
      */
     fieldName15?: number;
     /**
-     * @generated from protobuf field: optional int32 field__Name16 = 416;
+     * @generated from protobuf field: optional int32 field__Name16 = 416
      */
     fieldName16?: number;
     /**
-     * @generated from protobuf field: optional int32 field_name17__ = 417;
+     * @generated from protobuf field: optional int32 field_name17__ = 417
      */
     fieldName17?: number;
     /**
-     * @generated from protobuf field: optional int32 Field_name18__ = 418 [json_name = "FieldName18"];
+     * @generated from protobuf field: optional int32 Field_name18__ = 418
      */
     fieldName18?: number;
 }
@@ -649,11 +649,11 @@ export interface TestAllTypesProto2 {
  */
 export interface TestAllTypesProto2_NestedMessage {
     /**
-     * @generated from protobuf field: optional int32 a = 1;
+     * @generated from protobuf field: optional int32 a = 1
      */
     a?: number;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2 corecursive = 2;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2 corecursive = 2
      */
     corecursive?: TestAllTypesProto2;
 }
@@ -664,11 +664,11 @@ export interface TestAllTypesProto2_NestedMessage {
  */
 export interface TestAllTypesProto2_Data {
     /**
-     * @generated from protobuf field: optional int32 group_int32 = 202;
+     * @generated from protobuf field: optional int32 group_int32 = 202
      */
     groupInt32?: number;
     /**
-     * @generated from protobuf field: optional uint32 group_uint32 = 203;
+     * @generated from protobuf field: optional uint32 group_uint32 = 203
      */
     groupUint32?: number;
 }
@@ -677,11 +677,11 @@ export interface TestAllTypesProto2_Data {
  */
 export interface TestAllTypesProto2_MultiWordGroupField {
     /**
-     * @generated from protobuf field: optional int32 group_int32 = 205;
+     * @generated from protobuf field: optional int32 group_int32 = 205
      */
     groupInt32?: number;
     /**
-     * @generated from protobuf field: optional uint32 group_uint32 = 206;
+     * @generated from protobuf field: optional uint32 group_uint32 = 206
      */
     groupUint32?: number;
 }
@@ -697,7 +697,7 @@ export interface TestAllTypesProto2_MessageSetCorrect {
  */
 export interface TestAllTypesProto2_MessageSetCorrectExtension1 {
     /**
-     * @generated from protobuf field: optional string str = 25;
+     * @generated from protobuf field: optional string str = 25
      */
     str?: string;
 }
@@ -706,7 +706,7 @@ export interface TestAllTypesProto2_MessageSetCorrectExtension1 {
  */
 export interface TestAllTypesProto2_MessageSetCorrectExtension2 {
     /**
-     * @generated from protobuf field: optional int32 i = 9;
+     * @generated from protobuf field: optional int32 i = 9
      */
     i?: number;
 }
@@ -738,7 +738,7 @@ export enum TestAllTypesProto2_NestedEnum {
  */
 export interface ForeignMessageProto2 {
     /**
-     * @generated from protobuf field: optional int32 c = 1;
+     * @generated from protobuf field: optional int32 c = 1
      */
     c?: number;
 }
@@ -747,11 +747,11 @@ export interface ForeignMessageProto2 {
  */
 export interface GroupField {
     /**
-     * @generated from protobuf field: optional int32 group_int32 = 122;
+     * @generated from protobuf field: optional int32 group_int32 = 122
      */
     groupInt32?: number;
     /**
-     * @generated from protobuf field: optional uint32 group_uint32 = 123;
+     * @generated from protobuf field: optional uint32 group_uint32 = 123
      */
     groupUint32?: number;
 }
@@ -760,23 +760,23 @@ export interface GroupField {
  */
 export interface UnknownToTestAllTypes {
     /**
-     * @generated from protobuf field: optional int32 optional_int32 = 1001;
+     * @generated from protobuf field: optional int32 optional_int32 = 1001
      */
     optionalInt32?: number;
     /**
-     * @generated from protobuf field: optional string optional_string = 1002;
+     * @generated from protobuf field: optional string optional_string = 1002
      */
     optionalString?: string;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignMessageProto2 nested_message = 1003;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignMessageProto2 nested_message = 1003
      */
     nestedMessage?: ForeignMessageProto2;
     /**
-     * @generated from protobuf field: optional bool optional_bool = 1006;
+     * @generated from protobuf field: optional bool optional_bool = 1006
      */
     optionalBool?: boolean;
     /**
-     * @generated from protobuf field: repeated int32 repeated_int32 = 1011;
+     * @generated from protobuf field: repeated int32 repeated_int32 = 1011
      */
     repeatedInt32: number[];
 }
@@ -785,7 +785,7 @@ export interface UnknownToTestAllTypes {
  */
 export interface UnknownToTestAllTypes_OptionalGroup {
     /**
-     * @generated from protobuf field: optional int32 a = 1;
+     * @generated from protobuf field: optional int32 a = 1
      */
     a?: number;
 }
@@ -817,7 +817,7 @@ export enum EnumOnlyProto2_Bool {
  */
 export interface OneStringProto2 {
     /**
-     * @generated from protobuf field: optional string data = 1;
+     * @generated from protobuf field: optional string data = 1
      */
     data?: string;
 }
@@ -826,15 +826,15 @@ export interface OneStringProto2 {
  */
 export interface ProtoWithKeywords {
     /**
-     * @generated from protobuf field: optional int32 inline = 1;
+     * @generated from protobuf field: optional int32 inline = 1
      */
     inline?: number;
     /**
-     * @generated from protobuf field: optional string concept = 2;
+     * @generated from protobuf field: optional string concept = 2
      */
     concept?: string;
     /**
-     * @generated from protobuf field: repeated string requires = 3;
+     * @generated from protobuf field: repeated string requires = 3
      */
     requires: string[];
 }
@@ -845,157 +845,157 @@ export interface TestAllRequiredTypesProto2 {
     /**
      * Singular
      *
-     * @generated from protobuf field: int32 required_int32 = 1;
+     * @generated from protobuf field: required int32 required_int32 = 1
      */
     requiredInt32: number;
     /**
-     * @generated from protobuf field: int64 required_int64 = 2;
+     * @generated from protobuf field: required int64 required_int64 = 2
      */
     requiredInt64: string;
     /**
-     * @generated from protobuf field: uint32 required_uint32 = 3;
+     * @generated from protobuf field: required uint32 required_uint32 = 3
      */
     requiredUint32: number;
     /**
-     * @generated from protobuf field: uint64 required_uint64 = 4;
+     * @generated from protobuf field: required uint64 required_uint64 = 4
      */
     requiredUint64: string;
     /**
-     * @generated from protobuf field: sint32 required_sint32 = 5;
+     * @generated from protobuf field: required sint32 required_sint32 = 5
      */
     requiredSint32: number;
     /**
-     * @generated from protobuf field: sint64 required_sint64 = 6;
+     * @generated from protobuf field: required sint64 required_sint64 = 6
      */
     requiredSint64: string;
     /**
-     * @generated from protobuf field: fixed32 required_fixed32 = 7;
+     * @generated from protobuf field: required fixed32 required_fixed32 = 7
      */
     requiredFixed32: number;
     /**
-     * @generated from protobuf field: fixed64 required_fixed64 = 8;
+     * @generated from protobuf field: required fixed64 required_fixed64 = 8
      */
     requiredFixed64: string;
     /**
-     * @generated from protobuf field: sfixed32 required_sfixed32 = 9;
+     * @generated from protobuf field: required sfixed32 required_sfixed32 = 9
      */
     requiredSfixed32: number;
     /**
-     * @generated from protobuf field: sfixed64 required_sfixed64 = 10;
+     * @generated from protobuf field: required sfixed64 required_sfixed64 = 10
      */
     requiredSfixed64: string;
     /**
-     * @generated from protobuf field: float required_float = 11;
+     * @generated from protobuf field: required float required_float = 11
      */
     requiredFloat: number;
     /**
-     * @generated from protobuf field: double required_double = 12;
+     * @generated from protobuf field: required double required_double = 12
      */
     requiredDouble: number;
     /**
-     * @generated from protobuf field: bool required_bool = 13;
+     * @generated from protobuf field: required bool required_bool = 13
      */
     requiredBool: boolean;
     /**
-     * @generated from protobuf field: string required_string = 14;
+     * @generated from protobuf field: required string required_string = 14
      */
     requiredString: string;
     /**
-     * @generated from protobuf field: bytes required_bytes = 15;
+     * @generated from protobuf field: required bytes required_bytes = 15
      */
     requiredBytes: Uint8Array;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedMessage required_nested_message = 18;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedMessage required_nested_message = 18
      */
     requiredNestedMessage?: TestAllRequiredTypesProto2_NestedMessage;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.ForeignMessageProto2 required_foreign_message = 19;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.ForeignMessageProto2 required_foreign_message = 19
      */
     requiredForeignMessage?: ForeignMessageProto2;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedEnum required_nested_enum = 21;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedEnum required_nested_enum = 21
      */
     requiredNestedEnum: TestAllRequiredTypesProto2_NestedEnum;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.ForeignEnumProto2 required_foreign_enum = 22;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.ForeignEnumProto2 required_foreign_enum = 22
      */
     requiredForeignEnum: ForeignEnumProto2;
     /**
-     * @generated from protobuf field: string required_string_piece = 24;
+     * @generated from protobuf field: required string required_string_piece = 24
      */
     requiredStringPiece: string;
     /**
-     * @generated from protobuf field: string required_cord = 25;
+     * @generated from protobuf field: required string required_cord = 25
      */
     requiredCord: string;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.TestAllRequiredTypesProto2 recursive_message = 27;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.TestAllRequiredTypesProto2 recursive_message = 27
      */
     recursiveMessage?: TestAllRequiredTypesProto2;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_recursive_message = 28;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_recursive_message = 28
      */
     optionalRecursiveMessage?: TestAllRequiredTypesProto2;
     /**
      * default values
      *
-     * @generated from protobuf field: int32 default_int32 = 241;
+     * @generated from protobuf field: required int32 default_int32 = 241 [default = -123456789]
      */
     defaultInt32: number;
     /**
-     * @generated from protobuf field: int64 default_int64 = 242;
+     * @generated from protobuf field: required int64 default_int64 = 242 [default = -9123456789123456789]
      */
     defaultInt64: string;
     /**
-     * @generated from protobuf field: uint32 default_uint32 = 243;
+     * @generated from protobuf field: required uint32 default_uint32 = 243 [default = 2123456789]
      */
     defaultUint32: number;
     /**
-     * @generated from protobuf field: uint64 default_uint64 = 244;
+     * @generated from protobuf field: required uint64 default_uint64 = 244 [default = 10123456789123456789]
      */
     defaultUint64: string;
     /**
-     * @generated from protobuf field: sint32 default_sint32 = 245;
+     * @generated from protobuf field: required sint32 default_sint32 = 245 [default = -123456789]
      */
     defaultSint32: number;
     /**
-     * @generated from protobuf field: sint64 default_sint64 = 246;
+     * @generated from protobuf field: required sint64 default_sint64 = 246 [default = -9123456789123456789]
      */
     defaultSint64: string;
     /**
-     * @generated from protobuf field: fixed32 default_fixed32 = 247;
+     * @generated from protobuf field: required fixed32 default_fixed32 = 247 [default = 2123456789]
      */
     defaultFixed32: number;
     /**
-     * @generated from protobuf field: fixed64 default_fixed64 = 248;
+     * @generated from protobuf field: required fixed64 default_fixed64 = 248 [default = 10123456789123456789]
      */
     defaultFixed64: string;
     /**
-     * @generated from protobuf field: sfixed32 default_sfixed32 = 249;
+     * @generated from protobuf field: required sfixed32 default_sfixed32 = 249 [default = -123456789]
      */
     defaultSfixed32: number;
     /**
-     * @generated from protobuf field: sfixed64 default_sfixed64 = 250;
+     * @generated from protobuf field: required sfixed64 default_sfixed64 = 250 [default = -9123456789123456789]
      */
     defaultSfixed64: string;
     /**
-     * @generated from protobuf field: float default_float = 251;
+     * @generated from protobuf field: required float default_float = 251 [default = 9e+09]
      */
     defaultFloat: number;
     /**
-     * @generated from protobuf field: double default_double = 252;
+     * @generated from protobuf field: required double default_double = 252 [default = 7e+22]
      */
     defaultDouble: number;
     /**
-     * @generated from protobuf field: bool default_bool = 253;
+     * @generated from protobuf field: required bool default_bool = 253 [default = true]
      */
     defaultBool: boolean;
     /**
-     * @generated from protobuf field: string default_string = 254;
+     * @generated from protobuf field: required string default_string = 254 [default = "Rosebud"]
      */
     defaultString: string;
     /**
-     * @generated from protobuf field: bytes default_bytes = 255;
+     * @generated from protobuf field: required bytes default_bytes = 255 [default = "joshua"]
      */
     defaultBytes: Uint8Array;
 }
@@ -1004,15 +1004,15 @@ export interface TestAllRequiredTypesProto2 {
  */
 export interface TestAllRequiredTypesProto2_NestedMessage {
     /**
-     * @generated from protobuf field: int32 a = 1;
+     * @generated from protobuf field: required int32 a = 1
      */
     a: number;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.TestAllRequiredTypesProto2 corecursive = 2;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.TestAllRequiredTypesProto2 corecursive = 2
      */
     corecursive?: TestAllRequiredTypesProto2;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_corecursive = 3;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_corecursive = 3
      */
     optionalCorecursive?: TestAllRequiredTypesProto2;
 }
@@ -1023,11 +1023,11 @@ export interface TestAllRequiredTypesProto2_NestedMessage {
  */
 export interface TestAllRequiredTypesProto2_Data {
     /**
-     * @generated from protobuf field: int32 group_int32 = 202;
+     * @generated from protobuf field: required int32 group_int32 = 202
      */
     groupInt32: number;
     /**
-     * @generated from protobuf field: uint32 group_uint32 = 203;
+     * @generated from protobuf field: required uint32 group_uint32 = 203
      */
     groupUint32: number;
 }
@@ -1043,7 +1043,7 @@ export interface TestAllRequiredTypesProto2_MessageSetCorrect {
  */
 export interface TestAllRequiredTypesProto2_MessageSetCorrectExtension1 {
     /**
-     * @generated from protobuf field: string str = 25;
+     * @generated from protobuf field: required string str = 25
      */
     str: string;
 }
@@ -1052,7 +1052,7 @@ export interface TestAllRequiredTypesProto2_MessageSetCorrectExtension1 {
  */
 export interface TestAllRequiredTypesProto2_MessageSetCorrectExtension2 {
     /**
-     * @generated from protobuf field: int32 i = 9;
+     * @generated from protobuf field: required int32 i = 9
      */
     i: number;
 }

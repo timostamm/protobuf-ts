@@ -38,7 +38,7 @@ export interface Http {
      *
      * **NOTE:** All service configuration rules follow "last one wins" order.
      *
-     * @generated from protobuf field: repeated google.api.HttpRule rules = 1;
+     * @generated from protobuf field: repeated google.api.HttpRule rules = 1
      */
     rules: HttpRule[];
     /**
@@ -49,7 +49,7 @@ export interface Http {
      * The default behavior is to not decode RFC 6570 reserved characters in multi
      * segment matches.
      *
-     * @generated from protobuf field: bool fully_decode_reserved_expansion = 2;
+     * @generated from protobuf field: bool fully_decode_reserved_expansion = 2
      */
     fullyDecodeReservedExpansion: boolean;
 }
@@ -332,10 +332,14 @@ export interface HttpRule {
      *
      * Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
      *
-     * @generated from protobuf field: string selector = 1;
+     * @generated from protobuf field: string selector = 1
      */
     selector: string;
     /**
+     * Determines the URL pattern is matched by this rules. This pattern can be
+     * used with any of the {get|put|post|delete|patch} methods. A custom method
+     * can be defined using the 'custom' field.
+     *
      * @generated from protobuf oneof: pattern
      */
     pattern: {
@@ -344,7 +348,7 @@ export interface HttpRule {
          * Maps to HTTP GET. Used for listing and getting information about
          * resources.
          *
-         * @generated from protobuf field: string get = 2;
+         * @generated from protobuf field: string get = 2
          */
         get: string;
     } | {
@@ -352,7 +356,7 @@ export interface HttpRule {
         /**
          * Maps to HTTP PUT. Used for replacing a resource.
          *
-         * @generated from protobuf field: string put = 3;
+         * @generated from protobuf field: string put = 3
          */
         put: string;
     } | {
@@ -360,7 +364,7 @@ export interface HttpRule {
         /**
          * Maps to HTTP POST. Used for creating a resource or performing an action.
          *
-         * @generated from protobuf field: string post = 4;
+         * @generated from protobuf field: string post = 4
          */
         post: string;
     } | {
@@ -368,7 +372,7 @@ export interface HttpRule {
         /**
          * Maps to HTTP DELETE. Used for deleting a resource.
          *
-         * @generated from protobuf field: string delete = 5;
+         * @generated from protobuf field: string delete = 5
          */
         delete: string;
     } | {
@@ -376,7 +380,7 @@ export interface HttpRule {
         /**
          * Maps to HTTP PATCH. Used for updating a resource.
          *
-         * @generated from protobuf field: string patch = 6;
+         * @generated from protobuf field: string patch = 6
          */
         patch: string;
     } | {
@@ -387,7 +391,7 @@ export interface HttpRule {
          * HTTP method unspecified for this rule. The wild-card rule is useful
          * for services that provide content to Web (HTML) clients.
          *
-         * @generated from protobuf field: google.api.CustomHttpPattern custom = 8;
+         * @generated from protobuf field: google.api.CustomHttpPattern custom = 8
          */
         custom: CustomHttpPattern;
     } | {
@@ -401,7 +405,7 @@ export interface HttpRule {
      * NOTE: the referred field must be present at the top-level of the request
      * message type.
      *
-     * @generated from protobuf field: string body = 7;
+     * @generated from protobuf field: string body = 7
      */
     body: string;
     /**
@@ -412,7 +416,7 @@ export interface HttpRule {
      * NOTE: The referred field must be present at the top-level of the response
      * message type.
      *
-     * @generated from protobuf field: string response_body = 12;
+     * @generated from protobuf field: string response_body = 12
      */
     responseBody: string;
     /**
@@ -420,7 +424,7 @@ export interface HttpRule {
      * not contain an `additional_bindings` field themselves (that is,
      * the nesting may only be one level deep).
      *
-     * @generated from protobuf field: repeated google.api.HttpRule additional_bindings = 11;
+     * @generated from protobuf field: repeated google.api.HttpRule additional_bindings = 11
      */
     additionalBindings: HttpRule[];
 }
@@ -433,13 +437,13 @@ export interface CustomHttpPattern {
     /**
      * The name of this custom HTTP verb.
      *
-     * @generated from protobuf field: string kind = 1;
+     * @generated from protobuf field: string kind = 1
      */
     kind: string;
     /**
      * The path matched by this custom verb.
      *
-     * @generated from protobuf field: string path = 2;
+     * @generated from protobuf field: string path = 2
      */
     path: string;
 }
