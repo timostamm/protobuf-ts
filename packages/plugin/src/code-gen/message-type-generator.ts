@@ -4,7 +4,6 @@ import {
     addCommentBlockAsJsDoc,
     DescriptorProto,
     DescriptorRegistry,
-    FileOptions_OptimizeMode as OptimizeMode,
     TypescriptFile,
     TypeScriptImports, typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
@@ -17,6 +16,7 @@ import {InternalBinaryWrite} from "../message-type-extensions/internal-binary-wr
 import {FieldInfoGenerator} from "./field-info-generator";
 import {ESInterpreter} from "../es-interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
+import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 
 
 export interface CustomMethodGenerator {
@@ -80,7 +80,7 @@ export class MessageTypeGenerator {
      * Some field information is passed to the handler's
      * constructor.
      */
-    generateMessageType(source: TypescriptFile, descMessage: DescMessage, optimizeFor: OptimizeMode): void {
+    generateMessageType(source: TypescriptFile, descMessage: DescMessage, optimizeFor: FileOptions_OptimizeMode): void {
         const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         assert(DescriptorProto.is(legacyDescriptor));
 
@@ -120,7 +120,7 @@ export class MessageTypeGenerator {
         classDecMembers.push(...this.googleTypes.make(source, descMessage));
 
         // "MyMessage$Type" members for optimized binary format
-        if (optimizeFor === OptimizeMode.SPEED) {
+        if (optimizeFor === FileOptions_OptimizeMode.SPEED) {
             classDecMembers.push(
                 ...this.typeMethodCreate.make(source, descMessage),
                 ...this.typeMethodInternalBinaryRead.make(source, descMessage),

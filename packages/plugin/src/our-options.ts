@@ -5,7 +5,6 @@ import * as rt from "@protobuf-ts/runtime";
 import {
     FileDescriptorProto,
     FileOptions,
-    FileOptions_OptimizeMode as OptimizeMode,
     MethodOptions,
     ServiceDescriptorProto,
     ServiceOptions
@@ -13,6 +12,7 @@ import {
 import * as ts from "typescript";
 import {DescFile, DescService} from "@bufbuild/protobuf";
 import {ESInterpreter} from "./es-interpreter";
+import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 
 
 /**
@@ -183,8 +183,8 @@ export interface InternalOptions {
     readonly generateDependencies: boolean;
     readonly pluginCredit?: string;
     readonly normalLongType: rt.LongType,
-    readonly normalOptimizeMode: OptimizeMode,
-    readonly forcedOptimizeMode: OptimizeMode | undefined,
+    readonly normalOptimizeMode: FileOptions_OptimizeMode,
+    readonly forcedOptimizeMode: FileOptions_OptimizeMode | undefined,
     readonly normalServerStyle: ServerStyle,
     readonly forcedServerStyle: ServerStyle | undefined,
     readonly normalClientStyle: ClientStyle,
@@ -245,7 +245,7 @@ export function makeInternalOptions(
         {
             generateDependencies: false,
             normalLongType: rt.LongType.BIGINT,
-            normalOptimizeMode: OptimizeMode.SPEED,
+            normalOptimizeMode: FileOptions_OptimizeMode.SPEED,
             forcedOptimizeMode: undefined,
             normalClientStyle: ClientStyle.GENERIC_CLIENT,
             forcedClientStyle: undefined,
@@ -294,13 +294,13 @@ export function makeInternalOptions(
         o.normalLongType = rt.LongType.NUMBER;
     }
     if (params?.optimize_code_size) {
-        o.normalOptimizeMode = OptimizeMode.CODE_SIZE;
+        o.normalOptimizeMode = FileOptions_OptimizeMode.CODE_SIZE;
     }
     if (params?.force_optimize_speed) {
-        o.forcedOptimizeMode = OptimizeMode.SPEED;
+        o.forcedOptimizeMode = FileOptions_OptimizeMode.SPEED;
     }
     if (params?.force_optimize_code_size) {
-        o.forcedOptimizeMode = OptimizeMode.CODE_SIZE;
+        o.forcedOptimizeMode = FileOptions_OptimizeMode.CODE_SIZE;
     }
     if (params?.client_none) {
         o.normalClientStyle = ClientStyle.NO_CLIENT;
@@ -363,7 +363,7 @@ export class OptionResolver {
     ) {
     }
 
-    getOptimizeMode(file: DescFile): OptimizeMode {
+    getOptimizeMode(file: DescFile): FileOptions_OptimizeMode {
         if (this.options.forcedOptimizeMode !== undefined) {
             return this.options.forcedOptimizeMode;
         }
