@@ -5,7 +5,7 @@ import {
     DescriptorProto,
     DescriptorRegistry,
     TypescriptFile,
-    TypeScriptImports, typescriptLiteralFromValue
+    typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {WellKnownTypes} from "../message-type-extensions/well-known-types";
@@ -17,6 +17,7 @@ import {FieldInfoGenerator} from "./field-info-generator";
 import {Interpreter} from "../interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
 import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
+import {TypeScriptImports} from "../es-typescript-imports";
 
 
 export interface CustomMethodGenerator {

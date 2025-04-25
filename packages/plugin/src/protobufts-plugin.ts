@@ -2,8 +2,6 @@ import {
     CodeGeneratorResponse_Feature,
     GeneratedFile,
     setupCompiler,
-    SymbolTable,
-    TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {OutFile} from "./out-file";
 import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
@@ -25,7 +23,8 @@ import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
 import { Interpreter } from "./interpreter";
 import {FileDescriptorProto} from "@protobuf-ts/plugin-framework/src";
-import {createLocalTypeName} from "./code-gen/local-type-name";
+import {SymbolTable} from "./es-symbol-table";
+import {TypeScriptImports} from "./es-typescript-imports";
 
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {
@@ -260,14 +259,14 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         }
 
         // in second pass, register client and server file names
-        for (let fileDescriptor of registryEs.files) {
-            const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
-            fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
-            fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc1-server');
-            fileTable.register(base + '.client.ts', fileDescriptor, 'client');
-            fileTable.register(base + '.promise-client.ts', fileDescriptor, 'promise-client');
-            fileTable.register(base + '.rx-client.ts', fileDescriptor, 'rx-client');
-            fileTable.register(base + '.grpc-client.ts', fileDescriptor, 'grpc1-client');
+        for (let descFile of registryEs.files) {
+            const base = descFile.name + (options.addPbSuffix ? "_pb" : "");
+            fileTable.register(base + '.server.ts', descFile, 'generic-server');
+            fileTable.register(base + '.grpc-server.ts', descFile, 'grpc1-server');
+            fileTable.register(base + '.client.ts', descFile, 'client');
+            fileTable.register(base + '.promise-client.ts', descFile, 'promise-client');
+            fileTable.register(base + '.rx-client.ts', descFile, 'rx-client');
+            fileTable.register(base + '.grpc-client.ts', descFile, 'grpc1-client');
         }
 
         // in third pass, generate files
@@ -275,13 +274,13 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             const legacyFileDescriptor = legacyFileDescriptorsByName.get(descFile.proto.name);
             assert(legacyFileDescriptor);
             const
-                outMain = new OutFile(fileTable.get(legacyFileDescriptor).name, legacyFileDescriptor, legacyRegistry, options),
-                outServerGeneric = new OutFile(fileTable.get(legacyFileDescriptor, 'generic-server').name, legacyFileDescriptor, legacyRegistry, options),
-                outServerGrpc = new OutFile(fileTable.get(legacyFileDescriptor, 'grpc1-server').name, legacyFileDescriptor, legacyRegistry, options),
-                outClientCall = new OutFile(fileTable.get(legacyFileDescriptor, 'client').name, legacyFileDescriptor, legacyRegistry, options),
-                outClientPromise = new OutFile(fileTable.get(legacyFileDescriptor, 'promise-client').name, legacyFileDescriptor, legacyRegistry, options),
-                outClientRx = new OutFile(fileTable.get(legacyFileDescriptor, 'rx-client').name, legacyFileDescriptor, legacyRegistry, options),
-                outClientGrpc = new OutFile(fileTable.get(legacyFileDescriptor, 'grpc1-client').name, legacyFileDescriptor, legacyRegistry, options);
+                outMain = new OutFile(fileTable.get(descFile).name, legacyFileDescriptor, legacyRegistry, options),
+                outServerGeneric = new OutFile(fileTable.get(descFile, 'generic-server').name, legacyFileDescriptor, legacyRegistry, options),
+                outServerGrpc = new OutFile(fileTable.get(descFile, 'grpc1-server').name, legacyFileDescriptor, legacyRegistry, options),
+                outClientCall = new OutFile(fileTable.get(descFile, 'client').name, legacyFileDescriptor, legacyRegistry, options),
+                outClientPromise = new OutFile(fileTable.get(descFile, 'promise-client').name, legacyFileDescriptor, legacyRegistry, options),
+                outClientRx = new OutFile(fileTable.get(descFile, 'rx-client').name, legacyFileDescriptor, legacyRegistry, options),
+                outClientGrpc = new OutFile(fileTable.get(descFile, 'grpc1-client').name, legacyFileDescriptor, legacyRegistry, options);
             tsFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
 
             // in first pass over types, register all symbols, regardless whether they are going to be used

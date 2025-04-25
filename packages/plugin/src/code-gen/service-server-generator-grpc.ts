@@ -2,9 +2,7 @@ import * as rpc from "@protobuf-ts/runtime-rpc";
 import {
     addCommentBlockAsJsDoc,
     DescriptorRegistry,
-    SymbolTable,
     TypescriptFile,
-    TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
@@ -12,6 +10,8 @@ import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
 import {DescMethod, DescService} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../es-typescript-imports";
+import {SymbolTable} from "../es-symbol-table";
 
 
 export class ServiceServerGeneratorGrpc {

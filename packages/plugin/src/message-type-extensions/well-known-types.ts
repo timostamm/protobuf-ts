@@ -2,7 +2,6 @@ import {
     DescriptorProto,
     FieldDescriptorProto_Type,
     TypescriptFile,
-    TypeScriptImports,
     typescriptMethodFromText,
     DescriptorRegistry,
 } from "@protobuf-ts/plugin-framework";
@@ -11,6 +10,7 @@ import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 import {DescMessage} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../es-typescript-imports";
 
 
 export class WellKnownTypes implements CustomMethodGenerator {

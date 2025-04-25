@@ -5,7 +5,6 @@ import {
     ScalarValueType,
     StringFormat,
     TypescriptFile,
-    TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
@@ -14,6 +13,7 @@ import {assert} from "@protobuf-ts/runtime";
 import {Interpreter} from "../interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
 import {getDeclarationString} from "@bufbuild/protoplugin";
+import {TypeScriptImports} from "../es-typescript-imports";
 
 
 /**

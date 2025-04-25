@@ -1,10 +1,8 @@
 import {
     addCommentBlockAsJsDoc,
     DescriptorRegistry,
-    SymbolTable,
     ServiceDescriptorProto,
     TypescriptFile,
-    TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
@@ -14,6 +12,8 @@ import {DescService} from "@bufbuild/protobuf";
 import {Interpreter} from "../interpreter";
 import {assert} from "@protobuf-ts/runtime";
 import {createLocalTypeName} from "./local-type-name";
+import {TypeScriptImports} from "../es-typescript-imports";
+import {SymbolTable} from "../es-symbol-table";
 
 
 export class ServiceTypeGenerator {

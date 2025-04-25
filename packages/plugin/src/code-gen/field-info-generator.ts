@@ -3,9 +3,9 @@ import * as ts from "typescript";
 import {
     DescriptorRegistry,
     TypescriptFile,
-    TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
+import {TypeScriptImports} from "../es-typescript-imports";
 
 
 /**

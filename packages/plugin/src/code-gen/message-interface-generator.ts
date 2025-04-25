@@ -5,14 +5,14 @@ import {
     DescriptorProto,
     DescriptorRegistry,
     EnumDescriptorProto,
-    SymbolTable,
     TypescriptFile,
-    TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
 import {DescField, DescMessage, DescOneof} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../es-typescript-imports";
+import {SymbolTable} from "../es-symbol-table";
 
 
 export class MessageInterfaceGenerator {

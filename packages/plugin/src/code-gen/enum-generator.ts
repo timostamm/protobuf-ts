@@ -2,15 +2,15 @@ import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
 import {
     DescriptorRegistry,
-    SymbolTable,
     TypescriptEnumBuilder,
     TypescriptFile,
-    TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {DescEnum} from "@bufbuild/protobuf";
 import {Interpreter} from "../interpreter";
 import {createLocalTypeName} from "./local-type-name";
+import {TypeScriptImports} from "../es-typescript-imports";
+import {SymbolTable} from "../es-symbol-table";
 
 
 export class EnumGenerator {

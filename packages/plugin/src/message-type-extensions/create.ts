@@ -2,7 +2,6 @@ import {
     DescriptorProto,
     DescriptorRegistry,
     TypescriptFile,
-    TypeScriptImports,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
@@ -10,6 +9,7 @@ import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {Interpreter} from "../interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../es-typescript-imports";
 
 
 /**

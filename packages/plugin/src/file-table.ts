@@ -1,4 +1,3 @@
-import * as legacy_framework from "@protobuf-ts/plugin-framework";
 import {DescFile} from "@bufbuild/protobuf";
 
 
@@ -62,8 +61,8 @@ export class FileTable {
      * Find a symbol (of the given kind) for the given descriptor.
      * Raises error if not found.
      */
-    get(descriptor: legacy_framework.FileDescriptorProto | DescFile, kind = 'default'): FileTableEntry {
-        const protoFilename = "kind" in descriptor ? descriptor.proto.name : descriptor.name;
+    get(descriptor: DescFile, kind = 'default'): FileTableEntry {
+        const protoFilename = descriptor.proto.name;
         const found = this.findByProtoFilenameAndKind(protoFilename, kind);
         if (!found) {
             let msg = `Failed to find name for file ${protoFilename} of kind "${kind}". `
