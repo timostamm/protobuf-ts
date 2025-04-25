@@ -72,9 +72,6 @@ export class EnumGenerator {
      *
      */
     generateEnum(source: TypescriptFile, descriptor: DescEnum): ts.EnumDeclaration {
-
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descriptor.typeName);
-
         let enumObject = this.interpreter.getEnumInfo(descriptor)[1],
             builder = new TypescriptEnumBuilder();
         for (let ev of rt.listEnumValues(enumObject)) {
@@ -85,7 +82,7 @@ export class EnumGenerator {
             builder.add(ev.name, ev.number, comments);
         }
         let statement = builder.build(
-            this.imports.type(source, legacyDescriptor),
+            this.imports.type(source, descriptor),
             [ts.createModifier(ts.SyntaxKind.ExportKeyword)]
         );
         // add to our file

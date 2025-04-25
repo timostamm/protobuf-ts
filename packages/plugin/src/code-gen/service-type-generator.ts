@@ -8,7 +8,7 @@ import {
 import {CommentGenerator} from "./comment-generator";
 import * as ts from "typescript";
 import {MethodInfoGenerator} from "./method-info-generator";
-import {DescService} from "@bufbuild/protobuf";
+import {DescService, FileRegistry} from "@bufbuild/protobuf";
 import {Interpreter} from "../interpreter";
 import {assert} from "@protobuf-ts/runtime";
 import {createLocalTypeName} from "./local-type-name";
@@ -22,13 +22,14 @@ export class ServiceTypeGenerator {
 
     constructor(
         private readonly symbols: SymbolTable,
+        private readonly registry: FileRegistry,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: Interpreter,
         private readonly options: { runtimeRpcImportPath: string; },
     ) {
-        this.methodInfoGenerator = new MethodInfoGenerator(legacyRegistry, this.imports)
+        this.methodInfoGenerator = new MethodInfoGenerator(registry, legacyRegistry, this.imports)
     }
 
     registerSymbols(source: TypescriptFile, descService: DescService): void {
@@ -40,13 +41,9 @@ export class ServiceTypeGenerator {
     //     { name: "MakeHat", localName: "makeHat", I: Size, O: Hat },
     // ], {});
     generateServiceType(source: TypescriptFile, descService: DescService): void {
-
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
-        assert(ServiceDescriptorProto.is(legacyDescriptor));
-
         const
             // identifier for the service
-            MyService = this.imports.type(source, legacyDescriptor),
+            MyService = this.imports.type(source, descService),
             ServiceType = this.imports.name(source, "ServiceType", this.options.runtimeRpcImportPath),
             interpreterType = this.interpreter.getServiceType(descService);
 

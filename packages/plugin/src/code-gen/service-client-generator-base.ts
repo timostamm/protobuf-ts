@@ -8,7 +8,7 @@ import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {assert} from "@protobuf-ts/runtime";
 import {Interpreter} from "../interpreter";
-import {DescService} from "@bufbuild/protobuf";
+import {DescService, FileRegistry} from "@bufbuild/protobuf";
 import {TypeScriptImports} from "../es-typescript-imports";
 import {SymbolTable} from "../es-symbol-table";
 
@@ -22,6 +22,7 @@ export abstract class ServiceClientGeneratorBase {
 
     constructor(
         private readonly symbols: SymbolTable,
+        protected readonly registry: FileRegistry,
         protected readonly legacyRegistry: DescriptorRegistry,
         protected readonly imports: TypeScriptImports,
         protected readonly comments: CommentGenerator,
@@ -62,7 +63,7 @@ export abstract class ServiceClientGeneratorBase {
         const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const
             interpreterType = this.interpreter.getServiceType(descService),
-            IServiceClient = this.imports.type(source, legacyDescriptor, this.symbolKindInterface),
+            IServiceClient = this.imports.type(source, descService, this.symbolKindInterface),
             signatures: ts.MethodSignature[] = [];
 
 
@@ -171,12 +172,11 @@ export abstract class ServiceClientGeneratorBase {
      *
      */
     generateImplementationClass(source: TypescriptFile, descService: DescService): ts.ClassDeclaration {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const
             interpreterType = this.interpreter.getServiceType(descService),
-            ServiceType = this.imports.type(source, legacyDescriptor),
-            ServiceClient = this.imports.type(source, legacyDescriptor, this.symbolKindImplementation),
-            IServiceClient = this.imports.type(source, legacyDescriptor, this.symbolKindInterface),
+            ServiceType = this.imports.type(source, descService),
+            ServiceClient = this.imports.type(source, descService, this.symbolKindImplementation),
+            IServiceClient = this.imports.type(source, descService, this.symbolKindInterface),
             ServiceInfo = this.imports.name(source, 'ServiceInfo', this.options.runtimeRpcImportPath, true),
             RpcTransport = this.imports.name(source, 'RpcTransport', this.options.runtimeRpcImportPath, true);
 
@@ -287,16 +287,20 @@ export abstract class ServiceClientGeneratorBase {
 
 
     protected makeI(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
+        const descMessage = this.registry.getMessage(methodInfo.I.typeName);
+        assert(descMessage);
         return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
-            this.legacyRegistry.resolveTypeName(methodInfo.I.typeName),
+            descMessage,
             'default',
             isTypeOnly
         )), undefined);
     }
 
     protected makeO(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
+        const descMessage = this.registry.getMessage(methodInfo.O.typeName);
+        assert(descMessage);
         return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
-            this.legacyRegistry.resolveTypeName(methodInfo.O.typeName),
+            descMessage,
             'default',
             isTypeOnly
         )), undefined);

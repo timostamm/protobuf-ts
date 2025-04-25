@@ -8,7 +8,7 @@ import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
-import {DescService} from "@bufbuild/protobuf";
+import {DescService, FileRegistry} from "@bufbuild/protobuf";
 import {TypeScriptImports} from "../es-typescript-imports";
 import {SymbolTable} from "../es-symbol-table";
 
@@ -21,6 +21,7 @@ export class ServiceServerGeneratorGeneric {
 
     constructor(
         private readonly symbols: SymbolTable,
+        private readonly registry: FileRegistry,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
@@ -39,10 +40,9 @@ export class ServiceServerGeneratorGeneric {
 
 
     generateInterface(source: TypescriptFile, descService: DescService) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const
             interpreterType = this.interpreter.getServiceType(descService),
-            IGenericServer = this.imports.type(source, legacyDescriptor, this.symbolKindInterface),
+            IGenericServer = this.imports.type(source, descService, this.symbolKindInterface),
             ServerCallContext = this.imports.name(source, "ServerCallContext", this.options.runtimeRpcImportPath)
         ;
 
@@ -87,14 +87,19 @@ export class ServiceServerGeneratorGeneric {
 
 
     private createUnary(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
+        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
+        assert(descMessageI);
+        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
+        assert(descMessageO);
+
         const
             I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
+                descMessageI
             )), undefined),
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
+                descMessageO
             )), undefined);
         return ts.createMethodSignature(
             undefined,
@@ -132,14 +137,19 @@ export class ServiceServerGeneratorGeneric {
 
 
     private createServerStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
+        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
+        assert(descMessageI);
+        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
+        assert(descMessageO);
+
         const
             I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
+                descMessageI
             )), undefined),
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
+                descMessageO
             )), undefined),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -191,14 +201,18 @@ export class ServiceServerGeneratorGeneric {
 
 
     private createClientStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
+        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
+        assert(descMessageI);
+        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
+        assert(descMessageO);
         const
             I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
+                descMessageI
             )), undefined),
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
+                descMessageO
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -240,14 +254,18 @@ export class ServiceServerGeneratorGeneric {
 
 
     private createBidi(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
+        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
+        assert(descMessageI);
+        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
+        assert(descMessageO);
         const
             I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
+                descMessageI
             )), undefined),
             O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                 source,
-                this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
+                descMessageO
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);

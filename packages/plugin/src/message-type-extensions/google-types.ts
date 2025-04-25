@@ -1,11 +1,9 @@
 import {
-    DescriptorProto,
     TypescriptFile,
     typescriptMethodFromText,
-    DescriptorRegistry,
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
-import {assert, LongType} from "@protobuf-ts/runtime";
+import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 import {DescMessage} from "@bufbuild/protobuf";
@@ -15,7 +13,6 @@ import {TypeScriptImports} from "../es-typescript-imports";
 export class GoogleTypes implements CustomMethodGenerator {
 
     constructor(
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly options: { normalLongType: LongType; runtimeImportPath: string; useProtoFieldName: boolean },
     ) {
@@ -26,9 +23,6 @@ export class GoogleTypes implements CustomMethodGenerator {
      * Create custom methods for the handlers of some google types.
      */
     make(source: TypescriptFile, descMessage: DescMessage): ts.MethodDeclaration[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        assert(DescriptorProto.is(legacyDescriptor));
-
         const fn = this[descMessage.typeName as keyof this] as unknown as (source: TypescriptFile, descMessage: DescMessage) => void | string | string[];
         if (fn) {
             let r = fn.apply(this, [source, descMessage]);
@@ -44,8 +38,7 @@ export class GoogleTypes implements CustomMethodGenerator {
 
 
     ['google.type.Color'](source: TypescriptFile, descMessage: DescMessage) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        const Color = this.imports.type(source, legacyDescriptor);
+        const Color = this.imports.type(source, descMessage);
         return [
             `
             /**
@@ -126,8 +119,7 @@ export class GoogleTypes implements CustomMethodGenerator {
     }
 
     ['google.type.Date'](source: TypescriptFile, descMessage: DescMessage) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        const Date = this.imports.type(source, legacyDescriptor);
+        const Date = this.imports.type(source, descMessage);
         return [
             `
             /**
@@ -164,8 +156,7 @@ export class GoogleTypes implements CustomMethodGenerator {
     }
 
     ['google.type.DateTime'](source: TypescriptFile, descMessage: DescMessage) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        const DateTime = this.imports.type(source, legacyDescriptor);
+        const DateTime = this.imports.type(source, descMessage);
         const PbLong = this.imports.name(source, 'PbLong', this.options.runtimeImportPath);
         let longConvertMethod = 'toBigInt';
         if (this.options.normalLongType === LongType.NUMBER)
@@ -245,8 +236,7 @@ export class GoogleTypes implements CustomMethodGenerator {
     }
 
     ['google.type.TimeOfDay'](source: TypescriptFile, descMessage: DescMessage) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        const TimeOfDay = this.imports.type(source, legacyDescriptor);
+        const TimeOfDay = this.imports.type(source, descMessage);
         return [
             `
             /**

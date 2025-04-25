@@ -14,11 +14,10 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
 
 
     generateImplementationClass(source: TypescriptFile, descService: DescService): ts.ClassDeclaration {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const
             interpreterType = this.interpreter.getServiceType(descService),
-            ServiceClient = this.imports.type(source, legacyDescriptor, this.symbolKindImplementation),
-            IServiceClient = this.imports.type(source, legacyDescriptor, this.symbolKindInterface),
+            ServiceClient = this.imports.type(source, descService, this.symbolKindImplementation),
+            IServiceClient = this.imports.type(source, descService, this.symbolKindInterface),
             BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath, true),
             BinaryWriteOptions = this.imports.name(source, 'BinaryWriteOptions', this.options.runtimeImportPath, true),
             grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js');
@@ -991,8 +990,10 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
 
 
     protected createUnary(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        const descService = this.registry.getService(methodInfo.service.typeName);
+        assert(descService);
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js');
-        let ServiceType = this.imports.type(source, this.legacyRegistry.resolveTypeName(methodInfo.service.typeName));
+        let ServiceType = this.imports.type(source, descService);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         return ts.createMethod(
             undefined,
@@ -1323,8 +1324,10 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     }
 
     protected createServerStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        const descService = this.registry.getService(methodInfo.service.typeName);
+        assert(descService);
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
-        let ServiceType = this.imports.type(source, this.legacyRegistry.resolveTypeName(methodInfo.service.typeName));
+        let ServiceType = this.imports.type(source, descService);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         return ts.createMethod(
             undefined,
@@ -1539,8 +1542,10 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     }
 
     protected createClientStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        const descService = this.registry.getService(methodInfo.service.typeName);
+        assert(descService);
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
-        let ServiceType = this.imports.type(source, this.legacyRegistry.resolveTypeName(methodInfo.service.typeName));
+        let ServiceType = this.imports.type(source, descService);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         return ts.createMethod(
             undefined,
@@ -1861,8 +1866,10 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     }
 
     protected createDuplexStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
+        const descService = this.registry.getService(methodInfo.service.typeName);
+        assert(descService);
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
-        let ServiceType = this.imports.type(source, this.legacyRegistry.resolveTypeName(methodInfo.service.typeName));
+        let ServiceType = this.imports.type(source, descService);
         return ts.createMethod(
             undefined,
             undefined,

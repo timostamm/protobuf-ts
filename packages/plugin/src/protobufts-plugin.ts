@@ -232,18 +232,18 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             registryEs = createFileRegistryFromRequest(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(),
-            imports = new TypeScriptImports(symbols),
-            comments = new CommentGenerator(legacyRegistry),
+            imports = new TypeScriptImports(symbols, legacyRegistry),
+            comments = new CommentGenerator(),
             interpreter = new Interpreter(registryEs, options),
             optionResolver = new OptionResolver(interpreter, options),
-            genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genMessageInterface = new MessageInterfaceGenerator(symbols, registryEs, legacyRegistry, imports, comments, interpreter, options),
             genEnum = new EnumGenerator(symbols, legacyRegistry, imports, comments, interpreter),
-            genMessageType = new MessageTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
-            genServiceType = new ServiceTypeGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter),
-            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, options)
+            genMessageType = new MessageTypeGenerator(registryEs, legacyRegistry, imports, comments, interpreter, options),
+            genServiceType = new ServiceTypeGenerator(symbols, registryEs, legacyRegistry, imports, comments, interpreter, options),
+            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, registryEs, legacyRegistry, imports, comments, interpreter, options),
+            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, registryEs, legacyRegistry, imports, comments, interpreter),
+            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registryEs, legacyRegistry, imports, comments, interpreter, options),
+            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registryEs, legacyRegistry, imports, comments, interpreter, options)
         ;
 
         const legacyFileDescriptorsByName = new Map<string, FileDescriptorProto>(

@@ -15,7 +15,7 @@ import {InternalBinaryRead} from "../message-type-extensions/internal-binary-rea
 import {InternalBinaryWrite} from "../message-type-extensions/internal-binary-write";
 import {FieldInfoGenerator} from "./field-info-generator";
 import {Interpreter} from "../interpreter";
-import {DescMessage} from "@bufbuild/protobuf";
+import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
 import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 import {TypeScriptImports} from "../es-typescript-imports";
 
@@ -37,6 +37,7 @@ export class MessageTypeGenerator {
 
 
     constructor(
+        private readonly registry: FileRegistry,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
@@ -48,12 +49,12 @@ export class MessageTypeGenerator {
             useProtoFieldName: boolean;
         },
     ) {
-        this.fieldInfoGenerator = new FieldInfoGenerator(this.legacyRegistry, this.imports, this.options);
-        this.wellKnown = new WellKnownTypes(this.legacyRegistry, this.imports, this.options);
-        this.googleTypes = new GoogleTypes(this.legacyRegistry, this.imports, this.options);
-        this.typeMethodCreate = new Create(this.legacyRegistry, this.imports, this.interpreter, this.options);
-        this.typeMethodInternalBinaryRead = new InternalBinaryRead(this.legacyRegistry, this.imports, this.interpreter, this.options);
-        this.typeMethodInternalBinaryWrite = new InternalBinaryWrite(this.legacyRegistry, this.imports, this.interpreter, this.options);
+        this.fieldInfoGenerator = new FieldInfoGenerator(this.registry, this.imports);
+        this.wellKnown = new WellKnownTypes(this.imports, this.options);
+        this.googleTypes = new GoogleTypes(this.imports, this.options);
+        this.typeMethodCreate = new Create(this.imports, this.interpreter, this.options);
+        this.typeMethodInternalBinaryRead = new InternalBinaryRead(this.registry, this.imports, this.interpreter, this.options);
+        this.typeMethodInternalBinaryWrite = new InternalBinaryWrite(this.registry, this.imports, this.interpreter, this.options);
     }
 
 
@@ -82,18 +83,20 @@ export class MessageTypeGenerator {
      * constructor.
      */
     generateMessageType(source: TypescriptFile, descMessage: DescMessage, optimizeFor: FileOptions_OptimizeMode): void {
+        // TODO
         const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         assert(DescriptorProto.is(legacyDescriptor));
 
         const
             // identifier for the message
-            MyMessage = this.imports.type(source, legacyDescriptor),
-            Message$Type = ts.createIdentifier(this.imports.type(source, legacyDescriptor) + '$Type'),
+            MyMessage = this.imports.type(source, descMessage),
+            Message$Type = ts.createIdentifier(this.imports.type(source, descMessage) + '$Type'),
             MessageType = ts.createIdentifier(this.imports.name(source, "MessageType", this.options.runtimeImportPath)),
             interpreterType = this.interpreter.getMessageType(descMessage),
             classDecMembers: ts.ClassElement[] = [],
             classDecSuperArgs: ts.Expression[] = [ // arguments to the MessageType CTOR
                 // arg 0: type name
+                // TODO
                 ts.createStringLiteral(this.legacyRegistry.makeTypeName(legacyDescriptor)),
                 // arg 1: field infos
                 this.fieldInfoGenerator.createFieldInfoLiterals(source, interpreterType.fields)

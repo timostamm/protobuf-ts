@@ -1,12 +1,11 @@
 import {
-    DescriptorProto,
     FieldDescriptorProto_Type,
     TypescriptFile,
     typescriptMethodFromText,
     DescriptorRegistry,
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
-import {assert, LongType} from "@protobuf-ts/runtime";
+import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 import {DescMessage} from "@bufbuild/protobuf";
@@ -34,7 +33,6 @@ export class WellKnownTypes implements CustomMethodGenerator {
 
 
     constructor(
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly options: { normalLongType: LongType; runtimeImportPath: string, useProtoFieldName: boolean },
     ) {
@@ -49,9 +47,6 @@ export class WellKnownTypes implements CustomMethodGenerator {
      * `google.protobuf.Timestamp` to a javascript Date.
      */
     make(source: TypescriptFile, descMessage: DescMessage): ts.MethodDeclaration[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        assert(DescriptorProto.is(legacyDescriptor));
-
         const fn = this[descMessage.typeName as keyof this] as unknown as (source: TypescriptFile, descMessage: DescMessage) => void | string | string[];
         if (fn) {
             let r = fn.apply(this, [source, descMessage]);
@@ -71,9 +66,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.Any'](source: TypescriptFile, descMessage: DescMessage) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            Any = this.imports.type(source, legacyDescriptor),
+            Any = this.imports.type(source, descMessage),
             IMessageType = this.imports.name(source,'IMessageType', this.options.runtimeImportPath, true),
             BinaryReadOptions = this.imports.name(source,'BinaryReadOptions', this.options.runtimeImportPath, true),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
@@ -187,9 +181,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.Timestamp'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            Timestamp = this.imports.type(source, legacyDescriptor),
+            Timestamp = this.imports.type(source, descMessage),
             PbLong = this.imports.name(source,'PbLong', this.options.runtimeImportPath),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
@@ -285,9 +278,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.Duration'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            Duration = this.imports.type(source, legacyDescriptor),
+            Duration = this.imports.type(source, descMessage),
             PbLong = this.imports.name(source,'PbLong', this.options.runtimeImportPath),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
@@ -350,9 +342,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.FieldMask'](source: TypescriptFile, descMessage: DescMessage) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            FieldMask = this.imports.type(source, legacyDescriptor),
+            FieldMask = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             lowerCamelCase = this.imports.name(source,'lowerCamelCase', this.options.runtimeImportPath),
@@ -396,9 +387,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.Struct'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            Struct = this.imports.type(source, legacyDescriptor),
+            Struct = this.imports.type(source, descMessage),
             JsonObject = this.imports.name(source,'JsonObject', this.options.runtimeImportPath, true),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
@@ -436,9 +426,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.Value'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            Value = this.imports.type(source, legacyDescriptor),
+            Value = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
@@ -519,9 +508,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.ListValue'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            ListValue = this.imports.type(source, legacyDescriptor),
+            ListValue = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true),
@@ -551,9 +539,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.BoolValue'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            BoolValue = this.imports.type(source, legacyDescriptor),
+            BoolValue = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
@@ -581,9 +568,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.StringValue'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            StringValue = this.imports.type(source, legacyDescriptor),
+            StringValue = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
@@ -611,9 +597,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.DoubleValue'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            DoubleValue = this.imports.type(source, legacyDescriptor),
+            DoubleValue = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
@@ -640,9 +625,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.FloatValue'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            FloatValue = this.imports.type(source, legacyDescriptor),
+            FloatValue = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
@@ -669,9 +653,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.Int32Value'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            Int32Value = this.imports.type(source, legacyDescriptor),
+            Int32Value = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
@@ -698,9 +681,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.UInt32Value'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            UInt32Value = this.imports.type(source, legacyDescriptor),
+            UInt32Value = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);
@@ -727,9 +709,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.Int64Value'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            Int64Value = this.imports.type(source, legacyDescriptor),
+            Int64Value = this.imports.type(source, descMessage),
             iLongType = this.imports.name(source,'LongType', this.options.runtimeImportPath),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
@@ -763,9 +744,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.UInt64Value'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            UInt64Value = this.imports.type(source, legacyDescriptor),
+            UInt64Value = this.imports.type(source, descMessage),
             iLongType = this.imports.name(source,'LongType', this.options.runtimeImportPath),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
@@ -799,9 +779,8 @@ export class WellKnownTypes implements CustomMethodGenerator {
     }
 
     ['google.protobuf.BytesValue'](source: TypescriptFile, descMessage: DescMessage): string[] {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
         const
-            BytesValue = this.imports.type(source, legacyDescriptor),
+            BytesValue = this.imports.type(source, descMessage),
             JsonWriteOptions = this.imports.name(source,'JsonWriteOptions', this.options.runtimeImportPath, true),
             JsonReadOptions = this.imports.name(source,'JsonReadOptions', this.options.runtimeImportPath, true),
             JsonValue = this.imports.name(source,'JsonValue', this.options.runtimeImportPath, true);

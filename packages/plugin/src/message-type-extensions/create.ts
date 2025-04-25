@@ -1,11 +1,10 @@
 import {
-    DescriptorProto,
     DescriptorRegistry,
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
-import {assert, LongType} from "@protobuf-ts/runtime";
+import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {Interpreter} from "../interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
@@ -19,7 +18,6 @@ export class Create implements CustomMethodGenerator {
 
 
     constructor(
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly interpreter: Interpreter,
         private readonly options: { normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
@@ -55,11 +53,8 @@ export class Create implements CustomMethodGenerator {
 
 
     makeMethod(source: TypescriptFile, descMessage: DescMessage, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        assert(DescriptorProto.is(legacyDescriptor));
-
         const
-            MessageInterface = this.imports.type(source, legacyDescriptor),
+            MessageInterface = this.imports.type(source, descMessage),
             PartialMessage = this.imports.name(source,'PartialMessage', this.options.runtimeImportPath, true)
         ;
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("create"), undefined, undefined,
@@ -130,10 +125,7 @@ export class Create implements CustomMethodGenerator {
 
 
     makeMergeIf(source: TypescriptFile, descMessage: DescMessage) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        assert(DescriptorProto.is(legacyDescriptor));
-
-        const MessageInterface = this.imports.type(source, legacyDescriptor);
+        const MessageInterface = this.imports.type(source, descMessage);
         return ts.createIf(
             ts.createBinary(
                 ts.createIdentifier("value"),

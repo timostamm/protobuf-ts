@@ -2,16 +2,16 @@ import {assert} from "@protobuf-ts/runtime";
 import * as ts from "typescript";
 import * as path from "path";
 import {SymbolTable} from "./es-symbol-table";
-import {AnyTypeDescriptorProto, TypescriptFile} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile, DescriptorRegistry} from "@protobuf-ts/plugin-framework";
+import {DescEnum, DescMessage, DescService} from "@bufbuild/protobuf";
 
 
 export class TypeScriptImports {
 
-    private readonly symbols: SymbolTable;
-
-
-    constructor(symbols: SymbolTable) {
-        this.symbols = symbols;
+    constructor(
+        private readonly symbols: SymbolTable,
+        private readonly legacyRegistry: DescriptorRegistry,
+    ) {
     }
 
 
@@ -64,8 +64,10 @@ export class TypeScriptImports {
      * If you have multiple representations for a descriptor
      * in your generated code, use `kind` to discriminate.
      */
-    type(source: TypescriptFile, descriptor: AnyTypeDescriptorProto, kind = 'default', isTypeOnly = false): string {
-        const symbolReg = this.symbols.get(descriptor, kind);
+    type(source: TypescriptFile, descriptor: DescMessage | DescEnum | DescService, kind = 'default', isTypeOnly = false): string {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descriptor.typeName);
+
+        const symbolReg = this.symbols.get(legacyDescriptor, kind);
 
         // symbol in this file?
         if (symbolReg.file === source) {

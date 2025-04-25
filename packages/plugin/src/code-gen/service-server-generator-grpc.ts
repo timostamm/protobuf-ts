@@ -9,7 +9,7 @@ import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
-import {DescMethod, DescService} from "@bufbuild/protobuf";
+import {DescMethod, DescService, FileRegistry} from "@bufbuild/protobuf";
 import {TypeScriptImports} from "../es-typescript-imports";
 import {SymbolTable} from "../es-symbol-table";
 
@@ -23,6 +23,7 @@ export class ServiceServerGeneratorGrpc {
 
     constructor(
         private readonly symbols: SymbolTable,
+        private readonly registry: FileRegistry,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
@@ -42,10 +43,9 @@ export class ServiceServerGeneratorGrpc {
 
 
     generateInterface(source: TypescriptFile, descService: DescService) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const
             interpreterType = this.interpreter.getServiceType(descService),
-            IGrpcServer = this.imports.type(source, legacyDescriptor, this.symbolKindInterface),
+            IGrpcServer = this.imports.type(source, descService, this.symbolKindInterface),
             grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true)
         ;
 
@@ -93,6 +93,11 @@ export class ServiceServerGeneratorGrpc {
             handler = 'handleUnaryCall';
         }
 
+        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
+        assert(descMessageI);
+        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
+        assert(descMessageO);
+
         const signature = ts.createPropertySignature(
             undefined,
             ts.createIdentifier(methodInfo.localName),
@@ -105,11 +110,11 @@ export class ServiceServerGeneratorGrpc {
                 [
                     ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                         source,
-                        this.legacyRegistry.resolveTypeName(methodInfo.I.typeName)
+                        descMessageI
                     )), undefined),
                     ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
                         source,
-                        this.legacyRegistry.resolveTypeName(methodInfo.O.typeName)
+                        descMessageO
                     )), undefined),
                 ]
             ),
@@ -123,10 +128,9 @@ export class ServiceServerGeneratorGrpc {
 
 
     generateDefinition(source: TypescriptFile, descService: DescService) {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const
-            grpcServerDefinition = this.imports.type(source, legacyDescriptor, this.symbolKindDefinition),
-            IGrpcServer = this.imports.type(source, legacyDescriptor, this.symbolKindInterface),
+            grpcServerDefinition = this.imports.type(source, descService, this.symbolKindDefinition),
+            IGrpcServer = this.imports.type(source, descService, this.symbolKindInterface),
             interpreterType = this.interpreter.getServiceType(descService),
             grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true);
 
@@ -155,6 +159,7 @@ export class ServiceServerGeneratorGrpc {
         );
 
         // add to our file
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const doc =
             `@grpc/grpc-js definition for the protobuf ${this.legacyRegistry.formatQualifiedName(legacyDescriptor)}.\n` +
             `\n` +
@@ -173,8 +178,12 @@ export class ServiceServerGeneratorGrpc {
 
 
     private makeDefinitionProperty(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.PropertyAssignment {
-        const I = this.imports.type(source, this.legacyRegistry.resolveTypeName(methodInfo.I.typeName));
-        const O = this.imports.type(source, this.legacyRegistry.resolveTypeName(methodInfo.O.typeName));
+        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
+        assert(descMessageI);
+        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
+        assert(descMessageO);
+        const I = this.imports.type(source, descMessageI);
+        const O = this.imports.type(source, descMessageO);
 
         return ts.createPropertyAssignment(
             ts.createIdentifier(methodInfo.localName),

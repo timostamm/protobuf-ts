@@ -10,7 +10,7 @@ import {
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
-import {DescField, DescMessage, DescOneof} from "@bufbuild/protobuf";
+import {DescField, DescMessage, DescOneof, FileRegistry} from "@bufbuild/protobuf";
 import {TypeScriptImports} from "../es-typescript-imports";
 import {SymbolTable} from "../es-symbol-table";
 
@@ -20,6 +20,7 @@ export class MessageInterfaceGenerator {
 
     constructor(
         private readonly symbols: SymbolTable,
+        private readonly registry: FileRegistry,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
@@ -56,8 +57,6 @@ export class MessageInterfaceGenerator {
      *
      */
     generateMessageInterface(source: TypescriptFile, descMessage: DescMessage): ts.InterfaceDeclaration {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-
         const
             interpreterType = this.interpreter.getMessageType(descMessage.typeName),
             processedOneofs: string[] = [], // oneof groups already processed
@@ -82,7 +81,7 @@ export class MessageInterfaceGenerator {
         const statement = ts.createInterfaceDeclaration(
             undefined,
             [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
-            this.imports.type(source, legacyDescriptor),
+            this.imports.type(source, descMessage),
             undefined,
             undefined,
             members
@@ -301,17 +300,17 @@ export class MessageInterfaceGenerator {
     }
 
     private createMessageTypeNode(source: TypescriptFile, type: rt.IMessageType<rt.UnknownMessage>): ts.TypeNode {
-        let messageDescriptor = this.legacyRegistry.resolveTypeName(type.typeName);
-        assert(DescriptorProto.is(messageDescriptor));
-        return ts.createTypeReferenceNode(this.imports.type(source, messageDescriptor), undefined);
+        const descMessage = this.registry.getMessage(type.typeName);
+        assert(descMessage);
+        return ts.createTypeReferenceNode(this.imports.type(source, descMessage), undefined);
     }
 
 
     private createEnumTypeNode(source: TypescriptFile, ei: rt.EnumInfo): ts.TypeNode {
         let [enumTypeName] = ei;
-        let enumDescriptor = this.legacyRegistry.resolveTypeName(enumTypeName);
-        assert(EnumDescriptorProto.is(enumDescriptor));
-        return ts.createTypeReferenceNode(this.imports.type(source, enumDescriptor), undefined);
+        const descEnum = this.registry.getEnum(enumTypeName);
+        assert(descEnum);
+        return ts.createTypeReferenceNode(this.imports.type(source, descEnum), undefined);
     }
 
 
