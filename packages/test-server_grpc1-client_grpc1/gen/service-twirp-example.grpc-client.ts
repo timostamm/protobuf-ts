@@ -20,7 +20,7 @@ export interface IHaberdasherClient {
     /**
      * MakeHat produces a hat of mysterious, randomly-selected color!
      *
-     * @generated from protobuf rpc: MakeHat(spec.haberdasher.Size) returns (spec.haberdasher.Hat);
+     * @generated from protobuf rpc: MakeHat
      */
     makeHat(input: Size, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (err: grpc.ServiceError | null, value?: Hat) => void): grpc.ClientUnaryCall;
     makeHat(input: Size, metadata: grpc.Metadata, callback: (err: grpc.ServiceError | null, value?: Hat) => void): grpc.ClientUnaryCall;
@@ -41,7 +41,7 @@ export class HaberdasherClient extends grpc.Client implements IHaberdasherClient
     /**
      * MakeHat produces a hat of mysterious, randomly-selected color!
      *
-     * @generated from protobuf rpc: MakeHat(spec.haberdasher.Size) returns (spec.haberdasher.Hat);
+     * @generated from protobuf rpc: MakeHat
      */
     makeHat(input: Size, metadata: grpc.Metadata | grpc.CallOptions | ((err: grpc.ServiceError | null, value?: Hat) => void), options?: grpc.CallOptions | ((err: grpc.ServiceError | null, value?: Hat) => void), callback?: ((err: grpc.ServiceError | null, value?: Hat) => void)): grpc.ClientUnaryCall {
         const method = Haberdasher.methods[0];

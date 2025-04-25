@@ -10,7 +10,6 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
-import {LegacyInterpreter} from "../legacy-interpreter";
 import {assert} from "@protobuf-ts/runtime";
 import {ESInterpreter} from "../es-interpreter";
 import {DescMessage} from "@bufbuild/protobuf";

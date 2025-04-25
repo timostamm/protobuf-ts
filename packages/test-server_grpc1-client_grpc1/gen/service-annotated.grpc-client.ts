@@ -12,7 +12,7 @@ import * as grpc from "@grpc/grpc-js";
  */
 export interface IAnnotatedServiceClient {
     /**
-     * @generated from protobuf rpc: Get(spec.AnnoGetRequest) returns (spec.AnnoGetResponse);
+     * @generated from protobuf rpc: Get
      */
     get(input: AnnoGetRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (err: grpc.ServiceError | null, value?: AnnoGetResponse) => void): grpc.ClientUnaryCall;
     get(input: AnnoGetRequest, metadata: grpc.Metadata, callback: (err: grpc.ServiceError | null, value?: AnnoGetResponse) => void): grpc.ClientUnaryCall;
@@ -29,7 +29,7 @@ export class AnnotatedServiceClient extends grpc.Client implements IAnnotatedSer
         this._binaryOptions = binaryOptions;
     }
     /**
-     * @generated from protobuf rpc: Get(spec.AnnoGetRequest) returns (spec.AnnoGetResponse);
+     * @generated from protobuf rpc: Get
      */
     get(input: AnnoGetRequest, metadata: grpc.Metadata | grpc.CallOptions | ((err: grpc.ServiceError | null, value?: AnnoGetResponse) => void), options?: grpc.CallOptions | ((err: grpc.ServiceError | null, value?: AnnoGetResponse) => void), callback?: ((err: grpc.ServiceError | null, value?: AnnoGetResponse) => void)): grpc.ClientUnaryCall {
         const method = AnnotatedService.methods[0];

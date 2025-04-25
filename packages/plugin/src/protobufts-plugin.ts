@@ -1,16 +1,11 @@
 import {
     CodeGeneratorResponse_Feature,
-    DescriptorProto,
-    EnumDescriptorProto,
     GeneratedFile,
-    ServiceDescriptorProto,
     setupCompiler,
     SymbolTable,
     TypeScriptImports
 } from "@protobuf-ts/plugin-framework";
 import {OutFile} from "./out-file";
-import {createLocalTypeName} from "./code-gen/local-type-name";
-import {LegacyInterpreter} from "./legacy-interpreter";
 import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 import {CommentGenerator} from "./code-gen/comment-generator";
@@ -30,6 +25,7 @@ import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
 import { ESInterpreter } from "./es-interpreter";
 import {FileDescriptorProto} from "@protobuf-ts/plugin-framework/src";
+import {createLocalTypeName} from "./code-gen/local-type-name";
 
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {
@@ -239,17 +235,16 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             fileTable = new FileTable(),
             imports = new TypeScriptImports(symbols),
             comments = new CommentGenerator(legacyRegistry),
-            legacyInterpreter = new LegacyInterpreter(legacyRegistry, options),
             interpreter = new ESInterpreter(registryEs, options),
             optionResolver = new OptionResolver(interpreter, options),
             genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
-            genEnum = new EnumGenerator(legacyRegistry, imports, comments, interpreter),
+            genEnum = new EnumGenerator(symbols, legacyRegistry, imports, comments, interpreter),
             genMessageType = new MessageTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
-            genServiceType = new ServiceTypeGenerator(legacyRegistry, imports, comments, interpreter, options),
+            genServiceType = new ServiceTypeGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
             genServerGeneric = new ServiceServerGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
             genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter),
-            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options),
-            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, legacyInterpreter, options)
+            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, legacyRegistry, imports, comments, interpreter, options),
+            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter, options)
         ;
 
         const legacyFileDescriptorsByName = new Map<string, FileDescriptorProto>(
@@ -263,6 +258,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.ts', fileDescriptor);
         }
+
         // in second pass, register client and server file names
         for (let fileDescriptor of registryEs.files) {
             const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
@@ -290,17 +286,20 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
 
             // in first pass over types, register all symbols, regardless whether they are going to be used
             for (const desc of nestedTypes(descFile)) {
-                if (desc.kind == "extension") {
-                    continue;
-                }
-                const legacyDescriptor = legacyRegistry.resolveTypeName(desc.typeName);
-                symbols.register(createLocalTypeName(desc), legacyDescriptor, outMain);
-                if (desc.kind == "service") {
-                    assert(ServiceDescriptorProto.is(legacyDescriptor));
-                    genClientGeneric.registerSymbols(outClientCall, legacyDescriptor);
-                    genClientGrpc.registerSymbols(outClientGrpc, legacyDescriptor);
-                    genServerGeneric.registerSymbols(outServerGeneric, desc);
-                    genServerGrpc.registerSymbols(outServerGrpc, desc);
+                switch (desc.kind) {
+                    case "enum":
+                        genEnum.registerSymbols(outMain, desc);
+                        break;
+                    case "message":
+                        genMessageInterface.registerSymbols(outMain, desc);
+                        break;
+                    case "service":
+                        genServiceType.registerSymbols(outMain, desc);
+                        genClientGeneric.registerSymbols(outClientCall, desc);
+                        genClientGrpc.registerSymbols(outClientGrpc, desc);
+                        genServerGeneric.registerSymbols(outServerGeneric, desc);
+                        genServerGrpc.registerSymbols(outServerGrpc, desc);
+                        break;
                 }
             }
 
@@ -323,32 +322,29 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                         genMessageType.generateMessageType(outMain, desc, optionResolver.getOptimizeMode(descFile));
                         break;
                     case "service":
-                        const legacyServiceDescriptor = legacyRegistry.resolveTypeName(desc.typeName);
-                        assert(ServiceDescriptorProto.is(legacyServiceDescriptor));
-                        if (!options.forceDisableServices) {
-                            // service type
-                            genServiceType.generateServiceType(outMain, desc);
-
-                            // clients
-                            const clientStyles = optionResolver.getClientStyles(desc);
-                            if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
-                                genClientGeneric.generateInterface(outClientCall, legacyServiceDescriptor);
-                                genClientGeneric.generateImplementationClass(outClientCall, legacyServiceDescriptor);
-                            }
-                            if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
-                                genClientGrpc.generateInterface(outClientGrpc, legacyServiceDescriptor);
-                                genClientGrpc.generateImplementationClass(outClientGrpc, legacyServiceDescriptor);
-                            }
-
-                            // servers
-                            const serverStyles = optionResolver.getServerStyles(desc);
-                            if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
-                                genServerGeneric.generateInterface(outServerGeneric, desc);
-                            }
-                            if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
-                                genServerGrpc.generateInterface(outServerGrpc, desc);
-                                genServerGrpc.generateDefinition(outServerGrpc, desc);
-                            }
+                        if (options.forceDisableServices) {
+                            break;
+                        }
+                        // service type
+                        genServiceType.generateServiceType(outMain, desc);
+                        // clients
+                        const clientStyles = optionResolver.getClientStyles(desc);
+                        if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
+                            genClientGeneric.generateInterface(outClientCall, desc);
+                            genClientGeneric.generateImplementationClass(outClientCall, desc);
+                        }
+                        if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
+                            genClientGrpc.generateInterface(outClientGrpc, desc);
+                            genClientGrpc.generateImplementationClass(outClientGrpc, desc);
+                        }
+                        // servers
+                        const serverStyles = optionResolver.getServerStyles(desc);
+                        if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
+                            genServerGeneric.generateInterface(outServerGeneric, desc);
+                        }
+                        if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
+                            genServerGrpc.generateInterface(outServerGrpc, desc);
+                            genServerGrpc.generateDefinition(outServerGrpc, desc);
                         }
                         break;
                 }

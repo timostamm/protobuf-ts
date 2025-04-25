@@ -11,7 +11,7 @@ import * as grpc from "@grpc/grpc-js";
  */
 export interface IEmptyServiceClient {
     /**
-     * @generated from protobuf rpc: Get(google.protobuf.Empty) returns (google.protobuf.Empty);
+     * @generated from protobuf rpc: Get
      */
     get(input: Empty, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (err: grpc.ServiceError | null, value?: Empty) => void): grpc.ClientUnaryCall;
     get(input: Empty, metadata: grpc.Metadata, callback: (err: grpc.ServiceError | null, value?: Empty) => void): grpc.ClientUnaryCall;
@@ -28,7 +28,7 @@ export class EmptyServiceClient extends grpc.Client implements IEmptyServiceClie
         this._binaryOptions = binaryOptions;
     }
     /**
-     * @generated from protobuf rpc: Get(google.protobuf.Empty) returns (google.protobuf.Empty);
+     * @generated from protobuf rpc: Get
      */
     get(input: Empty, metadata: grpc.Metadata | grpc.CallOptions | ((err: grpc.ServiceError | null, value?: Empty) => void), options?: grpc.CallOptions | ((err: grpc.ServiceError | null, value?: Empty) => void), callback?: ((err: grpc.ServiceError | null, value?: Empty) => void)): grpc.ClientUnaryCall {
         const method = EmptyService.methods[0];

@@ -19,25 +19,25 @@ export interface IExampleServiceClient {
     /**
      * An example unary call.
      *
-     * @generated from protobuf rpc: Unary(spec.ExampleRequest) returns (spec.ExampleResponse);
+     * @generated from protobuf rpc: Unary
      */
     unary(input: ExampleRequest, options?: RpcOptions): UnaryCall<ExampleRequest, ExampleResponse>;
     /**
      * An example server-streaming call.
      *
-     * @generated from protobuf rpc: ServerStream(spec.ExampleRequest) returns (stream spec.ExampleResponse);
+     * @generated from protobuf rpc: ServerStream
      */
     serverStream(input: ExampleRequest, options?: RpcOptions): ServerStreamingCall<ExampleRequest, ExampleResponse>;
     /**
      * An example client-streaming call.
      *
-     * @generated from protobuf rpc: ClientStream(stream spec.ExampleRequest) returns (spec.ExampleResponse);
+     * @generated from protobuf rpc: ClientStream
      */
     clientStream(options?: RpcOptions): ClientStreamingCall<ExampleRequest, ExampleResponse>;
     /**
      * An example bidi-streaming call.
      *
-     * @generated from protobuf rpc: Bidi(stream spec.ExampleRequest) returns (stream spec.ExampleResponse);
+     * @generated from protobuf rpc: Bidi
      */
     bidi(options?: RpcOptions): DuplexStreamingCall<ExampleRequest, ExampleResponse>;
 }
@@ -53,7 +53,7 @@ export class ExampleServiceClient implements IExampleServiceClient, ServiceInfo 
     /**
      * An example unary call.
      *
-     * @generated from protobuf rpc: Unary(spec.ExampleRequest) returns (spec.ExampleResponse);
+     * @generated from protobuf rpc: Unary
      */
     unary(input: ExampleRequest, options?: RpcOptions): UnaryCall<ExampleRequest, ExampleResponse> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);
@@ -62,7 +62,7 @@ export class ExampleServiceClient implements IExampleServiceClient, ServiceInfo 
     /**
      * An example server-streaming call.
      *
-     * @generated from protobuf rpc: ServerStream(spec.ExampleRequest) returns (stream spec.ExampleResponse);
+     * @generated from protobuf rpc: ServerStream
      */
     serverStream(input: ExampleRequest, options?: RpcOptions): ServerStreamingCall<ExampleRequest, ExampleResponse> {
         const method = this.methods[1], opt = this._transport.mergeOptions(options);
@@ -71,7 +71,7 @@ export class ExampleServiceClient implements IExampleServiceClient, ServiceInfo 
     /**
      * An example client-streaming call.
      *
-     * @generated from protobuf rpc: ClientStream(stream spec.ExampleRequest) returns (spec.ExampleResponse);
+     * @generated from protobuf rpc: ClientStream
      */
     clientStream(options?: RpcOptions): ClientStreamingCall<ExampleRequest, ExampleResponse> {
         const method = this.methods[2], opt = this._transport.mergeOptions(options);
@@ -80,7 +80,7 @@ export class ExampleServiceClient implements IExampleServiceClient, ServiceInfo 
     /**
      * An example bidi-streaming call.
      *
-     * @generated from protobuf rpc: Bidi(stream spec.ExampleRequest) returns (stream spec.ExampleResponse);
+     * @generated from protobuf rpc: Bidi
      */
     bidi(options?: RpcOptions): DuplexStreamingCall<ExampleRequest, ExampleResponse> {
         const method = this.methods[3], opt = this._transport.mergeOptions(options);

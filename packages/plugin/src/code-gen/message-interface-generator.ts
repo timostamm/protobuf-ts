@@ -59,7 +59,7 @@ export class MessageInterfaceGenerator {
         const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
 
         const
-            interpreterType = this.interpreter.getMessageType(descMessage),
+            interpreterType = this.interpreter.getMessageType(descMessage.typeName),
             processedOneofs: string[] = [], // oneof groups already processed
             members: ts.TypeElement[] = []; // the interface members
 

@@ -13,7 +13,7 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface IEmptyServiceClient {
     /**
-     * @generated from protobuf rpc: Get(google.protobuf.Empty) returns (google.protobuf.Empty);
+     * @generated from protobuf rpc: Get
      */
     get(input: Empty, options?: RpcOptions): UnaryCall<Empty, Empty>;
 }
@@ -27,7 +27,7 @@ export class EmptyServiceClient implements IEmptyServiceClient, ServiceInfo {
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * @generated from protobuf rpc: Get(google.protobuf.Empty) returns (google.protobuf.Empty);
+     * @generated from protobuf rpc: Get
      */
     get(input: Empty, options?: RpcOptions): UnaryCall<Empty, Empty> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);

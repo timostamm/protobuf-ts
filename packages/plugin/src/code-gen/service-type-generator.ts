@@ -1,6 +1,7 @@
 import {
     addCommentBlockAsJsDoc,
     DescriptorRegistry,
+    SymbolTable,
     ServiceDescriptorProto,
     TypescriptFile,
     TypeScriptImports,
@@ -12,6 +13,7 @@ import {MethodInfoGenerator} from "./method-info-generator";
 import {DescService} from "@bufbuild/protobuf";
 import {ESInterpreter} from "../es-interpreter";
 import {assert} from "@protobuf-ts/runtime";
+import {createLocalTypeName} from "./local-type-name";
 
 
 export class ServiceTypeGenerator {
@@ -19,6 +21,7 @@ export class ServiceTypeGenerator {
     private readonly methodInfoGenerator: MethodInfoGenerator;
 
     constructor(
+        private readonly symbols: SymbolTable,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
@@ -28,6 +31,10 @@ export class ServiceTypeGenerator {
         this.methodInfoGenerator = new MethodInfoGenerator(legacyRegistry, this.imports)
     }
 
+    registerSymbols(source: TypescriptFile, descService: DescService): void {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
+        this.symbols.register(createLocalTypeName(descService), legacyDescriptor, source);
+    }
 
     // export const Haberdasher = new ServiceType("spec.haberdasher.Haberdasher", [
     //     { name: "MakeHat", localName: "makeHat", I: Size, O: Hat },

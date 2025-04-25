@@ -14,7 +14,7 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface IAnnotatedServiceClient {
     /**
-     * @generated from protobuf rpc: Get(spec.AnnoGetRequest) returns (spec.AnnoGetResponse);
+     * @generated from protobuf rpc: Get
      */
     get(input: AnnoGetRequest, options?: RpcOptions): UnaryCall<AnnoGetRequest, AnnoGetResponse>;
 }
@@ -28,7 +28,7 @@ export class AnnotatedServiceClient implements IAnnotatedServiceClient, ServiceI
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * @generated from protobuf rpc: Get(spec.AnnoGetRequest) returns (spec.AnnoGetResponse);
+     * @generated from protobuf rpc: Get
      */
     get(input: AnnoGetRequest, options?: RpcOptions): UnaryCall<AnnoGetRequest, AnnoGetResponse> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);

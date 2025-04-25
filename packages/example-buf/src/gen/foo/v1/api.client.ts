@@ -14,7 +14,7 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface IFooServiceClient {
     /**
-     * @generated from protobuf rpc: Get(foo.v1.GetRequest) returns (foo.v1.GetResponse);
+     * @generated from protobuf rpc: Get
      */
     get(input: GetRequest, options?: RpcOptions): UnaryCall<GetRequest, GetResponse>;
 }
@@ -28,7 +28,7 @@ export class FooServiceClient implements IFooServiceClient, ServiceInfo {
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * @generated from protobuf rpc: Get(foo.v1.GetRequest) returns (foo.v1.GetResponse);
+     * @generated from protobuf rpc: Get
      */
     get(input: GetRequest, options?: RpcOptions): UnaryCall<GetRequest, GetResponse> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);

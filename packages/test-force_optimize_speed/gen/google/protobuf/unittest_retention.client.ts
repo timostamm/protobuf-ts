@@ -21,7 +21,7 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface IServiceClient {
     /**
-     * @generated from protobuf rpc: DoStuff(protobuf_unittest.TopLevelMessage) returns (protobuf_unittest.TopLevelMessage);
+     * @generated from protobuf rpc: DoStuff
      */
     doStuff(input: TopLevelMessage, options?: RpcOptions): UnaryCall<TopLevelMessage, TopLevelMessage>;
 }
@@ -35,7 +35,7 @@ export class ServiceClient implements IServiceClient, ServiceInfo {
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * @generated from protobuf rpc: DoStuff(protobuf_unittest.TopLevelMessage) returns (protobuf_unittest.TopLevelMessage);
+     * @generated from protobuf rpc: DoStuff
      */
     doStuff(input: TopLevelMessage, options?: RpcOptions): UnaryCall<TopLevelMessage, TopLevelMessage> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);

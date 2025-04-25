@@ -53,8 +53,8 @@ export class FileTable {
      * Find a symbol (of the given kind) for the given descriptor.
      * Return `undefined` if not found.
      */
-    private findByProtoNameAndKind(protoName: string | undefined, kind = 'default'): FileTableEntry | undefined {
-        return this.entries.find(e => e.desc.proto.name === protoName && e.kind === kind);
+    private findByProtoFilenameAndKind(protoFilename: string | undefined, kind = 'default'): FileTableEntry | undefined {
+        return this.entries.find(e => e.desc.proto.name === protoFilename && e.kind === kind);
     }
 
 
@@ -63,10 +63,10 @@ export class FileTable {
      * Raises error if not found.
      */
     get(descriptor: legacy_framework.FileDescriptorProto | DescFile, kind = 'default'): FileTableEntry {
-        const protoName = "kind" in descriptor ? descriptor.proto.name : descriptor.name;
-        const found = this.findByProtoNameAndKind(protoName, kind);
+        const protoFilename = "kind" in descriptor ? descriptor.proto.name : descriptor.name;
+        const found = this.findByProtoFilenameAndKind(protoFilename, kind);
         if (!found) {
-            let msg = `Failed to find name for file ${protoName} of kind "${kind}". `
+            let msg = `Failed to find name for file ${protoFilename} of kind "${kind}". `
                 + `Searched in ${this.entries.length} files.`
             throw new Error(msg);
         }
@@ -78,7 +78,7 @@ export class FileTable {
      * Is a name (of the given kind) registered for the the given descriptor?
      */
     private has(descFile: DescFile, kind = 'default'): boolean {
-        return !!this.findByProtoNameAndKind(descFile.proto.name, kind);
+        return !!this.findByProtoFilenameAndKind(descFile.proto.name, kind);
     }
 
 

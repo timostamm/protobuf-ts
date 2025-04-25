@@ -2,6 +2,7 @@ import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
 import {
     DescriptorRegistry,
+    SymbolTable,
     TypescriptEnumBuilder,
     TypescriptFile,
     TypeScriptImports
@@ -9,17 +10,24 @@ import {
 import {CommentGenerator} from "./comment-generator";
 import {DescEnum} from "@bufbuild/protobuf";
 import {ESInterpreter} from "../es-interpreter";
+import {createLocalTypeName} from "./local-type-name";
 
 
 export class EnumGenerator {
 
 
     constructor(
+        private readonly symbols: SymbolTable,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: ESInterpreter,
     ) {
+    }
+
+    registerSymbols(source: TypescriptFile, descEnum: DescEnum): void {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descEnum.typeName);
+        this.symbols.register(createLocalTypeName(descEnum), legacyDescriptor, source);
     }
 
 
