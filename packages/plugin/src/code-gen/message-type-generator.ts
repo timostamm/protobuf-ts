@@ -14,7 +14,7 @@ import {Create} from "../message-type-extensions/create";
 import {InternalBinaryRead} from "../message-type-extensions/internal-binary-read";
 import {InternalBinaryWrite} from "../message-type-extensions/internal-binary-write";
 import {FieldInfoGenerator} from "./field-info-generator";
-import {ESInterpreter} from "../es-interpreter";
+import {Interpreter} from "../interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
 import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 
@@ -39,7 +39,7 @@ export class MessageTypeGenerator {
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
-        private readonly interpreter: ESInterpreter,
+        private readonly interpreter: Interpreter,
         private readonly options: {
             runtimeImportPath: string;
             normalLongType: LongType;

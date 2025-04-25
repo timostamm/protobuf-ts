@@ -8,7 +8,7 @@ import {
 import * as ts from "typescript";
 import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
-import {ESInterpreter} from "../es-interpreter";
+import {Interpreter} from "../interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
 
 
@@ -21,7 +21,7 @@ export class Create implements CustomMethodGenerator {
     constructor(
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
-        private readonly interpreter: ESInterpreter,
+        private readonly interpreter: Interpreter,
         private readonly options: { normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }

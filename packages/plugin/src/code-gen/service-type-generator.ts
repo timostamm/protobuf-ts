@@ -11,7 +11,7 @@ import {CommentGenerator} from "./comment-generator";
 import * as ts from "typescript";
 import {MethodInfoGenerator} from "./method-info-generator";
 import {DescService} from "@bufbuild/protobuf";
-import {ESInterpreter} from "../es-interpreter";
+import {Interpreter} from "../interpreter";
 import {assert} from "@protobuf-ts/runtime";
 import {createLocalTypeName} from "./local-type-name";
 
@@ -25,7 +25,7 @@ export class ServiceTypeGenerator {
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
-        private readonly interpreter: ESInterpreter,
+        private readonly interpreter: Interpreter,
         private readonly options: { runtimeRpcImportPath: string; },
     ) {
         this.methodInfoGenerator = new MethodInfoGenerator(legacyRegistry, this.imports)

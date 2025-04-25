@@ -9,7 +9,7 @@ import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {assert} from "@protobuf-ts/runtime";
-import {ESInterpreter} from "../es-interpreter";
+import {Interpreter} from "../interpreter";
 import {DescService} from "@bufbuild/protobuf";
 
 
@@ -25,7 +25,7 @@ export abstract class ServiceClientGeneratorBase {
         protected readonly legacyRegistry: DescriptorRegistry,
         protected readonly imports: TypeScriptImports,
         protected readonly comments: CommentGenerator,
-        protected readonly interpreter: ESInterpreter,
+        protected readonly interpreter: Interpreter,
         protected readonly options: {
             runtimeImportPath: string;
             runtimeRpcImportPath: string;

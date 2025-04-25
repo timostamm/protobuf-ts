@@ -11,7 +11,7 @@ import {
 import * as rt from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {assert} from "@protobuf-ts/runtime";
-import {ESInterpreter} from "../es-interpreter";
+import {Interpreter} from "../interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
 import {getDeclarationString} from "@bufbuild/protoplugin";
 
@@ -30,7 +30,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     constructor(
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
-        private readonly interpreter: ESInterpreter,
+        private readonly interpreter: Interpreter,
         private readonly options: { oneofKindDiscriminator: string; runtimeImportPath: string },
     ) {
     }

@@ -51,7 +51,7 @@ type JsonOptionsMap = {
  * single source of truth for generating message interfaces and reflection
  * information.
  */
-export class ESInterpreter {
+export class Interpreter {
 
 
     private readonly serviceTypes = new Map<string, rpc.ServiceType>();
@@ -326,7 +326,7 @@ export class ESInterpreter {
         info.name = methodDescriptor.name;
 
         // localName: The name of the method in the runtime.
-        let localName = ESInterpreter.createTypescriptNameForMethod(methodDescriptor);
+        let localName = Interpreter.createTypescriptNameForMethod(methodDescriptor);
         if (localName !== rt.lowerCamelCase(methodDescriptor.name)) {
             info.localName = localName;
         }
@@ -630,7 +630,7 @@ export class ESInterpreter {
         if (descField.scalar === undefined) {
             return false;
         }
-        return ESInterpreter.isLongValueType(descField.scalar);
+        return Interpreter.isLongValueType(descField.scalar);
     }
 
     /**

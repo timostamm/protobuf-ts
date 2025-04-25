@@ -11,7 +11,7 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
-import {ESInterpreter} from "../es-interpreter";
+import {Interpreter} from "../interpreter";
 import {DescField, DescMessage, DescOneof} from "@bufbuild/protobuf";
 
 
@@ -23,7 +23,7 @@ export class MessageInterfaceGenerator {
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
-        private readonly interpreter: ESInterpreter,
+        private readonly interpreter: Interpreter,
         private readonly options: {
             oneofKindDiscriminator: string;
             normalLongType: rt.LongType;

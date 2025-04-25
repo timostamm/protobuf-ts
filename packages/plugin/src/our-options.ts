@@ -11,7 +11,7 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import {DescFile, DescService} from "@bufbuild/protobuf";
-import {ESInterpreter} from "./es-interpreter";
+import {Interpreter} from "./interpreter";
 import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 
 
@@ -358,7 +358,7 @@ export class OptionResolver {
 
 
     constructor(
-        private readonly interpreter: ESInterpreter,
+        private readonly interpreter: Interpreter,
         private readonly options: InternalOptions,
     ) {
     }

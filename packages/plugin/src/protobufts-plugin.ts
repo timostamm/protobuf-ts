@@ -23,7 +23,7 @@ import {WellKnownTypes} from "./message-type-extensions/well-known-types";
 import {nestedTypes} from "@bufbuild/protobuf/reflect";
 import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
-import { ESInterpreter } from "./es-interpreter";
+import { Interpreter } from "./interpreter";
 import {FileDescriptorProto} from "@protobuf-ts/plugin-framework/src";
 import {createLocalTypeName} from "./code-gen/local-type-name";
 
@@ -235,7 +235,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             fileTable = new FileTable(),
             imports = new TypeScriptImports(symbols),
             comments = new CommentGenerator(legacyRegistry),
-            interpreter = new ESInterpreter(registryEs, options),
+            interpreter = new Interpreter(registryEs, options),
             optionResolver = new OptionResolver(interpreter, options),
             genMessageInterface = new MessageInterfaceGenerator(symbols, legacyRegistry, imports, comments, interpreter, options),
             genEnum = new EnumGenerator(symbols, legacyRegistry, imports, comments, interpreter),

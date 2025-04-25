@@ -9,7 +9,7 @@ import {
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {DescEnum} from "@bufbuild/protobuf";
-import {ESInterpreter} from "../es-interpreter";
+import {Interpreter} from "../interpreter";
 import {createLocalTypeName} from "./local-type-name";
 
 
@@ -21,7 +21,7 @@ export class EnumGenerator {
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
-        private readonly interpreter: ESInterpreter,
+        private readonly interpreter: Interpreter,
     ) {
     }
 
