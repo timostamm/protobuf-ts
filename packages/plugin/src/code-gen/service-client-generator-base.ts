@@ -60,7 +60,6 @@ export abstract class ServiceClientGeneratorBase {
      *
      */
     generateInterface(source: TypescriptFile, descService: DescService): ts.InterfaceDeclaration {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const
             interpreterType = this.interpreter.getServiceType(descService),
             IServiceClient = this.imports.type(source, descService, this.symbolKindInterface),
@@ -287,20 +286,16 @@ export abstract class ServiceClientGeneratorBase {
 
 
     protected makeI(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
-        const descMessage = this.registry.getMessage(methodInfo.I.typeName);
-        assert(descMessage);
-        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
-            descMessage,
+        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(source,
+            methodInfo.I.typeName,
             'default',
             isTypeOnly
         )), undefined);
     }
 
     protected makeO(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
-        const descMessage = this.registry.getMessage(methodInfo.O.typeName);
-        assert(descMessage);
-        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
-            descMessage,
+        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(source,
+            methodInfo.O.typeName,
             'default',
             isTypeOnly
         )), undefined);

@@ -1866,10 +1866,8 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     }
 
     protected createDuplexStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
-        const descService = this.registry.getService(methodInfo.service.typeName);
-        assert(descService);
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
-        let ServiceType = this.imports.type(source, descService);
+        let ServiceType = this.imports.typeByName(source, methodInfo.service.typeName);
         return ts.createMethod(
             undefined,
             undefined,

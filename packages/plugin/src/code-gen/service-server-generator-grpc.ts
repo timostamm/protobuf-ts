@@ -93,11 +93,6 @@ export class ServiceServerGeneratorGrpc {
             handler = 'handleUnaryCall';
         }
 
-        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
-        assert(descMessageI);
-        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
-        assert(descMessageO);
-
         const signature = ts.createPropertySignature(
             undefined,
             ts.createIdentifier(methodInfo.localName),
@@ -108,13 +103,13 @@ export class ServiceServerGeneratorGrpc {
                     ts.createIdentifier(handler)
                 ),
                 [
-                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                         source,
-                        descMessageI
+                        methodInfo.I.typeName,
                     )), undefined),
-                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                         source,
-                        descMessageO
+                        methodInfo.O.typeName,
                     )), undefined),
                 ]
             ),
@@ -178,12 +173,8 @@ export class ServiceServerGeneratorGrpc {
 
 
     private makeDefinitionProperty(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.PropertyAssignment {
-        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
-        assert(descMessageI);
-        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
-        assert(descMessageO);
-        const I = this.imports.type(source, descMessageI);
-        const O = this.imports.type(source, descMessageO);
+        const I = this.imports.typeByName(source, methodInfo.I.typeName);
+        const O = this.imports.typeByName(source, methodInfo.O.typeName);
 
         return ts.createPropertyAssignment(
             ts.createIdentifier(methodInfo.localName),

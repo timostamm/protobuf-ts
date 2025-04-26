@@ -2,7 +2,6 @@ import {
     FieldDescriptorProto_Type,
     TypescriptFile,
     typescriptMethodFromText,
-    DescriptorRegistry,
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";

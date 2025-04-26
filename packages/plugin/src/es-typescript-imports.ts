@@ -65,7 +65,11 @@ export class TypeScriptImports {
      * in your generated code, use `kind` to discriminate.
      */
     type(source: TypescriptFile, descriptor: DescMessage | DescEnum | DescService, kind = 'default', isTypeOnly = false): string {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descriptor.typeName);
+        return this.typeByName(source, descriptor.typeName, kind, isTypeOnly);
+    }
+
+    typeByName(source: TypescriptFile, typeName: string, kind = 'default', isTypeOnly = false): string {
+        const legacyDescriptor = this.legacyRegistry.resolveTypeName(typeName);
 
         const symbolReg = this.symbols.get(legacyDescriptor, kind);
 

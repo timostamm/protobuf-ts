@@ -87,19 +87,14 @@ export class ServiceServerGeneratorGeneric {
 
 
     private createUnary(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
-        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
-        assert(descMessageI);
-        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
-        assert(descMessageO);
-
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageI
+                methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageO
+                methodInfo.O.typeName
             )), undefined);
         return ts.createMethodSignature(
             undefined,
@@ -137,19 +132,14 @@ export class ServiceServerGeneratorGeneric {
 
 
     private createServerStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
-        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
-        assert(descMessageI);
-        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
-        assert(descMessageO);
-
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageI
+                methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageO
+                methodInfo.O.typeName
             )), undefined),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -201,18 +191,14 @@ export class ServiceServerGeneratorGeneric {
 
 
     private createClientStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
-        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
-        assert(descMessageI);
-        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
-        assert(descMessageO);
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageI
+                methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageO
+                methodInfo.O.typeName
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -254,18 +240,14 @@ export class ServiceServerGeneratorGeneric {
 
 
     private createBidi(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
-        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
-        assert(descMessageI);
-        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
-        assert(descMessageO);
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageI
+                methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageO
+                methodInfo.O.typeName
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);

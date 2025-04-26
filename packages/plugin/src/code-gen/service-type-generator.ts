@@ -22,14 +22,13 @@ export class ServiceTypeGenerator {
 
     constructor(
         private readonly symbols: SymbolTable,
-        private readonly registry: FileRegistry,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: Interpreter,
         private readonly options: { runtimeRpcImportPath: string; },
     ) {
-        this.methodInfoGenerator = new MethodInfoGenerator(registry, legacyRegistry, this.imports)
+        this.methodInfoGenerator = new MethodInfoGenerator(imports)
     }
 
     registerSymbols(source: TypescriptFile, descService: DescService): void {

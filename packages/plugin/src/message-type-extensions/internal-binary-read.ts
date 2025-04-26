@@ -1,7 +1,5 @@
 import * as ts from "typescript";
 import {
-    DescriptorProto,
-    DescriptorRegistry,
     ScalarValueType,
     StringFormat,
     TypescriptFile,
@@ -411,11 +409,9 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     //     msg: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, (message.result as any).msg)
     // };
     messageOneof(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }): ts.Statement[] {
-        const descMessage = this.registry.getMessage(field.T().typeName);
-        assert(descMessage);
         let handlerMergeCall = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, descMessage)),
+                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
                 ts.createIdentifier("internalBinaryRead")
             ),
             undefined,
@@ -450,11 +446,9 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
     // message.field.push(OtherMessage.internalBinaryRead(reader, reader.uint32(), options));
     messageRepeated(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
-        const descMessage = this.registry.getMessage(field.T().typeName);
-        assert(descMessage);
         let handlerMergeCall = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, descMessage)),
+                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
                 ts.createIdentifier("internalBinaryRead")
             ),
             undefined,
@@ -692,10 +686,8 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                 break;
 
             case "message":
-                const valueDescMessage = this.registry.getMessage(field.V.T().typeName);
-                assert(valueDescMessage);
                 readValueExpression = ts.createCall(
-                    ts.createPropertyAccess(ts.createIdentifier(this.imports.type(source, valueDescMessage)), ts.createIdentifier("internalBinaryRead")),
+                    ts.createPropertyAccess(ts.createIdentifier(this.imports.typeByName(source, field.V.T().typeName)), ts.createIdentifier("internalBinaryRead")),
                     undefined,
                     [
                         ts.createIdentifier("reader"),

@@ -2,13 +2,10 @@ import * as rt from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import * as ts from "typescript";
 import {
-    DescriptorRegistry,
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import {TypeScriptImports} from "../es-typescript-imports";
-import {FileRegistry} from "@bufbuild/protobuf";
-import {assert} from "@protobuf-ts/runtime";
 
 
 /**
@@ -19,8 +16,6 @@ export class MethodInfoGenerator {
 
 
     constructor(
-        private readonly registry: FileRegistry,
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
     ) {
     }
@@ -53,24 +48,20 @@ export class MethodInfoGenerator {
         }
 
         // I: The generated type handler for the input message.
-        const descMessageI = this.registry.getMessage(methodInfo.I.typeName);
-        assert(descMessageI);
         properties.push(ts.createPropertyAssignment(
             ts.createIdentifier('I'),
-            ts.createIdentifier(this.imports.type(
+            ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageI,
+                methodInfo.I.typeName,
             ))
         ));
 
         // O: The generated type handler for the output message.
-        const descMessageO = this.registry.getMessage(methodInfo.O.typeName);
-        assert(descMessageO);
         properties.push(ts.createPropertyAssignment(
             ts.createIdentifier('O'),
-            ts.createIdentifier(this.imports.type(
+            ts.createIdentifier(this.imports.typeByName(
                 source,
-                descMessageO,
+                methodInfo.O.typeName,
             ))
         ));
 

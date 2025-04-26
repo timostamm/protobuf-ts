@@ -326,9 +326,6 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
 
     message(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
-        const descMessage = this.registry.getMessage(field.T().typeName);
-        assert(descMessage);
-
         // writer.tag(<field no>, WireType.LengthDelimited).fork();
         let writeTagAndFork = this.makeWriterCall(
             this.makeWriterTagCall(source, 'writer', field.no, rt.WireType.LengthDelimited),
@@ -338,7 +335,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.messageField, <writeTagAndFork>, options);
         let binaryWrite = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, descMessage)),
+                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
                 ts.createIdentifier("internalBinaryWrite")
             ),
             undefined,
@@ -363,9 +360,6 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
 
     messageRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
-        const descMessage = this.registry.getMessage(field.T().typeName);
-        assert(descMessage);
-
         // message.repeatedMessageField[i]
         let fieldPropI = ts.createElementAccess(fieldPropertyAccess, ts.createIdentifier("i"));
 
@@ -378,7 +372,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.repeatedMessageField, <writeTagAndFork>, options);
         let binaryWrite = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, descMessage)),
+                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
                 ts.createIdentifier("internalBinaryWrite")
             ),
             undefined,
@@ -407,9 +401,6 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
 
     messageOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }, fieldDeclarationComment: string): ts.Statement[] {
-        const descMessage = this.registry.getMessage(field.T().typeName);
-        assert(descMessage);
-
         // message.<oneof name>
         let groupPropertyAccess = ts.createPropertyAccess(
             ts.createIdentifier("message"),
@@ -425,7 +416,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.<groupPropertyAccess>.<fieldLocalName>, <writeTagAndFork>, options);
         let binaryWrite = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, descMessage)),
+                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
                 ts.createIdentifier("internalBinaryWrite")
             ),
             undefined,

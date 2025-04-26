@@ -2,15 +2,13 @@ import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
 import {assert} from "@protobuf-ts/runtime";
 import {
-    DescriptorProto,
     DescriptorRegistry,
-    EnumDescriptorProto,
     TypescriptFile,
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
-import {DescField, DescMessage, DescOneof, FileRegistry} from "@bufbuild/protobuf";
+import {DescField, DescMessage, DescOneof} from "@bufbuild/protobuf";
 import {TypeScriptImports} from "../es-typescript-imports";
 import {SymbolTable} from "../es-symbol-table";
 
@@ -20,7 +18,6 @@ export class MessageInterfaceGenerator {
 
     constructor(
         private readonly symbols: SymbolTable,
-        private readonly registry: FileRegistry,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
@@ -300,17 +297,13 @@ export class MessageInterfaceGenerator {
     }
 
     private createMessageTypeNode(source: TypescriptFile, type: rt.IMessageType<rt.UnknownMessage>): ts.TypeNode {
-        const descMessage = this.registry.getMessage(type.typeName);
-        assert(descMessage);
-        return ts.createTypeReferenceNode(this.imports.type(source, descMessage), undefined);
+        return ts.createTypeReferenceNode(this.imports.typeByName(source, type.typeName), undefined);
     }
 
 
     private createEnumTypeNode(source: TypescriptFile, ei: rt.EnumInfo): ts.TypeNode {
         let [enumTypeName] = ei;
-        const descEnum = this.registry.getEnum(enumTypeName);
-        assert(descEnum);
-        return ts.createTypeReferenceNode(this.imports.type(source, descEnum), undefined);
+        return ts.createTypeReferenceNode(this.imports.typeByName(source, enumTypeName), undefined);
     }
 
 
