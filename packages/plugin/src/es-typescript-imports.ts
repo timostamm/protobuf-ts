@@ -2,15 +2,15 @@ import {assert} from "@protobuf-ts/runtime";
 import * as ts from "typescript";
 import * as path from "path";
 import {SymbolTable} from "./es-symbol-table";
-import {TypescriptFile, DescriptorRegistry} from "@protobuf-ts/plugin-framework";
-import {DescEnum, DescMessage, DescService} from "@bufbuild/protobuf";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
+import {DescEnum, DescMessage, DescService, FileRegistry} from "@bufbuild/protobuf";
 
 
 export class TypeScriptImports {
 
     constructor(
         private readonly symbols: SymbolTable,
-        private readonly legacyRegistry: DescriptorRegistry,
+        private readonly registry: FileRegistry,
     ) {
     }
 
@@ -69,9 +69,9 @@ export class TypeScriptImports {
     }
 
     typeByName(source: TypescriptFile, typeName: string, kind = 'default', isTypeOnly = false): string {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(typeName);
-
-        const symbolReg = this.symbols.get(legacyDescriptor, kind);
+        const descType = this.registry.get(typeName);
+        assert(descType?.kind == "message" || descType?.kind === "enum" || descType?.kind == "service");
+        const symbolReg = this.symbols.get(descType, kind);
 
         // symbol in this file?
         if (symbolReg.file === source) {

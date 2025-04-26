@@ -21,8 +21,6 @@ export class ServiceServerGeneratorGeneric {
 
     constructor(
         private readonly symbols: SymbolTable,
-        private readonly registry: FileRegistry,
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: Interpreter,
@@ -34,8 +32,7 @@ export class ServiceServerGeneratorGeneric {
     registerSymbols(source: TypescriptFile, descService: DescService): void {
         const basename = createLocalTypeName(descService);
         const interfaceName = `I${basename}`;
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
-        this.symbols.register(interfaceName, legacyDescriptor, source, this.symbolKindInterface);
+        this.symbols.register(interfaceName, descService, source, this.symbolKindInterface);
     }
 
 

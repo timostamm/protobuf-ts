@@ -1,5 +1,4 @@
 import {
-    DescriptorRegistry,
     TypescriptFile,
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
@@ -23,7 +22,6 @@ export abstract class ServiceClientGeneratorBase {
     constructor(
         private readonly symbols: SymbolTable,
         protected readonly registry: FileRegistry,
-        protected readonly legacyRegistry: DescriptorRegistry,
         protected readonly imports: TypeScriptImports,
         protected readonly comments: CommentGenerator,
         protected readonly interpreter: Interpreter,
@@ -39,9 +37,8 @@ export abstract class ServiceClientGeneratorBase {
         const basename = createLocalTypeName(descService);
         const interfaceName = `I${basename}Client`;
         const implementationName = `${basename}Client`;
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
-        this.symbols.register(interfaceName, legacyDescriptor, source, this.symbolKindInterface);
-        this.symbols.register(implementationName, legacyDescriptor, source, this.symbolKindImplementation);
+        this.symbols.register(interfaceName, descService, source, this.symbolKindInterface);
+        this.symbols.register(implementationName, descService, source, this.symbolKindImplementation);
     }
 
 

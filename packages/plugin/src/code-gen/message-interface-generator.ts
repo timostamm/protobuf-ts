@@ -2,7 +2,6 @@ import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
 import {assert} from "@protobuf-ts/runtime";
 import {
-    DescriptorRegistry,
     TypescriptFile,
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
@@ -18,7 +17,6 @@ export class MessageInterfaceGenerator {
 
     constructor(
         private readonly symbols: SymbolTable,
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: Interpreter,
@@ -31,9 +29,7 @@ export class MessageInterfaceGenerator {
 
 
     registerSymbols(source: TypescriptFile, descMessage: DescMessage): void {
-        const name = createLocalTypeName(descMessage);
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        this.symbols.register(name, legacyDescriptor, source);
+        this.symbols.register(createLocalTypeName(descMessage), descMessage, source);
     }
 
 

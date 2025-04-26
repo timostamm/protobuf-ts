@@ -1,4 +1,5 @@
-import {AnyTypeDescriptorProto, StringFormat, GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {DescriptorRegistry, AnyTypeDescriptorProto, StringFormat, GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {DescEnum, DescMessage, DescService} from "@bufbuild/protobuf";
 
 
 /**
@@ -13,7 +14,10 @@ export class SymbolTable {
     private readonly clashResolver: ClashResolver;
 
 
-    constructor(clashResolver?: ClashResolver) {
+    constructor(
+        private legacyRegistry: DescriptorRegistry,
+        clashResolver?: ClashResolver,
+    ) {
         this.clashResolver = clashResolver ?? SymbolTable.defaultClashResolver;
     }
 
@@ -33,12 +37,13 @@ export class SymbolTable {
      *
      * Returns the actual name registered.
      */
-    register(requestedName: string, descriptor: AnyTypeDescriptorProto, file: GeneratedFile, kind = 'default'): string {
+    register(requestedName: string, descType: DescMessage | DescEnum | DescService, file: GeneratedFile, kind = 'default'): string {
 
         // Only one symbol per kind can be registered for a descriptor.
-        if (this.has(descriptor, kind)) {
-            let {file, name} = this.get(descriptor, kind);
-            let msg = `Cannot register name "${requestedName}" of kind "${kind}" for ${StringFormat.formatName(descriptor)}. `
+        if (this.has(descType, kind)) {
+            let {file, name} = this.get(descType, kind);
+            const legacyDescriptor = this.legacyRegistry.resolveTypeName(descType.typeName);
+            let msg = `Cannot register name "${requestedName}" of kind "${kind}" for ${StringFormat.formatName(legacyDescriptor)}. `
                 + `The descriptor is already registered in file "${file.getFilename()}" with name "${name}". `
                 + `Use a different 'kind' to register multiple symbols for a descriptor.`
             throw new Error(msg);
@@ -48,17 +53,19 @@ export class SymbolTable {
         let name = requestedName;
         let count = 0;
         while (this.hasNameInFile(name, file) && count < this.clashResolveMaxTries) {
-            name = this.clashResolver(descriptor, file, requestedName, kind, ++count, name);
+            const legacyDescriptor = this.legacyRegistry.resolveTypeName(descType.typeName);
+            name = this.clashResolver(legacyDescriptor, file, requestedName, kind, ++count, name);
         }
         if (this.hasNameInFile(name, file)) {
-            let msg = `Failed to register name "${requestedName}" for ${StringFormat.formatName(descriptor)}. `
+            const legacyDescriptor = this.legacyRegistry.resolveTypeName(descType.typeName);
+            let msg = `Failed to register name "${requestedName}" for ${StringFormat.formatName(legacyDescriptor)}. `
                 + `Gave up finding alternative name after ${this.clashResolveMaxTries} tries. `
                 + `There is something wrong with the clash resolver.`;
             throw new Error(msg);
         }
 
         // add the entry and return name
-        this.entries.push({file, descriptor, kind, name});
+        this.entries.push({file, descriptor: descType, kind, name});
         return name;
     }
 
@@ -67,8 +74,8 @@ export class SymbolTable {
      * Find a symbol (of the given kind) for the given descriptor.
      * Return `undefined` if not found.
      */
-    find(descriptor: AnyTypeDescriptorProto, kind = 'default'): SymbolTableEntry | undefined {
-        return this.entries.find(e => e.descriptor === descriptor && e.kind === kind);
+    find(descType: DescMessage | DescEnum | DescService, kind = 'default'): SymbolTableEntry | undefined {
+        return this.entries.find(e => e.descriptor.typeName === descType.typeName && e.kind === kind);
     }
 
 
@@ -76,12 +83,13 @@ export class SymbolTable {
      * Find a symbol (of the given kind) for the given descriptor.
      * Raises error if not found.
      */
-    get(descriptor: AnyTypeDescriptorProto, kind = 'default'): SymbolTableEntry {
-        const found = this.find(descriptor, kind);
+    get(descType: DescMessage | DescEnum | DescService, kind = 'default'): SymbolTableEntry {
+        const found = this.find(descType, kind);
         if (!found) {
+            const legacyDescriptor = this.legacyRegistry.resolveTypeName(descType.typeName);
             let files = this.entries.map(e => e.file)
                 .filter((value, index, array) => array.indexOf(value) === index);
-            let msg = `Failed to find name for ${StringFormat.formatName(descriptor)} of kind "${kind}". `
+            let msg = `Failed to find name for ${StringFormat.formatName(legacyDescriptor)} of kind "${kind}". `
                 + `Searched in ${files.length} files.`
             throw new Error(msg);
         }
@@ -92,8 +100,8 @@ export class SymbolTable {
     /**
      * Is a name (of the given kind) registered for the the given descriptor?
      */
-    has(descriptor: AnyTypeDescriptorProto, kind = 'default'): boolean {
-        return !!this.find(descriptor, kind);
+    has(descType: DescMessage | DescEnum | DescService, kind = 'default'): boolean {
+        return !!this.find(descType, kind);
     }
 
 
@@ -139,7 +147,7 @@ export class SymbolTable {
 
 interface SymbolTableEntry {
     file: GeneratedFile;
-    descriptor: AnyTypeDescriptorProto;
+    descriptor: DescMessage | DescEnum | DescService;
     name: string;
     kind: string;
 }

@@ -8,9 +8,8 @@ import {
 import {CommentGenerator} from "./comment-generator";
 import * as ts from "typescript";
 import {MethodInfoGenerator} from "./method-info-generator";
-import {DescService, FileRegistry} from "@bufbuild/protobuf";
+import {DescService} from "@bufbuild/protobuf";
 import {Interpreter} from "../interpreter";
-import {assert} from "@protobuf-ts/runtime";
 import {createLocalTypeName} from "./local-type-name";
 import {TypeScriptImports} from "../es-typescript-imports";
 import {SymbolTable} from "../es-symbol-table";
@@ -22,7 +21,6 @@ export class ServiceTypeGenerator {
 
     constructor(
         private readonly symbols: SymbolTable,
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: Interpreter,
@@ -32,8 +30,7 @@ export class ServiceTypeGenerator {
     }
 
     registerSymbols(source: TypescriptFile, descService: DescService): void {
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
-        this.symbols.register(createLocalTypeName(descService), legacyDescriptor, source);
+        this.symbols.register(createLocalTypeName(descService), descService, source);
     }
 
     // export const Haberdasher = new ServiceType("spec.haberdasher.Haberdasher", [

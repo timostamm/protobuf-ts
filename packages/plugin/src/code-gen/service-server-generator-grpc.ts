@@ -23,7 +23,6 @@ export class ServiceServerGeneratorGrpc {
 
     constructor(
         private readonly symbols: SymbolTable,
-        private readonly registry: FileRegistry,
         private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
@@ -36,9 +35,8 @@ export class ServiceServerGeneratorGrpc {
         const basename = createLocalTypeName(descService);
         const interfaceName = `I${basename}`;
         const definitionName = `${basename[0].toLowerCase()}${basename.substring(1)}Definition`;
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
-        this.symbols.register(interfaceName, legacyDescriptor, source, this.symbolKindInterface);
-        this.symbols.register(definitionName, legacyDescriptor, source, this.symbolKindDefinition);
+        this.symbols.register(interfaceName, descService, source, this.symbolKindInterface);
+        this.symbols.register(definitionName, descService, source, this.symbolKindDefinition);
     }
 
 
