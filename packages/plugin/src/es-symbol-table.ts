@@ -42,8 +42,7 @@ export class SymbolTable {
         // Only one symbol per kind can be registered for a descriptor.
         if (this.has(descType, kind)) {
             let {file, name} = this.get(descType, kind);
-            const legacyDescriptor = this.legacyRegistry.resolveTypeName(descType.typeName);
-            let msg = `Cannot register name "${requestedName}" of kind "${kind}" for ${StringFormat.formatName(legacyDescriptor)}. `
+            let msg = `Cannot register name "${requestedName}" of kind "${kind}" for ${descType.toString()}. `
                 + `The descriptor is already registered in file "${file.getFilename()}" with name "${name}". `
                 + `Use a different 'kind' to register multiple symbols for a descriptor.`
             throw new Error(msg);
