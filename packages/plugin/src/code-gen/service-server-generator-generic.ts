@@ -1,6 +1,5 @@
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {
-    DescriptorRegistry,
     TypescriptFile,
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";

@@ -1,7 +1,5 @@
 import {
     addCommentBlockAsJsDoc,
-    DescriptorRegistry,
-    ServiceDescriptorProto,
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";

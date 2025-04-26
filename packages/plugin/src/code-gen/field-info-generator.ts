@@ -1,7 +1,6 @@
 import * as rt from "@protobuf-ts/runtime";
 import * as ts from "typescript";
 import {
-    DescriptorRegistry,
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";

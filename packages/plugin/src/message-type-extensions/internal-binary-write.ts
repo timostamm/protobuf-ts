@@ -1,7 +1,5 @@
 import * as ts from "typescript";
 import {
-    DescriptorProto,
-    DescriptorRegistry,
     ScalarValueType,
     StringFormat,
     TypescriptFile,

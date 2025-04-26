@@ -2,8 +2,6 @@ import * as ts from "typescript";
 import {assert, LongType} from "@protobuf-ts/runtime";
 import {
     addCommentBlockAsJsDoc,
-    DescriptorProto,
-    DescriptorRegistry,
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";

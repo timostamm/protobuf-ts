@@ -1,5 +1,4 @@
 import {
-    DescriptorRegistry,
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
