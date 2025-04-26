@@ -241,7 +241,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             genMessageType = new MessageTypeGenerator(registryEs, imports, comments, interpreter, options),
             genServiceType = new ServiceTypeGenerator(symbols, imports, comments, interpreter, options),
             genServerGeneric = new ServiceServerGeneratorGeneric(symbols, imports, comments, interpreter, options),
-            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter),
+            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, imports, comments, interpreter),
             genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registryEs, imports, comments, interpreter, options),
             genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registryEs, imports, comments, interpreter, options)
         ;

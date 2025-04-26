@@ -1,7 +1,6 @@
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {
     addCommentBlockAsJsDoc,
-    DescriptorRegistry,
     TypescriptFile,
 } from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
@@ -9,7 +8,7 @@ import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
-import {DescMethod, DescService, FileRegistry} from "@bufbuild/protobuf";
+import {DescMethod, DescService} from "@bufbuild/protobuf";
 import {TypeScriptImports} from "../es-typescript-imports";
 import {SymbolTable} from "../es-symbol-table";
 
@@ -23,7 +22,6 @@ export class ServiceServerGeneratorGrpc {
 
     constructor(
         private readonly symbols: SymbolTable,
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: Interpreter,
@@ -152,9 +150,8 @@ export class ServiceServerGeneratorGrpc {
         );
 
         // add to our file
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descService.typeName);
         const doc =
-            `@grpc/grpc-js definition for the protobuf ${this.legacyRegistry.formatQualifiedName(legacyDescriptor)}.\n` +
+            `@grpc/grpc-js definition for the protobuf ${descService.toString()}.\n` +
             `\n` +
             `Usage: Implement the interface ${IGrpcServer} and add to a grpc server.\n` +
             `\n` +
