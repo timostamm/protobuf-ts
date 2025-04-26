@@ -1,22 +1,23 @@
-import {getFileDescriptor} from "./support/helpers";
-import {DescriptorRegistry} from "@protobuf-ts/plugin-framework";
-import {LegacyInterpreter} from "../src/legacy-interpreter";
+import {getFileDescriptorSet} from "./support/helpers";
 import * as rt from "@protobuf-ts/runtime";
+import {Interpreter} from "../src/interpreter";
+import {createFileRegistry} from "@bufbuild/protobuf";
 
 
 describe('interpreter', function () {
     it('recognizes field option jstype', function () {
         [rt.LongType.NUMBER, rt.LongType.STRING, rt.LongType.BIGINT].forEach(normalLongType => {
-
-            const registry = DescriptorRegistry.createFrom(getFileDescriptor("msg-longs.proto"));
-            const interpreter = new LegacyInterpreter(registry, {
-                normalLongType,
-                synthesizeEnumZeroValue: 'UNSPECIFIED$',
-                oneofKindDiscriminator: 'oneofKind',
-                forceExcludeAllOptions: false,
-                keepEnumPrefix: false,
-                useProtoFieldName: false,
-            });
+            const interpreter = new Interpreter(
+                createFileRegistry(getFileDescriptorSet()),
+                {
+                    normalLongType,
+                    synthesizeEnumZeroValue: 'UNSPECIFIED$',
+                    oneofKindDiscriminator: 'oneofKind',
+                    forceExcludeAllOptions: false,
+                    keepEnumPrefix: false,
+                    useProtoFieldName: false,
+                },
+            )
             const messageType = interpreter.getMessageType('spec.LongsMessage');
 
             expectFieldType(messageType, 'sfixed64_field_min', normalLongType);
