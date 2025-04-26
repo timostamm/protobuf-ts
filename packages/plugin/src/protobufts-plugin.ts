@@ -231,7 +231,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             legacyRegistry = createLegacyRegistryFromRequest(request),
             registryEs = createFileRegistryFromRequest(request),
             symbols = new SymbolTable(legacyRegistry),
-            fileTable = new FileTable(),
+            fileTable = new FileTable(legacyRegistry, options),
             imports = new TypeScriptImports(symbols, registryEs),
             comments = new CommentGenerator(),
             interpreter = new Interpreter(registryEs, options),
@@ -249,8 +249,6 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         const legacyFileDescriptorsByName = new Map<string, FileDescriptorProto>(
             legacyRegistry.allFiles().map(f => [f.name ?? "", f]),
         );
-
-        let tsFiles: OutFile[] = [];
 
         // in first pass, register standard file names
         for (let fileDescriptor of registryEs.files) {
@@ -274,14 +272,14 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             const legacyFileDescriptor = legacyFileDescriptorsByName.get(descFile.proto.name);
             assert(legacyFileDescriptor);
             const
-                outMain = new OutFile(fileTable.get(descFile).name, legacyFileDescriptor, legacyRegistry, options),
-                outServerGeneric = new OutFile(fileTable.get(descFile, 'generic-server').name, legacyFileDescriptor, legacyRegistry, options),
-                outServerGrpc = new OutFile(fileTable.get(descFile, 'grpc1-server').name, legacyFileDescriptor, legacyRegistry, options),
-                outClientCall = new OutFile(fileTable.get(descFile, 'client').name, legacyFileDescriptor, legacyRegistry, options),
-                outClientPromise = new OutFile(fileTable.get(descFile, 'promise-client').name, legacyFileDescriptor, legacyRegistry, options),
-                outClientRx = new OutFile(fileTable.get(descFile, 'rx-client').name, legacyFileDescriptor, legacyRegistry, options),
-                outClientGrpc = new OutFile(fileTable.get(descFile, 'grpc1-client').name, legacyFileDescriptor, legacyRegistry, options);
-            tsFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
+                outMain = fileTable.create(descFile),
+                outServerGeneric = fileTable.create(descFile, 'generic-server'),
+                outServerGrpc = fileTable.create(descFile, 'grpc1-server'),
+                outClientCall = fileTable.create(descFile, 'client'),
+                // TODO
+                //outClientPromise = fileTable.create(descFile, 'promise-client'),
+                //outClientRx = fileTable.create(descFile, 'rx-client'),
+                outClientGrpc = fileTable.create(descFile, 'grpc1-client');
 
             // in first pass over types, register all symbols, regardless whether they are going to be used
             for (const desc of nestedTypes(descFile)) {
@@ -357,6 +355,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         // We always return well-known types, because we do not
         // maintain them in a package - they are always generated
         // on demand.
+        let tsFiles = fileTable.outFiles.concat();
         if (!options.generateDependencies) {
             tsFiles = tsFiles.filter(file => {
                 const protoFilename = file.fileDescriptor.name;

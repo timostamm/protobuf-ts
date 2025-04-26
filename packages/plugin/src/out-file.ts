@@ -6,6 +6,7 @@ import {
     TypescriptFile,
 } from "@protobuf-ts/plugin-framework";
 import {InternalOptions} from "./our-options";
+import {DescFile} from "@bufbuild/protobuf";
 
 
 /**
@@ -19,8 +20,10 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
 
     constructor(
         name: string,
+        // TODO migrate to DescFile
         public readonly fileDescriptor: FileDescriptorProto,
-        private readonly registry: DescriptorRegistry,
+        public readonly descFile: DescFile,
+        private readonly legacyRegistry: DescriptorRegistry,
         private readonly options: InternalOptions,
     ) {
         super(name);
@@ -64,12 +67,12 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         if (this.options.tsNoCheck) {
             header.push(`// @ts-nocheck`);
         }
-        if (this.registry.isExplicitlyDeclaredDeprecated(this.fileDescriptor)) {
+        if (this.legacyRegistry.isExplicitlyDeclaredDeprecated(this.fileDescriptor)) {
             header.push('// @deprecated');
         }
         [
-            ...this.registry.sourceCodeComments(this.fileDescriptor, FileDescriptorProtoFields.syntax).leadingDetached,
-            ...this.registry.sourceCodeComments(this.fileDescriptor, FileDescriptorProtoFields.package).leadingDetached
+            ...this.legacyRegistry.sourceCodeComments(this.fileDescriptor, FileDescriptorProtoFields.syntax).leadingDetached,
+            ...this.legacyRegistry.sourceCodeComments(this.fileDescriptor, FileDescriptorProtoFields.package).leadingDetached
         ].every(block => header.push('//', ...block.split('\n').map(l => '//' + l), '//'));
         let head = header.join('\n');
         if (head.length > 0 && !head.endsWith('\n')) {

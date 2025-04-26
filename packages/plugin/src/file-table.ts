@@ -1,15 +1,24 @@
 import {DescFile} from "@bufbuild/protobuf";
+import {InternalOptions} from "./our-options";
+import {DescriptorRegistry} from "@protobuf-ts/plugin-framework";
+import {OutFile} from "./out-file";
+import {assert} from "@protobuf-ts/runtime";
 
 
 export class FileTable {
 
 
+    readonly outFiles: OutFile[] = [];
     private readonly entries: FileTableEntry[] = [];
     private readonly clashResolveMaxTries = 100;
     private readonly clashResolver: ClashResolver;
 
 
-    constructor(clashResolver?: ClashResolver) {
+    constructor(
+        private readonly legacyRegistry: DescriptorRegistry,
+        private readonly options: InternalOptions,
+        clashResolver?: ClashResolver,
+    ) {
         this.clashResolver = clashResolver ?? FileTable.defaultClashResolver;
     }
 
@@ -41,6 +50,23 @@ export class FileTable {
         // add the entry and return name
         this.entries.push({desc: descFile, kind, name});
         return name;
+    }
+
+
+    create(descFile: DescFile, kind = 'default') {
+        const legacyFileDescriptor = this.legacyRegistry.allFiles().find(legacyFileDescriptor =>
+            legacyFileDescriptor.name === descFile.proto.name,
+        );
+        assert(legacyFileDescriptor);
+        const outFile = new OutFile(
+            this.get(descFile, kind).name,
+            legacyFileDescriptor,
+            descFile,
+            this.legacyRegistry,
+            this.options,
+        );
+        this.outFiles.push(outFile);
+        return outFile;
     }
 
 
