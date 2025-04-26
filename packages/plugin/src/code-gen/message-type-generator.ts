@@ -38,7 +38,6 @@ export class MessageTypeGenerator {
 
     constructor(
         private readonly registry: FileRegistry,
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly imports: TypeScriptImports,
         private readonly comments: CommentGenerator,
         private readonly interpreter: Interpreter,
@@ -83,10 +82,6 @@ export class MessageTypeGenerator {
      * constructor.
      */
     generateMessageType(source: TypescriptFile, descMessage: DescMessage, optimizeFor: FileOptions_OptimizeMode): void {
-        // TODO
-        const legacyDescriptor = this.legacyRegistry.resolveTypeName(descMessage.typeName);
-        assert(DescriptorProto.is(legacyDescriptor));
-
         const
             // identifier for the message
             MyMessage = this.imports.type(source, descMessage),
@@ -96,8 +91,7 @@ export class MessageTypeGenerator {
             classDecMembers: ts.ClassElement[] = [],
             classDecSuperArgs: ts.Expression[] = [ // arguments to the MessageType CTOR
                 // arg 0: type name
-                // TODO
-                ts.createStringLiteral(this.legacyRegistry.makeTypeName(legacyDescriptor)),
+                ts.createStringLiteral(descMessage.typeName),
                 // arg 1: field infos
                 this.fieldInfoGenerator.createFieldInfoLiterals(source, interpreterType.fields)
             ];

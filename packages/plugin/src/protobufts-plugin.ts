@@ -238,7 +238,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             optionResolver = new OptionResolver(interpreter, options),
             genMessageInterface = new MessageInterfaceGenerator(symbols, imports, comments, interpreter, options),
             genEnum = new EnumGenerator(symbols, imports, comments, interpreter),
-            genMessageType = new MessageTypeGenerator(registryEs, legacyRegistry, imports, comments, interpreter, options),
+            genMessageType = new MessageTypeGenerator(registryEs, imports, comments, interpreter, options),
             genServiceType = new ServiceTypeGenerator(symbols, imports, comments, interpreter, options),
             genServerGeneric = new ServiceServerGeneratorGeneric(symbols, imports, comments, interpreter, options),
             genServerGrpc = new ServiceServerGeneratorGrpc(symbols, legacyRegistry, imports, comments, interpreter),
