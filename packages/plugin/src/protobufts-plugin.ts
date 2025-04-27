@@ -230,7 +230,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             ),
             legacyRegistry = createLegacyRegistryFromRequest(request),
             registryEs = createFileRegistryFromRequest(request),
-            symbols = new SymbolTable(legacyRegistry),
+            symbols = new SymbolTable(),
             fileTable = new FileTable(legacyRegistry, options),
             imports = new TypeScriptImports(symbols, registryEs),
             comments = new CommentGenerator(),

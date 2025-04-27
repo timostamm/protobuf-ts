@@ -1,4 +1,4 @@
-import {DescriptorRegistry, AnyTypeDescriptorProto, StringFormat, GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile} from "@protobuf-ts/plugin-framework";
 import {DescEnum, DescMessage, DescService} from "@bufbuild/protobuf";
 
 
@@ -15,7 +15,6 @@ export class SymbolTable {
 
 
     constructor(
-        private legacyRegistry: DescriptorRegistry,
         clashResolver?: ClashResolver,
     ) {
         this.clashResolver = clashResolver ?? SymbolTable.defaultClashResolver;
@@ -52,12 +51,10 @@ export class SymbolTable {
         let name = requestedName;
         let count = 0;
         while (this.hasNameInFile(name, file) && count < this.clashResolveMaxTries) {
-            const legacyDescriptor = this.legacyRegistry.resolveTypeName(descType.typeName);
-            name = this.clashResolver(legacyDescriptor, file, requestedName, kind, ++count, name);
+            name = this.clashResolver(descType, file, requestedName, kind, ++count, name);
         }
         if (this.hasNameInFile(name, file)) {
-            const legacyDescriptor = this.legacyRegistry.resolveTypeName(descType.typeName);
-            let msg = `Failed to register name "${requestedName}" for ${StringFormat.formatName(legacyDescriptor)}. `
+            let msg = `Failed to register name "${requestedName}" for ${descType.toString()}. `
                 + `Gave up finding alternative name after ${this.clashResolveMaxTries} tries. `
                 + `There is something wrong with the clash resolver.`;
             throw new Error(msg);
@@ -85,10 +82,9 @@ export class SymbolTable {
     get(descType: DescMessage | DescEnum | DescService, kind = 'default'): SymbolTableEntry {
         const found = this.find(descType, kind);
         if (!found) {
-            const legacyDescriptor = this.legacyRegistry.resolveTypeName(descType.typeName);
             let files = this.entries.map(e => e.file)
                 .filter((value, index, array) => array.indexOf(value) === index);
-            let msg = `Failed to find name for ${StringFormat.formatName(legacyDescriptor)} of kind "${kind}". `
+            let msg = `Failed to find name for ${descType.toString()} of kind "${kind}". `
                 + `Searched in ${files.length} files.`
             throw new Error(msg);
         }
@@ -128,7 +124,7 @@ export class SymbolTable {
 
 
     static defaultClashResolver(
-        descriptor: AnyTypeDescriptorProto,
+        descriptor: DescMessage | DescEnum | DescService,
         file: GeneratedFile,
         requestedName: string,
         kind: string,
@@ -152,4 +148,4 @@ interface SymbolTableEntry {
 }
 
 
-type ClashResolver = (descriptor: AnyTypeDescriptorProto, file: GeneratedFile, requestedName: string, kind: string, tryCount: number, failedName: string) => string;
+type ClashResolver = (descriptor: DescMessage | DescEnum | DescService, file: GeneratedFile, requestedName: string, kind: string, tryCount: number, failedName: string) => string;
