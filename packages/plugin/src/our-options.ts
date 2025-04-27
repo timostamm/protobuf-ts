@@ -2,13 +2,6 @@
  * Custom file options interpreted by @protobuf-ts/plugin
  */
 import * as rt from "@protobuf-ts/runtime";
-import {
-    FileDescriptorProto,
-    FileOptions,
-    MethodOptions,
-    ServiceDescriptorProto,
-    ServiceOptions
-} from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import {DescFile, DescService} from "@bufbuild/protobuf";
 import {Interpreter} from "./interpreter";
@@ -55,40 +48,6 @@ export interface OurServiceOptions {
      * Can be set multiple times to generate several styles.
      */
     readonly ["ts.server"]: ServerStyle[];
-}
-
-
-/**
- * @deprecated
- * Read the custom file options declared in protobuf-ts.proto
- */
-export function readOurFileOptions(file: FileDescriptorProto): OurFileOptions {
-    return read<OurFileOptions>(file.options, emptyFileOptions, OurFileOptions);
-}
-
-/**
- * @deprecated
- * Read the custom service options declared in protobuf-ts.proto
- */
-export function readOurServiceOptions(service: ServiceDescriptorProto): OurServiceOptions {
-    return read<OurServiceOptions>(service.options, emptyServiceOptions, OurServiceOptions);
-}
-
-
-function read<T extends object>(options: FileOptions | MethodOptions | ServiceOptions | undefined, defaults: T, type: rt.IMessageType<T>): T {
-    if (!options) {
-        return defaults;
-    }
-    let unknownFields = rt.UnknownFieldHandler.list(options);
-    if (!unknownFields.length) {
-        return defaults;
-    }
-    // concat all unknown field data
-    let unknownWriter = new rt.BinaryWriter();
-    for (let {no, wireType, data} of unknownFields)
-        unknownWriter.tag(no, wireType).raw(data);
-    let unknownBytes = unknownWriter.finish();
-    return type.fromBinary(unknownBytes, {readUnknownField: false});
 }
 
 
@@ -170,10 +129,6 @@ export enum ServerStyle {
      */
     GRPC1_SERVER = 2,
 }
-
-
-const emptyFileOptions = OurFileOptions.create();
-const emptyServiceOptions = OurServiceOptions.create();
 
 
 /**
