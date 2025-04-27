@@ -1,7 +1,6 @@
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {
-    addCommentBlockAsJsDoc,
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
@@ -16,6 +15,7 @@ import {Interpreter} from "../interpreter";
 import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
 import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 import {TypeScriptImports} from "../framework/typescript-imports";
+import {addCommentBlockAsJsDoc} from "../framework/typescript-comments";
 
 
 export interface CustomMethodGenerator {

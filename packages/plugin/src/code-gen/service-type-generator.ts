@@ -1,5 +1,4 @@
 import {
-    addCommentBlockAsJsDoc,
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
@@ -11,6 +10,7 @@ import {Interpreter} from "../interpreter";
 import {createLocalTypeName} from "./local-type-name";
 import {TypeScriptImports} from "../framework/typescript-imports";
 import {SymbolTable} from "../framework/symbol-table";
+import {addCommentBlockAsJsDoc} from "../framework/typescript-comments";
 
 
 export class ServiceTypeGenerator {

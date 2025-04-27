@@ -1,7 +1,7 @@
 import * as ts from "typescript";
-import * as legacy_framework from "@protobuf-ts/plugin-framework";
 import {AnyDesc, DescComments} from "@bufbuild/protobuf";
 import {getComments, getDeclarationString} from "@bufbuild/protoplugin";
+import {addCommentBlocksAsLeadingDetachedLines, addCommentBlockAsJsDoc} from "../framework/typescript-comments";
 
 
 export class CommentGenerator {
@@ -43,13 +43,13 @@ export class CommentGenerator {
         const source = this.getComments(descriptor);
 
         // add leading detached comments as line comments
-        legacy_framework.addCommentBlocksAsLeadingDetachedLines(node, ...source.leadingDetached);
+        addCommentBlocksAsLeadingDetachedLines(node, ...source.leadingDetached);
 
         // start with leading block
         let leading = this.getCommentBlock(descriptor, trailingCommentsMode === "appendToLeadingBlock");
 
         // add leading block as jsdoc comment block
-        legacy_framework.addCommentBlockAsJsDoc(node, leading);
+        addCommentBlockAsJsDoc(node, leading);
 
         // add trailing comments as trailing line comments
         if (source.trailing && trailingCommentsMode === 'trailingLines') {
