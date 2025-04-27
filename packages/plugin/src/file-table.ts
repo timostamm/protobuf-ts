@@ -1,8 +1,6 @@
 import {DescFile} from "@bufbuild/protobuf";
 import {InternalOptions} from "./our-options";
-import {DescriptorRegistry} from "@protobuf-ts/plugin-framework";
 import {OutFile} from "./out-file";
-import {assert} from "@protobuf-ts/runtime";
 
 
 export class FileTable {
@@ -15,7 +13,6 @@ export class FileTable {
 
 
     constructor(
-        private readonly legacyRegistry: DescriptorRegistry,
         private readonly options: InternalOptions,
         clashResolver?: ClashResolver,
     ) {
@@ -54,15 +51,9 @@ export class FileTable {
 
 
     create(descFile: DescFile, kind = 'default') {
-        const legacyFileDescriptor = this.legacyRegistry.allFiles().find(legacyFileDescriptor =>
-            legacyFileDescriptor.name === descFile.proto.name,
-        );
-        assert(legacyFileDescriptor);
         const outFile = new OutFile(
             this.get(descFile, kind).name,
-            legacyFileDescriptor,
             descFile,
-            this.legacyRegistry,
             this.options,
         );
         this.outFiles.push(outFile);

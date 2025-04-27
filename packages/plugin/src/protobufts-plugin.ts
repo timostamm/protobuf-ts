@@ -22,9 +22,10 @@ import {nestedTypes} from "@bufbuild/protobuf/reflect";
 import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
 import { Interpreter } from "./interpreter";
-import {FileDescriptorProto} from "@protobuf-ts/plugin-framework/src";
+import {FileDescriptorProto} from "@protobuf-ts/plugin-framework";
 import {SymbolTable} from "./es-symbol-table";
 import {TypeScriptImports} from "./es-typescript-imports";
+import {DescEnum, DescExtension, DescFile, DescMessage, DescService} from "@bufbuild/protobuf";
 
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {
@@ -231,7 +232,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             legacyRegistry = createLegacyRegistryFromRequest(request),
             registryEs = createFileRegistryFromRequest(request),
             symbols = new SymbolTable(),
-            fileTable = new FileTable(legacyRegistry, options),
+            fileTable = new FileTable(options),
             imports = new TypeScriptImports(symbols, registryEs),
             comments = new CommentGenerator(),
             interpreter = new Interpreter(registryEs, options),
@@ -358,8 +359,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         let tsFiles = fileTable.outFiles.concat();
         if (!options.generateDependencies) {
             tsFiles = tsFiles.filter(file => {
-                const protoFilename = file.fileDescriptor.name;
-                assert(protoFilename);
+                const protoFilename = file.descFile.proto.name;
                 if (request.fileToGenerate.includes(protoFilename)) {
                     return true;
                 }
@@ -372,10 +372,10 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
 
         // if a proto file is imported to use custom options, or if a proto file declares custom options,
         // we do not to emit it. unless it was explicitly requested.
-        const outFileDescriptors = tsFiles.map(of => of.fileDescriptor);
+        // TODO why does the fallback condition include "used" files? isn't that what generateDependencies should do?
         tsFiles = tsFiles.filter(of =>
-            request.fileToGenerate.includes(of.fileDescriptor.name!)
-            || legacyRegistry.isFileUsed(of.fileDescriptor, outFileDescriptors)
+            request.fileToGenerate.includes(of.descFile.proto.name)
+            || this.isFileUsed(of.descFile, tsFiles.map(x => x.descFile))
         );
 
         return this.transpile(tsFiles, options);
@@ -433,5 +433,43 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
     // we support proto3-optionals, so we let protoc know
     protected getSupportedFeatures = () => [CodeGeneratorResponse_Feature.PROTO3_OPTIONAL];
 
+
+    private isFileUsed(descFile: DescFile, files: Iterable<DescFile>): boolean {
+        for (const type of nestedTypes(descFile)) {
+            // TODO do not consider referencing a type that a file defines itself used - filter the second argument to exclude the current file
+            if (this.isTypeUsed(type, files)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private isTypeUsed(type: DescMessage | DescEnum | DescService | DescExtension, files: Iterable<DescFile>): boolean {
+        for (const otherFile of files) {
+            for (const otherType of nestedTypes(otherFile)) {
+                switch (otherType.kind) {
+                    case "service":
+                        if (type.kind == "message") {
+                            if (otherType.methods.some(descMethod => descMethod.input.typeName == type.typeName)) {
+                                return true;
+                            }
+                            if (otherType.methods.some(descMethod => descMethod.output.typeName == type.typeName)) {
+                                return true;
+                            }
+                        }
+                        break;
+                    case "message":
+                        if (otherType.fields.some(descField => descField.message?.typeName === type.typeName)) {
+                            return true;
+                        }
+                        if (otherType.fields.some(descField => descField.enum?.typeName === type.typeName)) {
+                            return true;
+                        }
+                        break;
+                }
+            }
+        }
+        return false;
+    }
 
 }
