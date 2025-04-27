@@ -1,14 +1,10 @@
 import * as ts from "typescript";
-import {
-    ScalarValueType,
-    StringFormat,
-    TypescriptFile,
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {assert} from "@protobuf-ts/runtime";
 import {Interpreter} from "../interpreter";
-import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
+import {DescMessage, FileRegistry, ScalarType} from "@bufbuild/protobuf";
 import {getDeclarationString} from "@bufbuild/protoplugin";
 import {TypeScriptImports} from "../framework/typescript-imports";
 import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
@@ -619,7 +615,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
 
     protected makeWriterCall(writerExpressionOrName: string | ts.Expression, type: rt.ScalarType | 'fork' | 'join', argument?: ts.Expression): ts.Expression {
-        let methodName = typeof type == "string" ? type : StringFormat.formatScalarType(type as number as ScalarValueType);
+        let methodName = typeof type == "string" ? type : ScalarType[type].toLowerCase();
         let writerExpression = typeof writerExpressionOrName == "string" ? ts.createIdentifier(writerExpressionOrName) : writerExpressionOrName;
         let methodProp = ts.createPropertyAccess(writerExpression, ts.createIdentifier(methodName));
         return ts.createCall(methodProp, undefined, argument ? [argument] : undefined);

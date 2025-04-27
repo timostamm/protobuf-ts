@@ -1,14 +1,10 @@
 import * as ts from "typescript";
-import {
-    ScalarValueType,
-    StringFormat,
-    TypescriptFile,
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
 import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {Interpreter} from "../interpreter";
-import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
+import {DescMessage, FileRegistry, ScalarType} from "@bufbuild/protobuf";
 import {getDeclarationString} from "@bufbuild/protoplugin";
 import {TypeScriptImports} from "../framework/typescript-imports";
 import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
@@ -918,7 +914,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     // reader.int32().toBigInt()
     // reader.int32().toNumber()
     makeReaderCall(readerExpressionOrName: string | ts.Expression, type: rt.ScalarType, longType?: rt.LongType): ts.Expression {
-        let readerMethodName = StringFormat.formatScalarType(type as number as ScalarValueType);
+        let readerMethodName = ScalarType[type].toLowerCase();
         let readerMethodProp = ts.createPropertyAccess(typeof readerExpressionOrName == "string" ? ts.createIdentifier(readerExpressionOrName) : readerExpressionOrName, ts.createIdentifier(readerMethodName));
         let readerMethodCall = ts.createCall(
             readerMethodProp,

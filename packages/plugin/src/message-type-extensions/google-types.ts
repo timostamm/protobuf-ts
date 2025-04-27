@@ -1,10 +1,11 @@
-import {TypescriptFile, typescriptMethodFromText} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 import {DescMessage} from "@bufbuild/protobuf";
 import {TypeScriptImports} from "../framework/typescript-imports";
+import {typescriptMethodFromText} from "../framework/typescript-method-from-text";
 
 
 export class GoogleTypes implements CustomMethodGenerator {
