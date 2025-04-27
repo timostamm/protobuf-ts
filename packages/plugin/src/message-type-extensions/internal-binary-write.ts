@@ -3,7 +3,6 @@ import {
     ScalarValueType,
     StringFormat,
     TypescriptFile,
-    typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import * as rt from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
@@ -12,6 +11,7 @@ import {Interpreter} from "../interpreter";
 import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
 import {getDeclarationString} from "@bufbuild/protoplugin";
 import {TypeScriptImports} from "../framework/typescript-imports";
+import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
 
 
 /**

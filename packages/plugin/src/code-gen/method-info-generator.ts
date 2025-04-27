@@ -3,9 +3,9 @@ import * as rpc from "@protobuf-ts/runtime-rpc";
 import * as ts from "typescript";
 import {
     TypescriptFile,
-    typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import {TypeScriptImports} from "../framework/typescript-imports";
+import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
 
 
 /**

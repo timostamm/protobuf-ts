@@ -2,7 +2,6 @@ import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {
     TypescriptFile,
-    typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {WellKnownTypes} from "../message-type-extensions/well-known-types";
@@ -16,6 +15,7 @@ import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
 import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 import {TypeScriptImports} from "../framework/typescript-imports";
 import {addCommentBlockAsJsDoc} from "../framework/typescript-comments";
+import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
 
 
 export interface CustomMethodGenerator {

@@ -1,5 +1,4 @@
 import {
-    CodeGeneratorResponse_Feature,
     GeneratedFile,
     setupCompiler,
 } from "@protobuf-ts/plugin-framework";
@@ -26,7 +25,7 @@ import {DescEnum, DescExtension, DescFile, DescMessage, DescService} from "@bufb
 import {PluginBaseProtobufES} from "./framework/plugin-base";
 import {create, createFileRegistry, FileRegistry} from "@bufbuild/protobuf";
 import type {FileDescriptorSet} from "@bufbuild/protobuf/wkt";
-import {FileDescriptorSetSchema} from "@bufbuild/protobuf/wkt";
+import {CodeGeneratorResponse_Feature, FileDescriptorSetSchema} from "@bufbuild/protobuf/wkt";
 
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {

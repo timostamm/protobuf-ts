@@ -1,6 +1,5 @@
 import {
     TypescriptFile,
-    typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import * as ts from "typescript";
@@ -11,6 +10,7 @@ import {createLocalTypeName} from "./local-type-name";
 import {TypeScriptImports} from "../framework/typescript-imports";
 import {SymbolTable} from "../framework/symbol-table";
 import {addCommentBlockAsJsDoc} from "../framework/typescript-comments";
+import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
 
 
 export class ServiceTypeGenerator {
