@@ -1,7 +1,5 @@
 import * as rpc from "@protobuf-ts/runtime-rpc";
-import {
-    TypescriptFile,
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";

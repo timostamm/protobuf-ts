@@ -1,6 +1,4 @@
-import {
-    TypescriptFile,
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";

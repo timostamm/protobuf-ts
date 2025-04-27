@@ -1,8 +1,6 @@
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
-import {
-    TypescriptFile,
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
 import {WellKnownTypes} from "../message-type-extensions/well-known-types";
 import {GoogleTypes} from "../message-type-extensions/google-types";

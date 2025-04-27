@@ -1,7 +1,4 @@
-import {
-    GeneratedFile,
-    setupCompiler,
-} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile, setupCompiler} from "@protobuf-ts/plugin-framework";
 import {OutFile} from "./out-file";
 import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";

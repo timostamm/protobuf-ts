@@ -12,7 +12,20 @@ import {
 import {create, fromBinary, protoInt64, toBinary} from "@bufbuild/protobuf";
 import {ReadStream} from "tty";
 import {types} from "util";
-import {OptionsSpec, ResolvedOptions, GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile} from "@protobuf-ts/plugin-framework";
+
+
+type OptionsSpec = {
+    [key: string]: {
+        description: string;
+        excludes?: string[];
+        requires?: string[];
+    }
+}
+
+type ResolvedOptions<T extends OptionsSpec> = {
+    [P in keyof T]: boolean;
+}
 
 export abstract class PluginBaseProtobufES<T extends GeneratedFile = GeneratedFile> {
 

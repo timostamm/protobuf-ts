@@ -1,7 +1,4 @@
-import {
-    TypescriptFile,
-    typescriptMethodFromText,
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile, typescriptMethodFromText} from "@protobuf-ts/plugin-framework";
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";

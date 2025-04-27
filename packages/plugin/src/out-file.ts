@@ -1,7 +1,4 @@
-import {
-    GeneratedFile,
-    TypescriptFile,
-} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile, TypescriptFile} from "@protobuf-ts/plugin-framework";
 import {InternalOptions} from "./our-options";
 import {DescFile} from "@bufbuild/protobuf";
 import {getPackageComments, getSyntaxComments} from "@bufbuild/protoplugin";
