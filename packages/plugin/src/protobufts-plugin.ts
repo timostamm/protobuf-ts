@@ -23,8 +23,8 @@ import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
 import { Interpreter } from "./interpreter";
 import {FileDescriptorProto} from "@protobuf-ts/plugin-framework";
-import {SymbolTable} from "./es-symbol-table";
-import {TypeScriptImports} from "./es-typescript-imports";
+import {SymbolTable} from "./symbol-table";
+import {TypeScriptImports} from "./typescript-imports";
 import {DescEnum, DescExtension, DescFile, DescMessage, DescService} from "@bufbuild/protobuf";
 
 

@@ -11,7 +11,7 @@ import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {Interpreter} from "../interpreter";
 import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
 import {getDeclarationString} from "@bufbuild/protoplugin";
-import {TypeScriptImports} from "../es-typescript-imports";
+import {TypeScriptImports} from "../typescript-imports";
 
 
 /**

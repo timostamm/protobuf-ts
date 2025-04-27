@@ -15,7 +15,7 @@ import {FieldInfoGenerator} from "./field-info-generator";
 import {Interpreter} from "../interpreter";
 import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
 import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
-import {TypeScriptImports} from "../es-typescript-imports";
+import {TypeScriptImports} from "../typescript-imports";
 
 
 export interface CustomMethodGenerator {

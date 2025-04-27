@@ -5,7 +5,7 @@ import {
     TypescriptFile,
     typescriptLiteralFromValue
 } from "@protobuf-ts/plugin-framework";
-import {TypeScriptImports} from "../es-typescript-imports";
+import {TypeScriptImports} from "../typescript-imports";
 
 
 /**

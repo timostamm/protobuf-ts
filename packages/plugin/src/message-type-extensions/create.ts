@@ -7,7 +7,7 @@ import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {Interpreter} from "../interpreter";
 import {DescMessage} from "@bufbuild/protobuf";
-import {TypeScriptImports} from "../es-typescript-imports";
+import {TypeScriptImports} from "../typescript-imports";
 
 
 /**

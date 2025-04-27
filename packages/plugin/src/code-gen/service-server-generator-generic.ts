@@ -8,8 +8,8 @@ import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
 import {DescService, FileRegistry} from "@bufbuild/protobuf";
-import {TypeScriptImports} from "../es-typescript-imports";
-import {SymbolTable} from "../es-symbol-table";
+import {TypeScriptImports} from "../typescript-imports";
+import {SymbolTable} from "../symbol-table";
 
 
 export class ServiceServerGeneratorGeneric {
