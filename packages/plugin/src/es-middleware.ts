@@ -14,13 +14,7 @@ import {
 } from "@bufbuild/protobuf/wkt";
 import {ReadStream} from "tty";
 import {types} from "util";
-import {GeneratedFile, OptionsSpec, ResolvedOptions, DescriptorRegistry as LEGACY_DescriptorRegistry, CodeGeneratorRequest as LEGACY_CodeGeneratorRequest} from "@protobuf-ts/plugin-framework";
-
-export function createLegacyRegistryFromRequest(request: CodeGeneratorRequest): LEGACY_DescriptorRegistry {
-    const reqBytes = toBinary(CodeGeneratorRequestSchema, request);
-    const legReq = LEGACY_CodeGeneratorRequest.fromBinary(reqBytes);
-    return LEGACY_DescriptorRegistry.createFrom(legReq);
-}
+import {GeneratedFile, OptionsSpec, ResolvedOptions} from "@protobuf-ts/plugin-framework";
 
 export function createFileRegistryFromRequest(request: CodeGeneratorRequest): FileRegistry {
     const set = create(FileDescriptorSetSchema, {

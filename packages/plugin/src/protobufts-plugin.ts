@@ -16,13 +16,11 @@ import {FileTable} from "./file-table";
 import {ServiceServerGeneratorGeneric} from "./code-gen/service-server-generator-generic";
 import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-grpc";
 import * as ts from "typescript";
-import {assert} from "@protobuf-ts/runtime";
 import {WellKnownTypes} from "./message-type-extensions/well-known-types";
 import {nestedTypes} from "@bufbuild/protobuf/reflect";
 import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
-import {createFileRegistryFromRequest, createLegacyRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
-import { Interpreter } from "./interpreter";
-import {FileDescriptorProto} from "@protobuf-ts/plugin-framework";
+import {createFileRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
+import {Interpreter} from "./interpreter";
 import {SymbolTable} from "./symbol-table";
 import {TypeScriptImports} from "./typescript-imports";
 import {DescEnum, DescExtension, DescFile, DescMessage, DescService} from "@bufbuild/protobuf";
@@ -229,7 +227,6 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                 this.parseOptions(this.parameters, request.parameter),
                 `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
             ),
-            legacyRegistry = createLegacyRegistryFromRequest(request),
             registryEs = createFileRegistryFromRequest(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(options),
@@ -246,10 +243,6 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registryEs, imports, comments, interpreter, options),
             genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registryEs, imports, comments, interpreter, options)
         ;
-
-        const legacyFileDescriptorsByName = new Map<string, FileDescriptorProto>(
-            legacyRegistry.allFiles().map(f => [f.name ?? "", f]),
-        );
 
         // in first pass, register standard file names
         for (let fileDescriptor of registryEs.files) {
@@ -270,8 +263,6 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
 
         // in third pass, generate files
         for (let descFile of registryEs.files) {
-            const legacyFileDescriptor = legacyFileDescriptorsByName.get(descFile.proto.name);
-            assert(legacyFileDescriptor);
             const
                 outMain = fileTable.create(descFile),
                 outServerGeneric = fileTable.create(descFile, 'generic-server'),
