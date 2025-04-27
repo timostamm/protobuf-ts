@@ -1,6 +1,6 @@
 import {getCodeGeneratorRequest} from "./support/helpers";
 import {ProtobuftsPlugin} from "../src/protobufts-plugin";
-import {GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile} from "../src/framework/generated-file";
 
 const stringSnippets = [
     // Message

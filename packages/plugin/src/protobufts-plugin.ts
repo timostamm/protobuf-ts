@@ -1,4 +1,4 @@
-import {setupCompiler} from "@protobuf-ts/plugin-framework";
+import {setupCompiler} from "./framework/typescript-compile";
 import {GeneratedFile} from "./framework/generated-file";
 import {OutFile} from "./out-file";
 import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";

@@ -8,6 +8,6 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "/tmp",
-    "types": ["jasmine"],
+    "types": ["node", "jasmine"]
   }
 }

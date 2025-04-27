@@ -49,7 +49,6 @@
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.5",
     "@bufbuild/protoplugin": "^2.2.5",
-    "@protobuf-ts/plugin-framework": "^2.9.6",
     "@protobuf-ts/protoc": "^2.9.6",
     "@protobuf-ts/runtime": "^2.9.6",
     "@protobuf-ts/runtime-rpc": "^2.9.6",
