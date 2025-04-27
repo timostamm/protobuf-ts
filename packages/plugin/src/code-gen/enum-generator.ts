@@ -1,7 +1,6 @@
 import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
 import {
-    TypescriptEnumBuilder,
     TypescriptFile,
 } from "@protobuf-ts/plugin-framework";
 import {CommentGenerator} from "./comment-generator";
@@ -10,6 +9,7 @@ import {Interpreter} from "../interpreter";
 import {createLocalTypeName} from "./local-type-name";
 import {TypeScriptImports} from "../framework/typescript-imports";
 import {SymbolTable} from "../framework/symbol-table";
+import {TypescriptEnumBuilder} from "../framework/typescript-enum-builder";
 
 
 export class EnumGenerator {
