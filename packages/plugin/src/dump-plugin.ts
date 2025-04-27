@@ -1,11 +1,9 @@
 import {existsSync, mkdirSync, writeFileSync} from "fs";
 import * as path from "path";
-import {
-    CodeGeneratorRequest,
-    CodeGeneratorResponse_Feature,
-    GeneratedFile,
-    PluginBase
-} from "@protobuf-ts/plugin-framework";
+import {PluginBaseProtobufES} from "./framework/plugin-base";
+import {CodeGeneratorRequest, CodeGeneratorRequestSchema, CodeGeneratorResponse_Feature} from "@bufbuild/protobuf/wkt";
+import {fromBinary, toBinary, toJsonString} from "@bufbuild/protobuf";
+import {GeneratedFile} from "@protobuf-ts/plugin-framework";
 
 
 const BIN_SUFFIX = '.codegenreq';
@@ -27,7 +25,7 @@ Example:
 `;
 
 
-export class DumpPlugin extends PluginBase<GeneratedFile> {
+export class DumpPlugin extends PluginBaseProtobufES<GeneratedFile> {
 
     generate(request: CodeGeneratorRequest): GeneratedFile[] {
 
@@ -36,16 +34,16 @@ export class DumpPlugin extends PluginBase<GeneratedFile> {
         if (parameter?.endsWith(JSON_SUFFIX)) {
 
             DumpPlugin.mkdir(parameter);
-            writeFileSync(parameter, CodeGeneratorRequest.toJsonString(request, {prettySpaces: 2}));
+            writeFileSync(parameter, toJsonString(CodeGeneratorRequestSchema, request, {prettySpaces: 2}));
 
         } else if (parameter?.endsWith(BIN_SUFFIX)) {
 
             DumpPlugin.mkdir(parameter);
-            let bytes = CodeGeneratorRequest.toBinary(request);
+            let bytes = toBinary(CodeGeneratorRequestSchema, request);
             writeFileSync(parameter, bytes);
 
             try {
-                CodeGeneratorRequest.fromBinary(bytes)
+                fromBinary(CodeGeneratorRequestSchema, bytes)
             } catch (e) {
                 throw new Error("Sanity check failed: " + e)
             }
