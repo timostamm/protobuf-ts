@@ -9,8 +9,8 @@ import {MethodInfoGenerator} from "./method-info-generator";
 import {DescService} from "@bufbuild/protobuf";
 import {Interpreter} from "../interpreter";
 import {createLocalTypeName} from "./local-type-name";
-import {TypeScriptImports} from "../typescript-imports";
-import {SymbolTable} from "../symbol-table";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
 
 
 export class ServiceTypeGenerator {

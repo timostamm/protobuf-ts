@@ -11,7 +11,7 @@ import {assert} from "@protobuf-ts/runtime";
 import {Interpreter} from "../interpreter";
 import {DescMessage, FileRegistry} from "@bufbuild/protobuf";
 import {getDeclarationString} from "@bufbuild/protoplugin";
-import {TypeScriptImports} from "../typescript-imports";
+import {TypeScriptImports} from "../framework/typescript-imports";
 
 
 /**

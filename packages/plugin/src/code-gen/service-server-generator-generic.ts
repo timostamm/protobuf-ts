@@ -7,9 +7,9 @@ import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
-import {DescService, FileRegistry} from "@bufbuild/protobuf";
-import {TypeScriptImports} from "../typescript-imports";
-import {SymbolTable} from "../symbol-table";
+import {DescService} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
 
 
 export class ServiceServerGeneratorGeneric {

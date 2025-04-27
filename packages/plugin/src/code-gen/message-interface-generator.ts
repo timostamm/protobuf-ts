@@ -8,8 +8,8 @@ import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
 import {Interpreter} from "../interpreter";
 import {DescField, DescMessage, DescOneof} from "@bufbuild/protobuf";
-import {TypeScriptImports} from "../typescript-imports";
-import {SymbolTable} from "../symbol-table";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
 
 
 export class MessageInterfaceGenerator {

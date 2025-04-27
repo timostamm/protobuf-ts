@@ -8,8 +8,8 @@ import {createLocalTypeName} from "./local-type-name";
 import {assert} from "@protobuf-ts/runtime";
 import {Interpreter} from "../interpreter";
 import {DescService, FileRegistry} from "@bufbuild/protobuf";
-import {TypeScriptImports} from "../typescript-imports";
-import {SymbolTable} from "../symbol-table";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
 
 
 export abstract class ServiceClientGeneratorBase {

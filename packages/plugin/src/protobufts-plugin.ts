@@ -19,11 +19,14 @@ import * as ts from "typescript";
 import {WellKnownTypes} from "./message-type-extensions/well-known-types";
 import {nestedTypes} from "@bufbuild/protobuf/reflect";
 import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
-import {createFileRegistryFromRequest, PluginBaseProtobufES} from "./es-middleware";
 import {Interpreter} from "./interpreter";
-import {SymbolTable} from "./symbol-table";
-import {TypeScriptImports} from "./typescript-imports";
+import {SymbolTable} from "./framework/symbol-table";
+import {TypeScriptImports} from "./framework/typescript-imports";
 import {DescEnum, DescExtension, DescFile, DescMessage, DescService} from "@bufbuild/protobuf";
+import {PluginBaseProtobufES} from "./framework/plugin-base";
+import {create, createFileRegistry, FileRegistry} from "@bufbuild/protobuf";
+import type {FileDescriptorSet} from "@bufbuild/protobuf/wkt";
+import {FileDescriptorSetSchema} from "@bufbuild/protobuf/wkt";
 
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {
@@ -463,4 +466,11 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         return false;
     }
 
+}
+
+export function createFileRegistryFromRequest(request: CodeGeneratorRequest): FileRegistry {
+    const set = create(FileDescriptorSetSchema, {
+        file: request.protoFile,
+    }) as FileDescriptorSet;
+    return createFileRegistry(set);
 }

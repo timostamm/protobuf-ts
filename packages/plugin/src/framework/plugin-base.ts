@@ -1,27 +1,18 @@
-import {create, FileRegistry, fromBinary, protoInt64, toBinary, createFileRegistry} from "@bufbuild/protobuf";
 import type {
     CodeGeneratorRequest,
-    FileDescriptorSet,
     CodeGeneratorResponse,
     CodeGeneratorResponse_File
 } from "@bufbuild/protobuf/wkt";
 import {
-    FileDescriptorSetSchema,
     CodeGeneratorRequestSchema,
+    CodeGeneratorResponse_Feature,
     CodeGeneratorResponse_FileSchema,
-    CodeGeneratorResponseSchema,
-    CodeGeneratorResponse_Feature
+    CodeGeneratorResponseSchema
 } from "@bufbuild/protobuf/wkt";
+import {create, fromBinary, protoInt64, toBinary} from "@bufbuild/protobuf";
 import {ReadStream} from "tty";
 import {types} from "util";
-import {GeneratedFile, OptionsSpec, ResolvedOptions} from "@protobuf-ts/plugin-framework";
-
-export function createFileRegistryFromRequest(request: CodeGeneratorRequest): FileRegistry {
-    const set = create(FileDescriptorSetSchema, {
-        file: request.protoFile,
-    }) as FileDescriptorSet;
-    return createFileRegistry(set);
-}
+import {OptionsSpec, ResolvedOptions, GeneratedFile} from "@protobuf-ts/plugin-framework";
 
 export abstract class PluginBaseProtobufES<T extends GeneratedFile = GeneratedFile> {
 

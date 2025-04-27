@@ -7,7 +7,7 @@ import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import { FieldInfoGenerator } from "../code-gen/field-info-generator";
 import {DescMessage} from "@bufbuild/protobuf";
-import {TypeScriptImports} from "../typescript-imports";
+import {TypeScriptImports} from "../framework/typescript-imports";
 
 
 export class GoogleTypes implements CustomMethodGenerator {
