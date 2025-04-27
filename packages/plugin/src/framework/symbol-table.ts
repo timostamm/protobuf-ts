@@ -1,4 +1,4 @@
-import {GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile} from "./generated-file";
 import {DescEnum, DescMessage, DescService} from "@bufbuild/protobuf";
 
 

@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-import {TypescriptFile} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import * as rt from "@protobuf-ts/runtime";
 import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";

@@ -12,7 +12,7 @@ import {
 import {create, fromBinary, protoInt64, toBinary} from "@bufbuild/protobuf";
 import {ReadStream} from "tty";
 import {types} from "util";
-import {GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile} from "./generated-file";
 
 
 type OptionsSpec = {

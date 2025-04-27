@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
-import {TypescriptFile} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import {CommentGenerator} from "./comment-generator";
 import {DescEnum} from "@bufbuild/protobuf";
 import {Interpreter} from "../interpreter";

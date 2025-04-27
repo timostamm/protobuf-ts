@@ -2,7 +2,7 @@ import * as ts from "typescript";
 import {ServiceClientGeneratorBase} from "./service-client-generator-base";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {assert} from "@protobuf-ts/runtime";
-import {TypescriptFile} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 
 
 export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {

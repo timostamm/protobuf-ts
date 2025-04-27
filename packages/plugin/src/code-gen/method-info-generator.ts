@@ -1,7 +1,7 @@
 import * as rt from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import * as ts from "typescript";
-import {TypescriptFile} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import {TypeScriptImports} from "../framework/typescript-imports";
 import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
 

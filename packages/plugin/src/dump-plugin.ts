@@ -3,7 +3,7 @@ import * as path from "path";
 import {PluginBaseProtobufES} from "./framework/plugin-base";
 import {CodeGeneratorRequest, CodeGeneratorRequestSchema, CodeGeneratorResponse_Feature} from "@bufbuild/protobuf/wkt";
 import {fromBinary, toBinary, toJsonString} from "@bufbuild/protobuf";
-import {GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile} from "./framework/generated-file";
 
 
 const BIN_SUFFIX = '.codegenreq';

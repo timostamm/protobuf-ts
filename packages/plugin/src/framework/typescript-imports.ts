@@ -2,7 +2,7 @@ import {assert} from "@protobuf-ts/runtime";
 import * as ts from "typescript";
 import * as path from "path";
 import {SymbolTable} from "./symbol-table";
-import {TypescriptFile} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "./typescript-file";
 import {DescEnum, DescMessage, DescService, FileRegistry} from "@bufbuild/protobuf";
 
 

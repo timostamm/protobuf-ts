@@ -1,6 +1,6 @@
 import * as rt from "@protobuf-ts/runtime";
 import * as ts from "typescript";
-import {TypescriptFile} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import {TypeScriptImports} from "../framework/typescript-imports";
 import {FileRegistry} from "@bufbuild/protobuf";
 import {assert} from "@protobuf-ts/runtime";
