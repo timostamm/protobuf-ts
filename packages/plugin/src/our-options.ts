@@ -50,37 +50,6 @@ export interface OurServiceOptions {
     readonly ["ts.server"]: ServerStyle[];
 }
 
-
-const OurFileOptions = new rt.MessageType<OurFileOptions>("$synthetic.OurFileOptions", [
-    {
-        no: 777701,
-        name: "ts.exclude_options", localName: "ts.exclude_options", jsonName: "ts.exclude_options",
-        kind: "scalar",
-        T: rt.ScalarType.STRING,
-        repeat: rt.RepeatType.PACKED
-    }
-]);
-
-
-const OurServiceOptions = new rt.MessageType<OurServiceOptions>("$synthetic.OurServiceOptions", [
-    {
-        no: 777701,
-        name: "ts.client", localName: "ts.client", jsonName: "ts.client",
-        kind: "enum",
-        T: () => ["ts.ClientStyle", ClientStyle],
-        repeat: rt.RepeatType.UNPACKED,
-    },
-    {
-        no: 777702,
-        name: "ts.server", localName: "ts.server", jsonName: "ts.server",
-        kind: "enum",
-        T: () => ["ts.ServerStyle", ServerStyle],
-        repeat: rt.RepeatType.UNPACKED,
-    }
-
-]);
-
-
 /**
  * The available client styles from @protobuf-ts/plugin
  * The extensions are declared in protobuf-ts.proto
