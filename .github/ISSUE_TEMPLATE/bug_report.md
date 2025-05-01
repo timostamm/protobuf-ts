@@ -13,7 +13,7 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Protobuf file (include only the necessary parts)
-2. Code to run 
+2. Run code (give a short snippet that is ready to run)
 4. See error (include the full error message)
 
 **Expected behavior**
