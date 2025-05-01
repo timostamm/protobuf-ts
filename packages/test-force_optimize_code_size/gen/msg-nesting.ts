@@ -101,7 +101,7 @@ class ParentMessage$Type extends MessageType<ParentMessage> {
     constructor() {
         super("spec.ParentMessage", [
             { no: 1, name: "child", kind: "message", T: () => ParentMessage_ChildMessage },
-            { no: 2, name: "children", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ParentMessage_ChildMessage },
+            { no: 2, name: "children", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ParentMessage_ChildMessage },
             { no: 3, name: "child_enum", kind: "enum", T: () => ["spec.ParentMessage.ChildMessage.ChildEnum", ParentMessage_ChildMessage_ChildEnum] },
             { no: 4, name: "grand_child", kind: "message", T: () => ParentMessage_ChildMessage_GrandChildMessage },
             { no: 5, name: "other_grand_child", kind: "message", T: () => ParentMessage_ChildMessage_GrandChildMessage }

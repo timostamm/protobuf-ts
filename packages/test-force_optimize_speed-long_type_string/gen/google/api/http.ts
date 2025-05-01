@@ -447,7 +447,7 @@ export interface CustomHttpPattern {
 class Http$Type extends MessageType<Http> {
     constructor() {
         super("google.api.Http", [
-            { no: 1, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => HttpRule },
+            { no: 1, name: "rules", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => HttpRule },
             { no: 2, name: "fully_decode_reserved_expansion", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -511,7 +511,7 @@ class HttpRule$Type extends MessageType<HttpRule> {
             { no: 8, name: "custom", kind: "message", oneof: "pattern", T: () => CustomHttpPattern },
             { no: 7, name: "body", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "response_body", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 11, name: "additional_bindings", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => HttpRule }
+            { no: 11, name: "additional_bindings", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => HttpRule }
         ]);
     }
     create(value?: PartialMessage<HttpRule>): HttpRule {

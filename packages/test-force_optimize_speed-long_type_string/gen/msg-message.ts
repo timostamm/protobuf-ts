@@ -37,7 +37,7 @@ class MessageFieldMessage$Type extends MessageType<MessageFieldMessage> {
     constructor() {
         super("spec.MessageFieldMessage", [
             { no: 1, name: "message_field", kind: "message", T: () => MessageFieldMessage_TestMessage },
-            { no: 2, name: "repeated_message_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => MessageFieldMessage_TestMessage }
+            { no: 2, name: "repeated_message_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => MessageFieldMessage_TestMessage }
         ]);
     }
     create(value?: PartialMessage<MessageFieldMessage>): MessageFieldMessage {

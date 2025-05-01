@@ -419,7 +419,7 @@ export const Value = new Value$Type();
 class ListValue$Type extends MessageType<ListValue> {
     constructor() {
         super("google.protobuf.ListValue", [
-            { no: 1, name: "values", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Value }
+            { no: 1, name: "values", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Value }
         ]);
     }
     /**
