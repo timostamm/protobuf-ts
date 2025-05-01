@@ -429,9 +429,9 @@ class Type$Type extends MessageType<Type> {
     constructor() {
         super("google.protobuf.Type", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Field },
+            { no: 2, name: "fields", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Field },
             { no: 3, name: "oneofs", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
+            { no: 4, name: "options", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Option },
             { no: 5, name: "source_context", kind: "message", T: () => SourceContext },
             { no: 6, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] },
             { no: 7, name: "edition", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
@@ -453,7 +453,7 @@ class Field$Type extends MessageType<Field> {
             { no: 6, name: "type_url", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "oneof_index", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 8, name: "packed", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 9, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
+            { no: 9, name: "options", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Option },
             { no: 10, name: "json_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "default_value", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
@@ -468,8 +468,8 @@ class Enum$Type extends MessageType<Enum> {
     constructor() {
         super("google.protobuf.Enum", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "enumvalue", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => EnumValue },
-            { no: 3, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
+            { no: 2, name: "enumvalue", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => EnumValue },
+            { no: 3, name: "options", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Option },
             { no: 4, name: "source_context", kind: "message", T: () => SourceContext },
             { no: 5, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] },
             { no: 6, name: "edition", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
@@ -486,7 +486,7 @@ class EnumValue$Type extends MessageType<EnumValue> {
         super("google.protobuf.EnumValue", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "number", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option }
+            { no: 3, name: "options", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Option }
         ]);
     }
 }

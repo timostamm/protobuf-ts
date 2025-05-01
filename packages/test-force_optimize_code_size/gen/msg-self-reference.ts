@@ -26,7 +26,7 @@ class SelfReferencingMessage$Type extends MessageType<SelfReferencingMessage> {
     constructor() {
         super("spec.SelfReferencingMessage", [
             { no: 1, name: "self", kind: "message", T: () => SelfReferencingMessage },
-            { no: 2, name: "self_list", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SelfReferencingMessage },
+            { no: 2, name: "self_list", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => SelfReferencingMessage },
             { no: 3, name: "self_map", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => SelfReferencingMessage } }
         ]);
     }

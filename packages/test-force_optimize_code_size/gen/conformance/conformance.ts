@@ -351,7 +351,7 @@ export const TestStatus = new TestStatus$Type();
 class FailureSet$Type extends MessageType<FailureSet> {
     constructor() {
         super("conformance.FailureSet", [
-            { no: 2, name: "test", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => TestStatus }
+            { no: 2, name: "test", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => TestStatus }
         ]);
     }
 }

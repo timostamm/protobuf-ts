@@ -467,24 +467,24 @@ export const TestWellKnownTypes = new TestWellKnownTypes$Type();
 class RepeatedWellKnownTypes$Type extends MessageType<RepeatedWellKnownTypes> {
     constructor() {
         super("protobuf_unittest.RepeatedWellKnownTypes", [
-            { no: 1, name: "any_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Any },
-            { no: 2, name: "api_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Api },
-            { no: 3, name: "duration_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Duration },
-            { no: 4, name: "empty_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Empty },
-            { no: 5, name: "field_mask_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => FieldMask },
-            { no: 6, name: "source_context_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SourceContext },
-            { no: 7, name: "struct_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Struct },
-            { no: 8, name: "timestamp_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Timestamp },
-            { no: 9, name: "type_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Type },
-            { no: 10, name: "double_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => DoubleValue },
-            { no: 11, name: "float_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => FloatValue },
-            { no: 12, name: "int64_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Int64Value },
-            { no: 13, name: "uint64_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => UInt64Value },
-            { no: 14, name: "int32_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Int32Value },
-            { no: 15, name: "uint32_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => UInt32Value },
-            { no: 16, name: "bool_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => BoolValue },
-            { no: 17, name: "string_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => StringValue },
-            { no: 18, name: "bytes_field", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => BytesValue }
+            { no: 1, name: "any_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Any },
+            { no: 2, name: "api_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Api },
+            { no: 3, name: "duration_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Duration },
+            { no: 4, name: "empty_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Empty },
+            { no: 5, name: "field_mask_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => FieldMask },
+            { no: 6, name: "source_context_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => SourceContext },
+            { no: 7, name: "struct_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Struct },
+            { no: 8, name: "timestamp_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Timestamp },
+            { no: 9, name: "type_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Type },
+            { no: 10, name: "double_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => DoubleValue },
+            { no: 11, name: "float_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => FloatValue },
+            { no: 12, name: "int64_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Int64Value },
+            { no: 13, name: "uint64_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => UInt64Value },
+            { no: 14, name: "int32_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Int32Value },
+            { no: 15, name: "uint32_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => UInt32Value },
+            { no: 16, name: "bool_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => BoolValue },
+            { no: 17, name: "string_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => StringValue },
+            { no: 18, name: "bytes_field", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => BytesValue }
         ]);
     }
 }

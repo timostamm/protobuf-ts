@@ -265,11 +265,11 @@ class Api$Type extends MessageType<Api> {
     constructor() {
         super("google.protobuf.Api", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "methods", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Method },
-            { no: 3, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
+            { no: 2, name: "methods", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Method },
+            { no: 3, name: "options", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Option },
             { no: 4, name: "version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "source_context", kind: "message", T: () => SourceContext },
-            { no: 6, name: "mixins", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Mixin },
+            { no: 6, name: "mixins", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Mixin },
             { no: 7, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] }
         ]);
     }
@@ -287,7 +287,7 @@ class Method$Type extends MessageType<Method> {
             { no: 3, name: "request_streaming", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 4, name: "response_type_url", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "response_streaming", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 6, name: "options", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Option },
+            { no: 6, name: "options", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Option },
             { no: 7, name: "syntax", kind: "enum", T: () => ["google.protobuf.Syntax", Syntax, "SYNTAX_"] }
         ]);
     }
