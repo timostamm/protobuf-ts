@@ -593,6 +593,11 @@ export class DescriptorInfo implements IDescriptorInfo {
 
 
     shouldBePackedRepeated(fieldDescriptor: FieldDescriptorProto): boolean {
+        switch (fieldDescriptor.type) {
+            case FieldDescriptorProto_Type.MESSAGE:
+            case FieldDescriptorProto_Type.GROUP:
+                return false;
+        }
         let file = this.tree.fileOf(fieldDescriptor);
         let standard, declared = fieldDescriptor.options?.packed;
         if (file.syntax === 'proto3') {
