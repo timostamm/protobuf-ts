@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/example-node-grpc-transport-client",
-  "version": "2.9.6",
+  "version": "2.10.0",
   "description": "",
   "private": true,
   "scripts": {
@@ -14,14 +14,14 @@
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
     "@grpc/grpc-js": "^1.2.2",
-    "@protobuf-ts/grpc-transport": "^2.9.6",
-    "@protobuf-ts/runtime": "^2.9.6",
-    "@protobuf-ts/runtime-rpc": "^2.9.6",
+    "@protobuf-ts/grpc-transport": "^2.10.0",
+    "@protobuf-ts/runtime": "^2.10.0",
+    "@protobuf-ts/runtime-rpc": "^2.10.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.50.1",
-    "@protobuf-ts/plugin": "^2.9.6"
+    "@protobuf-ts/plugin": "^2.10.0"
   }
 }

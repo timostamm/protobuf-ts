@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/test-server_generic",
-  "version": "2.9.6",
+  "version": "2.10.0",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
