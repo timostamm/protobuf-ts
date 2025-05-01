@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 npm run all
+npx turbo run bootstrap
 
 cd packages/runtime; npm publish
 cd packages/runtime-rpc; npm publish
