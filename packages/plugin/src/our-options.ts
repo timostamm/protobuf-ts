@@ -200,6 +200,7 @@ export interface InternalOptions {
     readonly transpileModule: ts.ModuleKind,
     readonly forceDisableServices: boolean;
     readonly addPbSuffix: boolean;
+    readonly enable_import_extensions: boolean;
 }
 
 export function makeInternalOptions(
@@ -234,6 +235,7 @@ export function makeInternalOptions(
         output_javascript_es2019: boolean,
         output_javascript_es2020: boolean,
         output_legacy_commonjs: boolean,
+        enable_import_extensions: boolean,
     },
     pluginCredit?: string,
 ): InternalOptions {
@@ -262,6 +264,7 @@ export function makeInternalOptions(
             transpileModule: ts.ModuleKind.ES2015,
             forceDisableServices: false,
             addPbSuffix: false,
+            enable_import_extensions: true,
         },
     ) as Writeable<InternalOptions>;
     if (pluginCredit) {
@@ -426,4 +429,3 @@ export class OptionResolver {
     }
 
 }
-
