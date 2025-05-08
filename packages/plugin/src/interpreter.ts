@@ -1,8 +1,3 @@
-import * as rt from "@protobuf-ts/runtime";
-import {assert} from "@protobuf-ts/runtime";
-import * as rpc from "@protobuf-ts/runtime-rpc";
-import {FieldInfoGenerator} from "./code-gen/field-info-generator";
-import {OurFileOptions, OurServiceOptions} from "./our-options";
 import {
     DescEnum,
     DescExtension,
@@ -27,7 +22,11 @@ import {
     MethodOptionsSchema,
     ServiceOptionsSchema
 } from "@bufbuild/protobuf/wkt";
-import {client, exclude_options, server} from "./gen/protobuf-ts_pb";
+import * as rt from "@protobuf-ts/runtime";
+import {assert} from "@protobuf-ts/runtime";
+import * as rpc from "@protobuf-ts/runtime-rpc";
+import {FieldInfoGenerator} from "./code-gen/field-info-generator";
+import {exclude_options} from "./gen/protobuf-ts_pb";
 
 
 type JsonOptionsMap = {
@@ -189,27 +188,6 @@ export class Interpreter {
 
 
     /**
-     * Read the custom file options declared in protobuf-ts.proto
-     */
-    readOurFileOptions(file: DescFile): OurFileOptions {
-        return {
-            ["ts.exclude_options"]: getOption(file, exclude_options),
-        };
-    }
-
-
-    /**
-     * Read the custom service options declared in protobuf-ts.proto
-     */
-    readOurServiceOptions(service: DescService): OurServiceOptions {
-        return {
-            ["ts.client"]: getOption(service, client),
-            ["ts.server"]: getOption(service, server),
-        };
-    }
-
-
-    /**
      * Get a runtime type for the given message type name or message descriptor.
      * Creates the type if not created previously.
      *
@@ -232,10 +210,10 @@ export class Interpreter {
             );
             this.messageTypes.set(descriptor.typeName, type);
 
-            const ourFileOptions = this.readOurFileOptions(descriptor.file);
+            const excludeOptions = getOption(descriptor.file, exclude_options)
 
             // add message options *after* storing, so that the option can refer to itself
-            const messageOptions = this.readOptions(descriptor, ourFileOptions["ts.exclude_options"]);
+            const messageOptions = this.readOptions(descriptor, excludeOptions);
             if (messageOptions) {
                 for (let key of Object.keys(messageOptions)) {
                     optionsPlaceholder[key] = messageOptions[key];
@@ -246,7 +224,7 @@ export class Interpreter {
             for (let i = 0; i < type.fields.length; i++) {
                 const fd = descriptor.fields[i];
                 const fi = type.fields[i];
-                fi.options = this.readOptions(fd, ourFileOptions["ts.exclude_options"]);
+                fi.options = this.readOptions(fd, excludeOptions);
             }
 
         }
@@ -267,8 +245,8 @@ export class Interpreter {
         assert(descriptor);
         let type = this.serviceTypes.get(descriptor.typeName);
         if (!type) {
-            const ourFileOptions = this.readOurFileOptions(descriptor.file);
-            type = this.buildServiceType(descriptor.typeName, descriptor.methods, ourFileOptions["ts.exclude_options"].concat("ts.client"));
+            const excludeOptions = getOption(descriptor.file, exclude_options).concat("ts.client");
+            type = this.buildServiceType(descriptor.typeName, descriptor.methods, excludeOptions);
             this.serviceTypes.set(descriptor.typeName, type);
         }
         return type;
