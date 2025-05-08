@@ -1,7 +1,14 @@
 import {setupCompiler} from "./framework/typescript-compile";
 import {GeneratedFile} from "./framework/generated-file";
 import {OutFile} from "./out-file";
-import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
+import {
+    ClientStyle,
+    InternalOptions,
+    makeInternalOptions,
+    OptionResolver,
+    parseOptions,
+    ServerStyle
+} from "./our-options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 import {CommentGenerator} from "./code-gen/comment-generator";
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
@@ -28,192 +35,6 @@ import {CodeGeneratorResponse_Feature, FileDescriptorSetSchema} from "@bufbuild/
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {
 
-    parameters = {
-        // @formatter:off
-
-        // long type
-        long_type_string: {
-            description: "Sets jstype = JS_STRING for message fields with 64 bit integral values. \n" +
-                         "The default behaviour is to use native `bigint`. \n" +
-                         "Only applies to fields that do *not* use the option `jstype`.",
-            excludes: ["long_type_number", "long_type_bigint"],
-        },
-        long_type_number: {
-            description: "Sets jstype = JS_NUMBER for message fields with 64 bit integral values. \n" +
-                         "The default behaviour is to use native `bigint`. \n" +
-                         "Only applies to fields that do *not* use the option `jstype`.",
-            excludes: ["long_type_string", "long_type_bigint"],
-        },
-        long_type_bigint: {
-            description: "Sets jstype = JS_NORMAL for message fields with 64 bit integral values. \n" +
-                         "This is the default behavior. \n" +
-                         "Only applies to fields that do *not* use the option `jstype`.",
-            excludes: ["long_type_string", "long_type_number"],
-        },
-
-        // misc
-        generate_dependencies: {
-            description: "By default, only the PROTO_FILES passed as input to protoc are generated, \n" +
-                         "not the files they import (with the exception of well-known types, which are \n" +
-                         "always generated when imported). \n"+
-                         "Set this option to generate code for dependencies too.",
-        },
-        force_exclude_all_options: {
-            description: "By default, custom options are included in the metadata and can be blacklisted \n" +
-                          "with our option (ts.exclude_options). Set this option if you are certain you \n" +
-                          "do not want to include any options at all.",
-        },
-        keep_enum_prefix: {
-            description: "By default, if all enum values share a prefix that corresponds with the enum's \n" +
-                         "name, the prefix is dropped from the value names. Set this option to disable \n" +
-                         "this behavior.",
-        },
-        use_proto_field_name: {
-            description: "By default interface fields use lowerCamelCase names by transforming proto field\n" +
-                         "names to follow common style convention for TypeScript. Set this option to preserve\n" +
-                         "original proto field names in generated interfaces.",
-        },
-        ts_nocheck: {
-            description: "Generate a @ts-nocheck annotation at the top of each file. This will become the \n" +
-                "default behaviour in the next major release.",
-            excludes: ['disable_ts_nocheck'],
-        },
-        disable_ts_nocheck: {
-            description: "Do not generate a @ts-nocheck annotation at the top of each file. Since this is \n" +
-                "the default behaviour, this option has no effect.",
-            excludes: ['ts_nocheck'],
-        },
-        eslint_disable: {
-            description: "Generate a eslint-disable comment at the top of each file. This will become the \n" +
-                "default behaviour in the next major release.",
-            excludes: ['no_eslint_disable'],
-        },
-        no_eslint_disable: {
-            description: "Do not generate a eslint-disable comment at the top of each file. Since this is \n" +
-                "the default behaviour, this option has no effect.",
-            excludes: ['eslint_disable'],
-        },
-        add_pb_suffix: {
-            description: "Adds the suffix `_pb` to the names of all generated files. This will become the \n" +
-                         "default behaviour in the next major release.",
-        },
-
-        // output types
-        output_typescript: {
-            description: "Output TypeScript files. This is the default behavior.",
-            excludes: ["output_javascript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
-        },
-        output_javascript: {
-            description: "Output JavaScript for the currently recommended target ES2020. The target may \n" +
-                         "change with a major release of protobuf-ts. \n" +
-                         "Along with JavaScript files, this always outputs TypeScript declaration files.",
-            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
-        },
-        output_javascript_es2015: {
-            description: "Output JavaScript for the ES2015 target.",
-            excludes: ["output_typescript", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
-        },
-        output_javascript_es2016: {
-            description: "Output JavaScript for the ES2016 target.",
-            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
-        },
-        output_javascript_es2017: {
-            description: "Output JavaScript for the ES2017 target.",
-            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2018", "output_javascript_es2019", "output_javascript_es2020"]
-        },
-        output_javascript_es2018: {
-            description: "Output JavaScript for the ES2018 target.",
-            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2019", "output_javascript_es2020"]
-        },
-        output_javascript_es2019: {
-            description: "Output JavaScript for the ES2019 target.",
-            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2020"]
-        },
-        output_javascript_es2020: {
-            description: "Output JavaScript for the ES2020 target.",
-            excludes: ["output_typescript", "output_javascript_es2015", "output_javascript_es2016", "output_javascript_es2017", "output_javascript_es2018", "output_javascript_es2019"]
-        },
-        output_legacy_commonjs: {
-            description: "Use CommonJS instead of the default ECMAScript module system.",
-            excludes: ["output_typescript"]
-        },
-
-        // client
-        client_none: {
-            description: "Do not generate rpc clients. \n" +
-                         "Only applies to services that do *not* use the option `ts.client`. \n" +
-                         "If you do not want rpc clients at all, use `force_client_none`.",
-            excludes: ['client_generic', 'client_grpc1'],
-        },
-        client_generic: {
-            description: "Only applies to services that do *not* use the option `ts.client`. \n" +
-                         "Since GENERIC_CLIENT is the default, this option has no effect.",
-            excludes: ['client_none', 'client_grpc1', 'force_client_none', 'force_disable_services'],
-        },
-        client_grpc1: {
-            description: "Generate a client using @grpc/grpc-js (major version 1). \n" +
-                "Only applies to services that do *not* use the option `ts.client`." ,
-            excludes: ['client_none', 'client_generic', 'force_client_none', 'force_disable_services'],
-        },
-        force_client_none: {
-            description: "Do not generate rpc clients, ignore options in proto files.",
-            excludes: ['client_none', 'client_generic', 'client_grpc1'],
-        },
-
-        // server
-        server_none: {
-            description: "Do not generate rpc servers. \n" +
-                         "This is the default behaviour, but only applies to services that do \n" +
-                         "*not* use the option `ts.server`. \n" +
-                         "If you do not want servers at all, use `force_server_none`.",
-            excludes: ['server_grpc1'],
-        },
-        server_generic: {
-            description: "Generate a generic server interface. Adapters are used to serve the service, \n" +
-                         "for example @protobuf-ts/grpc-backend for gRPC. \n" +
-                         "Note that this is an experimental feature and may change with a minor release. \n" +
-                         "Only applies to services that do *not* use the option `ts.server`.",
-            excludes: ['server_none', 'force_server_none', 'force_disable_services'],
-        },
-        server_grpc1: {
-            description: "Generate a server interface and definition for use with @grpc/grpc-js \n" +
-                         "(major version 1). \n" +
-                         "Only applies to services that do *not* use the option `ts.server`.",
-            excludes: ['server_none', 'force_server_none', 'force_disable_services'],
-        },
-        force_server_none: {
-            description: "Do not generate rpc servers, ignore options in proto files.",
-        },
-
-        force_disable_services: {
-            description: "Do not generate anything for service definitions, and ignore options in proto \n" +
-                "files. This is the same as setting both options `force_server_none` and \n" +
-                "`force_client_none`, but also stops generating service metadata.",
-            excludes: ['client_generic', 'client_grpc1', 'server_generic', 'server_grpc1']
-        },
-
-        // optimization
-        optimize_speed: {
-            description: "Sets optimize_for = SPEED for proto files that have no file option \n" +
-                         "'option optimize_for'. Since SPEED is the default, this option has no effect.",
-            excludes: ['force_optimize_speed'],
-        },
-        optimize_code_size: {
-            description: "Sets optimize_for = CODE_SIZE for proto files that have no file option \n" +
-                         "'option optimize_for'.",
-            excludes: ['force_optimize_speed'],
-        },
-        force_optimize_code_size: {
-            description: "Forces optimize_for = CODE_SIZE for all proto files, ignore file options.",
-            excludes: ['optimize_code_size', 'force_optimize_speed']
-        },
-        force_optimize_speed: {
-            description: "Forces optimize_for = SPEED for all proto files, ignore file options.",
-            excludes: ['optimize_code_size', 'force_optimize_code_size']
-        },
-        // @formatter:on
-    }
-
 
     constructor(private readonly version: string) {
         super();
@@ -224,7 +45,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
     generate(request: CodeGeneratorRequest): GeneratedFile[] {
         const
             options = makeInternalOptions(
-                this.parseOptions(this.parameters, request.parameter),
+                parseOptions(request.parameter),
                 `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
             ),
             registryEs = createFileRegistryFromRequest(request),

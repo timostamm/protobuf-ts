@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "bootstrap": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "@protobuf-ts/plugin#build"],
       "inputs": [
         "package.json"
       ],

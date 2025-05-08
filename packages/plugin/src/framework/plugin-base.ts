@@ -15,18 +15,6 @@ import {types} from "util";
 import {GeneratedFile} from "./generated-file";
 
 
-type OptionsSpec = {
-    [key: string]: {
-        description: string;
-        excludes?: string[];
-        requires?: string[];
-    }
-}
-
-type ResolvedOptions<T extends OptionsSpec> = {
-    [P in keyof T]: boolean;
-}
-
 export abstract class PluginBaseProtobufES<T extends GeneratedFile = GeneratedFile> {
 
 
@@ -65,68 +53,6 @@ export abstract class PluginBaseProtobufES<T extends GeneratedFile = GeneratedFi
 
     protected getSupportedFeatures(): CodeGeneratorResponse_Feature[] {
         return [];
-    }
-
-
-    protected parseOptions<T extends OptionsSpec>(spec: T, parameter: string | undefined): ResolvedOptions<T> {
-        this.validateOptionsSpec(spec);
-        let given = parameter ? parameter.split(',') : [];
-        let known = Object.keys(spec);
-        let excess = given.filter(i => !known.includes(i));
-        if (excess.length > 0) {
-            this.throwOptionError(spec, `Option "${excess.join('", "')}" not recognized.`);
-        }
-        for (let [key, val] of Object.entries(spec)) {
-            if (given.includes(key)) {
-                let missing = val.requires?.filter(i => !given.includes(i)) ?? [];
-                if (missing.length > 0) {
-                    this.throwOptionError(spec, `Option "${key}" requires option "${missing.join('", "')}" to be set.`);
-                }
-                let excess = val.excludes?.filter(i => given.includes(i)) ?? [];
-                if (excess.length > 0) {
-                    this.throwOptionError(spec, `If option "${key}" is set, option "${excess.join('", "')}" cannot be set.`);
-                }
-            }
-        }
-        let resolved: { [k: string]: boolean } = {};
-        for (let key of Object.keys(spec)) {
-            resolved[key] = given.includes(key);
-        }
-        return resolved as ResolvedOptions<T>;
-    }
-
-
-    private throwOptionError(spec: OptionsSpec, error: string) {
-        let text = '';
-        text += error + '\n';
-        text += `\n`;
-        text += `Available options:\n`;
-        text += `\n`;
-        for (let [key, val] of Object.entries(spec)) {
-            text += `- "${key}"\n`;
-            for (let l of val.description.split('\n')) {
-                text += `  ${l}\n`;
-            }
-            text += `\n`;
-        }
-        let err = new Error(text);
-        err.name = `ParameterError`;
-        throw err;
-    }
-
-
-    private validateOptionsSpec(spec: OptionsSpec) {
-        let known = Object.keys(spec);
-        for (let [key, {excludes, requires}] of Object.entries(spec)) {
-            let r = requires?.filter(i => !known.includes(i)) ?? [];
-            if (r.length > 0) {
-                throw new Error(`Invalid parameter spec for parameter "${key}". "requires" points to unknown parameters: ${r.join(', ')}`);
-            }
-            let e = excludes?.filter(i => !known.includes(i)) ?? [];
-            if (e.length > 0) {
-                throw new Error(`Invalid parameter spec for parameter "${key}". "excludes" points to unknown parameters: ${e.join(', ')}`);
-            }
-        }
     }
 
 
