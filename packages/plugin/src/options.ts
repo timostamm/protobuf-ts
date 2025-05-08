@@ -233,7 +233,7 @@ const parseParameter = createOptionParser({
 /**
  * Internal settings for the file generation.
  */
-export interface InternalOptions {
+export interface Options {
     readonly generateDependencies: boolean;
     readonly pluginCredit?: string;
     readonly normalLongType: rt.LongType,
@@ -264,10 +264,10 @@ export interface InternalOptions {
 export function parseOptions(
     parameter: string,
     pluginCredit?: string,
-): InternalOptions {
+): Options {
     const params = parseParameter(parameter);
     type Writeable<T> = { -readonly [P in keyof T]: T[P] };
-    const o: Writeable<InternalOptions> = {
+    const o: Writeable<Options> = {
         generateDependencies: false,
         normalLongType: rt.LongType.BIGINT,
         normalOptimizeMode: FileOptions_OptimizeMode.SPEED,

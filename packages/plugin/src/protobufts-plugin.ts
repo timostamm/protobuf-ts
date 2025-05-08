@@ -7,7 +7,7 @@ import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {setupCompiler} from "./framework/typescript-compile";
 import {GeneratedFile} from "./framework/generated-file";
 import {OutFile} from "./out-file";
-import {InternalOptions, parseOptions} from "./our-options";
+import {Options, parseOptions} from "./options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 import {CommentGenerator} from "./code-gen/comment-generator";
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
@@ -187,7 +187,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
     }
 
 
-    protected transpile(tsFiles: OutFile[], options: InternalOptions): GeneratedFile[] {
+    protected transpile(tsFiles: OutFile[], options: Options): GeneratedFile[] {
         if (options.transpileTarget === undefined) {
             return tsFiles;
         }
