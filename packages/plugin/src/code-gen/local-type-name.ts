@@ -1,5 +1,4 @@
-import {AnyTypeDescriptorProto, FileDescriptorProto, IDescriptorTree} from "@protobuf-ts/plugin-framework";
-import {assert} from "@protobuf-ts/runtime";
+import {DescEnum, DescMessage, DescService} from "@bufbuild/protobuf";
 
 
 // TODO in generated code, use globalThis for all types in global scope
@@ -9,7 +8,6 @@ const reservedKeywords = 'break,case,catch,class,const,continue,debugger,default
 const reservedTypeNames = 'object,Uint8Array,array,Array,string,String,number,Number,boolean,Boolean,bigint,BigInt'.split(',');
 const escapeCharacter = '$';
 
-
 /**
  * Create a name for an enum, message or service.
  * - ignores package
@@ -18,25 +16,13 @@ const escapeCharacter = '$';
  * - does *not* prevent clashes, for example clash
  *   of merged nested name with other message name
  */
-export function createLocalTypeName(descriptor: AnyTypeDescriptorProto, treeLookup: IDescriptorTree): string {
-    // build name components for parent types
-    const components = [];
-    for (const ancestor of treeLookup.ancestorsOf(descriptor)) {
-        if (FileDescriptorProto.is(ancestor)) {
-            continue;
-        }
-        const name = ancestor.name;
-        assert(name !== undefined);
-        components.push(name);
-    }
-
-    // add name for actual descriptor
-    const name = descriptor.name;
-    assert(name !== undefined);
-    components.push(name);
-
+export function createLocalTypeName(descriptor: DescMessage | DescEnum | DescService): string {
     // join all components with underscore
-    let fullName = components.join('_');
+    let fullName = descriptor.typeName;
+    if (descriptor.file.proto.package.length > 0) {
+        fullName = fullName.substring(descriptor.file.proto.package.length + 1);
+    }
+    fullName = fullName.replace(/\./g, "_");
 
     // escape if reserved
     if (reservedKeywords.includes(fullName)) {

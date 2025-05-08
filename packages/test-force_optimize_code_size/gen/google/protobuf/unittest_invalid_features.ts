@@ -15,7 +15,7 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface TestInvalidFeatures {
     /**
-     * @generated from protobuf field: repeated int32 repeated_feature = 1;
+     * @generated from protobuf field: repeated int32 repeated_feature = 1
      */
     repeatedFeature: number[];
 }

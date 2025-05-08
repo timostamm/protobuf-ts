@@ -253,7 +253,7 @@ export interface FieldMask {
     /**
      * The set of field mask paths.
      *
-     * @generated from protobuf field: repeated string paths = 1;
+     * @generated from protobuf field: repeated string paths = 1
      */
     paths: string[];
 }

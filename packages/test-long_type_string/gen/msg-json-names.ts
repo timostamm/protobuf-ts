@@ -15,11 +15,11 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface JsonNamesMessage {
     /**
-     * @generated from protobuf field: string scalar_field = 1 [json_name = "scalarFieldJsonName"];
+     * @generated from protobuf field: string scalar_field = 1 [json_name = "scalarFieldJsonName"]
      */
     scalarField: string;
     /**
-     * @generated from protobuf field: repeated string repeated_scalar_field = 2 [json_name = "repeatedScalarFieldJsonName"];
+     * @generated from protobuf field: repeated string repeated_scalar_field = 2 [json_name = "repeatedScalarFieldJsonName"]
      */
     repeatedScalarField: string[];
 }
@@ -44,10 +44,10 @@ class JsonNamesMessage$Type extends MessageType<JsonNamesMessage> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string scalar_field = 1 [json_name = "scalarFieldJsonName"];*/ 1:
+                case /* string scalar_field = 1 [json_name = "scalarFieldJsonName"] */ 1:
                     message.scalarField = reader.string();
                     break;
-                case /* repeated string repeated_scalar_field = 2 [json_name = "repeatedScalarFieldJsonName"];*/ 2:
+                case /* repeated string repeated_scalar_field = 2 [json_name = "repeatedScalarFieldJsonName"] */ 2:
                     message.repeatedScalarField.push(reader.string());
                     break;
                 default:

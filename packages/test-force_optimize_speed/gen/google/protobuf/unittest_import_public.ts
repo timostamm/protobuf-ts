@@ -26,7 +26,7 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface PublicImportMessage {
     /**
-     * @generated from protobuf field: optional int32 e = 1;
+     * @generated from protobuf field: optional int32 e = 1
      */
     e?: number;
 }

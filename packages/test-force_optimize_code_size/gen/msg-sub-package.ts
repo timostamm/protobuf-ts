@@ -10,7 +10,7 @@ import { ParentMessage_ChildMessage_GrandChildMessage } from "./msg-nesting";
  */
 export interface SubPackageMessage {
     /**
-     * @generated from protobuf field: spec.ParentMessage.ChildMessage.GrandChildMessage grand_child = 1;
+     * @generated from protobuf field: spec.ParentMessage.ChildMessage.GrandChildMessage grand_child = 1
      */
     grandChild?: ParentMessage_ChildMessage_GrandChildMessage;
 }

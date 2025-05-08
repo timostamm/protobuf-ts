@@ -18,15 +18,15 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface OptionsMessage {
     /**
-     * @generated from protobuf field: optional int32 plain_field = 1;
+     * @generated from protobuf field: optional int32 plain_field = 1
      */
     plainField?: number;
     /**
-     * @generated from protobuf field: optional int32 runtime_retention_field = 2;
+     * @generated from protobuf field: optional int32 runtime_retention_field = 2
      */
     runtimeRetentionField?: number;
     /**
-     * @generated from protobuf field: optional int32 source_retention_field = 3;
+     * @generated from protobuf field: optional int32 source_retention_field = 3
      */
     sourceRetentionField?: number;
 }
@@ -40,7 +40,7 @@ export interface Extendee {
  */
 export interface TopLevelMessage {
     /**
-     * @generated from protobuf field: optional float f = 1;
+     * @generated from protobuf field: optional float f = 1
      */
     f?: number;
     /**
@@ -49,7 +49,7 @@ export interface TopLevelMessage {
     o: {
         oneofKind: "i";
         /**
-         * @generated from protobuf field: int64 i = 2;
+         * @generated from protobuf field: int64 i = 2
          */
         i: bigint;
     } | {

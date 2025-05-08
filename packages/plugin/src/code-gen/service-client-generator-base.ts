@@ -1,41 +1,42 @@
-import {
-    DescriptorRegistry,
-    ServiceDescriptorProto,
-    SymbolTable,
-    TypescriptFile,
-    TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import * as ts from "typescript";
 import * as rpc from "@protobuf-ts/runtime-rpc";
 import {CommentGenerator} from "./comment-generator";
-import {Interpreter} from "../interpreter";
-import {GeneratorBase} from "./generator-base";
 import {createLocalTypeName} from "./local-type-name";
 import {assert} from "@protobuf-ts/runtime";
+import {Interpreter} from "../interpreter";
+import {DescService, FileRegistry} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
 
 
-export abstract class ServiceClientGeneratorBase extends GeneratorBase {
+export abstract class ServiceClientGeneratorBase {
 
 
     abstract readonly symbolKindInterface: string;
     abstract readonly symbolKindImplementation: string;
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
-                protected readonly options: {
-                    runtimeImportPath: string;
-                    runtimeRpcImportPath: string;
-                }) {
-        super(symbols, registry, imports, comments, interpreter);
+    constructor(
+        private readonly symbols: SymbolTable,
+        protected readonly registry: FileRegistry,
+        protected readonly imports: TypeScriptImports,
+        protected readonly comments: CommentGenerator,
+        protected readonly interpreter: Interpreter,
+        protected readonly options: {
+            runtimeImportPath: string;
+            runtimeRpcImportPath: string;
+        },
+    ) {
     }
 
 
-    registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
-        const basename = createLocalTypeName(descriptor, this.registry);
+    registerSymbols(source: TypescriptFile, descService: DescService): void {
+        const basename = createLocalTypeName(descService);
         const interfaceName = `I${basename}Client`;
         const implementationName = `${basename}Client`;
-        this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);
-        this.symbols.register(implementationName, descriptor, source, this.symbolKindImplementation);
+        this.symbols.register(interfaceName, descService, source, this.symbolKindInterface);
+        this.symbols.register(implementationName, descService, source, this.symbolKindImplementation);
     }
 
 
@@ -53,10 +54,10 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
      *   }
      *
      */
-    generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto): ts.InterfaceDeclaration {
+    generateInterface(source: TypescriptFile, descService: DescService): ts.InterfaceDeclaration {
         const
-            interpreterType = this.interpreter.getServiceType(descriptor),
-            IServiceClient = this.imports.type(source, descriptor, this.symbolKindInterface),
+            interpreterType = this.interpreter.getServiceType(descService),
+            IServiceClient = this.imports.type(source, descService, this.symbolKindInterface),
             signatures: ts.MethodSignature[] = [];
 
 
@@ -65,9 +66,9 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
 
             // add comment to the first signature
             if (sig.length > 0) {
-                const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
-                assert(methodDescriptor);
-                this.comments.addCommentsForDescriptor(sig[0], methodDescriptor, 'appendToLeadingBlock');
+                const descMethod = descService.methods.find(descMethod => descMethod.name === mi.name);
+                assert(descMethod);
+                this.comments.addCommentsForDescriptor(sig[0], descMethod, 'appendToLeadingBlock');
             }
 
             signatures.push(...sig);
@@ -80,7 +81,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
         );
 
         // add to our file
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descService, 'appendToLeadingBlock');
         source.addStatement(statement);
 
         return statement;
@@ -164,12 +165,12 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
      *   }
      *
      */
-    generateImplementationClass(source: TypescriptFile, descriptor: ServiceDescriptorProto): ts.ClassDeclaration {
+    generateImplementationClass(source: TypescriptFile, descService: DescService): ts.ClassDeclaration {
         const
-            interpreterType = this.interpreter.getServiceType(descriptor),
-            ServiceType = this.imports.type(source, descriptor),
-            ServiceClient = this.imports.type(source, descriptor, this.symbolKindImplementation),
-            IServiceClient = this.imports.type(source, descriptor, this.symbolKindInterface),
+            interpreterType = this.interpreter.getServiceType(descService),
+            ServiceType = this.imports.type(source, descService),
+            ServiceClient = this.imports.type(source, descService, this.symbolKindImplementation),
+            IServiceClient = this.imports.type(source, descService, this.symbolKindInterface),
             ServiceInfo = this.imports.name(source, 'ServiceInfo', this.options.runtimeRpcImportPath, true),
             RpcTransport = this.imports.name(source, 'RpcTransport', this.options.runtimeRpcImportPath, true);
 
@@ -223,9 +224,9 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
 
             ...interpreterType.methods.map(mi => {
                 const declaration = this.createMethod(source, mi);
-                const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
-                assert(methodDescriptor);
-                this.comments.addCommentsForDescriptor(declaration, methodDescriptor, 'appendToLeadingBlock');
+                const descMethod = descService.methods.find(descMethod => descMethod.name === mi.name);
+                assert(descMethod);
+                this.comments.addCommentsForDescriptor(declaration, descMethod, 'appendToLeadingBlock');
                 return declaration;
             })
 
@@ -247,7 +248,7 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
         );
 
         source.addStatement(statement);
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descService, 'appendToLeadingBlock');
         return statement;
     }
 
@@ -280,16 +281,16 @@ export abstract class ServiceClientGeneratorBase extends GeneratorBase {
 
 
     protected makeI(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
-        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
-            this.registry.resolveTypeName(methodInfo.I.typeName),
+        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(source,
+            methodInfo.I.typeName,
             'default',
             isTypeOnly
         )), undefined);
     }
 
     protected makeO(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
-        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(source,
-            this.registry.resolveTypeName(methodInfo.O.typeName),
+        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(source,
+            methodInfo.O.typeName,
             'default',
             isTypeOnly
         )), undefined);

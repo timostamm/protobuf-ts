@@ -2,17 +2,10 @@
  * Custom file options interpreted by @protobuf-ts/plugin
  */
 import * as rt from "@protobuf-ts/runtime";
-import {
-    FileDescriptorProto,
-    FileOptions,
-    FileOptions_OptimizeMode as OptimizeMode,
-    IStringFormat,
-    MethodOptions,
-    ServiceDescriptorProto,
-    ServiceOptions
-} from "@protobuf-ts/plugin-framework";
-import {Interpreter} from "./interpreter";
 import * as ts from "typescript";
+import {DescFile, DescService} from "@bufbuild/protobuf";
+import {Interpreter} from "./interpreter";
+import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 
 
 /**
@@ -56,69 +49,6 @@ export interface OurServiceOptions {
      */
     readonly ["ts.server"]: ServerStyle[];
 }
-
-
-/**
- * Read the custom file options declared in protobuf-ts.proto
- */
-export function readOurFileOptions(file: FileDescriptorProto): OurFileOptions {
-    return read<OurFileOptions>(file.options, emptyFileOptions, OurFileOptions);
-}
-
-/**
- * Read the custom service options declared in protobuf-ts.proto
- */
-export function readOurServiceOptions(service: ServiceDescriptorProto): OurServiceOptions {
-    return read<OurServiceOptions>(service.options, emptyServiceOptions, OurServiceOptions);
-}
-
-
-function read<T extends object>(options: FileOptions | MethodOptions | ServiceOptions | undefined, defaults: T, type: rt.IMessageType<T>): T {
-    if (!options) {
-        return defaults;
-    }
-    let unknownFields = rt.UnknownFieldHandler.list(options);
-    if (!unknownFields.length) {
-        return defaults;
-    }
-    // concat all unknown field data
-    let unknownWriter = new rt.BinaryWriter();
-    for (let {no, wireType, data} of unknownFields)
-        unknownWriter.tag(no, wireType).raw(data);
-    let unknownBytes = unknownWriter.finish();
-    return type.fromBinary(unknownBytes, {readUnknownField: false});
-}
-
-
-const OurFileOptions = new rt.MessageType<OurFileOptions>("$synthetic.OurFileOptions", [
-    {
-        no: 777701,
-        name: "ts.exclude_options", localName: "ts.exclude_options", jsonName: "ts.exclude_options",
-        kind: "scalar",
-        T: rt.ScalarType.STRING,
-        repeat: rt.RepeatType.PACKED
-    }
-]);
-
-
-const OurServiceOptions = new rt.MessageType<OurServiceOptions>("$synthetic.OurServiceOptions", [
-    {
-        no: 777701,
-        name: "ts.client", localName: "ts.client", jsonName: "ts.client",
-        kind: "enum",
-        T: () => ["ts.ClientStyle", ClientStyle],
-        repeat: rt.RepeatType.UNPACKED,
-    },
-    {
-        no: 777702,
-        name: "ts.server", localName: "ts.server", jsonName: "ts.server",
-        kind: "enum",
-        T: () => ["ts.ServerStyle", ServerStyle],
-        repeat: rt.RepeatType.UNPACKED,
-    }
-
-]);
-
 
 /**
  * The available client styles from @protobuf-ts/plugin
@@ -170,10 +100,6 @@ export enum ServerStyle {
 }
 
 
-const emptyFileOptions = OurFileOptions.create();
-const emptyServiceOptions = OurServiceOptions.create();
-
-
 /**
  * Internal settings for the file generation.
  */
@@ -181,8 +107,8 @@ export interface InternalOptions {
     readonly generateDependencies: boolean;
     readonly pluginCredit?: string;
     readonly normalLongType: rt.LongType,
-    readonly normalOptimizeMode: OptimizeMode,
-    readonly forcedOptimizeMode: OptimizeMode | undefined,
+    readonly normalOptimizeMode: FileOptions_OptimizeMode,
+    readonly forcedOptimizeMode: FileOptions_OptimizeMode | undefined,
     readonly normalServerStyle: ServerStyle,
     readonly forcedServerStyle: ServerStyle | undefined,
     readonly normalClientStyle: ClientStyle,
@@ -243,7 +169,7 @@ export function makeInternalOptions(
         {
             generateDependencies: false,
             normalLongType: rt.LongType.BIGINT,
-            normalOptimizeMode: OptimizeMode.SPEED,
+            normalOptimizeMode: FileOptions_OptimizeMode.SPEED,
             forcedOptimizeMode: undefined,
             normalClientStyle: ClientStyle.GENERIC_CLIENT,
             forcedClientStyle: undefined,
@@ -292,13 +218,13 @@ export function makeInternalOptions(
         o.normalLongType = rt.LongType.NUMBER;
     }
     if (params?.optimize_code_size) {
-        o.normalOptimizeMode = OptimizeMode.CODE_SIZE;
+        o.normalOptimizeMode = FileOptions_OptimizeMode.CODE_SIZE;
     }
     if (params?.force_optimize_speed) {
-        o.forcedOptimizeMode = OptimizeMode.SPEED;
+        o.forcedOptimizeMode = FileOptions_OptimizeMode.SPEED;
     }
     if (params?.force_optimize_code_size) {
-        o.forcedOptimizeMode = OptimizeMode.CODE_SIZE;
+        o.forcedOptimizeMode = FileOptions_OptimizeMode.CODE_SIZE;
     }
     if (params?.client_none) {
         o.normalClientStyle = ClientStyle.NO_CLIENT;
@@ -357,29 +283,29 @@ export class OptionResolver {
 
     constructor(
         private readonly interpreter: Interpreter,
-        private readonly stringFormat: IStringFormat,
         private readonly options: InternalOptions,
     ) {
     }
 
-
-    getOptimizeMode(file: FileDescriptorProto): OptimizeMode {
+    getOptimizeMode(file: DescFile): FileOptions_OptimizeMode {
         if (this.options.forcedOptimizeMode !== undefined) {
             return this.options.forcedOptimizeMode;
         }
-        if (file.options?.optimizeFor !== undefined) {
-            return file.options.optimizeFor;
+        if (file.proto.options?.optimizeFor !== undefined) {
+            return file.proto.options.optimizeFor;
         }
         return this.options.normalOptimizeMode;
     }
 
-
-    getClientStyles(descriptor: ServiceDescriptorProto): ClientStyle[] {
+    getClientStyles(descriptor: DescService): ClientStyle[] {
         const opt = this.interpreter.readOurServiceOptions(descriptor)["ts.client"];
 
         // always check service options valid
         if (opt.includes(ClientStyle.NO_CLIENT) && opt.some(s => s !== ClientStyle.NO_CLIENT)) {
-            let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NO_CLIENT, you cannot set additional client styles.`);
+            descriptor.typeName
+            // TODO
+            //let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NO_CLIENT, you cannot set additional client styles.`);
+            let err = new Error(`You provided invalid options for ${descriptor.typeName}. If you set (ts.client) = NO_CLIENT, you cannot set additional client styles.`);
             err.name = `PluginMessageError`;
             throw err;
         }
@@ -399,13 +325,14 @@ export class OptionResolver {
         return [this.options.normalClientStyle];
     }
 
-
-    getServerStyles(descriptor: ServiceDescriptorProto): ServerStyle[] {
+    getServerStyles(descriptor: DescService): ServerStyle[] {
         const opt = this.interpreter.readOurServiceOptions(descriptor)["ts.server"];
 
         // always check service options valid
         if (opt.includes(ServerStyle.NO_SERVER) && opt.some(s => s !== ServerStyle.NO_SERVER)) {
-            let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.server) = NO_SERVER, you cannot set additional server styles.`);
+            // TODO
+            //let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.server) = NO_SERVER, you cannot set additional server styles.`);
+            let err = new Error(`You provided invalid options for ${descriptor.typeName}. If you set (ts.server) = NO_SERVER, you cannot set additional server styles.`);
             err.name = `PluginMessageError`;
             throw err;
         }

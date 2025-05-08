@@ -1,44 +1,42 @@
-import {GeneratorBase} from "./generator-base";
 import * as rpc from "@protobuf-ts/runtime-rpc";
-import {
-    DescriptorRegistry,
-    ServiceDescriptorProto,
-    SymbolTable,
-    TypescriptFile,
-    TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
-import {Interpreter} from "../interpreter";
+import {TypescriptFile} from "../framework/typescript-file";
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
+import {Interpreter} from "../interpreter";
+import {DescService} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
 
 
-export class ServiceServerGeneratorGeneric extends GeneratorBase {
+export class ServiceServerGeneratorGeneric {
 
 
     private readonly symbolKindInterface = 'generic-server-interface';
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
-                private readonly options: {
-                    runtimeRpcImportPath: string;
-                }) {
-        super(symbols, registry, imports, comments, interpreter);
+    constructor(
+        private readonly symbols: SymbolTable,
+        private readonly imports: TypeScriptImports,
+        private readonly comments: CommentGenerator,
+        private readonly interpreter: Interpreter,
+        private readonly options: { runtimeRpcImportPath: string; },
+    ) {
     }
 
 
-    registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
-        const basename = createLocalTypeName(descriptor, this.registry);
+    registerSymbols(source: TypescriptFile, descService: DescService): void {
+        const basename = createLocalTypeName(descService);
         const interfaceName = `I${basename}`;
-        this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);
+        this.symbols.register(interfaceName, descService, source, this.symbolKindInterface);
     }
 
 
-    generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto) {
+    generateInterface(source: TypescriptFile, descService: DescService) {
         const
-            interpreterType = this.interpreter.getServiceType(descriptor),
-            IGenericServer = this.imports.type(source, descriptor, this.symbolKindInterface),
+            interpreterType = this.interpreter.getServiceType(descService),
+            IGenericServer = this.imports.type(source, descService, this.symbolKindInterface),
             ServerCallContext = this.imports.name(source, "ServerCallContext", this.options.runtimeRpcImportPath)
         ;
 
@@ -58,8 +56,6 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
             ],
             undefined,
             interpreterType.methods.map(mi => {
-                const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
-                assert(methodDescriptor);
                 let signature: ts.MethodSignature;
                 if (mi.serverStreaming && mi.clientStreaming) {
                     signature = this.createBidi(source, mi);
@@ -70,13 +66,15 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
                 } else {
                     signature = this.createUnary(source, mi);
                 }
-                this.comments.addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
+                const descMethod = descService.methods.find(descMethod => descMethod.name === mi.name);
+                assert(descMethod);
+                this.comments.addCommentsForDescriptor(signature, descMethod, 'appendToLeadingBlock');
                 return signature;
             })
         );
 
         // add to our file
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descService, 'appendToLeadingBlock');
         source.addStatement(statement);
         return statement;
     }
@@ -84,13 +82,13 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
 
     private createUnary(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                this.registry.resolveTypeName(methodInfo.I.typeName)
+                methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                this.registry.resolveTypeName(methodInfo.O.typeName)
+                methodInfo.O.typeName
             )), undefined);
         return ts.createMethodSignature(
             undefined,
@@ -129,13 +127,13 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
 
     private createServerStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                this.registry.resolveTypeName(methodInfo.I.typeName)
+                methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                this.registry.resolveTypeName(methodInfo.O.typeName)
+                methodInfo.O.typeName
             )), undefined),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -188,13 +186,13 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
 
     private createClientStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                this.registry.resolveTypeName(methodInfo.I.typeName)
+                methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                this.registry.resolveTypeName(methodInfo.O.typeName)
+                methodInfo.O.typeName
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath);
         return ts.createMethodSignature(
@@ -237,13 +235,13 @@ export class ServiceServerGeneratorGeneric extends GeneratorBase {
 
     private createBidi(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                this.registry.resolveTypeName(methodInfo.I.typeName)
+                methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                 source,
-                this.registry.resolveTypeName(methodInfo.O.typeName)
+                methodInfo.O.typeName
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);

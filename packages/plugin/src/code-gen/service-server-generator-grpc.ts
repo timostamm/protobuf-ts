@@ -1,47 +1,45 @@
-import {GeneratorBase} from "./generator-base";
 import * as rpc from "@protobuf-ts/runtime-rpc";
-import {
-    addCommentBlockAsJsDoc,
-    DescriptorRegistry,
-    MethodDescriptorProto,
-    ServiceDescriptorProto,
-    SymbolTable,
-    TypescriptFile,
-    TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
-import {Interpreter} from "../interpreter";
+import {TypescriptFile} from "../framework/typescript-file";
 import * as ts from "typescript";
 import {assert} from "@protobuf-ts/runtime";
 import {CommentGenerator} from "./comment-generator";
 import {createLocalTypeName} from "./local-type-name";
+import {Interpreter} from "../interpreter";
+import {DescMethod, DescService} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
+import {addCommentBlockAsJsDoc} from "../framework/typescript-comments";
 
 
-export class ServiceServerGeneratorGrpc extends GeneratorBase {
+export class ServiceServerGeneratorGrpc {
 
 
     private readonly symbolKindInterface = 'grpc-server-interface';
     private readonly symbolKindDefinition = 'grpc-server-definition';
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
-                private readonly options: {}) {
-        super(symbols, registry, imports, comments, interpreter);
+    constructor(
+        private readonly symbols: SymbolTable,
+        private readonly imports: TypeScriptImports,
+        private readonly comments: CommentGenerator,
+        private readonly interpreter: Interpreter,
+    ) {
     }
 
 
-    registerSymbols(source: TypescriptFile, descriptor: ServiceDescriptorProto): void {
-        const basename = createLocalTypeName(descriptor, this.registry);
+    registerSymbols(source: TypescriptFile, descService: DescService): void {
+        const basename = createLocalTypeName(descService);
         const interfaceName = `I${basename}`;
         const definitionName = `${basename[0].toLowerCase()}${basename.substring(1)}Definition`;
-        this.symbols.register(interfaceName, descriptor, source, this.symbolKindInterface);
-        this.symbols.register(definitionName, descriptor, source, this.symbolKindDefinition);
+        this.symbols.register(interfaceName, descService, source, this.symbolKindInterface);
+        this.symbols.register(definitionName, descService, source, this.symbolKindDefinition);
     }
 
 
-    generateInterface(source: TypescriptFile, descriptor: ServiceDescriptorProto) {
+    generateInterface(source: TypescriptFile, descService: DescService) {
         const
-            interpreterType = this.interpreter.getServiceType(descriptor),
-            IGrpcServer = this.imports.type(source, descriptor, this.symbolKindInterface),
+            interpreterType = this.interpreter.getServiceType(descService),
+            IGrpcServer = this.imports.type(source, descService, this.symbolKindInterface),
             grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true)
         ;
 
@@ -61,21 +59,21 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
                 )]
             )],
             interpreterType.methods.map(mi => {
-                const methodDescriptor = descriptor.method.find(md => md.name === mi.name);
-                assert(methodDescriptor);
-                return this.createMethodPropertySignature(source, mi, methodDescriptor)
+                const descMethod = descService.methods.find(descMethod => descMethod.name === mi.name);
+                assert(descMethod);
+                return this.createMethodPropertySignature(source, mi, descMethod)
             })
         );
 
         // add to our file
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descService, 'appendToLeadingBlock');
         source.addStatement(statement);
         return statement;
 
     }
 
 
-    private createMethodPropertySignature(source: TypescriptFile, methodInfo: rpc.MethodInfo, methodDescriptor: MethodDescriptorProto): ts.PropertySignature {
+    private createMethodPropertySignature(source: TypescriptFile, methodInfo: rpc.MethodInfo, descMethod: DescMethod): ts.PropertySignature {
         const grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true)
 
         let handler: string;
@@ -99,30 +97,30 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
                     ts.createIdentifier(handler)
                 ),
                 [
-                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                         source,
-                        this.registry.resolveTypeName(methodInfo.I.typeName)
+                        methodInfo.I.typeName,
                     )), undefined),
-                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.type(
+                    ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
                         source,
-                        this.registry.resolveTypeName(methodInfo.O.typeName)
+                        methodInfo.O.typeName,
                     )), undefined),
                 ]
             ),
             undefined
         );
 
-        this.comments.addCommentsForDescriptor(signature, methodDescriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(signature, descMethod, 'appendToLeadingBlock');
 
         return signature;
     }
 
 
-    generateDefinition(source: TypescriptFile, descriptor: ServiceDescriptorProto) {
+    generateDefinition(source: TypescriptFile, descService: DescService) {
         const
-            grpcServerDefinition = this.imports.type(source, descriptor, this.symbolKindDefinition),
-            IGrpcServer = this.imports.type(source, descriptor, this.symbolKindInterface),
-            interpreterType = this.interpreter.getServiceType(descriptor),
+            grpcServerDefinition = this.imports.type(source, descService, this.symbolKindDefinition),
+            IGrpcServer = this.imports.type(source, descService, this.symbolKindInterface),
+            interpreterType = this.interpreter.getServiceType(descService),
             grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js', true);
 
         const statement = ts.createVariableStatement(
@@ -151,7 +149,7 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
 
         // add to our file
         const doc =
-            `@grpc/grpc-js definition for the protobuf ${this.registry.formatQualifiedName(descriptor)}.\n` +
+            `@grpc/grpc-js definition for the protobuf ${descService.toString()}.\n` +
             `\n` +
             `Usage: Implement the interface ${IGrpcServer} and add to a grpc server.\n` +
             `\n` +
@@ -168,8 +166,8 @@ export class ServiceServerGeneratorGrpc extends GeneratorBase {
 
 
     private makeDefinitionProperty(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.PropertyAssignment {
-        const I = this.imports.type(source, this.registry.resolveTypeName(methodInfo.I.typeName));
-        const O = this.imports.type(source, this.registry.resolveTypeName(methodInfo.O.typeName));
+        const I = this.imports.typeByName(source, methodInfo.I.typeName);
+        const O = this.imports.typeByName(source, methodInfo.O.typeName);
 
         return ts.createPropertyAssignment(
             ts.createIdentifier(methodInfo.localName),

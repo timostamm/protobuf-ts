@@ -25,13 +25,13 @@ export interface GoFeatures {
     /**
      * Whether or not to generate the deprecated UnmarshalJSON method for enums.
      *
-     * @generated from protobuf field: optional bool legacy_unmarshal_json_enum = 1;
+     * @generated from protobuf field: optional bool legacy_unmarshal_json_enum = 1
      */
     legacyUnmarshalJsonEnum?: boolean;
     /**
      * One of OPEN, HYBRID or OPAQUE.
      *
-     * @generated from protobuf field: optional pb.GoFeatures.APILevel api_level = 2;
+     * @generated from protobuf field: optional pb.GoFeatures.APILevel api_level = 2
      */
     apiLevel?: GoFeatures_APILevel;
 }

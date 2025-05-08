@@ -46,7 +46,7 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface NestedMessage {
     /**
-     * @generated from protobuf field: optional int32 d = 1;
+     * @generated from protobuf field: optional int32 d = 1
      */
     d?: number;
 }
@@ -55,7 +55,7 @@ export interface NestedMessage {
  */
 export interface ArenaMessage {
     /**
-     * @generated from protobuf field: repeated proto2_arena_unittest.NestedMessage repeated_nested_message = 1;
+     * @generated from protobuf field: repeated proto2_arena_unittest.NestedMessage repeated_nested_message = 1
      */
     repeatedNestedMessage: NestedMessage[];
 }

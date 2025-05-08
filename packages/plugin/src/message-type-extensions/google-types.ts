@@ -1,20 +1,16 @@
-import {
-    DescriptorProto,
-    ITypeNameLookup,
-    TypescriptFile,
-    TypeScriptImports,
-    typescriptMethodFromText
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import * as ts from "typescript";
 import {LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import { FieldInfoGenerator } from "../code-gen/field-info-generator";
+import {DescMessage} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {typescriptMethodFromText} from "../framework/typescript-method-from-text";
 
 
 export class GoogleTypes implements CustomMethodGenerator {
 
     constructor(
-        private readonly typeNameLookup: ITypeNameLookup,
         private readonly imports: TypeScriptImports,
         private readonly options: { normalLongType: LongType; runtimeImportPath: string; useProtoFieldName: boolean },
     ) {
@@ -24,12 +20,10 @@ export class GoogleTypes implements CustomMethodGenerator {
     /**
      * Create custom methods for the handlers of some google types.
      */
-    make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[] {
-        const
-            typeName = this.typeNameLookup.makeTypeName(descriptor),
-            fn = this[typeName as keyof this] as unknown as (source: TypescriptFile, descriptor: DescriptorProto) => void | string | string[];
+    make(source: TypescriptFile, descMessage: DescMessage): ts.MethodDeclaration[] {
+        const fn = this[descMessage.typeName as keyof this] as unknown as (source: TypescriptFile, descMessage: DescMessage) => void | string | string[];
         if (fn) {
-            let r = fn.apply(this, [source, descriptor]);
+            let r = fn.apply(this, [source, descMessage]);
             if (typeof r == "string") {
                 return [typescriptMethodFromText(r)];
             }
@@ -41,8 +35,8 @@ export class GoogleTypes implements CustomMethodGenerator {
     }
 
 
-    ['google.type.Color'](source: TypescriptFile, descriptor: DescriptorProto) {
-        const Color = this.imports.type(source, descriptor);
+    ['google.type.Color'](source: TypescriptFile, descMessage: DescMessage) {
+        const Color = this.imports.type(source, descMessage);
         return [
             `
             /**
@@ -122,8 +116,8 @@ export class GoogleTypes implements CustomMethodGenerator {
         ];
     }
 
-    ['google.type.Date'](source: TypescriptFile, descriptor: DescriptorProto) {
-        const Date = this.imports.type(source, descriptor);
+    ['google.type.Date'](source: TypescriptFile, descMessage: DescMessage) {
+        const Date = this.imports.type(source, descMessage);
         return [
             `
             /**
@@ -159,8 +153,8 @@ export class GoogleTypes implements CustomMethodGenerator {
         ];
     }
 
-    ['google.type.DateTime'](source: TypescriptFile, descriptor: DescriptorProto) {
-        const DateTime = this.imports.type(source, descriptor);
+    ['google.type.DateTime'](source: TypescriptFile, descMessage: DescMessage) {
+        const DateTime = this.imports.type(source, descMessage);
         const PbLong = this.imports.name(source, 'PbLong', this.options.runtimeImportPath);
         let longConvertMethod = 'toBigInt';
         if (this.options.normalLongType === LongType.NUMBER)
@@ -239,8 +233,8 @@ export class GoogleTypes implements CustomMethodGenerator {
         ];
     }
 
-    ['google.type.TimeOfDay'](source: TypescriptFile, descriptor: DescriptorProto) {
-        const TimeOfDay = this.imports.type(source, descriptor);
+    ['google.type.TimeOfDay'](source: TypescriptFile, descMessage: DescMessage) {
+        const TimeOfDay = this.imports.type(source, descMessage);
         return [
             `
             /**

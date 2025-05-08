@@ -1,37 +1,33 @@
 import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
 import {assert} from "@protobuf-ts/runtime";
-import {
-    DescriptorProto,
-    DescriptorRegistry,
-    EnumDescriptorProto,
-    FieldDescriptorProto,
-    OneofDescriptorProto,
-    SymbolTable,
-    TypescriptFile,
-    TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import {CommentGenerator} from "./comment-generator";
-import {Interpreter} from "../interpreter";
-import {GeneratorBase} from "./generator-base";
 import {createLocalTypeName} from "./local-type-name";
+import {Interpreter} from "../interpreter";
+import {DescField, DescMessage, DescOneof} from "@bufbuild/protobuf";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
 
 
-export class MessageInterfaceGenerator extends GeneratorBase {
+export class MessageInterfaceGenerator {
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
-                private readonly options: {
-                    oneofKindDiscriminator: string;
-                    normalLongType: rt.LongType;
-                }) {
-        super(symbols, registry, imports, comments, interpreter);
+    constructor(
+        private readonly symbols: SymbolTable,
+        private readonly imports: TypeScriptImports,
+        private readonly comments: CommentGenerator,
+        private readonly interpreter: Interpreter,
+        private readonly options: {
+            oneofKindDiscriminator: string;
+            normalLongType: rt.LongType;
+        },
+    ) {
     }
 
 
-    registerSymbols(source: TypescriptFile, descriptor: DescriptorProto): void {
-        const name = createLocalTypeName(descriptor, this.registry);
-        this.symbols.register(name, descriptor, source);
+    registerSymbols(source: TypescriptFile, descMessage: DescMessage): void {
+        this.symbols.register(createLocalTypeName(descMessage), descMessage, source);
     }
 
 
@@ -51,29 +47,24 @@ export class MessageInterfaceGenerator extends GeneratorBase {
      *   }
      *
      */
-    generateMessageInterface(source: TypescriptFile, descriptor: DescriptorProto): ts.InterfaceDeclaration {
+    generateMessageInterface(source: TypescriptFile, descMessage: DescMessage): ts.InterfaceDeclaration {
         const
-            interpreterType = this.interpreter.getMessageType(descriptor),
+            interpreterType = this.interpreter.getMessageType(descMessage.typeName),
             processedOneofs: string[] = [], // oneof groups already processed
             members: ts.TypeElement[] = []; // the interface members
 
         for (let fieldInfo of interpreterType.fields) {
-            let fieldDescriptor = descriptor.field.find(fd => fd.number === fieldInfo.no);
-            assert(fieldDescriptor !== undefined);
-
-            if (fieldInfo.oneof) {
+            const descField = descMessage.fields.find(descField => descField.number === fieldInfo.no);
+            assert(descField);
+            if (fieldInfo.oneof && descField.oneof) {
                 if (processedOneofs.includes(fieldInfo.oneof)) {
                     continue;
                 }
-                // create single property for entire oneof group
-                assert(fieldDescriptor.oneofIndex !== undefined);
-                let oneofDescriptor = descriptor.oneofDecl[fieldDescriptor.oneofIndex];
-                assert(oneofDescriptor !== undefined);
-                members.push(this.createOneofADTPropertySignature(source, oneofDescriptor));
+                members.push(this.createOneofADTPropertySignature(source, descField.oneof));
                 processedOneofs.push(fieldInfo.oneof);
             } else {
                 // create regular properties
-                members.push(this.createFieldPropertySignature(source, fieldDescriptor, fieldInfo));
+                members.push(this.createFieldPropertySignature(source, descField, fieldInfo));
             }
         }
 
@@ -81,7 +72,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
         const statement = ts.createInterfaceDeclaration(
             undefined,
             [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
-            this.imports.type(source, descriptor),
+            this.imports.type(source, descMessage),
             undefined,
             undefined,
             members
@@ -89,7 +80,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
 
         // add to our file
         source.addStatement(statement);
-        this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(statement, descMessage, 'appendToLeadingBlock');
         return statement;
     }
 
@@ -100,7 +91,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
      *    fieldName: number
      *
      */
-    protected createFieldPropertySignature(source: TypescriptFile, fieldDescriptor: FieldDescriptorProto, fieldInfo: rt.FieldInfo): ts.PropertySignature {
+    protected createFieldPropertySignature(source: TypescriptFile, descField: DescField, fieldInfo: rt.FieldInfo): ts.PropertySignature {
         let type: ts.TypeNode; // the property type, may be made optional or wrapped into array at the end
 
         switch (fieldInfo.kind) {
@@ -152,7 +143,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
                 ]);
                 break;
             default:
-                throw new Error("unkown kind " + fieldDescriptor.name);
+                throw new Error("unkown kind " + descField.toString());
         }
 
         // if repeated, wrap type into array type
@@ -171,7 +162,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
             type,
             undefined
         );
-        this.comments.addCommentsForDescriptor(property, fieldDescriptor, 'trailingLines');
+        this.comments.addCommentsForDescriptor(property, descField, 'trailingLines');
         return property;
     }
 
@@ -191,13 +182,11 @@ export class MessageInterfaceGenerator extends GeneratorBase {
      *         | { oneofKind: "error"; error: string; }
      *         | { oneofKind: undefined; };
      */
-    protected createOneofADTPropertySignature(source:TypescriptFile, oneofDescriptor: OneofDescriptorProto): ts.PropertySignature {
+    protected createOneofADTPropertySignature(source:TypescriptFile, descOneof: DescOneof): ts.PropertySignature {
         const
             oneofCases: ts.TypeLiteralNode[] = [],
-            [messageDescriptor, interpreterType, oneofLocalName] = this.oneofInfo(oneofDescriptor),
+            [parentMessageDesc, interpreterType, oneofLocalName] = this.oneofInfo(descOneof),
             memberFieldInfos = interpreterType.fields.filter(fi => fi.oneof === oneofLocalName);
-
-        assert(oneofDescriptor !== undefined);
 
         // create a type for each selection case
         for (let fieldInfo of memberFieldInfos) {
@@ -212,9 +201,9 @@ export class MessageInterfaceGenerator extends GeneratorBase {
             );
 
             // { ..., fieldName: type } part
-            let fieldDescriptor = messageDescriptor.field.find(fd => fd.number === fieldInfo.no);
-            assert(fieldDescriptor !== undefined);
-            let valueProperty = this.createFieldPropertySignature(source, fieldDescriptor, fieldInfo);
+            let descField = parentMessageDesc.fields.find(fd => fd.number === fieldInfo.no);
+            assert(descField !== undefined);
+            let valueProperty = this.createFieldPropertySignature(source, descField, fieldInfo);
 
             // add this case
             oneofCases.push(
@@ -246,7 +235,7 @@ export class MessageInterfaceGenerator extends GeneratorBase {
         );
 
         // add comments
-        this.comments.addCommentsForDescriptor(property, oneofDescriptor, 'appendToLeadingBlock');
+        this.comments.addCommentsForDescriptor(property, descOneof, 'appendToLeadingBlock');
         return property;
     }
 
@@ -257,19 +246,15 @@ export class MessageInterfaceGenerator extends GeneratorBase {
      * [1] a corresponding message type generated by the interpreter
      * [2] the runtime local name of the oneof
      */
-    private oneofInfo(oneofDescriptor: OneofDescriptorProto): [DescriptorProto, rt.IMessageType<rt.UnknownMessage>, string] {
-        const messageDescriptor = this.registry.parentOf(oneofDescriptor);
-        assert(DescriptorProto.is(messageDescriptor));
-        const interpreterType = this.interpreter.getMessageType(messageDescriptor);
-        const oneofIndex = messageDescriptor.oneofDecl.indexOf(oneofDescriptor);
-        assert(oneofIndex !== undefined);
-        const sampleFieldDescriptor = messageDescriptor.field.find(fd => fd.oneofIndex === oneofIndex);
-        assert(sampleFieldDescriptor !== undefined);
-        const sampleFieldInfo = interpreterType.fields.find(fi => fi.no === sampleFieldDescriptor.number);
+    private oneofInfo(descOneof: DescOneof): [DescMessage, rt.IMessageType<rt.UnknownMessage>, string] {
+        const parent: DescMessage = descOneof.parent;
+        const interpreterType = this.interpreter.getMessageType(parent);
+        const sampleField = descOneof.fields[0];
+        const sampleFieldInfo = interpreterType.fields.find(fi => fi.no === sampleField.number);
         assert(sampleFieldInfo !== undefined);
         const oneofName = sampleFieldInfo.oneof;
         assert(oneofName !== undefined);
-        return [messageDescriptor, interpreterType, oneofName];
+        return [parent, interpreterType, oneofName];
     }
 
 
@@ -306,17 +291,13 @@ export class MessageInterfaceGenerator extends GeneratorBase {
     }
 
     private createMessageTypeNode(source: TypescriptFile, type: rt.IMessageType<rt.UnknownMessage>): ts.TypeNode {
-        let messageDescriptor = this.registry.resolveTypeName(type.typeName);
-        assert(DescriptorProto.is(messageDescriptor));
-        return ts.createTypeReferenceNode(this.imports.type(source, messageDescriptor), undefined);
+        return ts.createTypeReferenceNode(this.imports.typeByName(source, type.typeName), undefined);
     }
 
 
     private createEnumTypeNode(source: TypescriptFile, ei: rt.EnumInfo): ts.TypeNode {
         let [enumTypeName] = ei;
-        let enumDescriptor = this.registry.resolveTypeName(enumTypeName);
-        assert(EnumDescriptorProto.is(enumDescriptor));
-        return ts.createTypeReferenceNode(this.imports.type(source, enumDescriptor), undefined);
+        return ts.createTypeReferenceNode(this.imports.typeByName(source, enumTypeName), undefined);
     }
 
 

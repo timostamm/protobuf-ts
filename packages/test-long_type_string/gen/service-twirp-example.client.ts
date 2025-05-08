@@ -22,7 +22,7 @@ export interface IHaberdasherClient {
     /**
      * MakeHat produces a hat of mysterious, randomly-selected color!
      *
-     * @generated from protobuf rpc: MakeHat(spec.haberdasher.Size) returns (spec.haberdasher.Hat);
+     * @generated from protobuf rpc: MakeHat
      */
     makeHat(input: Size, options?: RpcOptions): UnaryCall<Size, Hat>;
 }
@@ -40,7 +40,7 @@ export class HaberdasherClient implements IHaberdasherClient, ServiceInfo {
     /**
      * MakeHat produces a hat of mysterious, randomly-selected color!
      *
-     * @generated from protobuf rpc: MakeHat(spec.haberdasher.Size) returns (spec.haberdasher.Hat);
+     * @generated from protobuf rpc: MakeHat
      */
     makeHat(input: Size, options?: RpcOptions): UnaryCall<Size, Hat> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);

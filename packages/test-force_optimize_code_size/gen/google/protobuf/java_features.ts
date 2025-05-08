@@ -20,11 +20,11 @@ export interface JavaFeatures {
      * consistent with the legacy behavior of using proto3 enum types for proto2
      * fields.
      *
-     * @generated from protobuf field: optional bool legacy_closed_enum = 1;
+     * @generated from protobuf field: optional bool legacy_closed_enum = 1
      */
     legacyClosedEnum?: boolean;
     /**
-     * @generated from protobuf field: optional pb.JavaFeatures.Utf8Validation utf8_validation = 2;
+     * @generated from protobuf field: optional pb.JavaFeatures.Utf8Validation utf8_validation = 2
      */
     utf8Validation?: JavaFeatures_Utf8Validation;
 }

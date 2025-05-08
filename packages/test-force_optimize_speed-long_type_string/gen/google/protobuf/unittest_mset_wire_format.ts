@@ -37,7 +37,7 @@ export interface TestMessageSet {
  */
 export interface TestMessageSetWireFormatContainer {
     /**
-     * @generated from protobuf field: optional proto2_wireformat_unittest.TestMessageSet message_set = 1;
+     * @generated from protobuf field: optional proto2_wireformat_unittest.TestMessageSet message_set = 1
      */
     messageSet?: TestMessageSet;
 }

@@ -10,7 +10,7 @@ export interface AnyMessage {
     /**
      * https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/any.proto
      *
-     * @generated from protobuf field: google.protobuf.Any any_field = 1;
+     * @generated from protobuf field: google.protobuf.Any any_field = 1
      */
     anyField?: Any;
 }

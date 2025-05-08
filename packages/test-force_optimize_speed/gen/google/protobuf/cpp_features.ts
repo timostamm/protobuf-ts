@@ -28,15 +28,15 @@ export interface CppFeatures {
      * consistent with the legacy behavior of using proto3 enum types for proto2
      * fields.
      *
-     * @generated from protobuf field: optional bool legacy_closed_enum = 1;
+     * @generated from protobuf field: optional bool legacy_closed_enum = 1
      */
     legacyClosedEnum?: boolean;
     /**
-     * @generated from protobuf field: optional pb.CppFeatures.StringType string_type = 2;
+     * @generated from protobuf field: optional pb.CppFeatures.StringType string_type = 2
      */
     stringType?: CppFeatures_StringType;
     /**
-     * @generated from protobuf field: optional bool enum_name_uses_string_view = 3;
+     * @generated from protobuf field: optional bool enum_name_uses_string_view = 3
      */
     enumNameUsesStringView?: boolean;
 }

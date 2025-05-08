@@ -15,39 +15,39 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface Proto3PackedMessage {
     /**
-     * @generated from protobuf field: repeated double double_field = 1;
+     * @generated from protobuf field: repeated double double_field = 1
      */
     doubleField: number[];
     /**
-     * @generated from protobuf field: repeated uint32 uint32_field = 2;
+     * @generated from protobuf field: repeated uint32 uint32_field = 2
      */
     uint32Field: number[];
     /**
-     * @generated from protobuf field: repeated uint64 uint64_field = 3;
+     * @generated from protobuf field: repeated uint64 uint64_field = 3
      */
     uint64Field: bigint[];
     /**
-     * @generated from protobuf field: repeated double packed_double_field = 101 [packed = true];
+     * @generated from protobuf field: repeated double packed_double_field = 101 [packed = true]
      */
     packedDoubleField: number[];
     /**
-     * @generated from protobuf field: repeated uint32 packed_uint32_field = 102 [packed = true];
+     * @generated from protobuf field: repeated uint32 packed_uint32_field = 102 [packed = true]
      */
     packedUint32Field: number[];
     /**
-     * @generated from protobuf field: repeated uint64 packed_uint64_field = 103 [packed = true];
+     * @generated from protobuf field: repeated uint64 packed_uint64_field = 103 [packed = true]
      */
     packedUint64Field: bigint[];
     /**
-     * @generated from protobuf field: repeated double unpacked_double_field = 201 [packed = false];
+     * @generated from protobuf field: repeated double unpacked_double_field = 201 [packed = false]
      */
     unpackedDoubleField: number[];
     /**
-     * @generated from protobuf field: repeated uint32 unpacked_uint32_field = 202 [packed = false];
+     * @generated from protobuf field: repeated uint32 unpacked_uint32_field = 202 [packed = false]
      */
     unpackedUint32Field: number[];
     /**
-     * @generated from protobuf field: repeated uint64 unpacked_uint64_field = 203 [packed = false];
+     * @generated from protobuf field: repeated uint64 unpacked_uint64_field = 203 [packed = false]
      */
     unpackedUint64Field: bigint[];
 }
@@ -107,42 +107,42 @@ class Proto3PackedMessage$Type extends MessageType<Proto3PackedMessage> {
                     else
                         message.uint64Field.push(reader.uint64().toBigInt());
                     break;
-                case /* repeated double packed_double_field = 101 [packed = true];*/ 101:
+                case /* repeated double packed_double_field = 101 [packed = true] */ 101:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedDoubleField.push(reader.double());
                     else
                         message.packedDoubleField.push(reader.double());
                     break;
-                case /* repeated uint32 packed_uint32_field = 102 [packed = true];*/ 102:
+                case /* repeated uint32 packed_uint32_field = 102 [packed = true] */ 102:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint32Field.push(reader.uint32());
                     else
                         message.packedUint32Field.push(reader.uint32());
                     break;
-                case /* repeated uint64 packed_uint64_field = 103 [packed = true];*/ 103:
+                case /* repeated uint64 packed_uint64_field = 103 [packed = true] */ 103:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint64Field.push(reader.uint64().toBigInt());
                     else
                         message.packedUint64Field.push(reader.uint64().toBigInt());
                     break;
-                case /* repeated double unpacked_double_field = 201 [packed = false];*/ 201:
+                case /* repeated double unpacked_double_field = 201 [packed = false] */ 201:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedDoubleField.push(reader.double());
                     else
                         message.unpackedDoubleField.push(reader.double());
                     break;
-                case /* repeated uint32 unpacked_uint32_field = 202 [packed = false];*/ 202:
+                case /* repeated uint32 unpacked_uint32_field = 202 [packed = false] */ 202:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedUint32Field.push(reader.uint32());
                     else
                         message.unpackedUint32Field.push(reader.uint32());
                     break;
-                case /* repeated uint64 unpacked_uint64_field = 203 [packed = false];*/ 203:
+                case /* repeated uint64 unpacked_uint64_field = 203 [packed = false] */ 203:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedUint64Field.push(reader.uint64().toBigInt());

@@ -41,407 +41,407 @@ export interface TestAllTypesProto2 {
     /**
      * Singular
      *
-     * @generated from protobuf field: optional int32 optional_int32 = 1;
+     * @generated from protobuf field: optional int32 optional_int32 = 1
      */
     optionalInt32?: number;
     /**
-     * @generated from protobuf field: optional int64 optional_int64 = 2;
+     * @generated from protobuf field: optional int64 optional_int64 = 2
      */
     optionalInt64?: string;
     /**
-     * @generated from protobuf field: optional uint32 optional_uint32 = 3;
+     * @generated from protobuf field: optional uint32 optional_uint32 = 3
      */
     optionalUint32?: number;
     /**
-     * @generated from protobuf field: optional uint64 optional_uint64 = 4;
+     * @generated from protobuf field: optional uint64 optional_uint64 = 4
      */
     optionalUint64?: string;
     /**
-     * @generated from protobuf field: optional sint32 optional_sint32 = 5;
+     * @generated from protobuf field: optional sint32 optional_sint32 = 5
      */
     optionalSint32?: number;
     /**
-     * @generated from protobuf field: optional sint64 optional_sint64 = 6;
+     * @generated from protobuf field: optional sint64 optional_sint64 = 6
      */
     optionalSint64?: string;
     /**
-     * @generated from protobuf field: optional fixed32 optional_fixed32 = 7;
+     * @generated from protobuf field: optional fixed32 optional_fixed32 = 7
      */
     optionalFixed32?: number;
     /**
-     * @generated from protobuf field: optional fixed64 optional_fixed64 = 8;
+     * @generated from protobuf field: optional fixed64 optional_fixed64 = 8
      */
     optionalFixed64?: string;
     /**
-     * @generated from protobuf field: optional sfixed32 optional_sfixed32 = 9;
+     * @generated from protobuf field: optional sfixed32 optional_sfixed32 = 9
      */
     optionalSfixed32?: number;
     /**
-     * @generated from protobuf field: optional sfixed64 optional_sfixed64 = 10;
+     * @generated from protobuf field: optional sfixed64 optional_sfixed64 = 10
      */
     optionalSfixed64?: string;
     /**
-     * @generated from protobuf field: optional float optional_float = 11;
+     * @generated from protobuf field: optional float optional_float = 11
      */
     optionalFloat?: number;
     /**
-     * @generated from protobuf field: optional double optional_double = 12;
+     * @generated from protobuf field: optional double optional_double = 12
      */
     optionalDouble?: number;
     /**
-     * @generated from protobuf field: optional bool optional_bool = 13;
+     * @generated from protobuf field: optional bool optional_bool = 13
      */
     optionalBool?: boolean;
     /**
-     * @generated from protobuf field: optional string optional_string = 14;
+     * @generated from protobuf field: optional string optional_string = 14
      */
     optionalString?: string;
     /**
-     * @generated from protobuf field: optional bytes optional_bytes = 15;
+     * @generated from protobuf field: optional bytes optional_bytes = 15
      */
     optionalBytes?: Uint8Array;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage optional_nested_message = 18;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage optional_nested_message = 18
      */
     optionalNestedMessage?: TestAllTypesProto2_NestedMessage;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignMessageProto2 optional_foreign_message = 19;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignMessageProto2 optional_foreign_message = 19
      */
     optionalForeignMessage?: ForeignMessageProto2;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum optional_nested_enum = 21;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum optional_nested_enum = 21
      */
     optionalNestedEnum?: TestAllTypesProto2_NestedEnum;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignEnumProto2 optional_foreign_enum = 22;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignEnumProto2 optional_foreign_enum = 22
      */
     optionalForeignEnum?: ForeignEnumProto2;
     /**
-     * @generated from protobuf field: optional string optional_string_piece = 24;
+     * @generated from protobuf field: optional string optional_string_piece = 24
      */
     optionalStringPiece?: string;
     /**
-     * @generated from protobuf field: optional string optional_cord = 25;
+     * @generated from protobuf field: optional string optional_cord = 25
      */
     optionalCord?: string;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2 recursive_message = 27;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2 recursive_message = 27
      */
     recursiveMessage?: TestAllTypesProto2;
     /**
      * Repeated
      *
-     * @generated from protobuf field: repeated int32 repeated_int32 = 31;
+     * @generated from protobuf field: repeated int32 repeated_int32 = 31
      */
     repeatedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 repeated_int64 = 32;
+     * @generated from protobuf field: repeated int64 repeated_int64 = 32
      */
     repeatedInt64: string[];
     /**
-     * @generated from protobuf field: repeated uint32 repeated_uint32 = 33;
+     * @generated from protobuf field: repeated uint32 repeated_uint32 = 33
      */
     repeatedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 repeated_uint64 = 34;
+     * @generated from protobuf field: repeated uint64 repeated_uint64 = 34
      */
     repeatedUint64: string[];
     /**
-     * @generated from protobuf field: repeated sint32 repeated_sint32 = 35;
+     * @generated from protobuf field: repeated sint32 repeated_sint32 = 35
      */
     repeatedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 repeated_sint64 = 36;
+     * @generated from protobuf field: repeated sint64 repeated_sint64 = 36
      */
     repeatedSint64: string[];
     /**
-     * @generated from protobuf field: repeated fixed32 repeated_fixed32 = 37;
+     * @generated from protobuf field: repeated fixed32 repeated_fixed32 = 37
      */
     repeatedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 repeated_fixed64 = 38;
+     * @generated from protobuf field: repeated fixed64 repeated_fixed64 = 38
      */
     repeatedFixed64: string[];
     /**
-     * @generated from protobuf field: repeated sfixed32 repeated_sfixed32 = 39;
+     * @generated from protobuf field: repeated sfixed32 repeated_sfixed32 = 39
      */
     repeatedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 repeated_sfixed64 = 40;
+     * @generated from protobuf field: repeated sfixed64 repeated_sfixed64 = 40
      */
     repeatedSfixed64: string[];
     /**
-     * @generated from protobuf field: repeated float repeated_float = 41;
+     * @generated from protobuf field: repeated float repeated_float = 41
      */
     repeatedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double repeated_double = 42;
+     * @generated from protobuf field: repeated double repeated_double = 42
      */
     repeatedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool repeated_bool = 43;
+     * @generated from protobuf field: repeated bool repeated_bool = 43
      */
     repeatedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated string repeated_string = 44;
+     * @generated from protobuf field: repeated string repeated_string = 44
      */
     repeatedString: string[];
     /**
-     * @generated from protobuf field: repeated bytes repeated_bytes = 45;
+     * @generated from protobuf field: repeated bytes repeated_bytes = 45
      */
     repeatedBytes: Uint8Array[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage repeated_nested_message = 48;
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage repeated_nested_message = 48
      */
     repeatedNestedMessage: TestAllTypesProto2_NestedMessage[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.ForeignMessageProto2 repeated_foreign_message = 49;
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.ForeignMessageProto2 repeated_foreign_message = 49
      */
     repeatedForeignMessage: ForeignMessageProto2[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum repeated_nested_enum = 51;
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum repeated_nested_enum = 51
      */
     repeatedNestedEnum: TestAllTypesProto2_NestedEnum[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.ForeignEnumProto2 repeated_foreign_enum = 52;
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.ForeignEnumProto2 repeated_foreign_enum = 52
      */
     repeatedForeignEnum: ForeignEnumProto2[];
     /**
-     * @generated from protobuf field: repeated string repeated_string_piece = 54;
+     * @generated from protobuf field: repeated string repeated_string_piece = 54
      */
     repeatedStringPiece: string[];
     /**
-     * @generated from protobuf field: repeated string repeated_cord = 55;
+     * @generated from protobuf field: repeated string repeated_cord = 55
      */
     repeatedCord: string[];
     /**
      * Packed
      *
-     * @generated from protobuf field: repeated int32 packed_int32 = 75 [packed = true];
+     * @generated from protobuf field: repeated int32 packed_int32 = 75 [packed = true]
      */
     packedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 packed_int64 = 76 [packed = true];
+     * @generated from protobuf field: repeated int64 packed_int64 = 76 [packed = true]
      */
     packedInt64: string[];
     /**
-     * @generated from protobuf field: repeated uint32 packed_uint32 = 77 [packed = true];
+     * @generated from protobuf field: repeated uint32 packed_uint32 = 77 [packed = true]
      */
     packedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 packed_uint64 = 78 [packed = true];
+     * @generated from protobuf field: repeated uint64 packed_uint64 = 78 [packed = true]
      */
     packedUint64: string[];
     /**
-     * @generated from protobuf field: repeated sint32 packed_sint32 = 79 [packed = true];
+     * @generated from protobuf field: repeated sint32 packed_sint32 = 79 [packed = true]
      */
     packedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 packed_sint64 = 80 [packed = true];
+     * @generated from protobuf field: repeated sint64 packed_sint64 = 80 [packed = true]
      */
     packedSint64: string[];
     /**
-     * @generated from protobuf field: repeated fixed32 packed_fixed32 = 81 [packed = true];
+     * @generated from protobuf field: repeated fixed32 packed_fixed32 = 81 [packed = true]
      */
     packedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 packed_fixed64 = 82 [packed = true];
+     * @generated from protobuf field: repeated fixed64 packed_fixed64 = 82 [packed = true]
      */
     packedFixed64: string[];
     /**
-     * @generated from protobuf field: repeated sfixed32 packed_sfixed32 = 83 [packed = true];
+     * @generated from protobuf field: repeated sfixed32 packed_sfixed32 = 83 [packed = true]
      */
     packedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 packed_sfixed64 = 84 [packed = true];
+     * @generated from protobuf field: repeated sfixed64 packed_sfixed64 = 84 [packed = true]
      */
     packedSfixed64: string[];
     /**
-     * @generated from protobuf field: repeated float packed_float = 85 [packed = true];
+     * @generated from protobuf field: repeated float packed_float = 85 [packed = true]
      */
     packedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double packed_double = 86 [packed = true];
+     * @generated from protobuf field: repeated double packed_double = 86 [packed = true]
      */
     packedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool packed_bool = 87 [packed = true];
+     * @generated from protobuf field: repeated bool packed_bool = 87 [packed = true]
      */
     packedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum packed_nested_enum = 88 [packed = true];
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum packed_nested_enum = 88 [packed = true]
      */
     packedNestedEnum: TestAllTypesProto2_NestedEnum[];
     /**
      * Unpacked
      *
-     * @generated from protobuf field: repeated int32 unpacked_int32 = 89 [packed = false];
+     * @generated from protobuf field: repeated int32 unpacked_int32 = 89 [packed = false]
      */
     unpackedInt32: number[];
     /**
-     * @generated from protobuf field: repeated int64 unpacked_int64 = 90 [packed = false];
+     * @generated from protobuf field: repeated int64 unpacked_int64 = 90 [packed = false]
      */
     unpackedInt64: string[];
     /**
-     * @generated from protobuf field: repeated uint32 unpacked_uint32 = 91 [packed = false];
+     * @generated from protobuf field: repeated uint32 unpacked_uint32 = 91 [packed = false]
      */
     unpackedUint32: number[];
     /**
-     * @generated from protobuf field: repeated uint64 unpacked_uint64 = 92 [packed = false];
+     * @generated from protobuf field: repeated uint64 unpacked_uint64 = 92 [packed = false]
      */
     unpackedUint64: string[];
     /**
-     * @generated from protobuf field: repeated sint32 unpacked_sint32 = 93 [packed = false];
+     * @generated from protobuf field: repeated sint32 unpacked_sint32 = 93 [packed = false]
      */
     unpackedSint32: number[];
     /**
-     * @generated from protobuf field: repeated sint64 unpacked_sint64 = 94 [packed = false];
+     * @generated from protobuf field: repeated sint64 unpacked_sint64 = 94 [packed = false]
      */
     unpackedSint64: string[];
     /**
-     * @generated from protobuf field: repeated fixed32 unpacked_fixed32 = 95 [packed = false];
+     * @generated from protobuf field: repeated fixed32 unpacked_fixed32 = 95 [packed = false]
      */
     unpackedFixed32: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 unpacked_fixed64 = 96 [packed = false];
+     * @generated from protobuf field: repeated fixed64 unpacked_fixed64 = 96 [packed = false]
      */
     unpackedFixed64: string[];
     /**
-     * @generated from protobuf field: repeated sfixed32 unpacked_sfixed32 = 97 [packed = false];
+     * @generated from protobuf field: repeated sfixed32 unpacked_sfixed32 = 97 [packed = false]
      */
     unpackedSfixed32: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 unpacked_sfixed64 = 98 [packed = false];
+     * @generated from protobuf field: repeated sfixed64 unpacked_sfixed64 = 98 [packed = false]
      */
     unpackedSfixed64: string[];
     /**
-     * @generated from protobuf field: repeated float unpacked_float = 99 [packed = false];
+     * @generated from protobuf field: repeated float unpacked_float = 99 [packed = false]
      */
     unpackedFloat: number[];
     /**
-     * @generated from protobuf field: repeated double unpacked_double = 100 [packed = false];
+     * @generated from protobuf field: repeated double unpacked_double = 100 [packed = false]
      */
     unpackedDouble: number[];
     /**
-     * @generated from protobuf field: repeated bool unpacked_bool = 101 [packed = false];
+     * @generated from protobuf field: repeated bool unpacked_bool = 101 [packed = false]
      */
     unpackedBool: boolean[];
     /**
-     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum unpacked_nested_enum = 102 [packed = false];
+     * @generated from protobuf field: repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum unpacked_nested_enum = 102 [packed = false]
      */
     unpackedNestedEnum: TestAllTypesProto2_NestedEnum[];
     /**
      * Map
      *
-     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 56;
+     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 56
      */
     mapInt32Int32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 57;
+     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 57
      */
     mapInt64Int64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 58;
+     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 58
      */
     mapUint32Uint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 59;
+     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 59
      */
     mapUint64Uint64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 60;
+     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 60
      */
     mapSint32Sint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 61;
+     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 61
      */
     mapSint64Sint64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 62;
+     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 62
      */
     mapFixed32Fixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 63;
+     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 63
      */
     mapFixed64Fixed64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 64;
+     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 64
      */
     mapSfixed32Sfixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 65;
+     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 65
      */
     mapSfixed64Sfixed64: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<int32, float> map_int32_float = 66;
+     * @generated from protobuf field: map<int32, float> map_int32_float = 66
      */
     mapInt32Float: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int32, double> map_int32_double = 67;
+     * @generated from protobuf field: map<int32, double> map_int32_double = 67
      */
     mapInt32Double: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<bool, bool> map_bool_bool = 68;
+     * @generated from protobuf field: map<bool, bool> map_bool_bool = 68
      */
     mapBoolBool: {
         [key: string]: boolean;
     };
     /**
-     * @generated from protobuf field: map<string, string> map_string_string = 69;
+     * @generated from protobuf field: map<string, string> map_string_string = 69
      */
     mapStringString: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<string, bytes> map_string_bytes = 70;
+     * @generated from protobuf field: map<string, bytes> map_string_bytes = 70
      */
     mapStringBytes: {
         [key: string]: Uint8Array;
     };
     /**
-     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage> map_string_nested_message = 71;
+     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage> map_string_nested_message = 71
      */
     mapStringNestedMessage: {
         [key: string]: TestAllTypesProto2_NestedMessage;
     };
     /**
-     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.ForeignMessageProto2> map_string_foreign_message = 72;
+     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.ForeignMessageProto2> map_string_foreign_message = 72
      */
     mapStringForeignMessage: {
         [key: string]: ForeignMessageProto2;
     };
     /**
-     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum> map_string_nested_enum = 73;
+     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum> map_string_nested_enum = 73
      */
     mapStringNestedEnum: {
         [key: string]: TestAllTypesProto2_NestedEnum;
     };
     /**
-     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.ForeignEnumProto2> map_string_foreign_enum = 74;
+     * @generated from protobuf field: map<string, protobuf_test_messages.proto2.ForeignEnumProto2> map_string_foreign_enum = 74
      */
     mapStringForeignEnum: {
         [key: string]: ForeignEnumProto2;
@@ -452,55 +452,55 @@ export interface TestAllTypesProto2 {
     oneofField: {
         oneofKind: "oneofUint32";
         /**
-         * @generated from protobuf field: uint32 oneof_uint32 = 111;
+         * @generated from protobuf field: uint32 oneof_uint32 = 111
          */
         oneofUint32: number;
     } | {
         oneofKind: "oneofNestedMessage";
         /**
-         * @generated from protobuf field: protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage oneof_nested_message = 112;
+         * @generated from protobuf field: protobuf_test_messages.proto2.TestAllTypesProto2.NestedMessage oneof_nested_message = 112
          */
         oneofNestedMessage: TestAllTypesProto2_NestedMessage;
     } | {
         oneofKind: "oneofString";
         /**
-         * @generated from protobuf field: string oneof_string = 113;
+         * @generated from protobuf field: string oneof_string = 113
          */
         oneofString: string;
     } | {
         oneofKind: "oneofBytes";
         /**
-         * @generated from protobuf field: bytes oneof_bytes = 114;
+         * @generated from protobuf field: bytes oneof_bytes = 114
          */
         oneofBytes: Uint8Array;
     } | {
         oneofKind: "oneofBool";
         /**
-         * @generated from protobuf field: bool oneof_bool = 115;
+         * @generated from protobuf field: bool oneof_bool = 115
          */
         oneofBool: boolean;
     } | {
         oneofKind: "oneofUint64";
         /**
-         * @generated from protobuf field: uint64 oneof_uint64 = 116;
+         * @generated from protobuf field: uint64 oneof_uint64 = 116
          */
         oneofUint64: string;
     } | {
         oneofKind: "oneofFloat";
         /**
-         * @generated from protobuf field: float oneof_float = 117;
+         * @generated from protobuf field: float oneof_float = 117
          */
         oneofFloat: number;
     } | {
         oneofKind: "oneofDouble";
         /**
-         * @generated from protobuf field: double oneof_double = 118;
+         * @generated from protobuf field: double oneof_double = 118
          */
         oneofDouble: number;
     } | {
         oneofKind: "oneofEnum";
         /**
-         * @generated from protobuf field: protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum oneof_enum = 119;
+         * @generated from protobuf field: protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum oneof_enum = 119
          */
         oneofEnum: TestAllTypesProto2_NestedEnum;
     } | {
@@ -509,138 +509,138 @@ export interface TestAllTypesProto2 {
     /**
      * default values
      *
-     * @generated from protobuf field: optional int32 default_int32 = 241;
+     * @generated from protobuf field: optional int32 default_int32 = 241 [default = -123456789]
      */
     defaultInt32?: number;
     /**
-     * @generated from protobuf field: optional int64 default_int64 = 242;
+     * @generated from protobuf field: optional int64 default_int64 = 242 [default = -9123456789123456789]
      */
     defaultInt64?: string;
     /**
-     * @generated from protobuf field: optional uint32 default_uint32 = 243;
+     * @generated from protobuf field: optional uint32 default_uint32 = 243 [default = 2123456789]
      */
     defaultUint32?: number;
     /**
-     * @generated from protobuf field: optional uint64 default_uint64 = 244;
+     * @generated from protobuf field: optional uint64 default_uint64 = 244 [default = 10123456789123456789]
      */
     defaultUint64?: string;
     /**
-     * @generated from protobuf field: optional sint32 default_sint32 = 245;
+     * @generated from protobuf field: optional sint32 default_sint32 = 245 [default = -123456789]
      */
     defaultSint32?: number;
     /**
-     * @generated from protobuf field: optional sint64 default_sint64 = 246;
+     * @generated from protobuf field: optional sint64 default_sint64 = 246 [default = -9123456789123456789]
      */
     defaultSint64?: string;
     /**
-     * @generated from protobuf field: optional fixed32 default_fixed32 = 247;
+     * @generated from protobuf field: optional fixed32 default_fixed32 = 247 [default = 2123456789]
      */
     defaultFixed32?: number;
     /**
-     * @generated from protobuf field: optional fixed64 default_fixed64 = 248;
+     * @generated from protobuf field: optional fixed64 default_fixed64 = 248 [default = 10123456789123456789]
      */
     defaultFixed64?: string;
     /**
-     * @generated from protobuf field: optional sfixed32 default_sfixed32 = 249;
+     * @generated from protobuf field: optional sfixed32 default_sfixed32 = 249 [default = -123456789]
      */
     defaultSfixed32?: number;
     /**
-     * @generated from protobuf field: optional sfixed64 default_sfixed64 = 250;
+     * @generated from protobuf field: optional sfixed64 default_sfixed64 = 250 [default = -9123456789123456789]
      */
     defaultSfixed64?: string;
     /**
-     * @generated from protobuf field: optional float default_float = 251;
+     * @generated from protobuf field: optional float default_float = 251 [default = 9e+09]
      */
     defaultFloat?: number;
     /**
-     * @generated from protobuf field: optional double default_double = 252;
+     * @generated from protobuf field: optional double default_double = 252 [default = 7e+22]
      */
     defaultDouble?: number;
     /**
-     * @generated from protobuf field: optional bool default_bool = 253;
+     * @generated from protobuf field: optional bool default_bool = 253 [default = true]
      */
     defaultBool?: boolean;
     /**
-     * @generated from protobuf field: optional string default_string = 254;
+     * @generated from protobuf field: optional string default_string = 254 [default = "Rosebud"]
      */
     defaultString?: string;
     /**
-     * @generated from protobuf field: optional bytes default_bytes = 255;
+     * @generated from protobuf field: optional bytes default_bytes = 255 [default = "joshua"]
      */
     defaultBytes?: Uint8Array;
     /**
      * Test field-name-to-JSON-name convention.
      * (protobuf says names can be any valid C/C++ identifier.)
      *
-     * @generated from protobuf field: optional int32 fieldname1 = 401;
+     * @generated from protobuf field: optional int32 fieldname1 = 401
      */
     fieldname1?: number;
     /**
-     * @generated from protobuf field: optional int32 field_name2 = 402;
+     * @generated from protobuf field: optional int32 field_name2 = 402
      */
     fieldName2?: number;
     /**
-     * @generated from protobuf field: optional int32 _field_name3 = 403;
+     * @generated from protobuf field: optional int32 _field_name3 = 403
      */
     FieldName3?: number;
     /**
-     * @generated from protobuf field: optional int32 field__name4_ = 404;
+     * @generated from protobuf field: optional int32 field__name4_ = 404
      */
     fieldName4?: number;
     /**
-     * @generated from protobuf field: optional int32 field0name5 = 405 [json_name = "field0name5"];
+     * @generated from protobuf field: optional int32 field0name5 = 405
      */
     field0Name5?: number;
     /**
-     * @generated from protobuf field: optional int32 field_0_name6 = 406;
+     * @generated from protobuf field: optional int32 field_0_name6 = 406
      */
     field0Name6?: number;
     /**
-     * @generated from protobuf field: optional int32 fieldName7 = 407;
+     * @generated from protobuf field: optional int32 fieldName7 = 407
      */
     fieldName7?: number;
     /**
-     * @generated from protobuf field: optional int32 FieldName8 = 408 [json_name = "FieldName8"];
+     * @generated from protobuf field: optional int32 FieldName8 = 408
      */
     fieldName8?: number;
     /**
-     * @generated from protobuf field: optional int32 field_Name9 = 409;
+     * @generated from protobuf field: optional int32 field_Name9 = 409
      */
     fieldName9?: number;
     /**
-     * @generated from protobuf field: optional int32 Field_Name10 = 410 [json_name = "FieldName10"];
+     * @generated from protobuf field: optional int32 Field_Name10 = 410
      */
     fieldName10?: number;
     /**
-     * @generated from protobuf field: optional int32 FIELD_NAME11 = 411 [json_name = "FIELDNAME11"];
+     * @generated from protobuf field: optional int32 FIELD_NAME11 = 411
      */
     fIELDNAME11?: number;
     /**
-     * @generated from protobuf field: optional int32 FIELD_name12 = 412 [json_name = "FIELDName12"];
+     * @generated from protobuf field: optional int32 FIELD_name12 = 412
      */
     fIELDName12?: number;
     /**
-     * @generated from protobuf field: optional int32 __field_name13 = 413;
+     * @generated from protobuf field: optional int32 __field_name13 = 413
      */
     FieldName13?: number;
     /**
-     * @generated from protobuf field: optional int32 __Field_name14 = 414;
+     * @generated from protobuf field: optional int32 __Field_name14 = 414
      */
     FieldName14?: number;
     /**
-     * @generated from protobuf field: optional int32 field__name15 = 415;
+     * @generated from protobuf field: optional int32 field__name15 = 415
      */
     fieldName15?: number;
     /**
-     * @generated from protobuf field: optional int32 field__Name16 = 416;
+     * @generated from protobuf field: optional int32 field__Name16 = 416
      */
     fieldName16?: number;
     /**
-     * @generated from protobuf field: optional int32 field_name17__ = 417;
+     * @generated from protobuf field: optional int32 field_name17__ = 417
      */
     fieldName17?: number;
     /**
-     * @generated from protobuf field: optional int32 Field_name18__ = 418 [json_name = "FieldName18"];
+     * @generated from protobuf field: optional int32 Field_name18__ = 418
      */
     fieldName18?: number;
 }
@@ -649,11 +649,11 @@ export interface TestAllTypesProto2 {
  */
 export interface TestAllTypesProto2_NestedMessage {
     /**
-     * @generated from protobuf field: optional int32 a = 1;
+     * @generated from protobuf field: optional int32 a = 1
      */
     a?: number;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2 corecursive = 2;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllTypesProto2 corecursive = 2
      */
     corecursive?: TestAllTypesProto2;
 }
@@ -664,11 +664,11 @@ export interface TestAllTypesProto2_NestedMessage {
  */
 export interface TestAllTypesProto2_Data {
     /**
-     * @generated from protobuf field: optional int32 group_int32 = 202;
+     * @generated from protobuf field: optional int32 group_int32 = 202
      */
     groupInt32?: number;
     /**
-     * @generated from protobuf field: optional uint32 group_uint32 = 203;
+     * @generated from protobuf field: optional uint32 group_uint32 = 203
      */
     groupUint32?: number;
 }
@@ -677,11 +677,11 @@ export interface TestAllTypesProto2_Data {
  */
 export interface TestAllTypesProto2_MultiWordGroupField {
     /**
-     * @generated from protobuf field: optional int32 group_int32 = 205;
+     * @generated from protobuf field: optional int32 group_int32 = 205
      */
     groupInt32?: number;
     /**
-     * @generated from protobuf field: optional uint32 group_uint32 = 206;
+     * @generated from protobuf field: optional uint32 group_uint32 = 206
      */
     groupUint32?: number;
 }
@@ -697,7 +697,7 @@ export interface TestAllTypesProto2_MessageSetCorrect {
  */
 export interface TestAllTypesProto2_MessageSetCorrectExtension1 {
     /**
-     * @generated from protobuf field: optional string str = 25;
+     * @generated from protobuf field: optional string str = 25
      */
     str?: string;
 }
@@ -706,7 +706,7 @@ export interface TestAllTypesProto2_MessageSetCorrectExtension1 {
  */
 export interface TestAllTypesProto2_MessageSetCorrectExtension2 {
     /**
-     * @generated from protobuf field: optional int32 i = 9;
+     * @generated from protobuf field: optional int32 i = 9
      */
     i?: number;
 }
@@ -738,7 +738,7 @@ export enum TestAllTypesProto2_NestedEnum {
  */
 export interface ForeignMessageProto2 {
     /**
-     * @generated from protobuf field: optional int32 c = 1;
+     * @generated from protobuf field: optional int32 c = 1
      */
     c?: number;
 }
@@ -747,11 +747,11 @@ export interface ForeignMessageProto2 {
  */
 export interface GroupField {
     /**
-     * @generated from protobuf field: optional int32 group_int32 = 122;
+     * @generated from protobuf field: optional int32 group_int32 = 122
      */
     groupInt32?: number;
     /**
-     * @generated from protobuf field: optional uint32 group_uint32 = 123;
+     * @generated from protobuf field: optional uint32 group_uint32 = 123
      */
     groupUint32?: number;
 }
@@ -760,23 +760,23 @@ export interface GroupField {
  */
 export interface UnknownToTestAllTypes {
     /**
-     * @generated from protobuf field: optional int32 optional_int32 = 1001;
+     * @generated from protobuf field: optional int32 optional_int32 = 1001
      */
     optionalInt32?: number;
     /**
-     * @generated from protobuf field: optional string optional_string = 1002;
+     * @generated from protobuf field: optional string optional_string = 1002
      */
     optionalString?: string;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignMessageProto2 nested_message = 1003;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.ForeignMessageProto2 nested_message = 1003
      */
     nestedMessage?: ForeignMessageProto2;
     /**
-     * @generated from protobuf field: optional bool optional_bool = 1006;
+     * @generated from protobuf field: optional bool optional_bool = 1006
      */
     optionalBool?: boolean;
     /**
-     * @generated from protobuf field: repeated int32 repeated_int32 = 1011;
+     * @generated from protobuf field: repeated int32 repeated_int32 = 1011
      */
     repeatedInt32: number[];
 }
@@ -785,7 +785,7 @@ export interface UnknownToTestAllTypes {
  */
 export interface UnknownToTestAllTypes_OptionalGroup {
     /**
-     * @generated from protobuf field: optional int32 a = 1;
+     * @generated from protobuf field: optional int32 a = 1
      */
     a?: number;
 }
@@ -817,7 +817,7 @@ export enum EnumOnlyProto2_Bool {
  */
 export interface OneStringProto2 {
     /**
-     * @generated from protobuf field: optional string data = 1;
+     * @generated from protobuf field: optional string data = 1
      */
     data?: string;
 }
@@ -826,15 +826,15 @@ export interface OneStringProto2 {
  */
 export interface ProtoWithKeywords {
     /**
-     * @generated from protobuf field: optional int32 inline = 1;
+     * @generated from protobuf field: optional int32 inline = 1
      */
     inline?: number;
     /**
-     * @generated from protobuf field: optional string concept = 2;
+     * @generated from protobuf field: optional string concept = 2
      */
     concept?: string;
     /**
-     * @generated from protobuf field: repeated string requires = 3;
+     * @generated from protobuf field: repeated string requires = 3
      */
     requires: string[];
 }
@@ -845,157 +845,157 @@ export interface TestAllRequiredTypesProto2 {
     /**
      * Singular
      *
-     * @generated from protobuf field: int32 required_int32 = 1;
+     * @generated from protobuf field: required int32 required_int32 = 1
      */
     requiredInt32: number;
     /**
-     * @generated from protobuf field: int64 required_int64 = 2;
+     * @generated from protobuf field: required int64 required_int64 = 2
      */
     requiredInt64: string;
     /**
-     * @generated from protobuf field: uint32 required_uint32 = 3;
+     * @generated from protobuf field: required uint32 required_uint32 = 3
      */
     requiredUint32: number;
     /**
-     * @generated from protobuf field: uint64 required_uint64 = 4;
+     * @generated from protobuf field: required uint64 required_uint64 = 4
      */
     requiredUint64: string;
     /**
-     * @generated from protobuf field: sint32 required_sint32 = 5;
+     * @generated from protobuf field: required sint32 required_sint32 = 5
      */
     requiredSint32: number;
     /**
-     * @generated from protobuf field: sint64 required_sint64 = 6;
+     * @generated from protobuf field: required sint64 required_sint64 = 6
      */
     requiredSint64: string;
     /**
-     * @generated from protobuf field: fixed32 required_fixed32 = 7;
+     * @generated from protobuf field: required fixed32 required_fixed32 = 7
      */
     requiredFixed32: number;
     /**
-     * @generated from protobuf field: fixed64 required_fixed64 = 8;
+     * @generated from protobuf field: required fixed64 required_fixed64 = 8
      */
     requiredFixed64: string;
     /**
-     * @generated from protobuf field: sfixed32 required_sfixed32 = 9;
+     * @generated from protobuf field: required sfixed32 required_sfixed32 = 9
      */
     requiredSfixed32: number;
     /**
-     * @generated from protobuf field: sfixed64 required_sfixed64 = 10;
+     * @generated from protobuf field: required sfixed64 required_sfixed64 = 10
      */
     requiredSfixed64: string;
     /**
-     * @generated from protobuf field: float required_float = 11;
+     * @generated from protobuf field: required float required_float = 11
      */
     requiredFloat: number;
     /**
-     * @generated from protobuf field: double required_double = 12;
+     * @generated from protobuf field: required double required_double = 12
      */
     requiredDouble: number;
     /**
-     * @generated from protobuf field: bool required_bool = 13;
+     * @generated from protobuf field: required bool required_bool = 13
      */
     requiredBool: boolean;
     /**
-     * @generated from protobuf field: string required_string = 14;
+     * @generated from protobuf field: required string required_string = 14
      */
     requiredString: string;
     /**
-     * @generated from protobuf field: bytes required_bytes = 15;
+     * @generated from protobuf field: required bytes required_bytes = 15
      */
     requiredBytes: Uint8Array;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedMessage required_nested_message = 18;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedMessage required_nested_message = 18
      */
     requiredNestedMessage?: TestAllRequiredTypesProto2_NestedMessage;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.ForeignMessageProto2 required_foreign_message = 19;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.ForeignMessageProto2 required_foreign_message = 19
      */
     requiredForeignMessage?: ForeignMessageProto2;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedEnum required_nested_enum = 21;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedEnum required_nested_enum = 21
      */
     requiredNestedEnum: TestAllRequiredTypesProto2_NestedEnum;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.ForeignEnumProto2 required_foreign_enum = 22;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.ForeignEnumProto2 required_foreign_enum = 22
      */
     requiredForeignEnum: ForeignEnumProto2;
     /**
-     * @generated from protobuf field: string required_string_piece = 24;
+     * @generated from protobuf field: required string required_string_piece = 24
      */
     requiredStringPiece: string;
     /**
-     * @generated from protobuf field: string required_cord = 25;
+     * @generated from protobuf field: required string required_cord = 25
      */
     requiredCord: string;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.TestAllRequiredTypesProto2 recursive_message = 27;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.TestAllRequiredTypesProto2 recursive_message = 27
      */
     recursiveMessage?: TestAllRequiredTypesProto2;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_recursive_message = 28;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_recursive_message = 28
      */
     optionalRecursiveMessage?: TestAllRequiredTypesProto2;
     /**
      * default values
      *
-     * @generated from protobuf field: int32 default_int32 = 241;
+     * @generated from protobuf field: required int32 default_int32 = 241 [default = -123456789]
      */
     defaultInt32: number;
     /**
-     * @generated from protobuf field: int64 default_int64 = 242;
+     * @generated from protobuf field: required int64 default_int64 = 242 [default = -9123456789123456789]
      */
     defaultInt64: string;
     /**
-     * @generated from protobuf field: uint32 default_uint32 = 243;
+     * @generated from protobuf field: required uint32 default_uint32 = 243 [default = 2123456789]
      */
     defaultUint32: number;
     /**
-     * @generated from protobuf field: uint64 default_uint64 = 244;
+     * @generated from protobuf field: required uint64 default_uint64 = 244 [default = 10123456789123456789]
      */
     defaultUint64: string;
     /**
-     * @generated from protobuf field: sint32 default_sint32 = 245;
+     * @generated from protobuf field: required sint32 default_sint32 = 245 [default = -123456789]
      */
     defaultSint32: number;
     /**
-     * @generated from protobuf field: sint64 default_sint64 = 246;
+     * @generated from protobuf field: required sint64 default_sint64 = 246 [default = -9123456789123456789]
      */
     defaultSint64: string;
     /**
-     * @generated from protobuf field: fixed32 default_fixed32 = 247;
+     * @generated from protobuf field: required fixed32 default_fixed32 = 247 [default = 2123456789]
      */
     defaultFixed32: number;
     /**
-     * @generated from protobuf field: fixed64 default_fixed64 = 248;
+     * @generated from protobuf field: required fixed64 default_fixed64 = 248 [default = 10123456789123456789]
      */
     defaultFixed64: string;
     /**
-     * @generated from protobuf field: sfixed32 default_sfixed32 = 249;
+     * @generated from protobuf field: required sfixed32 default_sfixed32 = 249 [default = -123456789]
      */
     defaultSfixed32: number;
     /**
-     * @generated from protobuf field: sfixed64 default_sfixed64 = 250;
+     * @generated from protobuf field: required sfixed64 default_sfixed64 = 250 [default = -9123456789123456789]
      */
     defaultSfixed64: string;
     /**
-     * @generated from protobuf field: float default_float = 251;
+     * @generated from protobuf field: required float default_float = 251 [default = 9e+09]
      */
     defaultFloat: number;
     /**
-     * @generated from protobuf field: double default_double = 252;
+     * @generated from protobuf field: required double default_double = 252 [default = 7e+22]
      */
     defaultDouble: number;
     /**
-     * @generated from protobuf field: bool default_bool = 253;
+     * @generated from protobuf field: required bool default_bool = 253 [default = true]
      */
     defaultBool: boolean;
     /**
-     * @generated from protobuf field: string default_string = 254;
+     * @generated from protobuf field: required string default_string = 254 [default = "Rosebud"]
      */
     defaultString: string;
     /**
-     * @generated from protobuf field: bytes default_bytes = 255;
+     * @generated from protobuf field: required bytes default_bytes = 255 [default = "joshua"]
      */
     defaultBytes: Uint8Array;
 }
@@ -1004,15 +1004,15 @@ export interface TestAllRequiredTypesProto2 {
  */
 export interface TestAllRequiredTypesProto2_NestedMessage {
     /**
-     * @generated from protobuf field: int32 a = 1;
+     * @generated from protobuf field: required int32 a = 1
      */
     a: number;
     /**
-     * @generated from protobuf field: protobuf_test_messages.proto2.TestAllRequiredTypesProto2 corecursive = 2;
+     * @generated from protobuf field: required protobuf_test_messages.proto2.TestAllRequiredTypesProto2 corecursive = 2
      */
     corecursive?: TestAllRequiredTypesProto2;
     /**
-     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_corecursive = 3;
+     * @generated from protobuf field: optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_corecursive = 3
      */
     optionalCorecursive?: TestAllRequiredTypesProto2;
 }
@@ -1023,11 +1023,11 @@ export interface TestAllRequiredTypesProto2_NestedMessage {
  */
 export interface TestAllRequiredTypesProto2_Data {
     /**
-     * @generated from protobuf field: int32 group_int32 = 202;
+     * @generated from protobuf field: required int32 group_int32 = 202
      */
     groupInt32: number;
     /**
-     * @generated from protobuf field: uint32 group_uint32 = 203;
+     * @generated from protobuf field: required uint32 group_uint32 = 203
      */
     groupUint32: number;
 }
@@ -1043,7 +1043,7 @@ export interface TestAllRequiredTypesProto2_MessageSetCorrect {
  */
 export interface TestAllRequiredTypesProto2_MessageSetCorrectExtension1 {
     /**
-     * @generated from protobuf field: string str = 25;
+     * @generated from protobuf field: required string str = 25
      */
     str: string;
 }
@@ -1052,7 +1052,7 @@ export interface TestAllRequiredTypesProto2_MessageSetCorrectExtension1 {
  */
 export interface TestAllRequiredTypesProto2_MessageSetCorrectExtension2 {
     /**
-     * @generated from protobuf field: int32 i = 9;
+     * @generated from protobuf field: required int32 i = 9
      */
     i: number;
 }
@@ -1503,196 +1503,196 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case /* repeated string repeated_cord */ 55:
                     message.repeatedCord.push(reader.string());
                     break;
-                case /* repeated int32 packed_int32 = 75 [packed = true];*/ 75:
+                case /* repeated int32 packed_int32 = 75 [packed = true] */ 75:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt32.push(reader.int32());
                     else
                         message.packedInt32.push(reader.int32());
                     break;
-                case /* repeated int64 packed_int64 = 76 [packed = true];*/ 76:
+                case /* repeated int64 packed_int64 = 76 [packed = true] */ 76:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedInt64.push(reader.int64().toString());
                     else
                         message.packedInt64.push(reader.int64().toString());
                     break;
-                case /* repeated uint32 packed_uint32 = 77 [packed = true];*/ 77:
+                case /* repeated uint32 packed_uint32 = 77 [packed = true] */ 77:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint32.push(reader.uint32());
                     else
                         message.packedUint32.push(reader.uint32());
                     break;
-                case /* repeated uint64 packed_uint64 = 78 [packed = true];*/ 78:
+                case /* repeated uint64 packed_uint64 = 78 [packed = true] */ 78:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedUint64.push(reader.uint64().toString());
                     else
                         message.packedUint64.push(reader.uint64().toString());
                     break;
-                case /* repeated sint32 packed_sint32 = 79 [packed = true];*/ 79:
+                case /* repeated sint32 packed_sint32 = 79 [packed = true] */ 79:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSint32.push(reader.sint32());
                     else
                         message.packedSint32.push(reader.sint32());
                     break;
-                case /* repeated sint64 packed_sint64 = 80 [packed = true];*/ 80:
+                case /* repeated sint64 packed_sint64 = 80 [packed = true] */ 80:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSint64.push(reader.sint64().toString());
                     else
                         message.packedSint64.push(reader.sint64().toString());
                     break;
-                case /* repeated fixed32 packed_fixed32 = 81 [packed = true];*/ 81:
+                case /* repeated fixed32 packed_fixed32 = 81 [packed = true] */ 81:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFixed32.push(reader.fixed32());
                     else
                         message.packedFixed32.push(reader.fixed32());
                     break;
-                case /* repeated fixed64 packed_fixed64 = 82 [packed = true];*/ 82:
+                case /* repeated fixed64 packed_fixed64 = 82 [packed = true] */ 82:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFixed64.push(reader.fixed64().toString());
                     else
                         message.packedFixed64.push(reader.fixed64().toString());
                     break;
-                case /* repeated sfixed32 packed_sfixed32 = 83 [packed = true];*/ 83:
+                case /* repeated sfixed32 packed_sfixed32 = 83 [packed = true] */ 83:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSfixed32.push(reader.sfixed32());
                     else
                         message.packedSfixed32.push(reader.sfixed32());
                     break;
-                case /* repeated sfixed64 packed_sfixed64 = 84 [packed = true];*/ 84:
+                case /* repeated sfixed64 packed_sfixed64 = 84 [packed = true] */ 84:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedSfixed64.push(reader.sfixed64().toString());
                     else
                         message.packedSfixed64.push(reader.sfixed64().toString());
                     break;
-                case /* repeated float packed_float = 85 [packed = true];*/ 85:
+                case /* repeated float packed_float = 85 [packed = true] */ 85:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedFloat.push(reader.float());
                     else
                         message.packedFloat.push(reader.float());
                     break;
-                case /* repeated double packed_double = 86 [packed = true];*/ 86:
+                case /* repeated double packed_double = 86 [packed = true] */ 86:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedDouble.push(reader.double());
                     else
                         message.packedDouble.push(reader.double());
                     break;
-                case /* repeated bool packed_bool = 87 [packed = true];*/ 87:
+                case /* repeated bool packed_bool = 87 [packed = true] */ 87:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedBool.push(reader.bool());
                     else
                         message.packedBool.push(reader.bool());
                     break;
-                case /* repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum packed_nested_enum = 88 [packed = true];*/ 88:
+                case /* repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum packed_nested_enum = 88 [packed = true] */ 88:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.packedNestedEnum.push(reader.int32());
                     else
                         message.packedNestedEnum.push(reader.int32());
                     break;
-                case /* repeated int32 unpacked_int32 = 89 [packed = false];*/ 89:
+                case /* repeated int32 unpacked_int32 = 89 [packed = false] */ 89:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedInt32.push(reader.int32());
                     else
                         message.unpackedInt32.push(reader.int32());
                     break;
-                case /* repeated int64 unpacked_int64 = 90 [packed = false];*/ 90:
+                case /* repeated int64 unpacked_int64 = 90 [packed = false] */ 90:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedInt64.push(reader.int64().toString());
                     else
                         message.unpackedInt64.push(reader.int64().toString());
                     break;
-                case /* repeated uint32 unpacked_uint32 = 91 [packed = false];*/ 91:
+                case /* repeated uint32 unpacked_uint32 = 91 [packed = false] */ 91:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedUint32.push(reader.uint32());
                     else
                         message.unpackedUint32.push(reader.uint32());
                     break;
-                case /* repeated uint64 unpacked_uint64 = 92 [packed = false];*/ 92:
+                case /* repeated uint64 unpacked_uint64 = 92 [packed = false] */ 92:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedUint64.push(reader.uint64().toString());
                     else
                         message.unpackedUint64.push(reader.uint64().toString());
                     break;
-                case /* repeated sint32 unpacked_sint32 = 93 [packed = false];*/ 93:
+                case /* repeated sint32 unpacked_sint32 = 93 [packed = false] */ 93:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedSint32.push(reader.sint32());
                     else
                         message.unpackedSint32.push(reader.sint32());
                     break;
-                case /* repeated sint64 unpacked_sint64 = 94 [packed = false];*/ 94:
+                case /* repeated sint64 unpacked_sint64 = 94 [packed = false] */ 94:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedSint64.push(reader.sint64().toString());
                     else
                         message.unpackedSint64.push(reader.sint64().toString());
                     break;
-                case /* repeated fixed32 unpacked_fixed32 = 95 [packed = false];*/ 95:
+                case /* repeated fixed32 unpacked_fixed32 = 95 [packed = false] */ 95:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedFixed32.push(reader.fixed32());
                     else
                         message.unpackedFixed32.push(reader.fixed32());
                     break;
-                case /* repeated fixed64 unpacked_fixed64 = 96 [packed = false];*/ 96:
+                case /* repeated fixed64 unpacked_fixed64 = 96 [packed = false] */ 96:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedFixed64.push(reader.fixed64().toString());
                     else
                         message.unpackedFixed64.push(reader.fixed64().toString());
                     break;
-                case /* repeated sfixed32 unpacked_sfixed32 = 97 [packed = false];*/ 97:
+                case /* repeated sfixed32 unpacked_sfixed32 = 97 [packed = false] */ 97:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedSfixed32.push(reader.sfixed32());
                     else
                         message.unpackedSfixed32.push(reader.sfixed32());
                     break;
-                case /* repeated sfixed64 unpacked_sfixed64 = 98 [packed = false];*/ 98:
+                case /* repeated sfixed64 unpacked_sfixed64 = 98 [packed = false] */ 98:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedSfixed64.push(reader.sfixed64().toString());
                     else
                         message.unpackedSfixed64.push(reader.sfixed64().toString());
                     break;
-                case /* repeated float unpacked_float = 99 [packed = false];*/ 99:
+                case /* repeated float unpacked_float = 99 [packed = false] */ 99:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedFloat.push(reader.float());
                     else
                         message.unpackedFloat.push(reader.float());
                     break;
-                case /* repeated double unpacked_double = 100 [packed = false];*/ 100:
+                case /* repeated double unpacked_double = 100 [packed = false] */ 100:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedDouble.push(reader.double());
                     else
                         message.unpackedDouble.push(reader.double());
                     break;
-                case /* repeated bool unpacked_bool = 101 [packed = false];*/ 101:
+                case /* repeated bool unpacked_bool = 101 [packed = false] */ 101:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedBool.push(reader.bool());
                     else
                         message.unpackedBool.push(reader.bool());
                     break;
-                case /* repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum unpacked_nested_enum = 102 [packed = false];*/ 102:
+                case /* repeated protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum unpacked_nested_enum = 102 [packed = false] */ 102:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.unpackedNestedEnum.push(reader.int32());
@@ -1810,49 +1810,49 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                         oneofEnum: reader.int32()
                     };
                     break;
-                case /* optional int32 default_int32 */ 241:
+                case /* optional int32 default_int32 = 241 [default = -123456789] */ 241:
                     message.defaultInt32 = reader.int32();
                     break;
-                case /* optional int64 default_int64 */ 242:
+                case /* optional int64 default_int64 = 242 [default = -9123456789123456789] */ 242:
                     message.defaultInt64 = reader.int64().toString();
                     break;
-                case /* optional uint32 default_uint32 */ 243:
+                case /* optional uint32 default_uint32 = 243 [default = 2123456789] */ 243:
                     message.defaultUint32 = reader.uint32();
                     break;
-                case /* optional uint64 default_uint64 */ 244:
+                case /* optional uint64 default_uint64 = 244 [default = 10123456789123456789] */ 244:
                     message.defaultUint64 = reader.uint64().toString();
                     break;
-                case /* optional sint32 default_sint32 */ 245:
+                case /* optional sint32 default_sint32 = 245 [default = -123456789] */ 245:
                     message.defaultSint32 = reader.sint32();
                     break;
-                case /* optional sint64 default_sint64 */ 246:
+                case /* optional sint64 default_sint64 = 246 [default = -9123456789123456789] */ 246:
                     message.defaultSint64 = reader.sint64().toString();
                     break;
-                case /* optional fixed32 default_fixed32 */ 247:
+                case /* optional fixed32 default_fixed32 = 247 [default = 2123456789] */ 247:
                     message.defaultFixed32 = reader.fixed32();
                     break;
-                case /* optional fixed64 default_fixed64 */ 248:
+                case /* optional fixed64 default_fixed64 = 248 [default = 10123456789123456789] */ 248:
                     message.defaultFixed64 = reader.fixed64().toString();
                     break;
-                case /* optional sfixed32 default_sfixed32 */ 249:
+                case /* optional sfixed32 default_sfixed32 = 249 [default = -123456789] */ 249:
                     message.defaultSfixed32 = reader.sfixed32();
                     break;
-                case /* optional sfixed64 default_sfixed64 */ 250:
+                case /* optional sfixed64 default_sfixed64 = 250 [default = -9123456789123456789] */ 250:
                     message.defaultSfixed64 = reader.sfixed64().toString();
                     break;
-                case /* optional float default_float */ 251:
+                case /* optional float default_float = 251 [default = 9e+09] */ 251:
                     message.defaultFloat = reader.float();
                     break;
-                case /* optional double default_double */ 252:
+                case /* optional double default_double = 252 [default = 7e+22] */ 252:
                     message.defaultDouble = reader.double();
                     break;
-                case /* optional bool default_bool */ 253:
+                case /* optional bool default_bool = 253 [default = true] */ 253:
                     message.defaultBool = reader.bool();
                     break;
-                case /* optional string default_string */ 254:
+                case /* optional string default_string = 254 [default = "Rosebud"] */ 254:
                     message.defaultString = reader.string();
                     break;
-                case /* optional bytes default_bytes */ 255:
+                case /* optional bytes default_bytes = 255 [default = "joshua"] */ 255:
                     message.defaultBytes = reader.bytes();
                     break;
                 case /* optional int32 fieldname1 */ 401:
@@ -1867,7 +1867,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case /* optional int32 field__name4_ */ 404:
                     message.fieldName4 = reader.int32();
                     break;
-                case /* optional int32 field0name5 = 405 [json_name = "field0name5"];*/ 405:
+                case /* optional int32 field0name5 */ 405:
                     message.field0Name5 = reader.int32();
                     break;
                 case /* optional int32 field_0_name6 */ 406:
@@ -1876,19 +1876,19 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case /* optional int32 fieldName7 */ 407:
                     message.fieldName7 = reader.int32();
                     break;
-                case /* optional int32 FieldName8 = 408 [json_name = "FieldName8"];*/ 408:
+                case /* optional int32 FieldName8 */ 408:
                     message.fieldName8 = reader.int32();
                     break;
                 case /* optional int32 field_Name9 */ 409:
                     message.fieldName9 = reader.int32();
                     break;
-                case /* optional int32 Field_Name10 = 410 [json_name = "FieldName10"];*/ 410:
+                case /* optional int32 Field_Name10 */ 410:
                     message.fieldName10 = reader.int32();
                     break;
-                case /* optional int32 FIELD_NAME11 = 411 [json_name = "FIELDNAME11"];*/ 411:
+                case /* optional int32 FIELD_NAME11 */ 411:
                     message.fIELDNAME11 = reader.int32();
                     break;
-                case /* optional int32 FIELD_name12 = 412 [json_name = "FIELDName12"];*/ 412:
+                case /* optional int32 FIELD_name12 */ 412:
                     message.fIELDName12 = reader.int32();
                     break;
                 case /* optional int32 __field_name13 */ 413:
@@ -1906,7 +1906,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case /* optional int32 field_name17__ */ 417:
                     message.fieldName17 = reader.int32();
                     break;
-                case /* optional int32 Field_name18__ = 418 [json_name = "FieldName18"];*/ 418:
+                case /* optional int32 Field_name18__ */ 418:
                     message.fieldName18 = reader.int32();
                     break;
                 default:
@@ -1931,7 +1931,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_int32_int32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_int32_int32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1947,7 +1947,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.int64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_int64_int64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_int64_int64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -1963,7 +1963,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.uint32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_uint32_uint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_uint32_uint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1979,7 +1979,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.uint64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_uint64_uint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_uint64_uint64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -1995,7 +1995,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.sint32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_sint32_sint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_sint32_sint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -2011,7 +2011,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.sint64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_sint64_sint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_sint64_sint64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -2027,7 +2027,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.fixed32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_fixed32_fixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_fixed32_fixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -2043,7 +2043,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.fixed64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_fixed64_fixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_fixed64_fixed64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -2059,7 +2059,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.sfixed32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_sfixed32_sfixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_sfixed32_sfixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -2075,7 +2075,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.sfixed64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_sfixed64_sfixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_sfixed64_sfixed64");
             }
         }
         map[key ?? "0"] = val ?? "0";
@@ -2091,7 +2091,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.float();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_int32_float");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_int32_float");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -2107,7 +2107,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.double();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_int32_double");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_int32_double");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -2123,7 +2123,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.bool();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_bool_bool");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_bool_bool");
             }
         }
         map[key ?? "false"] = val ?? false;
@@ -2139,7 +2139,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_string_string");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_string_string");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -2155,7 +2155,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.bytes();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_string_bytes");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_string_bytes");
             }
         }
         map[key ?? ""] = val ?? new Uint8Array(0);
@@ -2171,7 +2171,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = TestAllTypesProto2_NestedMessage.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_string_nested_message");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_string_nested_message");
             }
         }
         map[key ?? ""] = val ?? TestAllTypesProto2_NestedMessage.create();
@@ -2187,7 +2187,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = ForeignMessageProto2.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_string_foreign_message");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_string_foreign_message");
             }
         }
         map[key ?? ""] = val ?? ForeignMessageProto2.create();
@@ -2203,7 +2203,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_string_nested_enum");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_string_nested_enum");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -2219,7 +2219,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_test_messages.proto2.TestAllTypesProto2.map_string_foreign_enum");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_test_messages.proto2.TestAllTypesProto2.map_string_foreign_enum");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -2586,49 +2586,49 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
         /* protobuf_test_messages.proto2.TestAllTypesProto2.NestedEnum oneof_enum = 119; */
         if (message.oneofField.oneofKind === "oneofEnum")
             writer.tag(119, WireType.Varint).int32(message.oneofField.oneofEnum);
-        /* optional int32 default_int32 = 241; */
+        /* optional int32 default_int32 = 241 [default = -123456789]; */
         if (message.defaultInt32 !== undefined)
             writer.tag(241, WireType.Varint).int32(message.defaultInt32);
-        /* optional int64 default_int64 = 242; */
+        /* optional int64 default_int64 = 242 [default = -9123456789123456789]; */
         if (message.defaultInt64 !== undefined)
             writer.tag(242, WireType.Varint).int64(message.defaultInt64);
-        /* optional uint32 default_uint32 = 243; */
+        /* optional uint32 default_uint32 = 243 [default = 2123456789]; */
         if (message.defaultUint32 !== undefined)
             writer.tag(243, WireType.Varint).uint32(message.defaultUint32);
-        /* optional uint64 default_uint64 = 244; */
+        /* optional uint64 default_uint64 = 244 [default = 10123456789123456789]; */
         if (message.defaultUint64 !== undefined)
             writer.tag(244, WireType.Varint).uint64(message.defaultUint64);
-        /* optional sint32 default_sint32 = 245; */
+        /* optional sint32 default_sint32 = 245 [default = -123456789]; */
         if (message.defaultSint32 !== undefined)
             writer.tag(245, WireType.Varint).sint32(message.defaultSint32);
-        /* optional sint64 default_sint64 = 246; */
+        /* optional sint64 default_sint64 = 246 [default = -9123456789123456789]; */
         if (message.defaultSint64 !== undefined)
             writer.tag(246, WireType.Varint).sint64(message.defaultSint64);
-        /* optional fixed32 default_fixed32 = 247; */
+        /* optional fixed32 default_fixed32 = 247 [default = 2123456789]; */
         if (message.defaultFixed32 !== undefined)
             writer.tag(247, WireType.Bit32).fixed32(message.defaultFixed32);
-        /* optional fixed64 default_fixed64 = 248; */
+        /* optional fixed64 default_fixed64 = 248 [default = 10123456789123456789]; */
         if (message.defaultFixed64 !== undefined)
             writer.tag(248, WireType.Bit64).fixed64(message.defaultFixed64);
-        /* optional sfixed32 default_sfixed32 = 249; */
+        /* optional sfixed32 default_sfixed32 = 249 [default = -123456789]; */
         if (message.defaultSfixed32 !== undefined)
             writer.tag(249, WireType.Bit32).sfixed32(message.defaultSfixed32);
-        /* optional sfixed64 default_sfixed64 = 250; */
+        /* optional sfixed64 default_sfixed64 = 250 [default = -9123456789123456789]; */
         if (message.defaultSfixed64 !== undefined)
             writer.tag(250, WireType.Bit64).sfixed64(message.defaultSfixed64);
-        /* optional float default_float = 251; */
+        /* optional float default_float = 251 [default = 9e+09]; */
         if (message.defaultFloat !== undefined)
             writer.tag(251, WireType.Bit32).float(message.defaultFloat);
-        /* optional double default_double = 252; */
+        /* optional double default_double = 252 [default = 7e+22]; */
         if (message.defaultDouble !== undefined)
             writer.tag(252, WireType.Bit64).double(message.defaultDouble);
-        /* optional bool default_bool = 253; */
+        /* optional bool default_bool = 253 [default = true]; */
         if (message.defaultBool !== undefined)
             writer.tag(253, WireType.Varint).bool(message.defaultBool);
-        /* optional string default_string = 254; */
+        /* optional string default_string = 254 [default = "Rosebud"]; */
         if (message.defaultString !== undefined)
             writer.tag(254, WireType.LengthDelimited).string(message.defaultString);
-        /* optional bytes default_bytes = 255; */
+        /* optional bytes default_bytes = 255 [default = "joshua"]; */
         if (message.defaultBytes !== undefined)
             writer.tag(255, WireType.LengthDelimited).bytes(message.defaultBytes);
         /* optional int32 fieldname1 = 401; */
@@ -2643,7 +2643,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
         /* optional int32 field__name4_ = 404; */
         if (message.fieldName4 !== undefined)
             writer.tag(404, WireType.Varint).int32(message.fieldName4);
-        /* optional int32 field0name5 = 405 [json_name = "field0name5"]; */
+        /* optional int32 field0name5 = 405; */
         if (message.field0Name5 !== undefined)
             writer.tag(405, WireType.Varint).int32(message.field0Name5);
         /* optional int32 field_0_name6 = 406; */
@@ -2652,19 +2652,19 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
         /* optional int32 fieldName7 = 407; */
         if (message.fieldName7 !== undefined)
             writer.tag(407, WireType.Varint).int32(message.fieldName7);
-        /* optional int32 FieldName8 = 408 [json_name = "FieldName8"]; */
+        /* optional int32 FieldName8 = 408; */
         if (message.fieldName8 !== undefined)
             writer.tag(408, WireType.Varint).int32(message.fieldName8);
         /* optional int32 field_Name9 = 409; */
         if (message.fieldName9 !== undefined)
             writer.tag(409, WireType.Varint).int32(message.fieldName9);
-        /* optional int32 Field_Name10 = 410 [json_name = "FieldName10"]; */
+        /* optional int32 Field_Name10 = 410; */
         if (message.fieldName10 !== undefined)
             writer.tag(410, WireType.Varint).int32(message.fieldName10);
-        /* optional int32 FIELD_NAME11 = 411 [json_name = "FIELDNAME11"]; */
+        /* optional int32 FIELD_NAME11 = 411; */
         if (message.fIELDNAME11 !== undefined)
             writer.tag(411, WireType.Varint).int32(message.fIELDNAME11);
-        /* optional int32 FIELD_name12 = 412 [json_name = "FIELDName12"]; */
+        /* optional int32 FIELD_name12 = 412; */
         if (message.fIELDName12 !== undefined)
             writer.tag(412, WireType.Varint).int32(message.fIELDName12);
         /* optional int32 __field_name13 = 413; */
@@ -2682,7 +2682,7 @@ class TestAllTypesProto2$Type extends MessageType<TestAllTypesProto2> {
         /* optional int32 field_name17__ = 417; */
         if (message.fieldName17 !== undefined)
             writer.tag(417, WireType.Varint).int32(message.fieldName17);
-        /* optional int32 Field_name18__ = 418 [json_name = "FieldName18"]; */
+        /* optional int32 Field_name18__ = 418; */
         if (message.fieldName18 !== undefined)
             writer.tag(418, WireType.Varint).int32(message.fieldName18);
         let u = options.writeUnknownFields;
@@ -3480,118 +3480,118 @@ class TestAllRequiredTypesProto2$Type extends MessageType<TestAllRequiredTypesPr
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 required_int32 */ 1:
+                case /* required int32 required_int32 */ 1:
                     message.requiredInt32 = reader.int32();
                     break;
-                case /* int64 required_int64 */ 2:
+                case /* required int64 required_int64 */ 2:
                     message.requiredInt64 = reader.int64().toString();
                     break;
-                case /* uint32 required_uint32 */ 3:
+                case /* required uint32 required_uint32 */ 3:
                     message.requiredUint32 = reader.uint32();
                     break;
-                case /* uint64 required_uint64 */ 4:
+                case /* required uint64 required_uint64 */ 4:
                     message.requiredUint64 = reader.uint64().toString();
                     break;
-                case /* sint32 required_sint32 */ 5:
+                case /* required sint32 required_sint32 */ 5:
                     message.requiredSint32 = reader.sint32();
                     break;
-                case /* sint64 required_sint64 */ 6:
+                case /* required sint64 required_sint64 */ 6:
                     message.requiredSint64 = reader.sint64().toString();
                     break;
-                case /* fixed32 required_fixed32 */ 7:
+                case /* required fixed32 required_fixed32 */ 7:
                     message.requiredFixed32 = reader.fixed32();
                     break;
-                case /* fixed64 required_fixed64 */ 8:
+                case /* required fixed64 required_fixed64 */ 8:
                     message.requiredFixed64 = reader.fixed64().toString();
                     break;
-                case /* sfixed32 required_sfixed32 */ 9:
+                case /* required sfixed32 required_sfixed32 */ 9:
                     message.requiredSfixed32 = reader.sfixed32();
                     break;
-                case /* sfixed64 required_sfixed64 */ 10:
+                case /* required sfixed64 required_sfixed64 */ 10:
                     message.requiredSfixed64 = reader.sfixed64().toString();
                     break;
-                case /* float required_float */ 11:
+                case /* required float required_float */ 11:
                     message.requiredFloat = reader.float();
                     break;
-                case /* double required_double */ 12:
+                case /* required double required_double */ 12:
                     message.requiredDouble = reader.double();
                     break;
-                case /* bool required_bool */ 13:
+                case /* required bool required_bool */ 13:
                     message.requiredBool = reader.bool();
                     break;
-                case /* string required_string */ 14:
+                case /* required string required_string */ 14:
                     message.requiredString = reader.string();
                     break;
-                case /* bytes required_bytes */ 15:
+                case /* required bytes required_bytes */ 15:
                     message.requiredBytes = reader.bytes();
                     break;
-                case /* protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedMessage required_nested_message */ 18:
+                case /* required protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedMessage required_nested_message */ 18:
                     message.requiredNestedMessage = TestAllRequiredTypesProto2_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.requiredNestedMessage);
                     break;
-                case /* protobuf_test_messages.proto2.ForeignMessageProto2 required_foreign_message */ 19:
+                case /* required protobuf_test_messages.proto2.ForeignMessageProto2 required_foreign_message */ 19:
                     message.requiredForeignMessage = ForeignMessageProto2.internalBinaryRead(reader, reader.uint32(), options, message.requiredForeignMessage);
                     break;
-                case /* protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedEnum required_nested_enum */ 21:
+                case /* required protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedEnum required_nested_enum */ 21:
                     message.requiredNestedEnum = reader.int32();
                     break;
-                case /* protobuf_test_messages.proto2.ForeignEnumProto2 required_foreign_enum */ 22:
+                case /* required protobuf_test_messages.proto2.ForeignEnumProto2 required_foreign_enum */ 22:
                     message.requiredForeignEnum = reader.int32();
                     break;
-                case /* string required_string_piece */ 24:
+                case /* required string required_string_piece */ 24:
                     message.requiredStringPiece = reader.string();
                     break;
-                case /* string required_cord */ 25:
+                case /* required string required_cord */ 25:
                     message.requiredCord = reader.string();
                     break;
-                case /* protobuf_test_messages.proto2.TestAllRequiredTypesProto2 recursive_message */ 27:
+                case /* required protobuf_test_messages.proto2.TestAllRequiredTypesProto2 recursive_message */ 27:
                     message.recursiveMessage = TestAllRequiredTypesProto2.internalBinaryRead(reader, reader.uint32(), options, message.recursiveMessage);
                     break;
                 case /* optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_recursive_message */ 28:
                     message.optionalRecursiveMessage = TestAllRequiredTypesProto2.internalBinaryRead(reader, reader.uint32(), options, message.optionalRecursiveMessage);
                     break;
-                case /* int32 default_int32 */ 241:
+                case /* required int32 default_int32 = 241 [default = -123456789] */ 241:
                     message.defaultInt32 = reader.int32();
                     break;
-                case /* int64 default_int64 */ 242:
+                case /* required int64 default_int64 = 242 [default = -9123456789123456789] */ 242:
                     message.defaultInt64 = reader.int64().toString();
                     break;
-                case /* uint32 default_uint32 */ 243:
+                case /* required uint32 default_uint32 = 243 [default = 2123456789] */ 243:
                     message.defaultUint32 = reader.uint32();
                     break;
-                case /* uint64 default_uint64 */ 244:
+                case /* required uint64 default_uint64 = 244 [default = 10123456789123456789] */ 244:
                     message.defaultUint64 = reader.uint64().toString();
                     break;
-                case /* sint32 default_sint32 */ 245:
+                case /* required sint32 default_sint32 = 245 [default = -123456789] */ 245:
                     message.defaultSint32 = reader.sint32();
                     break;
-                case /* sint64 default_sint64 */ 246:
+                case /* required sint64 default_sint64 = 246 [default = -9123456789123456789] */ 246:
                     message.defaultSint64 = reader.sint64().toString();
                     break;
-                case /* fixed32 default_fixed32 */ 247:
+                case /* required fixed32 default_fixed32 = 247 [default = 2123456789] */ 247:
                     message.defaultFixed32 = reader.fixed32();
                     break;
-                case /* fixed64 default_fixed64 */ 248:
+                case /* required fixed64 default_fixed64 = 248 [default = 10123456789123456789] */ 248:
                     message.defaultFixed64 = reader.fixed64().toString();
                     break;
-                case /* sfixed32 default_sfixed32 */ 249:
+                case /* required sfixed32 default_sfixed32 = 249 [default = -123456789] */ 249:
                     message.defaultSfixed32 = reader.sfixed32();
                     break;
-                case /* sfixed64 default_sfixed64 */ 250:
+                case /* required sfixed64 default_sfixed64 = 250 [default = -9123456789123456789] */ 250:
                     message.defaultSfixed64 = reader.sfixed64().toString();
                     break;
-                case /* float default_float */ 251:
+                case /* required float default_float = 251 [default = 9e+09] */ 251:
                     message.defaultFloat = reader.float();
                     break;
-                case /* double default_double */ 252:
+                case /* required double default_double = 252 [default = 7e+22] */ 252:
                     message.defaultDouble = reader.double();
                     break;
-                case /* bool default_bool */ 253:
+                case /* required bool default_bool = 253 [default = true] */ 253:
                     message.defaultBool = reader.bool();
                     break;
-                case /* string default_string */ 254:
+                case /* required string default_string = 254 [default = "Rosebud"] */ 254:
                     message.defaultString = reader.string();
                     break;
-                case /* bytes default_bytes */ 255:
+                case /* required bytes default_bytes = 255 [default = "joshua"] */ 255:
                     message.defaultBytes = reader.bytes();
                     break;
                 default:
@@ -3606,118 +3606,118 @@ class TestAllRequiredTypesProto2$Type extends MessageType<TestAllRequiredTypesPr
         return message;
     }
     internalBinaryWrite(message: TestAllRequiredTypesProto2, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 required_int32 = 1; */
+        /* required int32 required_int32 = 1; */
         if (message.requiredInt32 !== 0)
             writer.tag(1, WireType.Varint).int32(message.requiredInt32);
-        /* int64 required_int64 = 2; */
+        /* required int64 required_int64 = 2; */
         if (message.requiredInt64 !== "0")
             writer.tag(2, WireType.Varint).int64(message.requiredInt64);
-        /* uint32 required_uint32 = 3; */
+        /* required uint32 required_uint32 = 3; */
         if (message.requiredUint32 !== 0)
             writer.tag(3, WireType.Varint).uint32(message.requiredUint32);
-        /* uint64 required_uint64 = 4; */
+        /* required uint64 required_uint64 = 4; */
         if (message.requiredUint64 !== "0")
             writer.tag(4, WireType.Varint).uint64(message.requiredUint64);
-        /* sint32 required_sint32 = 5; */
+        /* required sint32 required_sint32 = 5; */
         if (message.requiredSint32 !== 0)
             writer.tag(5, WireType.Varint).sint32(message.requiredSint32);
-        /* sint64 required_sint64 = 6; */
+        /* required sint64 required_sint64 = 6; */
         if (message.requiredSint64 !== "0")
             writer.tag(6, WireType.Varint).sint64(message.requiredSint64);
-        /* fixed32 required_fixed32 = 7; */
+        /* required fixed32 required_fixed32 = 7; */
         if (message.requiredFixed32 !== 0)
             writer.tag(7, WireType.Bit32).fixed32(message.requiredFixed32);
-        /* fixed64 required_fixed64 = 8; */
+        /* required fixed64 required_fixed64 = 8; */
         if (message.requiredFixed64 !== "0")
             writer.tag(8, WireType.Bit64).fixed64(message.requiredFixed64);
-        /* sfixed32 required_sfixed32 = 9; */
+        /* required sfixed32 required_sfixed32 = 9; */
         if (message.requiredSfixed32 !== 0)
             writer.tag(9, WireType.Bit32).sfixed32(message.requiredSfixed32);
-        /* sfixed64 required_sfixed64 = 10; */
+        /* required sfixed64 required_sfixed64 = 10; */
         if (message.requiredSfixed64 !== "0")
             writer.tag(10, WireType.Bit64).sfixed64(message.requiredSfixed64);
-        /* float required_float = 11; */
+        /* required float required_float = 11; */
         if (message.requiredFloat !== 0)
             writer.tag(11, WireType.Bit32).float(message.requiredFloat);
-        /* double required_double = 12; */
+        /* required double required_double = 12; */
         if (message.requiredDouble !== 0)
             writer.tag(12, WireType.Bit64).double(message.requiredDouble);
-        /* bool required_bool = 13; */
+        /* required bool required_bool = 13; */
         if (message.requiredBool !== false)
             writer.tag(13, WireType.Varint).bool(message.requiredBool);
-        /* string required_string = 14; */
+        /* required string required_string = 14; */
         if (message.requiredString !== "")
             writer.tag(14, WireType.LengthDelimited).string(message.requiredString);
-        /* bytes required_bytes = 15; */
+        /* required bytes required_bytes = 15; */
         if (message.requiredBytes.length)
             writer.tag(15, WireType.LengthDelimited).bytes(message.requiredBytes);
-        /* protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedMessage required_nested_message = 18; */
+        /* required protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedMessage required_nested_message = 18; */
         if (message.requiredNestedMessage)
             TestAllRequiredTypesProto2_NestedMessage.internalBinaryWrite(message.requiredNestedMessage, writer.tag(18, WireType.LengthDelimited).fork(), options).join();
-        /* protobuf_test_messages.proto2.ForeignMessageProto2 required_foreign_message = 19; */
+        /* required protobuf_test_messages.proto2.ForeignMessageProto2 required_foreign_message = 19; */
         if (message.requiredForeignMessage)
             ForeignMessageProto2.internalBinaryWrite(message.requiredForeignMessage, writer.tag(19, WireType.LengthDelimited).fork(), options).join();
-        /* protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedEnum required_nested_enum = 21; */
+        /* required protobuf_test_messages.proto2.TestAllRequiredTypesProto2.NestedEnum required_nested_enum = 21; */
         if (message.requiredNestedEnum !== 0)
             writer.tag(21, WireType.Varint).int32(message.requiredNestedEnum);
-        /* protobuf_test_messages.proto2.ForeignEnumProto2 required_foreign_enum = 22; */
+        /* required protobuf_test_messages.proto2.ForeignEnumProto2 required_foreign_enum = 22; */
         if (message.requiredForeignEnum !== 0)
             writer.tag(22, WireType.Varint).int32(message.requiredForeignEnum);
-        /* string required_string_piece = 24; */
+        /* required string required_string_piece = 24; */
         if (message.requiredStringPiece !== "")
             writer.tag(24, WireType.LengthDelimited).string(message.requiredStringPiece);
-        /* string required_cord = 25; */
+        /* required string required_cord = 25; */
         if (message.requiredCord !== "")
             writer.tag(25, WireType.LengthDelimited).string(message.requiredCord);
-        /* protobuf_test_messages.proto2.TestAllRequiredTypesProto2 recursive_message = 27; */
+        /* required protobuf_test_messages.proto2.TestAllRequiredTypesProto2 recursive_message = 27; */
         if (message.recursiveMessage)
             TestAllRequiredTypesProto2.internalBinaryWrite(message.recursiveMessage, writer.tag(27, WireType.LengthDelimited).fork(), options).join();
         /* optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_recursive_message = 28; */
         if (message.optionalRecursiveMessage)
             TestAllRequiredTypesProto2.internalBinaryWrite(message.optionalRecursiveMessage, writer.tag(28, WireType.LengthDelimited).fork(), options).join();
-        /* int32 default_int32 = 241; */
+        /* required int32 default_int32 = 241 [default = -123456789]; */
         if (message.defaultInt32 !== 0)
             writer.tag(241, WireType.Varint).int32(message.defaultInt32);
-        /* int64 default_int64 = 242; */
+        /* required int64 default_int64 = 242 [default = -9123456789123456789]; */
         if (message.defaultInt64 !== "0")
             writer.tag(242, WireType.Varint).int64(message.defaultInt64);
-        /* uint32 default_uint32 = 243; */
+        /* required uint32 default_uint32 = 243 [default = 2123456789]; */
         if (message.defaultUint32 !== 0)
             writer.tag(243, WireType.Varint).uint32(message.defaultUint32);
-        /* uint64 default_uint64 = 244; */
+        /* required uint64 default_uint64 = 244 [default = 10123456789123456789]; */
         if (message.defaultUint64 !== "0")
             writer.tag(244, WireType.Varint).uint64(message.defaultUint64);
-        /* sint32 default_sint32 = 245; */
+        /* required sint32 default_sint32 = 245 [default = -123456789]; */
         if (message.defaultSint32 !== 0)
             writer.tag(245, WireType.Varint).sint32(message.defaultSint32);
-        /* sint64 default_sint64 = 246; */
+        /* required sint64 default_sint64 = 246 [default = -9123456789123456789]; */
         if (message.defaultSint64 !== "0")
             writer.tag(246, WireType.Varint).sint64(message.defaultSint64);
-        /* fixed32 default_fixed32 = 247; */
+        /* required fixed32 default_fixed32 = 247 [default = 2123456789]; */
         if (message.defaultFixed32 !== 0)
             writer.tag(247, WireType.Bit32).fixed32(message.defaultFixed32);
-        /* fixed64 default_fixed64 = 248; */
+        /* required fixed64 default_fixed64 = 248 [default = 10123456789123456789]; */
         if (message.defaultFixed64 !== "0")
             writer.tag(248, WireType.Bit64).fixed64(message.defaultFixed64);
-        /* sfixed32 default_sfixed32 = 249; */
+        /* required sfixed32 default_sfixed32 = 249 [default = -123456789]; */
         if (message.defaultSfixed32 !== 0)
             writer.tag(249, WireType.Bit32).sfixed32(message.defaultSfixed32);
-        /* sfixed64 default_sfixed64 = 250; */
+        /* required sfixed64 default_sfixed64 = 250 [default = -9123456789123456789]; */
         if (message.defaultSfixed64 !== "0")
             writer.tag(250, WireType.Bit64).sfixed64(message.defaultSfixed64);
-        /* float default_float = 251; */
+        /* required float default_float = 251 [default = 9e+09]; */
         if (message.defaultFloat !== 0)
             writer.tag(251, WireType.Bit32).float(message.defaultFloat);
-        /* double default_double = 252; */
+        /* required double default_double = 252 [default = 7e+22]; */
         if (message.defaultDouble !== 0)
             writer.tag(252, WireType.Bit64).double(message.defaultDouble);
-        /* bool default_bool = 253; */
+        /* required bool default_bool = 253 [default = true]; */
         if (message.defaultBool !== false)
             writer.tag(253, WireType.Varint).bool(message.defaultBool);
-        /* string default_string = 254; */
+        /* required string default_string = 254 [default = "Rosebud"]; */
         if (message.defaultString !== "")
             writer.tag(254, WireType.LengthDelimited).string(message.defaultString);
-        /* bytes default_bytes = 255; */
+        /* required bytes default_bytes = 255 [default = "joshua"]; */
         if (message.defaultBytes.length)
             writer.tag(255, WireType.LengthDelimited).bytes(message.defaultBytes);
         let u = options.writeUnknownFields;
@@ -3751,10 +3751,10 @@ class TestAllRequiredTypesProto2_NestedMessage$Type extends MessageType<TestAllR
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 a */ 1:
+                case /* required int32 a */ 1:
                     message.a = reader.int32();
                     break;
-                case /* protobuf_test_messages.proto2.TestAllRequiredTypesProto2 corecursive */ 2:
+                case /* required protobuf_test_messages.proto2.TestAllRequiredTypesProto2 corecursive */ 2:
                     message.corecursive = TestAllRequiredTypesProto2.internalBinaryRead(reader, reader.uint32(), options, message.corecursive);
                     break;
                 case /* optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_corecursive */ 3:
@@ -3772,10 +3772,10 @@ class TestAllRequiredTypesProto2_NestedMessage$Type extends MessageType<TestAllR
         return message;
     }
     internalBinaryWrite(message: TestAllRequiredTypesProto2_NestedMessage, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 a = 1; */
+        /* required int32 a = 1; */
         if (message.a !== 0)
             writer.tag(1, WireType.Varint).int32(message.a);
-        /* protobuf_test_messages.proto2.TestAllRequiredTypesProto2 corecursive = 2; */
+        /* required protobuf_test_messages.proto2.TestAllRequiredTypesProto2 corecursive = 2; */
         if (message.corecursive)
             TestAllRequiredTypesProto2.internalBinaryWrite(message.corecursive, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
         /* optional protobuf_test_messages.proto2.TestAllRequiredTypesProto2 optional_corecursive = 3; */
@@ -3812,10 +3812,10 @@ class TestAllRequiredTypesProto2_Data$Type extends MessageType<TestAllRequiredTy
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 group_int32 */ 202:
+                case /* required int32 group_int32 */ 202:
                     message.groupInt32 = reader.int32();
                     break;
-                case /* uint32 group_uint32 */ 203:
+                case /* required uint32 group_uint32 */ 203:
                     message.groupUint32 = reader.uint32();
                     break;
                 default:
@@ -3830,10 +3830,10 @@ class TestAllRequiredTypesProto2_Data$Type extends MessageType<TestAllRequiredTy
         return message;
     }
     internalBinaryWrite(message: TestAllRequiredTypesProto2_Data, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 group_int32 = 202; */
+        /* required int32 group_int32 = 202; */
         if (message.groupInt32 !== 0)
             writer.tag(202, WireType.Varint).int32(message.groupInt32);
-        /* uint32 group_uint32 = 203; */
+        /* required uint32 group_uint32 = 203; */
         if (message.groupUint32 !== 0)
             writer.tag(203, WireType.Varint).uint32(message.groupUint32);
         let u = options.writeUnknownFields;
@@ -3903,7 +3903,7 @@ class TestAllRequiredTypesProto2_MessageSetCorrectExtension1$Type extends Messag
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string str */ 25:
+                case /* required string str */ 25:
                     message.str = reader.string();
                     break;
                 default:
@@ -3918,7 +3918,7 @@ class TestAllRequiredTypesProto2_MessageSetCorrectExtension1$Type extends Messag
         return message;
     }
     internalBinaryWrite(message: TestAllRequiredTypesProto2_MessageSetCorrectExtension1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string str = 25; */
+        /* required string str = 25; */
         if (message.str !== "")
             writer.tag(25, WireType.LengthDelimited).string(message.str);
         let u = options.writeUnknownFields;
@@ -3950,7 +3950,7 @@ class TestAllRequiredTypesProto2_MessageSetCorrectExtension2$Type extends Messag
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 i */ 9:
+                case /* required int32 i */ 9:
                     message.i = reader.int32();
                     break;
                 default:
@@ -3965,7 +3965,7 @@ class TestAllRequiredTypesProto2_MessageSetCorrectExtension2$Type extends Messag
         return message;
     }
     internalBinaryWrite(message: TestAllRequiredTypesProto2_MessageSetCorrectExtension2, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 i = 9; */
+        /* required int32 i = 9; */
         if (message.i !== 0)
             writer.tag(9, WireType.Varint).int32(message.i);
         let u = options.writeUnknownFields;

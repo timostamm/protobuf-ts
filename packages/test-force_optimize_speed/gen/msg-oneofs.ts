@@ -17,6 +17,8 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface OneofScalarMemberMessage {
     /**
+     * Only one of (or none of) the fields below can be selected
+     *
      * @generated from protobuf oneof: result
      */
     result: {
@@ -24,7 +26,7 @@ export interface OneofScalarMemberMessage {
         /**
          * Contains the value if result available
          *
-         * @generated from protobuf field: int32 value = 1;
+         * @generated from protobuf field: int32 value = 1
          */
         value: number;
     } | {
@@ -32,7 +34,7 @@ export interface OneofScalarMemberMessage {
         /**
          * Contains error message if result not available
          *
-         * @generated from protobuf field: string error = 2;
+         * @generated from protobuf field: string error = 2
          */
         error: string;
     } | {
@@ -51,13 +53,13 @@ export interface OneofMessageMemberMessage {
     objects: {
         oneofKind: "a";
         /**
-         * @generated from protobuf field: spec.OneofMessageMemberMessage.TestMessageA a = 1;
+         * @generated from protobuf field: spec.OneofMessageMemberMessage.TestMessageA a = 1
          */
         a: OneofMessageMemberMessage_TestMessageA;
     } | {
         oneofKind: "b";
         /**
-         * @generated from protobuf field: spec.OneofMessageMemberMessage.TestMessageB b = 2;
+         * @generated from protobuf field: spec.OneofMessageMemberMessage.TestMessageB b = 2
          */
         b: OneofMessageMemberMessage_TestMessageB;
     } | {
@@ -69,7 +71,7 @@ export interface OneofMessageMemberMessage {
  */
 export interface OneofMessageMemberMessage_TestMessageA {
     /**
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
 }
@@ -78,7 +80,7 @@ export interface OneofMessageMemberMessage_TestMessageA {
  */
 export interface OneofMessageMemberMessage_TestMessageB {
     /**
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
 }

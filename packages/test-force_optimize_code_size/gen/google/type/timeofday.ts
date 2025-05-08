@@ -30,26 +30,26 @@ export interface TimeOfDay {
      * Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
      * to allow the value "24:00:00" for scenarios like business closing time.
      *
-     * @generated from protobuf field: int32 hours = 1;
+     * @generated from protobuf field: int32 hours = 1
      */
     hours: number;
     /**
      * Minutes of hour of day. Must be from 0 to 59.
      *
-     * @generated from protobuf field: int32 minutes = 2;
+     * @generated from protobuf field: int32 minutes = 2
      */
     minutes: number;
     /**
      * Seconds of minutes of the time. Must normally be from 0 to 59. An API may
      * allow the value 60 if it allows leap-seconds.
      *
-     * @generated from protobuf field: int32 seconds = 3;
+     * @generated from protobuf field: int32 seconds = 3
      */
     seconds: number;
     /**
      * Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
      *
-     * @generated from protobuf field: int32 nanos = 4;
+     * @generated from protobuf field: int32 nanos = 4
      */
     nanos: number;
 }

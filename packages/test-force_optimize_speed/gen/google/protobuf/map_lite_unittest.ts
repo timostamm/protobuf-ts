@@ -48,109 +48,109 @@ import { ForeignMessageLite } from "./unittest_lite";
  */
 export interface TestMapLite {
     /**
-     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 1;
+     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 1
      */
     mapInt32Int32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 2;
+     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 2
      */
     mapInt64Int64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 3;
+     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 3
      */
     mapUint32Uint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 4;
+     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 4
      */
     mapUint64Uint64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 5;
+     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 5
      */
     mapSint32Sint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 6;
+     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 6
      */
     mapSint64Sint64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 7;
+     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 7
      */
     mapFixed32Fixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 8;
+     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 8
      */
     mapFixed64Fixed64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9;
+     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9
      */
     mapSfixed32Sfixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10;
+     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10
      */
     mapSfixed64Sfixed64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<int32, float> map_int32_float = 11;
+     * @generated from protobuf field: map<int32, float> map_int32_float = 11
      */
     mapInt32Float: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int32, double> map_int32_double = 12;
+     * @generated from protobuf field: map<int32, double> map_int32_double = 12
      */
     mapInt32Double: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<bool, bool> map_bool_bool = 13;
+     * @generated from protobuf field: map<bool, bool> map_bool_bool = 13
      */
     mapBoolBool: {
         [key: string]: boolean;
     };
     /**
-     * @generated from protobuf field: map<string, string> map_string_string = 14;
+     * @generated from protobuf field: map<string, string> map_string_string = 14
      */
     mapStringString: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<int32, bytes> map_int32_bytes = 15;
+     * @generated from protobuf field: map<int32, bytes> map_int32_bytes = 15
      */
     mapInt32Bytes: {
         [key: number]: Uint8Array;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16;
+     * @generated from protobuf field: map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16
      */
     mapInt32Enum: {
         [key: number]: MapEnumLite;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.ForeignMessageLite> map_int32_foreign_message = 17;
+     * @generated from protobuf field: map<int32, protobuf_unittest.ForeignMessageLite> map_int32_foreign_message = 17
      */
     mapInt32ForeignMessage: {
         [key: number]: ForeignMessageLite;
     };
     /**
-     * @generated from protobuf field: map<int32, int32> teboring = 18;
+     * @generated from protobuf field: map<int32, int32> teboring = 18
      */
     teboring: {
         [key: number]: number;
@@ -161,103 +161,103 @@ export interface TestMapLite {
  */
 export interface TestArenaMapLite {
     /**
-     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 1;
+     * @generated from protobuf field: map<int32, int32> map_int32_int32 = 1
      */
     mapInt32Int32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 2;
+     * @generated from protobuf field: map<int64, int64> map_int64_int64 = 2
      */
     mapInt64Int64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 3;
+     * @generated from protobuf field: map<uint32, uint32> map_uint32_uint32 = 3
      */
     mapUint32Uint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 4;
+     * @generated from protobuf field: map<uint64, uint64> map_uint64_uint64 = 4
      */
     mapUint64Uint64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 5;
+     * @generated from protobuf field: map<sint32, sint32> map_sint32_sint32 = 5
      */
     mapSint32Sint32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 6;
+     * @generated from protobuf field: map<sint64, sint64> map_sint64_sint64 = 6
      */
     mapSint64Sint64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 7;
+     * @generated from protobuf field: map<fixed32, fixed32> map_fixed32_fixed32 = 7
      */
     mapFixed32Fixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 8;
+     * @generated from protobuf field: map<fixed64, fixed64> map_fixed64_fixed64 = 8
      */
     mapFixed64Fixed64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9;
+     * @generated from protobuf field: map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9
      */
     mapSfixed32Sfixed32: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10;
+     * @generated from protobuf field: map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10
      */
     mapSfixed64Sfixed64: {
         [key: string]: bigint;
     };
     /**
-     * @generated from protobuf field: map<int32, float> map_int32_float = 11;
+     * @generated from protobuf field: map<int32, float> map_int32_float = 11
      */
     mapInt32Float: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<int32, double> map_int32_double = 12;
+     * @generated from protobuf field: map<int32, double> map_int32_double = 12
      */
     mapInt32Double: {
         [key: number]: number;
     };
     /**
-     * @generated from protobuf field: map<bool, bool> map_bool_bool = 13;
+     * @generated from protobuf field: map<bool, bool> map_bool_bool = 13
      */
     mapBoolBool: {
         [key: string]: boolean;
     };
     /**
-     * @generated from protobuf field: map<string, string> map_string_string = 14;
+     * @generated from protobuf field: map<string, string> map_string_string = 14
      */
     mapStringString: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<int32, bytes> map_int32_bytes = 15;
+     * @generated from protobuf field: map<int32, bytes> map_int32_bytes = 15
      */
     mapInt32Bytes: {
         [key: number]: Uint8Array;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16;
+     * @generated from protobuf field: map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16
      */
     mapInt32Enum: {
         [key: number]: MapEnumLite;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.ForeignMessageArenaLite> map_int32_foreign_message = 17;
+     * @generated from protobuf field: map<int32, protobuf_unittest.ForeignMessageArenaLite> map_int32_foreign_message = 17
      */
     mapInt32ForeignMessage: {
         [key: number]: ForeignMessageArenaLite;
@@ -270,7 +270,7 @@ export interface TestArenaMapLite {
  */
 export interface TestRequiredMessageMapLite {
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.TestRequiredLite> map_field = 1;
+     * @generated from protobuf field: map<int32, protobuf_unittest.TestRequiredLite> map_field = 1
      */
     mapField: {
         [key: number]: TestRequiredLite;
@@ -281,13 +281,13 @@ export interface TestRequiredMessageMapLite {
  */
 export interface TestEnumMapLite {
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumLite> known_map_field = 101;
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumLite> known_map_field = 101
      */
     knownMapField: {
         [key: number]: Proto2MapEnumLite;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumLite> unknown_map_field = 102;
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumLite> unknown_map_field = 102
      */
     unknownMapField: {
         [key: number]: Proto2MapEnumLite;
@@ -298,13 +298,13 @@ export interface TestEnumMapLite {
  */
 export interface TestEnumMapPlusExtraLite {
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> known_map_field = 101;
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> known_map_field = 101
      */
     knownMapField: {
         [key: number]: Proto2MapEnumPlusExtraLite;
     };
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> unknown_map_field = 102;
+     * @generated from protobuf field: map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> unknown_map_field = 102
      */
     unknownMapField: {
         [key: number]: Proto2MapEnumPlusExtraLite;
@@ -315,7 +315,7 @@ export interface TestEnumMapPlusExtraLite {
  */
 export interface TestMessageMapLite {
     /**
-     * @generated from protobuf field: map<int32, protobuf_unittest.TestAllTypesLite> map_int32_message = 1;
+     * @generated from protobuf field: map<int32, protobuf_unittest.TestAllTypesLite> map_int32_message = 1
      */
     mapInt32Message: {
         [key: number]: TestAllTypesLite;
@@ -326,15 +326,15 @@ export interface TestMessageMapLite {
  */
 export interface TestRequiredLite {
     /**
-     * @generated from protobuf field: int32 a = 1;
+     * @generated from protobuf field: required int32 a = 1
      */
     a: number;
     /**
-     * @generated from protobuf field: int32 b = 2;
+     * @generated from protobuf field: required int32 b = 2
      */
     b: number;
     /**
-     * @generated from protobuf field: int32 c = 3;
+     * @generated from protobuf field: required int32 c = 3
      */
     c: number;
 }
@@ -343,7 +343,7 @@ export interface TestRequiredLite {
  */
 export interface ForeignMessageArenaLite {
     /**
-     * @generated from protobuf field: optional int32 c = 1;
+     * @generated from protobuf field: optional int32 c = 1
      */
     c?: number;
 }
@@ -531,7 +531,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_int32_int32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_int32_int32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -547,7 +547,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.int64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_int64_int64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_int64_int64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -563,7 +563,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.uint32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_uint32_uint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_uint32_uint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -579,7 +579,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.uint64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_uint64_uint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_uint64_uint64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -595,7 +595,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.sint32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_sint32_sint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_sint32_sint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -611,7 +611,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.sint64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_sint64_sint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_sint64_sint64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -627,7 +627,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.fixed32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_fixed32_fixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_fixed32_fixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -643,7 +643,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.fixed64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_fixed64_fixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_fixed64_fixed64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -659,7 +659,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.sfixed32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_sfixed32_sfixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_sfixed32_sfixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -675,7 +675,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.sfixed64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_sfixed64_sfixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_sfixed64_sfixed64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -691,7 +691,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.float();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_int32_float");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_int32_float");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -707,7 +707,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.double();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_int32_double");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_int32_double");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -723,7 +723,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.bool();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_bool_bool");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_bool_bool");
             }
         }
         map[key ?? "false"] = val ?? false;
@@ -739,7 +739,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_string_string");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_string_string");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -755,7 +755,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.bytes();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_int32_bytes");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_int32_bytes");
             }
         }
         map[key ?? 0] = val ?? new Uint8Array(0);
@@ -771,7 +771,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_int32_enum");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_int32_enum");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -787,7 +787,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = ForeignMessageLite.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.map_int32_foreign_message");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.map_int32_foreign_message");
             }
         }
         map[key ?? 0] = val ?? ForeignMessageLite.create();
@@ -803,7 +803,7 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMapLite.teboring");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMapLite.teboring");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1001,7 +1001,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_int32_int32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_int32_int32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1017,7 +1017,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.int64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_int64_int64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_int64_int64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -1033,7 +1033,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.uint32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_uint32_uint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_uint32_uint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1049,7 +1049,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.uint64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_uint64_uint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_uint64_uint64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -1065,7 +1065,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.sint32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_sint32_sint32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_sint32_sint32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1081,7 +1081,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.sint64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_sint64_sint64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_sint64_sint64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -1097,7 +1097,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.fixed32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_fixed32_fixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_fixed32_fixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1113,7 +1113,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.fixed64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_fixed64_fixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_fixed64_fixed64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -1129,7 +1129,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.sfixed32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_sfixed32_sfixed32");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_sfixed32_sfixed32");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1145,7 +1145,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.sfixed64().toBigInt();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_sfixed64_sfixed64");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_sfixed64_sfixed64");
             }
         }
         map[key ?? "0"] = val ?? 0n;
@@ -1161,7 +1161,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.float();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_int32_float");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_int32_float");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1177,7 +1177,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.double();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_int32_double");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_int32_double");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1193,7 +1193,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.bool();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_bool_bool");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_bool_bool");
             }
         }
         map[key ?? "false"] = val ?? false;
@@ -1209,7 +1209,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_string_string");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_string_string");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -1225,7 +1225,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.bytes();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_int32_bytes");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_int32_bytes");
             }
         }
         map[key ?? 0] = val ?? new Uint8Array(0);
@@ -1241,7 +1241,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_int32_enum");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_int32_enum");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1257,7 +1257,7 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
                 case 2:
                     val = ForeignMessageArenaLite.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestArenaMapLite.map_int32_foreign_message");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestArenaMapLite.map_int32_foreign_message");
             }
         }
         map[key ?? 0] = val ?? ForeignMessageArenaLite.create();
@@ -1372,7 +1372,7 @@ class TestRequiredMessageMapLite$Type extends MessageType<TestRequiredMessageMap
                 case 2:
                     val = TestRequiredLite.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestRequiredMessageMapLite.map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestRequiredMessageMapLite.map_field");
             }
         }
         map[key ?? 0] = val ?? TestRequiredLite.create();
@@ -1444,7 +1444,7 @@ class TestEnumMapLite$Type extends MessageType<TestEnumMapLite> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapLite.known_map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapLite.known_map_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1460,7 +1460,7 @@ class TestEnumMapLite$Type extends MessageType<TestEnumMapLite> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapLite.unknown_map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapLite.unknown_map_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1531,7 +1531,7 @@ class TestEnumMapPlusExtraLite$Type extends MessageType<TestEnumMapPlusExtraLite
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtraLite.known_map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtraLite.known_map_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1547,7 +1547,7 @@ class TestEnumMapPlusExtraLite$Type extends MessageType<TestEnumMapPlusExtraLite
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestEnumMapPlusExtraLite.unknown_map_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestEnumMapPlusExtraLite.unknown_map_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -1613,7 +1613,7 @@ class TestMessageMapLite$Type extends MessageType<TestMessageMapLite> {
                 case 2:
                     val = TestAllTypesLite.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.TestMessageMapLite.map_int32_message");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.TestMessageMapLite.map_int32_message");
             }
         }
         map[key ?? 0] = val ?? TestAllTypesLite.create();
@@ -1659,13 +1659,13 @@ class TestRequiredLite$Type extends MessageType<TestRequiredLite> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* int32 a */ 1:
+                case /* required int32 a */ 1:
                     message.a = reader.int32();
                     break;
-                case /* int32 b */ 2:
+                case /* required int32 b */ 2:
                     message.b = reader.int32();
                     break;
-                case /* int32 c */ 3:
+                case /* required int32 c */ 3:
                     message.c = reader.int32();
                     break;
                 default:
@@ -1680,13 +1680,13 @@ class TestRequiredLite$Type extends MessageType<TestRequiredLite> {
         return message;
     }
     internalBinaryWrite(message: TestRequiredLite, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 a = 1; */
+        /* required int32 a = 1; */
         if (message.a !== 0)
             writer.tag(1, WireType.Varint).int32(message.a);
-        /* int32 b = 2; */
+        /* required int32 b = 2; */
         if (message.b !== 0)
             writer.tag(2, WireType.Varint).int32(message.b);
-        /* int32 c = 3; */
+        /* required int32 c = 3; */
         if (message.c !== 0)
             writer.tag(3, WireType.Varint).int32(message.c);
         let u = options.writeUnknownFields;

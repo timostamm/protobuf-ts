@@ -25,7 +25,7 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface SayRequest {
     /**
-     * @generated from protobuf field: string sentence = 1;
+     * @generated from protobuf field: string sentence = 1
      */
     sentence: string;
 }
@@ -36,7 +36,7 @@ export interface SayRequest {
  */
 export interface SayResponse {
     /**
-     * @generated from protobuf field: string sentence = 1;
+     * @generated from protobuf field: string sentence = 1
      */
     sentence: string;
 }
@@ -48,7 +48,7 @@ export interface SayResponse {
  */
 export interface ConverseRequest {
     /**
-     * @generated from protobuf field: string sentence = 1;
+     * @generated from protobuf field: string sentence = 1
      */
     sentence: string;
 }
@@ -60,7 +60,7 @@ export interface ConverseRequest {
  */
 export interface ConverseResponse {
     /**
-     * @generated from protobuf field: string sentence = 1;
+     * @generated from protobuf field: string sentence = 1
      */
     sentence: string;
 }
@@ -71,7 +71,7 @@ export interface ConverseResponse {
  */
 export interface IntroduceRequest {
     /**
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
 }
@@ -82,7 +82,7 @@ export interface IntroduceRequest {
  */
 export interface IntroduceResponse {
     /**
-     * @generated from protobuf field: string sentence = 1;
+     * @generated from protobuf field: string sentence = 1
      */
     sentence: string;
 }

@@ -46,19 +46,19 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface MyMessage {
     /**
-     * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnum e = 1;
+     * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnum e = 1
      */
     e: MyEnum;
     /**
-     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnum repeated_e = 2;
+     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnum repeated_e = 2
      */
     repeatedE: MyEnum[];
     /**
-     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnum repeated_packed_e = 3 [packed = true];
+     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnum repeated_packed_e = 3 [packed = true]
      */
     repeatedPackedE: MyEnum[];
     /**
-     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_unexpected_e = 4;
+     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_unexpected_e = 4
      */
     repeatedPackedUnexpectedE: MyEnumPlusExtra[]; // not packed
     /**
@@ -67,13 +67,13 @@ export interface MyMessage {
     o: {
         oneofKind: "oneofE1";
         /**
-         * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnum oneof_e_1 = 5;
+         * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnum oneof_e_1 = 5
          */
         oneofE1: MyEnum;
     } | {
         oneofKind: "oneofE2";
         /**
-         * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnum oneof_e_2 = 6;
+         * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnum oneof_e_2 = 6
          */
         oneofE2: MyEnum;
     } | {
@@ -85,19 +85,19 @@ export interface MyMessage {
  */
 export interface MyMessagePlusExtra {
     /**
-     * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra e = 1;
+     * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra e = 1
      */
     e: MyEnumPlusExtra;
     /**
-     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_e = 2;
+     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_e = 2
      */
     repeatedE: MyEnumPlusExtra[];
     /**
-     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_e = 3 [packed = true];
+     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_e = 3 [packed = true]
      */
     repeatedPackedE: MyEnumPlusExtra[];
     /**
-     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_unexpected_e = 4 [packed = true];
+     * @generated from protobuf field: repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_unexpected_e = 4 [packed = true]
      */
     repeatedPackedUnexpectedE: MyEnumPlusExtra[];
     /**
@@ -106,13 +106,13 @@ export interface MyMessagePlusExtra {
     o: {
         oneofKind: "oneofE1";
         /**
-         * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra oneof_e_1 = 5;
+         * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra oneof_e_1 = 5
          */
         oneofE1: MyEnumPlusExtra;
     } | {
         oneofKind: "oneofE2";
         /**
-         * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra oneof_e_2 = 6;
+         * @generated from protobuf field: proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra oneof_e_2 = 6
          */
         oneofE2: MyEnumPlusExtra;
     } | {
@@ -195,7 +195,7 @@ class MyMessage$Type extends MessageType<MyMessage> {
                     else
                         message.repeatedE.push(reader.int32());
                     break;
-                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnum repeated_packed_e = 3 [packed = true];*/ 3:
+                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnum repeated_packed_e = 3 [packed = true] */ 3:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedPackedE.push(reader.int32());
@@ -311,14 +311,14 @@ class MyMessagePlusExtra$Type extends MessageType<MyMessagePlusExtra> {
                     else
                         message.repeatedE.push(reader.int32());
                     break;
-                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_e = 3 [packed = true];*/ 3:
+                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_e = 3 [packed = true] */ 3:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedPackedE.push(reader.int32());
                     else
                         message.repeatedPackedE.push(reader.int32());
                     break;
-                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_unexpected_e = 4 [packed = true];*/ 4:
+                case /* repeated proto3_preserve_unknown_enum_unittest.MyEnumPlusExtra repeated_packed_unexpected_e = 4 [packed = true] */ 4:
                     if (wireType === WireType.LengthDelimited)
                         for (let e = reader.int32() + reader.pos; reader.pos < e;)
                             message.repeatedPackedUnexpectedE.push(reader.int32());

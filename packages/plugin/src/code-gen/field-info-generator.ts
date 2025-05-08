@@ -1,11 +1,10 @@
 import * as rt from "@protobuf-ts/runtime";
 import * as ts from "typescript";
-import {
-    DescriptorRegistry,
-    TypescriptFile,
-    TypeScriptImports,
-    typescriptLiteralFromValue
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {FileRegistry} from "@bufbuild/protobuf";
+import {assert} from "@protobuf-ts/runtime";
+import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
 
 
 /**
@@ -16,9 +15,8 @@ export class FieldInfoGenerator {
 
 
     constructor(
-        private readonly registry: DescriptorRegistry,
+        private readonly registry: FileRegistry,
         private readonly imports: TypeScriptImports,
-        private readonly options: {},
     ) {
     }
 
@@ -138,7 +136,8 @@ export class FieldInfoGenerator {
     }
 
     private createMessageT(source: TypescriptFile, type: rt.IMessageType<rt.UnknownMessage>): ts.ArrowFunction {
-        let descriptor = this.registry.resolveTypeName(type.typeName);
+        let descriptor = this.registry.getMessage(type.typeName);
+        assert(descriptor);
         let generatedMessage = this.imports.type(source, descriptor);
         return ts.createArrowFunction(
             undefined, undefined, [], undefined,
@@ -148,9 +147,10 @@ export class FieldInfoGenerator {
     }
 
     private createEnumT(source: TypescriptFile, ei: rt.EnumInfo): ts.ArrowFunction {
-        let [pbTypeName, , sharedPrefix] = ei,
-            descriptor = this.registry.resolveTypeName(pbTypeName),
-            generatedEnum = this.imports.type(source, descriptor),
+        const [pbTypeName, , sharedPrefix] = ei;
+        const descriptor = this.registry.getEnum(pbTypeName);
+        assert(descriptor);
+        let generatedEnum = this.imports.type(source, descriptor),
             enumInfoLiteral: ts.Expression[] = [
                 ts.createStringLiteral(pbTypeName),
                 ts.createIdentifier(generatedEnum),

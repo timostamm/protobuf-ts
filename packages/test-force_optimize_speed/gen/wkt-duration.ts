@@ -18,7 +18,7 @@ export interface DurationMessage {
     /**
      * https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/duration.proto
      *
-     * @generated from protobuf field: google.protobuf.Duration duration_field = 1;
+     * @generated from protobuf field: google.protobuf.Duration duration_field = 1
      */
     durationField?: Duration;
 }

@@ -16,11 +16,11 @@ import { Timestamp } from "../../google/protobuf/timestamp";
  */
 export interface CommonMessage {
     /**
-     * @generated from protobuf field: string a = 1;
+     * @generated from protobuf field: string a = 1
      */
     a: string;
     /**
-     * @generated from protobuf field: google.protobuf.Timestamp b = 2;
+     * @generated from protobuf field: google.protobuf.Timestamp b = 2
      */
     b?: Timestamp;
 }

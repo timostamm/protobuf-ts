@@ -13,7 +13,7 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface IServiceWithExcludedOptionsClient {
     /**
-     * @generated from protobuf rpc: Test(google.protobuf.Empty) returns (google.protobuf.Empty);
+     * @generated from protobuf rpc: Test
      */
     test(input: Empty, options?: RpcOptions): UnaryCall<Empty, Empty>;
 }
@@ -27,7 +27,7 @@ export class ServiceWithExcludedOptionsClient implements IServiceWithExcludedOpt
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * @generated from protobuf rpc: Test(google.protobuf.Empty) returns (google.protobuf.Empty);
+     * @generated from protobuf rpc: Test
      */
     test(input: Empty, options?: RpcOptions): UnaryCall<Empty, Empty> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);

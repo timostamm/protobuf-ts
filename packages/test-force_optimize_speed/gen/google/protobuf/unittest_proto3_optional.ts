@@ -25,89 +25,89 @@ export interface TestProto3Optional {
     /**
      * Singular
      *
-     * @generated from protobuf field: optional int32 optional_int32 = 1;
+     * @generated from protobuf field: optional int32 optional_int32 = 1
      */
     optionalInt32?: number;
     /**
-     * @generated from protobuf field: optional int64 optional_int64 = 2;
+     * @generated from protobuf field: optional int64 optional_int64 = 2
      */
     optionalInt64?: bigint;
     /**
-     * @generated from protobuf field: optional uint32 optional_uint32 = 3;
+     * @generated from protobuf field: optional uint32 optional_uint32 = 3
      */
     optionalUint32?: number;
     /**
-     * @generated from protobuf field: optional uint64 optional_uint64 = 4;
+     * @generated from protobuf field: optional uint64 optional_uint64 = 4
      */
     optionalUint64?: bigint;
     /**
-     * @generated from protobuf field: optional sint32 optional_sint32 = 5;
+     * @generated from protobuf field: optional sint32 optional_sint32 = 5
      */
     optionalSint32?: number;
     /**
-     * @generated from protobuf field: optional sint64 optional_sint64 = 6;
+     * @generated from protobuf field: optional sint64 optional_sint64 = 6
      */
     optionalSint64?: bigint;
     /**
-     * @generated from protobuf field: optional fixed32 optional_fixed32 = 7;
+     * @generated from protobuf field: optional fixed32 optional_fixed32 = 7
      */
     optionalFixed32?: number;
     /**
-     * @generated from protobuf field: optional fixed64 optional_fixed64 = 8;
+     * @generated from protobuf field: optional fixed64 optional_fixed64 = 8
      */
     optionalFixed64?: bigint;
     /**
-     * @generated from protobuf field: optional sfixed32 optional_sfixed32 = 9;
+     * @generated from protobuf field: optional sfixed32 optional_sfixed32 = 9
      */
     optionalSfixed32?: number;
     /**
-     * @generated from protobuf field: optional sfixed64 optional_sfixed64 = 10;
+     * @generated from protobuf field: optional sfixed64 optional_sfixed64 = 10
      */
     optionalSfixed64?: bigint;
     /**
-     * @generated from protobuf field: optional float optional_float = 11;
+     * @generated from protobuf field: optional float optional_float = 11
      */
     optionalFloat?: number;
     /**
-     * @generated from protobuf field: optional double optional_double = 12;
+     * @generated from protobuf field: optional double optional_double = 12
      */
     optionalDouble?: number;
     /**
-     * @generated from protobuf field: optional bool optional_bool = 13;
+     * @generated from protobuf field: optional bool optional_bool = 13
      */
     optionalBool?: boolean;
     /**
-     * @generated from protobuf field: optional string optional_string = 14;
+     * @generated from protobuf field: optional string optional_string = 14
      */
     optionalString?: string;
     /**
-     * @generated from protobuf field: optional bytes optional_bytes = 15;
+     * @generated from protobuf field: optional bytes optional_bytes = 15
      */
     optionalBytes?: Uint8Array;
     /**
-     * @generated from protobuf field: optional string optional_cord = 16;
+     * @generated from protobuf field: optional string optional_cord = 16
      */
     optionalCord?: string;
     /**
-     * @generated from protobuf field: optional protobuf_unittest.TestProto3Optional.NestedMessage optional_nested_message = 18;
+     * @generated from protobuf field: optional protobuf_unittest.TestProto3Optional.NestedMessage optional_nested_message = 18
      */
     optionalNestedMessage?: TestProto3Optional_NestedMessage;
     /**
-     * @generated from protobuf field: optional protobuf_unittest.TestProto3Optional.NestedMessage lazy_nested_message = 19;
+     * @generated from protobuf field: optional protobuf_unittest.TestProto3Optional.NestedMessage lazy_nested_message = 19
      */
     lazyNestedMessage?: TestProto3Optional_NestedMessage;
     /**
-     * @generated from protobuf field: optional protobuf_unittest.TestProto3Optional.NestedEnum optional_nested_enum = 21;
+     * @generated from protobuf field: optional protobuf_unittest.TestProto3Optional.NestedEnum optional_nested_enum = 21
      */
     optionalNestedEnum?: TestProto3Optional_NestedEnum;
     /**
      * Add some non-optional fields to verify we can mix them.
      *
-     * @generated from protobuf field: int32 singular_int32 = 22;
+     * @generated from protobuf field: int32 singular_int32 = 22
      */
     singularInt32: number;
     /**
-     * @generated from protobuf field: int64 singular_int64 = 23;
+     * @generated from protobuf field: int64 singular_int64 = 23
      */
     singularInt64: bigint;
 }
@@ -120,7 +120,7 @@ export interface TestProto3Optional_NestedMessage {
      * a local variable named "b" in one of the generated methods.  Doh.
      * This file needs to compile in proto1 to test backwards-compatibility.
      *
-     * @generated from protobuf field: optional int32 bb = 1;
+     * @generated from protobuf field: optional int32 bb = 1
      */
     bb?: number;
 }
@@ -156,11 +156,11 @@ export enum TestProto3Optional_NestedEnum {
  */
 export interface TestProto3OptionalMessage {
     /**
-     * @generated from protobuf field: protobuf_unittest.TestProto3OptionalMessage.NestedMessage nested_message = 1;
+     * @generated from protobuf field: protobuf_unittest.TestProto3OptionalMessage.NestedMessage nested_message = 1
      */
     nestedMessage?: TestProto3OptionalMessage_NestedMessage;
     /**
-     * @generated from protobuf field: optional protobuf_unittest.TestProto3OptionalMessage.NestedMessage optional_nested_message = 2;
+     * @generated from protobuf field: optional protobuf_unittest.TestProto3OptionalMessage.NestedMessage optional_nested_message = 2
      */
     optionalNestedMessage?: TestProto3OptionalMessage_NestedMessage;
 }
@@ -169,7 +169,7 @@ export interface TestProto3OptionalMessage {
  */
 export interface TestProto3OptionalMessage_NestedMessage {
     /**
-     * @generated from protobuf field: string s = 1;
+     * @generated from protobuf field: string s = 1
      */
     s: string;
 }

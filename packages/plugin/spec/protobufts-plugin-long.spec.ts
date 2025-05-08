@@ -1,6 +1,6 @@
 import {getCodeGeneratorRequest} from "./support/helpers";
 import {ProtobuftsPlugin} from "../src/protobufts-plugin";
-import {GeneratedFile} from "@protobuf-ts/plugin-framework";
+import {GeneratedFile} from "../src/framework/generated-file";
 
 const stringSnippets = [
     // Message
@@ -9,7 +9,7 @@ const stringSnippets = [
     // MessageType
     '{ no: 11, name: "fixed64_field_min_str", kind: "scalar", T: 6 /*ScalarType.FIXED64*/ },',
     // BinaryReader
-    'case /* fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING];*/ 11:',
+    'case /* fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING] */ 11:',
     'message.fixed64FieldMinStr = reader.fixed64().toString();',
     // BinaryWriter
     '/* fixed64 fixed64_field_min_str = 11 [jstype = JS_STRING]; */',
@@ -18,29 +18,29 @@ const stringSnippets = [
 
 const bigintSnippets = [
     // Message
-    '@generated from protobuf field: fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL];',
+    '@generated from protobuf field: fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL]',
     'fixed64FieldMin: bigint;',
     // MessageType
     '{ no: 1, name: "fixed64_field_min", kind: "scalar", T: 6 /*ScalarType.FIXED64*/, L: 0 /*LongType.BIGINT*/ },',
     // BinaryReader
-    'case /* fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL];*/ 1:',
+    'case /* fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL] */ 1:',
     'message.fixed64FieldMin = reader.fixed64().toBigInt();',
     // BinaryWriter
-    '/* fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL]; */',
+    '/* fixed64 fixed64_field_min = 1 [jstype = JS_NORMAL] */',
     'if (message.fixed64FieldMin !== 0n)',
 ]
 
 const numberSnippets = [
     // Message
-    '@generated from protobuf field: fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER];',
+    '@generated from protobuf field: fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER]',
     'fixed64FieldMinNum: number;',
     // MessageType
     '{ no: 21, name: "fixed64_field_min_num", kind: "scalar", T: 6 /*ScalarType.FIXED64*/, L: 2 /*LongType.NUMBER*/ },',
     // BinaryReader
-    'case /* fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER];*/ 21:',
+    'case /* fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER] */ 21:',
     'message.fixed64FieldMinNum = reader.fixed64().toNumber();',
     // BinaryWriter
-    '/* fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER]; */',
+    '/* fixed64 fixed64_field_min_num = 21 [jstype = JS_NUMBER] */',
     'if (message.fixed64FieldMinNum !== 0)',
 ]
 
@@ -55,7 +55,7 @@ describe('Generated code for long type', function () {
         it('should set the default type to string', () => {
             expectContainAll(file, [
                 // Message
-                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
+                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5',
                 'sfixed64FieldMin: string;',
                 // MessageType
                 'case /* sfixed64 sfixed64_field_min */ 5:',
@@ -85,7 +85,7 @@ describe('Generated code for long type', function () {
         it('should set the default type to bigint', () => {
             expectContainAll(file, [
                 // Message
-                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
+                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5',
                 'sfixed64FieldMin: bigint;',
                 // MessageType
                 'case /* sfixed64 sfixed64_field_min */ 5:',
@@ -115,7 +115,7 @@ describe('Generated code for long type', function () {
         it('should set the default type to number', () => {
             expectContainAll(file, [
                 // Message
-                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5;',
+                '@generated from protobuf field: sfixed64 sfixed64_field_min = 5',
                 'sfixed64FieldMin: number;',
                 // MessageType
                 'case /* sfixed64 sfixed64_field_min */ 5:',

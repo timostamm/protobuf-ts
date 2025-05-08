@@ -17,19 +17,19 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface IAllStyleServiceClient {
     /**
-     * @generated from protobuf rpc: Unary(google.protobuf.StringValue) returns (google.protobuf.Int32Value);
+     * @generated from protobuf rpc: Unary
      */
     unary(input: StringValue, options?: RpcOptions): UnaryCall<StringValue, Int32Value>;
     /**
-     * @generated from protobuf rpc: ServerStream(google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);
+     * @generated from protobuf rpc: ServerStream
      */
     serverStream(input: StringValue, options?: RpcOptions): ServerStreamingCall<StringValue, Int32Value>;
     /**
-     * @generated from protobuf rpc: ClientStream(stream google.protobuf.StringValue) returns (google.protobuf.Int32Value);
+     * @generated from protobuf rpc: ClientStream
      */
     clientStream(options?: RpcOptions): ClientStreamingCall<StringValue, Int32Value>;
     /**
-     * @generated from protobuf rpc: Bidi(stream google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);
+     * @generated from protobuf rpc: Bidi
      */
     bidi(options?: RpcOptions): DuplexStreamingCall<StringValue, Int32Value>;
 }
@@ -43,28 +43,28 @@ export class AllStyleServiceClient implements IAllStyleServiceClient, ServiceInf
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * @generated from protobuf rpc: Unary(google.protobuf.StringValue) returns (google.protobuf.Int32Value);
+     * @generated from protobuf rpc: Unary
      */
     unary(input: StringValue, options?: RpcOptions): UnaryCall<StringValue, Int32Value> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);
         return stackIntercept<StringValue, Int32Value>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: ServerStream(google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);
+     * @generated from protobuf rpc: ServerStream
      */
     serverStream(input: StringValue, options?: RpcOptions): ServerStreamingCall<StringValue, Int32Value> {
         const method = this.methods[1], opt = this._transport.mergeOptions(options);
         return stackIntercept<StringValue, Int32Value>("serverStreaming", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: ClientStream(stream google.protobuf.StringValue) returns (google.protobuf.Int32Value);
+     * @generated from protobuf rpc: ClientStream
      */
     clientStream(options?: RpcOptions): ClientStreamingCall<StringValue, Int32Value> {
         const method = this.methods[2], opt = this._transport.mergeOptions(options);
         return stackIntercept<StringValue, Int32Value>("clientStreaming", this._transport, method, opt);
     }
     /**
-     * @generated from protobuf rpc: Bidi(stream google.protobuf.StringValue) returns (stream google.protobuf.Int32Value);
+     * @generated from protobuf rpc: Bidi
      */
     bidi(options?: RpcOptions): DuplexStreamingCall<StringValue, Int32Value> {
         const method = this.methods[3], opt = this._transport.mergeOptions(options);

@@ -45,7 +45,7 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface LazyMessage {
     /**
-     * @generated from protobuf field: optional int32 a = 1;
+     * @generated from protobuf field: optional int32 a = 1
      */
     a?: number;
 }

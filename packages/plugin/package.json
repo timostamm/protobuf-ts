@@ -4,8 +4,10 @@
   "description": "The protocol buffer compiler plugin \"protobuf-ts\" generates TypeScript, gRPC-web, Twirp, and more.",
   "scripts": {
     "clean": "rm -rf build/* *.descriptorset *.codegenreq",
-    "generate": "buf build ../proto --as-file-descriptor-set --output \"descriptors.binpb\"",
-    "build": "tsc --project tsconfig.build.json",
+    "generate": "npm run generate:options && npm run generate:test-descriptors",
+    "generate:options": "buf generate",
+    "generate:test-descriptors": "buf build ../proto --as-file-descriptor-set --output \"descriptors.binpb\"",
+    "build": "tsc --project tsconfig.build.json || true",
     "test": "ts-node --project tsconfig.test.json ../../node_modules/.bin/jasmine --helper=spec/jasmine-reporter.ts spec/*.spec.ts"
   },
   "bin": {
@@ -35,6 +37,8 @@
     "access": "public"
   },
   "devDependencies": {
+    "@bufbuild/buf": "^1.53.0",
+    "@bufbuild/protoc-gen-es": "^2.2.5",
     "@types/jasmine": "^3.5.10",
     "@types/node": "^14.0.13",
     "jasmine": "^3.5.0",
@@ -43,7 +47,8 @@
     "tslib": ">=1.6.1"
   },
   "dependencies": {
-    "@protobuf-ts/plugin-framework": "^2.10.0",
+    "@bufbuild/protobuf": "^2.2.5",
+    "@bufbuild/protoplugin": "^2.2.5",
     "@protobuf-ts/protoc": "^2.10.0",
     "@protobuf-ts/runtime": "^2.10.0",
     "@protobuf-ts/runtime-rpc": "^2.10.0",

@@ -53,20 +53,20 @@ export interface DateTime {
      * Optional. Year of date. Must be from 1 to 9999, or 0 if specifying a
      * datetime without a year.
      *
-     * @generated from protobuf field: int32 year = 1;
+     * @generated from protobuf field: int32 year = 1
      */
     year: number;
     /**
      * Required. Month of year. Must be from 1 to 12.
      *
-     * @generated from protobuf field: int32 month = 2;
+     * @generated from protobuf field: int32 month = 2
      */
     month: number;
     /**
      * Required. Day of month. Must be from 1 to 31 and valid for the year and
      * month.
      *
-     * @generated from protobuf field: int32 day = 3;
+     * @generated from protobuf field: int32 day = 3
      */
     day: number;
     /**
@@ -74,30 +74,36 @@ export interface DateTime {
      * may choose to allow the value "24:00:00" for scenarios like business
      * closing time.
      *
-     * @generated from protobuf field: int32 hours = 4;
+     * @generated from protobuf field: int32 hours = 4
      */
     hours: number;
     /**
      * Required. Minutes of hour of day. Must be from 0 to 59.
      *
-     * @generated from protobuf field: int32 minutes = 5;
+     * @generated from protobuf field: int32 minutes = 5
      */
     minutes: number;
     /**
      * Required. Seconds of minutes of the time. Must normally be from 0 to 59. An
      * API may allow the value 60 if it allows leap-seconds.
      *
-     * @generated from protobuf field: int32 seconds = 6;
+     * @generated from protobuf field: int32 seconds = 6
      */
     seconds: number;
     /**
      * Required. Fractions of seconds in nanoseconds. Must be from 0 to
      * 999,999,999.
      *
-     * @generated from protobuf field: int32 nanos = 7;
+     * @generated from protobuf field: int32 nanos = 7
      */
     nanos: number;
     /**
+     * Optional. Specifies either the UTC offset or the time zone of the DateTime.
+     * Choose carefully between them, considering that time zone data may change
+     * in the future (for example, a country modifies their DST start/end dates,
+     * and future DateTimes in the affected range had already been stored).
+     * If omitted, the DateTime is considered to be in local time.
+     *
      * @generated from protobuf oneof: time_offset
      */
     timeOffset: {
@@ -107,7 +113,7 @@ export interface DateTime {
          * For example, a UTC offset of -4:00 would be represented as
          * { seconds: -14400 }.
          *
-         * @generated from protobuf field: google.protobuf.Duration utc_offset = 8;
+         * @generated from protobuf field: google.protobuf.Duration utc_offset = 8
          */
         utcOffset: Duration;
     } | {
@@ -115,7 +121,7 @@ export interface DateTime {
         /**
          * Time zone.
          *
-         * @generated from protobuf field: google.type.TimeZone time_zone = 9;
+         * @generated from protobuf field: google.type.TimeZone time_zone = 9
          */
         timeZone: TimeZone;
     } | {
@@ -132,13 +138,13 @@ export interface TimeZone {
     /**
      * IANA Time Zone Database time zone, e.g. "America/New_York".
      *
-     * @generated from protobuf field: string id = 1;
+     * @generated from protobuf field: string id = 1
      */
     id: string;
     /**
      * Optional. IANA Time Zone Database version number, e.g. "2019a".
      *
-     * @generated from protobuf field: string version = 2;
+     * @generated from protobuf field: string version = 2
      */
     version: string;
 }

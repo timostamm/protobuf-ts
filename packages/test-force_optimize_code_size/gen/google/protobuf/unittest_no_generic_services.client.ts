@@ -24,7 +24,7 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface ITestServiceClient {
     /**
-     * @generated from protobuf rpc: Foo(protobuf_unittest.no_generic_services_test.TestMessage) returns (protobuf_unittest.no_generic_services_test.TestMessage);
+     * @generated from protobuf rpc: Foo
      */
     foo(input: TestMessage, options?: RpcOptions): UnaryCall<TestMessage, TestMessage>;
 }
@@ -38,7 +38,7 @@ export class TestServiceClient implements ITestServiceClient, ServiceInfo {
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * @generated from protobuf rpc: Foo(protobuf_unittest.no_generic_services_test.TestMessage) returns (protobuf_unittest.no_generic_services_test.TestMessage);
+     * @generated from protobuf rpc: Foo
      */
     foo(input: TestMessage, options?: RpcOptions): UnaryCall<TestMessage, TestMessage> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);

@@ -30,13 +30,13 @@ export interface LatLng {
     /**
      * The latitude in degrees. It must be in the range [-90.0, +90.0].
      *
-     * @generated from protobuf field: double latitude = 1;
+     * @generated from protobuf field: double latitude = 1
      */
     latitude: number;
     /**
      * The longitude in degrees. It must be in the range [-180.0, +180.0].
      *
-     * @generated from protobuf field: double longitude = 2;
+     * @generated from protobuf field: double longitude = 2
      */
     longitude: number;
 }

@@ -1,25 +1,28 @@
 import * as ts from "typescript";
 import * as rt from "@protobuf-ts/runtime";
-import {
-    DescriptorRegistry,
-    EnumDescriptorProto,
-    SymbolTable,
-    TypescriptEnumBuilder,
-    TypescriptFile,
-    TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import {CommentGenerator} from "./comment-generator";
+import {DescEnum} from "@bufbuild/protobuf";
 import {Interpreter} from "../interpreter";
-import {GeneratorBase} from "./generator-base";
+import {createLocalTypeName} from "./local-type-name";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {SymbolTable} from "../framework/symbol-table";
+import {TypescriptEnumBuilder} from "../framework/typescript-enum-builder";
 
 
-export class EnumGenerator extends GeneratorBase {
+export class EnumGenerator {
 
 
-    constructor(symbols: SymbolTable, registry: DescriptorRegistry, imports: TypeScriptImports, comments: CommentGenerator, interpreter: Interpreter,
-                private readonly options: {
-                }) {
-        super(symbols, registry, imports, comments, interpreter);
+    constructor(
+        private readonly symbols: SymbolTable,
+        private readonly imports: TypeScriptImports,
+        private readonly comments: CommentGenerator,
+        private readonly interpreter: Interpreter,
+    ) {
+    }
+
+    registerSymbols(source: TypescriptFile, descEnum: DescEnum): void {
+        this.symbols.register(createLocalTypeName(descEnum), descEnum, source);
     }
 
 
@@ -63,18 +66,18 @@ export class EnumGenerator extends GeneratorBase {
      * ```
      *
      */
-    generateEnum(source: TypescriptFile, descriptor: EnumDescriptorProto): ts.EnumDeclaration {
+    generateEnum(source: TypescriptFile, descriptor: DescEnum): ts.EnumDeclaration {
         let enumObject = this.interpreter.getEnumInfo(descriptor)[1],
             builder = new TypescriptEnumBuilder();
         for (let ev of rt.listEnumValues(enumObject)) {
-            let evDescriptor = descriptor.value.find(v => v.number === ev.number);
+            let evDescriptor = descriptor.values.find(v => v.number === ev.number);
             let comments = evDescriptor
                 ? this.comments.getCommentBlock(evDescriptor, true)
                 : "@generated synthetic value - protobuf-ts requires all enums to have a 0 value";
             builder.add(ev.name, ev.number, comments);
         }
         let statement = builder.build(
-            this.imports.type(source,descriptor),
+            this.imports.type(source, descriptor),
             [ts.createModifier(ts.SyntaxKind.ExportKeyword)]
         );
         // add to our file
@@ -82,6 +85,5 @@ export class EnumGenerator extends GeneratorBase {
         this.comments.addCommentsForDescriptor(statement, descriptor, 'appendToLeadingBlock');
         return statement;
     }
-
 
 }

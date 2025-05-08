@@ -15,15 +15,15 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface SelfReferencingMessage {
     /**
-     * @generated from protobuf field: spec.SelfReferencingMessage self = 1;
+     * @generated from protobuf field: spec.SelfReferencingMessage self = 1
      */
     self?: SelfReferencingMessage;
     /**
-     * @generated from protobuf field: repeated spec.SelfReferencingMessage self_list = 2;
+     * @generated from protobuf field: repeated spec.SelfReferencingMessage self_list = 2
      */
     selfList: SelfReferencingMessage[];
     /**
-     * @generated from protobuf field: map<string, spec.SelfReferencingMessage> self_map = 3;
+     * @generated from protobuf field: map<string, spec.SelfReferencingMessage> self_map = 3
      */
     selfMap: {
         [key: string]: SelfReferencingMessage;
@@ -82,7 +82,7 @@ class SelfReferencingMessage$Type extends MessageType<SelfReferencingMessage> {
                 case 2:
                     val = SelfReferencingMessage.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.SelfReferencingMessage.self_map");
+                default: throw new globalThis.Error("unknown map entry field for spec.SelfReferencingMessage.self_map");
             }
         }
         map[key ?? ""] = val ?? SelfReferencingMessage.create();

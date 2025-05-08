@@ -15,63 +15,63 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface ScalarValuesMessage {
     /**
-     * @generated from protobuf field: double double_field = 1;
+     * @generated from protobuf field: double double_field = 1
      */
     doubleField: number;
     /**
-     * @generated from protobuf field: float float_field = 2;
+     * @generated from protobuf field: float float_field = 2
      */
     floatField: number;
     /**
-     * @generated from protobuf field: int64 int64_field = 3;
+     * @generated from protobuf field: int64 int64_field = 3
      */
     int64Field: bigint;
     /**
-     * @generated from protobuf field: uint64 uint64_field = 4;
+     * @generated from protobuf field: uint64 uint64_field = 4
      */
     uint64Field: bigint;
     /**
-     * @generated from protobuf field: int32 int32_field = 5;
+     * @generated from protobuf field: int32 int32_field = 5
      */
     int32Field: number;
     /**
-     * @generated from protobuf field: fixed64 fixed64_field = 6;
+     * @generated from protobuf field: fixed64 fixed64_field = 6
      */
     fixed64Field: bigint;
     /**
-     * @generated from protobuf field: fixed32 fixed32_field = 7;
+     * @generated from protobuf field: fixed32 fixed32_field = 7
      */
     fixed32Field: number;
     /**
-     * @generated from protobuf field: bool bool_field = 8;
+     * @generated from protobuf field: bool bool_field = 8
      */
     boolField: boolean;
     /**
-     * @generated from protobuf field: string string_field = 9;
+     * @generated from protobuf field: string string_field = 9
      */
     stringField: string;
     /**
-     * @generated from protobuf field: bytes bytes_field = 11;
+     * @generated from protobuf field: bytes bytes_field = 11
      */
     bytesField: Uint8Array;
     /**
-     * @generated from protobuf field: uint32 uint32_field = 12;
+     * @generated from protobuf field: uint32 uint32_field = 12
      */
     uint32Field: number;
     /**
-     * @generated from protobuf field: sfixed32 sfixed32_field = 14;
+     * @generated from protobuf field: sfixed32 sfixed32_field = 14
      */
     sfixed32Field: number;
     /**
-     * @generated from protobuf field: sfixed64 sfixed64_field = 15;
+     * @generated from protobuf field: sfixed64 sfixed64_field = 15
      */
     sfixed64Field: bigint;
     /**
-     * @generated from protobuf field: sint32 sint32_field = 16;
+     * @generated from protobuf field: sint32 sint32_field = 16
      */
     sint32Field: number;
     /**
-     * @generated from protobuf field: sint64 sint64_field = 17;
+     * @generated from protobuf field: sint64 sint64_field = 17
      */
     sint64Field: bigint;
 }
@@ -80,63 +80,63 @@ export interface ScalarValuesMessage {
  */
 export interface RepeatedScalarValuesMessage {
     /**
-     * @generated from protobuf field: repeated double double_field = 1;
+     * @generated from protobuf field: repeated double double_field = 1
      */
     doubleField: number[];
     /**
-     * @generated from protobuf field: repeated float float_field = 2;
+     * @generated from protobuf field: repeated float float_field = 2
      */
     floatField: number[];
     /**
-     * @generated from protobuf field: repeated int64 int64_field = 3;
+     * @generated from protobuf field: repeated int64 int64_field = 3
      */
     int64Field: bigint[];
     /**
-     * @generated from protobuf field: repeated uint64 uint64_field = 4;
+     * @generated from protobuf field: repeated uint64 uint64_field = 4
      */
     uint64Field: bigint[];
     /**
-     * @generated from protobuf field: repeated int32 int32_field = 5;
+     * @generated from protobuf field: repeated int32 int32_field = 5
      */
     int32Field: number[];
     /**
-     * @generated from protobuf field: repeated fixed64 fixed64_field = 6;
+     * @generated from protobuf field: repeated fixed64 fixed64_field = 6
      */
     fixed64Field: bigint[];
     /**
-     * @generated from protobuf field: repeated fixed32 fixed32_field = 7;
+     * @generated from protobuf field: repeated fixed32 fixed32_field = 7
      */
     fixed32Field: number[];
     /**
-     * @generated from protobuf field: repeated bool bool_field = 8;
+     * @generated from protobuf field: repeated bool bool_field = 8
      */
     boolField: boolean[];
     /**
-     * @generated from protobuf field: repeated string string_field = 9;
+     * @generated from protobuf field: repeated string string_field = 9
      */
     stringField: string[];
     /**
-     * @generated from protobuf field: repeated bytes bytes_field = 11;
+     * @generated from protobuf field: repeated bytes bytes_field = 11
      */
     bytesField: Uint8Array[];
     /**
-     * @generated from protobuf field: repeated uint32 uint32_field = 12;
+     * @generated from protobuf field: repeated uint32 uint32_field = 12
      */
     uint32Field: number[];
     /**
-     * @generated from protobuf field: repeated sfixed32 sfixed32_field = 14;
+     * @generated from protobuf field: repeated sfixed32 sfixed32_field = 14
      */
     sfixed32Field: number[];
     /**
-     * @generated from protobuf field: repeated sfixed64 sfixed64_field = 15;
+     * @generated from protobuf field: repeated sfixed64 sfixed64_field = 15
      */
     sfixed64Field: bigint[];
     /**
-     * @generated from protobuf field: repeated sint32 sint32_field = 16;
+     * @generated from protobuf field: repeated sint32 sint32_field = 16
      */
     sint32Field: number[];
     /**
-     * @generated from protobuf field: repeated sint64 sint64_field = 17;
+     * @generated from protobuf field: repeated sint64 sint64_field = 17
      */
     sint64Field: bigint[];
 }

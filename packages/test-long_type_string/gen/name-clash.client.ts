@@ -15,35 +15,35 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface INameClashServiceClient {
     /**
-     * @generated from protobuf rpc: __proto__(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: __proto__
      */
     Proto(input: Error, options?: RpcOptions): UnaryCall<Error, Error>;
     /**
-     * @generated from protobuf rpc: toString(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: toString
      */
     toString$(input: Error, options?: RpcOptions): UnaryCall<Error, Error>;
     /**
-     * @generated from protobuf rpc: name(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: name
      */
     name$(input: Error, options?: RpcOptions): UnaryCall<Error, Error>;
     /**
-     * @generated from protobuf rpc: constructor(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: constructor
      */
     constructor$(input: Error, options?: RpcOptions): UnaryCall<Error, Error>;
     /**
-     * @generated from protobuf rpc: methods(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: methods
      */
     methods$(input: Error, options?: RpcOptions): UnaryCall<Error, Error>;
     /**
-     * @generated from protobuf rpc: typeName(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: typeName
      */
     typeName$(input: Error, options?: RpcOptions): UnaryCall<Error, Error>;
     /**
-     * @generated from protobuf rpc: options(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: options
      */
     options$(input: Error, options?: RpcOptions): UnaryCall<Error, Error>;
     /**
-     * @generated from protobuf rpc: _transport(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: _transport
      */
     Transport(input: Error, options?: RpcOptions): UnaryCall<Error, Error>;
 }
@@ -59,56 +59,56 @@ export class NameClashServiceClient implements INameClashServiceClient, ServiceI
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * @generated from protobuf rpc: __proto__(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: __proto__
      */
     Proto(input: Error, options?: RpcOptions): UnaryCall<Error, Error> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);
         return stackIntercept<Error, Error>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: toString(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: toString
      */
     toString$(input: Error, options?: RpcOptions): UnaryCall<Error, Error> {
         const method = this.methods[1], opt = this._transport.mergeOptions(options);
         return stackIntercept<Error, Error>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: name(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: name
      */
     name$(input: Error, options?: RpcOptions): UnaryCall<Error, Error> {
         const method = this.methods[2], opt = this._transport.mergeOptions(options);
         return stackIntercept<Error, Error>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: constructor(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: constructor
      */
     constructor$(input: Error, options?: RpcOptions): UnaryCall<Error, Error> {
         const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<Error, Error>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: methods(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: methods
      */
     methods$(input: Error, options?: RpcOptions): UnaryCall<Error, Error> {
         const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<Error, Error>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: typeName(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: typeName
      */
     typeName$(input: Error, options?: RpcOptions): UnaryCall<Error, Error> {
         const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<Error, Error>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: options(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: options
      */
     options$(input: Error, options?: RpcOptions): UnaryCall<Error, Error> {
         const method = this.methods[6], opt = this._transport.mergeOptions(options);
         return stackIntercept<Error, Error>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: _transport(spec.Error) returns (spec.Error);
+     * @generated from protobuf rpc: _transport
      */
     Transport(input: Error, options?: RpcOptions): UnaryCall<Error, Error> {
         const method = this.methods[7], opt = this._transport.mergeOptions(options);

@@ -29,7 +29,7 @@ export interface TestExtensionSet {
  */
 export interface TestExtensionSetContainer {
     /**
-     * @generated from protobuf field: optional protobuf_unittest.TestExtensionSet extension = 1;
+     * @generated from protobuf field: optional protobuf_unittest.TestExtensionSet extension = 1
      */
     extension?: TestExtensionSet;
 }

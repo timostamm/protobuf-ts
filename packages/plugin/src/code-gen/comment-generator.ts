@@ -1,25 +1,14 @@
 import * as ts from "typescript";
-import {
-    addCommentBlockAsJsDoc,
-    addCommentBlocksAsLeadingDetachedLines,
-    AnyDescriptorProto,
-    DescriptorRegistry,
-    EnumValueDescriptorProto,
-    FieldDescriptorProto,
-    isAnyTypeDescriptorProto,
-    MethodDescriptorProto,
-    OneofDescriptorProto
-} from "@protobuf-ts/plugin-framework";
+import {AnyDesc, DescComments} from "@bufbuild/protobuf";
+import {getComments, getDeclarationString} from "@bufbuild/protoplugin";
+import {addCommentBlocksAsLeadingDetachedLines, addCommentBlockAsJsDoc} from "../framework/typescript-comments";
 
 
 export class CommentGenerator {
 
 
-    constructor(
-        private readonly registry: DescriptorRegistry
-    ) {
+    constructor() {
     }
-
 
     /**
      * Adds comments from the .proto as a JSDoc block.
@@ -47,8 +36,11 @@ export class CommentGenerator {
      * be appended to the leading block so that the
      * information is not discarded.
      */
-    addCommentsForDescriptor(node: ts.Node, descriptor: AnyDescriptorProto, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
-        const source = this.registry.sourceCodeComments(descriptor);
+    addCommentsForDescriptor(node: ts.Node, descriptor: AnyDesc, trailingCommentsMode: 'appendToLeadingBlock' | 'trailingLines'): void {
+        if (descriptor.kind == "file") {
+            return;
+        }
+        const source = this.getComments(descriptor);
 
         // add leading detached comments as line comments
         addCommentBlocksAsLeadingDetachedLines(node, ...source.leadingDetached);
@@ -68,12 +60,35 @@ export class CommentGenerator {
         }
     }
 
+    private getComments(desc: AnyDesc): Omit<DescComments, "sourcePath"> {
+        if (desc.kind == "file") {
+            return {
+                leadingDetached: [],
+            };
+        }
+        const comments = getComments(desc);
+        return {
+            leading: comments.leading !== undefined ? this.stripTrailingNewlines(comments.leading) : comments.leading,
+            trailing: comments.trailing !== undefined ? this.stripTrailingNewlines(comments.trailing) : comments.trailing,
+            leadingDetached: comments.leadingDetached.map(t => this.stripTrailingNewlines(t)),
+        }
+    }
+
+    private stripTrailingNewlines(block: string): string {
+        return block.endsWith('\n')
+            ? block.slice(0, -1)
+            : block;
+    }
+
     /**
      * Returns a block of source comments (no leading detached!),
      * with @generated tags and @deprecated tag (if applicable).
      */
-    getCommentBlock(descriptor: AnyDescriptorProto, appendTrailingComments = false): string {
-        const source = this.registry.sourceCodeComments(descriptor);
+    getCommentBlock(descriptor: AnyDesc, appendTrailingComments = false): string {
+        if (descriptor.kind == "file") {
+            return "";
+        }
+        const source = this.getComments(descriptor);
 
         // start with leading block
         let commentBlock = source.leading ?? '';
@@ -92,7 +107,9 @@ export class CommentGenerator {
         }
 
         // add deprecated information to the leading block
-        commentBlock += this.makeDeprecatedTag(descriptor);
+        if (CommentGenerator.isDeprecated(descriptor)) {
+            commentBlock += '@deprecated\n';
+        }
 
         // add source info to the leading block
         commentBlock += this.makeGeneratedTag(descriptor);
@@ -100,44 +117,62 @@ export class CommentGenerator {
         return commentBlock;
     }
 
+    /**
+     * Creates string like "@generated from protobuf field: string foo = 1;"
+     */
+    makeGeneratedTag(desc: AnyDesc) {
+        switch (desc.kind) {
+            case "oneof":
+                return `@generated from protobuf oneof: ${desc.name}`;
+            case "enum_value":
+                return `@generated from protobuf enum value: ${getDeclarationString(desc)};`;
+            case "field":
+                return `@generated from protobuf field: ${getDeclarationString(desc)}`;
+            case "extension":
+                return `@generated from protobuf extension: ${getDeclarationString(desc)}`;
+            case "rpc":
+                // TODO see StringFormat.formatRpcDeclaration
+                return `@generated from protobuf rpc: ${desc.name}`;
+            case "message":
+            case "enum":
+            case "service":
+            case "file":
+                return `@generated from protobuf ${desc.toString()}`;
+        }
+    }
 
     /**
      * Returns "@deprecated\n" if explicitly deprecated.
      * For top level types, also returns "@deprecated\n" if entire file is deprecated.
      * Otherwise, returns "".
      */
-    makeDeprecatedTag(descriptor: AnyDescriptorProto) {
-        let deprecated = this.registry.isExplicitlyDeclaredDeprecated(descriptor);
-
-        if (!deprecated && isAnyTypeDescriptorProto(descriptor)) {
-            // an entire .proto file can be marked deprecated.
-            // this means all types within are deprecated.
-            // we mark them as deprecated, but dont touch members.
-            deprecated = this.registry.isExplicitlyDeclaredDeprecated(this.registry.fileOf(descriptor));
-        }
-        if (deprecated) {
+    makeDeprecatedTag(desc: AnyDesc) {
+        if (CommentGenerator.isDeprecated(desc)) {
             return '@deprecated\n';
         }
         return '';
     }
 
 
-    /**
-     * Creates string like "@generated from protobuf field: string foo = 1;"
-     */
-    makeGeneratedTag(descriptor: AnyDescriptorProto): string {
-        if (OneofDescriptorProto.is(descriptor)) {
-            return `@generated from protobuf oneof: ${descriptor.name}`;
-        } else if (EnumValueDescriptorProto.is(descriptor)) {
-            return `@generated from protobuf enum value: ${this.registry.formatEnumValueDeclaration(descriptor)}`;
-        } else if (FieldDescriptorProto.is(descriptor)) {
-            return `@generated from protobuf field: ${this.registry.formatFieldDeclaration(descriptor)}`;
-        } else if (MethodDescriptorProto.is(descriptor)) {
-            return `@generated from protobuf rpc: ${this.registry.formatRpcDeclaration(descriptor)}`;
-        } else {
-            return `@generated from protobuf ${this.registry.formatQualifiedName(descriptor)}`;
+    private static isDeprecated(desc: AnyDesc) {
+        if (desc.kind == "file") {
+            return false;
+        }
+        if (desc.deprecated) {
+            return true;
+        }
+        switch (desc.kind) {
+            case "enum":
+            case "service":
+            case "message":
+            case "extension":
+                return desc.file.deprecated;
+            case "field":
+            case "rpc":
+            case "enum_value":
+            case "oneof":
+                return desc.parent.file.deprecated;
         }
     }
-
 
 }

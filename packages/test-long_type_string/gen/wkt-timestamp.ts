@@ -18,7 +18,7 @@ export interface TimestampMessage {
     /**
      * https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/timestamp.proto
      *
-     * @generated from protobuf field: google.protobuf.Timestamp timestamp_field = 1;
+     * @generated from protobuf field: google.protobuf.Timestamp timestamp_field = 1
      */
     timestampField?: Timestamp;
 }

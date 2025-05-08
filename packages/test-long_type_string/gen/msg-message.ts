@@ -15,11 +15,11 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface MessageFieldMessage {
     /**
-     * @generated from protobuf field: spec.MessageFieldMessage.TestMessage message_field = 1;
+     * @generated from protobuf field: spec.MessageFieldMessage.TestMessage message_field = 1
      */
     messageField?: MessageFieldMessage_TestMessage;
     /**
-     * @generated from protobuf field: repeated spec.MessageFieldMessage.TestMessage repeated_message_field = 2;
+     * @generated from protobuf field: repeated spec.MessageFieldMessage.TestMessage repeated_message_field = 2
      */
     repeatedMessageField: MessageFieldMessage_TestMessage[];
 }
@@ -28,7 +28,7 @@ export interface MessageFieldMessage {
  */
 export interface MessageFieldMessage_TestMessage {
     /**
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 1
      */
     name: string;
 }

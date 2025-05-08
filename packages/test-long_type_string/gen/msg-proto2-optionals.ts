@@ -15,19 +15,19 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface Proto2OptionalsMessage {
     /**
-     * @generated from protobuf field: optional string string_field = 1;
+     * @generated from protobuf field: optional string string_field = 1
      */
     stringField?: string;
     /**
-     * @generated from protobuf field: optional bytes bytes_field = 2;
+     * @generated from protobuf field: optional bytes bytes_field = 2
      */
     bytesField?: Uint8Array;
     /**
-     * @generated from protobuf field: optional spec.Proto2OptionalsMessage.TestEnum enum_field = 3;
+     * @generated from protobuf field: optional spec.Proto2OptionalsMessage.TestEnum enum_field = 3
      */
     enumField?: Proto2OptionalsMessage_TestEnum;
     /**
-     * @generated from protobuf field: optional spec.Proto2OptionalsMessage.TestMessage message_field = 4;
+     * @generated from protobuf field: optional spec.Proto2OptionalsMessage.TestMessage message_field = 4
      */
     messageField?: Proto2OptionalsMessage_TestMessage;
 }
@@ -36,7 +36,7 @@ export interface Proto2OptionalsMessage {
  */
 export interface Proto2OptionalsMessage_TestMessage {
     /**
-     * @generated from protobuf field: string field = 1;
+     * @generated from protobuf field: required string field = 1
      */
     field: string;
 }
@@ -143,7 +143,7 @@ class Proto2OptionalsMessage_TestMessage$Type extends MessageType<Proto2Optional
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string field */ 1:
+                case /* required string field */ 1:
                     message.field = reader.string();
                     break;
                 default:
@@ -158,7 +158,7 @@ class Proto2OptionalsMessage_TestMessage$Type extends MessageType<Proto2Optional
         return message;
     }
     internalBinaryWrite(message: Proto2OptionalsMessage_TestMessage, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string field = 1; */
+        /* required string field = 1; */
         if (message.field !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.field);
         let u = options.writeUnknownFields;

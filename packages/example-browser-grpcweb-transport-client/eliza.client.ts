@@ -44,7 +44,7 @@ export interface IElizaServiceClient {
     /**
      * Say is a unary RPC. Eliza responds to the prompt with a single sentence.
      *
-     * @generated from protobuf rpc: Say(connectrpc.eliza.v1.SayRequest) returns (connectrpc.eliza.v1.SayResponse);
+     * @generated from protobuf rpc: Say
      */
     say(input: SayRequest, options?: RpcOptions): UnaryCall<SayRequest, SayResponse>;
     /**
@@ -52,14 +52,14 @@ export interface IElizaServiceClient {
      * back-and-forth messages with Eliza over a long-lived connection. Eliza
      * responds to each ConverseRequest with a ConverseResponse.
      *
-     * @generated from protobuf rpc: Converse(stream connectrpc.eliza.v1.ConverseRequest) returns (stream connectrpc.eliza.v1.ConverseResponse);
+     * @generated from protobuf rpc: Converse
      */
     converse(options?: RpcOptions): DuplexStreamingCall<ConverseRequest, ConverseResponse>;
     /**
      * Introduce is a server streaming RPC. Given the caller's name, Eliza
      * returns a stream of sentences to introduce itself.
      *
-     * @generated from protobuf rpc: Introduce(connectrpc.eliza.v1.IntroduceRequest) returns (stream connectrpc.eliza.v1.IntroduceResponse);
+     * @generated from protobuf rpc: Introduce
      */
     introduce(input: IntroduceRequest, options?: RpcOptions): ServerStreamingCall<IntroduceRequest, IntroduceResponse>;
 }
@@ -82,7 +82,7 @@ export class ElizaServiceClient implements IElizaServiceClient, ServiceInfo {
     /**
      * Say is a unary RPC. Eliza responds to the prompt with a single sentence.
      *
-     * @generated from protobuf rpc: Say(connectrpc.eliza.v1.SayRequest) returns (connectrpc.eliza.v1.SayResponse);
+     * @generated from protobuf rpc: Say
      */
     say(input: SayRequest, options?: RpcOptions): UnaryCall<SayRequest, SayResponse> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);
@@ -93,7 +93,7 @@ export class ElizaServiceClient implements IElizaServiceClient, ServiceInfo {
      * back-and-forth messages with Eliza over a long-lived connection. Eliza
      * responds to each ConverseRequest with a ConverseResponse.
      *
-     * @generated from protobuf rpc: Converse(stream connectrpc.eliza.v1.ConverseRequest) returns (stream connectrpc.eliza.v1.ConverseResponse);
+     * @generated from protobuf rpc: Converse
      */
     converse(options?: RpcOptions): DuplexStreamingCall<ConverseRequest, ConverseResponse> {
         const method = this.methods[1], opt = this._transport.mergeOptions(options);
@@ -103,7 +103,7 @@ export class ElizaServiceClient implements IElizaServiceClient, ServiceInfo {
      * Introduce is a server streaming RPC. Given the caller's name, Eliza
      * returns a stream of sentences to introduce itself.
      *
-     * @generated from protobuf rpc: Introduce(connectrpc.eliza.v1.IntroduceRequest) returns (stream connectrpc.eliza.v1.IntroduceResponse);
+     * @generated from protobuf rpc: Introduce
      */
     introduce(input: IntroduceRequest, options?: RpcOptions): ServerStreamingCall<IntroduceRequest, IntroduceResponse> {
         const method = this.methods[2], opt = this._transport.mergeOptions(options);

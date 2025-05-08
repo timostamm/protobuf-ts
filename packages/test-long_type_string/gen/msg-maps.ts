@@ -15,49 +15,49 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface ScalarMapsMessage {
     /**
-     * @generated from protobuf field: map<string, string> str_str_field = 1;
+     * @generated from protobuf field: map<string, string> str_str_field = 1
      */
     strStrField: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<string, int32> str_int32_field = 2;
+     * @generated from protobuf field: map<string, int32> str_int32_field = 2
      */
     strInt32Field: {
         [key: string]: number;
     };
     /**
-     * @generated from protobuf field: map<string, int64> str_int64_field = 3;
+     * @generated from protobuf field: map<string, int64> str_int64_field = 3
      */
     strInt64Field: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<string, bool> str_bool_field = 4;
+     * @generated from protobuf field: map<string, bool> str_bool_field = 4
      */
     strBoolField: {
         [key: string]: boolean;
     };
     /**
-     * @generated from protobuf field: map<string, bytes> str_bytes_field = 5;
+     * @generated from protobuf field: map<string, bytes> str_bytes_field = 5
      */
     strBytesField: {
         [key: string]: Uint8Array;
     };
     /**
-     * @generated from protobuf field: map<int32, string> int32_str_field = 6;
+     * @generated from protobuf field: map<int32, string> int32_str_field = 6
      */
     int32StrField: {
         [key: number]: string;
     };
     /**
-     * @generated from protobuf field: map<int64, string> int64_str_field = 7;
+     * @generated from protobuf field: map<int64, string> int64_str_field = 7
      */
     int64StrField: {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: map<bool, string> bool_str_field = 8;
+     * @generated from protobuf field: map<bool, string> bool_str_field = 8
      */
     boolStrField: {
         [key: string]: string;
@@ -68,19 +68,19 @@ export interface ScalarMapsMessage {
  */
 export interface MessageMapMessage {
     /**
-     * @generated from protobuf field: map<string, spec.MessageMapMessage.MyItem> str_msg_field = 1;
+     * @generated from protobuf field: map<string, spec.MessageMapMessage.MyItem> str_msg_field = 1
      */
     strMsgField: {
         [key: string]: MessageMapMessage_MyItem;
     };
     /**
-     * @generated from protobuf field: map<int32, spec.MessageMapMessage.MyItem> int32_msg_field = 2;
+     * @generated from protobuf field: map<int32, spec.MessageMapMessage.MyItem> int32_msg_field = 2
      */
     int32MsgField: {
         [key: number]: MessageMapMessage_MyItem;
     };
     /**
-     * @generated from protobuf field: map<int64, spec.MessageMapMessage.MyItem> int64_msg_field = 3;
+     * @generated from protobuf field: map<int64, spec.MessageMapMessage.MyItem> int64_msg_field = 3
      */
     int64MsgField: {
         [key: string]: MessageMapMessage_MyItem;
@@ -91,7 +91,7 @@ export interface MessageMapMessage {
  */
 export interface MessageMapMessage_MyItem {
     /**
-     * @generated from protobuf field: string text = 1;
+     * @generated from protobuf field: string text = 1
      */
     text: string;
 }
@@ -100,19 +100,19 @@ export interface MessageMapMessage_MyItem {
  */
 export interface EnumMapMessage {
     /**
-     * @generated from protobuf field: map<string, spec.EnumMapMessage.MyEnum> str_enu_field = 1;
+     * @generated from protobuf field: map<string, spec.EnumMapMessage.MyEnum> str_enu_field = 1
      */
     strEnuField: {
         [key: string]: EnumMapMessage_MyEnum;
     };
     /**
-     * @generated from protobuf field: map<int32, spec.EnumMapMessage.MyEnum> int32_enu_field = 2;
+     * @generated from protobuf field: map<int32, spec.EnumMapMessage.MyEnum> int32_enu_field = 2
      */
     int32EnuField: {
         [key: number]: EnumMapMessage_MyEnum;
     };
     /**
-     * @generated from protobuf field: map<int64, spec.EnumMapMessage.MyEnum> int64_enu_field = 3;
+     * @generated from protobuf field: map<int64, spec.EnumMapMessage.MyEnum> int64_enu_field = 3
      */
     int64EnuField: {
         [key: string]: EnumMapMessage_MyEnum;
@@ -214,7 +214,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_str_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_str_field");
             }
         }
         map[key ?? ""] = val ?? "";
@@ -230,7 +230,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_int32_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_int32_field");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -246,7 +246,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.int64().toString();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_int64_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_int64_field");
             }
         }
         map[key ?? ""] = val ?? "0";
@@ -262,7 +262,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.bool();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_bool_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_bool_field");
             }
         }
         map[key ?? ""] = val ?? false;
@@ -278,7 +278,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.bytes();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.str_bytes_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.str_bytes_field");
             }
         }
         map[key ?? ""] = val ?? new Uint8Array(0);
@@ -294,7 +294,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.int32_str_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.int32_str_field");
             }
         }
         map[key ?? 0] = val ?? "";
@@ -310,7 +310,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.int64_str_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.int64_str_field");
             }
         }
         map[key ?? "0"] = val ?? "";
@@ -326,7 +326,7 @@ class ScalarMapsMessage$Type extends MessageType<ScalarMapsMessage> {
                 case 2:
                     val = reader.string();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.ScalarMapsMessage.bool_str_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.ScalarMapsMessage.bool_str_field");
             }
         }
         map[key ?? "false"] = val ?? "";
@@ -420,7 +420,7 @@ class MessageMapMessage$Type extends MessageType<MessageMapMessage> {
                 case 2:
                     val = MessageMapMessage_MyItem.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.MessageMapMessage.str_msg_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.MessageMapMessage.str_msg_field");
             }
         }
         map[key ?? ""] = val ?? MessageMapMessage_MyItem.create();
@@ -436,7 +436,7 @@ class MessageMapMessage$Type extends MessageType<MessageMapMessage> {
                 case 2:
                     val = MessageMapMessage_MyItem.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.MessageMapMessage.int32_msg_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.MessageMapMessage.int32_msg_field");
             }
         }
         map[key ?? 0] = val ?? MessageMapMessage_MyItem.create();
@@ -452,7 +452,7 @@ class MessageMapMessage$Type extends MessageType<MessageMapMessage> {
                 case 2:
                     val = MessageMapMessage_MyItem.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.MessageMapMessage.int64_msg_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.MessageMapMessage.int64_msg_field");
             }
         }
         map[key ?? "0"] = val ?? MessageMapMessage_MyItem.create();
@@ -590,7 +590,7 @@ class EnumMapMessage$Type extends MessageType<EnumMapMessage> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.EnumMapMessage.str_enu_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.EnumMapMessage.str_enu_field");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -606,7 +606,7 @@ class EnumMapMessage$Type extends MessageType<EnumMapMessage> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.EnumMapMessage.int32_enu_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.EnumMapMessage.int32_enu_field");
             }
         }
         map[key ?? 0] = val ?? 0;
@@ -622,7 +622,7 @@ class EnumMapMessage$Type extends MessageType<EnumMapMessage> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field spec.EnumMapMessage.int64_enu_field");
+                default: throw new globalThis.Error("unknown map entry field for spec.EnumMapMessage.int64_enu_field");
             }
         }
         map[key ?? "0"] = val ?? 0;

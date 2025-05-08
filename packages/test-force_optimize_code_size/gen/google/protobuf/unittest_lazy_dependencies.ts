@@ -52,7 +52,7 @@ import { LazyMessage } from "./unittest_lazy_dependencies_custom_option";
  */
 export interface ImportedMessage {
     /**
-     * @generated from protobuf field: optional protobuf_unittest.lazy_imports.LazyMessage lazy_message = 1;
+     * @generated from protobuf field: optional protobuf_unittest.lazy_imports.LazyMessage lazy_message = 1
      */
     lazyMessage?: LazyMessage;
 }

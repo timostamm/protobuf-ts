@@ -54,7 +54,7 @@ export interface PostalAddress {
      *
      * All new revisions **must** be backward compatible with old revisions.
      *
-     * @generated from protobuf field: int32 revision = 1;
+     * @generated from protobuf field: int32 revision = 1
      */
     revision: number;
     /**
@@ -64,7 +64,7 @@ export interface PostalAddress {
      * http://www.unicode.org/cldr/charts/30/supplemental/territory_information.html
      * for details. Example: "CH" for Switzerland.
      *
-     * @generated from protobuf field: string region_code = 2;
+     * @generated from protobuf field: string region_code = 2
      */
     regionCode: string;
     /**
@@ -81,7 +81,7 @@ export interface PostalAddress {
      *
      * Examples: "zh-Hant", "ja", "ja-Latn", "en".
      *
-     * @generated from protobuf field: string language_code = 3;
+     * @generated from protobuf field: string language_code = 3
      */
     languageCode: string;
     /**
@@ -90,7 +90,7 @@ export interface PostalAddress {
      * additional validation with other parts of the address (e.g. state/zip
      * validation in the U.S.A.).
      *
-     * @generated from protobuf field: string postal_code = 4;
+     * @generated from protobuf field: string postal_code = 4
      */
     postalCode: string;
     /**
@@ -100,7 +100,7 @@ export interface PostalAddress {
      * alone, representing the "sector code" (Jamaica), "delivery area indicator"
      * (Malawi) or "post office indicator" (e.g. Côte d'Ivoire).
      *
-     * @generated from protobuf field: string sorting_code = 5;
+     * @generated from protobuf field: string sorting_code = 5
      */
     sortingCode: string;
     /**
@@ -112,7 +112,7 @@ export interface PostalAddress {
      * Many countries don't use an administrative area in postal addresses. E.g.
      * in Switzerland this should be left unpopulated.
      *
-     * @generated from protobuf field: string administrative_area = 6;
+     * @generated from protobuf field: string administrative_area = 6
      */
     administrativeArea: string;
     /**
@@ -121,14 +121,14 @@ export interface PostalAddress {
      * In regions of the world where localities are not well defined or do not fit
      * into this structure well, leave locality empty and use address_lines.
      *
-     * @generated from protobuf field: string locality = 7;
+     * @generated from protobuf field: string locality = 7
      */
     locality: string;
     /**
      * Optional. Sublocality of the address.
      * For example, this can be neighborhoods, boroughs, districts.
      *
-     * @generated from protobuf field: string sublocality = 8;
+     * @generated from protobuf field: string sublocality = 8
      */
     sublocality: string;
     /**
@@ -155,7 +155,7 @@ export interface PostalAddress {
      * addresses (as opposed to guessing which parts of the address should be
      * localities or administrative areas).
      *
-     * @generated from protobuf field: repeated string address_lines = 9;
+     * @generated from protobuf field: repeated string address_lines = 9
      */
     addressLines: string[];
     /**
@@ -163,13 +163,13 @@ export interface PostalAddress {
      * This field may, under certain circumstances, contain multiline information.
      * For example, it might contain "care of" information.
      *
-     * @generated from protobuf field: repeated string recipients = 10;
+     * @generated from protobuf field: repeated string recipients = 10
      */
     recipients: string[];
     /**
      * Optional. The name of the organization at the address.
      *
-     * @generated from protobuf field: string organization = 11;
+     * @generated from protobuf field: string organization = 11
      */
     organization: string;
 }

@@ -1,19 +1,6 @@
-import {
-    CodeGeneratorRequest,
-    CodeGeneratorResponse_Feature,
-    DescriptorProto,
-    DescriptorRegistry,
-    EnumDescriptorProto,
-    GeneratedFile,
-    PluginBase,
-    ServiceDescriptorProto,
-    setupCompiler,
-    SymbolTable,
-    TypeScriptImports
-} from "@protobuf-ts/plugin-framework";
+import {setupCompiler} from "./framework/typescript-compile";
+import {GeneratedFile} from "./framework/generated-file";
 import {OutFile} from "./out-file";
-import {createLocalTypeName} from "./code-gen/local-type-name";
-import {Interpreter} from "./interpreter";
 import {ClientStyle, InternalOptions, makeInternalOptions, OptionResolver, ServerStyle} from "./our-options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 import {CommentGenerator} from "./code-gen/comment-generator";
@@ -26,11 +13,20 @@ import {FileTable} from "./file-table";
 import {ServiceServerGeneratorGeneric} from "./code-gen/service-server-generator-generic";
 import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-grpc";
 import * as ts from "typescript";
-import {assert} from "@protobuf-ts/runtime";
 import {WellKnownTypes} from "./message-type-extensions/well-known-types";
+import {nestedTypes} from "@bufbuild/protobuf/reflect";
+import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
+import {Interpreter} from "./interpreter";
+import {SymbolTable} from "./framework/symbol-table";
+import {TypeScriptImports} from "./framework/typescript-imports";
+import {DescEnum, DescExtension, DescFile, DescMessage, DescService} from "@bufbuild/protobuf";
+import {PluginBaseProtobufES} from "./framework/plugin-base";
+import {create, createFileRegistry, FileRegistry} from "@bufbuild/protobuf";
+import type {FileDescriptorSet} from "@bufbuild/protobuf/wkt";
+import {CodeGeneratorResponse_Feature, FileDescriptorSetSchema} from "@bufbuild/protobuf/wkt";
 
 
-export class ProtobuftsPlugin extends PluginBase {
+export class ProtobuftsPlugin extends PluginBaseProtobufES {
 
     parameters = {
         // @formatter:off
@@ -231,116 +227,117 @@ export class ProtobuftsPlugin extends PluginBase {
                 this.parseOptions(this.parameters, request.parameter),
                 `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
             ),
-            registry = DescriptorRegistry.createFrom(request),
+            registryEs = createFileRegistryFromRequest(request),
             symbols = new SymbolTable(),
-            fileTable = new FileTable(),
-            imports = new TypeScriptImports(symbols),
-            comments = new CommentGenerator(registry),
-            interpreter = new Interpreter(registry, options),
-            optionResolver = new OptionResolver(interpreter, registry, options),
-            genMessageInterface = new MessageInterfaceGenerator(symbols, registry, imports, comments, interpreter, options),
-            genEnum = new EnumGenerator(symbols, registry, imports, comments, interpreter, options),
-            genMessageType = new MessageTypeGenerator(symbols, registry, imports, comments, interpreter, options),
-            genServiceType = new ServiceTypeGenerator(symbols, registry, imports, comments, interpreter, options),
-            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
-            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, registry, imports, comments, interpreter, options),
-            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
-            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registry, imports, comments, interpreter, options)
+            fileTable = new FileTable(options),
+            imports = new TypeScriptImports(symbols, registryEs),
+            comments = new CommentGenerator(),
+            interpreter = new Interpreter(registryEs, options),
+            optionResolver = new OptionResolver(interpreter, options),
+            genMessageInterface = new MessageInterfaceGenerator(symbols, imports, comments, interpreter, options),
+            genEnum = new EnumGenerator(symbols, imports, comments, interpreter),
+            genMessageType = new MessageTypeGenerator(registryEs, imports, comments, interpreter, options),
+            genServiceType = new ServiceTypeGenerator(symbols, imports, comments, interpreter, options),
+            genServerGeneric = new ServiceServerGeneratorGeneric(symbols, imports, comments, interpreter, options),
+            genServerGrpc = new ServiceServerGeneratorGrpc(symbols, imports, comments, interpreter),
+            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registryEs, imports, comments, interpreter, options),
+            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registryEs, imports, comments, interpreter, options)
         ;
 
-
-        let tsFiles: OutFile[] = [];
-
-
-        // ensure unique file names
-        for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
+        // in first pass, register standard file names
+        for (let fileDescriptor of registryEs.files) {
+            const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.ts', fileDescriptor);
         }
-        for (let fileDescriptor of registry.allFiles()) {
-            const base = fileDescriptor.name!.replace('.proto', '') + (options.addPbSuffix ? "_pb" : "");
-            fileTable.register(base + '.server.ts', fileDescriptor, 'generic-server');
-            fileTable.register(base + '.grpc-server.ts', fileDescriptor, 'grpc1-server');
-            fileTable.register(base + '.client.ts', fileDescriptor, 'client');
-            fileTable.register(base + '.promise-client.ts', fileDescriptor, 'promise-client');
-            fileTable.register(base + '.rx-client.ts', fileDescriptor, 'rx-client');
-            fileTable.register(base + '.grpc-client.ts', fileDescriptor, 'grpc1-client');
+
+        // in second pass, register client and server file names
+        for (let descFile of registryEs.files) {
+            const base = descFile.name + (options.addPbSuffix ? "_pb" : "");
+            fileTable.register(base + '.server.ts', descFile, 'generic-server');
+            fileTable.register(base + '.grpc-server.ts', descFile, 'grpc1-server');
+            fileTable.register(base + '.client.ts', descFile, 'client');
+            fileTable.register(base + '.promise-client.ts', descFile, 'promise-client');
+            fileTable.register(base + '.rx-client.ts', descFile, 'rx-client');
+            fileTable.register(base + '.grpc-client.ts', descFile, 'grpc1-client');
         }
 
-
-        for (let fileDescriptor of registry.allFiles()) {
+        // in third pass, generate files
+        for (let descFile of registryEs.files) {
             const
-                outMain = new OutFile(fileTable.get(fileDescriptor).name, fileDescriptor, registry, options),
-                outServerGeneric = new OutFile(fileTable.get(fileDescriptor, 'generic-server').name, fileDescriptor, registry, options),
-                outServerGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-server').name, fileDescriptor, registry, options),
-                outClientCall = new OutFile(fileTable.get(fileDescriptor, 'client').name, fileDescriptor, registry, options),
-                outClientPromise = new OutFile(fileTable.get(fileDescriptor, 'promise-client').name, fileDescriptor, registry, options),
-                outClientRx = new OutFile(fileTable.get(fileDescriptor, 'rx-client').name, fileDescriptor, registry, options),
-                outClientGrpc = new OutFile(fileTable.get(fileDescriptor, 'grpc1-client').name, fileDescriptor, registry, options);
-            tsFiles.push(outMain, outServerGeneric, outServerGrpc, outClientCall, outClientPromise, outClientRx, outClientGrpc);
+                outMain = fileTable.create(descFile),
+                outServerGeneric = fileTable.create(descFile, 'generic-server'),
+                outServerGrpc = fileTable.create(descFile, 'grpc1-server'),
+                outClientCall = fileTable.create(descFile, 'client'),
+                // TODO
+                //outClientPromise = fileTable.create(descFile, 'promise-client'),
+                //outClientRx = fileTable.create(descFile, 'rx-client'),
+                outClientGrpc = fileTable.create(descFile, 'grpc1-client');
 
-            registry.visitTypes(fileDescriptor, descriptor => {
-                // we are not interested in synthetic types like map entry messages
-                if (registry.isSyntheticElement(descriptor)) return;
-
-                // register all symbols, regardless whether they are going to be used - we want stable behaviour
-                symbols.register(createLocalTypeName(descriptor, registry), descriptor, outMain);
-                if (ServiceDescriptorProto.is(descriptor)) {
-                    genClientGeneric.registerSymbols(outClientCall, descriptor);
-                    genClientGrpc.registerSymbols(outClientGrpc, descriptor);
-                    genServerGeneric.registerSymbols(outServerGeneric, descriptor);
-                    genServerGrpc.registerSymbols(outServerGrpc, descriptor);
+            // in first pass over types, register all symbols, regardless whether they are going to be used
+            for (const desc of nestedTypes(descFile)) {
+                switch (desc.kind) {
+                    case "enum":
+                        genEnum.registerSymbols(outMain, desc);
+                        break;
+                    case "message":
+                        genMessageInterface.registerSymbols(outMain, desc);
+                        break;
+                    case "service":
+                        genServiceType.registerSymbols(outMain, desc);
+                        genClientGeneric.registerSymbols(outClientCall, desc);
+                        genClientGrpc.registerSymbols(outClientGrpc, desc);
+                        genServerGeneric.registerSymbols(outServerGeneric, desc);
+                        genServerGrpc.registerSymbols(outServerGrpc, desc);
+                        break;
                 }
-            });
+            }
 
-            registry.visitTypes(fileDescriptor, descriptor => {
-                // we are not interested in synthetic types like map entry messages
-                if (registry.isSyntheticElement(descriptor)) return;
-
-                if (DescriptorProto.is(descriptor)) {
-                    genMessageInterface.generateMessageInterface(outMain, descriptor)
+            // in second pass over types, generate message interfaces and enums
+            for (const desc of nestedTypes(descFile)) {
+                switch (desc.kind) {
+                    case "message":
+                        genMessageInterface.generateMessageInterface(outMain, desc)
+                        break;
+                    case "enum":
+                        genEnum.generateEnum(outMain, desc);
+                        break;
                 }
-                if (EnumDescriptorProto.is(descriptor)) {
-                    genEnum.generateEnum(outMain, descriptor);
-                }
-            });
+            }
 
-            registry.visitTypes(fileDescriptor, descriptor => {
-                // still not interested in synthetic types like map entry messages
-                if (registry.isSyntheticElement(descriptor)) return;
-
-                if (DescriptorProto.is(descriptor)) {
-                    genMessageType.generateMessageType(outMain, descriptor, optionResolver.getOptimizeMode(fileDescriptor));
-                }
-
-                if (!options.forceDisableServices) {
-                    if (ServiceDescriptorProto.is(descriptor)) {
+            // in third pass over types, generate message and service types
+            for (const desc of nestedTypes(descFile)) {
+                switch (desc.kind) {
+                    case "message":
+                        genMessageType.generateMessageType(outMain, desc, optionResolver.getOptimizeMode(descFile));
+                        break;
+                    case "service":
+                        if (options.forceDisableServices) {
+                            break;
+                        }
                         // service type
-                        genServiceType.generateServiceType(outMain, descriptor);
-
+                        genServiceType.generateServiceType(outMain, desc);
                         // clients
-                        const clientStyles = optionResolver.getClientStyles(descriptor);
+                        const clientStyles = optionResolver.getClientStyles(desc);
                         if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
-                            genClientGeneric.generateInterface(outClientCall, descriptor);
-                            genClientGeneric.generateImplementationClass(outClientCall, descriptor);
+                            genClientGeneric.generateInterface(outClientCall, desc);
+                            genClientGeneric.generateImplementationClass(outClientCall, desc);
                         }
                         if (clientStyles.includes(ClientStyle.GRPC1_CLIENT)) {
-                            genClientGrpc.generateInterface(outClientGrpc, descriptor);
-                            genClientGrpc.generateImplementationClass(outClientGrpc, descriptor);
+                            genClientGrpc.generateInterface(outClientGrpc, desc);
+                            genClientGrpc.generateImplementationClass(outClientGrpc, desc);
                         }
-
                         // servers
-                        const serverStyles = optionResolver.getServerStyles(descriptor);
+                        const serverStyles = optionResolver.getServerStyles(desc);
                         if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
-                            genServerGeneric.generateInterface(outServerGeneric, descriptor);
+                            genServerGeneric.generateInterface(outServerGeneric, desc);
                         }
                         if (serverStyles.includes(ServerStyle.GRPC1_SERVER)) {
-                            genServerGrpc.generateInterface(outServerGrpc, descriptor);
-                            genServerGrpc.generateDefinition(outServerGrpc, descriptor);
+                            genServerGrpc.generateInterface(outServerGrpc, desc);
+                            genServerGrpc.generateDefinition(outServerGrpc, desc);
                         }
-                    }
+                        break;
                 }
-            });
+            }
 
         }
 
@@ -350,10 +347,10 @@ export class ProtobuftsPlugin extends PluginBase {
         // We always return well-known types, because we do not
         // maintain them in a package - they are always generated
         // on demand.
+        let tsFiles = fileTable.outFiles.concat();
         if (!options.generateDependencies) {
             tsFiles = tsFiles.filter(file => {
-                const protoFilename = file.fileDescriptor.name;
-                assert(protoFilename);
+                const protoFilename = file.descFile.proto.name;
                 if (request.fileToGenerate.includes(protoFilename)) {
                     return true;
                 }
@@ -366,10 +363,10 @@ export class ProtobuftsPlugin extends PluginBase {
 
         // if a proto file is imported to use custom options, or if a proto file declares custom options,
         // we do not to emit it. unless it was explicitly requested.
-        const outFileDescriptors = tsFiles.map(of => of.fileDescriptor);
+        // TODO why does the fallback condition include "used" files? isn't that what generateDependencies should do?
         tsFiles = tsFiles.filter(of =>
-            request.fileToGenerate.includes(of.fileDescriptor.name!)
-            || registry.isFileUsed(of.fileDescriptor, outFileDescriptors)
+            request.fileToGenerate.includes(of.descFile.proto.name)
+            || this.isFileUsed(of.descFile, tsFiles.map(x => x.descFile))
         );
 
         return this.transpile(tsFiles, options);
@@ -428,4 +425,49 @@ export class ProtobuftsPlugin extends PluginBase {
     protected getSupportedFeatures = () => [CodeGeneratorResponse_Feature.PROTO3_OPTIONAL];
 
 
+    private isFileUsed(descFile: DescFile, files: Iterable<DescFile>): boolean {
+        for (const type of nestedTypes(descFile)) {
+            // TODO do not consider referencing a type that a file defines itself used - filter the second argument to exclude the current file
+            if (this.isTypeUsed(type, files)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private isTypeUsed(type: DescMessage | DescEnum | DescService | DescExtension, files: Iterable<DescFile>): boolean {
+        for (const otherFile of files) {
+            for (const otherType of nestedTypes(otherFile)) {
+                switch (otherType.kind) {
+                    case "service":
+                        if (type.kind == "message") {
+                            if (otherType.methods.some(descMethod => descMethod.input.typeName == type.typeName)) {
+                                return true;
+                            }
+                            if (otherType.methods.some(descMethod => descMethod.output.typeName == type.typeName)) {
+                                return true;
+                            }
+                        }
+                        break;
+                    case "message":
+                        if (otherType.fields.some(descField => descField.message?.typeName === type.typeName)) {
+                            return true;
+                        }
+                        if (otherType.fields.some(descField => descField.enum?.typeName === type.typeName)) {
+                            return true;
+                        }
+                        break;
+                }
+            }
+        }
+        return false;
+    }
+
+}
+
+export function createFileRegistryFromRequest(request: CodeGeneratorRequest): FileRegistry {
+    const set = create(FileDescriptorSetSchema, {
+        file: request.protoFile,
+    }) as FileDescriptorSet;
+    return createFileRegistry(set);
 }

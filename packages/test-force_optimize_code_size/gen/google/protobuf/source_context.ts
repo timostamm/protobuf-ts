@@ -44,7 +44,7 @@ export interface SourceContext {
      * The path-qualified name of the .proto file that contained the associated
      * protobuf element.  For example: `"google/protobuf/source_context.proto"`.
      *
-     * @generated from protobuf field: string file_name = 1;
+     * @generated from protobuf field: string file_name = 1
      */
     fileName: string;
 }

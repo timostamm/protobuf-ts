@@ -45,14 +45,14 @@ export interface Date {
      * Year of date. Must be from 1 to 9999, or 0 if specifying a date without
      * a year.
      *
-     * @generated from protobuf field: int32 year = 1;
+     * @generated from protobuf field: int32 year = 1
      */
     year: number;
     /**
      * Month of year. Must be from 1 to 12, or 0 if specifying a year without a
      * month and day.
      *
-     * @generated from protobuf field: int32 month = 2;
+     * @generated from protobuf field: int32 month = 2
      */
     month: number;
     /**
@@ -60,7 +60,7 @@ export interface Date {
      * if specifying a year by itself or a year and month where the day is not
      * significant.
      *
-     * @generated from protobuf field: int32 day = 3;
+     * @generated from protobuf field: int32 day = 3
      */
     day: number;
 }

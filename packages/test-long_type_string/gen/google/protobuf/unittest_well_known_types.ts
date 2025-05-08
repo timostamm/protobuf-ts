@@ -46,81 +46,81 @@ import { Any } from "./any";
  */
 export interface TestWellKnownTypes {
     /**
-     * @generated from protobuf field: google.protobuf.Any any_field = 1;
+     * @generated from protobuf field: google.protobuf.Any any_field = 1
      */
     anyField?: Any;
     /**
-     * @generated from protobuf field: google.protobuf.Api api_field = 2;
+     * @generated from protobuf field: google.protobuf.Api api_field = 2
      */
     apiField?: Api;
     /**
-     * @generated from protobuf field: google.protobuf.Duration duration_field = 3;
+     * @generated from protobuf field: google.protobuf.Duration duration_field = 3
      */
     durationField?: Duration;
     /**
-     * @generated from protobuf field: google.protobuf.Empty empty_field = 4;
+     * @generated from protobuf field: google.protobuf.Empty empty_field = 4
      */
     emptyField?: Empty;
     /**
-     * @generated from protobuf field: google.protobuf.FieldMask field_mask_field = 5;
+     * @generated from protobuf field: google.protobuf.FieldMask field_mask_field = 5
      */
     fieldMaskField?: FieldMask;
     /**
-     * @generated from protobuf field: google.protobuf.SourceContext source_context_field = 6;
+     * @generated from protobuf field: google.protobuf.SourceContext source_context_field = 6
      */
     sourceContextField?: SourceContext;
     /**
-     * @generated from protobuf field: google.protobuf.Struct struct_field = 7;
+     * @generated from protobuf field: google.protobuf.Struct struct_field = 7
      */
     structField?: Struct;
     /**
-     * @generated from protobuf field: google.protobuf.Timestamp timestamp_field = 8;
+     * @generated from protobuf field: google.protobuf.Timestamp timestamp_field = 8
      */
     timestampField?: Timestamp;
     /**
-     * @generated from protobuf field: google.protobuf.Type type_field = 9;
+     * @generated from protobuf field: google.protobuf.Type type_field = 9
      */
     typeField?: Type;
     /**
-     * @generated from protobuf field: google.protobuf.DoubleValue double_field = 10;
+     * @generated from protobuf field: google.protobuf.DoubleValue double_field = 10
      */
     doubleField?: DoubleValue;
     /**
-     * @generated from protobuf field: google.protobuf.FloatValue float_field = 11;
+     * @generated from protobuf field: google.protobuf.FloatValue float_field = 11
      */
     floatField?: FloatValue;
     /**
-     * @generated from protobuf field: google.protobuf.Int64Value int64_field = 12;
+     * @generated from protobuf field: google.protobuf.Int64Value int64_field = 12
      */
     int64Field?: Int64Value;
     /**
-     * @generated from protobuf field: google.protobuf.UInt64Value uint64_field = 13;
+     * @generated from protobuf field: google.protobuf.UInt64Value uint64_field = 13
      */
     uint64Field?: UInt64Value;
     /**
-     * @generated from protobuf field: google.protobuf.Int32Value int32_field = 14;
+     * @generated from protobuf field: google.protobuf.Int32Value int32_field = 14
      */
     int32Field?: Int32Value;
     /**
-     * @generated from protobuf field: google.protobuf.UInt32Value uint32_field = 15;
+     * @generated from protobuf field: google.protobuf.UInt32Value uint32_field = 15
      */
     uint32Field?: UInt32Value;
     /**
-     * @generated from protobuf field: google.protobuf.BoolValue bool_field = 16;
+     * @generated from protobuf field: google.protobuf.BoolValue bool_field = 16
      */
     boolField?: BoolValue;
     /**
-     * @generated from protobuf field: google.protobuf.StringValue string_field = 17;
+     * @generated from protobuf field: google.protobuf.StringValue string_field = 17
      */
     stringField?: StringValue;
     /**
-     * @generated from protobuf field: google.protobuf.BytesValue bytes_field = 18;
+     * @generated from protobuf field: google.protobuf.BytesValue bytes_field = 18
      */
     bytesField?: BytesValue;
     /**
      * Part of struct, but useful to be able to test separately
      *
-     * @generated from protobuf field: google.protobuf.Value value_field = 19;
+     * @generated from protobuf field: google.protobuf.Value value_field = 19
      */
     valueField?: Value;
 }
@@ -131,77 +131,77 @@ export interface TestWellKnownTypes {
  */
 export interface RepeatedWellKnownTypes {
     /**
-     * @generated from protobuf field: repeated google.protobuf.Any any_field = 1;
+     * @generated from protobuf field: repeated google.protobuf.Any any_field = 1
      */
     anyField: Any[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.Api api_field = 2;
+     * @generated from protobuf field: repeated google.protobuf.Api api_field = 2
      */
     apiField: Api[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.Duration duration_field = 3;
+     * @generated from protobuf field: repeated google.protobuf.Duration duration_field = 3
      */
     durationField: Duration[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.Empty empty_field = 4;
+     * @generated from protobuf field: repeated google.protobuf.Empty empty_field = 4
      */
     emptyField: Empty[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.FieldMask field_mask_field = 5;
+     * @generated from protobuf field: repeated google.protobuf.FieldMask field_mask_field = 5
      */
     fieldMaskField: FieldMask[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.SourceContext source_context_field = 6;
+     * @generated from protobuf field: repeated google.protobuf.SourceContext source_context_field = 6
      */
     sourceContextField: SourceContext[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.Struct struct_field = 7;
+     * @generated from protobuf field: repeated google.protobuf.Struct struct_field = 7
      */
     structField: Struct[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.Timestamp timestamp_field = 8;
+     * @generated from protobuf field: repeated google.protobuf.Timestamp timestamp_field = 8
      */
     timestampField: Timestamp[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.Type type_field = 9;
+     * @generated from protobuf field: repeated google.protobuf.Type type_field = 9
      */
     typeField: Type[];
     /**
      * These don't actually make a lot of sense, but they're not prohibited...
      *
-     * @generated from protobuf field: repeated google.protobuf.DoubleValue double_field = 10;
+     * @generated from protobuf field: repeated google.protobuf.DoubleValue double_field = 10
      */
     doubleField: DoubleValue[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.FloatValue float_field = 11;
+     * @generated from protobuf field: repeated google.protobuf.FloatValue float_field = 11
      */
     floatField: FloatValue[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.Int64Value int64_field = 12;
+     * @generated from protobuf field: repeated google.protobuf.Int64Value int64_field = 12
      */
     int64Field: Int64Value[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.UInt64Value uint64_field = 13;
+     * @generated from protobuf field: repeated google.protobuf.UInt64Value uint64_field = 13
      */
     uint64Field: UInt64Value[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.Int32Value int32_field = 14;
+     * @generated from protobuf field: repeated google.protobuf.Int32Value int32_field = 14
      */
     int32Field: Int32Value[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.UInt32Value uint32_field = 15;
+     * @generated from protobuf field: repeated google.protobuf.UInt32Value uint32_field = 15
      */
     uint32Field: UInt32Value[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.BoolValue bool_field = 16;
+     * @generated from protobuf field: repeated google.protobuf.BoolValue bool_field = 16
      */
     boolField: BoolValue[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.StringValue string_field = 17;
+     * @generated from protobuf field: repeated google.protobuf.StringValue string_field = 17
      */
     stringField: StringValue[];
     /**
-     * @generated from protobuf field: repeated google.protobuf.BytesValue bytes_field = 18;
+     * @generated from protobuf field: repeated google.protobuf.BytesValue bytes_field = 18
      */
     bytesField: BytesValue[];
 }
@@ -215,109 +215,109 @@ export interface OneofWellKnownTypes {
     oneofField: {
         oneofKind: "anyField";
         /**
-         * @generated from protobuf field: google.protobuf.Any any_field = 1;
+         * @generated from protobuf field: google.protobuf.Any any_field = 1
          */
         anyField: Any;
     } | {
         oneofKind: "apiField";
         /**
-         * @generated from protobuf field: google.protobuf.Api api_field = 2;
+         * @generated from protobuf field: google.protobuf.Api api_field = 2
          */
         apiField: Api;
     } | {
         oneofKind: "durationField";
         /**
-         * @generated from protobuf field: google.protobuf.Duration duration_field = 3;
+         * @generated from protobuf field: google.protobuf.Duration duration_field = 3
          */
         durationField: Duration;
     } | {
         oneofKind: "emptyField";
         /**
-         * @generated from protobuf field: google.protobuf.Empty empty_field = 4;
+         * @generated from protobuf field: google.protobuf.Empty empty_field = 4
          */
         emptyField: Empty;
     } | {
         oneofKind: "fieldMaskField";
         /**
-         * @generated from protobuf field: google.protobuf.FieldMask field_mask_field = 5;
+         * @generated from protobuf field: google.protobuf.FieldMask field_mask_field = 5
          */
         fieldMaskField: FieldMask;
     } | {
         oneofKind: "sourceContextField";
         /**
-         * @generated from protobuf field: google.protobuf.SourceContext source_context_field = 6;
+         * @generated from protobuf field: google.protobuf.SourceContext source_context_field = 6
          */
         sourceContextField: SourceContext;
     } | {
         oneofKind: "structField";
         /**
-         * @generated from protobuf field: google.protobuf.Struct struct_field = 7;
+         * @generated from protobuf field: google.protobuf.Struct struct_field = 7
          */
         structField: Struct;
     } | {
         oneofKind: "timestampField";
         /**
-         * @generated from protobuf field: google.protobuf.Timestamp timestamp_field = 8;
+         * @generated from protobuf field: google.protobuf.Timestamp timestamp_field = 8
          */
         timestampField: Timestamp;
     } | {
         oneofKind: "typeField";
         /**
-         * @generated from protobuf field: google.protobuf.Type type_field = 9;
+         * @generated from protobuf field: google.protobuf.Type type_field = 9
          */
         typeField: Type;
     } | {
         oneofKind: "doubleField";
         /**
-         * @generated from protobuf field: google.protobuf.DoubleValue double_field = 10;
+         * @generated from protobuf field: google.protobuf.DoubleValue double_field = 10
          */
         doubleField: DoubleValue;
     } | {
         oneofKind: "floatField";
         /**
-         * @generated from protobuf field: google.protobuf.FloatValue float_field = 11;
+         * @generated from protobuf field: google.protobuf.FloatValue float_field = 11
          */
         floatField: FloatValue;
     } | {
         oneofKind: "int64Field";
         /**
-         * @generated from protobuf field: google.protobuf.Int64Value int64_field = 12;
+         * @generated from protobuf field: google.protobuf.Int64Value int64_field = 12
          */
         int64Field: Int64Value;
     } | {
         oneofKind: "uint64Field";
         /**
-         * @generated from protobuf field: google.protobuf.UInt64Value uint64_field = 13;
+         * @generated from protobuf field: google.protobuf.UInt64Value uint64_field = 13
          */
         uint64Field: UInt64Value;
     } | {
         oneofKind: "int32Field";
         /**
-         * @generated from protobuf field: google.protobuf.Int32Value int32_field = 14;
+         * @generated from protobuf field: google.protobuf.Int32Value int32_field = 14
          */
         int32Field: Int32Value;
     } | {
         oneofKind: "uint32Field";
         /**
-         * @generated from protobuf field: google.protobuf.UInt32Value uint32_field = 15;
+         * @generated from protobuf field: google.protobuf.UInt32Value uint32_field = 15
          */
         uint32Field: UInt32Value;
     } | {
         oneofKind: "boolField";
         /**
-         * @generated from protobuf field: google.protobuf.BoolValue bool_field = 16;
+         * @generated from protobuf field: google.protobuf.BoolValue bool_field = 16
          */
         boolField: BoolValue;
     } | {
         oneofKind: "stringField";
         /**
-         * @generated from protobuf field: google.protobuf.StringValue string_field = 17;
+         * @generated from protobuf field: google.protobuf.StringValue string_field = 17
          */
         stringField: StringValue;
     } | {
         oneofKind: "bytesField";
         /**
-         * @generated from protobuf field: google.protobuf.BytesValue bytes_field = 18;
+         * @generated from protobuf field: google.protobuf.BytesValue bytes_field = 18
          */
         bytesField: BytesValue;
     } | {
@@ -333,109 +333,109 @@ export interface OneofWellKnownTypes {
  */
 export interface MapWellKnownTypes {
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Any> any_field = 1;
+     * @generated from protobuf field: map<int32, google.protobuf.Any> any_field = 1
      */
     anyField: {
         [key: number]: Any;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Api> api_field = 2;
+     * @generated from protobuf field: map<int32, google.protobuf.Api> api_field = 2
      */
     apiField: {
         [key: number]: Api;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Duration> duration_field = 3;
+     * @generated from protobuf field: map<int32, google.protobuf.Duration> duration_field = 3
      */
     durationField: {
         [key: number]: Duration;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Empty> empty_field = 4;
+     * @generated from protobuf field: map<int32, google.protobuf.Empty> empty_field = 4
      */
     emptyField: {
         [key: number]: Empty;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.FieldMask> field_mask_field = 5;
+     * @generated from protobuf field: map<int32, google.protobuf.FieldMask> field_mask_field = 5
      */
     fieldMaskField: {
         [key: number]: FieldMask;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.SourceContext> source_context_field = 6;
+     * @generated from protobuf field: map<int32, google.protobuf.SourceContext> source_context_field = 6
      */
     sourceContextField: {
         [key: number]: SourceContext;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Struct> struct_field = 7;
+     * @generated from protobuf field: map<int32, google.protobuf.Struct> struct_field = 7
      */
     structField: {
         [key: number]: Struct;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Timestamp> timestamp_field = 8;
+     * @generated from protobuf field: map<int32, google.protobuf.Timestamp> timestamp_field = 8
      */
     timestampField: {
         [key: number]: Timestamp;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Type> type_field = 9;
+     * @generated from protobuf field: map<int32, google.protobuf.Type> type_field = 9
      */
     typeField: {
         [key: number]: Type;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.DoubleValue> double_field = 10;
+     * @generated from protobuf field: map<int32, google.protobuf.DoubleValue> double_field = 10
      */
     doubleField: {
         [key: number]: DoubleValue;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.FloatValue> float_field = 11;
+     * @generated from protobuf field: map<int32, google.protobuf.FloatValue> float_field = 11
      */
     floatField: {
         [key: number]: FloatValue;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Int64Value> int64_field = 12;
+     * @generated from protobuf field: map<int32, google.protobuf.Int64Value> int64_field = 12
      */
     int64Field: {
         [key: number]: Int64Value;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.UInt64Value> uint64_field = 13;
+     * @generated from protobuf field: map<int32, google.protobuf.UInt64Value> uint64_field = 13
      */
     uint64Field: {
         [key: number]: UInt64Value;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.Int32Value> int32_field = 14;
+     * @generated from protobuf field: map<int32, google.protobuf.Int32Value> int32_field = 14
      */
     int32Field: {
         [key: number]: Int32Value;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.UInt32Value> uint32_field = 15;
+     * @generated from protobuf field: map<int32, google.protobuf.UInt32Value> uint32_field = 15
      */
     uint32Field: {
         [key: number]: UInt32Value;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.BoolValue> bool_field = 16;
+     * @generated from protobuf field: map<int32, google.protobuf.BoolValue> bool_field = 16
      */
     boolField: {
         [key: number]: BoolValue;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.StringValue> string_field = 17;
+     * @generated from protobuf field: map<int32, google.protobuf.StringValue> string_field = 17
      */
     stringField: {
         [key: number]: StringValue;
     };
     /**
-     * @generated from protobuf field: map<int32, google.protobuf.BytesValue> bytes_field = 18;
+     * @generated from protobuf field: map<int32, google.protobuf.BytesValue> bytes_field = 18
      */
     bytesField: {
         [key: number]: BytesValue;
@@ -1145,7 +1145,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Any.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.any_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.any_field");
             }
         }
         map[key ?? 0] = val ?? Any.create();
@@ -1161,7 +1161,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Api.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.api_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.api_field");
             }
         }
         map[key ?? 0] = val ?? Api.create();
@@ -1177,7 +1177,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Duration.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.duration_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.duration_field");
             }
         }
         map[key ?? 0] = val ?? Duration.create();
@@ -1193,7 +1193,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Empty.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.empty_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.empty_field");
             }
         }
         map[key ?? 0] = val ?? Empty.create();
@@ -1209,7 +1209,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = FieldMask.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.field_mask_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.field_mask_field");
             }
         }
         map[key ?? 0] = val ?? FieldMask.create();
@@ -1225,7 +1225,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = SourceContext.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.source_context_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.source_context_field");
             }
         }
         map[key ?? 0] = val ?? SourceContext.create();
@@ -1241,7 +1241,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Struct.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.struct_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.struct_field");
             }
         }
         map[key ?? 0] = val ?? Struct.create();
@@ -1257,7 +1257,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Timestamp.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.timestamp_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.timestamp_field");
             }
         }
         map[key ?? 0] = val ?? Timestamp.create();
@@ -1273,7 +1273,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Type.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.type_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.type_field");
             }
         }
         map[key ?? 0] = val ?? Type.create();
@@ -1289,7 +1289,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = DoubleValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.double_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.double_field");
             }
         }
         map[key ?? 0] = val ?? DoubleValue.create();
@@ -1305,7 +1305,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = FloatValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.float_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.float_field");
             }
         }
         map[key ?? 0] = val ?? FloatValue.create();
@@ -1321,7 +1321,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Int64Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.int64_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.int64_field");
             }
         }
         map[key ?? 0] = val ?? Int64Value.create();
@@ -1337,7 +1337,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = UInt64Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.uint64_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.uint64_field");
             }
         }
         map[key ?? 0] = val ?? UInt64Value.create();
@@ -1353,7 +1353,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = Int32Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.int32_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.int32_field");
             }
         }
         map[key ?? 0] = val ?? Int32Value.create();
@@ -1369,7 +1369,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = UInt32Value.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.uint32_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.uint32_field");
             }
         }
         map[key ?? 0] = val ?? UInt32Value.create();
@@ -1385,7 +1385,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = BoolValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.bool_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.bool_field");
             }
         }
         map[key ?? 0] = val ?? BoolValue.create();
@@ -1401,7 +1401,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = StringValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.string_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.string_field");
             }
         }
         map[key ?? 0] = val ?? StringValue.create();
@@ -1417,7 +1417,7 @@ class MapWellKnownTypes$Type extends MessageType<MapWellKnownTypes> {
                 case 2:
                     val = BytesValue.internalBinaryRead(reader, reader.uint32(), options);
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field protobuf_unittest.MapWellKnownTypes.bytes_field");
+                default: throw new globalThis.Error("unknown map entry field for protobuf_unittest.MapWellKnownTypes.bytes_field");
             }
         }
         map[key ?? 0] = val ?? BytesValue.create();

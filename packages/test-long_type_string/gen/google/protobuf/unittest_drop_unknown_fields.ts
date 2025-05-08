@@ -46,11 +46,11 @@ import { MessageType } from "@protobuf-ts/runtime";
  */
 export interface Foo {
     /**
-     * @generated from protobuf field: int32 int32_value = 1;
+     * @generated from protobuf field: int32 int32_value = 1
      */
     int32Value: number;
     /**
-     * @generated from protobuf field: unittest_drop_unknown_fields.Foo.NestedEnum enum_value = 2;
+     * @generated from protobuf field: unittest_drop_unknown_fields.Foo.NestedEnum enum_value = 2
      */
     enumValue: Foo_NestedEnum;
 }
@@ -76,15 +76,15 @@ export enum Foo_NestedEnum {
  */
 export interface FooWithExtraFields {
     /**
-     * @generated from protobuf field: int32 int32_value = 1;
+     * @generated from protobuf field: int32 int32_value = 1
      */
     int32Value: number;
     /**
-     * @generated from protobuf field: unittest_drop_unknown_fields.FooWithExtraFields.NestedEnum enum_value = 2;
+     * @generated from protobuf field: unittest_drop_unknown_fields.FooWithExtraFields.NestedEnum enum_value = 2
      */
     enumValue: FooWithExtraFields_NestedEnum;
     /**
-     * @generated from protobuf field: int32 extra_int32_value = 3;
+     * @generated from protobuf field: int32 extra_int32_value = 3
      */
     extraInt32Value: number;
 }

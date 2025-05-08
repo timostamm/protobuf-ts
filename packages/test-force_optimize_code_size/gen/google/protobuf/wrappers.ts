@@ -32,10 +32,17 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Wrappers for primitive (non-message) types. These types are useful
-// for embedding primitives in the `google.protobuf.Any` type and for places
-// where we need to distinguish between the absence of a primitive
-// typed field and its default value.
+// Wrappers for primitive (non-message) types. These types were needed
+// for legacy reasons and are not recommended for use in new APIs.
+//
+// Historically these wrappers were useful to have presence on proto3 primitive
+// fields, but proto3 syntax has been updated to support the `optional` keyword.
+// Using that keyword is now the strongly preferred way to add presence to
+// proto3 primitive fields.
+//
+// A secondary usecase was to embed primitives in the `google.protobuf.Any`
+// type: it is now recommended that you embed your value in your own wrapper
+// message which can be specifically documented.
 //
 // These wrappers have no meaningful use within repeated fields as they lack
 // the ability to detect presence on individual elements.
@@ -53,13 +60,16 @@ import { MessageType } from "@protobuf-ts/runtime";
  *
  * The JSON representation for `DoubleValue` is JSON number.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.DoubleValue
  */
 export interface DoubleValue {
     /**
      * The double value.
      *
-     * @generated from protobuf field: double value = 1;
+     * @generated from protobuf field: double value = 1
      */
     value: number;
 }
@@ -68,13 +78,16 @@ export interface DoubleValue {
  *
  * The JSON representation for `FloatValue` is JSON number.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.FloatValue
  */
 export interface FloatValue {
     /**
      * The float value.
      *
-     * @generated from protobuf field: float value = 1;
+     * @generated from protobuf field: float value = 1
      */
     value: number;
 }
@@ -83,13 +96,16 @@ export interface FloatValue {
  *
  * The JSON representation for `Int64Value` is JSON string.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.Int64Value
  */
 export interface Int64Value {
     /**
      * The int64 value.
      *
-     * @generated from protobuf field: int64 value = 1;
+     * @generated from protobuf field: int64 value = 1
      */
     value: bigint;
 }
@@ -98,13 +114,16 @@ export interface Int64Value {
  *
  * The JSON representation for `UInt64Value` is JSON string.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.UInt64Value
  */
 export interface UInt64Value {
     /**
      * The uint64 value.
      *
-     * @generated from protobuf field: uint64 value = 1;
+     * @generated from protobuf field: uint64 value = 1
      */
     value: bigint;
 }
@@ -113,13 +132,16 @@ export interface UInt64Value {
  *
  * The JSON representation for `Int32Value` is JSON number.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.Int32Value
  */
 export interface Int32Value {
     /**
      * The int32 value.
      *
-     * @generated from protobuf field: int32 value = 1;
+     * @generated from protobuf field: int32 value = 1
      */
     value: number;
 }
@@ -128,13 +150,16 @@ export interface Int32Value {
  *
  * The JSON representation for `UInt32Value` is JSON number.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.UInt32Value
  */
 export interface UInt32Value {
     /**
      * The uint32 value.
      *
-     * @generated from protobuf field: uint32 value = 1;
+     * @generated from protobuf field: uint32 value = 1
      */
     value: number;
 }
@@ -143,13 +168,16 @@ export interface UInt32Value {
  *
  * The JSON representation for `BoolValue` is JSON `true` and `false`.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.BoolValue
  */
 export interface BoolValue {
     /**
      * The bool value.
      *
-     * @generated from protobuf field: bool value = 1;
+     * @generated from protobuf field: bool value = 1
      */
     value: boolean;
 }
@@ -158,13 +186,16 @@ export interface BoolValue {
  *
  * The JSON representation for `StringValue` is JSON string.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.StringValue
  */
 export interface StringValue {
     /**
      * The string value.
      *
-     * @generated from protobuf field: string value = 1;
+     * @generated from protobuf field: string value = 1
      */
     value: string;
 }
@@ -173,13 +204,16 @@ export interface StringValue {
  *
  * The JSON representation for `BytesValue` is JSON string.
  *
+ * Not recommended for use in new APIs, but still useful for legacy APIs and
+ * has no plan to be removed.
+ *
  * @generated from protobuf message google.protobuf.BytesValue
  */
 export interface BytesValue {
     /**
      * The bytes value.
      *
-     * @generated from protobuf field: bytes value = 1;
+     * @generated from protobuf field: bytes value = 1
      */
     value: Uint8Array;
 }

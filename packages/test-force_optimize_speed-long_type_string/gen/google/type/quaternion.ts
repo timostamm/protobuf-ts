@@ -90,25 +90,25 @@ export interface Quaternion {
     /**
      * The x component.
      *
-     * @generated from protobuf field: double x = 1;
+     * @generated from protobuf field: double x = 1
      */
     x: number;
     /**
      * The y component.
      *
-     * @generated from protobuf field: double y = 2;
+     * @generated from protobuf field: double y = 2
      */
     y: number;
     /**
      * The z component.
      *
-     * @generated from protobuf field: double z = 3;
+     * @generated from protobuf field: double z = 3
      */
     z: number;
     /**
      * The scalar component.
      *
-     * @generated from protobuf field: double w = 4;
+     * @generated from protobuf field: double w = 4
      */
     w: number;
 }

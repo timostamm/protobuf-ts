@@ -1,17 +1,13 @@
 import * as ts from "typescript";
-import {
-    DescriptorProto,
-    DescriptorRegistry,
-    ScalarValueType,
-    StringFormat,
-    TypescriptFile,
-    TypeScriptImports,
-    typescriptLiteralFromValue
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "../framework/typescript-file";
 import * as rt from "@protobuf-ts/runtime";
 import {assert, LongType} from "@protobuf-ts/runtime";
 import {CustomMethodGenerator} from "../code-gen/message-type-generator";
 import {Interpreter} from "../interpreter";
+import {DescMessage, FileRegistry, ScalarType} from "@bufbuild/protobuf";
+import {getDeclarationString} from "@bufbuild/protoplugin";
+import {TypeScriptImports} from "../framework/typescript-imports";
+import {typescriptLiteralFromValue} from "../framework/typescript-literal-from-value";
 
 
 /**
@@ -21,7 +17,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     constructor(
-        private readonly registry: DescriptorRegistry,
+        private readonly registry: FileRegistry,
         private readonly imports: TypeScriptImports,
         private readonly interpreter: Interpreter,
         private readonly options: { normalLongType: LongType; oneofKindDiscriminator: string; runtimeImportPath: string },
@@ -31,13 +27,13 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     private readonly binaryReadMapEntryMethodName = "binaryReadMap";
 
 
-    make(source: TypescriptFile, descriptor: DescriptorProto): ts.MethodDeclaration[] {
+    make(source: TypescriptFile, descMessage: DescMessage): ts.MethodDeclaration[] {
         const methods: ts.MethodDeclaration[] = [];
 
         // internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ${messageInterfaceId}): ${messageInterfaceId} {
         let internalBinaryRead = this.makeMethod(
             source,
-            descriptor,
+            descMessage,
 
             // let message = target ?? this.create(), end = reader.pos + length;
             this.makeVariables(),
@@ -47,7 +43,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             //   switch (fieldNo) {
             this.makeWhileSwitch(
                 // case ...:
-                this.makeCaseClauses(source, descriptor),
+                this.makeCaseClauses(source, descMessage),
 
                 // default:
                 //  ...
@@ -59,17 +55,17 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         )
 
         methods.push(internalBinaryRead);
-        for (let fieldInfo of this.interpreter.getMessageType(descriptor).fields) {
+        for (let fieldInfo of this.interpreter.getMessageType(descMessage).fields) {
             if (fieldInfo.kind == "map") {
-                methods.push(this.makeMapEntryReadMethod(source,descriptor, fieldInfo));
+                methods.push(this.makeMapEntryReadMethod(source, descMessage, fieldInfo));
             }
         }
         return methods;
     }
 
-    makeMethod(source:TypescriptFile, descriptor: DescriptorProto, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+    makeMethod(source:TypescriptFile, descMessage: DescMessage, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
-            MessageInterface = this.imports.type(source, descriptor),
+            MessageInterface = this.imports.type(source, descMessage),
             IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath, true),
             BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath, true);
         return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("internalBinaryRead"), undefined, undefined,
@@ -184,9 +180,9 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         )
     }
 
-    makeCaseClauses(source: TypescriptFile,descriptor: DescriptorProto): ts.CaseClause[] {
+    makeCaseClauses(source: TypescriptFile,descMessage: DescMessage): ts.CaseClause[] {
         const
-            interpreterType = this.interpreter.getMessageType(descriptor),
+            interpreterType = this.interpreter.getMessageType(descMessage),
             clauses: ts.CaseClause[] = [];
 
         for (let fieldInfo of interpreterType.fields) {
@@ -223,11 +219,13 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             }
 
             // case /* double double_field */ 1:
-            let fieldDescriptor = descriptor.field.find(fd => fd.number === fieldInfo.no);
-            assert(fieldDescriptor !== undefined);
+            const descField = descMessage.fields.find(descField => descField.number === fieldInfo.no);
+            assert(descField !== undefined);
             let fieldNumber = ts.createNumericLiteral(`${fieldInfo.no}`);
-            ts.addSyntheticLeadingComment(fieldNumber, ts.SyntaxKind.MultiLineCommentTrivia,
-                ' ' + this.registry.formatFieldDeclaration(fieldDescriptor).replace(/= \d+;$/, ''), false)
+            const fieldDeclarationComment = " " + getDeclarationString(descField)
+                .replace(/= \d+$/, '')
+                .replace(/]$/, '] ');
+            ts.addSyntheticLeadingComment(fieldNumber, ts.SyntaxKind.MultiLineCommentTrivia, fieldDeclarationComment, false)
             clauses.push(ts.createCaseClause(
                 fieldNumber,
                 [...statements, ts.createBreak(undefined)]
@@ -379,11 +377,11 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
     // message.field = OtherMessage.internalBinaryRead(reader, reader.uint32(), options, message.field);
     message(source:TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
-        let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
-        assert(DescriptorProto.is(messageDescriptor));
+        const descMessage = this.registry.getMessage(field.T().typeName);
+        assert(descMessage);
         let handlerMergeCall = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, messageDescriptor)),
+                ts.createIdentifier(this.imports.type(source, descMessage)),
                 ts.createIdentifier("internalBinaryRead")
             ),
             undefined,
@@ -407,11 +405,9 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     //     msg: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, (message.result as any).msg)
     // };
     messageOneof(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }): ts.Statement[] {
-        let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
-        assert(DescriptorProto.is(messageDescriptor));
         let handlerMergeCall = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, messageDescriptor)),
+                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
                 ts.createIdentifier("internalBinaryRead")
             ),
             undefined,
@@ -446,11 +442,9 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
     // message.field.push(OtherMessage.internalBinaryRead(reader, reader.uint32(), options));
     messageRepeated(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
-        let messageDescriptor = this.registry.resolveTypeName(field.T().typeName);
-        assert(DescriptorProto.is(messageDescriptor));
         let handlerMergeCall = ts.createCall(
             ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, messageDescriptor)),
+                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
                 ts.createIdentifier("internalBinaryRead")
             ),
             undefined,
@@ -593,16 +587,14 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     // binaryReadMapEntry<field no>(map: ExampleResponse["<field local name>"], reader: IBinaryReader, options: BinaryReadOptions): void
-    makeMapEntryReadMethod(source:TypescriptFile,messageDescriptor: DescriptorProto, field: rt.FieldInfo & { kind: "map" }): ts.MethodDeclaration {
+    makeMapEntryReadMethod(source:TypescriptFile, descMessage: DescMessage, field: rt.FieldInfo & { kind: "map" }): ts.MethodDeclaration {
         let
             methodName = this.binaryReadMapEntryMethodName + field.no,
-            fieldDescriptor = messageDescriptor.field.find(fd => fd.number === field.no),
-            MessageInterface = this.imports.type(source, messageDescriptor),
+            MessageInterface = this.imports.type(source, descMessage),
             IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath, true),
             BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath, true),
             methodStatements: ts.Statement[] = [];
-
-        assert(fieldDescriptor !== undefined);
+        const fieldQualifiedName = descMessage.typeName + "." + field.name;
 
         // let len = reader.uint32(), end = reader.pos + len, key: keyof EnumMapMessage["int64EnuField"] | undefined, val: EnumMapMessage["int64EnuField"][any] | undefined;
         methodStatements.push(
@@ -690,10 +682,8 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                 break;
 
             case "message":
-                let valueMessageDescriptor = this.registry.resolveTypeName(field.V.T().typeName);
-                assert(DescriptorProto.is(valueMessageDescriptor));
                 readValueExpression = ts.createCall(
-                    ts.createPropertyAccess(ts.createIdentifier(this.imports.type(source, valueMessageDescriptor)), ts.createIdentifier("internalBinaryRead")),
+                    ts.createPropertyAccess(ts.createIdentifier(this.imports.typeByName(source, field.V.T().typeName)), ts.createIdentifier("internalBinaryRead")),
                     undefined,
                     [
                         ts.createIdentifier("reader"),
@@ -786,7 +776,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                                         ts.createIdentifier("Error")
                                     ),
                                     undefined,
-                                    [ts.createStringLiteral("unknown map entry field for " + this.registry.formatQualifiedName(fieldDescriptor))]
+                                    [ts.createStringLiteral("unknown map entry field for " + fieldQualifiedName)]
                                 ))])
                             ])
                         )
@@ -895,9 +885,9 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             case "enum":
                 return typescriptLiteralFromValue(this.createScalarDefaultValue(rt.ScalarType.INT32));
             case "message":
-                let messageDescriptor = this.registry.resolveTypeName(V.T().typeName);
-                assert(DescriptorProto.is(messageDescriptor));
-                let MessageInterface = this.imports.type(source, messageDescriptor);
+                const descMessage = this.registry.getMessage(V.T().typeName);
+                assert(descMessage);
+                let MessageInterface = this.imports.type(source, descMessage);
                 return ts.createCall(
                     ts.createPropertyAccess(
                         ts.createIdentifier(MessageInterface),
@@ -924,7 +914,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     // reader.int32().toBigInt()
     // reader.int32().toNumber()
     makeReaderCall(readerExpressionOrName: string | ts.Expression, type: rt.ScalarType, longType?: rt.LongType): ts.Expression {
-        let readerMethodName = StringFormat.formatScalarType(type as number as ScalarValueType);
+        let readerMethodName = ScalarType[type].toLowerCase();
         let readerMethodProp = ts.createPropertyAccess(typeof readerExpressionOrName == "string" ? ts.createIdentifier(readerExpressionOrName) : readerExpressionOrName, ts.createIdentifier(readerMethodName));
         let readerMethodCall = ts.createCall(
             readerMethodProp,

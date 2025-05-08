@@ -1,25 +1,31 @@
-import {FileDescriptorProto, StringFormat} from "@protobuf-ts/plugin-framework";
+import {DescFile} from "@bufbuild/protobuf";
+import {InternalOptions} from "./our-options";
+import {OutFile} from "./out-file";
 
 
 export class FileTable {
 
 
+    readonly outFiles: OutFile[] = [];
     private readonly entries: FileTableEntry[] = [];
     private readonly clashResolveMaxTries = 100;
     private readonly clashResolver: ClashResolver;
 
 
-    constructor(clashResolver?: ClashResolver) {
+    constructor(
+        private readonly options: InternalOptions,
+        clashResolver?: ClashResolver,
+    ) {
         this.clashResolver = clashResolver ?? FileTable.defaultClashResolver;
     }
 
 
-    register(requestedName: string, descriptor: FileDescriptorProto, kind = 'default'): string {
+    register(requestedName: string, descFile: DescFile, kind = 'default'): string {
 
         // Only one symbol per kind can be registered for a descriptor.
-        if (this.has(descriptor, kind)) {
-            let {name} = this.get(descriptor, kind);
-            let msg = `Cannot register name "${requestedName}" of kind "${kind}" for ${StringFormat.formatName(descriptor)}. `
+        if (this.has(descFile, kind)) {
+            let {name} = this.get(descFile, kind);
+            let msg = `Cannot register name "${requestedName}" of kind "${kind}" for ${descFile.toString()}. `
                 + `The descriptor is already registered with name "${name}". `
                 + `Use a different 'kind' to register multiple symbols for a descriptor.`
             throw new Error(msg);
@@ -29,18 +35,29 @@ export class FileTable {
         let name = requestedName;
         let count = 0;
         while (this.hasName(name) && count < this.clashResolveMaxTries) {
-            name = this.clashResolver(descriptor, requestedName, kind, ++count, name);
+            name = this.clashResolver(descFile, requestedName, kind, ++count, name);
         }
         if (this.hasName(name)) {
-            let msg = `Failed to register name "${requestedName}" for ${StringFormat.formatName(descriptor)}. `
+            let msg = `Failed to register name "${requestedName}" for ${descFile.toString()}. `
                 + `Gave up finding alternative name after ${this.clashResolveMaxTries} tries. `
                 + `There is something wrong with the clash resolver.`;
             throw new Error(msg);
         }
 
         // add the entry and return name
-        this.entries.push({descriptor, kind, name});
+        this.entries.push({desc: descFile, kind, name});
         return name;
+    }
+
+
+    create(descFile: DescFile, kind = 'default') {
+        const outFile = new OutFile(
+            this.get(descFile, kind).name,
+            descFile,
+            this.options,
+        );
+        this.outFiles.push(outFile);
+        return outFile;
     }
 
 
@@ -52,8 +69,8 @@ export class FileTable {
      * Find a symbol (of the given kind) for the given descriptor.
      * Return `undefined` if not found.
      */
-    find(descriptor: FileDescriptorProto, kind = 'default'): FileTableEntry | undefined {
-        return this.entries.find(e => e.descriptor === descriptor && e.kind === kind);
+    private findByProtoFilenameAndKind(protoFilename: string | undefined, kind = 'default'): FileTableEntry | undefined {
+        return this.entries.find(e => e.desc.proto.name === protoFilename && e.kind === kind);
     }
 
 
@@ -61,10 +78,11 @@ export class FileTable {
      * Find a symbol (of the given kind) for the given descriptor.
      * Raises error if not found.
      */
-    get(descriptor: FileDescriptorProto, kind = 'default'): FileTableEntry {
-        const found = this.find(descriptor, kind);
+    get(descriptor: DescFile, kind = 'default'): FileTableEntry {
+        const protoFilename = descriptor.proto.name;
+        const found = this.findByProtoFilenameAndKind(protoFilename, kind);
         if (!found) {
-            let msg = `Failed to find name for ${StringFormat.formatName(descriptor)} of kind "${kind}". `
+            let msg = `Failed to find name for file ${protoFilename} of kind "${kind}". `
                 + `Searched in ${this.entries.length} files.`
             throw new Error(msg);
         }
@@ -75,13 +93,13 @@ export class FileTable {
     /**
      * Is a name (of the given kind) registered for the the given descriptor?
      */
-    has(descriptor: FileDescriptorProto, kind = 'default'): boolean {
-        return !!this.find(descriptor, kind);
+    private has(descFile: DescFile, kind = 'default'): boolean {
+        return !!this.findByProtoFilenameAndKind(descFile.proto.name, kind);
     }
 
 
     static defaultClashResolver(
-        descriptor: FileDescriptorProto,
+        descriptor: DescFile,
         requestedName: string,
         kind: string,
         tryCount: number,
@@ -101,10 +119,10 @@ export class FileTable {
 
 
 interface FileTableEntry {
-    descriptor: FileDescriptorProto;
+    desc: DescFile;
     name: string;
     kind: string;
 }
 
 
-type ClashResolver = (descriptor: FileDescriptorProto, requestedName: string, kind: string, tryCount: number, failedName: string) => string;
+type ClashResolver = (descriptor: DescFile, requestedName: string, kind: string, tryCount: number, failedName: string) => string;

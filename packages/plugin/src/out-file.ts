@@ -1,11 +1,8 @@
-import {
-    DescriptorRegistry,
-    FileDescriptorProto,
-    FileDescriptorProtoFields,
-    GeneratedFile,
-    TypescriptFile,
-} from "@protobuf-ts/plugin-framework";
+import {TypescriptFile} from "./framework/typescript-file";
+import {GeneratedFile} from "./framework/generated-file";
 import {InternalOptions} from "./our-options";
+import {DescFile} from "@bufbuild/protobuf";
+import {getPackageComments, getSyntaxComments} from "@bufbuild/protoplugin";
 
 
 /**
@@ -19,8 +16,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
 
     constructor(
         name: string,
-        public readonly fileDescriptor: FileDescriptorProto,
-        private readonly registry: DescriptorRegistry,
+        public readonly descFile: DescFile,
         private readonly options: InternalOptions,
     ) {
         super(name);
@@ -45,32 +41,32 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
         return this.header;
     }
 
-
     private makeHeader(): string {
         let props = [];
-        if (this.fileDescriptor.package) {
-            props.push('package "' + this.fileDescriptor.package + '"');
+        if (this.descFile.proto.package.length > 0) {
+            props.push('package "' + this.descFile.proto.package + '"');
         }
-        props.push('syntax ' + (this.fileDescriptor.syntax ?? 'proto2'));
+        props.push('syntax ' + (this.descFile.proto.syntax.length > 0 ? this.descFile.proto.syntax : 'proto2'));
         const header = []
         if (this.options.esLintDisable) {
             header.push(`/* eslint-disable */`);
         }
         header.push(...[
             `// @generated ${this.options.pluginCredit}`,
-            `// @generated from protobuf file "${this.fileDescriptor.name}" (${props.join(', ')})`,
+            `// @generated from protobuf file "${this.descFile.proto.name}" (${props.join(', ')})`,
             `// tslint:disable`
         ]);
         if (this.options.tsNoCheck) {
             header.push(`// @ts-nocheck`);
         }
-        if (this.registry.isExplicitlyDeclaredDeprecated(this.fileDescriptor)) {
+        if (this.descFile.deprecated) {
             header.push('// @deprecated');
         }
         [
-            ...this.registry.sourceCodeComments(this.fileDescriptor, FileDescriptorProtoFields.syntax).leadingDetached,
-            ...this.registry.sourceCodeComments(this.fileDescriptor, FileDescriptorProtoFields.package).leadingDetached
-        ].every(block => header.push('//', ...block.split('\n').map(l => '//' + l), '//'));
+            ...getSyntaxComments(this.descFile).leadingDetached,
+            ...getPackageComments(this.descFile).leadingDetached
+        ].map(block => block.endsWith("\n") ? block.substring(0, block.length - 1) : block)
+         .every(block => header.push('//', ...block.split('\n').map(l => '//' + l), '//'));
         let head = header.join('\n');
         if (head.length > 0 && !head.endsWith('\n')) {
             head += '\n';
