@@ -18,6 +18,4 @@
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/grpc-backend?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/grpc-backend)
 - [@protobuf-ts/runtime-rpc](./runtime-rpc) - shared contracts for RPC  
   [![npm](https://img.shields.io/npm/v/@protobuf-ts/runtime-rpc?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/runtime-rpc)
-- [@protobuf-ts/plugin-framework](./plugin-framework) - a framework for writing `protoc` plugins in TypeScript  
-  [![npm](https://img.shields.io/npm/v/@protobuf-ts/plugin-framework?style=flat-square)](https://www.npmjs.com/package/@protobuf-ts/plugin-framework)
 

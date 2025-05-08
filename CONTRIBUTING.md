@@ -62,9 +62,9 @@ we generate a `FileDescriptorSet` ahead of time. The `FileDescriptorSet` contain
 information necessary to create the `CodeGeneratorRequest`s we need for testing 
 the plugin. 
 
-`packages/plugin` and `packages/plugin-framework` are both tested using the 
-`FileDescriptorSet`. In `spec/helpers.ts`, the function `getCodeGeneratorRequest` 
-can be used to create a `CodeGeneratorRequest` from the file descriptors.  
+`packages/plugin` is tested using the `FileDescriptorSet`. In `spec/helpers.ts`, 
+the function `getCodeGeneratorRequest` can be used to create a `CodeGeneratorRequest` 
+from the file descriptors.  
 
 The plugin itself has only very basic test coverage. We generate TypeScript 
 (in memory) for all .proto files in `packages/proto` and compile the 

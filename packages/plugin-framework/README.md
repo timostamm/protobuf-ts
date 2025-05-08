@@ -1,6 +1,11 @@
 @protobuf-ts/plugin-framework
 =============================
 
+> [!IMPORTANT]
+> 
+> This plugin framework is deprecated.  
+> For a good alternative, see [@bufbuild/protoplugin](https://www.npmjs.com/package/@bufbuild/protoplugin)
+
 A framework to create protoc plugins in typescript.
 
 The google protocol buffer compiler (protoc) has a plugin system. With a 
@@ -51,7 +56,6 @@ code, but can be used to generate code in other languages.
 - Take a look at `descriptor-registry.ts` to see the if it can help you work with the 
   descriptor protos that the compiler sends you.
 - Take a look at `plugin-base.ts` for a base class that can help with some plumbing.
-- Take a look at the source code of [protobuf-ts](https://github.com/timostamm/protobuf-ts/), which uses this framework.    
 
 
 ### Copyright
