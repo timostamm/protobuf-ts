@@ -12,7 +12,7 @@ import {client, server, ServerStyle, ClientStyle} from "./gen/protobuf-ts_pb";
 /**
  * Parse Protobuf-TS plugin options from raw options.
  */
-const parsePluginOptions = createOptionParser({
+const parseParameter = createOptionParser({
     // long type
     long_type_string: {
         kind: "flag",
@@ -265,7 +265,7 @@ export function parseOptions(
     parameter: string,
     pluginCredit?: string,
 ): InternalOptions {
-    const i = parsePluginOptions(parameter);
+    const params = parseParameter(parameter);
     type Writeable<T> = { -readonly [P in keyof T]: T[P] };
     const o: Writeable<InternalOptions> = {
         generateDependencies: false,
@@ -354,85 +354,85 @@ export function parseOptions(
     if (pluginCredit) {
         o.pluginCredit = pluginCredit;
     }
-    if (i.generate_dependencies) {
+    if (params.generate_dependencies) {
         o.generateDependencies = true;
     }
-    if (i.force_exclude_all_options) {
+    if (params.force_exclude_all_options) {
         o.forceExcludeAllOptions = true;
     }
-    if (i.keep_enum_prefix) {
+    if (params.keep_enum_prefix) {
         o.keepEnumPrefix = true;
     }
-    if (i.use_proto_field_name) {
+    if (params.use_proto_field_name) {
         o.useProtoFieldName = true;
     }
-    if (i.ts_nocheck) {
+    if (params.ts_nocheck) {
         o.tsNoCheck = true;
     }
-    if (i.eslint_disable) {
+    if (params.eslint_disable) {
         o.esLintDisable = true;
     }
-    if (i.long_type_string) {
+    if (params.long_type_string) {
         o.normalLongType = rt.LongType.STRING;
     }
-    if (i.long_type_number) {
+    if (params.long_type_number) {
         o.normalLongType = rt.LongType.NUMBER;
     }
-    if (i.optimize_code_size) {
+    if (params.optimize_code_size) {
         o.normalOptimizeMode = FileOptions_OptimizeMode.CODE_SIZE;
     }
-    if (i.force_optimize_speed) {
+    if (params.force_optimize_speed) {
         o.forcedOptimizeMode = FileOptions_OptimizeMode.SPEED;
     }
-    if (i.force_optimize_code_size) {
+    if (params.force_optimize_code_size) {
         o.forcedOptimizeMode = FileOptions_OptimizeMode.CODE_SIZE;
     }
-    if (i.client_none) {
+    if (params.client_none) {
         o.normalClientStyle = ClientStyle.NO_CLIENT;
     }
-    if (i.client_grpc1) {
+    if (params.client_grpc1) {
         o.normalClientStyle = ClientStyle.GRPC1_CLIENT;
     }
-    if (i.force_client_none) {
+    if (params.force_client_none) {
         o.forcedClientStyle = ClientStyle.NO_CLIENT;
     }
-    if (i.server_generic) {
+    if (params.server_generic) {
         o.normalServerStyle = ServerStyle.GENERIC_SERVER;
     }
-    if (i.server_grpc1) {
+    if (params.server_grpc1) {
         o.normalServerStyle = ServerStyle.GRPC1_SERVER;
     }
-    if (i.force_server_none) {
+    if (params.force_server_none) {
         o.forcedServerStyle = ServerStyle.NO_SERVER;
     }
-    if (i.add_pb_suffix) {
+    if (params.add_pb_suffix) {
         o.addPbSuffix = true;
     }
-    if (i.force_disable_services) {
+    if (params.force_disable_services) {
       o.forceDisableServices = true;
     }
-    if (i.output_javascript) {
+    if (params.output_javascript) {
         o.transpileTarget = ts.ScriptTarget.ES2020;
     }
-    if (i.output_javascript_es2015) {
+    if (params.output_javascript_es2015) {
         o.transpileTarget = ts.ScriptTarget.ES2015;
     }
-    if (i.output_javascript_es2016) {
+    if (params.output_javascript_es2016) {
         o.transpileTarget = ts.ScriptTarget.ES2016;
     }
-    if (i.output_javascript_es2017) {
+    if (params.output_javascript_es2017) {
         o.transpileTarget = ts.ScriptTarget.ES2017;
     }
-    if (i.output_javascript_es2018) {
+    if (params.output_javascript_es2018) {
         o.transpileTarget = ts.ScriptTarget.ES2018;
     }
-    if (i.output_javascript_es2019) {
+    if (params.output_javascript_es2019) {
         o.transpileTarget = ts.ScriptTarget.ES2019;
     }
-    if (i.output_javascript_es2020) {
+    if (params.output_javascript_es2020) {
         o.transpileTarget = ts.ScriptTarget.ES2020;
     }
-    if (i.output_legacy_commonjs) {
+    if (params.output_legacy_commonjs) {
         o.transpileModule = ts.ModuleKind.CommonJS;
     }
     return o;
