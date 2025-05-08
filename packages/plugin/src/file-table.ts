@@ -1,5 +1,5 @@
 import {DescFile} from "@bufbuild/protobuf";
-import {InternalOptions} from "./our-options";
+import {Options} from "./options";
 import {OutFile} from "./out-file";
 
 
@@ -13,7 +13,7 @@ export class FileTable {
 
 
     constructor(
-        private readonly options: InternalOptions,
+        private readonly options: Options,
         clashResolver?: ClashResolver,
     ) {
         this.clashResolver = clashResolver ?? FileTable.defaultClashResolver;

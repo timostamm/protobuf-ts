@@ -1,14 +1,13 @@
+import {DescEnum, DescExtension, DescFile, DescMessage, DescService} from "@bufbuild/protobuf";
+import {create, createFileRegistry, FileRegistry} from "@bufbuild/protobuf";
+import type {FileDescriptorSet} from "@bufbuild/protobuf/wkt";
+import {CodeGeneratorResponse_Feature, FileDescriptorSetSchema} from "@bufbuild/protobuf/wkt";
+import {nestedTypes} from "@bufbuild/protobuf/reflect";
+import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {setupCompiler} from "./framework/typescript-compile";
 import {GeneratedFile} from "./framework/generated-file";
 import {OutFile} from "./out-file";
-import {
-    ClientStyle,
-    InternalOptions,
-    makeInternalOptions,
-    OptionResolver,
-    parseOptions,
-    ServerStyle
-} from "./our-options";
+import {Options, parseOptions} from "./options";
 import {ServiceServerGeneratorGrpc} from "./code-gen/service-server-generator-grpc";
 import {CommentGenerator} from "./code-gen/comment-generator";
 import {MessageInterfaceGenerator} from "./code-gen/message-interface-generator";
@@ -21,16 +20,11 @@ import {ServiceServerGeneratorGeneric} from "./code-gen/service-server-generator
 import {ServiceClientGeneratorGrpc} from "./code-gen/service-client-generator-grpc";
 import * as ts from "typescript";
 import {WellKnownTypes} from "./message-type-extensions/well-known-types";
-import {nestedTypes} from "@bufbuild/protobuf/reflect";
-import type {CodeGeneratorRequest} from "@bufbuild/protobuf/wkt";
 import {Interpreter} from "./interpreter";
 import {SymbolTable} from "./framework/symbol-table";
 import {TypeScriptImports} from "./framework/typescript-imports";
-import {DescEnum, DescExtension, DescFile, DescMessage, DescService} from "@bufbuild/protobuf";
 import {PluginBaseProtobufES} from "./framework/plugin-base";
-import {create, createFileRegistry, FileRegistry} from "@bufbuild/protobuf";
-import type {FileDescriptorSet} from "@bufbuild/protobuf/wkt";
-import {CodeGeneratorResponse_Feature, FileDescriptorSetSchema} from "@bufbuild/protobuf/wkt";
+import {ServerStyle, ClientStyle} from "./gen/protobuf-ts_pb";
 
 
 export class ProtobuftsPlugin extends PluginBaseProtobufES {
@@ -44,8 +38,8 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
 
     generate(request: CodeGeneratorRequest): GeneratedFile[] {
         const
-            options = makeInternalOptions(
-                parseOptions(request.parameter),
+            options = parseOptions(
+                request.parameter,
                 `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
             ),
             registryEs = createFileRegistryFromRequest(request),
@@ -54,7 +48,6 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             imports = new TypeScriptImports(symbols, registryEs),
             comments = new CommentGenerator(),
             interpreter = new Interpreter(registryEs, options),
-            optionResolver = new OptionResolver(interpreter, options),
             genMessageInterface = new MessageInterfaceGenerator(symbols, imports, comments, interpreter, options),
             genEnum = new EnumGenerator(symbols, imports, comments, interpreter),
             genMessageType = new MessageTypeGenerator(registryEs, imports, comments, interpreter, options),
@@ -129,7 +122,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             for (const desc of nestedTypes(descFile)) {
                 switch (desc.kind) {
                     case "message":
-                        genMessageType.generateMessageType(outMain, desc, optionResolver.getOptimizeMode(descFile));
+                        genMessageType.generateMessageType(outMain, desc, options.getOptimizeMode(descFile));
                         break;
                     case "service":
                         if (options.forceDisableServices) {
@@ -138,7 +131,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                         // service type
                         genServiceType.generateServiceType(outMain, desc);
                         // clients
-                        const clientStyles = optionResolver.getClientStyles(desc);
+                        const clientStyles = options.getClientStyles(desc);
                         if (clientStyles.includes(ClientStyle.GENERIC_CLIENT)) {
                             genClientGeneric.generateInterface(outClientCall, desc);
                             genClientGeneric.generateImplementationClass(outClientCall, desc);
@@ -148,7 +141,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                             genClientGrpc.generateImplementationClass(outClientGrpc, desc);
                         }
                         // servers
-                        const serverStyles = optionResolver.getServerStyles(desc);
+                        const serverStyles = options.getServerStyles(desc);
                         if (serverStyles.includes(ServerStyle.GENERIC_SERVER)) {
                             genServerGeneric.generateInterface(outServerGeneric, desc);
                         }
@@ -194,7 +187,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
     }
 
 
-    protected transpile(tsFiles: OutFile[], options: InternalOptions): GeneratedFile[] {
+    protected transpile(tsFiles: OutFile[], options: Options): GeneratedFile[] {
         if (options.transpileTarget === undefined) {
             return tsFiles;
         }

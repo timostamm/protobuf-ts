@@ -1,6 +1,6 @@
 import {TypescriptFile} from "./framework/typescript-file";
 import {GeneratedFile} from "./framework/generated-file";
-import {InternalOptions} from "./our-options";
+import {Options} from "./options";
 import {DescFile} from "@bufbuild/protobuf";
 import {getPackageComments, getSyntaxComments} from "@bufbuild/protoplugin";
 
@@ -17,7 +17,7 @@ export class OutFile extends TypescriptFile implements GeneratedFile {
     constructor(
         name: string,
         public readonly descFile: DescFile,
-        private readonly options: InternalOptions,
+        private readonly options: Options,
     ) {
         super(name);
     }
