@@ -107,9 +107,7 @@ export class CommentGenerator {
         }
 
         // add deprecated information to the leading block
-        if (CommentGenerator.isDeprecated(descriptor)) {
-            commentBlock += '@deprecated\n';
-        }
+        commentBlock += this.makeDeprecatedTag(descriptor);
 
         // add source info to the leading block
         commentBlock += this.makeGeneratedTag(descriptor);
