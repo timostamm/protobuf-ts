@@ -1,6 +1,7 @@
 import * as rt from "@protobuf-ts/runtime";
 import * as ts from "typescript";
 import {DescFile, DescService, getOption} from "@bufbuild/protobuf";
+import {qualifiedName} from "@bufbuild/protobuf/reflect";
 import {FileOptions_OptimizeMode} from "@bufbuild/protobuf/wkt";
 import {createOptionParser} from "./framework/create-option-parser";
 import {client, server, ServerStyle, ClientStyle} from "./gen/protobuf-ts_pb";
@@ -300,9 +301,7 @@ export function parseOptions(
 
             // always check service options valid
             if (opt.includes(ClientStyle.NO_CLIENT) && opt.some(s => s !== ClientStyle.NO_CLIENT)) {
-                // TODO
-                //let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.client) = NO_CLIENT, you cannot set additional client styles.`);
-                let err = new Error(`You provided invalid options for ${descriptor.typeName}. If you set (ts.client) = NO_CLIENT, you cannot set additional client styles.`);
+                const err = new Error(`You provided invalid options for ${qualifiedName(descriptor)}. If you set (ts.client) = NO_CLIENT, you cannot set additional client styles.`);
                 err.name = `PluginMessageError`;
                 throw err;
             }
@@ -326,9 +325,7 @@ export function parseOptions(
 
             // always check service options valid
             if (opt.includes(ServerStyle.NO_SERVER) && opt.some(s => s !== ServerStyle.NO_SERVER)) {
-                // TODO
-                //let err = new Error(`You provided invalid options for ${this.stringFormat.formatQualifiedName(descriptor, true)}. If you set (ts.server) = NO_SERVER, you cannot set additional server styles.`);
-                let err = new Error(`You provided invalid options for ${descriptor.typeName}. If you set (ts.server) = NO_SERVER, you cannot set additional server styles.`);
+                const err = new Error(`You provided invalid options for ${qualifiedName(descriptor)}. If you set (ts.server) = NO_SERVER, you cannot set additional server styles.`);
                 err.name = `PluginMessageError`;
                 throw err;
             }
