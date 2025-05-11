@@ -131,7 +131,6 @@ export class CommentGenerator {
             case "extension":
                 return `@generated from protobuf extension: ${getDeclarationString(desc)}`;
             case "rpc":
-                // TODO see StringFormat.formatRpcDeclaration
                 return `@generated from protobuf rpc: ${desc.name}`;
             case "message":
             case "enum":
