@@ -1,6 +1,3 @@
-/**
- * Custom file options interpreted by @protobuf-ts/plugin
- */
 import * as rt from "@protobuf-ts/runtime";
 import * as ts from "typescript";
 import {DescFile, DescService, getOption} from "@bufbuild/protobuf";
