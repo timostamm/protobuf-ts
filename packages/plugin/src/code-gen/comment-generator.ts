@@ -107,9 +107,7 @@ export class CommentGenerator {
         }
 
         // add deprecated information to the leading block
-        if (CommentGenerator.isDeprecated(descriptor)) {
-            commentBlock += '@deprecated\n';
-        }
+        commentBlock += this.makeDeprecatedTag(descriptor);
 
         // add source info to the leading block
         commentBlock += this.makeGeneratedTag(descriptor);
@@ -131,7 +129,6 @@ export class CommentGenerator {
             case "extension":
                 return `@generated from protobuf extension: ${getDeclarationString(desc)}`;
             case "rpc":
-                // TODO see StringFormat.formatRpcDeclaration
                 return `@generated from protobuf rpc: ${desc.name}`;
             case "message":
             case "enum":
