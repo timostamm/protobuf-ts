@@ -91,7 +91,7 @@ export class MessageInterfaceGenerator {
      *    fieldName: number
      *
      */
-    protected createFieldPropertySignature(source: TypescriptFile, descField: DescField, fieldInfo: rt.FieldInfo): ts.PropertySignature {
+    private createFieldPropertySignature(source: TypescriptFile, descField: DescField, fieldInfo: rt.FieldInfo): ts.PropertySignature {
         let type: ts.TypeNode; // the property type, may be made optional or wrapped into array at the end
 
         switch (fieldInfo.kind) {
@@ -182,7 +182,7 @@ export class MessageInterfaceGenerator {
      *         | { oneofKind: "error"; error: string; }
      *         | { oneofKind: undefined; };
      */
-    protected createOneofADTPropertySignature(source:TypescriptFile, descOneof: DescOneof): ts.PropertySignature {
+    private createOneofADTPropertySignature(source:TypescriptFile, descOneof: DescOneof): ts.PropertySignature {
         const
             oneofCases: ts.TypeLiteralNode[] = [],
             [parentMessageDesc, interpreterType, oneofLocalName] = this.oneofInfo(descOneof),

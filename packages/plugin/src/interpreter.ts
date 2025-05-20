@@ -98,7 +98,7 @@ export class Interpreter {
      * Note that options on options (google.protobuf.*Options) are not
      * supported.
      */
-    readOptions(descriptor: DescField | DescMethod | DescFile | DescService | DescMessage, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
+    private readOptions(descriptor: DescField | DescMethod | DescFile | DescService | DescMessage, excludeOptions: readonly string[]): JsonOptionsMap | undefined {
 
         // the option to force exclude all options takes precedence
         if (this.options.forceExcludeAllOptions) {
@@ -525,7 +525,7 @@ export class Interpreter {
     }
 
 
-    protected buildEnumInfo(descriptor: DescEnum): rt.EnumInfo {
+    private buildEnumInfo(descriptor: DescEnum): rt.EnumInfo {
         let sharedPrefix = this.options.keepEnumPrefix
             ? undefined
             : this.findEnumSharedPrefix(descriptor);
@@ -577,7 +577,7 @@ export class Interpreter {
     }
 
 
-    protected getL(descField: DescField | DescExtension): rt.LongType | undefined {
+    private getL(descField: DescField | DescExtension): rt.LongType | undefined {
         if (!this.isLong(descField)) {
             return undefined;
         }

@@ -42,30 +42,30 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
                 request.parameter,
                 `by protobuf-ts ${this.version}` + (request.parameter ? ` with parameter ${request.parameter}` : '')
             ),
-            registryEs = createFileRegistryFromRequest(request),
+            registry = createFileRegistryFromRequest(request),
             symbols = new SymbolTable(),
             fileTable = new FileTable(options),
-            imports = new TypeScriptImports(symbols, registryEs),
+            imports = new TypeScriptImports(symbols, registry),
             comments = new CommentGenerator(),
-            interpreter = new Interpreter(registryEs, options),
+            interpreter = new Interpreter(registry, options),
             genMessageInterface = new MessageInterfaceGenerator(symbols, imports, comments, interpreter, options),
             genEnum = new EnumGenerator(symbols, imports, comments, interpreter),
-            genMessageType = new MessageTypeGenerator(registryEs, imports, comments, interpreter, options),
+            genMessageType = new MessageTypeGenerator(registry, imports, comments, interpreter, options),
             genServiceType = new ServiceTypeGenerator(symbols, imports, comments, interpreter, options),
             genServerGeneric = new ServiceServerGeneratorGeneric(symbols, imports, comments, interpreter, options),
             genServerGrpc = new ServiceServerGeneratorGrpc(symbols, imports, comments, interpreter),
-            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registryEs, imports, comments, interpreter, options),
-            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registryEs, imports, comments, interpreter, options)
+            genClientGeneric = new ServiceClientGeneratorGeneric(symbols, registry, imports, comments, interpreter, options),
+            genClientGrpc = new ServiceClientGeneratorGrpc(symbols, registry, imports, comments, interpreter, options)
         ;
 
         // in first pass, register standard file names
-        for (let fileDescriptor of registryEs.files) {
+        for (let fileDescriptor of registry.files) {
             const base = fileDescriptor.name + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.ts', fileDescriptor);
         }
 
         // in second pass, register client and server file names
-        for (let descFile of registryEs.files) {
+        for (let descFile of registry.files) {
             const base = descFile.name + (options.addPbSuffix ? "_pb" : "");
             fileTable.register(base + '.server.ts', descFile, 'generic-server');
             fileTable.register(base + '.grpc-server.ts', descFile, 'grpc1-server');
@@ -76,7 +76,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         }
 
         // in third pass, generate files
-        for (let descFile of registryEs.files) {
+        for (let descFile of registry.files) {
             const
                 outMain = fileTable.create(descFile),
                 outServerGeneric = fileTable.create(descFile, 'generic-server'),
