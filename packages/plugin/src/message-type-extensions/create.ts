@@ -49,7 +49,7 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMethod(source: TypescriptFile, descMessage: DescMessage, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+    private makeMethod(source: TypescriptFile, descMessage: DescMessage, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
             MessageInterface = this.imports.type(source, descMessage),
             PartialMessage = this.imports.name(source,'PartialMessage', this.options.runtimeImportPath, true)
@@ -71,7 +71,7 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMessageVariable() {
+    private makeMessageVariable() {
         return ts.createVariableStatement(
             undefined,
             ts.createVariableDeclarationList(
@@ -103,7 +103,7 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMessagePropertyAssignments(source: TypescriptFile, descMessage: DescMessage) {
+    private makeMessagePropertyAssignments(source: TypescriptFile, descMessage: DescMessage) {
         let messageType = this.interpreter.getMessageType(descMessage);
         let defaultMessage = messageType.create();
         return Object.entries(defaultMessage).map(([key, value]): ts.ExpressionStatement => (
@@ -121,7 +121,7 @@ export class Create implements CustomMethodGenerator {
     }
 
 
-    makeMergeIf(source: TypescriptFile, descMessage: DescMessage) {
+    private makeMergeIf(source: TypescriptFile, descMessage: DescMessage) {
         const MessageInterface = this.imports.type(source, descMessage);
         return ts.createIf(
             ts.createBinary(

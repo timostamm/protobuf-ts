@@ -63,7 +63,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         return methods;
     }
 
-    makeMethod(source:TypescriptFile, descMessage: DescMessage, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+    private makeMethod(source:TypescriptFile, descMessage: DescMessage, ...bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
             MessageInterface = this.imports.type(source, descMessage),
             IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath, true),
@@ -85,7 +85,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         );
     }
 
-    makeVariables(): ts.VariableStatement {
+    private makeVariables(): ts.VariableStatement {
         // let message = target ?? this.create(), end = reader.pos + length;
         return ts.createVariableStatement(
             undefined,
@@ -123,7 +123,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         );
     }
 
-    makeWhileSwitch(switchCases: ts.CaseClause[], defaultClause: ts.DefaultClause): ts.WhileStatement {
+    private makeWhileSwitch(switchCases: ts.CaseClause[], defaultClause: ts.DefaultClause): ts.WhileStatement {
         return ts.createWhile(
             ts.createBinary(
                 ts.createPropertyAccess(
@@ -180,7 +180,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         )
     }
 
-    makeCaseClauses(source: TypescriptFile,descMessage: DescMessage): ts.CaseClause[] {
+    private makeCaseClauses(source: TypescriptFile,descMessage: DescMessage): ts.CaseClause[] {
         const
             interpreterType = this.interpreter.getMessageType(descMessage),
             clauses: ts.CaseClause[] = [];
@@ -235,7 +235,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         return clauses;
     }
 
-    makeDefaultClause(source:TypescriptFile,): ts.DefaultClause {
+    private makeDefaultClause(source:TypescriptFile,): ts.DefaultClause {
         let UnknownFieldHandler = this.imports.name(source, 'UnknownFieldHandler', this.options.runtimeImportPath);
         return ts.createDefaultClause([
                 ts.createVariableStatement(
@@ -359,7 +359,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
     // message.int32StrField[reader.skip(0).skipBytes(1).int32()] = reader.skipBytes(1).string();
     // message.msgField[reader.skip(0).skipBytes(1).int32()] = OtherMessage.internalBinaryRead(reader, reader.skipBytes(1).uint32(), options);
-    map(field: rt.FieldInfo & { kind: "map" }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
+    private map(field: rt.FieldInfo & { kind: "map" }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
         return [ts.createExpressionStatement(ts.createCall(
             ts.createPropertyAccess(
                 ts.createThis(),
@@ -376,7 +376,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     // message.field = OtherMessage.internalBinaryRead(reader, reader.uint32(), options, message.field);
-    message(source:TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
+    private message(source:TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
         const descMessage = this.registry.getMessage(field.T().typeName);
         assert(descMessage);
         let handlerMergeCall = ts.createCall(
@@ -404,7 +404,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     //     oneofKind: "msg",
     //     msg: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, (message.result as any).msg)
     // };
-    messageOneof(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }): ts.Statement[] {
+    private messageOneof(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }): ts.Statement[] {
         let handlerMergeCall = ts.createCall(
             ts.createPropertyAccess(
                 ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
@@ -441,7 +441,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     // message.field.push(OtherMessage.internalBinaryRead(reader, reader.uint32(), options));
-    messageRepeated(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
+    private messageRepeated(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
         let handlerMergeCall = ts.createCall(
             ts.createPropertyAccess(
                 ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
@@ -466,7 +466,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     // message.doubleField = reader.double();
-    scalar(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: undefined | rt.RepeatType.NO }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
+    private scalar(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: undefined | rt.RepeatType.NO }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
         let longType = field.kind == "enum" ? undefined : field.L;
         let readerCall = this.makeReaderCall("reader", type, longType);
@@ -482,7 +482,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     //     oneofKind: "err",
     //     err: reader.string()
     // };
-    scalarOneof(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }): ts.Statement[] {
+    private scalarOneof(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
         let longType = field.kind == "enum" ? undefined : field.L;
         return [ts.createExpressionStatement(ts.createBinary(
@@ -506,7 +506,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     //         message.doubleField.push(reader.double());
     // else
     //     message.doubleField.push(reader.double());
-    scalarRepeated(source:TypescriptFile,field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
+    private scalarRepeated(source:TypescriptFile,field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
         let longType = field.kind == "enum" ? undefined : field.L;
 
@@ -587,7 +587,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
     // binaryReadMapEntry<field no>(map: ExampleResponse["<field local name>"], reader: IBinaryReader, options: BinaryReadOptions): void
-    makeMapEntryReadMethod(source:TypescriptFile, descMessage: DescMessage, field: rt.FieldInfo & { kind: "map" }): ts.MethodDeclaration {
+    private makeMapEntryReadMethod(source:TypescriptFile, descMessage: DescMessage, field: rt.FieldInfo & { kind: "map" }): ts.MethodDeclaration {
         let
             methodName = this.binaryReadMapEntryMethodName + field.no,
             MessageInterface = this.imports.type(source, descMessage),
@@ -913,7 +913,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     // reader.int32().toString()
     // reader.int32().toBigInt()
     // reader.int32().toNumber()
-    makeReaderCall(readerExpressionOrName: string | ts.Expression, type: rt.ScalarType, longType?: rt.LongType): ts.Expression {
+    private makeReaderCall(readerExpressionOrName: string | ts.Expression, type: rt.ScalarType, longType?: rt.LongType): ts.Expression {
         let readerMethodName = ScalarType[type].toLowerCase();
         let readerMethodProp = ts.createPropertyAccess(typeof readerExpressionOrName == "string" ? ts.createIdentifier(readerExpressionOrName) : readerExpressionOrName, ts.createIdentifier(readerMethodName));
         let readerMethodCall = ts.createCall(

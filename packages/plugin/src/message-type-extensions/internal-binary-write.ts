@@ -46,7 +46,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    makeMethod(source: TypescriptFile, descMessage: DescMessage, bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
+    private makeMethod(source: TypescriptFile, descMessage: DescMessage, bodyStatements: readonly ts.Statement[]): ts.MethodDeclaration {
         const
             MessageInterface = this.imports.type(source, descMessage),
             IBinaryWriter = this.imports.name(source, 'IBinaryWriter', this.options.runtimeImportPath, true),
@@ -63,7 +63,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    makeUnknownFieldsHandler(source: TypescriptFile,): ts.Statement[] {
+    private makeUnknownFieldsHandler(source: TypescriptFile,): ts.Statement[] {
         let UnknownFieldHandler = this.imports.name(source, 'UnknownFieldHandler', this.options.runtimeImportPath);
         return [
             ts.createVariableStatement(
@@ -115,7 +115,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    makeStatementsForEveryField(source: TypescriptFile, descMessage: DescMessage): ts.Statement[] {
+    private makeStatementsForEveryField(source: TypescriptFile, descMessage: DescMessage): ts.Statement[] {
         const
             interpreterType = this.interpreter.getMessageType(descMessage),
             statements: ts.Statement[] = [];
@@ -160,7 +160,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    scalar(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: undefined | rt.RepeatType.NO }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    private scalar(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: undefined | rt.RepeatType.NO }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
         let type: rt.ScalarType = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
 
         // we only write scalar fields if they have a non-default value
@@ -212,7 +212,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    scalarRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    private scalarRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: undefined; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
         let statement;
         let type: rt.ScalarType = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
 
@@ -281,7 +281,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    scalarOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }, fieldDeclarationComment: string): ts.Statement[] {
+    private scalarOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }, fieldDeclarationComment: string): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
 
         let groupPropertyAccess = ts.createPropertyAccess(
@@ -319,7 +319,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    message(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    private message(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
         // writer.tag(<field no>, WireType.LengthDelimited).fork();
         let writeTagAndFork = this.makeWriterCall(
             this.makeWriterTagCall(source, 'writer', field.no, rt.WireType.LengthDelimited),
@@ -353,7 +353,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    messageRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    private messageRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
         // message.repeatedMessageField[i]
         let fieldPropI = ts.createElementAccess(fieldPropertyAccess, ts.createIdentifier("i"));
 
@@ -394,7 +394,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    messageOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }, fieldDeclarationComment: string): ts.Statement[] {
+    private messageOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }, fieldDeclarationComment: string): ts.Statement[] {
         // message.<oneof name>
         let groupPropertyAccess = ts.createPropertyAccess(
             ts.createIdentifier("message"),
@@ -448,7 +448,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    map(source: TypescriptFile, field: rt.FieldInfo & { kind: "map" }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
+    private map(source: TypescriptFile, field: rt.FieldInfo & { kind: "map" }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
 
         // all javascript property keys are strings, need to do some conversion for wire format
         let mapEntryKeyRead: ts.Expression;
@@ -614,7 +614,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    protected makeWriterCall(writerExpressionOrName: string | ts.Expression, type: rt.ScalarType | 'fork' | 'join', argument?: ts.Expression): ts.Expression {
+    private  makeWriterCall(writerExpressionOrName: string | ts.Expression, type: rt.ScalarType | 'fork' | 'join', argument?: ts.Expression): ts.Expression {
         let methodName = typeof type == "string" ? type : ScalarType[type].toLowerCase();
         let writerExpression = typeof writerExpressionOrName == "string" ? ts.createIdentifier(writerExpressionOrName) : writerExpressionOrName;
         let methodProp = ts.createPropertyAccess(writerExpression, ts.createIdentifier(methodName));
@@ -622,7 +622,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    protected makeWriterTagCall(source: TypescriptFile, writerExpressionOrName: string | ts.Expression, fieldNo: number, wireType: rt.WireType): ts.Expression {
+    private  makeWriterTagCall(source: TypescriptFile, writerExpressionOrName: string | ts.Expression, fieldNo: number, wireType: rt.WireType): ts.Expression {
         let writerExpression = typeof writerExpressionOrName == "string" ? ts.createIdentifier(writerExpressionOrName) : writerExpressionOrName;
         let methodProp = ts.createPropertyAccess(writerExpression, ts.createIdentifier("tag"));
         let wireTypeName: string;
@@ -657,7 +657,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     }
 
 
-    protected wireTypeForSingleScalar(scalarType: rt.ScalarType): rt.WireType {
+    private wireTypeForSingleScalar(scalarType: rt.ScalarType): rt.WireType {
         let wireType;
         switch (scalarType) {
             case rt.ScalarType.BOOL:

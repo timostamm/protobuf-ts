@@ -183,7 +183,7 @@ function findNamespaceImports(sourceFile: ts.SourceFile): { as: string; from: st
  *
  * Returns the imported name or the alternative name.
  */
-export function ensureNamedImportPresent(
+function ensureNamedImportPresent(
     currentFile: ts.SourceFile,
     importName: string,
     importFrom: string,
@@ -221,7 +221,7 @@ export function ensureNamedImportPresent(
  * import type {<name>} from '<from>';
  * import type {<name> as <as>} from '<from>';
  */
-export function createNamedImport(name: string, from: string, as?: string, isTypeOnly = false): ts.ImportDeclaration {
+function createNamedImport(name: string, from: string, as?: string, isTypeOnly = false): ts.ImportDeclaration {
     if (as) {
         return ts.createImportDeclaration(
             undefined,
@@ -260,7 +260,7 @@ export function createNamedImport(name: string, from: string, as?: string, isTyp
  * import type {<name>} from '<from>';
  * import type {<name> as <as>} from '<from>';
  */
-export function findNamedImports(sourceFile: ts.SourceFile): { name: string, as: string | undefined, from: string, isTypeOnly: boolean }[] {
+function findNamedImports(sourceFile: ts.SourceFile): { name: string, as: string | undefined, from: string, isTypeOnly: boolean }[] {
     let r: Array<{ name: string, as: string | undefined, from: string, isTypeOnly: boolean }> = [];
     for (let s of sourceFile.statements) {
         if (ts.isImportDeclaration(s) && s.importClause) {
