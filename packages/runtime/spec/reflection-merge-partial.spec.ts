@@ -2,6 +2,7 @@ import {
     IMessageType,
     MessageInfo,
     MessageType,
+    MergeOptions,
     normalizeFieldInfo,
     reflectionCreate,
     reflectionMergePartial,
@@ -105,12 +106,12 @@ describe('reflectionMergePartial()', () => {
         describe('and source field empty', () => {
             const source: object = {child: undefined};
             it('does not touch target', () => {
-                const target: any = {child: 123};
+                const target: any = {child: 123, children: []};
                 reflectionMergePartial(messageInfo, target, source);
                 expect(target.child).toBe(123);
             });
             it('does not call child handler', () => {
-                reflectionMergePartial(messageInfo, {}, source);
+                reflectionMergePartial(messageInfo, {children: []}, source);
                 expect(childHandler.create).not.toHaveBeenCalled();
                 expect(childHandler.mergePartial).not.toHaveBeenCalled();
             });
@@ -119,12 +120,12 @@ describe('reflectionMergePartial()', () => {
         describe('and source field null', () => {
             const source: object = {child: null};
             it('does not touch target', () => {
-                const target: any = {child: 123};
+                const target: any = {child: 123, children: []};
                 reflectionMergePartial(messageInfo, target, source);
                 expect(target.child).toBe(123);
             });
             it('does not call child handler', () => {
-                reflectionMergePartial(messageInfo, {}, source);
+                reflectionMergePartial(messageInfo, {children: []}, source);
                 expect(childHandler.create).not.toHaveBeenCalled();
                 expect(childHandler.mergePartial).not.toHaveBeenCalled();
             });
@@ -133,13 +134,13 @@ describe('reflectionMergePartial()', () => {
         describe('and target field empty', () => {
             it('calls child handler´s create()', () => {
                 const source = {child: {other_msg_fake_field: true}};
-                const target = {child: undefined};
+                const target = {child: undefined, children: []};
                 reflectionMergePartial<any>(messageInfo, target, source);
                 expect(childHandler.create).toHaveBeenCalled();
                 expect(childHandler.create).toHaveBeenCalledWith(source.child);
             });
             it('uses child handler´s create()', () => {
-                const target: any = {};
+                const target: any = {children: []};
                 const source = {child: {}};
                 reflectionMergePartial(messageInfo, target, source);
                 expect(target.child).toEqual(handlerCreateReturn);
@@ -149,10 +150,10 @@ describe('reflectionMergePartial()', () => {
         describe('and target field non-empty', () => {
             it('calls child handler´s mergePartial()', () => {
                 const source = {child: {other_msg_fake_field: true}};
-                const target = {child: {other_msg_fake_field: false}};
+                const target = {child: {other_msg_fake_field: false}, children: []};
                 reflectionMergePartial(messageInfo, target, source);
                 expect(childHandler.mergePartial).toHaveBeenCalled();
-                expect(childHandler.mergePartial).toHaveBeenCalledWith({other_msg_fake_field: false}, {other_msg_fake_field: true});
+                expect(childHandler.mergePartial).toHaveBeenCalledWith({other_msg_fake_field: false}, {other_msg_fake_field: true}, MergeOptions.defaults);
             });
         });
 
