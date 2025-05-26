@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/test-server_grpc1-client_grpc1",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
@@ -10,10 +10,10 @@
   "devDependencies": {
     "@grpc/grpc-js": "^1.2.2",
     "@bufbuild/buf": "^1.50.1",
-    "@protobuf-ts/plugin": "^2.9.6",
-    "@protobuf-ts/protoc": "^2.9.6",
-    "@protobuf-ts/runtime": "^2.9.6",
-    "@protobuf-ts/runtime-rpc": "^2.9.6",
+    "@protobuf-ts/plugin": "^2.11.0",
+    "@protobuf-ts/protoc": "^2.11.0",
+    "@protobuf-ts/runtime": "^2.11.0",
+    "@protobuf-ts/runtime-rpc": "^2.11.0",
     "@types/jasmine": "^3.5.10",
     "@types/node": "^14.0.13",
     "abort-controller": "^3.0.0",
