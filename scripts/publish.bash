@@ -2,7 +2,6 @@
 
 set -e
 
-npx turbo run bootstrap
 npm run all
 
 cd packages/runtime; npm publish; cd ../../;

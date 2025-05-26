@@ -6,10 +6,10 @@
   },
   "scripts": {
     "clean": "git clean -Xdf",
-    "all": "turbo run --ui tui build generate test conformance bootstrap",
-    "affected": "turbo run --affected --ui tui build generate test conformance bootstrap",
+    "all": "turbo run --ui tui build generate test conformance",
+    "affected": "turbo run --affected --ui tui build generate test conformance",
     "setversion": "fnm exec --using v22 node scripts/set-version.mjs",
-    "postsetversion": "npx turbo run generate bootstrap",
+    "postsetversion": "npm run all",
     "publish": "./scripts/publish.bash"
   },
   "workspaces": [
