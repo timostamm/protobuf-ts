@@ -27,7 +27,6 @@
     "packages/grpc-transport",
     "packages/grpcweb-transport",
     "packages/plugin",
-    "packages/plugin-framework",
     "packages/proto",
     "packages/protobuf-conformance",
     "packages/protoc",
