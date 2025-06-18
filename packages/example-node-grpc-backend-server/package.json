@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/example-node-grpc-backend-server",
-  "version": "2.11.0",
+  "version": "2.11.1",
   "description": "",
   "private": true,
   "scripts": {
@@ -14,14 +14,14 @@
   "homepage": "https://github.com/timostamm/protobuf-ts",
   "dependencies": {
     "@grpc/grpc-js": "^1.2.2",
-    "@protobuf-ts/grpc-backend": "^2.11.0",
-    "@protobuf-ts/runtime": "^2.11.0",
-    "@protobuf-ts/runtime-rpc": "^2.11.0",
+    "@protobuf-ts/grpc-backend": "^2.11.1",
+    "@protobuf-ts/runtime": "^2.11.1",
+    "@protobuf-ts/runtime-rpc": "^2.11.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.50.1",
-    "@protobuf-ts/plugin": "^2.11.0"
+    "@protobuf-ts/plugin": "^2.11.1"
   }
 }
