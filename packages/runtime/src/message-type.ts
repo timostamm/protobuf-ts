@@ -19,8 +19,8 @@ import type {UnknownMessage} from "./unknown-types";
 import {binaryWriteOptions} from "./binary-writer";
 import {binaryReadOptions} from "./binary-reader";
 
-const baseDescriptors = Object.getOwnPropertyDescriptors(Object.getPrototypeOf({}));
-const messageTypeDescriptor = baseDescriptors[MESSAGE_TYPE] = {};
+const baseDescriptors = Object.getOwnPropertyDescriptors(Object.getPrototypeOf({})) as Record<typeof MESSAGE_TYPE, unknown>;
+const messageTypeDescriptor = baseDescriptors[MESSAGE_TYPE] = {} as {value?: unknown};
 
 /**
  * This standard message type provides reflection-based
