@@ -1,6 +1,6 @@
 {
   "name": "@protobuf-ts/example-buf",
-  "version": "2.11.0",
+  "version": "2.11.1",
   "private": true,
   "author": "Timo Stamm <ts@timostamm.com>",
   "license": "Apache-2.0",
@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "typescript": "^4.4.3",
-    "@protobuf-ts/plugin": "^2.11.0",
+    "@protobuf-ts/plugin": "^2.11.1",
     "@bufbuild/buf": "^1.50.1"
   }
 }
