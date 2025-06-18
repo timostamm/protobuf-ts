@@ -20,6 +20,7 @@ import {binaryWriteOptions} from "./binary-writer";
 import {binaryReadOptions} from "./binary-reader";
 
 const baseDescriptors = Object.getOwnPropertyDescriptors(Object.getPrototypeOf({}));
+const messageTypeDescriptor = baseDescriptors[MESSAGE_TYPE] = {};
 
 /**
  * This standard message type provides reflection-based
@@ -69,7 +70,8 @@ export class MessageType<T extends object> implements IMessageType<T> {
         this.typeName = name;
         this.fields = fields.map(normalizeFieldInfo);
         this.options = options ?? {};
-        this.messagePrototype = Object.create(null, { ...baseDescriptors, [MESSAGE_TYPE]: { value: this } });
+        messageTypeDescriptor.value = this;
+        this.messagePrototype = Object.create(null, baseDescriptors);
         this.refTypeCheck = new ReflectionTypeCheck(this);
         this.refJsonReader = new ReflectionJsonReader(this);
         this.refJsonWriter = new ReflectionJsonWriter(this);
