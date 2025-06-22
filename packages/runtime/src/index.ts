@@ -36,6 +36,9 @@ export {
     JsonReadOptions, JsonWriteOptions, JsonWriteStringOptions, jsonReadOptions, jsonWriteOptions, mergeJsonOptions
 } from './json-format-contract';
 
+// Merge options, types, and defaults
+export {MergeOptions} from './merge-options';
+
 // Message type contract
 export {IMessageType, PartialMessage, MESSAGE_TYPE} from './message-type-contract';
 
@@ -77,6 +80,20 @@ export {ReflectionBinaryWriter} from './reflection-binary-writer';
 export {ReflectionJsonReader} from './reflection-json-reader';
 export {ReflectionJsonWriter} from './reflection-json-writer';
 export {containsMessageType, MessageTypeContainer} from './reflection-contains-message-type';
+
+// FieldMask utils
+export {
+    FieldMaskLike,
+    fieldMaskUtils,
+    fieldMaskCanonicalForm,
+    fieldMaskFrom,
+    fieldMaskFromFieldNumbers,
+    fieldMaskFromMessageType,
+    fieldMaskIntersect,
+    fieldMaskIsValid,
+    fieldMaskMergeMessage,
+    fieldMaskUnion,
+} from './field-mask-utils';
 
 // Oneof helpers
 export {isOneofGroup, setOneofValue, getOneofValue, clearOneofValue, getSelectedOneofValue} from './oneof';
