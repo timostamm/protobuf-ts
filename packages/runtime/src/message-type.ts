@@ -18,6 +18,7 @@ import {reflectionEquals} from "./reflection-equals";
 import type {UnknownMessage} from "./unknown-types";
 import {binaryWriteOptions} from "./binary-writer";
 import {binaryReadOptions} from "./binary-reader";
+import { containsMessageType } from "./reflection-contains-message-type";
 
 const baseDescriptors = Object.getOwnPropertyDescriptors(Object.getPrototypeOf({})) as Record<typeof MESSAGE_TYPE, unknown>;
 const messageTypeDescriptor = baseDescriptors[MESSAGE_TYPE] = {} as {value?: unknown};
@@ -126,9 +127,26 @@ export class MessageType<T extends object> implements IMessageType<T> {
      * Determines whether two message of the same type have the same field values.
      * Checks for deep equality, traversing repeated fields, oneof groups, maps
      * and messages recursively.
+     *
      * Will also return true if both messages are `undefined`.
+     *
+     * This method checks the MESSAGE_TYPE symbol property added by create()
+     * since v2.0.3: It returns false if either of the two messages has the wrong
+     * type.
      */
     equals(a: T | undefined, b: T | undefined): boolean {
+        if (a === b) {
+            return true;
+        }
+        if (!a || !b) {
+            return false;
+        }
+        if (containsMessageType(a) && a[MESSAGE_TYPE].typeName !== this.typeName) {
+            return false;
+        }
+        if (containsMessageType(b) && b[MESSAGE_TYPE].typeName !== this.typeName) {
+            return false;
+        }
         return reflectionEquals(this, a as UnknownMessage | undefined, b as UnknownMessage | undefined);
     }
 
