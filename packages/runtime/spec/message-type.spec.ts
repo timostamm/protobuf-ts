@@ -99,6 +99,20 @@ describe('MessageType', () => {
         expect(msg).toEqual(exp);
     })
 
+    describe('equals()', () => {
+        it('decides on wrong MESSAGE_TYPE', () => {
+            const A: MessageType<any> = new MessageType<any>('.test.A', [
+                {no: 1, name: 'string_field', kind: "scalar", T: ScalarType.STRING},
+            ]);
+            const B: MessageType<any> = new MessageType<any>('.test.B', [
+                {no: 1, name: 'string_field', kind: "scalar", T: ScalarType.STRING},
+            ]);
+            const a = A.create();
+            const b = B.create();
+            expect(A.equals(a, b)).toBe(false);
+        });
+    });
+
     it('create() sets MESSAGE_TYPE', () => {
         const msg = MyMessage.create({
             stringField: "hello world",
