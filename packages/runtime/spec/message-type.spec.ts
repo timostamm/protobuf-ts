@@ -113,5 +113,60 @@ describe('MessageType', () => {
         });
     });
 
+    it('create() sets MESSAGE_TYPE', () => {
+        const msg = MyMessage.create({
+            stringField: "hello world",
+        });
+        expect(MESSAGE_TYPE in msg);
+        expect((msg as unknown as {[MESSAGE_TYPE]: MessageType<any>})[MESSAGE_TYPE]).toBe(MyMessage);
+    })
+
+
+    describe('is()', () => {
+        it('returns false for null', () => {
+            expect(MyMessage.is(null)).toBe(false);
+        });
+
+        it('decodes on MESSAGE_TYPE', () => {
+            const A: MessageType<any> = new MessageType<any>('.test.A', [
+                {no: 1, name: 'string_field', kind: "scalar", T: ScalarType.STRING},
+            ]);
+            const B: MessageType<any> = new MessageType<any>('.test.B', [
+                {no: 99, name: 'bool_field', kind: "scalar", T: ScalarType.BOOL},
+            ]);
+            const a = A.create();
+            const b = B.create();
+            expect(A.is(a)).toBe(true);
+            expect(A.is(b)).toBe(false);
+            expect(B.is(a)).toBe(false);
+            expect(B.is(b)).toBe(true);
+        });
+    });
+
+    describe('isAssignable()', () => {
+        it('returns false for null', () => {
+            expect(MyMessage.isAssignable(null)).toBe(false);
+        });
+
+        it('prefers MESSAGE_TYPE', () => {
+            const A: MessageType<any> = new MessageType<any>('.test.A', [
+                {no: 1, name: 'string_field', kind: "scalar", T: ScalarType.STRING},
+            ]);
+            const B: MessageType<any> = new MessageType<any>('.test.B', [
+                {no: 99, name: 'bool_field', kind: "scalar", T: ScalarType.BOOL},
+            ]);
+            const C: MessageType<any> = new MessageType<any>('.test.C', [
+                {no: 1, name: 'string_field', kind: "scalar", T: ScalarType.STRING},
+            ]);
+            const a = A.create();
+            const b = B.create();
+            const c = C.create();
+            expect(A.isAssignable(a)).toBe(true);
+            expect(A.isAssignable(b)).toBe(false);
+            expect(A.isAssignable(c)).toBe(true);
+        });
+
+    });
+
 });
 

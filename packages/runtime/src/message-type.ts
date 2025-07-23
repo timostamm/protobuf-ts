@@ -18,7 +18,7 @@ import {reflectionEquals} from "./reflection-equals";
 import type {UnknownMessage} from "./unknown-types";
 import {binaryWriteOptions} from "./binary-writer";
 import {binaryReadOptions} from "./binary-reader";
-import { containsMessageType } from "./reflection-contains-message-type";
+import {containsMessageType} from "./reflection-contains-message-type";
 
 const baseDescriptors = Object.getOwnPropertyDescriptors(Object.getPrototypeOf({})) as Record<typeof MESSAGE_TYPE, unknown>;
 const messageTypeDescriptor = baseDescriptors[MESSAGE_TYPE] = {} as {value?: unknown};
@@ -152,10 +152,22 @@ export class MessageType<T extends object> implements IMessageType<T> {
 
 
     /**
-     * Is the given value assignable to our message type
-     * and contains no [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks)?
+     * Is the given value a message of our type?
+     *
+     * This method checks the MESSAGE_TYPE symbol property added by create()
+     * since v2.0.3: It returns true if the value matches our message type,
+     * false otherwise.
+     *
+     * If the value does not have the MESSAGE_TYPE symbol, this method checks all
+     * field types recursively, and returns false if it contains [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks).
      */
     is(arg: any, depth = this.defaultCheckDepth): arg is T {
+        if (typeof arg != 'object' || arg == null) {
+            return false;
+        }
+        if (containsMessageType(arg as object)) {
+            return arg[MESSAGE_TYPE].typeName === this.typeName;
+        }
         return this.refTypeCheck.is(arg, depth, false);
     }
 
@@ -163,8 +175,20 @@ export class MessageType<T extends object> implements IMessageType<T> {
     /**
      * Is the given value assignable to our message type,
      * regardless of [excess properties](https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks)?
+     *
+     * This method checks the MESSAGE_TYPE symbol property added by create()
+     * since v2.0.3: It returns true if the value matches our message type.
+     *
+     * If the value does not have the MESSAGE_TYPE symbol, this method checks all
+     * field types recursively, and returns false if it's missing a mandatory property.
      */
     isAssignable(arg: any, depth = this.defaultCheckDepth): arg is T {
+        if (typeof arg != 'object' || arg == null) {
+            return false;
+        }
+        if (containsMessageType(arg as object) && arg[MESSAGE_TYPE].typeName === this.typeName) {
+            return true;
+        }
         return this.refTypeCheck.is(arg, depth, true);
     }
 
