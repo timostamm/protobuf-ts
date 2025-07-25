@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build", "generate"],
-      "inputs": ["*.js", "package.json"],
+      "inputs": ["*.js", "package.json", "version.txt"],
       "outputs": [
         "installed/**",
         "proto/**"
