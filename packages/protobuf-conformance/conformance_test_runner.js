@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const {spawnSync} = require('child_process');
-const {ensureInstalled, findVersionConfig} = require('./util');
+const {spawnSync} = require('node:child_process');
+const {ensureInstalled, readVersion} = require('./util');
 
 main().catch(err => {
     console.error((err instanceof Error) ? err.message : err);
@@ -9,8 +9,7 @@ main().catch(err => {
 });
 
 async function main() {
-    const configuredVersion = findVersionConfig(process.cwd());
-    const { conformanceTestRunnerPath } = await ensureInstalled(configuredVersion);
+    const { conformanceTestRunnerPath } = await ensureInstalled(readVersion());
     const child = spawnSync(conformanceTestRunnerPath, process.argv.slice(2), {
         stdio: "inherit",
         shell: false

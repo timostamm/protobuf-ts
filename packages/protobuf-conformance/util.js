@@ -1,13 +1,13 @@
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
-const assert = require("assert");
+const path = require("node:path");
+const fs = require("node:fs");
+const os = require("node:os");
+const assert = require("node:assert");
 
 const standardInstallDirectory = path.join(__dirname, "installed");
 
 module.exports.standardInstallDirectory = standardInstallDirectory;
 module.exports.makeReleaseName = makeReleaseName;
-module.exports.findVersionConfig = findVersionConfig;
+module.exports.readVersion = readVersion;
 
 
 module.exports.ensureInstalled = async function ensureInstalled(version) {
@@ -261,58 +261,13 @@ function makeReleaseName(params) {
 
 
 /**
- * Reads the package json from the given path if it exists and
- * looks for config.protobufConformanceVersion, falling back to
- * config.protocVersion.
+ * Reads version.txt.
  *
- * If the package.json does not exist or does not specify a
- * version, walk the file system up until a package.json with
- * a version is found.
- *
- * If nothing was found, return undefined.
- *
- * @param {string} cwd
- * @returns {string | undefined}
+ * @returns {string}
  */
-function findVersionConfig(cwd) {
-    let version = undefined;
-    let dirname = cwd;
-    while (true) {
-        version = tryReadVersion(path.join(dirname, "package.json"));
-        if (version !== undefined) {
-            break;
-        }
-        let parent = path.dirname(dirname);
-        if (parent === dirname) {
-            break;
-        }
-        dirname = parent;
-    }
-    return version;
+function readVersion() {
+    return fs.readFileSync(path.join(__dirname, "version.txt"), "utf8");
 }
-
-function tryReadVersion(pkgPath) {
-    if (!fs.existsSync(pkgPath)) {
-        return undefined;
-    }
-    let json = fs.readFileSync(pkgPath, "utf8");
-    let pkg;
-    try {
-        pkg = JSON.parse(json);
-    } catch (e) {
-        return undefined;
-    }
-    if (typeof pkg === "object" && typeof pkg.config === "object" && pkg.config !== null) {
-        if (pkg.config.hasOwnProperty("protobufConformanceVersion") && typeof pkg.config.protobufConformanceVersion == "string") {
-            return pkg.config.protobufConformanceVersion;
-        }
-        if (pkg.config.hasOwnProperty("protocVersion") && typeof pkg.config.protocVersion == "string") {
-            return pkg.config.protocVersion;
-        }
-    }
-    return undefined;
-}
-
 
 /**
  * @callback fileCallback
