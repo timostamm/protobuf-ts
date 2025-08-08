@@ -28,7 +28,6 @@
     "packages/grpcweb-transport",
     "packages/plugin",
     "packages/proto",
-    "packages/protobuf-conformance",
     "packages/protoc",
     "packages/runtime",
     "packages/runtime-rpc",
@@ -43,6 +42,7 @@
   ],
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
+    "protobuf-conformance": "^29.2.0",
     "turbo": "^2.4.4",
     "typescript": ">=3.8.3 <4"
   },
