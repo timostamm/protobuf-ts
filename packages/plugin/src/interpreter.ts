@@ -8,7 +8,8 @@ import {
     DescOneof,
     DescService,
     FileRegistry,
-    getOption, isFieldSet
+    getOption,
+    isFieldSet
 } from "@bufbuild/protobuf";
 import {
     Edition,
@@ -25,7 +26,6 @@ import {
 import * as rt from "@protobuf-ts/runtime";
 import {assert} from "@protobuf-ts/runtime";
 import * as rpc from "@protobuf-ts/runtime-rpc";
-import {FieldInfoGenerator} from "./code-gen/field-info-generator";
 import {exclude_options} from "./gen/protobuf-ts_pb";
 
 
@@ -252,6 +252,35 @@ export class Interpreter {
         return type;
     }
 
+    getMethodInfo(desc: DescMethod): rpc.MethodInfo {
+        const methodInfo = this.getServiceType(desc.parent).methods.find(mi => mi.name === desc.name);
+        assert(methodInfo);
+        return methodInfo;
+    }
+
+    getMethodInfoPartial(desc: DescMethod): rpc.PartialMethodInfo {
+        const info = this.getServiceType(desc.parent).methods.find(mi => mi.name === desc.name);
+        assert(info);
+        let partial: any = {...info};
+        delete partial.service;
+        if (info.localName === rt.lowerCamelCase(info.name)) {
+            delete partial.localName;
+        }
+        if (!info.serverStreaming) {
+            delete partial.serverStreaming;
+        }
+        if (!info.clientStreaming) {
+            delete partial.clientStreaming;
+        }
+        if (info.options && Object.keys(info.options).length) {
+            delete partial.info;
+        }
+        if (info.idempotency === undefined) {
+            delete partial.idempotency;
+        }
+        return partial;
+    }
+
 
     /**
      * Get runtime information for an enum.
@@ -263,6 +292,56 @@ export class Interpreter {
         let enumInfo = this.enumInfos.get(descriptor.typeName) ?? this.buildEnumInfo(descriptor);
         this.enumInfos.set(descriptor.typeName, enumInfo);
         return enumInfo;
+    }
+
+
+    getFieldInfo(field: DescField): rt.FieldInfo {
+        const messageType = this.getMessageType(field.parent);
+        const fi = messageType.fields.find(fi => fi.no === field.number);
+        assert(fi, "`Cannot find field info for " + field.toString());
+        return fi;
+    }
+
+    /**
+     * Turn normalized field info returned by normalizeFieldInfo() back into
+     * the minimized form.
+     */
+    getFieldInfoPartial(desc: DescField): rt.PartialFieldInfo {
+        const info = this.getFieldInfo(desc);
+        let partial: rt.PartialFieldInfo = {...info};
+        if (info.jsonName === rt.lowerCamelCase(info.name)) {
+            delete partial.jsonName;
+        }
+        if (info.localName === rt.lowerCamelCase(info.name)) {
+            delete partial.localName;
+        }
+        if (info.repeat === rt.RepeatType.NO) {
+            delete partial.repeat;
+        }
+        if (info.opt === false) {
+            delete partial.opt;
+        } else if (info.opt === true && info.kind == "message") {
+            delete partial.opt;
+        }
+        return partial;
+    }
+
+
+
+    /**
+     * Get the long type of a field, if applicable.
+     *
+     * If the field is not a 64-bit integral type, return undefined.
+     */
+    getFieldLongType(field: DescField): rt.LongType | undefined {
+        const fi = this.getFieldInfo(field);
+        if (fi.kind === "scalar" && Interpreter.isLongValueType(fi.T)) {
+            return fi.L ?? rt.LongType.STRING;
+        }
+        if (fi.kind === "map" && fi.V.kind === "scalar" && Interpreter.isLongValueType(fi.V.T)) {
+            return fi.V.L ?? rt.LongType.STRING;
+        }
+        return undefined;
     }
 
 
@@ -353,9 +432,7 @@ export class Interpreter {
      */
     private createTypescriptNameForField(descriptor: DescField | DescExtension | DescOneof, escapeCharacter = '$'): string {
         const reservedObjectProperties = '__proto__,toString'.split(',');
-        let name = descriptor.name;
-        assert(name !== undefined);
-        name = FieldInfoGenerator.createTypescriptLocalName(name, this.options);
+        let name = this.options.useProtoFieldName ? descriptor.name : rt.lowerCamelCase(descriptor.name);
         if (reservedObjectProperties.includes(name)) {
             name = name + escapeCharacter;
         }
@@ -363,6 +440,13 @@ export class Interpreter {
             name = name + escapeCharacter;
         }
         return name;
+    }
+
+    /**
+     * Creates the interface field / oneof name based on original proto field name and naming options.
+     */
+    static createTypescriptLocalName(name: string, options: { useProtoFieldName: boolean }): string {
+        return options.useProtoFieldName ? name : rt.lowerCamelCase(name);
     }
 
 
@@ -375,17 +459,14 @@ export class Interpreter {
                 // Note that groups are deprecated and not supported in proto3.
                 continue;
             }
-            const fi = this.buildFieldInfo(fd);
-            if (fi) {
-                result.push(fi);
-            }
+            result.push(this.buildFieldInfo(fd));
         }
         return result;
     }
 
 
     // throws on unexpected field types, notably GROUP
-    private buildFieldInfo(fieldDescriptor: DescField | DescExtension): undefined | rt.PartialFieldInfo {
+    private buildFieldInfo(fieldDescriptor: DescField | DescExtension): rt.PartialFieldInfo {
         let info: { [k: string]: any } = {};
 
 
@@ -578,7 +659,7 @@ export class Interpreter {
 
 
     private getL(descField: DescField | DescExtension): rt.LongType | undefined {
-        if (!this.isLong(descField)) {
+        if (descField.scalar === undefined || !Interpreter.isLongValueType(descField.scalar)) {
             return undefined;
         }
         const jsTypeOption = (descField.proto.options !== undefined && isFieldSet(descField.proto.options, FieldOptionsSchema.field.jstype))
@@ -602,13 +683,6 @@ export class Interpreter {
             return undefined;
         }
         return this.options.normalLongType;
-    }
-
-    private isLong(descField: DescField | DescExtension): boolean {
-        if (descField.scalar === undefined) {
-            return false;
-        }
-        return Interpreter.isLongValueType(descField.scalar);
     }
 
     /**

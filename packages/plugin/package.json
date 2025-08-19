@@ -47,6 +47,7 @@
     "tslib": ">=1.6.1"
   },
   "dependencies": {
+    "@bufbuild/protoplugin-print": "file:./bufbuild-protoplugin-print-2.5.0.tgz",
     "@bufbuild/protobuf": "^2.4.0",
     "@bufbuild/protoplugin": "^2.4.0",
     "@protobuf-ts/protoc": "^2.11.1",
