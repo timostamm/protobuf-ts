@@ -2,6 +2,7 @@
 // @generated from protobuf file "msg-oneofs.proto" (package "spec", syntax proto3)
 // tslint:disable
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Oneof with 2 scalar members
  *

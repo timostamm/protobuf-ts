@@ -3,6 +3,7 @@
 // tslint:disable
 // @deprecated
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @deprecated
  * @generated from protobuf message spec.ImplicitlyDeprecatedMessage

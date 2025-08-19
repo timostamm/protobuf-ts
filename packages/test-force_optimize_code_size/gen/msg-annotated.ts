@@ -2,6 +2,7 @@
 // @generated from protobuf file "msg-annotated.proto" (package "spec", syntax proto3)
 // tslint:disable
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * An annotation message, used by the extension field "spec.field_ui"
  * which extends google.protobuf.FieldOptions

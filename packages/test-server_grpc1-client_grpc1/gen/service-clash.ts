@@ -7,6 +7,7 @@
 // be written under a different name.
 //
 import { ServiceType } from "@protobuf-ts/runtime-rpc";
+
 /**
  * @generated ServiceType for protobuf service spec.ClashService
  */

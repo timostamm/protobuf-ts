@@ -17,6 +17,7 @@
 // A proto file which is imported by unittest.proto to test importing.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message protobuf_unittest_import.ImportMessage
  */

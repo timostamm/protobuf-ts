@@ -17,9 +17,9 @@
 // limitations under the License.
 //
 //
-import { PbLong } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
 import { Duration } from "../protobuf/duration";
+import { MessageType, PbLong } from "@protobuf-ts/runtime";
+
 /**
  * Represents civil time in one of a few possible ways:
  *
@@ -173,14 +173,23 @@ class DateTime$Type extends MessageType<DateTime> {
      * ids.
      */
     toJsDate(message: DateTime): globalThis.Date {
-        let dt = new globalThis.Date(message.year, message.month - 1, message.day, message.hours, message.minutes, message.seconds, message.nanos / 1000), to = message.timeOffset;
+        let dt = new globalThis.Date(
+        		message.year,
+        		message.month - 1,
+        		message.day,
+        		message.hours,
+        		message.minutes,
+        		message.seconds,
+        		message.nanos / 1000,
+        	),
+        	to = message.timeOffset;
         if (to) {
-            if (to.oneofKind === "timeZone")
-                throw new globalThis.Error("IANA time zone not supported");
-            if (to.oneofKind === "utcOffset") {
-                let s = PbLong.from(to.utcOffset.seconds).toNumber();
-                dt = new globalThis.Date(dt.getTime() - (s * 1000));
-            }
+        	if (to.oneofKind === "timeZone")
+        		throw new globalThis.Error("IANA time zone not supported");
+        	if (to.oneofKind === "utcOffset") {
+        		let s = PbLong.from(to.utcOffset.seconds).toNumber();
+        		dt = new globalThis.Date(dt.getTime() - (s * 1000));
+        	}
         }
         return dt;
     }
@@ -191,11 +200,20 @@ class DateTime$Type extends MessageType<DateTime> {
      */
     fromJsDate(date: globalThis.Date): DateTime {
         return {
-            year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate(), hours: date.getHours(), minutes: date.getMinutes(), seconds: date.getSeconds(), nanos: date.getMilliseconds() * 1000, timeOffset: {
-                oneofKind: "utcOffset", utcOffset: {
-                    seconds: PbLong.from(date.getTimezoneOffset() * 60).toBigInt(), nanos: 0,
-                }
-            }
+        	year: date.getFullYear(),
+        	month: date.getMonth() + 1,
+        	day: date.getDate(),
+        	hours: date.getHours(),
+        	minutes: date.getMinutes(),
+        	seconds: date.getSeconds(),
+        	nanos: date.getMilliseconds() * 1000,
+        	timeOffset: {
+        		oneofKind: "utcOffset",
+        		utcOffset: {
+        			seconds: PbLong.from(date.getTimezoneOffset() * 60).toBigInt(),
+        			nanos: 0,
+        		}
+        	}
         };
     }
 }

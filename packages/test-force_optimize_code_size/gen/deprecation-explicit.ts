@@ -2,6 +2,7 @@
 // @generated from protobuf file "deprecation-explicit.proto" (package "spec", syntax proto3)
 // tslint:disable
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * The entire message is deprecated
  *

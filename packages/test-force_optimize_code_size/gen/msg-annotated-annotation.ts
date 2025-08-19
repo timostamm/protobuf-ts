@@ -2,6 +2,7 @@
 // @generated from protobuf file "msg-annotated-annotation.proto" (package "spec", syntax proto3)
 // tslint:disable
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * test case for #141
  *

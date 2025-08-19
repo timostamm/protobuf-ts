@@ -33,6 +33,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message proto2_arena_unittest.NestedMessage
  */

@@ -10,6 +10,7 @@
 // https://developers.google.com/open-source/licenses/bsd
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message protobuf_unittest.TestProto3Optional
  */

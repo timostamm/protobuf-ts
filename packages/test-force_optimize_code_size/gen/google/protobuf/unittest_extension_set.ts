@@ -17,6 +17,7 @@
 // This file contains messages for testing extensions.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * A message with message_set_wire_format.
  *

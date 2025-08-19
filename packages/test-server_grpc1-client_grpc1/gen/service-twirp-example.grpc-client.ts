@@ -5,12 +5,12 @@
 // Twirp example RPC
 // https://github.com/twitchtv/twirp-example/blob/c1501aeb89609a522db7d79d4c2e71b6c032af28/rpc/haberdasher/haberdasher.proto
 //
+import type { Hat, Size } from "./service-twirp-example";
 import { Haberdasher } from "./service-twirp-example";
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { Hat } from "./service-twirp-example";
-import type { Size } from "./service-twirp-example";
-import * as grpc from "@grpc/grpc-js";
+import type { CallOptions, ChannelCredentials, ClientOptions, ClientUnaryCall, Metadata, ServiceError } from "@grpc/grpc-js";
+import { Client } from "@grpc/grpc-js";
+import type { BinaryReadOptions, BinaryWriteOptions } from "@protobuf-ts/runtime";
+
 /**
  * A Haberdasher makes hats for clients.
  *
@@ -22,19 +22,19 @@ export interface IHaberdasherClient {
      *
      * @generated from protobuf rpc: MakeHat
      */
-    makeHat(input: Size, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (err: grpc.ServiceError | null, value?: Hat) => void): grpc.ClientUnaryCall;
-    makeHat(input: Size, metadata: grpc.Metadata, callback: (err: grpc.ServiceError | null, value?: Hat) => void): grpc.ClientUnaryCall;
-    makeHat(input: Size, options: grpc.CallOptions, callback: (err: grpc.ServiceError | null, value?: Hat) => void): grpc.ClientUnaryCall;
-    makeHat(input: Size, callback: (err: grpc.ServiceError | null, value?: Hat) => void): grpc.ClientUnaryCall;
+    makeHat(input: Size, metadata: Metadata, options: CallOptions, callback: (err: ServiceError | null, value?: Hat) => void): ClientUnaryCall;
+    makeHat(input: Size, metadata: Metadata, callback: (err: ServiceError | null, value?: Hat) => void): ClientUnaryCall;
+    makeHat(input: Size, options: CallOptions, callback: (err: ServiceError | null, value?: Hat) => void): ClientUnaryCall;
+    makeHat(input: Size, callback: (err: ServiceError | null, value?: Hat) => void): ClientUnaryCall;
 }
 /**
  * A Haberdasher makes hats for clients.
  *
  * @generated from protobuf service spec.haberdasher.Haberdasher
  */
-export class HaberdasherClient extends grpc.Client implements IHaberdasherClient {
+export class HaberdasherClient extends Client {
     private readonly _binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions>;
-    constructor(address: string, credentials: grpc.ChannelCredentials, options: grpc.ClientOptions = {}, binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions> = {}) {
+    constructor(address: string, credentials: ChannelCredentials, options: ClientOptions = {}, binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions> = {}) {
         super(address, credentials, options);
         this._binaryOptions = binaryOptions;
     }
@@ -43,8 +43,8 @@ export class HaberdasherClient extends grpc.Client implements IHaberdasherClient
      *
      * @generated from protobuf rpc: MakeHat
      */
-    makeHat(input: Size, metadata: grpc.Metadata | grpc.CallOptions | ((err: grpc.ServiceError | null, value?: Hat) => void), options?: grpc.CallOptions | ((err: grpc.ServiceError | null, value?: Hat) => void), callback?: ((err: grpc.ServiceError | null, value?: Hat) => void)): grpc.ClientUnaryCall {
-        const method = Haberdasher.methods[0];
-        return this.makeUnaryRequest<Size, Hat>(`/${Haberdasher.typeName}/${method.name}`, (value: Size): Buffer => Buffer.from(method.I.toBinary(value, this._binaryOptions)), (value: Buffer): Hat => method.O.fromBinary(value, this._binaryOptions), input, (metadata as any), (options as any), (callback as any));
-    }
+   makeHat(input: Size, metadata: Metadata | CallOptions | ((err: ServiceError | null, value?: Hat) => void), options?: CallOptions | ((err: ServiceError | null, value?: Hat) => void), callback?: ((err: ServiceError | null, value?: Hat) => void)): ClientUnaryCall {
+       const method = Haberdasher.methods[0];
+       return this.makeUnaryRequest<Size, Hat>(`/${Haberdasher.typeName}/${method.name}`, (value: Size): Buffer => Buffer.from(method.I.toBinary(value, this._binaryOptions)), (value: Buffer): Hat => method.O.fromBinary(value, this._binaryOptions), input, (metadata as any), (options as any), (callback as any));
+   }
 }

@@ -39,8 +39,9 @@
 //
 // A proto file we will use for unit testing.
 //
-import { MessageType } from "@protobuf-ts/runtime";
 import { LazyMessage } from "./unittest_lazy_dependencies_custom_option";
+import { MessageType } from "@protobuf-ts/runtime";
+
 // The following are used to test that the proto file
 // with the definition of the following field types is
 // not built when this proto file is built. Then test

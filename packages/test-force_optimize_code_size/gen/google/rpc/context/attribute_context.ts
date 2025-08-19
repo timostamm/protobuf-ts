@@ -16,9 +16,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-import { MessageType } from "@protobuf-ts/runtime";
-import { Timestamp } from "../../protobuf/timestamp";
 import { Struct } from "../../protobuf/struct";
+import { Timestamp } from "../../protobuf/timestamp";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * This message defines the standard attribute vocabulary for Google APIs.
  *

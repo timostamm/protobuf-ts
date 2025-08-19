@@ -18,6 +18,7 @@
 //
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Represents a fraction in terms of a numerator divided by a denominator.
  *

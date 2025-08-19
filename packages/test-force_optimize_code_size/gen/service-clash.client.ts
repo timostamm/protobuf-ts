@@ -6,6 +6,7 @@
 // It blocks the client file for service.clash.proto.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message spec.ClashWithExampleServiceClient
  */

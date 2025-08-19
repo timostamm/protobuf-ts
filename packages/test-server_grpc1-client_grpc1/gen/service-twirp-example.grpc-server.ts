@@ -5,34 +5,34 @@
 // Twirp example RPC
 // https://github.com/twitchtv/twirp-example/blob/c1501aeb89609a522db7d79d4c2e71b6c032af28/rpc/haberdasher/haberdasher.proto
 //
-import { Hat } from "./service-twirp-example";
-import { Size } from "./service-twirp-example";
-import type * as grpc from "@grpc/grpc-js";
+import type { handleUnaryCall, ServiceDefinition, UntypedServiceImplementation } from "@grpc/grpc-js";
+import { Hat, Size } from "./service-twirp-example";
+
 /**
  * A Haberdasher makes hats for clients.
  *
  * @generated from protobuf service spec.haberdasher.Haberdasher
  */
-export interface IHaberdasher extends grpc.UntypedServiceImplementation {
+export interface IHaberdasher extends UntypedServiceImplementation {
     /**
      * MakeHat produces a hat of mysterious, randomly-selected color!
      *
      * @generated from protobuf rpc: MakeHat
      */
-    makeHat: grpc.handleUnaryCall<Size, Hat>;
+    makeHat: handleUnaryCall<Size, Hat>;
 }
 /**
  * @grpc/grpc-js definition for the protobuf service spec.haberdasher.Haberdasher.
  *
- * Usage: Implement the interface IHaberdasher and add to a grpc server.
+ * Usage: Implement the interface IExampleService and add to a grpc server.
  *
  * ```typescript
  * const server = new grpc.Server();
- * const service: IHaberdasher = ...
- * server.addService(haberdasherDefinition, service);
+ * const service: IExampleService = ...
+ * server.addService(exampleServiceDefinition, service);
  * ```
  */
-export const haberdasherDefinition: grpc.ServiceDefinition<IHaberdasher> = {
+export const haberdasherDefinition: ServiceDefinition<IHaberdasher> = {
     makeHat: {
         path: "/spec.haberdasher.Haberdasher/MakeHat",
         originalName: "MakeHat",

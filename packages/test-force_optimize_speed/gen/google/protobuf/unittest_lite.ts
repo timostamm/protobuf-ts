@@ -37,18 +37,11 @@
 //
 // This is like unittest.proto but with optimize_for = LITE_RUNTIME.
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
+import { ImportEnumLite, ImportMessageLite } from "./unittest_import_lite";
 import { PublicImportMessageLite } from "./unittest_import_public_lite";
-import { ImportEnumLite } from "./unittest_import_lite";
-import { ImportMessageLite } from "./unittest_import_lite";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, PartialMessage } from "@protobuf-ts/runtime";
+import { MessageType, reflectionMergePartial, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * Same as TestAllTypes but with the lite runtime.
  *
@@ -903,11 +896,11 @@ export enum DupEnum_TestEnumWithDupValueLite {
      */
     BAZ = 3,
     /**
-     * @generated from protobuf enum value: FOO1 = 1;
+     * @generated from protobuf enum value: FOO2 = 1;
      */
     FOO2 = 1,
     /**
-     * @generated from protobuf enum value: BAR1 = 2;
+     * @generated from protobuf enum value: BAR2 = 2;
      */
     BAR2 = 2
 }
@@ -1359,7 +1352,7 @@ class TestAllTypesLite$Type extends MessageType<TestAllTypesLite> {
                 case /* protobuf_unittest.TestAllTypesLite.NestedMessage oneof_nested_message */ 112:
                     message.oneofField = {
                         oneofKind: "oneofNestedMessage",
-                        oneofNestedMessage: TestAllTypesLite_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, (message.oneofField as any).oneofNestedMessage)
+                        oneofNestedMessage: TestAllTypesLite_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.oneofField.oneofKind === "oneofNestedMessage" ? message.oneofField.oneofNestedMessage : undefined)
                     };
                     break;
                 case /* string oneof_string */ 113:
@@ -1377,7 +1370,7 @@ class TestAllTypesLite$Type extends MessageType<TestAllTypesLite> {
                 case /* protobuf_unittest.TestAllTypesLite.NestedMessage oneof_lazy_nested_message */ 115:
                     message.oneofField = {
                         oneofKind: "oneofLazyNestedMessage",
-                        oneofLazyNestedMessage: TestAllTypesLite_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, (message.oneofField as any).oneofLazyNestedMessage)
+                        oneofLazyNestedMessage: TestAllTypesLite_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.oneofField.oneofKind === "oneofLazyNestedMessage" ? message.oneofField.oneofLazyNestedMessage : undefined)
                     };
                     break;
                 case /* optional int32 deceptively_named_list */ 116:
@@ -2944,7 +2937,7 @@ class TestHugeFieldNumbersLite$Type extends MessageType<TestHugeFieldNumbersLite
                 case /* protobuf_unittest.TestAllTypesLite oneof_test_all_types */ 536870012:
                     message.oneofField = {
                         oneofKind: "oneofTestAllTypes",
-                        oneofTestAllTypes: TestAllTypesLite.internalBinaryRead(reader, reader.uint32(), options, (message.oneofField as any).oneofTestAllTypes)
+                        oneofTestAllTypes: TestAllTypesLite.internalBinaryRead(reader, reader.uint32(), options, message.oneofField.oneofKind === "oneofTestAllTypes" ? message.oneofField.oneofTestAllTypes : undefined)
                     };
                     break;
                 case /* string oneof_string */ 536870013:
@@ -3122,7 +3115,7 @@ class TestOneofParsingLite$Type extends MessageType<TestOneofParsingLite> {
                 case /* protobuf_unittest.TestAllTypesLite oneof_submessage */ 2:
                     message.oneofField = {
                         oneofKind: "oneofSubmessage",
-                        oneofSubmessage: TestAllTypesLite.internalBinaryRead(reader, reader.uint32(), options, (message.oneofField as any).oneofSubmessage)
+                        oneofSubmessage: TestAllTypesLite.internalBinaryRead(reader, reader.uint32(), options, message.oneofField.oneofKind === "oneofSubmessage" ? message.oneofField.oneofSubmessage : undefined)
                     };
                     break;
                 case /* string oneof_string */ 3:

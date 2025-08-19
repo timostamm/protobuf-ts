@@ -6,21 +6,23 @@
 // Because the latter is already taken by a proto file, the client file should
 // be written under a different name.
 //
-import type * as grpc from "@grpc/grpc-js";
+import type { ServiceDefinition, UntypedServiceImplementation } from "@grpc/grpc-js";
+
 /**
  * @generated from protobuf service spec.ClashService
  */
-export interface IClashService extends grpc.UntypedServiceImplementation {
+export interface IClashService extends UntypedServiceImplementation {
 }
 /**
  * @grpc/grpc-js definition for the protobuf service spec.ClashService.
  *
- * Usage: Implement the interface IClashService and add to a grpc server.
+ * Usage: Implement the interface IExampleService and add to a grpc server.
  *
  * ```typescript
  * const server = new grpc.Server();
- * const service: IClashService = ...
- * server.addService(clashServiceDefinition, service);
+ * const service: IExampleService = ...
+ * server.addService(exampleServiceDefinition, service);
  * ```
  */
-export const clashServiceDefinition: grpc.ServiceDefinition<IClashService> = {};
+export const clashServiceDefinition: ServiceDefinition<IClashService> = {
+};

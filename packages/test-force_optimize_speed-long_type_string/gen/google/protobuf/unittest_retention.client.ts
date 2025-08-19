@@ -9,13 +9,11 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 //
-import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
-import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
-import { Service } from "./unittest_retention";
-import { stackIntercept } from "@protobuf-ts/runtime-rpc";
 import type { TopLevelMessage } from "./unittest_retention";
-import type { UnaryCall } from "@protobuf-ts/runtime-rpc";
-import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
+import { Service } from "./unittest_retention";
+import type { RpcOptions, RpcTransport, ServiceInfo, UnaryCall } from "@protobuf-ts/runtime-rpc";
+import { stackIntercept } from "@protobuf-ts/runtime-rpc";
+
 /**
  * @generated from protobuf service protobuf_unittest.Service
  */

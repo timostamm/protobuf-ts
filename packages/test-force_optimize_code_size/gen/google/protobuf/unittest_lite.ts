@@ -37,10 +37,10 @@
 //
 // This is like unittest.proto but with optimize_for = LITE_RUNTIME.
 //
-import { MessageType } from "@protobuf-ts/runtime";
+import { ImportEnumLite, ImportMessageLite } from "./unittest_import_lite";
 import { PublicImportMessageLite } from "./unittest_import_public_lite";
-import { ImportEnumLite } from "./unittest_import_lite";
-import { ImportMessageLite } from "./unittest_import_lite";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Same as TestAllTypes but with the lite runtime.
  *
@@ -895,11 +895,11 @@ export enum DupEnum_TestEnumWithDupValueLite {
      */
     BAZ = 3,
     /**
-     * @generated from protobuf enum value: FOO1 = 1;
+     * @generated from protobuf enum value: FOO2 = 1;
      */
     FOO2 = 1,
     /**
-     * @generated from protobuf enum value: BAR1 = 2;
+     * @generated from protobuf enum value: BAR2 = 2;
      */
     BAR2 = 2
 }

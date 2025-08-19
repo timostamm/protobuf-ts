@@ -9,8 +9,9 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 //
-import { ServiceType } from "@protobuf-ts/runtime-rpc";
 import { MessageType } from "@protobuf-ts/runtime";
+import { ServiceType } from "@protobuf-ts/runtime-rpc";
+
 /**
  * Retention attributes set on fields nested within a message
  *

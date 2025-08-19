@@ -12,8 +12,9 @@
 //
 // Author: kenton@google.com (Kenton Varda)
 //
-import { ServiceType } from "@protobuf-ts/runtime-rpc";
 import { MessageType } from "@protobuf-ts/runtime";
+import { ServiceType } from "@protobuf-ts/runtime-rpc";
+
 // *_generic_services are false by default.
 
 /**

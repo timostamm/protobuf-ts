@@ -9,9 +9,10 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 //
-import { MessageType } from "@protobuf-ts/runtime";
-import { PublicImportMessage } from "./unittest_import_public";
 import { ImportMessage } from "./unittest_import";
+import { PublicImportMessage } from "./unittest_import_public";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * This proto includes every type of field in both singular and repeated
  * forms.

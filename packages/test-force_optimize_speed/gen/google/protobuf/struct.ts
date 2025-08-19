@@ -32,21 +32,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { isJsonObject } from "@protobuf-ts/runtime";
-import { typeofJsonValue } from "@protobuf-ts/runtime";
-import type { JsonValue } from "@protobuf-ts/runtime";
-import type { JsonReadOptions } from "@protobuf-ts/runtime";
-import type { JsonWriteOptions } from "@protobuf-ts/runtime";
-import type { JsonObject } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, JsonObject, JsonReadOptions, JsonValue, JsonWriteOptions, PartialMessage } from "@protobuf-ts/runtime";
+import { isJsonObject, MessageType, reflectionMergePartial, typeofJsonValue, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * `Struct` represents a structured data value, consisting of fields
  * which map to dynamically typed values. In some languages, `Struct`
@@ -176,7 +164,7 @@ class Struct$Type extends MessageType<Struct> {
         ]);
     }
     /**
-     * Encode `Struct` to JSON object.
+     * Encode `Struct` to JSON object. 
      */
     internalJsonWrite(message: Struct, options: JsonWriteOptions): JsonValue {
         let json: JsonObject = {};
@@ -271,30 +259,30 @@ class Value$Type extends MessageType<Value> {
         ]);
     }
     /**
-     * Encode `Value` to JSON value.
+     * Encode `Value` to JSON value. 
      */
     internalJsonWrite(message: Value, options: JsonWriteOptions): JsonValue {
-        if (message.kind.oneofKind === undefined)
-            throw new globalThis.Error();
+        if (message.kind.oneofKind === undefined) throw new globalThis.Error();
         switch (message.kind.oneofKind) {
-            case undefined: throw new globalThis.Error();
-            case "boolValue": return message.kind.boolValue;
-            case "nullValue": return null;
+            case undefined:
+                throw new globalThis.Error();
+            case "boolValue":
+                return message.kind.boolValue;
+            case "nullValue":
+                return null;
             case "numberValue":
                 let numberValue = message.kind.numberValue;
-                if (typeof numberValue == "number" && !Number.isFinite(numberValue))
-                    throw new globalThis.Error();
+                if (typeof numberValue == "number" && !Number.isFinite(numberValue)) throw new globalThis.Error();
                 return numberValue;
-            case "stringValue": return message.kind.stringValue;
+            case "stringValue":
+                return message.kind.stringValue;
             case "listValue":
                 let listValueField = this.fields.find(f => f.no === 6);
-                if (listValueField?.kind !== "message")
-                    throw new globalThis.Error();
+                if (listValueField?.kind !== 'message') throw new globalThis.Error();
                 return listValueField.T().toJson(message.kind.listValue);
             case "structValue":
                 let structValueField = this.fields.find(f => f.no === 5);
-                if (structValueField?.kind !== "message")
-                    throw new globalThis.Error();
+                if (structValueField?.kind !== 'message') throw new globalThis.Error();
                 return structValueField.T().toJson(message.kind.structValue);
         }
     }
@@ -316,16 +304,15 @@ class Value$Type extends MessageType<Value> {
                 break;
             case "object":
                 if (json === null) {
-                    target.kind = { oneofKind: "nullValue", nullValue: NullValue.NULL_VALUE };
-                }
-                else if (globalThis.Array.isArray(json)) {
-                    target.kind = { oneofKind: "listValue", listValue: ListValue.fromJson(json) };
-                }
-                else {
-                    target.kind = { oneofKind: "structValue", structValue: Struct.fromJson(json) };
+                    target.kind = {oneofKind: "nullValue", nullValue: NullValue.NULL_VALUE};
+                } else if (globalThis.Array.isArray(json)) {
+                    target.kind = {oneofKind: "listValue", listValue: ListValue.fromJson(json)};
+                } else {
+                    target.kind = {oneofKind: "structValue", structValue: Struct.fromJson(json)};
                 }
                 break;
-            default: throw new globalThis.Error("Unable to parse " + this.typeName + " from JSON " + typeofJsonValue(json));
+            default:
+                throw new globalThis.Error('Unable to parse ' + this.typeName + ' from JSON ' + typeofJsonValue(json));
         }
         return target;
     }
@@ -368,13 +355,13 @@ class Value$Type extends MessageType<Value> {
                 case /* google.protobuf.Struct struct_value */ 5:
                     message.kind = {
                         oneofKind: "structValue",
-                        structValue: Struct.internalBinaryRead(reader, reader.uint32(), options, (message.kind as any).structValue)
+                        structValue: Struct.internalBinaryRead(reader, reader.uint32(), options, message.kind.oneofKind === "structValue" ? message.kind.structValue : undefined)
                     };
                     break;
                 case /* google.protobuf.ListValue list_value */ 6:
                     message.kind = {
                         oneofKind: "listValue",
-                        listValue: ListValue.internalBinaryRead(reader, reader.uint32(), options, (message.kind as any).listValue)
+                        listValue: ListValue.internalBinaryRead(reader, reader.uint32(), options, message.kind.oneofKind === "listValue" ? message.kind.listValue : undefined)
                     };
                     break;
                 default:
@@ -434,8 +421,7 @@ class ListValue$Type extends MessageType<ListValue> {
      * Decode `ListValue` from JSON array.
      */
     internalJsonRead(json: JsonValue, options: JsonReadOptions, target?: ListValue): ListValue {
-        if (!globalThis.Array.isArray(json))
-            throw new globalThis.Error("Unable to parse " + this.typeName + " from JSON " + typeofJsonValue(json));
+        if (! globalThis.Array.isArray(json)) throw new globalThis.Error('Unable to parse ' + this.typeName + ' from JSON ' + typeofJsonValue(json));
         if (!target)
             target = this.create();
         let values = json.map(v => Value.fromJson(v));

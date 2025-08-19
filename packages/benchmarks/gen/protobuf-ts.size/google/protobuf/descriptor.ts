@@ -42,6 +42,7 @@
 // without any other information (e.g. without reading its imports).
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * The protocol compiler can output a FileDescriptorSet containing the .proto
  * files it parses.

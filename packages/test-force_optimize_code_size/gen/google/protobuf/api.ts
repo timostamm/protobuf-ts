@@ -32,10 +32,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-import { MessageType } from "@protobuf-ts/runtime";
-import { Syntax } from "./type";
+import { Option, Syntax } from "./type";
 import { SourceContext } from "./source_context";
-import { Option } from "./type";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Api is a light-weight descriptor for an API Interface.
  *

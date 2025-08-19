@@ -9,17 +9,11 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
-import { PublicImportMessage } from "./unittest_import_public";
 import { ImportMessage } from "./unittest_import";
+import { PublicImportMessage } from "./unittest_import_public";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, PartialMessage } from "@protobuf-ts/runtime";
+import { MessageType, reflectionMergePartial, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * This proto includes every type of field in both singular and repeated
  * forms.
@@ -1180,7 +1174,7 @@ class TestAllTypes$Type extends MessageType<TestAllTypes> {
                 case /* proto3_unittest.TestAllTypes.NestedMessage oneof_nested_message */ 112:
                     message.oneofField = {
                         oneofKind: "oneofNestedMessage",
-                        oneofNestedMessage: TestAllTypes_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, (message.oneofField as any).oneofNestedMessage)
+                        oneofNestedMessage: TestAllTypes_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.oneofField.oneofKind === "oneofNestedMessage" ? message.oneofField.oneofNestedMessage : undefined)
                     };
                     break;
                 case /* string oneof_string */ 113:

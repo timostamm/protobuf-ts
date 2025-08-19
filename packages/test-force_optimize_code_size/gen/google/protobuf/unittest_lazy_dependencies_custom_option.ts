@@ -40,6 +40,7 @@
 // A proto file we will use for unit testing.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message protobuf_unittest.lazy_imports.LazyMessage
  */

@@ -2,6 +2,7 @@
 // @generated from protobuf file "msg-enum.proto" (package "spec", syntax proto3)
 // tslint:disable
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message spec.EnumFieldMessage
  */
@@ -80,7 +81,7 @@ export enum AliasEnum {
      */
     B = 1,
     /**
-     * @generated from protobuf enum value: B = 1;
+     * @generated from protobuf enum value: C = 1;
      */
     C = 1
 }

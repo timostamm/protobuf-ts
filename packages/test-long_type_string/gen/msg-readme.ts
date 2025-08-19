@@ -2,6 +2,7 @@
 // @generated from protobuf file "msg-readme.proto" (syntax proto3)
 // tslint:disable
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * A very simple protobuf message.
  *

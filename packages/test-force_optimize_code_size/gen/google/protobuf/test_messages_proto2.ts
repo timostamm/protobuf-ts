@@ -18,6 +18,7 @@
 // LINT: ALLOW_GROUPS
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * This proto includes every type of field in both singular and repeated
  * forms.

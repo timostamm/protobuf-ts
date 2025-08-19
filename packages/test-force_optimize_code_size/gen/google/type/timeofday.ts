@@ -18,6 +18,7 @@
 //
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Represents a time of day. The date and time zone are either not significant
  * or are specified elsewhere. An API may choose to allow leap seconds. Related
@@ -68,7 +69,10 @@ class TimeOfDay$Type extends MessageType<TimeOfDay> {
      */
     fromJsDate(date: globalThis.Date): TimeOfDay {
         return {
-            hours: date.getHours(), minutes: date.getMinutes(), seconds: date.getSeconds(), nanos: date.getMilliseconds() * 1000,
+            hours: date.getHours(),
+            minutes: date.getMinutes(),
+            seconds: date.getSeconds(),
+            nanos: date.getMilliseconds() * 1000,
         };
     }
 }

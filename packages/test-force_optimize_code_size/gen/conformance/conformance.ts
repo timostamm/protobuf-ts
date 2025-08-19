@@ -10,6 +10,7 @@
 // https://developers.google.com/open-source/licenses/bsd
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Meant to encapsulate all types of tests: successes, skips, failures, etc.
  * Therefore, this may or may not have a failure message. Failure messages

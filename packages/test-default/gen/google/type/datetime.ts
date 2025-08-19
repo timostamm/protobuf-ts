@@ -17,17 +17,10 @@
 // limitations under the License.
 //
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { PbLong } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
 import { Duration } from "../protobuf/duration";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, PartialMessage } from "@protobuf-ts/runtime";
+import { MessageType, PbLong, reflectionMergePartial, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * Represents civil time in one of a few possible ways:
  *
@@ -181,14 +174,23 @@ class DateTime$Type extends MessageType<DateTime> {
      * ids.
      */
     toJsDate(message: DateTime): globalThis.Date {
-        let dt = new globalThis.Date(message.year, message.month - 1, message.day, message.hours, message.minutes, message.seconds, message.nanos / 1000), to = message.timeOffset;
+        let dt = new globalThis.Date(
+        		message.year,
+        		message.month - 1,
+        		message.day,
+        		message.hours,
+        		message.minutes,
+        		message.seconds,
+        		message.nanos / 1000,
+        	),
+        	to = message.timeOffset;
         if (to) {
-            if (to.oneofKind === "timeZone")
-                throw new globalThis.Error("IANA time zone not supported");
-            if (to.oneofKind === "utcOffset") {
-                let s = PbLong.from(to.utcOffset.seconds).toNumber();
-                dt = new globalThis.Date(dt.getTime() - (s * 1000));
-            }
+        	if (to.oneofKind === "timeZone")
+        		throw new globalThis.Error("IANA time zone not supported");
+        	if (to.oneofKind === "utcOffset") {
+        		let s = PbLong.from(to.utcOffset.seconds).toNumber();
+        		dt = new globalThis.Date(dt.getTime() - (s * 1000));
+        	}
         }
         return dt;
     }
@@ -199,11 +201,20 @@ class DateTime$Type extends MessageType<DateTime> {
      */
     fromJsDate(date: globalThis.Date): DateTime {
         return {
-            year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate(), hours: date.getHours(), minutes: date.getMinutes(), seconds: date.getSeconds(), nanos: date.getMilliseconds() * 1000, timeOffset: {
-                oneofKind: "utcOffset", utcOffset: {
-                    seconds: PbLong.from(date.getTimezoneOffset() * 60).toBigInt(), nanos: 0,
-                }
-            }
+        	year: date.getFullYear(),
+        	month: date.getMonth() + 1,
+        	day: date.getDate(),
+        	hours: date.getHours(),
+        	minutes: date.getMinutes(),
+        	seconds: date.getSeconds(),
+        	nanos: date.getMilliseconds() * 1000,
+        	timeOffset: {
+        		oneofKind: "utcOffset",
+        		utcOffset: {
+        			seconds: PbLong.from(date.getTimezoneOffset() * 60).toBigInt(),
+        			nanos: 0,
+        		}
+        	}
         };
     }
     create(value?: PartialMessage<DateTime>): DateTime {
@@ -249,13 +260,13 @@ class DateTime$Type extends MessageType<DateTime> {
                 case /* google.protobuf.Duration utc_offset */ 8:
                     message.timeOffset = {
                         oneofKind: "utcOffset",
-                        utcOffset: Duration.internalBinaryRead(reader, reader.uint32(), options, (message.timeOffset as any).utcOffset)
+                        utcOffset: Duration.internalBinaryRead(reader, reader.uint32(), options, message.timeOffset.oneofKind === "utcOffset" ? message.timeOffset.utcOffset : undefined)
                     };
                     break;
                 case /* google.type.TimeZone time_zone */ 9:
                     message.timeOffset = {
                         oneofKind: "timeZone",
-                        timeZone: TimeZone.internalBinaryRead(reader, reader.uint32(), options, (message.timeOffset as any).timeZone)
+                        timeZone: TimeZone.internalBinaryRead(reader, reader.uint32(), options, message.timeOffset.oneofKind === "timeZone" ? message.timeOffset.timeZone : undefined)
                     };
                     break;
                 default:

@@ -17,6 +17,7 @@
 // limitations under the License.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * An object representing a latitude/longitude pair. This is expressed as a pair
  * of doubles representing degrees latitude and degrees longitude. Unless

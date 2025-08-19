@@ -49,20 +49,9 @@
 // These wrappers have no meaningful use within a map or a oneof since
 // individual entries of a map or fields of a oneof can already detect presence.
 //
-import { ScalarType } from "@protobuf-ts/runtime";
-import { LongType } from "@protobuf-ts/runtime";
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import type { JsonValue } from "@protobuf-ts/runtime";
-import type { JsonReadOptions } from "@protobuf-ts/runtime";
-import type { JsonWriteOptions } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, JsonReadOptions, JsonValue, JsonWriteOptions, PartialMessage } from "@protobuf-ts/runtime";
+import { LongType, MessageType, reflectionMergePartial, ScalarType, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * Wrapper message for `double`.
  *
@@ -605,7 +594,7 @@ class BoolValue$Type extends MessageType<BoolValue> {
         ]);
     }
     /**
-     * Encode `BoolValue` to JSON bool.
+     * Encode `BoolValue` to JSON bool. 
      */
     internalJsonWrite(message: BoolValue, options: JsonWriteOptions): JsonValue {
         return message.value;

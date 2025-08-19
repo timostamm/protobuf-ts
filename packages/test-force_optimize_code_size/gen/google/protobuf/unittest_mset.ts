@@ -17,8 +17,9 @@
 // This file is similar to unittest_mset_wire_format.proto, but does not
 // have a TestMessageSet, so it can be downgraded to proto1.
 //
-import { MessageType } from "@protobuf-ts/runtime";
 import { TestMessageSet } from "./unittest_mset_wire_format";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message protobuf_unittest.TestMessageSetContainer
  */
@@ -214,7 +215,8 @@ export const TestMessageSetExtension3 = new TestMessageSetExtension3$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class RawMessageSet$Type extends MessageType<RawMessageSet> {
     constructor() {
-        super("protobuf_unittest.RawMessageSet", []);
+        super("protobuf_unittest.RawMessageSet", [
+        ]);
     }
 }
 /**

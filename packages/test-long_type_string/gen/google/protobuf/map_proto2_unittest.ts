@@ -9,16 +9,10 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
 import { ImportEnumForMap } from "./unittest_import";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, PartialMessage } from "@protobuf-ts/runtime";
+import { MessageType, reflectionMergePartial, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message protobuf_unittest.TestEnumMap
  */
@@ -693,10 +687,10 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
     internalBinaryWrite(message: TestEnumMap, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, protobuf_unittest.Proto2MapEnum> known_map_field = 101; */
         for (let k of globalThis.Object.keys(message.knownMapField))
-            writer.tag(101, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.knownMapField[k as any]).join();
+            writer.tag(101, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.knownMapField[parseInt(k)]).join();
         /* map<int32, protobuf_unittest.Proto2MapEnum> unknown_map_field = 102; */
         for (let k of globalThis.Object.keys(message.unknownMapField))
-            writer.tag(102, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapField[k as any]).join();
+            writer.tag(102, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapField[parseInt(k)]).join();
         /* map<int64, protobuf_unittest.Proto2MapEnum> unknown_map_field_int64 = 200; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldInt64))
             writer.tag(200, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldInt64[k]).join();
@@ -705,13 +699,13 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
             writer.tag(201, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldUint64[k]).join();
         /* map<int32, protobuf_unittest.Proto2MapEnum> unknown_map_field_int32 = 202; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldInt32))
-            writer.tag(202, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldInt32[k as any]).join();
+            writer.tag(202, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldInt32[parseInt(k)]).join();
         /* map<uint32, protobuf_unittest.Proto2MapEnum> unknown_map_field_uint32 = 203; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldUint32))
-            writer.tag(203, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldUint32[k as any]).join();
+            writer.tag(203, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldUint32[parseInt(k)]).join();
         /* map<fixed32, protobuf_unittest.Proto2MapEnum> unknown_map_field_fixed32 = 204; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldFixed32))
-            writer.tag(204, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldFixed32[k as any]).join();
+            writer.tag(204, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldFixed32[parseInt(k)]).join();
         /* map<fixed64, protobuf_unittest.Proto2MapEnum> unknown_map_field_fixed64 = 205; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldFixed64))
             writer.tag(205, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).fixed64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldFixed64[k]).join();
@@ -723,13 +717,13 @@ class TestEnumMap$Type extends MessageType<TestEnumMap> {
             writer.tag(207, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.unknownMapFieldString[k]).join();
         /* map<sint32, protobuf_unittest.Proto2MapEnum> unknown_map_field_sint32 = 208; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldSint32))
-            writer.tag(208, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldSint32[k as any]).join();
+            writer.tag(208, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldSint32[parseInt(k)]).join();
         /* map<sint64, protobuf_unittest.Proto2MapEnum> unknown_map_field_sint64 = 209; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldSint64))
             writer.tag(209, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldSint64[k]).join();
         /* map<sfixed32, protobuf_unittest.Proto2MapEnum> unknown_map_field_sfixed32 = 210; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldSfixed32))
-            writer.tag(210, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldSfixed32[k as any]).join();
+            writer.tag(210, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldSfixed32[parseInt(k)]).join();
         /* map<sfixed64, protobuf_unittest.Proto2MapEnum> unknown_map_field_sfixed64 = 211; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldSfixed64))
             writer.tag(211, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).sfixed64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldSfixed64[k]).join();
@@ -1068,10 +1062,10 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
     internalBinaryWrite(message: TestEnumMapPlusExtra, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, protobuf_unittest.Proto2MapEnumPlusExtra> known_map_field = 101; */
         for (let k of globalThis.Object.keys(message.knownMapField))
-            writer.tag(101, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.knownMapField[k as any]).join();
+            writer.tag(101, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.knownMapField[parseInt(k)]).join();
         /* map<int32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field = 102; */
         for (let k of globalThis.Object.keys(message.unknownMapField))
-            writer.tag(102, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapField[k as any]).join();
+            writer.tag(102, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapField[parseInt(k)]).join();
         /* map<int64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_int64 = 200; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldInt64))
             writer.tag(200, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldInt64[k]).join();
@@ -1080,13 +1074,13 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
             writer.tag(201, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldUint64[k]).join();
         /* map<int32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_int32 = 202; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldInt32))
-            writer.tag(202, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldInt32[k as any]).join();
+            writer.tag(202, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldInt32[parseInt(k)]).join();
         /* map<uint32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_uint32 = 203; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldUint32))
-            writer.tag(203, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldUint32[k as any]).join();
+            writer.tag(203, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldUint32[parseInt(k)]).join();
         /* map<fixed32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_fixed32 = 204; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldFixed32))
-            writer.tag(204, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldFixed32[k as any]).join();
+            writer.tag(204, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldFixed32[parseInt(k)]).join();
         /* map<fixed64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_fixed64 = 205; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldFixed64))
             writer.tag(205, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).fixed64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldFixed64[k]).join();
@@ -1098,13 +1092,13 @@ class TestEnumMapPlusExtra$Type extends MessageType<TestEnumMapPlusExtra> {
             writer.tag(207, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.unknownMapFieldString[k]).join();
         /* map<sint32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_sint32 = 208; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldSint32))
-            writer.tag(208, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldSint32[k as any]).join();
+            writer.tag(208, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldSint32[parseInt(k)]).join();
         /* map<sint64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_sint64 = 209; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldSint64))
             writer.tag(209, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldSint64[k]).join();
         /* map<sfixed32, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_sfixed32 = 210; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldSfixed32))
-            writer.tag(210, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldSfixed32[k as any]).join();
+            writer.tag(210, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapFieldSfixed32[parseInt(k)]).join();
         /* map<sfixed64, protobuf_unittest.Proto2MapEnumPlusExtra> unknown_map_field_sfixed64 = 211; */
         for (let k of globalThis.Object.keys(message.unknownMapFieldSfixed64))
             writer.tag(211, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).sfixed64(k).tag(2, WireType.Varint).int32(message.unknownMapFieldSfixed64[k]).join();
@@ -1170,7 +1164,7 @@ class TestImportEnumMap$Type extends MessageType<TestImportEnumMap> {
     internalBinaryWrite(message: TestImportEnumMap, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, protobuf_unittest_import.ImportEnumForMap> import_enum_amp = 1; */
         for (let k of globalThis.Object.keys(message.importEnumAmp))
-            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.importEnumAmp[k as any]).join();
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.importEnumAmp[parseInt(k)]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1233,7 +1227,7 @@ class TestIntIntMap$Type extends MessageType<TestIntIntMap> {
     internalBinaryWrite(message: TestIntIntMap, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, int32> m = 1; */
         for (let k of globalThis.Object.keys(message.m))
-            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.m[k as any]).join();
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.m[parseInt(k)]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1529,7 +1523,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
         for (let k of globalThis.Object.keys(message.mInt32)) {
             writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            TestIntIntMap.internalBinaryWrite(message.mInt32[k as any], writer, options);
+            TestIntIntMap.internalBinaryWrite(message.mInt32[parseInt(k)], writer, options);
             writer.join().join();
         }
         /* map<int64, protobuf_unittest.TestIntIntMap> m_int64 = 2; */
@@ -1543,7 +1537,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
         for (let k of globalThis.Object.keys(message.mUint32)) {
             writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            TestIntIntMap.internalBinaryWrite(message.mUint32[k as any], writer, options);
+            TestIntIntMap.internalBinaryWrite(message.mUint32[parseInt(k)], writer, options);
             writer.join().join();
         }
         /* map<uint64, protobuf_unittest.TestIntIntMap> m_uint64 = 4; */
@@ -1557,7 +1551,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
         for (let k of globalThis.Object.keys(message.mSint32)) {
             writer.tag(5, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            TestIntIntMap.internalBinaryWrite(message.mSint32[k as any], writer, options);
+            TestIntIntMap.internalBinaryWrite(message.mSint32[parseInt(k)], writer, options);
             writer.join().join();
         }
         /* map<sint64, protobuf_unittest.TestIntIntMap> m_sint64 = 6; */
@@ -1571,7 +1565,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
         for (let k of globalThis.Object.keys(message.mFixed32)) {
             writer.tag(7, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            TestIntIntMap.internalBinaryWrite(message.mFixed32[k as any], writer, options);
+            TestIntIntMap.internalBinaryWrite(message.mFixed32[parseInt(k)], writer, options);
             writer.join().join();
         }
         /* map<fixed64, protobuf_unittest.TestIntIntMap> m_fixed64 = 8; */
@@ -1585,7 +1579,7 @@ class TestMaps$Type extends MessageType<TestMaps> {
         for (let k of globalThis.Object.keys(message.mSfixed32)) {
             writer.tag(9, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            TestIntIntMap.internalBinaryWrite(message.mSfixed32[k as any], writer, options);
+            TestIntIntMap.internalBinaryWrite(message.mSfixed32[parseInt(k)], writer, options);
             writer.join().join();
         }
         /* map<sfixed64, protobuf_unittest.TestIntIntMap> m_sfixed64 = 10; */
@@ -1738,10 +1732,10 @@ class TestProto2BytesMap$Type extends MessageType<TestProto2BytesMap> {
     internalBinaryWrite(message: TestProto2BytesMap, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, bytes> map_bytes = 1; */
         for (let k of globalThis.Object.keys(message.mapBytes))
-            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.LengthDelimited).bytes(message.mapBytes[k as any]).join();
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.LengthDelimited).bytes(message.mapBytes[parseInt(k)]).join();
         /* map<int32, string> map_string = 2; */
         for (let k of globalThis.Object.keys(message.mapString))
-            writer.tag(2, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.LengthDelimited).string(message.mapString[k as any]).join();
+            writer.tag(2, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.LengthDelimited).string(message.mapString[parseInt(k)]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

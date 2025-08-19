@@ -5,8 +5,9 @@
 // Twirp example RPC
 // https://github.com/twitchtv/twirp-example/blob/c1501aeb89609a522db7d79d4c2e71b6c032af28/rpc/haberdasher/haberdasher.proto
 //
-import { ServiceType } from "@protobuf-ts/runtime-rpc";
 import { MessageType } from "@protobuf-ts/runtime";
+import { ServiceType } from "@protobuf-ts/runtime-rpc";
+
 /**
  * A Hat is a piece of headwear made by a Haberdasher.
  *

@@ -8,6 +8,7 @@
 // Comment after syntax.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 // Comment after package.
 
 // Comment between package and message.
@@ -118,7 +119,7 @@ export interface GoogleCommentExample {
     // will be removed. 
     /**
      * Block comment attached to
-     * grault.
+     * grault. 
      *
      * @generated from protobuf field: int32 grault = 6
      */

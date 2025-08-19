@@ -32,12 +32,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-import { typeofJsonValue } from "@protobuf-ts/runtime";
-import type { JsonValue } from "@protobuf-ts/runtime";
-import type { JsonReadOptions } from "@protobuf-ts/runtime";
-import type { JsonWriteOptions } from "@protobuf-ts/runtime";
-import { PbLong } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
+import type { JsonReadOptions, JsonValue, JsonWriteOptions } from "@protobuf-ts/runtime";
+import { MessageType, PbLong, typeofJsonValue } from "@protobuf-ts/runtime";
+
 /**
  * A Timestamp represents a point in time independent of any time zone or local
  * calendar, encoded as a count of seconds and fractions of seconds at
@@ -214,7 +211,10 @@ class Timestamp$Type extends MessageType<Timestamp> {
     internalJsonRead(json: JsonValue, options: JsonReadOptions, target?: Timestamp): Timestamp {
         if (typeof json !== "string")
             throw new Error("Unable to parse Timestamp from JSON " + typeofJsonValue(json) + ".");
-        let matches = json.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:Z|\.([0-9]{3,9})Z|([+-][0-9][0-9]:[0-9][0-9]))$/);
+        // RFC 3339 with "Z" (UTC) or offset like "+08:00" and optional fractions
+        // match[7] optional fractions, 3 to 9 digits
+        // match[8] offset like "-08:00", if undefined date is UTC
+        let matches = json.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:Z|.([0-9]{3,9})Z|([+-][0-9][0-9]:[0-9][0-9]))$/);
         if (!matches)
             throw new Error("Unable to parse Timestamp from JSON. Invalid format.");
         let ms = Date.parse(matches[1] + "-" + matches[2] + "-" + matches[3] + "T" + matches[4] + ":" + matches[5] + ":" + matches[6] + (matches[8] ? matches[8] : "Z"));

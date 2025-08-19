@@ -17,16 +17,10 @@
 // This file is similar to unittest_mset_wire_format.proto, but does not
 // have a TestMessageSet, so it can be downgraded to proto1.
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
 import { TestMessageSet } from "./unittest_mset_wire_format";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, PartialMessage } from "@protobuf-ts/runtime";
+import { MessageType, reflectionMergePartial, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message protobuf_unittest.TestMessageSetContainer
  */
@@ -469,7 +463,8 @@ export const TestMessageSetExtension3 = new TestMessageSetExtension3$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class RawMessageSet$Type extends MessageType<RawMessageSet> {
     constructor() {
-        super("protobuf_unittest.RawMessageSet", []);
+        super("protobuf_unittest.RawMessageSet", [
+        ]);
     }
     create(value?: PartialMessage<RawMessageSet>): RawMessageSet {
         const message = globalThis.Object.create((this.messagePrototype!));

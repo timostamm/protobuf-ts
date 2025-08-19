@@ -20,6 +20,7 @@
 // such as the string literal length limit in Java.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * clang-format off
  *

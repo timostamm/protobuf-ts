@@ -32,9 +32,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-import { MessageType } from "@protobuf-ts/runtime";
-import { Any } from "./any";
 import { SourceContext } from "./source_context";
+import { Any } from "./any";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * A protocol buffer message type.
  *

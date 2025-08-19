@@ -32,20 +32,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { typeofJsonValue } from "@protobuf-ts/runtime";
-import type { JsonValue } from "@protobuf-ts/runtime";
-import { lowerCamelCase } from "@protobuf-ts/runtime";
-import type { JsonReadOptions } from "@protobuf-ts/runtime";
-import type { JsonWriteOptions } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, JsonReadOptions, JsonValue, JsonWriteOptions, PartialMessage } from "@protobuf-ts/runtime";
+import { lowerCamelCase, MessageType, reflectionMergePartial, typeofJsonValue, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * `FieldMask` represents a set of symbolic field paths, for example:
  *
@@ -271,7 +260,7 @@ class FieldMask$Type extends MessageType<FieldMask> {
         const invalidFieldMaskJsonRegex = /[A-Z]|(_([.0-9_]|$))/g;
         return message.paths.map(p => {
             if (invalidFieldMaskJsonRegex.test(p))
-                throw new Error("Unable to encode FieldMask to JSON. lowerCamelCase of path name \"" + p + "\" is irreversible.");
+                throw new Error("Unable to encode FieldMask to JSON. lowerCamelCase of path name '" + p + "' is irreversible.");
             return lowerCamelCase(p);
         }).join(",");
     }
@@ -286,7 +275,7 @@ class FieldMask$Type extends MessageType<FieldMask> {
         if (json === "")
             return target;
         let camelToSnake = (str: string) => {
-            if (str.includes("_"))
+            if (str.includes('_'))
                 throw new Error("Unable to parse FieldMask from JSON. Path names must be lowerCamelCase.");
             let sc = str.replace(/[A-Z]/g, letter => "_" + letter.toLowerCase());
             return sc;

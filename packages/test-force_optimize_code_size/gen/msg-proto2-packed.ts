@@ -2,6 +2,7 @@
 // @generated from protobuf file "msg-proto2-packed.proto" (package "spec", syntax proto2)
 // tslint:disable
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message spec.Proto2PackedMessage
  */

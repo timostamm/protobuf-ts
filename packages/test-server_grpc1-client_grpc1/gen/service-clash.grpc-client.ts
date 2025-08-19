@@ -6,9 +6,10 @@
 // Because the latter is already taken by a proto file, the client file should
 // be written under a different name.
 //
-import * as grpc from "@grpc/grpc-js";
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
+import type { ChannelCredentials, ClientOptions } from "@grpc/grpc-js";
+import { Client } from "@grpc/grpc-js";
+import type { BinaryReadOptions, BinaryWriteOptions } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf service spec.ClashService
  */
@@ -17,9 +18,9 @@ export interface IClashServiceClient {
 /**
  * @generated from protobuf service spec.ClashService
  */
-export class ClashServiceClient extends grpc.Client implements IClashServiceClient {
+export class ClashServiceClient extends Client {
     private readonly _binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions>;
-    constructor(address: string, credentials: grpc.ChannelCredentials, options: grpc.ClientOptions = {}, binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions> = {}) {
+    constructor(address: string, credentials: ChannelCredentials, options: ClientOptions = {}, binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions> = {}) {
         super(address, credentials, options);
         this._binaryOptions = binaryOptions;
     }

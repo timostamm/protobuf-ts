@@ -18,6 +18,7 @@
 //
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * A quaternion is defined as the quotient of two directed lines in a
  * three-dimensional space or equivalently as the quotient of two Euclidean

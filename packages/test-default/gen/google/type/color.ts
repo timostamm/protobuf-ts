@@ -17,16 +17,10 @@
 // limitations under the License.
 //
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
 import { FloatValue } from "../protobuf/wrappers";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, PartialMessage } from "@protobuf-ts/runtime";
+import { MessageType, reflectionMergePartial, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * Represents a color in the RGBA color space. This representation is designed
  * for simplicity of conversion to/from color representations in various
@@ -207,7 +201,9 @@ class Color$Type extends MessageType<Color> {
      */
     toHex(message: Color): string {
         let hex = [
-            message.red.toString(16), message.green.toString(16), message.blue.toString(16),
+            message.red.toString(16),
+            message.green.toString(16),
+            message.blue.toString(16),
         ];
         if (message.alpha) {
             let alpha = Math.max(Math.min(message.alpha.value, 1), 0);
@@ -226,25 +222,36 @@ class Color$Type extends MessageType<Color> {
      */
     fromHex(hex: string): Color {
         if (/^#(?:[0-9a-fA-F]{3}){1}$/.test(hex)) {
+            // #RGB
             return {
-                red: parseInt(hex.substring(1, 2) + hex.substring(1, 2), 16), green: parseInt(hex.substring(2, 3) + hex.substring(2, 3), 16), blue: parseInt(hex.substring(3, 4) + hex.substring(3, 4), 16),
+                red: parseInt(hex.substring(1, 2) + hex.substring(1, 2), 16),
+                green: parseInt(hex.substring(2, 3) + hex.substring(2, 3), 16),
+                blue: parseInt(hex.substring(3, 4) + hex.substring(3, 4), 16),
             };
-        }
-        else if (/^#(?:[0-9a-fA-F]{3}){2}$/.test(hex)) {
+        } else if (/^#(?:[0-9a-fA-F]{3}){2}$/.test(hex)) {
+            // #RRGGBB
             return {
-                red: parseInt(hex.substring(1, 3), 16), green: parseInt(hex.substring(3, 5), 16), blue: parseInt(hex.substring(5, 7), 16),
+                red: parseInt(hex.substring(1, 3), 16),
+                green: parseInt(hex.substring(3, 5), 16),
+                blue: parseInt(hex.substring(5, 7), 16),
             };
-        }
-        else if (/^#(?:[0-9a-fA-F]{4}){1}$/.test(hex)) {
+        } else if (/^#(?:[0-9a-fA-F]{4}){1}$/.test(hex)) {
+            // #RGBA
             return {
-                red: parseInt(hex.substring(1, 2) + hex.substring(1, 2), 16), green: parseInt(hex.substring(2, 3) + hex.substring(2, 3), 16), blue: parseInt(hex.substring(3, 4) + hex.substring(3, 4), 16), alpha: {
+                red: parseInt(hex.substring(1, 2) + hex.substring(1, 2), 16),
+                green: parseInt(hex.substring(2, 3) + hex.substring(2, 3), 16),
+                blue: parseInt(hex.substring(3, 4) + hex.substring(3, 4), 16),
+                alpha: {
                     value: parseInt(hex.substring(4, 5) + hex.substring(4, 5), 16) / 255,
                 }
             };
-        }
-        else if (/^#(?:[0-9a-fA-F]{4}){2}$/.test(hex)) {
+        } else if (/^#(?:[0-9a-fA-F]{4}){2}$/.test(hex)) {
+            // #RRGGBBAA
             return {
-                red: parseInt(hex.substring(1, 3), 16), green: parseInt(hex.substring(3, 5), 16), blue: parseInt(hex.substring(5, 7), 16), alpha: {
+                red: parseInt(hex.substring(1, 3), 16),
+                green: parseInt(hex.substring(3, 5), 16),
+                blue: parseInt(hex.substring(5, 7), 16),
+                alpha: {
                     value: parseInt(hex.substring(7, 9), 16) / 255,
                 }
             };

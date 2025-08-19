@@ -32,17 +32,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
-import { TestAllTypesLite } from "./unittest_lite";
-import { ForeignMessageLite } from "./unittest_lite";
+import { ForeignMessageLite, TestAllTypesLite } from "./unittest_lite";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, PartialMessage } from "@protobuf-ts/runtime";
+import { MessageType, reflectionMergePartial, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message protobuf_unittest.TestMapLite
  */
@@ -811,40 +804,40 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
     internalBinaryWrite(message: TestMapLite, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, int32> map_int32_int32 = 1; */
         for (let k of globalThis.Object.keys(message.mapInt32Int32))
-            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Int32[k as any]).join();
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Int32[parseInt(k)]).join();
         /* map<int64, int64> map_int64_int64 = 2; */
         for (let k of globalThis.Object.keys(message.mapInt64Int64))
             writer.tag(2, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int64(k).tag(2, WireType.Varint).int64(message.mapInt64Int64[k]).join();
         /* map<uint32, uint32> map_uint32_uint32 = 3; */
         for (let k of globalThis.Object.keys(message.mapUint32Uint32))
-            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).uint32(message.mapUint32Uint32[k as any]).join();
+            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).uint32(message.mapUint32Uint32[parseInt(k)]).join();
         /* map<uint64, uint64> map_uint64_uint64 = 4; */
         for (let k of globalThis.Object.keys(message.mapUint64Uint64))
             writer.tag(4, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint64(k).tag(2, WireType.Varint).uint64(message.mapUint64Uint64[k]).join();
         /* map<sint32, sint32> map_sint32_sint32 = 5; */
         for (let k of globalThis.Object.keys(message.mapSint32Sint32))
-            writer.tag(5, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).sint32(message.mapSint32Sint32[k as any]).join();
+            writer.tag(5, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).sint32(message.mapSint32Sint32[parseInt(k)]).join();
         /* map<sint64, sint64> map_sint64_sint64 = 6; */
         for (let k of globalThis.Object.keys(message.mapSint64Sint64))
             writer.tag(6, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint64(k).tag(2, WireType.Varint).sint64(message.mapSint64Sint64[k]).join();
         /* map<fixed32, fixed32> map_fixed32_fixed32 = 7; */
         for (let k of globalThis.Object.keys(message.mapFixed32Fixed32))
-            writer.tag(7, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Bit32).fixed32(message.mapFixed32Fixed32[k as any]).join();
+            writer.tag(7, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Bit32).fixed32(message.mapFixed32Fixed32[parseInt(k)]).join();
         /* map<fixed64, fixed64> map_fixed64_fixed64 = 8; */
         for (let k of globalThis.Object.keys(message.mapFixed64Fixed64))
             writer.tag(8, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).fixed64(k).tag(2, WireType.Bit64).fixed64(message.mapFixed64Fixed64[k]).join();
         /* map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9; */
         for (let k of globalThis.Object.keys(message.mapSfixed32Sfixed32))
-            writer.tag(9, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Bit32).sfixed32(message.mapSfixed32Sfixed32[k as any]).join();
+            writer.tag(9, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Bit32).sfixed32(message.mapSfixed32Sfixed32[parseInt(k)]).join();
         /* map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10; */
         for (let k of globalThis.Object.keys(message.mapSfixed64Sfixed64))
             writer.tag(10, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).sfixed64(k).tag(2, WireType.Bit64).sfixed64(message.mapSfixed64Sfixed64[k]).join();
         /* map<int32, float> map_int32_float = 11; */
         for (let k of globalThis.Object.keys(message.mapInt32Float))
-            writer.tag(11, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit32).float(message.mapInt32Float[k as any]).join();
+            writer.tag(11, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit32).float(message.mapInt32Float[parseInt(k)]).join();
         /* map<int32, double> map_int32_double = 12; */
         for (let k of globalThis.Object.keys(message.mapInt32Double))
-            writer.tag(12, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit64).double(message.mapInt32Double[k as any]).join();
+            writer.tag(12, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit64).double(message.mapInt32Double[parseInt(k)]).join();
         /* map<bool, bool> map_bool_bool = 13; */
         for (let k of globalThis.Object.keys(message.mapBoolBool))
             writer.tag(13, WireType.LengthDelimited).fork().tag(1, WireType.Varint).bool(k === "true").tag(2, WireType.Varint).bool(message.mapBoolBool[k]).join();
@@ -853,20 +846,20 @@ class TestMapLite$Type extends MessageType<TestMapLite> {
             writer.tag(14, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.mapStringString[k]).join();
         /* map<int32, bytes> map_int32_bytes = 15; */
         for (let k of globalThis.Object.keys(message.mapInt32Bytes))
-            writer.tag(15, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.LengthDelimited).bytes(message.mapInt32Bytes[k as any]).join();
+            writer.tag(15, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.LengthDelimited).bytes(message.mapInt32Bytes[parseInt(k)]).join();
         /* map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16; */
         for (let k of globalThis.Object.keys(message.mapInt32Enum))
-            writer.tag(16, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Enum[k as any]).join();
+            writer.tag(16, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Enum[parseInt(k)]).join();
         /* map<int32, protobuf_unittest.ForeignMessageLite> map_int32_foreign_message = 17; */
         for (let k of globalThis.Object.keys(message.mapInt32ForeignMessage)) {
             writer.tag(17, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            ForeignMessageLite.internalBinaryWrite(message.mapInt32ForeignMessage[k as any], writer, options);
+            ForeignMessageLite.internalBinaryWrite(message.mapInt32ForeignMessage[parseInt(k)], writer, options);
             writer.join().join();
         }
         /* map<int32, int32> teboring = 18; */
         for (let k of globalThis.Object.keys(message.teboring))
-            writer.tag(18, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.teboring[k as any]).join();
+            writer.tag(18, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.teboring[parseInt(k)]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1265,40 +1258,40 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
     internalBinaryWrite(message: TestArenaMapLite, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, int32> map_int32_int32 = 1; */
         for (let k of globalThis.Object.keys(message.mapInt32Int32))
-            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Int32[k as any]).join();
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Int32[parseInt(k)]).join();
         /* map<int64, int64> map_int64_int64 = 2; */
         for (let k of globalThis.Object.keys(message.mapInt64Int64))
             writer.tag(2, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int64(k).tag(2, WireType.Varint).int64(message.mapInt64Int64[k]).join();
         /* map<uint32, uint32> map_uint32_uint32 = 3; */
         for (let k of globalThis.Object.keys(message.mapUint32Uint32))
-            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).uint32(message.mapUint32Uint32[k as any]).join();
+            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).uint32(message.mapUint32Uint32[parseInt(k)]).join();
         /* map<uint64, uint64> map_uint64_uint64 = 4; */
         for (let k of globalThis.Object.keys(message.mapUint64Uint64))
             writer.tag(4, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint64(k).tag(2, WireType.Varint).uint64(message.mapUint64Uint64[k]).join();
         /* map<sint32, sint32> map_sint32_sint32 = 5; */
         for (let k of globalThis.Object.keys(message.mapSint32Sint32))
-            writer.tag(5, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).sint32(message.mapSint32Sint32[k as any]).join();
+            writer.tag(5, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).sint32(message.mapSint32Sint32[parseInt(k)]).join();
         /* map<sint64, sint64> map_sint64_sint64 = 6; */
         for (let k of globalThis.Object.keys(message.mapSint64Sint64))
             writer.tag(6, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint64(k).tag(2, WireType.Varint).sint64(message.mapSint64Sint64[k]).join();
         /* map<fixed32, fixed32> map_fixed32_fixed32 = 7; */
         for (let k of globalThis.Object.keys(message.mapFixed32Fixed32))
-            writer.tag(7, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Bit32).fixed32(message.mapFixed32Fixed32[k as any]).join();
+            writer.tag(7, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Bit32).fixed32(message.mapFixed32Fixed32[parseInt(k)]).join();
         /* map<fixed64, fixed64> map_fixed64_fixed64 = 8; */
         for (let k of globalThis.Object.keys(message.mapFixed64Fixed64))
             writer.tag(8, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).fixed64(k).tag(2, WireType.Bit64).fixed64(message.mapFixed64Fixed64[k]).join();
         /* map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 9; */
         for (let k of globalThis.Object.keys(message.mapSfixed32Sfixed32))
-            writer.tag(9, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Bit32).sfixed32(message.mapSfixed32Sfixed32[k as any]).join();
+            writer.tag(9, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Bit32).sfixed32(message.mapSfixed32Sfixed32[parseInt(k)]).join();
         /* map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 10; */
         for (let k of globalThis.Object.keys(message.mapSfixed64Sfixed64))
             writer.tag(10, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).sfixed64(k).tag(2, WireType.Bit64).sfixed64(message.mapSfixed64Sfixed64[k]).join();
         /* map<int32, float> map_int32_float = 11; */
         for (let k of globalThis.Object.keys(message.mapInt32Float))
-            writer.tag(11, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit32).float(message.mapInt32Float[k as any]).join();
+            writer.tag(11, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit32).float(message.mapInt32Float[parseInt(k)]).join();
         /* map<int32, double> map_int32_double = 12; */
         for (let k of globalThis.Object.keys(message.mapInt32Double))
-            writer.tag(12, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit64).double(message.mapInt32Double[k as any]).join();
+            writer.tag(12, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit64).double(message.mapInt32Double[parseInt(k)]).join();
         /* map<bool, bool> map_bool_bool = 13; */
         for (let k of globalThis.Object.keys(message.mapBoolBool))
             writer.tag(13, WireType.LengthDelimited).fork().tag(1, WireType.Varint).bool(k === "true").tag(2, WireType.Varint).bool(message.mapBoolBool[k]).join();
@@ -1307,15 +1300,15 @@ class TestArenaMapLite$Type extends MessageType<TestArenaMapLite> {
             writer.tag(14, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.mapStringString[k]).join();
         /* map<int32, bytes> map_int32_bytes = 15; */
         for (let k of globalThis.Object.keys(message.mapInt32Bytes))
-            writer.tag(15, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.LengthDelimited).bytes(message.mapInt32Bytes[k as any]).join();
+            writer.tag(15, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.LengthDelimited).bytes(message.mapInt32Bytes[parseInt(k)]).join();
         /* map<int32, protobuf_unittest.MapEnumLite> map_int32_enum = 16; */
         for (let k of globalThis.Object.keys(message.mapInt32Enum))
-            writer.tag(16, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Enum[k as any]).join();
+            writer.tag(16, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Enum[parseInt(k)]).join();
         /* map<int32, protobuf_unittest.ForeignMessageArenaLite> map_int32_foreign_message = 17; */
         for (let k of globalThis.Object.keys(message.mapInt32ForeignMessage)) {
             writer.tag(17, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            ForeignMessageArenaLite.internalBinaryWrite(message.mapInt32ForeignMessage[k as any], writer, options);
+            ForeignMessageArenaLite.internalBinaryWrite(message.mapInt32ForeignMessage[parseInt(k)], writer, options);
             writer.join().join();
         }
         let u = options.writeUnknownFields;
@@ -1382,7 +1375,7 @@ class TestRequiredMessageMapLite$Type extends MessageType<TestRequiredMessageMap
         for (let k of globalThis.Object.keys(message.mapField)) {
             writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            TestRequiredLite.internalBinaryWrite(message.mapField[k as any], writer, options);
+            TestRequiredLite.internalBinaryWrite(message.mapField[parseInt(k)], writer, options);
             writer.join().join();
         }
         let u = options.writeUnknownFields;
@@ -1468,10 +1461,10 @@ class TestEnumMapLite$Type extends MessageType<TestEnumMapLite> {
     internalBinaryWrite(message: TestEnumMapLite, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, protobuf_unittest.Proto2MapEnumLite> known_map_field = 101; */
         for (let k of globalThis.Object.keys(message.knownMapField))
-            writer.tag(101, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.knownMapField[k as any]).join();
+            writer.tag(101, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.knownMapField[parseInt(k)]).join();
         /* map<int32, protobuf_unittest.Proto2MapEnumLite> unknown_map_field = 102; */
         for (let k of globalThis.Object.keys(message.unknownMapField))
-            writer.tag(102, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapField[k as any]).join();
+            writer.tag(102, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapField[parseInt(k)]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1555,10 +1548,10 @@ class TestEnumMapPlusExtraLite$Type extends MessageType<TestEnumMapPlusExtraLite
     internalBinaryWrite(message: TestEnumMapPlusExtraLite, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> known_map_field = 101; */
         for (let k of globalThis.Object.keys(message.knownMapField))
-            writer.tag(101, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.knownMapField[k as any]).join();
+            writer.tag(101, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.knownMapField[parseInt(k)]).join();
         /* map<int32, protobuf_unittest.Proto2MapEnumPlusExtraLite> unknown_map_field = 102; */
         for (let k of globalThis.Object.keys(message.unknownMapField))
-            writer.tag(102, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapField[k as any]).join();
+            writer.tag(102, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.unknownMapField[parseInt(k)]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1623,7 +1616,7 @@ class TestMessageMapLite$Type extends MessageType<TestMessageMapLite> {
         for (let k of globalThis.Object.keys(message.mapInt32Message)) {
             writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k));
             writer.tag(2, WireType.LengthDelimited).fork();
-            TestAllTypesLite.internalBinaryWrite(message.mapInt32Message[k as any], writer, options);
+            TestAllTypesLite.internalBinaryWrite(message.mapInt32Message[parseInt(k)], writer, options);
             writer.join().join();
         }
         let u = options.writeUnknownFields;

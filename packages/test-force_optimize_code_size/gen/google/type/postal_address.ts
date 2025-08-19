@@ -18,6 +18,7 @@
 //
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Represents a postal address, e.g. for postal delivery or payments addresses.
  * Given a postal address, a postal service can deliver items to a premise, P.O.

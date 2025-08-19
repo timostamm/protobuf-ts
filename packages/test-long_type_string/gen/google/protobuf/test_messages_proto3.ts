@@ -16,32 +16,15 @@
 // - conformance tests
 //
 //
-import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
-import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import type { BinaryReadOptions } from "@protobuf-ts/runtime";
-import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
-import type { PartialMessage } from "@protobuf-ts/runtime";
-import { reflectionMergePartial } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
-import { ListValue } from "./struct";
-import { Value } from "./struct";
-import { Any } from "./any";
-import { Struct } from "./struct";
-import { FieldMask } from "./field_mask";
-import { Timestamp } from "./timestamp";
+import { ListValue, NullValue, Struct, Value } from "./struct";
+import { BoolValue, BytesValue, DoubleValue, FloatValue, Int32Value, Int64Value, StringValue, UInt32Value, UInt64Value } from "./wrappers";
 import { Duration } from "./duration";
-import { BytesValue } from "./wrappers";
-import { StringValue } from "./wrappers";
-import { DoubleValue } from "./wrappers";
-import { FloatValue } from "./wrappers";
-import { UInt64Value } from "./wrappers";
-import { UInt32Value } from "./wrappers";
-import { Int64Value } from "./wrappers";
-import { Int32Value } from "./wrappers";
-import { BoolValue } from "./wrappers";
-import { NullValue } from "./struct";
+import { Timestamp } from "./timestamp";
+import { FieldMask } from "./field_mask";
+import { Any } from "./any";
+import type { BinaryReadOptions, BinaryWriteOptions, IBinaryReader, IBinaryWriter, PartialMessage } from "@protobuf-ts/runtime";
+import { MessageType, reflectionMergePartial, UnknownFieldHandler, WireType } from "@protobuf-ts/runtime";
+
 /**
  * This proto includes every type of field in both singular and repeated
  * forms.
@@ -791,15 +774,15 @@ export enum TestAllTypesProto3_AliasedEnum {
      */
     ALIAS_BAZ = 2,
     /**
-     * @generated from protobuf enum value: ALIAS_BAZ = 2;
+     * @generated from protobuf enum value: MOO = 2;
      */
     MOO = 2,
     /**
-     * @generated from protobuf enum value: ALIAS_BAZ = 2;
+     * @generated from protobuf enum value: moo = 2;
      */
     moo = 2,
     /**
-     * @generated from protobuf enum value: ALIAS_BAZ = 2;
+     * @generated from protobuf enum value: bAz = 2;
      */
     bAz = 2
 }
@@ -1598,7 +1581,7 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
                 case /* protobuf_test_messages.proto3.TestAllTypesProto3.NestedMessage oneof_nested_message */ 112:
                     message.oneofField = {
                         oneofKind: "oneofNestedMessage",
-                        oneofNestedMessage: TestAllTypesProto3_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, (message.oneofField as any).oneofNestedMessage)
+                        oneofNestedMessage: TestAllTypesProto3_NestedMessage.internalBinaryRead(reader, reader.uint32(), options, message.oneofField.oneofKind === "oneofNestedMessage" ? message.oneofField.oneofNestedMessage : undefined)
                     };
                     break;
                 case /* string oneof_string */ 113:
@@ -2309,40 +2292,40 @@ class TestAllTypesProto3$Type extends MessageType<TestAllTypesProto3> {
             writer.tag(55, WireType.LengthDelimited).string(message.repeatedCord[i]);
         /* map<int32, int32> map_int32_int32 = 56; */
         for (let k of globalThis.Object.keys(message.mapInt32Int32))
-            writer.tag(56, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Int32[k as any]).join();
+            writer.tag(56, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Varint).int32(message.mapInt32Int32[parseInt(k)]).join();
         /* map<int64, int64> map_int64_int64 = 57; */
         for (let k of globalThis.Object.keys(message.mapInt64Int64))
             writer.tag(57, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int64(k).tag(2, WireType.Varint).int64(message.mapInt64Int64[k]).join();
         /* map<uint32, uint32> map_uint32_uint32 = 58; */
         for (let k of globalThis.Object.keys(message.mapUint32Uint32))
-            writer.tag(58, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).uint32(message.mapUint32Uint32[k as any]).join();
+            writer.tag(58, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint32(parseInt(k)).tag(2, WireType.Varint).uint32(message.mapUint32Uint32[parseInt(k)]).join();
         /* map<uint64, uint64> map_uint64_uint64 = 59; */
         for (let k of globalThis.Object.keys(message.mapUint64Uint64))
             writer.tag(59, WireType.LengthDelimited).fork().tag(1, WireType.Varint).uint64(k).tag(2, WireType.Varint).uint64(message.mapUint64Uint64[k]).join();
         /* map<sint32, sint32> map_sint32_sint32 = 60; */
         for (let k of globalThis.Object.keys(message.mapSint32Sint32))
-            writer.tag(60, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).sint32(message.mapSint32Sint32[k as any]).join();
+            writer.tag(60, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint32(parseInt(k)).tag(2, WireType.Varint).sint32(message.mapSint32Sint32[parseInt(k)]).join();
         /* map<sint64, sint64> map_sint64_sint64 = 61; */
         for (let k of globalThis.Object.keys(message.mapSint64Sint64))
             writer.tag(61, WireType.LengthDelimited).fork().tag(1, WireType.Varint).sint64(k).tag(2, WireType.Varint).sint64(message.mapSint64Sint64[k]).join();
         /* map<fixed32, fixed32> map_fixed32_fixed32 = 62; */
         for (let k of globalThis.Object.keys(message.mapFixed32Fixed32))
-            writer.tag(62, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Bit32).fixed32(message.mapFixed32Fixed32[k as any]).join();
+            writer.tag(62, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).fixed32(parseInt(k)).tag(2, WireType.Bit32).fixed32(message.mapFixed32Fixed32[parseInt(k)]).join();
         /* map<fixed64, fixed64> map_fixed64_fixed64 = 63; */
         for (let k of globalThis.Object.keys(message.mapFixed64Fixed64))
             writer.tag(63, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).fixed64(k).tag(2, WireType.Bit64).fixed64(message.mapFixed64Fixed64[k]).join();
         /* map<sfixed32, sfixed32> map_sfixed32_sfixed32 = 64; */
         for (let k of globalThis.Object.keys(message.mapSfixed32Sfixed32))
-            writer.tag(64, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Bit32).sfixed32(message.mapSfixed32Sfixed32[k as any]).join();
+            writer.tag(64, WireType.LengthDelimited).fork().tag(1, WireType.Bit32).sfixed32(parseInt(k)).tag(2, WireType.Bit32).sfixed32(message.mapSfixed32Sfixed32[parseInt(k)]).join();
         /* map<sfixed64, sfixed64> map_sfixed64_sfixed64 = 65; */
         for (let k of globalThis.Object.keys(message.mapSfixed64Sfixed64))
             writer.tag(65, WireType.LengthDelimited).fork().tag(1, WireType.Bit64).sfixed64(k).tag(2, WireType.Bit64).sfixed64(message.mapSfixed64Sfixed64[k]).join();
         /* map<int32, float> map_int32_float = 66; */
         for (let k of globalThis.Object.keys(message.mapInt32Float))
-            writer.tag(66, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit32).float(message.mapInt32Float[k as any]).join();
+            writer.tag(66, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit32).float(message.mapInt32Float[parseInt(k)]).join();
         /* map<int32, double> map_int32_double = 67; */
         for (let k of globalThis.Object.keys(message.mapInt32Double))
-            writer.tag(67, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit64).double(message.mapInt32Double[k as any]).join();
+            writer.tag(67, WireType.LengthDelimited).fork().tag(1, WireType.Varint).int32(parseInt(k)).tag(2, WireType.Bit64).double(message.mapInt32Double[parseInt(k)]).join();
         /* map<bool, bool> map_bool_bool = 68; */
         for (let k of globalThis.Object.keys(message.mapBoolBool))
             writer.tag(68, WireType.LengthDelimited).fork().tag(1, WireType.Varint).bool(k === "true").tag(2, WireType.Varint).bool(message.mapBoolBool[k]).join();

@@ -18,6 +18,7 @@
 //
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Represents a whole or partial calendar date, e.g. a birthday. The time of day
  * and time zone are either specified elsewhere or are not significant. The date
@@ -73,14 +74,24 @@ class Date$Type extends MessageType<Date> {
      */
     toJsDate(message: Date, hours?: number, minutes?: number, seconds?: number, ms?: number): globalThis.Date {
         let now = new globalThis.Date();
-        return new globalThis.Date(message.year, message.month - 1, message.day, hours ?? now.getHours(), minutes ?? now.getMinutes(), seconds ?? now.getSeconds(), ms ?? now.getMilliseconds());
+        return new globalThis.Date(
+            message.year,
+            message.month - 1,
+            message.day,
+            hours ?? now.getHours(),
+            minutes ?? now.getMinutes(),
+            seconds ?? now.getSeconds(),
+            ms ?? now.getMilliseconds(),
+        );
     }
     /**
      * Creates a Date message from a javascript Date object.
      */
     fromJsDate(date: globalThis.Date): Date {
         return {
-            year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate(),
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.getDate(),
         };
     }
 }

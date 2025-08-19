@@ -9,26 +9,18 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 //
-import { MessageType } from "@protobuf-ts/runtime";
-import { Value } from "./struct";
-import { BytesValue } from "./wrappers";
-import { StringValue } from "./wrappers";
-import { BoolValue } from "./wrappers";
-import { UInt32Value } from "./wrappers";
-import { Int32Value } from "./wrappers";
-import { UInt64Value } from "./wrappers";
-import { Int64Value } from "./wrappers";
-import { FloatValue } from "./wrappers";
-import { DoubleValue } from "./wrappers";
-import { Type } from "./type";
-import { Timestamp } from "./timestamp";
-import { Struct } from "./struct";
-import { SourceContext } from "./source_context";
-import { FieldMask } from "./field_mask";
-import { Empty } from "./empty";
-import { Duration } from "./duration";
-import { Api } from "./api";
 import { Any } from "./any";
+import { Api } from "./api";
+import { Duration } from "./duration";
+import { Empty } from "./empty";
+import { FieldMask } from "./field_mask";
+import { SourceContext } from "./source_context";
+import { Struct, Value } from "./struct";
+import { Timestamp } from "./timestamp";
+import { Type } from "./type";
+import { BoolValue, BytesValue, DoubleValue, FloatValue, Int32Value, Int64Value, StringValue, UInt32Value, UInt64Value } from "./wrappers";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Test that we can include all well-known types.
  * Each wrapper type is included separately, as languages

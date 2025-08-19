@@ -5,9 +5,9 @@
 // Twirp example RPC
 // https://github.com/twitchtv/twirp-example/blob/c1501aeb89609a522db7d79d4c2e71b6c032af28/rpc/haberdasher/haberdasher.proto
 //
-import { Hat } from "./service-twirp-example";
-import { Size } from "./service-twirp-example";
-import { ServerCallContext } from "@protobuf-ts/runtime-rpc";
+import type { ServerCallContext } from "@protobuf-ts/runtime-rpc";
+import type { Hat, Size } from "./service-twirp-example";
+
 /**
  * A Haberdasher makes hats for clients.
  *

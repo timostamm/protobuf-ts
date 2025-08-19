@@ -2,6 +2,7 @@
 // @generated from protobuf file "optimize-for-code-size.proto" (package "spec", syntax proto3)
 // tslint:disable
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * @generated from protobuf message spec.OptimizeForCodeSizeMessage
  */

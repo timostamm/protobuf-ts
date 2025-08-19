@@ -16,8 +16,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-import { MessageType } from "@protobuf-ts/runtime";
 import { Duration } from "../protobuf/duration";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Describes when the clients can retry a failed request. Clients could ignore
  * the recommendation here or retry when this information is missing from error

@@ -17,6 +17,7 @@
 // limitations under the License.
 //
 import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * Defines the HTTP configuration for an API service. It contains a list of
  * [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method

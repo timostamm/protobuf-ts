@@ -16,8 +16,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-import { MessageType } from "@protobuf-ts/runtime";
 import { Any } from "../protobuf/any";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * The `Status` type defines a logical error model that is suitable for
  * different programming environments, including REST APIs and RPC APIs. It is

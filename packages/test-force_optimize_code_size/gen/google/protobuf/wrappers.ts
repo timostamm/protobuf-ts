@@ -49,12 +49,9 @@
 // These wrappers have no meaningful use within a map or a oneof since
 // individual entries of a map or fields of a oneof can already detect presence.
 //
-import { ScalarType } from "@protobuf-ts/runtime";
-import { LongType } from "@protobuf-ts/runtime";
-import type { JsonValue } from "@protobuf-ts/runtime";
-import type { JsonReadOptions } from "@protobuf-ts/runtime";
-import type { JsonWriteOptions } from "@protobuf-ts/runtime";
-import { MessageType } from "@protobuf-ts/runtime";
+import type { JsonReadOptions, JsonValue, JsonWriteOptions } from "@protobuf-ts/runtime";
+import { LongType, MessageType, ScalarType } from "@protobuf-ts/runtime";
+
 /**
  * Wrapper message for `double`.
  *
@@ -387,7 +384,7 @@ class BoolValue$Type extends MessageType<BoolValue> {
         ]);
     }
     /**
-     * Encode `BoolValue` to JSON bool.
+     * Encode `BoolValue` to JSON bool. 
      */
     internalJsonWrite(message: BoolValue, options: JsonWriteOptions): JsonValue {
         return message.value;

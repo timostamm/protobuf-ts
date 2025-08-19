@@ -16,24 +16,14 @@
 // - conformance tests
 //
 //
-import { MessageType } from "@protobuf-ts/runtime";
-import { ListValue } from "./struct";
-import { Value } from "./struct";
-import { Any } from "./any";
-import { Struct } from "./struct";
-import { FieldMask } from "./field_mask";
-import { Timestamp } from "./timestamp";
+import { ListValue, NullValue, Struct, Value } from "./struct";
+import { BoolValue, BytesValue, DoubleValue, FloatValue, Int32Value, Int64Value, StringValue, UInt32Value, UInt64Value } from "./wrappers";
 import { Duration } from "./duration";
-import { BytesValue } from "./wrappers";
-import { StringValue } from "./wrappers";
-import { DoubleValue } from "./wrappers";
-import { FloatValue } from "./wrappers";
-import { UInt64Value } from "./wrappers";
-import { UInt32Value } from "./wrappers";
-import { Int64Value } from "./wrappers";
-import { Int32Value } from "./wrappers";
-import { BoolValue } from "./wrappers";
-import { NullValue } from "./struct";
+import { Timestamp } from "./timestamp";
+import { FieldMask } from "./field_mask";
+import { Any } from "./any";
+import { MessageType } from "@protobuf-ts/runtime";
+
 /**
  * This proto includes every type of field in both singular and repeated
  * forms.
@@ -783,15 +773,15 @@ export enum TestAllTypesProto3_AliasedEnum {
      */
     ALIAS_BAZ = 2,
     /**
-     * @generated from protobuf enum value: ALIAS_BAZ = 2;
+     * @generated from protobuf enum value: MOO = 2;
      */
     MOO = 2,
     /**
-     * @generated from protobuf enum value: ALIAS_BAZ = 2;
+     * @generated from protobuf enum value: moo = 2;
      */
     moo = 2,
     /**
-     * @generated from protobuf enum value: ALIAS_BAZ = 2;
+     * @generated from protobuf enum value: bAz = 2;
      */
     bAz = 2
 }
