@@ -160,7 +160,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
             file.println(`        return msg;`);
             file.println(`    }`);
             file.println(createJsDocBlock([
-                "In JSON format, the `Timestamp` type is encoded as a string ",
+                "In JSON format, the `Timestamp` type is encoded as a string",
                 "in the RFC 3339 format.",
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, Timestamp, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
@@ -211,7 +211,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.Duration":
             const Duration = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `Duration` to JSON string like \"3.000001s\". ",
+                "Encode `Duration` to JSON string like \"3.000001s\".",
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, Duration, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        let s = `, PbLong, `.from(message.seconds).toNumber();`);
@@ -237,7 +237,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, Duration, `): `, Duration, ` {`);
             file.println(`        if (typeof json !== "string")`);
             file.println(`            throw new Error("Unable to parse Duration from JSON " + `, typeofJsonValue, `(json) + ". Expected string.");`);
-            file.println(`        let match = json.match(/^(-?)([0-9]+)(?:\.([0-9]+))?s/);`);
+            file.println(`        let match = json.match(/^(-?)([0-9]+)(?:\\.([0-9]+))?s/);`);
             file.println(`        if (match === null)`);
             file.println(`            throw new Error("Unable to parse Duration from JSON string. Invalid format.");`);
             file.println(`        if (!target)`);
@@ -257,7 +257,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.FieldMask":
             const FieldMask = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `FieldMask` to JSON object. ",
+                "Encode `FieldMask` to JSON object.",
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, FieldMask, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        const invalidFieldMaskJsonRegex = /[A-Z]|(_([.0-9_]|$))/g;`);
@@ -305,7 +305,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, Struct, `): `, Struct, ` {`);
             file.println(`        if (!`, isJsonObject, `(json))`);
             file.println(`            throw new globalThis.Error("Unable to parse message " + this.typeName + " from JSON " + `, typeofJsonValue, `(json) + ".");`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        for (let [k, v] of globalThis.Object.entries(json)) {`);
             file.println(`            target.fields[k] = Value.fromJson(v);`);
@@ -353,17 +353,17 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `Value` from JSON value."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, Value, `): `, Value, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        switch (typeof json) {`);
             file.println(`            case "number":`);
-            file.println(`                target.kind = {oneofKind: "`, numberValueField, `", `, numberValueField, `: json};`);
+            file.println(`                target.kind = { oneofKind: "`, numberValueField, `", `, numberValueField, `: json };`);
             file.println(`                break;`);
             file.println(`            case "string":`);
-            file.println(`                target.kind = {oneofKind: "`, stringValueField, `", `, stringValueField, `: json};`);
+            file.println(`                target.kind = { oneofKind: "`, stringValueField, `", `, stringValueField, `: json };`);
             file.println(`                break;`);
             file.println(`            case "boolean":`);
-            file.println(`                target.kind = {oneofKind: "`, boolValueField, `", `, boolValueField, `: json};`);
+            file.println(`                target.kind = { oneofKind: "`, boolValueField, `", `, boolValueField, `: json };`);
             file.println(`                break;`);
             file.println(`            case "object":`);
             file.println(`                if (json === null) {`);
@@ -383,7 +383,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.ListValue":
             const ListValue = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `ListValue` to JSON array. "
+                "Encode `ListValue` to JSON array."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, ListValue, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return message.values.map(v => Value.toJson(v));`);
@@ -393,7 +393,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, ListValue, `): `, ListValue, ` {`);
             file.println(`        if (! globalThis.Array.isArray(json)) throw new globalThis.Error('Unable to parse ' + this.typeName + ' from JSON ' + `, typeofJsonValue, `(json));`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        let values = json.map(v => Value.fromJson(v));`);
             file.println(`        target.values.push(...values);`);
@@ -412,7 +412,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `BoolValue` from JSON bool."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, BoolValue, `): `, BoolValue, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, 8, undefined, "value") as boolean;`);
             file.println(`        return target;`);
@@ -421,7 +421,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.StringValue":
             const StringValue = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `StringValue` to JSON string. "
+                "Encode `StringValue` to JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, StringValue, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return message.value;`);
@@ -430,7 +430,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `StringValue` from JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, StringValue, `): `, StringValue, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, 9, undefined, "value") as string;`);
             file.println(`        return target;`);
@@ -439,7 +439,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.DoubleValue":
             const DoubleValue = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `DoubleValue` to JSON number. "
+                "Encode `DoubleValue` to JSON number."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, DoubleValue, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return this.refJsonWriter.scalar(2, message.value, "value", false, true);`);
@@ -448,7 +448,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `DoubleValue` from JSON number."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, DoubleValue, `): `, DoubleValue, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, 1, undefined, "value") as number;`);
             file.println(`        return target;`);
@@ -457,7 +457,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.FloatValue":
             const FloatValue = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `FloatValue` to JSON number. "
+                "Encode `FloatValue` to JSON number."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, FloatValue, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return this.refJsonWriter.scalar(1, message.value, "value", false, true);`);
@@ -466,7 +466,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `FloatValue` from JSON number."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, FloatValue, `): `, FloatValue, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, 1, undefined, "value") as number;`);
             file.println(`        return target;`);
@@ -475,7 +475,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.Int32Value":
             const Int32Value = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `Int32Value` to JSON string. "
+                "Encode `Int32Value` to JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, Int32Value, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return this.refJsonWriter.scalar(5, message.value, "value", false, true);`);
@@ -484,7 +484,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `Int32Value` from JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, Int32Value, `): `, Int32Value, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, 5, undefined, "value") as number;`);
             file.println(`        return target;`);
@@ -493,7 +493,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.UInt32Value":
             const UInt32Value = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `UInt32Value` to JSON string. "
+                "Encode `UInt32Value` to JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, UInt32Value, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return this.refJsonWriter.scalar(13, message.value, "value", false, true);`);
@@ -502,7 +502,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `UInt32Value` from JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, UInt32Value, `): `, UInt32Value, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, 13, undefined, "value") as number;`);
             file.println(`        return target;`);
@@ -511,7 +511,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.Int64Value":
             const Int64Value = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `Int64Value` to JSON string. "
+                "Encode `Int64Value` to JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, Int64Value, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return this.refJsonWriter.scalar(`, ScalarType, `.INT64, message.value, "value", false, true);`);
@@ -520,7 +520,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `Int64Value` from JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, Int64Value, `): `, Int64Value, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, `, ScalarType, `.INT64, `, iLongType, `.`, longTypeEnumValue, `, "value") as any;`);
             file.println(`        return target;`);
@@ -529,7 +529,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.UInt64Value":
             const UInt64Value = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `UInt64Value` to JSON string. "
+                "Encode `UInt64Value` to JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, UInt64Value, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return this.refJsonWriter.scalar(`, ScalarType, `.UINT64, message.value, "value", false, true);`);
@@ -538,7 +538,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `UInt64Value` from JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, UInt64Value, `): `, UInt64Value, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, `, ScalarType, `.UINT64, `, iLongType, `.`, longTypeEnumValue, `, "value") as any;`);
             file.println(`        return target;`);
@@ -547,7 +547,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
         case "google.protobuf.BytesValue":
             const BytesValue = importMessageInterface(desc);
             file.println(createJsDocBlock([
-                "Encode `BytesValue` to JSON string. "
+                "Encode `BytesValue` to JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonWrite(message: `, BytesValue, `, options: `, JsonWriteOptions, `): `, JsonValue, ` {`);
             file.println(`        return this.refJsonWriter.scalar(12, message.value, "value", false, true);`);
@@ -556,7 +556,7 @@ export function printWellKnownTypeMethods(schema: Schema, file: File, desc: Desc
                 "Decode `BytesValue` from JSON string."
             ].join("\n"), "    "));
             file.println(`    internalJsonRead(json: `, JsonValue, `, options: `, JsonReadOptions, `, target?: `, BytesValue, `): `, BytesValue, ` {`);
-            file.println(`        if (!target) `);
+            file.println(`        if (!target)`);
             file.println(`            target = this.create();`);
             file.println(`        target.value = this.refJsonReader.scalar(json, 12, undefined, "value") as Uint8Array;`);
             file.println(`        return target;`);
