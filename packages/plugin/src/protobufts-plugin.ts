@@ -48,10 +48,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             interpreter = new Interpreter(registry, options),
             schema = createSchema(interpreter, options)
         ;
-        for (const desc of registry.files) {
-            if (!this.shouldGenerate(desc, request.fileToGenerate, registry, options)) {
-                continue;
-            }
+        for (const desc of filterFilesToGenerate(registry, request, options)) {
             const file = schema.createFile(desc, ".ts");
             const clientFile = schema.createFile(desc, ".client.ts");
             const clientGrpcFile = schema.createFile(desc, ".grpc-client.ts");
@@ -107,38 +104,6 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         return this.transpile(schema.getFiles(), options);
     }
 
-    private shouldGenerate(file: DescFile, fileToGenerate: string[], registry: FileRegistry, options: Options): boolean {
-        if (options.generateDependencies) {
-            return true;
-        }
-        const protoFilename = file.proto.name;
-        if (fileToGenerate.includes(protoFilename)) {
-            return true;
-        }
-        const wkt = [
-            "google/protobuf/any.proto",
-            "google/protobuf/api.proto",
-            "google/protobuf/descriptor.proto",
-            "google/protobuf/duration.proto",
-            "google/protobuf/empty.proto",
-            "google/protobuf/field_mask.proto",
-            "google/protobuf/source_context.proto",
-            "google/protobuf/struct.proto",
-            "google/protobuf/timestamp.proto",
-            "google/protobuf/type.proto",
-            "google/protobuf/wrappers.proto",
-            "google/protobuf/compiler/plugin.proto",
-            "google/protobuf/any.proto",
-        ];
-        if (wkt.includes(protoFilename)) {
-            return true;
-        }
-        // if a proto file is imported to use custom options, or if a proto file declares custom options,
-        // we do not to emit it. unless it was explicitly requested.
-        // TODO why does the fallback condition include "used" files? isn't that what generateDependencies should do?
-        const all = Array.from(registry.files);
-        return this.isFileUsed(file, all);
-    }
 
     protected transpile(files: File[], options: Options): GeneratedFile[] {
         const inputFiles: GeneratedFile[] = files.map(file => {
@@ -204,54 +169,89 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
         return results;
     }
 
-
     // we support proto3-optionals, so we let protoc know
     protected getSupportedFeatures = () => [CodeGeneratorResponse_Feature.PROTO3_OPTIONAL];
 
-
-    private isFileUsed(descFile: DescFile, files: Iterable<DescFile>): boolean {
-        for (const type of nestedTypes(descFile)) {
-            // TODO do not consider referencing a type that a file defines itself used - filter the second argument to exclude the current file
-            if (this.isTypeUsed(type, files)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private isTypeUsed(type: DescMessage | DescEnum | DescService | DescExtension, files: Iterable<DescFile>): boolean {
-        for (const otherFile of files) {
-            for (const otherType of nestedTypes(otherFile)) {
-                switch (otherType.kind) {
-                    case "service":
-                        if (type.kind == "message") {
-                            if (otherType.methods.some(descMethod => descMethod.input.typeName == type.typeName)) {
-                                return true;
-                            }
-                            if (otherType.methods.some(descMethod => descMethod.output.typeName == type.typeName)) {
-                                return true;
-                            }
-                        }
-                        break;
-                    case "message":
-                        if (otherType.fields.some(descField => descField.message?.typeName === type.typeName)) {
-                            return true;
-                        }
-                        if (otherType.fields.some(descField => descField.enum?.typeName === type.typeName)) {
-                            return true;
-                        }
-                        break;
-                }
-            }
-        }
-        return false;
-    }
-
 }
 
-export function createFileRegistryFromRequest(request: CodeGeneratorRequest): FileRegistry {
+function createFileRegistryFromRequest(request: CodeGeneratorRequest): FileRegistry {
     const set = create(FileDescriptorSetSchema, {
         file: request.protoFile,
     }) as FileDescriptorSet;
     return createFileRegistry(set);
+}
+
+function filterFilesToGenerate(registry: FileRegistry, request: CodeGeneratorRequest, options: Options): DescFile[] {
+    const all = Array.from(registry.files);
+    const firstPass = all.filter(file => {
+        if (options.generateDependencies) {
+            return true;
+        }
+        if (request.fileToGenerate.includes(file.proto.name)) {
+            return true;
+        }
+        const wkt = [
+            "google/protobuf/any.proto",
+            "google/protobuf/api.proto",
+            "google/protobuf/descriptor.proto",
+            "google/protobuf/duration.proto",
+            "google/protobuf/empty.proto",
+            "google/protobuf/field_mask.proto",
+            "google/protobuf/source_context.proto",
+            "google/protobuf/struct.proto",
+            "google/protobuf/timestamp.proto",
+            "google/protobuf/type.proto",
+            "google/protobuf/wrappers.proto",
+            "google/protobuf/compiler/plugin.proto",
+            "google/protobuf/any.proto",
+        ];
+        if (wkt.includes(file.proto.name)) {
+            return true;
+        }
+        return false;
+    });
+    return firstPass.filter(file => {
+        if (request.fileToGenerate.includes(file.proto.name)) {
+            return true;
+        }
+        return isFileUsed(file, firstPass)
+    });
+}
+
+function isFileUsed(descFile: DescFile, files: Iterable<DescFile>): boolean {
+    for (const type of nestedTypes(descFile)) {
+        // TODO do not consider referencing a type that a file defines itself used - filter the second argument to exclude the current file
+        if (isTypeUsed(type, files)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function isTypeUsed(type: DescMessage | DescEnum | DescService | DescExtension, files: Iterable<DescFile>): boolean {
+    for (const otherFile of files) {
+        for (const otherType of nestedTypes(otherFile)) {
+            switch (otherType.kind) {
+                case "service":
+                    if (type.kind == "message") {
+                        if (otherType.methods.some(descMethod => descMethod.input.typeName == type.typeName)) {
+                            return true;
+                        }
+                        if (otherType.methods.some(descMethod => descMethod.output.typeName == type.typeName)) {
+                            return true;
+                        }
+                    }
+                    break;
+                case "message":
+                    if (otherType.fields.some(descField => descField.message?.typeName === type.typeName)) {
+                        return true;
+                    }
+                    if (otherType.fields.some(descField => descField.enum?.typeName === type.typeName)) {
+                        return true;
+                    }
+                    break;
+            }
+        }
+    }
+    return false;
 }
