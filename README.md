@@ -47,7 +47,7 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 
 ### Quickstart
 
-- `npm install @protobuf-ts/plugin`
+- `npm install --save-dev @protobuf-ts/plugin protoc`
   > installs the plugin and the compiler "protoc"  
 
 - download the example file [msg-readme.proto](https://raw.githubusercontent.com/timostamm/protobuf-ts/main/packages/proto/msg-readme.proto) and place it into a `protos/` directory
@@ -67,7 +67,6 @@ official [language guide](https://developers.google.com/protocol-buffers/docs/ov
 - [x] generates [native gRPC servers](MANUAL.md#native-grpc-server) and 
       [clients](MANUAL.md#native-grpc-client) for usage with `@grpc/grpc-js`
 - [x] supported by [Twirp-TS](https://github.com/hopin-team/twirp-ts) for Twirp servers running on Node.js
-- [x] automatically [installs protoc](./packages/protoc/README.md) (with Yarn berry, please use [node-protoc](https://www.npmjs.com/package/node-protoc))
 - [x] can optimize for [speed or code size](MANUAL.md#code-size-vs-speed)  
 - [x] supports [proto3 optionals](MANUAL.md#proto3-optionals)
 - [x] [supports bigint](MANUAL.md#bigint-support) for 64 bit integers
@@ -94,7 +93,7 @@ Read the [MANUAL](MANUAL.md) to learn more.
 - The [code to encode and decode varint](./packages/runtime/src/goog-varint.ts) is Copyright 2008 Google Inc., licensed under BSD-3-Clause.
 - The [gRPC status codes](./packages/grpcweb-transport/src/goog-grpc-status-code.ts) are Copyright 2016 gRPC authors, licensed under Apache-2.0.
 - The [Twirp error codes](./packages/twirp-transport/src/twitch-twirp-error-code.ts) are Copyright 2018 Twitch Interactive, Inc., licensed under Apache-2.0.
-- The proto files in [proto/google](./packages/proto/google) and [test-conformance/proto](./packages/test-conformance/proto) are Copyright Google Inc. / Google LLC, licensed under Apache-2.0 / BSD-3-Clause.
+- The proto files in [proto/google](./packages/proto/google) are Copyright Google Inc. / Google LLC, licensed under Apache-2.0 / BSD-3-Clause.
 - All other files are licensed under Apache-2.0, see [LICENSE](./LICENSE). 
 
 

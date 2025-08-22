@@ -14,8 +14,6 @@
   "devDependencies": {
     "@bufbuild/buf": "^1.50.1",
     "@protobuf-ts/plugin": "^2.11.1",
-    "@protobuf-ts/protobuf-conformance": "^2.11.1",
-    "@protobuf-ts/protoc": "^2.11.1",
     "@protobuf-ts/runtime": "^2.11.1",
     "@protobuf-ts/runtime-rpc": "^2.11.1",
     "@types/jasmine": "^3.5.10",
