@@ -15,7 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.11.1",
-    "@protobuf-ts/protoc": "^2.11.1",
+    "protoc": "^29.2.0",
     "@protobuf-ts/runtime": "^2.11.1",
     "@protobufjs/utf8": "^1.1.0",
     "@types/node": "^14.0.13",

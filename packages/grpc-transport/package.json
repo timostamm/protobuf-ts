@@ -40,7 +40,7 @@
   "devDependencies": {
     "@grpc/grpc-js": "^1.6.0",
     "@protobuf-ts/plugin": "^2.11.1",
-    "@protobuf-ts/protoc": "^2.11.1",
+    "protoc": "^29.2.0",
     "@types/jasmine": "^3.5.10",
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^5.0.2",

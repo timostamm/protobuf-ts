@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.11.1",
-    "@protobuf-ts/protoc": "^2.11.1",
+    "protoc": "^29.2.0",
     "esbuild": "^0.25.0",
     "typescript": "^3.9.5"
   }

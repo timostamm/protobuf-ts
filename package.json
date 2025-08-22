@@ -1,9 +1,6 @@
 {
   "name": "root",
   "private": true,
-  "config": {
-    "protocVersion": "29.2"
-  },
   "scripts": {
     "clean": "git clean -Xdf",
     "all": "turbo run --ui tui build generate test conformance",
@@ -28,7 +25,6 @@
     "packages/grpcweb-transport",
     "packages/plugin",
     "packages/proto",
-    "packages/protoc",
     "packages/runtime",
     "packages/runtime-rpc",
     "packages/test-default",

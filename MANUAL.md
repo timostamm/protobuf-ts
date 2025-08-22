@@ -83,8 +83,13 @@ npm install @protobuf-ts/plugin
 yarn add @protobuf-ts/plugin
 ```
 
-This will install the plugin as a dependency in your package.  
-The protocol buffer compiler `protoc` is automatically installed ([explanation](./packages/protoc/README.md)). 
+This will install the plugin as a dependency in your package.
+
+You'll also need a Protobuf compiler, such as `protoc`:
+
+```shell script
+npm install protoc
+```
 
 Usage:
 ```shell script

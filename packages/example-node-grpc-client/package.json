@@ -15,7 +15,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.2.2",
     "@protobuf-ts/plugin": "^2.11.1",
-    "@protobuf-ts/protoc": "^2.11.1",
+    "protoc": "^29.2.0",
     "@protobuf-ts/runtime": "^2.11.1",
     "@protobuf-ts/runtime-rpc": "^2.11.1",
     "ts-node": "^8.10.2",
