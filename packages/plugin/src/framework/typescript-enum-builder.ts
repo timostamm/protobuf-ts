@@ -21,17 +21,16 @@ export class TypescriptEnumBuilder {
         this.validate();
         const members: ts.EnumMember[] = [];
         for (let {name, number, comment} of this.values) {
-            let member = ts.createEnumMember(
-                ts.createIdentifier(name),
-                ts.createNumericLiteral(number.toString())
+            let member = ts.factory.createEnumMember(
+                ts.factory.createIdentifier(name),
+                ts.factory.createNumericLiteral(number.toString())
             );
             if (comment) {
                 addCommentBlockAsJsDoc(member, comment);
             }
             members.push(member);
         }
-        return ts.createEnumDeclaration(
-            undefined,
+        return ts.factory.createEnumDeclaration(
             modifiers,
             name,
             members

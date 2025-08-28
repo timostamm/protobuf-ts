@@ -78,7 +78,7 @@ export class EnumGenerator {
         }
         let statement = builder.build(
             this.imports.type(source, descriptor),
-            [ts.createModifier(ts.SyntaxKind.ExportKeyword)]
+            [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)]
         );
         // add to our file
         source.addStatement(statement);

@@ -51,7 +51,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             ),
 
             // return message
-            ts.createReturn(ts.createIdentifier("message")),
+            ts.factory.createReturnStatement(ts.factory.createIdentifier("message")),
         )
 
         methods.push(internalBinaryRead);
@@ -68,53 +68,55 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             MessageInterface = this.imports.type(source, descMessage),
             IBinaryReader = this.imports.name(source, 'IBinaryReader', this.options.runtimeImportPath, true),
             BinaryReadOptions = this.imports.name(source, 'BinaryReadOptions', this.options.runtimeImportPath, true);
-        return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("internalBinaryRead"), undefined, undefined,
+        return ts.factory.createMethodDeclaration(undefined, undefined, ts.factory.createIdentifier("internalBinaryRead"), undefined, undefined,
             [
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("reader"), undefined, ts.createTypeReferenceNode(IBinaryReader, undefined), undefined),
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("length"), undefined, ts.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword), undefined),
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("options"), undefined,
-                    ts.createTypeReferenceNode(BinaryReadOptions, undefined), undefined
+                ts.factory.createParameterDeclaration(undefined, undefined, ts.factory.createIdentifier("reader"), undefined, ts.factory.createTypeReferenceNode(IBinaryReader, undefined), undefined),
+                ts.factory.createParameterDeclaration(undefined, undefined, ts.factory.createIdentifier("length"), undefined, ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword), undefined),
+                ts.factory.createParameterDeclaration(undefined, undefined, ts.factory.createIdentifier("options"), undefined,
+                    ts.factory.createTypeReferenceNode(BinaryReadOptions, undefined), undefined
                 ),
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("target"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(MessageInterface, undefined),
+                ts.factory.createParameterDeclaration(undefined, undefined, ts.factory.createIdentifier("target"), ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(MessageInterface, undefined),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(MessageInterface, undefined),
-            ts.createBlock(bodyStatements, true)
+            ts.factory.createTypeReferenceNode(MessageInterface, undefined),
+            ts.factory.createBlock(bodyStatements, true)
         );
     }
 
     private makeVariables(): ts.VariableStatement {
         // let message = target ?? this.create(), end = reader.pos + length;
-        return ts.createVariableStatement(
+        return ts.factory.createVariableStatement(
             undefined,
-            ts.createVariableDeclarationList(
+            ts.factory.createVariableDeclarationList(
                 [
-                    ts.createVariableDeclaration(
-                        ts.createIdentifier("message"),
+                    ts.factory.createVariableDeclaration(
+                        ts.factory.createIdentifier("message"),
                         undefined,
-                        ts.createBinary(
-                            ts.createIdentifier("target"),
-                            ts.createToken(ts.SyntaxKind.QuestionQuestionToken),
-                            ts.createCall(
-                                ts.createPropertyAccess(
-                                    ts.createThis(),
-                                    ts.createIdentifier("create")
+                        undefined,
+                        ts.factory.createBinaryExpression(
+                            ts.factory.createIdentifier("target"),
+                            ts.factory.createToken(ts.SyntaxKind.QuestionQuestionToken),
+                            ts.factory.createCallExpression(
+                                ts.factory.createPropertyAccessExpression(
+                                    ts.factory.createThis(),
+                                    ts.factory.createIdentifier("create")
                                 ), undefined, []
                             )
                         )
                     ),
-                    ts.createVariableDeclaration(
-                        ts.createIdentifier("end"),
+                    ts.factory.createVariableDeclaration(
+                        ts.factory.createIdentifier("end"),
                         undefined,
-                        ts.createBinary(
-                            ts.createPropertyAccess(
-                                ts.createIdentifier("reader"),
-                                ts.createIdentifier("pos")
+                        undefined,
+                        ts.factory.createBinaryExpression(
+                            ts.factory.createPropertyAccessExpression(
+                                ts.factory.createIdentifier("reader"),
+                                ts.factory.createIdentifier("pos")
                             ),
-                            ts.createToken(ts.SyntaxKind.PlusToken),
-                            ts.createIdentifier("length")
+                            ts.factory.createToken(ts.SyntaxKind.PlusToken),
+                            ts.factory.createIdentifier("length")
                         )
                     )
                 ],
@@ -124,41 +126,42 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     }
 
     private makeWhileSwitch(switchCases: ts.CaseClause[], defaultClause: ts.DefaultClause): ts.WhileStatement {
-        return ts.createWhile(
-            ts.createBinary(
-                ts.createPropertyAccess(
-                    ts.createIdentifier("reader"),
-                    ts.createIdentifier("pos")
+        return ts.factory.createWhileStatement(
+            ts.factory.createBinaryExpression(
+                ts.factory.createPropertyAccessExpression(
+                    ts.factory.createIdentifier("reader"),
+                    ts.factory.createIdentifier("pos")
                 ),
-                ts.createToken(ts.SyntaxKind.LessThanToken),
-                ts.createIdentifier("end")
+                ts.factory.createToken(ts.SyntaxKind.LessThanToken),
+                ts.factory.createIdentifier("end")
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
 
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createArrayBindingPattern([
-                                    ts.createBindingElement(
+                        ts.factory.createVariableDeclarationList(
+                            [ts.factory.createVariableDeclaration(
+                                ts.factory.createArrayBindingPattern([
+                                    ts.factory.createBindingElement(
                                         undefined,
                                         undefined,
-                                        ts.createIdentifier("fieldNo"),
+                                        ts.factory.createIdentifier("fieldNo"),
                                         undefined
                                     ),
-                                    ts.createBindingElement(
+                                    ts.factory.createBindingElement(
                                         undefined,
                                         undefined,
-                                        ts.createIdentifier("wireType"),
+                                        ts.factory.createIdentifier("wireType"),
                                         undefined
                                     )
                                 ]),
                                 undefined,
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier("reader"),
-                                        ts.createIdentifier("tag")
+                                undefined,
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier("reader"),
+                                        ts.factory.createIdentifier("tag")
                                     ),
                                     undefined,
                                     []
@@ -167,9 +170,9 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                             ts.NodeFlags.Let
                         )
                     ),
-                    ts.createSwitch(
-                        ts.createIdentifier("fieldNo"),
-                        ts.createCaseBlock([
+                    ts.factory.createSwitchStatement(
+                        ts.factory.createIdentifier("fieldNo"),
+                        ts.factory.createCaseBlock([
                             ...switchCases,
                             defaultClause
                         ])
@@ -188,7 +191,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         for (let fieldInfo of interpreterType.fields) {
 
             let statements: ts.Statement[],
-                fieldPropertyAccess = ts.createPropertyAccess(ts.createIdentifier("message"), fieldInfo.localName);
+                fieldPropertyAccess = ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("message"), fieldInfo.localName);
 
             switch (fieldInfo.kind) {
 
@@ -221,14 +224,14 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             // case /* double double_field */ 1:
             const descField = descMessage.fields.find(descField => descField.number === fieldInfo.no);
             assert(descField !== undefined);
-            let fieldNumber = ts.createNumericLiteral(`${fieldInfo.no}`);
+            let fieldNumber = ts.factory.createNumericLiteral(`${fieldInfo.no}`);
             const fieldDeclarationComment = " " + getDeclarationString(descField)
                 .replace(/= \d+$/, '')
                 .replace(/]$/, '] ');
             ts.addSyntheticLeadingComment(fieldNumber, ts.SyntaxKind.MultiLineCommentTrivia, fieldDeclarationComment, false)
-            clauses.push(ts.createCaseClause(
+            clauses.push(ts.factory.createCaseClause(
                 fieldNumber,
-                [...statements, ts.createBreak(undefined)]
+                [...statements, ts.factory.createBreakStatement(undefined)]
             ));
         }
 
@@ -237,59 +240,60 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
     private makeDefaultClause(source:TypescriptFile,): ts.DefaultClause {
         let UnknownFieldHandler = this.imports.name(source, 'UnknownFieldHandler', this.options.runtimeImportPath);
-        return ts.createDefaultClause([
-                ts.createVariableStatement(
+        return ts.factory.createDefaultClause([
+                ts.factory.createVariableStatement(
                     undefined,
-                    ts.createVariableDeclarationList(
-                        [ts.createVariableDeclaration(
-                            ts.createIdentifier("u"),
+                    ts.factory.createVariableDeclarationList(
+                        [ts.factory.createVariableDeclaration(
+                            ts.factory.createIdentifier("u"),
                             undefined,
-                            ts.createPropertyAccess(
-                                ts.createIdentifier("options"),
-                                ts.createIdentifier("readUnknownField")
+                            undefined,
+                            ts.factory.createPropertyAccessExpression(
+                                ts.factory.createIdentifier("options"),
+                                ts.factory.createIdentifier("readUnknownField")
                             )
                         )],
                         ts.NodeFlags.Let
                     )
                 ),
-                ts.createIf(
-                    ts.createBinary(
-                        ts.createIdentifier("u"),
-                        ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
-                        ts.createStringLiteral("throw")
+                ts.factory.createIfStatement(
+                    ts.factory.createBinaryExpression(
+                        ts.factory.createIdentifier("u"),
+                        ts.factory.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
+                        ts.factory.createStringLiteral("throw")
                     ),
-                    ts.createThrow(ts.createNew(
-                        ts.createPropertyAccess(
-                            ts.createIdentifier("globalThis"),
-                            ts.createIdentifier("Error")
+                    ts.factory.createThrowStatement(ts.factory.createNewExpression(
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createIdentifier("globalThis"),
+                            ts.factory.createIdentifier("Error")
                         ),
                         undefined,
-                        [ts.createTemplateExpression(
-                            ts.createTemplateHead(
+                        [ts.factory.createTemplateExpression(
+                            ts.factory.createTemplateHead(
                                 "Unknown field ",
                                 "Unknown field "
                             ),
                             [
-                                ts.createTemplateSpan(
-                                    ts.createIdentifier("fieldNo"),
-                                    ts.createTemplateMiddle(
+                                ts.factory.createTemplateSpan(
+                                    ts.factory.createIdentifier("fieldNo"),
+                                    ts.factory.createTemplateMiddle(
                                         " (wire type ",
                                         " (wire type "
                                     )
                                 ),
-                                ts.createTemplateSpan(
-                                    ts.createIdentifier("wireType"),
-                                    ts.createTemplateMiddle(
+                                ts.factory.createTemplateSpan(
+                                    ts.factory.createIdentifier("wireType"),
+                                    ts.factory.createTemplateMiddle(
                                         ") for ",
                                         ") for "
                                     )
                                 ),
-                                ts.createTemplateSpan(
-                                    ts.createPropertyAccess(
-                                        ts.createThis(),
-                                        ts.createIdentifier("typeName")
+                                ts.factory.createTemplateSpan(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createThis(),
+                                        ts.factory.createIdentifier("typeName")
                                     ),
-                                    ts.createTemplateTail(
+                                    ts.factory.createTemplateTail(
                                         "",
                                         ""
                                     )
@@ -299,55 +303,56 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                     )),
                     undefined
                 ),
-                ts.createVariableStatement(
+                ts.factory.createVariableStatement(
                     undefined,
-                    ts.createVariableDeclarationList(
-                        [ts.createVariableDeclaration(
-                            ts.createIdentifier("d"),
+                    ts.factory.createVariableDeclarationList(
+                        [ts.factory.createVariableDeclaration(
+                            ts.factory.createIdentifier("d"),
                             undefined,
-                            ts.createCall(
-                                ts.createPropertyAccess(
-                                    ts.createIdentifier("reader"),
-                                    ts.createIdentifier("skip")
+                            undefined,
+                            ts.factory.createCallExpression(
+                                ts.factory.createPropertyAccessExpression(
+                                    ts.factory.createIdentifier("reader"),
+                                    ts.factory.createIdentifier("skip")
                                 ),
                                 undefined,
-                                [ts.createIdentifier("wireType")]
+                                [ts.factory.createIdentifier("wireType")]
                             )
                         )],
                         ts.NodeFlags.Let
                     )
                 ),
-                ts.createIf(
-                    ts.createBinary(
-                        ts.createIdentifier("u"),
-                        ts.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
-                        ts.createFalse()
+                ts.factory.createIfStatement(
+                    ts.factory.createBinaryExpression(
+                        ts.factory.createIdentifier("u"),
+                        ts.factory.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
+                        ts.factory.createFalse()
                     ),
-                    ts.createExpressionStatement(ts.createCall(
-                        ts.createParen(ts.createConditional(
-                            ts.createBinary(
-                                ts.createIdentifier("u"),
-                                ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
-                                ts.createTrue()
+                    ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+                        ts.factory.createParenthesizedExpression(ts.factory.createConditionalExpression(
+                            ts.factory.createBinaryExpression(
+                                ts.factory.createIdentifier("u"),
+                                ts.factory.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
+                                ts.factory.createTrue()
                             ),
-                            ts.createToken(ts.SyntaxKind.QuestionToken),
-                            ts.createPropertyAccess(
-                                ts.createIdentifier(UnknownFieldHandler),
-                                ts.createIdentifier("onRead")
+                            ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                            ts.factory.createPropertyAccessExpression(
+                                ts.factory.createIdentifier(UnknownFieldHandler),
+                                ts.factory.createIdentifier("onRead")
                             ),
-                            ts.createToken(ts.SyntaxKind.ColonToken),
-                            ts.createIdentifier("u")
+                            ts.factory.createToken(ts.SyntaxKind.ColonToken),
+                            ts.factory.createIdentifier("u")
                         )),
                         undefined,
                         [
-                            ts.createPropertyAccess(
-                                ts.createThis(),
-                                ts.createIdentifier("typeName")
+                            ts.factory.createPropertyAccessExpression(
+                                ts.factory.createThis(),
+                                ts.factory.createIdentifier("typeName")
                             ),
-                            ts.createIdentifier("message"),
-                            ts.createIdentifier("fieldNo"),
-                            ts.createIdentifier("wireType"),
-                            ts.createIdentifier("d")
+                            ts.factory.createIdentifier("message"),
+                            ts.factory.createIdentifier("fieldNo"),
+                            ts.factory.createIdentifier("wireType"),
+                            ts.factory.createIdentifier("d")
                         ]
                     )),
                     undefined
@@ -360,16 +365,16 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     // message.int32StrField[reader.skip(0).skipBytes(1).int32()] = reader.skipBytes(1).string();
     // message.msgField[reader.skip(0).skipBytes(1).int32()] = OtherMessage.internalBinaryRead(reader, reader.skipBytes(1).uint32(), options);
     private map(field: rt.FieldInfo & { kind: "map" }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
-        return [ts.createExpressionStatement(ts.createCall(
-            ts.createPropertyAccess(
-                ts.createThis(),
-                ts.createIdentifier(this.binaryReadMapEntryMethodName + field.no)
+        return [ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+            ts.factory.createPropertyAccessExpression(
+                ts.factory.createThis(),
+                ts.factory.createIdentifier(this.binaryReadMapEntryMethodName + field.no)
             ),
             undefined,
             [
                 fieldPropertyAccess,
-                ts.createIdentifier("reader"),
-                ts.createIdentifier("options")
+                ts.factory.createIdentifier("reader"),
+                ts.factory.createIdentifier("options")
             ]
         ))];
     }
@@ -379,22 +384,22 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     private message(source:TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
         const descMessage = this.registry.getMessage(field.T().typeName);
         assert(descMessage);
-        let handlerMergeCall = ts.createCall(
-            ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.type(source, descMessage)),
-                ts.createIdentifier("internalBinaryRead")
+        let handlerMergeCall = ts.factory.createCallExpression(
+            ts.factory.createPropertyAccessExpression(
+                ts.factory.createIdentifier(this.imports.type(source, descMessage)),
+                ts.factory.createIdentifier("internalBinaryRead")
             ),
             undefined,
             [
-                ts.createIdentifier("reader"),
+                ts.factory.createIdentifier("reader"),
                 this.makeReaderCall("reader", rt.ScalarType.UINT32),
-                ts.createIdentifier("options"),
+                ts.factory.createIdentifier("options"),
                 fieldPropertyAccess
             ]
         );
-        return [ts.createExpressionStatement(ts.createBinary(
-            ts.createPropertyAccess(ts.createIdentifier("message"), field.localName),
-            ts.createToken(ts.SyntaxKind.EqualsToken),
+        return [ts.factory.createExpressionStatement(ts.factory.createBinaryExpression(
+            ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("message"), field.localName),
+            ts.factory.createToken(ts.SyntaxKind.EqualsToken),
             handlerMergeCall
         ))];
     }
@@ -405,34 +410,34 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     //     msg: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, (message.result as any).msg)
     // };
     private messageOneof(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }): ts.Statement[] {
-        let handlerMergeCall = ts.createCall(
-            ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
-                ts.createIdentifier("internalBinaryRead")
+        let handlerMergeCall = ts.factory.createCallExpression(
+            ts.factory.createPropertyAccessExpression(
+                ts.factory.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
+                ts.factory.createIdentifier("internalBinaryRead")
             ),
             undefined,
             [
-                ts.createIdentifier("reader"),
+                ts.factory.createIdentifier("reader"),
                 this.makeReaderCall("reader", rt.ScalarType.UINT32),
-                ts.createIdentifier("options"),
-                ts.createPropertyAccess(
-                    ts.createParen(ts.createAsExpression(
-                        ts.createPropertyAccess(ts.createIdentifier("message"), field.oneof),
-                        ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                ts.factory.createIdentifier("options"),
+                ts.factory.createPropertyAccessExpression(
+                    ts.factory.createParenthesizedExpression(ts.factory.createAsExpression(
+                        ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("message"), field.oneof),
+                        ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                     )),
-                    ts.createIdentifier(field.localName)
+                    ts.factory.createIdentifier(field.localName)
                 )
             ]
         );
-        return [ts.createExpressionStatement(ts.createBinary(
-            ts.createPropertyAccess(ts.createIdentifier("message"), field.oneof),
-            ts.createToken(ts.SyntaxKind.EqualsToken),
-            ts.createObjectLiteral(
+        return [ts.factory.createExpressionStatement(ts.factory.createBinaryExpression(
+            ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("message"), field.oneof),
+            ts.factory.createToken(ts.SyntaxKind.EqualsToken),
+            ts.factory.createObjectLiteralExpression(
                 [
                     //     oneofKind: "msg",
-                    ts.createPropertyAssignment(ts.createIdentifier(this.options.oneofKindDiscriminator), ts.createStringLiteral(field.localName)),
+                    ts.factory.createPropertyAssignment(ts.factory.createIdentifier(this.options.oneofKindDiscriminator), ts.factory.createStringLiteral(field.localName)),
                     //     msg: OtherMessage.internalBinaryRead(reader, reader.uint32(), options, (message.result as any).msg)
-                    ts.createPropertyAssignment(field.localName, handlerMergeCall)
+                    ts.factory.createPropertyAssignment(field.localName, handlerMergeCall)
                 ],
                 true
             )
@@ -442,22 +447,22 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
     // message.field.push(OtherMessage.internalBinaryRead(reader, reader.uint32(), options));
     private messageRepeated(source:TypescriptFile,field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression): ts.Statement[] {
-        let handlerMergeCall = ts.createCall(
-            ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
-                ts.createIdentifier("internalBinaryRead")
+        let handlerMergeCall = ts.factory.createCallExpression(
+            ts.factory.createPropertyAccessExpression(
+                ts.factory.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
+                ts.factory.createIdentifier("internalBinaryRead")
             ),
             undefined,
             [
-                ts.createIdentifier("reader"),
+                ts.factory.createIdentifier("reader"),
                 this.makeReaderCall("reader", rt.ScalarType.UINT32),
-                ts.createIdentifier("options"),
+                ts.factory.createIdentifier("options"),
             ]
         );
-        return [ts.createExpressionStatement(ts.createCall(
-            ts.createPropertyAccess(
+        return [ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+            ts.factory.createPropertyAccessExpression(
                 fieldPropertyAccess,
-                ts.createIdentifier("push")
+                ts.factory.createIdentifier("push")
             ),
             undefined,
             [handlerMergeCall]
@@ -470,9 +475,9 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
         let longType = field.kind == "enum" ? undefined : field.L;
         let readerCall = this.makeReaderCall("reader", type, longType);
-        return [ts.createExpressionStatement(ts.createBinary(
+        return [ts.factory.createExpressionStatement(ts.factory.createBinaryExpression(
             fieldPropertyAccess,
-            ts.createToken(ts.SyntaxKind.EqualsToken),
+            ts.factory.createToken(ts.SyntaxKind.EqualsToken),
             readerCall
         ))];
     }
@@ -485,15 +490,15 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     private scalarOneof(field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
         let longType = field.kind == "enum" ? undefined : field.L;
-        return [ts.createExpressionStatement(ts.createBinary(
-            ts.createPropertyAccess(ts.createIdentifier("message"), field.oneof),
-            ts.createToken(ts.SyntaxKind.EqualsToken),
-            ts.createObjectLiteral(
+        return [ts.factory.createExpressionStatement(ts.factory.createBinaryExpression(
+            ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("message"), field.oneof),
+            ts.factory.createToken(ts.SyntaxKind.EqualsToken),
+            ts.factory.createObjectLiteralExpression(
                 [
                     //     oneofKind: "err",
-                    ts.createPropertyAssignment(ts.createIdentifier(this.options.oneofKindDiscriminator), ts.createStringLiteral(field.localName)),
+                    ts.factory.createPropertyAssignment(ts.factory.createIdentifier(this.options.oneofKindDiscriminator), ts.factory.createStringLiteral(field.localName)),
                     //     err: reader.string()
-                    ts.createPropertyAssignment(field.localName, this.makeReaderCall("reader", type, longType))
+                    ts.factory.createPropertyAssignment(field.localName, this.makeReaderCall("reader", type, longType))
                 ],
                 true
             )
@@ -515,10 +520,10 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             case rt.ScalarType.BYTES:
                 // never packed
                 // message.${fieldName}.push(reader.${readerMethod}());
-                return [ts.createExpressionStatement(ts.createCall(
-                    ts.createPropertyAccess(
+                return [ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+                    ts.factory.createPropertyAccessExpression(
                         fieldPropertyAccess,
-                        ts.createIdentifier("push")
+                        ts.factory.createIdentifier("push")
                     ),
                     undefined,
                     [this.makeReaderCall('reader', type, longType)]
@@ -527,54 +532,55 @@ export class InternalBinaryRead implements CustomMethodGenerator {
             default:
                 // maybe packed
                 return [
-                    ts.createIf(
-                        ts.createBinary(
-                            ts.createIdentifier("wireType"),
-                            ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
-                            ts.createPropertyAccess(
-                                ts.createIdentifier(this.imports.name(source, 'WireType', this.options.runtimeImportPath)),
+                    ts.factory.createIfStatement(
+                        ts.factory.createBinaryExpression(
+                            ts.factory.createIdentifier("wireType"),
+                            ts.factory.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
+                            ts.factory.createPropertyAccessExpression(
+                                ts.factory.createIdentifier(this.imports.name(source, 'WireType', this.options.runtimeImportPath)),
                                 'LengthDelimited'
                             )
                             // ts.addSyntheticTrailingComment(
-                            //     ts.createNumericLiteral(WireType.LengthDelimited.toString()),
+                            //     ts.factory.createNumericLiteral(WireType.LengthDelimited.toString()),
                             //     ts.SyntaxKind.MultiLineCommentTrivia, " packed! ", false
                             // )
                         ),
-                        ts.createFor(
-                            ts.createVariableDeclarationList(
-                                [ts.createVariableDeclaration(
-                                    ts.createIdentifier("e"),
+                        ts.factory.createForStatement(
+                            ts.factory.createVariableDeclarationList(
+                                [ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("e"),
                                     undefined,
-                                    ts.createBinary(
+                                    undefined,
+                                    ts.factory.createBinaryExpression(
                                         this.makeReaderCall("reader", rt.ScalarType.INT32),
-                                        ts.createToken(ts.SyntaxKind.PlusToken),
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("reader"),
-                                            ts.createIdentifier("pos")
+                                        ts.factory.createToken(ts.SyntaxKind.PlusToken),
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("reader"),
+                                            ts.factory.createIdentifier("pos")
                                         )
                                     )
                                 )],
                                 ts.NodeFlags.Let
                             ),
-                            ts.createBinary(
-                                ts.createPropertyAccess(ts.createIdentifier("reader"), ts.createIdentifier("pos")),
-                                ts.createToken(ts.SyntaxKind.LessThanToken),
-                                ts.createIdentifier("e")
+                            ts.factory.createBinaryExpression(
+                                ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("reader"), ts.factory.createIdentifier("pos")),
+                                ts.factory.createToken(ts.SyntaxKind.LessThanToken),
+                                ts.factory.createIdentifier("e")
                             ),
                             undefined,
-                            ts.createExpressionStatement(ts.createCall(
-                                ts.createPropertyAccess(
+                            ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+                                ts.factory.createPropertyAccessExpression(
                                     fieldPropertyAccess,
-                                    ts.createIdentifier("push")
+                                    ts.factory.createIdentifier("push")
                                 ),
                                 undefined,
                                 [this.makeReaderCall("reader", type, longType)]
                             ))
                         ),
-                        ts.createExpressionStatement(ts.createCall(
-                            ts.createPropertyAccess(
+                        ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+                            ts.factory.createPropertyAccessExpression(
                                 fieldPropertyAccess,
-                                ts.createIdentifier("push")
+                                ts.factory.createIdentifier("push")
                             ),
                             undefined,
                             [this.makeReaderCall("reader", type, longType)]
@@ -598,62 +604,66 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
         // let len = reader.uint32(), end = reader.pos + len, key: keyof EnumMapMessage["int64EnuField"] | undefined, val: EnumMapMessage["int64EnuField"][any] | undefined;
         methodStatements.push(
-            ts.createVariableStatement(
+            ts.factory.createVariableStatement(
                 undefined,
-                ts.createVariableDeclarationList(
+                ts.factory.createVariableDeclarationList(
                     [
-                        ts.createVariableDeclaration(
-                            ts.createIdentifier("len"),
+                        ts.factory.createVariableDeclaration(
+                            ts.factory.createIdentifier("len"),
                             undefined,
-                            ts.createCall(
-                                ts.createPropertyAccess(
-                                    ts.createIdentifier("reader"),
-                                    ts.createIdentifier("uint32")
+                            undefined,
+                            ts.factory.createCallExpression(
+                                ts.factory.createPropertyAccessExpression(
+                                    ts.factory.createIdentifier("reader"),
+                                    ts.factory.createIdentifier("uint32")
                                 ),
                                 undefined,
                                 []
                             )
                         ),
-                        ts.createVariableDeclaration(
-                            ts.createIdentifier("end"),
+                        ts.factory.createVariableDeclaration(
+                            ts.factory.createIdentifier("end"),
                             undefined,
-                            ts.createBinary(
-                                ts.createPropertyAccess(
-                                    ts.createIdentifier("reader"),
-                                    ts.createIdentifier("pos")
+                            undefined,
+                            ts.factory.createBinaryExpression(
+                                ts.factory.createPropertyAccessExpression(
+                                    ts.factory.createIdentifier("reader"),
+                                    ts.factory.createIdentifier("pos")
                                 ),
-                                ts.createToken(ts.SyntaxKind.PlusToken),
-                                ts.createIdentifier("len")
+                                ts.factory.createToken(ts.SyntaxKind.PlusToken),
+                                ts.factory.createIdentifier("len")
                             )
                         ),
-                        ts.createVariableDeclaration(
-                            ts.createIdentifier("key"),
-                            ts.createUnionTypeNode([
-                                ts.createTypeOperatorNode(ts.createIndexedAccessTypeNode(
-                                    ts.createTypeReferenceNode(
+                        ts.factory.createVariableDeclaration(
+                            ts.factory.createIdentifier("key"),
+                            undefined,
+                            ts.factory.createUnionTypeNode([
+                                ts.factory.createIndexedAccessTypeNode(
+                                    ts.factory.createTypeReferenceNode(
                                         MessageInterface,
                                         undefined
                                     ),
-                                    ts.createLiteralTypeNode(ts.createStringLiteral(field.localName))
-                                )),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword)
+                                    ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(field.localName))
+                                ),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword)
                             ]),
                             undefined
                         ),
-                        ts.createVariableDeclaration(
-                            ts.createIdentifier("val"),
-                            ts.createUnionTypeNode([
-                                ts.createIndexedAccessTypeNode(
-                                    ts.createIndexedAccessTypeNode(
-                                        ts.createTypeReferenceNode(
+                        ts.factory.createVariableDeclaration(
+                            ts.factory.createIdentifier("val"),
+                            undefined,
+                            ts.factory.createUnionTypeNode([
+                                ts.factory.createIndexedAccessTypeNode(
+                                    ts.factory.createIndexedAccessTypeNode(
+                                        ts.factory.createTypeReferenceNode(
                                             MessageInterface,
                                             undefined
                                         ),
-                                        ts.createLiteralTypeNode(ts.createStringLiteral(field.localName))
+                                        ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(field.localName))
                                     ),
-                                    ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                                    ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                                 ),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword)
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword)
                             ]),
                             undefined
                         )
@@ -667,7 +677,7 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         // reader.string()
         let readKeyExpression = this.makeReaderCall("reader", field.K, rt.LongType.STRING);
         if (field.K === rt.ScalarType.BOOL) {
-            readKeyExpression = ts.createCall(ts.createPropertyAccess(readKeyExpression, ts.createIdentifier("toString")), undefined, []);
+            readKeyExpression = ts.factory.createCallExpression(ts.factory.createPropertyAccessExpression(readKeyExpression, ts.factory.createIdentifier("toString")), undefined, []);
         }
 
         // reader.bytes()
@@ -682,13 +692,13 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                 break;
 
             case "message":
-                readValueExpression = ts.createCall(
-                    ts.createPropertyAccess(ts.createIdentifier(this.imports.typeByName(source, field.V.T().typeName)), ts.createIdentifier("internalBinaryRead")),
+                readValueExpression = ts.factory.createCallExpression(
+                    ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier(this.imports.typeByName(source, field.V.T().typeName)), ts.factory.createIdentifier("internalBinaryRead")),
                     undefined,
                     [
-                        ts.createIdentifier("reader"),
+                        ts.factory.createIdentifier("reader"),
                         this.makeReaderCall("reader", rt.ScalarType.UINT32),
-                        ts.createIdentifier("options")
+                        ts.factory.createIdentifier("options")
                     ]
                 );
                 break;
@@ -697,41 +707,42 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
         // while (reader.pos < end) {
         methodStatements.push(
-            ts.createWhile(
-                ts.createBinary(
-                    ts.createPropertyAccess(
-                        ts.createIdentifier("reader"),
-                        ts.createIdentifier("pos")
+            ts.factory.createWhileStatement(
+                ts.factory.createBinaryExpression(
+                    ts.factory.createPropertyAccessExpression(
+                        ts.factory.createIdentifier("reader"),
+                        ts.factory.createIdentifier("pos")
                     ),
-                    ts.createToken(ts.SyntaxKind.LessThanToken),
-                    ts.createIdentifier("end")
+                    ts.factory.createToken(ts.SyntaxKind.LessThanToken),
+                    ts.factory.createIdentifier("end")
                 ),
-                ts.createBlock(
+                ts.factory.createBlock(
                     [
                         // let [fieldNo, wireType] = reader.tag();
-                        ts.createVariableStatement(
+                        ts.factory.createVariableStatement(
                             undefined,
-                            ts.createVariableDeclarationList(
-                                [ts.createVariableDeclaration(
-                                    ts.createArrayBindingPattern([
-                                        ts.createBindingElement(
+                            ts.factory.createVariableDeclarationList(
+                                [ts.factory.createVariableDeclaration(
+                                    ts.factory.createArrayBindingPattern([
+                                        ts.factory.createBindingElement(
                                             undefined,
                                             undefined,
-                                            ts.createIdentifier("fieldNo"),
+                                            ts.factory.createIdentifier("fieldNo"),
                                             undefined
                                         ),
-                                        ts.createBindingElement(
+                                        ts.factory.createBindingElement(
                                             undefined,
                                             undefined,
-                                            ts.createIdentifier("wireType"),
+                                            ts.factory.createIdentifier("wireType"),
                                             undefined
                                         )
                                     ]),
                                     undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("reader"),
-                                            ts.createIdentifier("tag")
+                                    undefined,
+                                    ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("reader"),
+                                            ts.factory.createIdentifier("tag")
                                         ),
                                         undefined,
                                         []
@@ -741,42 +752,42 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                             )
                         ),
                         // switch (fieldNo) {
-                        ts.createSwitch(
-                            ts.createIdentifier("fieldNo"),
-                            ts.createCaseBlock([
+                        ts.factory.createSwitchStatement(
+                            ts.factory.createIdentifier("fieldNo"),
+                            ts.factory.createCaseBlock([
                                 // case 1:
-                                ts.createCaseClause(
-                                    ts.createNumericLiteral("1"),
+                                ts.factory.createCaseClause(
+                                    ts.factory.createNumericLiteral("1"),
                                     [
                                         // key = reader....
-                                        ts.createExpressionStatement(ts.createBinary(
-                                            ts.createIdentifier("key"),
-                                            ts.createToken(ts.SyntaxKind.EqualsToken),
+                                        ts.factory.createExpressionStatement(ts.factory.createBinaryExpression(
+                                            ts.factory.createIdentifier("key"),
+                                            ts.factory.createToken(ts.SyntaxKind.EqualsToken),
                                             readKeyExpression
                                         )),
-                                        ts.createBreak(undefined)
+                                        ts.factory.createBreakStatement(undefined)
                                     ]
                                 ),
                                 // case 2:
-                                ts.createCaseClause(
-                                    ts.createNumericLiteral("2"),
+                                ts.factory.createCaseClause(
+                                    ts.factory.createNumericLiteral("2"),
                                     [
                                         // value = ...
-                                        ts.createExpressionStatement(ts.createBinary(
-                                            ts.createIdentifier("val"),
-                                            ts.createToken(ts.SyntaxKind.EqualsToken),
+                                        ts.factory.createExpressionStatement(ts.factory.createBinaryExpression(
+                                            ts.factory.createIdentifier("val"),
+                                            ts.factory.createToken(ts.SyntaxKind.EqualsToken),
                                             readValueExpression
                                         )),
-                                        ts.createBreak(undefined)
+                                        ts.factory.createBreakStatement(undefined)
                                     ]
                                 ),
-                                ts.createDefaultClause([ts.createThrow(ts.createNew(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier("globalThis"),
-                                        ts.createIdentifier("Error")
+                                ts.factory.createDefaultClause([ts.factory.createThrowStatement(ts.factory.createNewExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier("globalThis"),
+                                        ts.factory.createIdentifier("Error")
                                     ),
                                     undefined,
-                                    [ts.createStringLiteral("unknown map entry field for " + fieldQualifiedName)]
+                                    [ts.factory.createStringLiteral("unknown map entry field for " + fieldQualifiedName)]
                                 ))])
                             ])
                         )
@@ -789,19 +800,19 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
         // map[key ?? ""] = val ?? 0;
         methodStatements.push(
-            ts.createExpressionStatement(ts.createBinary(
-                ts.createElementAccess(
-                    ts.createIdentifier("map"),
-                    ts.createBinary(
-                        ts.createIdentifier("key"),
-                        ts.createToken(ts.SyntaxKind.QuestionQuestionToken),
+            ts.factory.createExpressionStatement(ts.factory.createBinaryExpression(
+                ts.factory.createElementAccessExpression(
+                    ts.factory.createIdentifier("map"),
+                    ts.factory.createBinaryExpression(
+                        ts.factory.createIdentifier("key"),
+                        ts.factory.createToken(ts.SyntaxKind.QuestionQuestionToken),
                         this.createMapKeyDefaultValue(field.K)
                     )
                 ),
-                ts.createToken(ts.SyntaxKind.EqualsToken),
-                ts.createBinary(
-                    ts.createIdentifier("val"),
-                    ts.createToken(ts.SyntaxKind.QuestionQuestionToken),
+                ts.factory.createToken(ts.SyntaxKind.EqualsToken),
+                ts.factory.createBinaryExpression(
+                    ts.factory.createIdentifier("val"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionQuestionToken),
                     this.createMapValueDefaultValue(source,field.V)
                 )
             ))
@@ -809,57 +820,53 @@ export class InternalBinaryRead implements CustomMethodGenerator {
 
 
         // private binaryReadMapEntry<field no>(map: ExampleResponse["<field local name>"], reader: IBinaryReader, options: BinaryReadOptions): void
-        return ts.createMethod(
+        return ts.factory.createMethodDeclaration(
+            [ts.factory.createModifier(ts.SyntaxKind.PrivateKeyword)],
             undefined,
-            [ts.createModifier(ts.SyntaxKind.PrivateKeyword)],
-            undefined,
-            ts.createIdentifier(methodName),
+            ts.factory.createIdentifier(methodName),
             undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("map"),
                     undefined,
-                    ts.createIdentifier("map"),
-                    undefined,
-                    ts.createIndexedAccessTypeNode(
-                        ts.createTypeReferenceNode(
-                            ts.createIdentifier(MessageInterface),
+                    ts.factory.createIndexedAccessTypeNode(
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createIdentifier(MessageInterface),
                             undefined
                         ),
-                        ts.createLiteralTypeNode(ts.createStringLiteral(field.localName))
+                        ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(field.localName))
                     ),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("reader"),
                     undefined,
-                    ts.createIdentifier("reader"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier(IBinaryReader),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier(IBinaryReader),
                         undefined
                     ),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("options"),
                     undefined,
-                    ts.createIdentifier("options"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier(BinaryReadOptions),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier(BinaryReadOptions),
                         undefined
                     ),
                     undefined
                 )
 
             ],
-            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
-            ts.createBlock(
+            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
+            ts.factory.createBlock(
                 methodStatements,
                 true
             )
@@ -888,10 +895,10 @@ export class InternalBinaryRead implements CustomMethodGenerator {
                 const descMessage = this.registry.getMessage(V.T().typeName);
                 assert(descMessage);
                 let MessageInterface = this.imports.type(source, descMessage);
-                return ts.createCall(
-                    ts.createPropertyAccess(
-                        ts.createIdentifier(MessageInterface),
-                        ts.createIdentifier("create")
+                return ts.factory.createCallExpression(
+                    ts.factory.createPropertyAccessExpression(
+                        ts.factory.createIdentifier(MessageInterface),
+                        ts.factory.createIdentifier("create")
                     ),
                     undefined,
                     []
@@ -915,8 +922,8 @@ export class InternalBinaryRead implements CustomMethodGenerator {
     // reader.int32().toNumber()
     private makeReaderCall(readerExpressionOrName: string | ts.Expression, type: rt.ScalarType, longType?: rt.LongType): ts.Expression {
         let readerMethodName = ScalarType[type].toLowerCase();
-        let readerMethodProp = ts.createPropertyAccess(typeof readerExpressionOrName == "string" ? ts.createIdentifier(readerExpressionOrName) : readerExpressionOrName, ts.createIdentifier(readerMethodName));
-        let readerMethodCall = ts.createCall(
+        let readerMethodProp = ts.factory.createPropertyAccessExpression(typeof readerExpressionOrName == "string" ? ts.factory.createIdentifier(readerExpressionOrName) : readerExpressionOrName, ts.factory.createIdentifier(readerMethodName));
+        let readerMethodCall = ts.factory.createCallExpression(
             readerMethodProp,
             undefined, []
         );
@@ -926,16 +933,16 @@ export class InternalBinaryRead implements CustomMethodGenerator {
         let convertMethodProp;
         switch (longType ?? rt.LongType.STRING) {
             case rt.LongType.STRING:
-                convertMethodProp = ts.createPropertyAccess(readerMethodCall, ts.createIdentifier('toString'));
+                convertMethodProp = ts.factory.createPropertyAccessExpression(readerMethodCall, ts.factory.createIdentifier('toString'));
                 break;
             case rt.LongType.NUMBER:
-                convertMethodProp = ts.createPropertyAccess(readerMethodCall, ts.createIdentifier('toNumber'));
+                convertMethodProp = ts.factory.createPropertyAccessExpression(readerMethodCall, ts.factory.createIdentifier('toNumber'));
                 break;
             case rt.LongType.BIGINT:
-                convertMethodProp = ts.createPropertyAccess(readerMethodCall, ts.createIdentifier('toBigInt'));
+                convertMethodProp = ts.factory.createPropertyAccessExpression(readerMethodCall, ts.factory.createIdentifier('toBigInt'));
                 break;
         }
-        return ts.createCall(
+        return ts.factory.createCallExpression(
             convertMethodProp,
             undefined, []
         );

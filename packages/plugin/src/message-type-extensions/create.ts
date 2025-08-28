@@ -43,7 +43,7 @@ export class Create implements CustomMethodGenerator {
             this.makeMergeIf(source, descMessage),
 
             // return message;
-            ts.createReturn(ts.createIdentifier("message"))
+            ts.factory.createReturnStatement(ts.factory.createIdentifier("message"))
         )
         return [methodDeclaration];
     }
@@ -54,44 +54,45 @@ export class Create implements CustomMethodGenerator {
             MessageInterface = this.imports.type(source, descMessage),
             PartialMessage = this.imports.name(source,'PartialMessage', this.options.runtimeImportPath, true)
         ;
-        return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("create"), undefined, undefined,
+        return ts.factory.createMethodDeclaration(undefined, undefined, ts.factory.createIdentifier("create"), undefined, undefined,
             [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("value"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(PartialMessage, [
-                        ts.createTypeReferenceNode((MessageInterface), undefined)]
+                ts.factory.createParameterDeclaration(
+                    undefined, undefined, ts.factory.createIdentifier("value"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(PartialMessage, [
+                        ts.factory.createTypeReferenceNode((MessageInterface), undefined)]
                     ),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(MessageInterface, undefined),
-            ts.createBlock(bodyStatements, true)
+            ts.factory.createTypeReferenceNode(MessageInterface, undefined),
+            ts.factory.createBlock(bodyStatements, true)
         );
     }
 
 
     private makeMessageVariable() {
-        return ts.createVariableStatement(
+        return ts.factory.createVariableStatement(
             undefined,
-            ts.createVariableDeclarationList(
-                [ts.createVariableDeclaration(
-                    ts.createIdentifier("message"),
+            ts.factory.createVariableDeclarationList(
+                [ts.factory.createVariableDeclaration(
+                    ts.factory.createIdentifier("message"),
                     undefined,
-                    ts.createCall(
-                        ts.createPropertyAccess(
-                            ts.createPropertyAccess(
-                                ts.createIdentifier("globalThis"),
-                                ts.createIdentifier("Object")
+                    undefined,
+                    ts.factory.createCallExpression(
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createPropertyAccessExpression(
+                                ts.factory.createIdentifier("globalThis"),
+                                ts.factory.createIdentifier("Object")
                             ),
-                            ts.createIdentifier("create")
+                            ts.factory.createIdentifier("create")
                         ),
                         undefined,
                         [
-                            ts.createNonNullExpression(
-                                ts.createPropertyAccess(
-                                    ts.createThis(),
-                                    ts.createIdentifier("messagePrototype")
+                            ts.factory.createNonNullExpression(
+                                ts.factory.createPropertyAccessExpression(
+                                    ts.factory.createThis(),
+                                    ts.factory.createIdentifier("messagePrototype")
                                 )
                             )
                         ]
@@ -107,13 +108,13 @@ export class Create implements CustomMethodGenerator {
         let messageType = this.interpreter.getMessageType(descMessage);
         let defaultMessage = messageType.create();
         return Object.entries(defaultMessage).map(([key, value]): ts.ExpressionStatement => (
-            ts.createExpressionStatement(
-                ts.createBinary(
-                    ts.createPropertyAccess(
-                        ts.createIdentifier("message"),
-                        ts.createIdentifier(key)
+            ts.factory.createExpressionStatement(
+                ts.factory.createBinaryExpression(
+                    ts.factory.createPropertyAccessExpression(
+                        ts.factory.createIdentifier("message"),
+                        ts.factory.createIdentifier(key)
                     ),
-                    ts.createToken(ts.SyntaxKind.EqualsToken),
+                    ts.factory.createToken(ts.SyntaxKind.EqualsToken),
                     typescriptLiteralFromValue(value)
                 )
             )
@@ -123,22 +124,22 @@ export class Create implements CustomMethodGenerator {
 
     private makeMergeIf(source: TypescriptFile, descMessage: DescMessage) {
         const MessageInterface = this.imports.type(source, descMessage);
-        return ts.createIf(
-            ts.createBinary(
-                ts.createIdentifier("value"),
-                ts.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
-                ts.createIdentifier("undefined")
+        return ts.factory.createIfStatement(
+            ts.factory.createBinaryExpression(
+                ts.factory.createIdentifier("value"),
+                ts.factory.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
+                ts.factory.createIdentifier("undefined")
             ),
-            ts.createExpressionStatement(ts.createCall(
-                ts.createIdentifier(this.imports.name(source, 'reflectionMergePartial', this.options.runtimeImportPath)),
-                [ts.createTypeReferenceNode(
+            ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+                ts.factory.createIdentifier(this.imports.name(source, 'reflectionMergePartial', this.options.runtimeImportPath)),
+                [ts.factory.createTypeReferenceNode(
                     MessageInterface,
                     undefined
                 )],
                 [
-                    ts.createThis(),
-                    ts.createIdentifier("message"),
-                    ts.createIdentifier("value"),
+                    ts.factory.createThis(),
+                    ts.factory.createIdentifier("message"),
+                    ts.factory.createIdentifier("value"),
                 ]
             )),
             undefined

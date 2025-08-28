@@ -81,13 +81,13 @@ export class MessageTypeGenerator {
         const
             // identifier for the message
             MyMessage = this.imports.type(source, descMessage),
-            Message$Type = ts.createIdentifier(this.imports.type(source, descMessage) + '$Type'),
-            MessageType = ts.createIdentifier(this.imports.name(source, "MessageType", this.options.runtimeImportPath)),
+            Message$Type = ts.factory.createIdentifier(this.imports.type(source, descMessage) + '$Type'),
+            MessageType = ts.factory.createIdentifier(this.imports.name(source, "MessageType", this.options.runtimeImportPath)),
             interpreterType = this.interpreter.getMessageType(descMessage),
             classDecMembers: ts.ClassElement[] = [],
             classDecSuperArgs: ts.Expression[] = [ // arguments to the MessageType CTOR
                 // arg 0: type name
-                ts.createStringLiteral(descMessage.typeName),
+                ts.factory.createStringLiteral(descMessage.typeName),
                 // arg 1: field infos
                 this.fieldInfoGenerator.createFieldInfoLiterals(source, interpreterType.fields)
             ];
@@ -101,10 +101,10 @@ export class MessageTypeGenerator {
 
         // "MyMessage$Type" constructor() { super(...) }
         classDecMembers.push(
-            ts.createConstructor(
-                undefined, undefined, [],
-                ts.createBlock([ts.createExpressionStatement(
-                    ts.createCall(ts.createSuper(), undefined, classDecSuperArgs)
+            ts.factory.createConstructorDeclaration(
+                undefined, [],
+                ts.factory.createBlock([ts.factory.createExpressionStatement(
+                    ts.factory.createCallExpression(ts.factory.createSuper(), undefined, classDecSuperArgs)
                 )], true)
             )
         );
@@ -123,23 +123,23 @@ export class MessageTypeGenerator {
         }
 
         // class "MyMessage$Type" extends "MessageType"<"MyMessage"> {
-        const classDec = ts.createClassDeclaration(
-            undefined, undefined, Message$Type, undefined,
-            [ts.createHeritageClause(
+        const classDec = ts.factory.createClassDeclaration(
+            undefined, Message$Type, undefined,
+            [ts.factory.createHeritageClause(
                 ts.SyntaxKind.ExtendsKeyword,
-                [ts.createExpressionWithTypeArguments([ts.createTypeReferenceNode(MyMessage, undefined)], MessageType)]
+                [ts.factory.createExpressionWithTypeArguments(MessageType, [ts.factory.createTypeReferenceNode(MyMessage, undefined)])]
             )],
             classDecMembers
         );
 
 
         // export const "messageId" = new "MessageTypeId"();
-        const exportConst = ts.createVariableStatement(
-            [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
-            ts.createVariableDeclarationList(
-                [ts.createVariableDeclaration(
-                    MyMessage, undefined,
-                    ts.createNew(Message$Type, undefined, [])
+        const exportConst = ts.factory.createVariableStatement(
+            [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+            ts.factory.createVariableDeclarationList(
+                [ts.factory.createVariableDeclaration(
+                    MyMessage, undefined, undefined,
+                    ts.factory.createNewExpression(Message$Type, undefined, [])
                 )],
                 ts.NodeFlags.Const
             )

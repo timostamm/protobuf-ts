@@ -132,15 +132,14 @@ function ensureNamespaceImportPresent(
  * import * as <asName> from "<importFrom>";
  */
 function createNamespaceImport(asName: string, importFrom: string, isTypeOnly: boolean) {
-    return ts.createImportDeclaration(
+    return ts.factory.createImportDeclaration(
         undefined,
-        undefined,
-        ts.createImportClause(
+        ts.factory.createImportClause(
+            isTypeOnly ? ts.SyntaxKind.TypeKeyword : undefined,
             undefined,
-            ts.createNamespaceImport(ts.createIdentifier(asName)),
-            isTypeOnly
+            ts.factory.createNamespaceImport(ts.factory.createIdentifier(asName))
         ),
-        ts.createStringLiteral(importFrom)
+        ts.factory.createStringLiteral(importFrom)
     );
 }
 
@@ -223,34 +222,34 @@ function ensureNamedImportPresent(
  */
 function createNamedImport(name: string, from: string, as?: string, isTypeOnly = false): ts.ImportDeclaration {
     if (as) {
-        return ts.createImportDeclaration(
+        return ts.factory.createImportDeclaration(
             undefined,
-            undefined,
-            ts.createImportClause(
+            ts.factory.createImportClause(
+                isTypeOnly ? ts.SyntaxKind.TypeKeyword : undefined,
                 undefined,
-                ts.createNamedImports([ts.createImportSpecifier(
-                    ts.createIdentifier(name),
-                    ts.createIdentifier(as)
-                )]),
-                isTypeOnly
+                ts.factory.createNamedImports([ts.factory.createImportSpecifier(
+                    false,
+                    ts.factory.createIdentifier(name),
+                    ts.factory.createIdentifier(as)
+                )])
             ),
-            ts.createStringLiteral(from)
+            ts.factory.createStringLiteral(from)
         );
     }
-    return ts.createImportDeclaration(
+    return ts.factory.createImportDeclaration(
         undefined,
-        undefined,
-        ts.createImportClause(
+        ts.factory.createImportClause(
+            isTypeOnly ? ts.SyntaxKind.TypeKeyword : undefined,
             undefined,
-            ts.createNamedImports([
-                ts.createImportSpecifier(
+            ts.factory.createNamedImports([
+                ts.factory.createImportSpecifier(
+                    false,
                     undefined,
-                    ts.createIdentifier(name)
+                    ts.factory.createIdentifier(name)
                 )
-            ]),
-            isTypeOnly
+            ])
         ),
-        ts.createStringLiteral(from)
+        ts.factory.createStringLiteral(from)
     );
 }
 
@@ -270,7 +269,7 @@ function findNamedImports(sourceFile: ts.SourceFile): { name: string, as: string
                     assert(ts.isStringLiteral(s.moduleSpecifier));
                     if (importSpecifier.propertyName) {
                         r.push({
-                            name: importSpecifier.propertyName.escapedText.toString(),
+                            name: importSpecifier.propertyName.text.toString(),
                             as: importSpecifier.name.escapedText.toString(),
                             from: s.moduleSpecifier.text,
                             isTypeOnly: s.importClause.isTypeOnly

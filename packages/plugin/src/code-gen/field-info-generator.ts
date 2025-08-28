@@ -23,7 +23,7 @@ export class FieldInfoGenerator {
 
     createFieldInfoLiterals(source: TypescriptFile, fieldInfos: readonly rt.PartialFieldInfo[]): ts.ArrayLiteralExpression {
         fieldInfos = fieldInfos.map(fi => FieldInfoGenerator.denormalizeFieldInfo(fi));
-        return ts.createArrayLiteral(fieldInfos.map(fi => this.createFieldInfoLiteral(source, fi)), true);
+        return ts.factory.createArrayLiteralExpression(fieldInfos.map(fi => this.createFieldInfoLiteral(source, fi)), true);
     }
 
 
@@ -39,7 +39,7 @@ export class FieldInfoGenerator {
         // oneof: The name of the `oneof` group, if this field belongs to one.
         for (let key of ["no", "name", "kind", "localName", "jsonName", "oneof"] as const) {
             if (fieldInfo[key] !== undefined) {
-                properties.push(ts.createPropertyAssignment(
+                properties.push(ts.factory.createPropertyAssignment(
                     key, typescriptLiteralFromValue(fieldInfo[key])
                 ));
             }
@@ -47,7 +47,7 @@ export class FieldInfoGenerator {
 
         // repeat: Is the field repeated?
         if (fieldInfo.repeat !== undefined) {
-            properties.push(ts.createPropertyAssignment(
+            properties.push(ts.factory.createPropertyAssignment(
                 "repeat",
                 this.createRepeatType(fieldInfo.repeat)
             ));
@@ -55,7 +55,7 @@ export class FieldInfoGenerator {
 
         // opt: Is the field optional?
         if (fieldInfo.opt !== undefined) {
-            properties.push(ts.createPropertyAssignment(
+            properties.push(ts.factory.createPropertyAssignment(
                 "opt", typescriptLiteralFromValue(fieldInfo.opt)
             ));
         }
@@ -64,43 +64,43 @@ export class FieldInfoGenerator {
             case "scalar":
 
                 // T: Scalar field type.
-                properties.push(ts.createPropertyAssignment("T", this.createScalarType(fieldInfo.T)));
+                properties.push(ts.factory.createPropertyAssignment("T", this.createScalarType(fieldInfo.T)));
 
                 // L?: JavaScript long type
                 if (fieldInfo.L !== undefined) {
-                    properties.push(ts.createPropertyAssignment("L", this.createLongType(fieldInfo.L)));
+                    properties.push(ts.factory.createPropertyAssignment("L", this.createLongType(fieldInfo.L)));
                 }
                 break;
 
             case "enum":
                 // T: Return enum field type info.
-                properties.push(ts.createPropertyAssignment(ts.createIdentifier('T'), this.createEnumT(source, fieldInfo.T())));
+                properties.push(ts.factory.createPropertyAssignment(ts.factory.createIdentifier('T'), this.createEnumT(source, fieldInfo.T())));
                 break;
 
             case "message":
                 // T: Return message field type handler.
-                properties.push(ts.createPropertyAssignment(ts.createIdentifier('T'), this.createMessageT(source, fieldInfo.T())));
+                properties.push(ts.factory.createPropertyAssignment(ts.factory.createIdentifier('T'), this.createMessageT(source, fieldInfo.T())));
                 break;
 
 
             case "map":
                 // K: Map field key type.
-                properties.push(ts.createPropertyAssignment("K", this.createScalarType(fieldInfo.K)));
+                properties.push(ts.factory.createPropertyAssignment("K", this.createScalarType(fieldInfo.K)));
 
                 // V: Map field value type.
-                properties.push(ts.createPropertyAssignment("V", this.createMapV(source, fieldInfo.V)));
+                properties.push(ts.factory.createPropertyAssignment("V", this.createMapV(source, fieldInfo.V)));
                 break;
         }
 
         // options:
         if (fieldInfo.options) {
-            properties.push(ts.createPropertyAssignment(
-                ts.createIdentifier('options'),
+            properties.push(ts.factory.createPropertyAssignment(
+                ts.factory.createIdentifier('options'),
                 typescriptLiteralFromValue(fieldInfo.options)
             ));
         }
 
-        return ts.createObjectLiteral(properties, false);
+        return ts.factory.createObjectLiteralExpression(properties, false);
     }
 
 
@@ -139,10 +139,10 @@ export class FieldInfoGenerator {
         let descriptor = this.registry.getMessage(type.typeName);
         assert(descriptor);
         let generatedMessage = this.imports.type(source, descriptor);
-        return ts.createArrowFunction(
+        return ts.factory.createArrowFunction(
             undefined, undefined, [], undefined,
-            ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-            ts.createIdentifier(generatedMessage)
+            ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+            ts.factory.createIdentifier(generatedMessage)
         );
     }
 
@@ -152,36 +152,36 @@ export class FieldInfoGenerator {
         assert(descriptor);
         let generatedEnum = this.imports.type(source, descriptor),
             enumInfoLiteral: ts.Expression[] = [
-                ts.createStringLiteral(pbTypeName),
-                ts.createIdentifier(generatedEnum),
+                ts.factory.createStringLiteral(pbTypeName),
+                ts.factory.createIdentifier(generatedEnum),
             ];
         if (sharedPrefix) {
-            enumInfoLiteral.push(ts.createStringLiteral(sharedPrefix));
+            enumInfoLiteral.push(ts.factory.createStringLiteral(sharedPrefix));
         }
-        return ts.createArrowFunction(
+        return ts.factory.createArrowFunction(
             undefined, undefined, [], undefined,
-            ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-            ts.createArrayLiteral(enumInfoLiteral, false)
+            ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+            ts.factory.createArrayLiteralExpression(enumInfoLiteral, false)
         );
     }
 
 
     private createRepeatType(type: rt.RepeatType): ts.Expression {
-        const expr = ts.createNumericLiteral(type.toString());
+        const expr = ts.factory.createNumericLiteral(type.toString());
         ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `RepeatType.${rt.RepeatType[type]}`);
         return expr;
     }
 
 
     private createScalarType(type: rt.ScalarType): ts.Expression {
-        const expr = ts.createNumericLiteral(type.toString());
+        const expr = ts.factory.createNumericLiteral(type.toString());
         ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `ScalarType.${rt.ScalarType[type]}`);
         return expr;
     }
 
 
     private createLongType(type: rt.LongType): ts.Expression {
-        const expr = ts.createNumericLiteral(type.toString());
+        const expr = ts.factory.createNumericLiteral(type.toString());
         ts.addSyntheticTrailingComment(expr, ts.SyntaxKind.MultiLineCommentTrivia, `LongType.${rt.LongType[type]}`);
         return expr;
     }
@@ -205,15 +205,15 @@ export class FieldInfoGenerator {
                 break;
         }
         const properties: ts.ObjectLiteralElementLike[] = [
-            ts.createPropertyAssignment(ts.createIdentifier('kind'), ts.createStringLiteral(mapV.kind)),
-            ts.createPropertyAssignment(ts.createIdentifier('T'), T)
+            ts.factory.createPropertyAssignment(ts.factory.createIdentifier('kind'), ts.factory.createStringLiteral(mapV.kind)),
+            ts.factory.createPropertyAssignment(ts.factory.createIdentifier('T'), T)
         ];
         if (L) {
             properties.push(
-                ts.createPropertyAssignment(ts.createIdentifier('L'), L)
+                ts.factory.createPropertyAssignment(ts.factory.createIdentifier('L'), L)
             );
         }
-        return ts.createObjectLiteral(properties);
+        return ts.factory.createObjectLiteralExpression(properties);
     }
 
 
