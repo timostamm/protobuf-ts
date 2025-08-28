@@ -40,7 +40,7 @@ export class ServiceTypeGenerator {
             interpreterType = this.interpreter.getServiceType(descService);
 
         const args: ts.Expression[] = [
-            ts.createStringLiteral(interpreterType.typeName),
+            ts.factory.createStringLiteral(interpreterType.typeName),
             this.methodInfoGenerator.createMethodInfoLiterals(source, interpreterType.methods)
         ];
 
@@ -50,14 +50,15 @@ export class ServiceTypeGenerator {
             );
         }
 
-        const exportConst = ts.createVariableStatement(
-            [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
-            ts.createVariableDeclarationList(
-                [ts.createVariableDeclaration(
-                    ts.createIdentifier(MyService),
+        const exportConst = ts.factory.createVariableStatement(
+            [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+            ts.factory.createVariableDeclarationList(
+                [ts.factory.createVariableDeclaration(
+                    ts.factory.createIdentifier(MyService),
                     undefined,
-                    ts.createNew(
-                        ts.createIdentifier(ServiceType),
+                    undefined,
+                    ts.factory.createNewExpression(
+                        ts.factory.createIdentifier(ServiceType),
                         undefined,
                         args
                     )

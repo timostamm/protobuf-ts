@@ -75,8 +75,8 @@ export abstract class ServiceClientGeneratorBase {
         }
 
         // export interface MyService {...
-        let statement = ts.createInterfaceDeclaration(
-            undefined, [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
+        let statement = ts.factory.createInterfaceDeclaration(
+            [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
             IServiceClient, undefined, undefined, [...signatures]
         );
 
@@ -104,45 +104,49 @@ export abstract class ServiceClientGeneratorBase {
 
     protected createUnarySignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[] {
         const method = this.createUnary(source, methodInfo);
-        return [ts.createMethodSignature(
+        return [ts.factory.createMethodSignature(
+            method.modifiers as ts.MethodSignature['modifiers'],
+            method.name,
+            method.questionToken,
             method.typeParameters,
             method.parameters,
-            method.type,
-            method.name,
-            method.questionToken
+            method.type
         )];
     }
 
     protected createServerStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[]{
         const method = this.createServerStreaming(source, methodInfo);
-        return [ts.createMethodSignature(
+        return [ts.factory.createMethodSignature(
+            method.modifiers as ts.MethodSignature['modifiers'],
+            method.name,
+            method.questionToken,
             method.typeParameters,
             method.parameters,
-            method.type,
-            method.name,
-            method.questionToken
+            method.type
         )];
     }
 
     protected createClientStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[]{
         const method = this.createClientStreaming(source, methodInfo);
-        return [ts.createMethodSignature(
+        return [ts.factory.createMethodSignature(
+            method.modifiers as ts.MethodSignature['modifiers'],
+            method.name,
+            method.questionToken,
             method.typeParameters,
             method.parameters,
-            method.type,
-            method.name,
-            method.questionToken
+            method.type
         )];
     }
 
     protected createDuplexStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[]{
         const method = this.createDuplexStreaming(source, methodInfo);
-        return [ts.createMethodSignature(
+        return [ts.factory.createMethodSignature(
+            method.modifiers as ts.MethodSignature['modifiers'],
+            method.name,
+            method.questionToken,
             method.typeParameters,
             method.parameters,
-            method.type,
-            method.name,
-            method.questionToken
+            method.type
         )];
     }
 
@@ -179,46 +183,46 @@ export abstract class ServiceClientGeneratorBase {
         const members: ts.ClassElement[] = [
 
             // typeName = Haberdasher.typeName;
-            ts.createProperty(
-                undefined, undefined, ts.createIdentifier("typeName"),
-                undefined, undefined, ts.createPropertyAccess(
-                    ts.createIdentifier(ServiceType),
-                    ts.createIdentifier("typeName")
+            ts.factory.createPropertyDeclaration(
+                undefined, ts.factory.createIdentifier("typeName"),
+                undefined, undefined, ts.factory.createPropertyAccessExpression(
+                    ts.factory.createIdentifier(ServiceType),
+                    ts.factory.createIdentifier("typeName")
                 )
             ),
 
             // methods = Haberdasher.methods;
-            ts.createProperty(
-                undefined, undefined, ts.createIdentifier("methods"),
-                undefined, undefined, ts.createPropertyAccess(
-                    ts.createIdentifier(ServiceType),
-                    ts.createIdentifier("methods")
+            ts.factory.createPropertyDeclaration(
+                undefined, ts.factory.createIdentifier("methods"),
+                undefined, undefined, ts.factory.createPropertyAccessExpression(
+                    ts.factory.createIdentifier(ServiceType),
+                    ts.factory.createIdentifier("methods")
                 )
             ),
 
             // options = Haberdasher.options;
-            ts.createProperty(
-                undefined, undefined, ts.createIdentifier("options"),
-                undefined, undefined, ts.createPropertyAccess(
-                    ts.createIdentifier(ServiceType),
-                    ts.createIdentifier("options")
+            ts.factory.createPropertyDeclaration(
+                undefined, ts.factory.createIdentifier("options"),
+                undefined, undefined, ts.factory.createPropertyAccessExpression(
+                    ts.factory.createIdentifier(ServiceType),
+                    ts.factory.createIdentifier("options")
                 )
             ),
 
             // constructor(@Inject(RPC_TRANSPORT) private readonly _transport: RpcTransport) {}
-            ts.createConstructor(
-                undefined, undefined,
-                [ts.createParameter(
-                    constructorDecorators,
+            ts.factory.createConstructorDeclaration(
+                undefined,
+                [ts.factory.createParameterDeclaration(
                     [
-                        ts.createModifier(ts.SyntaxKind.PrivateKeyword),
-                        ts.createModifier(ts.SyntaxKind.ReadonlyKeyword)
+                        ts.factory.createModifier(ts.SyntaxKind.PrivateKeyword),
+                        ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
+                        ...constructorDecorators,
                     ],
-                    undefined, ts.createIdentifier("_transport"), undefined,
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcTransport), undefined),
+                    undefined, ts.factory.createIdentifier("_transport"), undefined,
+                    ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(RpcTransport), undefined),
                     undefined
                 )],
-                ts.createBlock([], true)
+                ts.factory.createBlock([], true)
             ),
 
 
@@ -233,15 +237,14 @@ export abstract class ServiceClientGeneratorBase {
         ];
 
         // export class MyService implements MyService, ServiceInfo
-        const statement = ts.createClassDeclaration(
-            classDecorators,
-            [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
+        const statement = ts.factory.createClassDeclaration(
+            [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword), ...classDecorators],
             ServiceClient,
             undefined,
             [
-                ts.createHeritageClause(ts.SyntaxKind.ImplementsKeyword, [
-                    ts.createExpressionWithTypeArguments(undefined, ts.createIdentifier(IServiceClient)),
-                    ts.createExpressionWithTypeArguments(undefined, ts.createIdentifier(ServiceInfo)),
+                ts.factory.createHeritageClause(ts.SyntaxKind.ImplementsKeyword, [
+                    ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(IServiceClient), undefined),
+                    ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(ServiceInfo), undefined),
                 ]),
             ],
             members
@@ -281,7 +284,7 @@ export abstract class ServiceClientGeneratorBase {
 
 
     protected makeI(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
-        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(source,
+        return ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(source,
             methodInfo.I.typeName,
             'default',
             isTypeOnly
@@ -289,7 +292,7 @@ export abstract class ServiceClientGeneratorBase {
     }
 
     protected makeO(source: TypescriptFile, methodInfo: rpc.MethodInfo, isTypeOnly = false): ts.TypeReferenceNode {
-        return ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(source,
+        return ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(source,
             methodInfo.O.typeName,
             'default',
             isTypeOnly

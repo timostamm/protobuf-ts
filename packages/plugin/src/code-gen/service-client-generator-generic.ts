@@ -18,55 +18,57 @@ export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
-        return ts.createMethod(
-            undefined, undefined, undefined,
-            ts.createIdentifier(methodInfo.localName),
+        return ts.factory.createMethodDeclaration(
+            undefined, undefined,
+            ts.factory.createIdentifier(methodInfo.localName),
             undefined, undefined,
             [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
+                ts.factory.createParameterDeclaration(
+                    undefined, undefined, ts.factory.createIdentifier("input"), undefined,
                     this.makeI(source, methodInfo, true)
                 ),
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
+                ts.factory.createParameterDeclaration(
+                    undefined, undefined, ts.factory.createIdentifier("options"), ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(RpcOptions), undefined), undefined
                 )
             ],
-            ts.createTypeReferenceNode(
+            ts.factory.createTypeReferenceNode(
                 UnaryCall,
                 [
                     this.makeI(source, methodInfo, true),
                     this.makeO(source, methodInfo, true),
                 ]
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
                     // const method = this.methods[0], opt = this._transport.mergeOptions(options);
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList(
+                        ts.factory.createVariableDeclarationList(
                             [
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("method"),
+                                ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("method"),
                                     undefined,
-                                    ts.createElementAccess(
-                                        ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("methods")),
-                                        ts.createNumericLiteral(methodIndex.toString())
+                                    undefined,
+                                    ts.factory.createElementAccessExpression(
+                                        ts.factory.createPropertyAccessExpression(ts.factory.createThis(), ts.factory.createIdentifier("methods")),
+                                        ts.factory.createNumericLiteral(methodIndex.toString())
                                     )
                                 ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("opt"),
+                                ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("opt"),
                                     undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(
-                                                ts.createThis(),
-                                                ts.createIdentifier("_transport")
+                                    undefined,
+                                    ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createThis(),
+                                                ts.factory.createIdentifier("_transport")
                                             ),
-                                            ts.createIdentifier("mergeOptions")
+                                            ts.factory.createIdentifier("mergeOptions")
                                         ),
                                         undefined,
-                                        [ts.createIdentifier("options")]
+                                        [ts.factory.createIdentifier("options")]
                                     )
                                 ),
                             ],
@@ -75,21 +77,21 @@ export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
                     ),
 
                     // return stackIntercept("unary", this._transport, method, opt, input);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
+                    ts.factory.createReturnStatement(ts.factory.createCallExpression(
+                        ts.factory.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
                         [
                             this.makeI(source, methodInfo, true),
                             this.makeO(source, methodInfo, true)
                         ],
                         [
-                            ts.createStringLiteral("unary"),
-                            ts.createPropertyAccess(
-                                ts.createThis(),
-                                ts.createIdentifier("_transport")
+                            ts.factory.createStringLiteral("unary"),
+                            ts.factory.createPropertyAccessExpression(
+                                ts.factory.createThis(),
+                                ts.factory.createIdentifier("_transport")
                             ),
-                            ts.createIdentifier("method"),
-                            ts.createIdentifier("opt"),
-                            ts.createIdentifier("input"),
+                            ts.factory.createIdentifier("method"),
+                            ts.factory.createIdentifier("opt"),
+                            ts.factory.createIdentifier("input"),
                         ]
                     )),
                 ],
@@ -105,55 +107,57 @@ export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
-        return ts.createMethod(
-            undefined, undefined, undefined,
-            ts.createIdentifier(methodInfo.localName),
+        return ts.factory.createMethodDeclaration(
+            undefined, undefined,
+            ts.factory.createIdentifier(methodInfo.localName),
             undefined, undefined,
             [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("input"), undefined,
+                ts.factory.createParameterDeclaration(
+                    undefined, undefined, ts.factory.createIdentifier("input"), undefined,
                     this.makeI(source, methodInfo, true)
                 ),
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
+                ts.factory.createParameterDeclaration(
+                    undefined, undefined, ts.factory.createIdentifier("options"), ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(RpcOptions), undefined), undefined
                 )
             ],
-            ts.createTypeReferenceNode(
+            ts.factory.createTypeReferenceNode(
                 ServerStreamingCall,
                 [
                     this.makeI(source, methodInfo, true),
                     this.makeO(source, methodInfo, true),
                 ]
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
                     // const method = this.methods[0], opt = this._transport.mergeOptions(options);
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList(
+                        ts.factory.createVariableDeclarationList(
                             [
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("method"),
+                                ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("method"),
                                     undefined,
-                                    ts.createElementAccess(
-                                        ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("methods")),
-                                        ts.createNumericLiteral(methodIndex.toString())
+                                    undefined,
+                                    ts.factory.createElementAccessExpression(
+                                        ts.factory.createPropertyAccessExpression(ts.factory.createThis(), ts.factory.createIdentifier("methods")),
+                                        ts.factory.createNumericLiteral(methodIndex.toString())
                                     )
                                 ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("opt"),
+                                ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("opt"),
                                     undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(
-                                                ts.createThis(),
-                                                ts.createIdentifier("_transport")
+                                    undefined,
+                                    ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createThis(),
+                                                ts.factory.createIdentifier("_transport")
                                             ),
-                                            ts.createIdentifier("mergeOptions")
+                                            ts.factory.createIdentifier("mergeOptions")
                                         ),
                                         undefined,
-                                        [ts.createIdentifier("options")]
+                                        [ts.factory.createIdentifier("options")]
                                     )
                                 ),
                             ],
@@ -162,18 +166,18 @@ export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
                     ),
 
                     // return stackIntercept("serverStreaming", this._transport, method, opt, i);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
+                    ts.factory.createReturnStatement(ts.factory.createCallExpression(
+                        ts.factory.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
                         [
                             this.makeI(source, methodInfo, true),
                             this.makeO(source, methodInfo, true)
                         ],
                         [
-                            ts.createStringLiteral("serverStreaming"),
-                            ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
-                            ts.createIdentifier("method"),
-                            ts.createIdentifier("opt"),
-                            ts.createIdentifier("input"),
+                            ts.factory.createStringLiteral("serverStreaming"),
+                            ts.factory.createPropertyAccessExpression(ts.factory.createThis(), ts.factory.createIdentifier("_transport")),
+                            ts.factory.createIdentifier("method"),
+                            ts.factory.createIdentifier("opt"),
+                            ts.factory.createIdentifier("input"),
                         ]
                     )),
                 ],
@@ -189,51 +193,53 @@ export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
-        return ts.createMethod(
-            undefined, undefined, undefined,
-            ts.createIdentifier(methodInfo.localName),
+        return ts.factory.createMethodDeclaration(
+            undefined, undefined,
+            ts.factory.createIdentifier(methodInfo.localName),
             undefined, undefined,
             [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
+                ts.factory.createParameterDeclaration(
+                    undefined, undefined, ts.factory.createIdentifier("options"), ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(RpcOptions), undefined), undefined
                 )
             ],
-            ts.createTypeReferenceNode(
+            ts.factory.createTypeReferenceNode(
                 ClientStreamingCall,
                 [
                     this.makeI(source, methodInfo, true),
                     this.makeO(source, methodInfo, true),
                 ]
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
 
                     // const method = this.methods[0], opt = this._transport.mergeOptions(options)
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList([
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("method"),
+                        ts.factory.createVariableDeclarationList([
+                                ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("method"),
                                     undefined,
-                                    ts.createElementAccess(
-                                        ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("methods")),
-                                        ts.createNumericLiteral(methodIndex.toString())
+                                    undefined,
+                                    ts.factory.createElementAccessExpression(
+                                        ts.factory.createPropertyAccessExpression(ts.factory.createThis(), ts.factory.createIdentifier("methods")),
+                                        ts.factory.createNumericLiteral(methodIndex.toString())
                                     )
                                 ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("opt"),
+                                ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("opt"),
                                     undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(
-                                                ts.createThis(),
-                                                ts.createIdentifier("_transport")
+                                    undefined,
+                                    ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createThis(),
+                                                ts.factory.createIdentifier("_transport")
                                             ),
-                                            ts.createIdentifier("mergeOptions")
+                                            ts.factory.createIdentifier("mergeOptions")
                                         ),
                                         undefined,
-                                        [ts.createIdentifier("options")]
+                                        [ts.factory.createIdentifier("options")]
                                     )
                                 )],
                             ts.NodeFlags.Const
@@ -241,17 +247,17 @@ export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
                     ),
 
                     // return stackIntercept("clientStreaming", this._transport, methods, opt);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
+                    ts.factory.createReturnStatement(ts.factory.createCallExpression(
+                        ts.factory.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
                         [
                             this.makeI(source, methodInfo, true),
                             this.makeO(source, methodInfo, true)
                         ],
                         [
-                            ts.createStringLiteral("clientStreaming"),
-                            ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
-                            ts.createIdentifier("method"),
-                            ts.createIdentifier("opt")
+                            ts.factory.createStringLiteral("clientStreaming"),
+                            ts.factory.createPropertyAccessExpression(ts.factory.createThis(), ts.factory.createIdentifier("_transport")),
+                            ts.factory.createIdentifier("method"),
+                            ts.factory.createIdentifier("opt")
                         ]
                     )),
                 ],
@@ -267,51 +273,53 @@ export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
         assert(methodIndex >= 0);
 
-        return ts.createMethod(
-            undefined, undefined, undefined,
-            ts.createIdentifier(methodInfo.localName),
+        return ts.factory.createMethodDeclaration(
+            undefined, undefined,
+            ts.factory.createIdentifier(methodInfo.localName),
             undefined, undefined,
             [
-                ts.createParameter(
-                    undefined, undefined, undefined, ts.createIdentifier("options"), ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(ts.createIdentifier(RpcOptions), undefined), undefined
+                ts.factory.createParameterDeclaration(
+                    undefined, undefined, ts.factory.createIdentifier("options"), ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(RpcOptions), undefined), undefined
                 )
             ],
-            ts.createTypeReferenceNode(
+            ts.factory.createTypeReferenceNode(
                 DuplexStreamingCall,
                 [
                     this.makeI(source, methodInfo, true),
                     this.makeO(source, methodInfo, true),
                 ]
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
 
                     // const method = this.methods[0], opt = this._transport.mergeOptions(options)
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList([
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("method"),
+                        ts.factory.createVariableDeclarationList([
+                                ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("method"),
                                     undefined,
-                                    ts.createElementAccess(
-                                        ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("methods")),
-                                        ts.createNumericLiteral(methodIndex.toString())
+                                    undefined,
+                                    ts.factory.createElementAccessExpression(
+                                        ts.factory.createPropertyAccessExpression(ts.factory.createThis(), ts.factory.createIdentifier("methods")),
+                                        ts.factory.createNumericLiteral(methodIndex.toString())
                                     )
                                 ),
-                                ts.createVariableDeclaration(
-                                    ts.createIdentifier("opt"),
+                                ts.factory.createVariableDeclaration(
+                                    ts.factory.createIdentifier("opt"),
                                     undefined,
-                                    ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(
-                                                ts.createThis(),
-                                                ts.createIdentifier("_transport")
+                                    undefined,
+                                    ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createThis(),
+                                                ts.factory.createIdentifier("_transport")
                                             ),
-                                            ts.createIdentifier("mergeOptions")
+                                            ts.factory.createIdentifier("mergeOptions")
                                         ),
                                         undefined,
-                                        [ts.createIdentifier("options")]
+                                        [ts.factory.createIdentifier("options")]
                                     )
                                 )],
                             ts.NodeFlags.Const
@@ -319,17 +327,17 @@ export class ServiceClientGeneratorGeneric extends ServiceClientGeneratorBase {
                     ),
 
                     // return stackIntercept("duplex", this._transport, this, methods, opt);
-                    ts.createReturn(ts.createCall(
-                        ts.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
+                    ts.factory.createReturnStatement(ts.factory.createCallExpression(
+                        ts.factory.createIdentifier(this.imports.name(source, 'stackIntercept', this.options.runtimeRpcImportPath)),
                         [
                             this.makeI(source, methodInfo, true),
                             this.makeO(source, methodInfo, true)
                         ],
                         [
-                            ts.createStringLiteral("duplex"),
-                            ts.createPropertyAccess(ts.createThis(), ts.createIdentifier("_transport")),
-                            ts.createIdentifier("method"),
-                            ts.createIdentifier("opt")
+                            ts.factory.createStringLiteral("duplex"),
+                            ts.factory.createPropertyAccessExpression(ts.factory.createThis(), ts.factory.createIdentifier("_transport")),
+                            ts.factory.createIdentifier("method"),
+                            ts.factory.createIdentifier("opt")
                         ]
                     )),
                 ],

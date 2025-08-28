@@ -51,6 +51,6 @@
     "@bufbuild/protoplugin": "^2.4.0",
     "@protobuf-ts/runtime": "^2.11.1",
     "@protobuf-ts/runtime-rpc": "^2.11.1",
-    "typescript": "^3.9"
+    "typescript": "^5.9"
   }
 }

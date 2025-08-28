@@ -40,16 +40,15 @@ export class ServiceServerGeneratorGeneric {
             ServerCallContext = this.imports.name(source, "ServerCallContext", this.options.runtimeRpcImportPath)
         ;
 
-        const statement = ts.createInterfaceDeclaration(
-            undefined,
-            [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
-            ts.createIdentifier(IGenericServer),
+        const statement = ts.factory.createInterfaceDeclaration(
+            [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+            ts.factory.createIdentifier(IGenericServer),
             [
-              ts.createTypeParameterDeclaration(
-                "T",
+              ts.factory.createTypeParameterDeclaration(
                 undefined,
-                ts.createTypeReferenceNode(
-                  ts.createIdentifier(ServerCallContext),
+                "T",
+                ts.factory.createTypeReferenceNode(
+                  ts.factory.createIdentifier(ServerCallContext),
                   undefined
                 ),
               )
@@ -82,103 +81,100 @@ export class ServiceServerGeneratorGeneric {
 
     private createUnary(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
+            I = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
+            O = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.O.typeName
             )), undefined);
-        return ts.createMethodSignature(
+        return ts.factory.createMethodSignature(
+            undefined,
+            ts.factory.createIdentifier(methodInfo.localName),
+            undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("request"),
+                    ts.factory.createIdentifier("request"),
                     undefined,
                     I,
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("context"),
                     undefined,
-                    ts.createIdentifier("context"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier("T"),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier("T"),
                         undefined
                     ),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(
-                ts.createIdentifier("Promise"),
+            ts.factory.createTypeReferenceNode(
+                ts.factory.createIdentifier("Promise"),
                 [O]
             ),
-            ts.createIdentifier(methodInfo.localName),
-            undefined
         );
     }
 
 
     private createServerStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
+            I = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
+            O = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.O.typeName
             )), undefined),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
-        return ts.createMethodSignature(
+        return ts.factory.createMethodSignature(
+            undefined,
+            ts.factory.createIdentifier(methodInfo.localName),
+            undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("request"),
+                    ts.factory.createIdentifier("request"),
                     undefined,
                     I,
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("responses"),
                     undefined,
-                    ts.createIdentifier("responses"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier(RpcInputStream),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier(RpcInputStream),
                         [O]
                     ),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("context"),
                     undefined,
-                    ts.createIdentifier("context"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier("T"),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier("T"),
                         undefined
                     ),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(
-                ts.createIdentifier("Promise"),
-                [ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)]
+            ts.factory.createTypeReferenceNode(
+                ts.factory.createIdentifier("Promise"),
+                [ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)]
             ),
-            ts.createIdentifier(methodInfo.localName),
-            undefined
         );
     }
 
@@ -186,111 +182,108 @@ export class ServiceServerGeneratorGeneric {
 
     private createClientStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
+            I = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
+            O = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.O.typeName
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath);
-        return ts.createMethodSignature(
+        return ts.factory.createMethodSignature(
+            undefined,
+            ts.factory.createIdentifier(methodInfo.localName),
+            undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("requests"),
                     undefined,
-                    ts.createIdentifier("requests"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier(RpcOutputStream),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier(RpcOutputStream),
                         [I]
                     ),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("context"),
                     undefined,
-                    ts.createIdentifier("context"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier("T"),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier("T"),
                         undefined
                     ),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(
-                ts.createIdentifier("Promise"),
+            ts.factory.createTypeReferenceNode(
+                ts.factory.createIdentifier("Promise"),
                 [O]
             ),
-            ts.createIdentifier(methodInfo.localName),
-            undefined
         );
     }
 
 
     private createBidi(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature {
         const
-            I = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
+            I = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.I.typeName
             )), undefined),
-            O = ts.createTypeReferenceNode(ts.createIdentifier(this.imports.typeByName(
+            O = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.O.typeName
             )), undefined),
             RpcOutputStream = this.imports.name(source, 'RpcOutputStream', this.options.runtimeRpcImportPath),
             RpcInputStream = this.imports.name(source, 'RpcInputStream', this.options.runtimeRpcImportPath);
-        return ts.createMethodSignature(
+        return ts.factory.createMethodSignature(
+            undefined,
+            ts.factory.createIdentifier(methodInfo.localName),
+            undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("requests"),
                     undefined,
-                    ts.createIdentifier("requests"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier(RpcOutputStream),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier(RpcOutputStream),
                         [I]
                     ),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("responses"),
                     undefined,
-                    ts.createIdentifier("responses"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier(RpcInputStream),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier(RpcInputStream),
                         [O]
                     ),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("context"),
                     undefined,
-                    ts.createIdentifier("context"),
-                    undefined,
-                    ts.createTypeReferenceNode(
-                        ts.createIdentifier("T"),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createIdentifier("T"),
                         undefined
                     ),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(
-                ts.createIdentifier("Promise"),
-                [ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)]
+            ts.factory.createTypeReferenceNode(
+                ts.factory.createIdentifier("Promise"),
+                [ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)]
             ),
-            ts.createIdentifier(methodInfo.localName),
-            undefined
         );
     }
 

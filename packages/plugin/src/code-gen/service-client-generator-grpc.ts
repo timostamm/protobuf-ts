@@ -26,23 +26,22 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
         const members: ts.ClassElement[] = [
 
             // private readonly _binaryOptions: Partial<BinaryReadOptions & BinaryWriteOptions>;
-            ts.createProperty(
-                undefined,
+            ts.factory.createPropertyDeclaration(
                 [
-                    ts.createModifier(ts.SyntaxKind.PrivateKeyword),
-                    ts.createModifier(ts.SyntaxKind.ReadonlyKeyword)
+                    ts.factory.createModifier(ts.SyntaxKind.PrivateKeyword),
+                    ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword)
                 ],
-                ts.createIdentifier("_binaryOptions"),
+                ts.factory.createIdentifier("_binaryOptions"),
                 undefined,
-                ts.createTypeReferenceNode(
-                    ts.createIdentifier("Partial"),
-                    [ts.createIntersectionTypeNode([
-                        ts.createTypeReferenceNode(
-                            ts.createIdentifier(BinaryReadOptions),
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createIdentifier("Partial"),
+                    [ts.factory.createIntersectionTypeNode([
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createIdentifier(BinaryReadOptions),
                             undefined
                         ),
-                        ts.createTypeReferenceNode(
-                            ts.createIdentifier(BinaryWriteOptions),
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createIdentifier(BinaryWriteOptions),
                             undefined
                         )
                     ])]
@@ -51,95 +50,90 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
             ),
 
             //
-            ts.createConstructor(
-                undefined,
+            ts.factory.createConstructorDeclaration(
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("address"),
                         undefined,
-                        ts.createIdentifier("address"),
-                        undefined,
-                        ts.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+                        ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("credentials"),
                         undefined,
-                        ts.createIdentifier("credentials"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("ChannelCredentials")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("ChannelCredentials")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("options"),
                         undefined,
-                        ts.createIdentifier("options"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("ClientOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("ClientOptions")
                             ),
                             undefined
                         ),
-                        ts.createObjectLiteral(
+                        ts.factory.createObjectLiteralExpression(
                             [],
                             false
                         )
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("binaryOptions"),
                         undefined,
-                        ts.createIdentifier("binaryOptions"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createIdentifier("Partial"),
-                            [ts.createIntersectionTypeNode([
-                                ts.createTypeReferenceNode(
-                                    ts.createIdentifier(BinaryReadOptions),
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createIdentifier("Partial"),
+                            [ts.factory.createIntersectionTypeNode([
+                                ts.factory.createTypeReferenceNode(
+                                    ts.factory.createIdentifier(BinaryReadOptions),
                                     undefined
                                 ),
-                                ts.createTypeReferenceNode(
-                                    ts.createIdentifier(BinaryWriteOptions),
+                                ts.factory.createTypeReferenceNode(
+                                    ts.factory.createIdentifier(BinaryWriteOptions),
                                     undefined
                                 )
                             ])]
                         ),
-                        ts.createObjectLiteral(
+                        ts.factory.createObjectLiteralExpression(
                             [],
                             false
                         )
                     )
                 ],
-                ts.createBlock(
+                ts.factory.createBlock(
                     [
-                        ts.createExpressionStatement(ts.createCall(
-                            ts.createSuper(),
+                        ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+                            ts.factory.createSuper(),
                             undefined,
                             [
-                                ts.createIdentifier("address"),
-                                ts.createIdentifier("credentials"),
-                                ts.createIdentifier("options")
+                                ts.factory.createIdentifier("address"),
+                                ts.factory.createIdentifier("credentials"),
+                                ts.factory.createIdentifier("options")
                             ]
                         )),
-                        ts.createExpressionStatement(ts.createBinary(
-                            ts.createPropertyAccess(
-                                ts.createThis(),
-                                ts.createIdentifier("_binaryOptions")
+                        ts.factory.createExpressionStatement(ts.factory.createBinaryExpression(
+                            ts.factory.createPropertyAccessExpression(
+                                ts.factory.createThis(),
+                                ts.factory.createIdentifier("_binaryOptions")
                             ),
-                            ts.createToken(ts.SyntaxKind.EqualsToken),
-                            ts.createIdentifier("binaryOptions")
+                            ts.factory.createToken(ts.SyntaxKind.EqualsToken),
+                            ts.factory.createIdentifier("binaryOptions")
                         ))
                     ],
                     true
@@ -158,27 +152,26 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
 
 
         // export class MyService implements MyService, ServiceInfo
-        const statement = ts.createClassDeclaration(
-            undefined,
-            [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
+        const statement = ts.factory.createClassDeclaration(
+            [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
             ServiceClient,
             undefined,
             [
-                ts.createHeritageClause(
+                ts.factory.createHeritageClause(
                     ts.SyntaxKind.ExtendsKeyword,
-                    [ts.createExpressionWithTypeArguments(
-                        undefined,
-                        ts.createPropertyAccess(
-                            ts.createIdentifier(grpc),
-                            ts.createIdentifier("Client")
-                        )
+                    [ts.factory.createExpressionWithTypeArguments(
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createIdentifier(grpc),
+                            ts.factory.createIdentifier("Client")
+                        ),
+                        undefined
                     )]
                 ),
-                ts.createHeritageClause(
+                ts.factory.createHeritageClause(
                     ts.SyntaxKind.ImplementsKeyword,
-                    [ts.createExpressionWithTypeArguments(
-                        undefined,
-                        ts.createIdentifier(IServiceClient)
+                    [ts.factory.createExpressionWithTypeArguments(
+                        ts.factory.createIdentifier(IServiceClient),
+                        undefined
                     )]
                 )
             ],
@@ -195,324 +188,308 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
         return [
 
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("input"),
+                        ts.factory.createIdentifier("input"),
                         undefined,
                         this.makeI(source, methodInfo, true),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("metadata"),
                         undefined,
-                        ts.createIdentifier("metadata"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("options"),
                         undefined,
-                        ts.createIdentifier("options"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("callback"),
                         undefined,
-                        ts.createIdentifier("callback"),
-                        undefined,
-                        ts.createFunctionTypeNode(
+                        ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientUnaryCall")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientUnaryCall")
                     ),
                     undefined
-                ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
+                )
             ),
 
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("input"),
+                        ts.factory.createIdentifier("input"),
                         undefined,
                         this.makeI(source, methodInfo, true),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("metadata"),
                         undefined,
-                        ts.createIdentifier("metadata"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("callback"),
                         undefined,
-                        ts.createIdentifier("callback"),
-                        undefined,
-                        ts.createFunctionTypeNode(
+                        ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientUnaryCall")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientUnaryCall")
                     ),
                     undefined
                 ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
             ),
 
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("input"),
+                        ts.factory.createIdentifier("input"),
                         undefined,
                         this.makeI(source, methodInfo, true),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("options"),
                         undefined,
-                        ts.createIdentifier("options"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("callback"),
                         undefined,
-                        ts.createIdentifier("callback"),
-                        undefined,
-                        ts.createFunctionTypeNode(
+                        ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientUnaryCall")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientUnaryCall")
                     ),
                     undefined
                 ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
             ),
 
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("input"),
+                        ts.factory.createIdentifier("input"),
                         undefined,
                         this.makeI(source, methodInfo, true),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("callback"),
                         undefined,
-                        ts.createIdentifier("callback"),
-                        undefined,
-                        ts.createFunctionTypeNode(
+                        ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientUnaryCall")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientUnaryCall")
                     ),
                     undefined
                 ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
             )
 
 
@@ -523,96 +500,93 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     protected createServerStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[] {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
         return [
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("input"),
+                        ts.factory.createIdentifier("input"),
                         undefined,
                         this.makeI(source, methodInfo, true),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("metadata"),
-                        ts.createToken(ts.SyntaxKind.QuestionToken),
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                        ts.factory.createIdentifier("metadata"),
+                        ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("options"),
-                        ts.createToken(ts.SyntaxKind.QuestionToken),
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createIdentifier("options"),
+                        ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientReadableStream")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientReadableStream")
                     ),
                     [this.makeO(source, methodInfo, true)]
-                ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
+                )
             ),
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("input"),
+                        ts.factory.createIdentifier("input"),
                         undefined,
                         this.makeI(source, methodInfo, true),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("options"),
-                        ts.createToken(ts.SyntaxKind.QuestionToken),
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createIdentifier("options"),
+                        ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientReadableStream")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientReadableStream")
                     ),
                     [this.makeO(source, methodInfo, true)]
-                ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
+                )
             )
         ];
     }
@@ -620,287 +594,275 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     protected createClientStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[] {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
         return [
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("metadata"),
                         undefined,
-                        ts.createIdentifier("metadata"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("options"),
                         undefined,
-                        ts.createIdentifier("options"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("callback"),
                         undefined,
-                        ts.createIdentifier("callback"),
-                        undefined,
-                        ts.createFunctionTypeNode(
+                        ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientWritableStream")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientWritableStream")
                     ),
                     [this.makeI(source, methodInfo, true)]
-                ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
+                )
             ),
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("metadata"),
                         undefined,
-                        ts.createIdentifier("metadata"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("callback"),
                         undefined,
-                        ts.createIdentifier("callback"),
-                        undefined,
-                        ts.createFunctionTypeNode(
+                        ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientWritableStream")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientWritableStream")
                     ),
                     [this.makeI(source, methodInfo, true)]
-                ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
+                )
             ),
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("options"),
                         undefined,
-                        ts.createIdentifier("options"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("callback"),
                         undefined,
-                        ts.createIdentifier("callback"),
-                        undefined,
-                        ts.createFunctionTypeNode(
+                        ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientWritableStream")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientWritableStream")
                     ),
                     [
                         this.makeI(source, methodInfo, true),
                     ]
-                ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
+                )
             ),
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
                 undefined,
-                [ts.createParameter(
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
+                undefined,
+                [ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("callback"),
                     undefined,
-                    ts.createIdentifier("callback"),
-                    undefined,
-                    ts.createFunctionTypeNode(
+                    ts.factory.createFunctionTypeNode(
                         undefined,
                         [
-                            ts.createParameter(
+                            ts.factory.createParameterDeclaration(
                                 undefined,
                                 undefined,
+                                ts.factory.createIdentifier("err"),
                                 undefined,
-                                ts.createIdentifier("err"),
-                                undefined,
-                                ts.createUnionTypeNode([
-                                    ts.createTypeReferenceNode(
-                                        ts.createQualifiedName(
-                                            ts.createIdentifier(grpc),
-                                            ts.createIdentifier("ServiceError")
+                                ts.factory.createUnionTypeNode([
+                                    ts.factory.createTypeReferenceNode(
+                                        ts.factory.createQualifiedName(
+                                            ts.factory.createIdentifier(grpc),
+                                            ts.factory.createIdentifier("ServiceError")
                                         ),
                                         undefined
                                     ),
-                                    ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                    ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                 ]),
                                 undefined
                             ),
-                            ts.createParameter(
+                            ts.factory.createParameterDeclaration(
                                 undefined,
                                 undefined,
-                                undefined,
-                                ts.createIdentifier("value"),
-                                ts.createToken(ts.SyntaxKind.QuestionToken),
+                                ts.factory.createIdentifier("value"),
+                                ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                 this.makeO(source, methodInfo, true),
                                 undefined
                             )
                         ],
-                        ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                        ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                     ),
                     undefined
                 )],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientWritableStream")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientWritableStream")
                     ),
                     [
                         this.makeI(source, methodInfo, true),
                     ]
-                ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
+                )
             )
         ];
     }
@@ -908,82 +870,81 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     protected createDuplexStreamingSignatures(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodSignature[] {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
         return [
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
+                undefined,
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
                 undefined,
                 [
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
+                        ts.factory.createIdentifier("metadata"),
                         undefined,
-                        ts.createIdentifier("metadata"),
-                        undefined,
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
                         undefined
                     ),
-                    ts.createParameter(
+                    ts.factory.createParameterDeclaration(
                         undefined,
                         undefined,
-                        undefined,
-                        ts.createIdentifier("options"),
-                        ts.createToken(ts.SyntaxKind.QuestionToken),
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createIdentifier("options"),
+                        ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
                         undefined
                     )
                 ],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientDuplexStream")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientDuplexStream")
                     ),
                     [
                         this.makeI(source, methodInfo, true),
                         this.makeO(source, methodInfo, true),
                     ]
                 ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
             ),
-            ts.createMethodSignature(
+            ts.factory.createMethodSignature(
                 undefined,
-                [ts.createParameter(
+                ts.factory.createIdentifier(methodInfo.localName),
+                undefined,
+                undefined,
+                [ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(
-                        ts.createQualifiedName(
-                            ts.createIdentifier(grpc),
-                            ts.createIdentifier("CallOptions")
+                    ts.factory.createIdentifier("options"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createQualifiedName(
+                            ts.factory.createIdentifier(grpc),
+                            ts.factory.createIdentifier("CallOptions")
                         ),
                         undefined
                     ),
                     undefined
                 )],
-                ts.createTypeReferenceNode(
-                    ts.createQualifiedName(
-                        ts.createIdentifier(grpc),
-                        ts.createIdentifier("ClientDuplexStream")
+                ts.factory.createTypeReferenceNode(
+                    ts.factory.createQualifiedName(
+                        ts.factory.createIdentifier(grpc),
+                        ts.factory.createIdentifier("ClientDuplexStream")
                     ),
                     [
                         this.makeI(source, methodInfo, true),
                         this.makeO(source, methodInfo, true),
                     ]
                 ),
-                ts.createIdentifier(methodInfo.localName),
-                undefined
             )
         ];
     }
@@ -995,325 +956,313 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js');
         let ServiceType = this.imports.type(source, descService);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
-        return ts.createMethod(
+        return ts.factory.createMethodDeclaration(
             undefined,
             undefined,
-            undefined,
-            ts.createIdentifier(methodInfo.localName),
+            ts.factory.createIdentifier(methodInfo.localName),
             undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("input"),
+                    ts.factory.createIdentifier("input"),
                     undefined,
                     this.makeI(source, methodInfo, true),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("metadata"),
                     undefined,
-                    ts.createIdentifier("metadata"),
-                    undefined,
-                    ts.createUnionTypeNode([
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                    ts.factory.createUnionTypeNode([
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
-                        ts.createParenthesizedType(ts.createFunctionTypeNode(
+                        ts.factory.createParenthesizedType(ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ))
                     ]),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createUnionTypeNode([
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                    ts.factory.createIdentifier("options"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createUnionTypeNode([
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
-                        ts.createParenthesizedType(ts.createFunctionTypeNode(
+                        ts.factory.createParenthesizedType(ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ))
                     ]),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("callback"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createParenthesizedType(ts.createFunctionTypeNode(
+                    ts.factory.createIdentifier("callback"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createParenthesizedType(ts.factory.createFunctionTypeNode(
                         undefined,
                         [
-                            ts.createParameter(
+                            ts.factory.createParameterDeclaration(
                                 undefined,
                                 undefined,
+                                ts.factory.createIdentifier("err"),
                                 undefined,
-                                ts.createIdentifier("err"),
-                                undefined,
-                                ts.createUnionTypeNode([
-                                    ts.createTypeReferenceNode(
-                                        ts.createQualifiedName(
-                                            ts.createIdentifier(grpc),
-                                            ts.createIdentifier("ServiceError")
+                                ts.factory.createUnionTypeNode([
+                                    ts.factory.createTypeReferenceNode(
+                                        ts.factory.createQualifiedName(
+                                            ts.factory.createIdentifier(grpc),
+                                            ts.factory.createIdentifier("ServiceError")
                                         ),
                                         undefined
                                     ),
-                                    ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                    ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                 ]),
                                 undefined
                             ),
-                            ts.createParameter(
+                            ts.factory.createParameterDeclaration(
                                 undefined,
                                 undefined,
-                                undefined,
-                                ts.createIdentifier("value"),
-                                ts.createToken(ts.SyntaxKind.QuestionToken),
+                                ts.factory.createIdentifier("value"),
+                                ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                 this.makeO(source, methodInfo, true),
                                 undefined
                             )
                         ],
-                        ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                        ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                     )),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(
-                ts.createQualifiedName(
-                    ts.createIdentifier(grpc),
-                    ts.createIdentifier("ClientUnaryCall")
+            ts.factory.createTypeReferenceNode(
+                ts.factory.createQualifiedName(
+                    ts.factory.createIdentifier(grpc),
+                    ts.factory.createIdentifier("ClientUnaryCall")
                 ),
                 undefined
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createIdentifier("method"),
+                        ts.factory.createVariableDeclarationList(
+                            [ts.factory.createVariableDeclaration(
+                                ts.factory.createIdentifier("method"),
                                 undefined,
-                                ts.createElementAccess(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier(ServiceType),
-                                        ts.createIdentifier("methods")
+                                undefined,
+                                ts.factory.createElementAccessExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier(ServiceType),
+                                        ts.factory.createIdentifier("methods")
                                     ),
-                                    ts.createNumericLiteral(methodIndex.toString())
+                                    ts.factory.createNumericLiteral(methodIndex.toString())
                                 )
                             )],
                             ts.NodeFlags.Const
                         )
                     ),
-                    ts.createReturn(ts.createCall(
-                        ts.createPropertyAccess(
-                            ts.createThis(),
-                            ts.createIdentifier("makeUnaryRequest")
+                    ts.factory.createReturnStatement(ts.factory.createCallExpression(
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createThis(),
+                            ts.factory.createIdentifier("makeUnaryRequest")
                         ),
                         [
                             this.makeI(source, methodInfo, true),
                             this.makeO(source, methodInfo, true)
                         ],
                         [
-                            ts.createTemplateExpression(
-                                ts.createTemplateHead(
+                            ts.factory.createTemplateExpression(
+                                ts.factory.createTemplateHead(
                                     "/",
                                     "/"
                                 ),
                                 [
-                                    ts.createTemplateSpan(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier(ServiceType),
-                                            ts.createIdentifier("typeName")
+                                    ts.factory.createTemplateSpan(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier(ServiceType),
+                                            ts.factory.createIdentifier("typeName")
                                         ),
-                                        ts.createTemplateMiddle(
+                                        ts.factory.createTemplateMiddle(
                                             "/",
                                             "/"
                                         )
                                     ),
-                                    ts.createTemplateSpan(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("method"),
-                                            ts.createIdentifier("name")
+                                    ts.factory.createTemplateSpan(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("method"),
+                                            ts.factory.createIdentifier("name")
                                         ),
-                                        ts.createTemplateTail(
+                                        ts.factory.createTemplateTail(
                                             "",
                                             ""
                                         )
                                     )
                                 ]
                             ),
-                            ts.createArrowFunction(
+                            ts.factory.createArrowFunction(
                                 undefined,
                                 undefined,
-                                [ts.createParameter(
+                                [ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
+                                    ts.factory.createIdentifier("value"),
                                     undefined,
                                     this.makeI(source, methodInfo, true),
                                     undefined
                                 )],
-                                ts.createTypeReferenceNode(
-                                    ts.createIdentifier("Buffer"),
+                                ts.factory.createTypeReferenceNode(
+                                    ts.factory.createIdentifier("Buffer"),
                                     undefined
                                 ),
-                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier("Buffer"),
-                                        ts.createIdentifier("from")
+                                ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier("Buffer"),
+                                        ts.factory.createIdentifier("from")
                                     ),
                                     undefined,
-                                    [ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(
-                                                ts.createIdentifier("method"),
-                                                ts.createIdentifier("I")
+                                    [ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createIdentifier("method"),
+                                                ts.factory.createIdentifier("I")
                                             ),
-                                            ts.createIdentifier("toBinary")
+                                            ts.factory.createIdentifier("toBinary")
                                         ),
                                         undefined,
                                         [
-                                            ts.createIdentifier("value"),
-                                            ts.createPropertyAccess(
-                                                ts.createThis(),
-                                                ts.createIdentifier("_binaryOptions")
+                                            ts.factory.createIdentifier("value"),
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createThis(),
+                                                ts.factory.createIdentifier("_binaryOptions")
                                             )
                                         ]
                                     )]
                                 )
                             ),
-                            ts.createArrowFunction(
+                            ts.factory.createArrowFunction(
                                 undefined,
                                 undefined,
-                                [ts.createParameter(
+                                [ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("value"),
                                     undefined,
-                                    ts.createIdentifier("value"),
-                                    undefined,
-                                    ts.createTypeReferenceNode(
-                                        ts.createIdentifier("Buffer"),
+                                    ts.factory.createTypeReferenceNode(
+                                        ts.factory.createIdentifier("Buffer"),
                                         undefined
                                     ),
                                     undefined
                                 )],
                                 this.makeO(source, methodInfo, true),
-                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("method"),
-                                            ts.createIdentifier("O")
+                                ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("method"),
+                                            ts.factory.createIdentifier("O")
                                         ),
-                                        ts.createIdentifier("fromBinary")
+                                        ts.factory.createIdentifier("fromBinary")
                                     ),
                                     undefined,
                                     [
-                                        ts.createIdentifier("value"),
-                                        ts.createPropertyAccess(
-                                            ts.createThis(),
-                                            ts.createIdentifier("_binaryOptions")
+                                        ts.factory.createIdentifier("value"),
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createThis(),
+                                            ts.factory.createIdentifier("_binaryOptions")
                                         )
                                     ]
                                 )
                             ),
-                            ts.createIdentifier("input"),
-                            ts.createAsExpression(
-                                ts.createIdentifier("metadata"),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                            ts.factory.createIdentifier("input"),
+                            ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("metadata"),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                             ),
-                            ts.createAsExpression(
-                                ts.createIdentifier("options"),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                            ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("options"),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                             ),
-                            ts.createAsExpression(
-                                ts.createIdentifier("callback"),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                            ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("callback"),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                             )
                         ]
                     ))
@@ -1329,210 +1278,205 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
         let ServiceType = this.imports.type(source, descService);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
-        return ts.createMethod(
+        return ts.factory.createMethodDeclaration(
             undefined,
             undefined,
-            undefined,
-            ts.createIdentifier(methodInfo.localName),
+            ts.factory.createIdentifier(methodInfo.localName),
             undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("input"),
+                    ts.factory.createIdentifier("input"),
                     undefined,
                     this.makeI(source, methodInfo, true),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("metadata"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createUnionTypeNode([
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                    ts.factory.createIdentifier("metadata"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createUnionTypeNode([
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         )
                     ]),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(
-                        ts.createQualifiedName(
-                            ts.createIdentifier(grpc),
-                            ts.createIdentifier("CallOptions")
+                    ts.factory.createIdentifier("options"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createQualifiedName(
+                            ts.factory.createIdentifier(grpc),
+                            ts.factory.createIdentifier("CallOptions")
                         ),
                         undefined
                     ),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(
-                ts.createQualifiedName(
-                    ts.createIdentifier(grpc),
-                    ts.createIdentifier("ClientReadableStream")
+            ts.factory.createTypeReferenceNode(
+                ts.factory.createQualifiedName(
+                    ts.factory.createIdentifier(grpc),
+                    ts.factory.createIdentifier("ClientReadableStream")
                 ),
                 [this.makeO(source, methodInfo, true)]
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createIdentifier("method"),
+                        ts.factory.createVariableDeclarationList(
+                            [ts.factory.createVariableDeclaration(
+                                ts.factory.createIdentifier("method"),
                                 undefined,
-                                ts.createElementAccess(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier(ServiceType),
-                                        ts.createIdentifier("methods")
+                                undefined,
+                                ts.factory.createElementAccessExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier(ServiceType),
+                                        ts.factory.createIdentifier("methods")
                                     ),
-                                    ts.createNumericLiteral(methodIndex.toString())
+                                    ts.factory.createNumericLiteral(methodIndex.toString())
                                 )
                             )],
                             ts.NodeFlags.Const
                         )
                     ),
-                    ts.createReturn(ts.createCall(
-                        ts.createPropertyAccess(
-                            ts.createThis(),
-                            ts.createIdentifier("makeServerStreamRequest")
+                    ts.factory.createReturnStatement(ts.factory.createCallExpression(
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createThis(),
+                            ts.factory.createIdentifier("makeServerStreamRequest")
                         ),
                         [
                             this.makeI(source, methodInfo, true),
                             this.makeO(source, methodInfo, true)
                         ],
                         [
-                            ts.createTemplateExpression(
-                                ts.createTemplateHead(
+                            ts.factory.createTemplateExpression(
+                                ts.factory.createTemplateHead(
                                     "/",
                                     "/"
                                 ),
                                 [
-                                    ts.createTemplateSpan(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier(ServiceType),
-                                            ts.createIdentifier("typeName")
+                                    ts.factory.createTemplateSpan(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier(ServiceType),
+                                            ts.factory.createIdentifier("typeName")
                                         ),
-                                        ts.createTemplateMiddle(
+                                        ts.factory.createTemplateMiddle(
                                             "/",
                                             "/"
                                         )
                                     ),
-                                    ts.createTemplateSpan(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("method"),
-                                            ts.createIdentifier("name")
+                                    ts.factory.createTemplateSpan(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("method"),
+                                            ts.factory.createIdentifier("name")
                                         ),
-                                        ts.createTemplateTail(
+                                        ts.factory.createTemplateTail(
                                             "",
                                             ""
                                         )
                                     )
                                 ]
                             ),
-                            ts.createArrowFunction(
+                            ts.factory.createArrowFunction(
                                 undefined,
                                 undefined,
-                                [ts.createParameter(
+                                [ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
+                                    ts.factory.createIdentifier("value"),
                                     undefined,
                                     this.makeI(source, methodInfo, true),
                                     undefined
                                 )],
-                                ts.createTypeReferenceNode(
-                                    ts.createIdentifier("Buffer"),
+                                ts.factory.createTypeReferenceNode(
+                                    ts.factory.createIdentifier("Buffer"),
                                     undefined
                                 ),
-                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier("Buffer"),
-                                        ts.createIdentifier("from")
+                                ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier("Buffer"),
+                                        ts.factory.createIdentifier("from")
                                     ),
                                     undefined,
-                                    [ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(
-                                                ts.createIdentifier("method"),
-                                                ts.createIdentifier("I")
+                                    [ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createIdentifier("method"),
+                                                ts.factory.createIdentifier("I")
                                             ),
-                                            ts.createIdentifier("toBinary")
+                                            ts.factory.createIdentifier("toBinary")
                                         ),
                                         undefined,
                                         [
-                                            ts.createIdentifier("value"),
-                                            ts.createPropertyAccess(
-                                                ts.createThis(),
-                                                ts.createIdentifier("_binaryOptions")
+                                            ts.factory.createIdentifier("value"),
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createThis(),
+                                                ts.factory.createIdentifier("_binaryOptions")
                                             )
                                         ]
                                     )]
                                 )
                             ),
-                            ts.createArrowFunction(
+                            ts.factory.createArrowFunction(
                                 undefined,
                                 undefined,
-                                [ts.createParameter(
+                                [ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("value"),
                                     undefined,
-                                    ts.createIdentifier("value"),
-                                    undefined,
-                                    ts.createTypeReferenceNode(
-                                        ts.createIdentifier("Buffer"),
+                                    ts.factory.createTypeReferenceNode(
+                                        ts.factory.createIdentifier("Buffer"),
                                         undefined
                                     ),
                                     undefined
                                 )],
                                 this.makeO(source, methodInfo, true),
-                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("method"),
-                                            ts.createIdentifier("O")
+                                ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("method"),
+                                            ts.factory.createIdentifier("O")
                                         ),
-                                        ts.createIdentifier("fromBinary")
+                                        ts.factory.createIdentifier("fromBinary")
                                     ),
                                     undefined,
                                     [
-                                        ts.createIdentifier("value"),
-                                        ts.createPropertyAccess(
-                                            ts.createThis(),
-                                            ts.createIdentifier("_binaryOptions")
+                                        ts.factory.createIdentifier("value"),
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createThis(),
+                                            ts.factory.createIdentifier("_binaryOptions")
                                         )
                                     ]
                                 )
                             ),
-                            ts.createIdentifier("input"),
-                            ts.createAsExpression(
-                                ts.createIdentifier("metadata"),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                            ts.factory.createIdentifier("input"),
+                            ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("metadata"),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                             ),
-                            ts.createIdentifier("options")
+                            ts.factory.createIdentifier("options")
                         ]
                     ))
                 ],
@@ -1547,315 +1491,304 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
         let ServiceType = this.imports.type(source, descService);
         let methodIndex = methodInfo.service.methods.indexOf(methodInfo);
-        return ts.createMethod(
+        return ts.factory.createMethodDeclaration(
             undefined,
             undefined,
-            undefined,
-            ts.createIdentifier(methodInfo.localName),
+            ts.factory.createIdentifier(methodInfo.localName),
             undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
+                    ts.factory.createIdentifier("metadata"),
                     undefined,
-                    ts.createIdentifier("metadata"),
-                    undefined,
-                    ts.createUnionTypeNode([
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                    ts.factory.createUnionTypeNode([
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
-                        ts.createParenthesizedType(ts.createFunctionTypeNode(
+                        ts.factory.createParenthesizedType(ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ))
                     ]),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createUnionTypeNode([
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                    ts.factory.createIdentifier("options"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createUnionTypeNode([
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         ),
-                        ts.createParenthesizedType(ts.createFunctionTypeNode(
+                        ts.factory.createParenthesizedType(ts.factory.createFunctionTypeNode(
                             undefined,
                             [
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("err"),
                                     undefined,
-                                    ts.createIdentifier("err"),
-                                    undefined,
-                                    ts.createUnionTypeNode([
-                                        ts.createTypeReferenceNode(
-                                            ts.createQualifiedName(
-                                                ts.createIdentifier(grpc),
-                                                ts.createIdentifier("ServiceError")
+                                    ts.factory.createUnionTypeNode([
+                                        ts.factory.createTypeReferenceNode(
+                                            ts.factory.createQualifiedName(
+                                                ts.factory.createIdentifier(grpc),
+                                                ts.factory.createIdentifier("ServiceError")
                                             ),
                                             undefined
                                         ),
-                                        ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                        ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                     ]),
                                     undefined
                                 ),
-                                ts.createParameter(
+                                ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
-                                    ts.createToken(ts.SyntaxKind.QuestionToken),
+                                    ts.factory.createIdentifier("value"),
+                                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                     this.makeO(source, methodInfo, true),
                                     undefined
                                 )
                             ],
-                            ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                         ))
                     ]),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("callback"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createParenthesizedType(ts.createFunctionTypeNode(
+                    ts.factory.createIdentifier("callback"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createParenthesizedType(ts.factory.createFunctionTypeNode(
                         undefined,
                         [
-                            ts.createParameter(
+                            ts.factory.createParameterDeclaration(
                                 undefined,
                                 undefined,
+                                ts.factory.createIdentifier("err"),
                                 undefined,
-                                ts.createIdentifier("err"),
-                                undefined,
-                                ts.createUnionTypeNode([
-                                    ts.createTypeReferenceNode(
-                                        ts.createQualifiedName(
-                                            ts.createIdentifier(grpc),
-                                            ts.createIdentifier("ServiceError")
+                                ts.factory.createUnionTypeNode([
+                                    ts.factory.createTypeReferenceNode(
+                                        ts.factory.createQualifiedName(
+                                            ts.factory.createIdentifier(grpc),
+                                            ts.factory.createIdentifier("ServiceError")
                                         ),
                                         undefined
                                     ),
-                                    ts.createKeywordTypeNode(ts.SyntaxKind.NullKeyword)
+                                    ts.factory.createLiteralTypeNode(ts.factory.createNull())
                                 ]),
                                 undefined
                             ),
-                            ts.createParameter(
+                            ts.factory.createParameterDeclaration(
                                 undefined,
                                 undefined,
-                                undefined,
-                                ts.createIdentifier("value"),
-                                ts.createToken(ts.SyntaxKind.QuestionToken),
+                                ts.factory.createIdentifier("value"),
+                                ts.factory.createToken(ts.SyntaxKind.QuestionToken),
                                 this.makeO(source, methodInfo, true),
                                 undefined
                             )
                         ],
-                        ts.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+                        ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
                     )),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(
-                ts.createQualifiedName(
-                    ts.createIdentifier(grpc),
-                    ts.createIdentifier("ClientWritableStream")
+            ts.factory.createTypeReferenceNode(
+                ts.factory.createQualifiedName(
+                    ts.factory.createIdentifier(grpc),
+                    ts.factory.createIdentifier("ClientWritableStream")
                 ),
                 [this.makeI(source, methodInfo, true)]
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createIdentifier("method"),
+                        ts.factory.createVariableDeclarationList(
+                            [ts.factory.createVariableDeclaration(
+                                ts.factory.createIdentifier("method"),
                                 undefined,
-                                ts.createElementAccess(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier(ServiceType),
-                                        ts.createIdentifier("methods")
+                                undefined,
+                                ts.factory.createElementAccessExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier(ServiceType),
+                                        ts.factory.createIdentifier("methods")
                                     ),
-                                    ts.createNumericLiteral(methodIndex.toString())
+                                    ts.factory.createNumericLiteral(methodIndex.toString())
                                 )
                             )],
                             ts.NodeFlags.Const
                         )
                     ),
-                    ts.createReturn(ts.createCall(
-                        ts.createPropertyAccess(
-                            ts.createThis(),
-                            ts.createIdentifier("makeClientStreamRequest")
+                    ts.factory.createReturnStatement(ts.factory.createCallExpression(
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createThis(),
+                            ts.factory.createIdentifier("makeClientStreamRequest")
                         ),
                         [
                             this.makeI(source, methodInfo, true),
                             this.makeO(source, methodInfo, true)
                         ],
                         [
-                            ts.createTemplateExpression(
-                                ts.createTemplateHead(
+                            ts.factory.createTemplateExpression(
+                                ts.factory.createTemplateHead(
                                     "/",
                                     "/"
                                 ),
                                 [
-                                    ts.createTemplateSpan(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier(ServiceType),
-                                            ts.createIdentifier("typeName")
+                                    ts.factory.createTemplateSpan(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier(ServiceType),
+                                            ts.factory.createIdentifier("typeName")
                                         ),
-                                        ts.createTemplateMiddle(
+                                        ts.factory.createTemplateMiddle(
                                             "/",
                                             "/"
                                         )
                                     ),
-                                    ts.createTemplateSpan(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("method"),
-                                            ts.createIdentifier("name")
+                                    ts.factory.createTemplateSpan(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("method"),
+                                            ts.factory.createIdentifier("name")
                                         ),
-                                        ts.createTemplateTail(
+                                        ts.factory.createTemplateTail(
                                             "",
                                             ""
                                         )
                                     )
                                 ]
                             ),
-                            ts.createArrowFunction(
+                            ts.factory.createArrowFunction(
                                 undefined,
                                 undefined,
-                                [ts.createParameter(
+                                [ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
+                                    ts.factory.createIdentifier("value"),
                                     undefined,
                                     this.makeI(source, methodInfo, true),
                                     undefined
                                 )],
-                                ts.createTypeReferenceNode(
-                                    ts.createIdentifier("Buffer"),
+                                ts.factory.createTypeReferenceNode(
+                                    ts.factory.createIdentifier("Buffer"),
                                     undefined
                                 ),
-                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier("Buffer"),
-                                        ts.createIdentifier("from")
+                                ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier("Buffer"),
+                                        ts.factory.createIdentifier("from")
                                     ),
                                     undefined,
-                                    [ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(
-                                                ts.createIdentifier("method"),
-                                                ts.createIdentifier("I")
+                                    [ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createIdentifier("method"),
+                                                ts.factory.createIdentifier("I")
                                             ),
-                                            ts.createIdentifier("toBinary")
+                                            ts.factory.createIdentifier("toBinary")
                                         ),
                                         undefined,
                                         [
-                                            ts.createIdentifier("value"),
-                                            ts.createPropertyAccess(
-                                                ts.createThis(),
-                                                ts.createIdentifier("_binaryOptions")
+                                            ts.factory.createIdentifier("value"),
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createThis(),
+                                                ts.factory.createIdentifier("_binaryOptions")
                                             )
                                         ]
                                     )]
                                 )
                             ),
-                            ts.createArrowFunction(
+                            ts.factory.createArrowFunction(
                                 undefined,
                                 undefined,
-                                [ts.createParameter(
+                                [ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("value"),
                                     undefined,
-                                    ts.createIdentifier("value"),
-                                    undefined,
-                                    ts.createTypeReferenceNode(
-                                        ts.createIdentifier("Buffer"),
+                                    ts.factory.createTypeReferenceNode(
+                                        ts.factory.createIdentifier("Buffer"),
                                         undefined
                                     ),
                                     undefined
                                 )],
                                 this.makeO(source, methodInfo, true),
-                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("method"),
-                                            ts.createIdentifier("O")
+                                ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("method"),
+                                            ts.factory.createIdentifier("O")
                                         ),
-                                        ts.createIdentifier("fromBinary")
+                                        ts.factory.createIdentifier("fromBinary")
                                     ),
                                     undefined,
                                     [
-                                        ts.createIdentifier("value"),
-                                        ts.createPropertyAccess(
-                                            ts.createThis(),
-                                            ts.createIdentifier("_binaryOptions")
+                                        ts.factory.createIdentifier("value"),
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createThis(),
+                                            ts.factory.createIdentifier("_binaryOptions")
                                         )
                                     ]
                                 )
                             ),
-                            ts.createAsExpression(
-                                ts.createIdentifier("metadata"),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                            ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("metadata"),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                             ),
-                            ts.createAsExpression(
-                                ts.createIdentifier("options"),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                            ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("options"),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                             ),
-                            ts.createAsExpression(
-                                ts.createIdentifier("callback"),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                            ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("callback"),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                             )
                         ]
                     ))
@@ -1868,203 +1801,199 @@ export class ServiceClientGeneratorGrpc extends ServiceClientGeneratorBase {
     protected createDuplexStreaming(source: TypescriptFile, methodInfo: rpc.MethodInfo): ts.MethodDeclaration {
         let grpc = this.imports.namespace(source, 'grpc', '@grpc/grpc-js')
         let ServiceType = this.imports.typeByName(source, methodInfo.service.typeName);
-        return ts.createMethod(
+        return ts.factory.createMethodDeclaration(
             undefined,
             undefined,
-            undefined,
-            ts.createIdentifier(methodInfo.localName),
+            ts.factory.createIdentifier(methodInfo.localName),
             undefined,
             undefined,
             [
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("metadata"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createUnionTypeNode([
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("Metadata")
+                    ts.factory.createIdentifier("metadata"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createUnionTypeNode([
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("Metadata")
                             ),
                             undefined
                         ),
-                        ts.createTypeReferenceNode(
-                            ts.createQualifiedName(
-                                ts.createIdentifier(grpc),
-                                ts.createIdentifier("CallOptions")
+                        ts.factory.createTypeReferenceNode(
+                            ts.factory.createQualifiedName(
+                                ts.factory.createIdentifier(grpc),
+                                ts.factory.createIdentifier("CallOptions")
                             ),
                             undefined
                         )
                     ]),
                     undefined
                 ),
-                ts.createParameter(
+                ts.factory.createParameterDeclaration(
                     undefined,
                     undefined,
-                    undefined,
-                    ts.createIdentifier("options"),
-                    ts.createToken(ts.SyntaxKind.QuestionToken),
-                    ts.createTypeReferenceNode(
-                        ts.createQualifiedName(
-                            ts.createIdentifier(grpc),
-                            ts.createIdentifier("CallOptions")
+                    ts.factory.createIdentifier("options"),
+                    ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+                    ts.factory.createTypeReferenceNode(
+                        ts.factory.createQualifiedName(
+                            ts.factory.createIdentifier(grpc),
+                            ts.factory.createIdentifier("CallOptions")
                         ),
                         undefined
                     ),
                     undefined
                 )
             ],
-            ts.createTypeReferenceNode(
-                ts.createQualifiedName(
-                    ts.createIdentifier(grpc),
-                    ts.createIdentifier("ClientDuplexStream")
+            ts.factory.createTypeReferenceNode(
+                ts.factory.createQualifiedName(
+                    ts.factory.createIdentifier(grpc),
+                    ts.factory.createIdentifier("ClientDuplexStream")
                 ),
                 [
                     this.makeI(source, methodInfo, true),
                     this.makeO(source, methodInfo, true)
                 ]
             ),
-            ts.createBlock(
+            ts.factory.createBlock(
                 [
-                    ts.createVariableStatement(
+                    ts.factory.createVariableStatement(
                         undefined,
-                        ts.createVariableDeclarationList(
-                            [ts.createVariableDeclaration(
-                                ts.createIdentifier("method"),
+                        ts.factory.createVariableDeclarationList(
+                            [ts.factory.createVariableDeclaration(
+                                ts.factory.createIdentifier("method"),
                                 undefined,
-                                ts.createElementAccess(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier(ServiceType),
-                                        ts.createIdentifier("methods")
+                                undefined,
+                                ts.factory.createElementAccessExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier(ServiceType),
+                                        ts.factory.createIdentifier("methods")
                                     ),
-                                    ts.createNumericLiteral(methodInfo.service.methods.indexOf(methodInfo).toString())
+                                    ts.factory.createNumericLiteral(methodInfo.service.methods.indexOf(methodInfo).toString())
                                 )
                             )],
                             ts.NodeFlags.Const
                         )
                     ),
-                    ts.createReturn(ts.createCall(
-                        ts.createPropertyAccess(
-                            ts.createThis(),
-                            ts.createIdentifier("makeBidiStreamRequest")
+                    ts.factory.createReturnStatement(ts.factory.createCallExpression(
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createThis(),
+                            ts.factory.createIdentifier("makeBidiStreamRequest")
                         ),
                         [
                             this.makeI(source, methodInfo, true),
                             this.makeO(source, methodInfo, true)
                         ],
                         [
-                            ts.createTemplateExpression(
-                                ts.createTemplateHead(
+                            ts.factory.createTemplateExpression(
+                                ts.factory.createTemplateHead(
                                     "/",
                                     "/"
                                 ),
                                 [
-                                    ts.createTemplateSpan(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier(ServiceType),
-                                            ts.createIdentifier("typeName")
+                                    ts.factory.createTemplateSpan(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier(ServiceType),
+                                            ts.factory.createIdentifier("typeName")
                                         ),
-                                        ts.createTemplateMiddle(
+                                        ts.factory.createTemplateMiddle(
                                             "/",
                                             "/"
                                         )
                                     ),
-                                    ts.createTemplateSpan(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("method"),
-                                            ts.createIdentifier("name")
+                                    ts.factory.createTemplateSpan(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("method"),
+                                            ts.factory.createIdentifier("name")
                                         ),
-                                        ts.createTemplateTail(
+                                        ts.factory.createTemplateTail(
                                             "",
                                             ""
                                         )
                                     )
                                 ]
                             ),
-                            ts.createArrowFunction(
+                            ts.factory.createArrowFunction(
                                 undefined,
                                 undefined,
-                                [ts.createParameter(
+                                [ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
-                                    undefined,
-                                    ts.createIdentifier("value"),
+                                    ts.factory.createIdentifier("value"),
                                     undefined,
                                     this.makeI(source, methodInfo, true),
                                     undefined
                                 )],
-                                ts.createTypeReferenceNode(
-                                    ts.createIdentifier("Buffer"),
+                                ts.factory.createTypeReferenceNode(
+                                    ts.factory.createIdentifier("Buffer"),
                                     undefined
                                 ),
-                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createIdentifier("Buffer"),
-                                        ts.createIdentifier("from")
+                                ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createIdentifier("Buffer"),
+                                        ts.factory.createIdentifier("from")
                                     ),
                                     undefined,
-                                    [ts.createCall(
-                                        ts.createPropertyAccess(
-                                            ts.createPropertyAccess(
-                                                ts.createIdentifier("method"),
-                                                ts.createIdentifier("I")
+                                    [ts.factory.createCallExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createIdentifier("method"),
+                                                ts.factory.createIdentifier("I")
                                             ),
-                                            ts.createIdentifier("toBinary")
+                                            ts.factory.createIdentifier("toBinary")
                                         ),
                                         undefined,
                                         [
-                                            ts.createIdentifier("value"),
-                                            ts.createPropertyAccess(
-                                                ts.createThis(),
-                                                ts.createIdentifier("_binaryOptions")
+                                            ts.factory.createIdentifier("value"),
+                                            ts.factory.createPropertyAccessExpression(
+                                                ts.factory.createThis(),
+                                                ts.factory.createIdentifier("_binaryOptions")
                                             )
                                         ]
                                     )]
                                 )
                             ),
-                            ts.createArrowFunction(
+                            ts.factory.createArrowFunction(
                                 undefined,
                                 undefined,
-                                [ts.createParameter(
+                                [ts.factory.createParameterDeclaration(
                                     undefined,
                                     undefined,
+                                    ts.factory.createIdentifier("value"),
                                     undefined,
-                                    ts.createIdentifier("value"),
-                                    undefined,
-                                    ts.createTypeReferenceNode(
-                                        ts.createIdentifier("Buffer"),
+                                    ts.factory.createTypeReferenceNode(
+                                        ts.factory.createIdentifier("Buffer"),
                                         undefined
                                     ),
                                     undefined
                                 )],
                                 this.makeO(source, methodInfo, true),
-                                ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                                ts.createCall(
-                                    ts.createPropertyAccess(
-                                        ts.createPropertyAccess(
-                                            ts.createIdentifier("method"),
-                                            ts.createIdentifier("O")
+                                ts.factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                                ts.factory.createCallExpression(
+                                    ts.factory.createPropertyAccessExpression(
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createIdentifier("method"),
+                                            ts.factory.createIdentifier("O")
                                         ),
-                                        ts.createIdentifier("fromBinary")
+                                        ts.factory.createIdentifier("fromBinary")
                                     ),
                                     undefined,
                                     [
-                                        ts.createIdentifier("value"),
-                                        ts.createPropertyAccess(
-                                            ts.createThis(),
-                                            ts.createIdentifier("_binaryOptions")
+                                        ts.factory.createIdentifier("value"),
+                                        ts.factory.createPropertyAccessExpression(
+                                            ts.factory.createThis(),
+                                            ts.factory.createIdentifier("_binaryOptions")
                                         )
                                     ]
                                 )
                             ),
-                            ts.createAsExpression(
-                                ts.createIdentifier("metadata"),
-                                ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+                            ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("metadata"),
+                                ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
                             ),
-                            ts.createIdentifier("options")
+                            ts.factory.createIdentifier("options")
                         ]
                     ))
                 ],

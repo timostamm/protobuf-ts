@@ -23,7 +23,7 @@ export class TypescriptFile {
         const newStatements = atTop
             ? [statement, ...this.sf.statements]
             : this.sf.statements.concat(statement)
-        this.sf = ts.updateSourceFileNode(
+        this.sf = ts.factory.updateSourceFile(
             this.sf, newStatements,
         );
     }

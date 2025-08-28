@@ -18,8 +18,7 @@ export function typescriptMethodFromText(functionText: string): ts.MethodDeclara
         throw new Error('function needs a name');
     }
 
-    const method = ts.createMethod(
-        node.decorators /*decorators*/,
+    const method = ts.factory.createMethodDeclaration(
         node.modifiers /*modifiers*/,
         node.asteriskToken /*asteriskToken*/,
         node.name,

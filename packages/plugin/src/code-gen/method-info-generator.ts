@@ -23,7 +23,7 @@ export class MethodInfoGenerator {
         const mi = methodInfos
             .map(mi => MethodInfoGenerator.denormalizeMethodInfo(mi))
             .map(mi => this.createMethodInfoLiteral(source, mi));
-        return ts.createArrayLiteral(mi, true);
+        return ts.factory.createArrayLiteralExpression(mi, true);
     }
 
 
@@ -39,31 +39,31 @@ export class MethodInfoGenerator {
         // options: Contains custom method options from the .proto source in JSON format.
         for (let key of ["name", "localName", "idempotency", "serverStreaming", "clientStreaming", "options"] as const) {
             if (methodInfo[key] !== undefined) {
-                properties.push(ts.createPropertyAssignment(
+                properties.push(ts.factory.createPropertyAssignment(
                     key, typescriptLiteralFromValue(methodInfo[key])
                 ));
             }
         }
 
         // I: The generated type handler for the input message.
-        properties.push(ts.createPropertyAssignment(
-            ts.createIdentifier('I'),
-            ts.createIdentifier(this.imports.typeByName(
+        properties.push(ts.factory.createPropertyAssignment(
+            ts.factory.createIdentifier('I'),
+            ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.I.typeName,
             ))
         ));
 
         // O: The generated type handler for the output message.
-        properties.push(ts.createPropertyAssignment(
-            ts.createIdentifier('O'),
-            ts.createIdentifier(this.imports.typeByName(
+        properties.push(ts.factory.createPropertyAssignment(
+            ts.factory.createIdentifier('O'),
+            ts.factory.createIdentifier(this.imports.typeByName(
                 source,
                 methodInfo.O.typeName,
             ))
         ));
 
-        return ts.createObjectLiteral(properties, false);
+        return ts.factory.createObjectLiteralExpression(properties, false);
     }
 
 

@@ -39,7 +39,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                 ...this.makeStatementsForEveryField(source, descMessage),
                 ...this.makeUnknownFieldsHandler(source),
                 // return writer;
-                ts.createReturn(ts.createIdentifier("writer"))
+                ts.factory.createReturnStatement(ts.factory.createIdentifier("writer"))
             ],
         )
         return [internalBinaryWrite];
@@ -51,14 +51,14 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             MessageInterface = this.imports.type(source, descMessage),
             IBinaryWriter = this.imports.name(source, 'IBinaryWriter', this.options.runtimeImportPath, true),
             BinaryWriteOptions = this.imports.name(source, 'BinaryWriteOptions', this.options.runtimeImportPath, true);
-        return ts.createMethod(undefined, undefined, undefined, ts.createIdentifier("internalBinaryWrite"), undefined, undefined,
+        return ts.factory.createMethodDeclaration(undefined, undefined, ts.factory.createIdentifier("internalBinaryWrite"), undefined, undefined,
             [
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("message"), undefined, ts.createTypeReferenceNode(MessageInterface, undefined), undefined),
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("writer"), undefined, ts.createTypeReferenceNode(IBinaryWriter, undefined), undefined),
-                ts.createParameter(undefined, undefined, undefined, ts.createIdentifier("options"), undefined, ts.createTypeReferenceNode(BinaryWriteOptions, undefined), undefined),
+                ts.factory.createParameterDeclaration(undefined, undefined, ts.factory.createIdentifier("message"), undefined, ts.factory.createTypeReferenceNode(MessageInterface, undefined), undefined),
+                ts.factory.createParameterDeclaration(undefined, undefined, ts.factory.createIdentifier("writer"), undefined, ts.factory.createTypeReferenceNode(IBinaryWriter, undefined), undefined),
+                ts.factory.createParameterDeclaration(undefined, undefined, ts.factory.createIdentifier("options"), undefined, ts.factory.createTypeReferenceNode(BinaryWriteOptions, undefined), undefined),
             ],
-            ts.createTypeReferenceNode(IBinaryWriter, undefined),
-            ts.createBlock(bodyStatements, true)
+            ts.factory.createTypeReferenceNode(IBinaryWriter, undefined),
+            ts.factory.createBlock(bodyStatements, true)
         );
     }
 
@@ -66,47 +66,50 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     private makeUnknownFieldsHandler(source: TypescriptFile,): ts.Statement[] {
         let UnknownFieldHandler = this.imports.name(source, 'UnknownFieldHandler', this.options.runtimeImportPath);
         return [
-            ts.createVariableStatement(
+            ts.factory.createVariableStatement(
                 undefined,
-                ts.createVariableDeclarationList(
-                    [ts.createVariableDeclaration(
-                        ts.createIdentifier("u"),
+                ts.factory.createVariableDeclarationList(
+                    [ts.factory.createVariableDeclaration(
+                        ts.factory.createIdentifier("u"),
                         undefined,
-                        ts.createPropertyAccess(
-                            ts.createIdentifier("options"),
-                            ts.createIdentifier("writeUnknownFields")
+                        undefined,
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createIdentifier("options"),
+                            ts.factory.createIdentifier("writeUnknownFields")
                         )
                     )],
                     ts.NodeFlags.Let
                 )
             ),
-            ts.createIf(
-                ts.createBinary(
-                    ts.createIdentifier("u"),
-                    ts.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
-                    ts.createFalse()
+            ts.factory.createIfStatement(
+                ts.factory.createBinaryExpression(
+                    ts.factory.createIdentifier("u"),
+                    ts.factory.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
+                    ts.factory.createFalse()
                 ),
-                ts.createExpressionStatement(ts.createCall(
-                    ts.createParen(ts.createConditional(
-                        ts.createBinary(
-                            ts.createIdentifier("u"),
-                            ts.createToken(ts.SyntaxKind.EqualsEqualsToken),
-                            ts.createTrue()
+                ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+                    ts.factory.createParenthesizedExpression(ts.factory.createConditionalExpression(
+                        ts.factory.createBinaryExpression(
+                            ts.factory.createIdentifier("u"),
+                            ts.factory.createToken(ts.SyntaxKind.EqualsEqualsToken),
+                            ts.factory.createTrue()
                         ),
-                        ts.createPropertyAccess(
-                            ts.createIdentifier(UnknownFieldHandler),
-                            ts.createIdentifier("onWrite")
+                        undefined,
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createIdentifier(UnknownFieldHandler),
+                            ts.factory.createIdentifier("onWrite")
                         ),
-                        ts.createIdentifier("u")
+                        undefined,
+                        ts.factory.createIdentifier("u")
                     )),
                     undefined,
                     [
-                        ts.createPropertyAccess(
-                            ts.createThis(),
-                            ts.createIdentifier("typeName")
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createThis(),
+                            ts.factory.createIdentifier("typeName")
                         ),
-                        ts.createIdentifier("message"),
-                        ts.createIdentifier("writer")
+                        ts.factory.createIdentifier("message"),
+                        ts.factory.createIdentifier("writer")
                     ]
                 )),
                 undefined
@@ -127,7 +130,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             // TODO drop semicolon added for BC
             let fieldDeclarationComment = getDeclarationString(descField) + ";";
 
-            let fieldPropertyAccess = ts.createPropertyAccess(ts.createIdentifier("message"), fieldInfo.localName);
+            let fieldPropertyAccess = ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("message"), fieldInfo.localName);
             switch (fieldInfo.kind) {
 
                 case "scalar":
@@ -168,34 +171,34 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         let shouldWriteCondition: ts.Expression;
         if (field.T === rt.ScalarType.BYTES && field.opt) {
             // message.bytes !== undefined
-            shouldWriteCondition = ts.createBinary(
+            shouldWriteCondition = ts.factory.createBinaryExpression(
                 fieldPropertyAccess,
-                ts.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
-                ts.createIdentifier("undefined")
+                ts.factory.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
+                ts.factory.createIdentifier("undefined")
             );
         } else if (field.T === rt.ScalarType.BYTES && !field.opt) {
             // message.bytes.length
-            shouldWriteCondition = ts.createPropertyAccess(
+            shouldWriteCondition = ts.factory.createPropertyAccessExpression(
                 fieldPropertyAccess,
-                ts.createIdentifier("length")
+                ts.factory.createIdentifier("length")
             );
         } else {
             // message.field !== <default value>
             // get a default value for the scalar field using the MessageType
             let defaultValue = new rt.MessageType<rt.UnknownMessage>("$synthetic.InternalBinaryWrite", [field]).create()[field.localName];
             let defaultValueExpression = typescriptLiteralFromValue(defaultValue);
-            shouldWriteCondition = ts.createBinary(
+            shouldWriteCondition = ts.factory.createBinaryExpression(
                 fieldPropertyAccess,
-                ts.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
+                ts.factory.createToken(ts.SyntaxKind.ExclamationEqualsEqualsToken),
                 defaultValueExpression
             );
         }
 
         // if ( <shouldWriteCondition> )
-        let statement = ts.createIf(
+        let statement = ts.factory.createIfStatement(
             shouldWriteCondition,
             // writer.tag( <field no>, <wire type> ).string(message.stringField)
-            ts.createExpressionStatement(
+            ts.factory.createExpressionStatement(
                 this.makeWriterCall(
                     this.makeWriterTagCall(source, 'writer', field.no, this.wireTypeForSingleScalar(type)),
                     type,
@@ -219,32 +222,32 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         if (field.repeat === rt.RepeatType.PACKED) {
 
             // if (message.int32Field.length) {
-            statement = ts.createIf(
-                ts.createPropertyAccess(fieldPropertyAccess, ts.createIdentifier("length")),
-                ts.createBlock([
+            statement = ts.factory.createIfStatement(
+                ts.factory.createPropertyAccessExpression(fieldPropertyAccess, ts.factory.createIdentifier("length")),
+                ts.factory.createBlock([
                     // writer.tag(3, WireType.LengthDelimited).fork();
-                    ts.createExpressionStatement(
+                    ts.factory.createExpressionStatement(
                         this.makeWriterCall(
                             this.makeWriterTagCall(source, 'writer', field.no, rt.WireType.LengthDelimited),
                             'fork'
                         )
                     ),
                     // for (let i = 0; i < message.int32Field.length; i++)
-                    ts.createFor(
-                        ts.createVariableDeclarationList([ts.createVariableDeclaration(ts.createIdentifier("i"), undefined, ts.createNumericLiteral("0"))], ts.NodeFlags.Let),
-                        ts.createBinary(
-                            ts.createIdentifier("i"),
-                            ts.createToken(ts.SyntaxKind.LessThanToken),
-                            ts.createPropertyAccess(fieldPropertyAccess, ts.createIdentifier("length"))
+                    ts.factory.createForStatement(
+                        ts.factory.createVariableDeclarationList([ts.factory.createVariableDeclaration(ts.factory.createIdentifier("i"), undefined, undefined, ts.factory.createNumericLiteral("0"))], ts.NodeFlags.Let),
+                        ts.factory.createBinaryExpression(
+                            ts.factory.createIdentifier("i"),
+                            ts.factory.createToken(ts.SyntaxKind.LessThanToken),
+                            ts.factory.createPropertyAccessExpression(fieldPropertyAccess, ts.factory.createIdentifier("length"))
                         ),
-                        ts.createPostfix(ts.createIdentifier("i"), ts.SyntaxKind.PlusPlusToken),
+                        ts.factory.createPostfixUnaryExpression(ts.factory.createIdentifier("i"), ts.SyntaxKind.PlusPlusToken),
                         // writer.int32(message.int32Field[i]);
-                        ts.createExpressionStatement(
-                            this.makeWriterCall('writer', type, ts.createElementAccess(fieldPropertyAccess, ts.createIdentifier("i")))
+                        ts.factory.createExpressionStatement(
+                            this.makeWriterCall('writer', type, ts.factory.createNonNullExpression(ts.factory.createElementAccessExpression(fieldPropertyAccess, ts.factory.createIdentifier("i"))))
                         )
                     ),
                     // writer.join();
-                    ts.createExpressionStatement(
+                    ts.factory.createExpressionStatement(
                         this.makeWriterCall('writer', 'join')
                     ),
                 ], true),
@@ -255,20 +258,20 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             // never packed
 
             // for (let i = 0; i < message.bytesField.length; i++)
-            statement = ts.createFor(
-                ts.createVariableDeclarationList([ts.createVariableDeclaration(ts.createIdentifier("i"), undefined, ts.createNumericLiteral("0"))], ts.NodeFlags.Let),
-                ts.createBinary(
-                    ts.createIdentifier("i"),
-                    ts.createToken(ts.SyntaxKind.LessThanToken),
-                    ts.createPropertyAccess(fieldPropertyAccess, ts.createIdentifier("length"))
+            statement = ts.factory.createForStatement(
+                ts.factory.createVariableDeclarationList([ts.factory.createVariableDeclaration(ts.factory.createIdentifier("i"), undefined, undefined, ts.factory.createNumericLiteral("0"))], ts.NodeFlags.Let),
+                ts.factory.createBinaryExpression(
+                    ts.factory.createIdentifier("i"),
+                    ts.factory.createToken(ts.SyntaxKind.LessThanToken),
+                    ts.factory.createPropertyAccessExpression(fieldPropertyAccess, ts.factory.createIdentifier("length"))
                 ),
-                ts.createPostfix(ts.createIdentifier("i"), ts.SyntaxKind.PlusPlusToken),
+                ts.factory.createPostfixUnaryExpression(ts.factory.createIdentifier("i"), ts.SyntaxKind.PlusPlusToken),
                 //   writer.tag( <field number>, <wire type> ).bytes( message.bytesField[i] )
-                ts.createExpressionStatement(
+                ts.factory.createExpressionStatement(
                     this.makeWriterCall(
                         this.makeWriterTagCall(source, "writer", field.no, this.wireTypeForSingleScalar(type)),
                         type,
-                        ts.createElementAccess(fieldPropertyAccess, ts.createIdentifier("i"))
+                        ts.factory.createNonNullExpression(ts.factory.createElementAccessExpression(fieldPropertyAccess, ts.factory.createIdentifier("i")))
                     )
                 )
             );
@@ -284,27 +287,27 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
     private scalarOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "scalar" | "enum"; oneof: string; repeat: undefined | rt.RepeatType.NO }, fieldDeclarationComment: string): ts.Statement[] {
         let type = field.kind == "enum" ? rt.ScalarType.INT32 : field.T;
 
-        let groupPropertyAccess = ts.createPropertyAccess(
-            ts.createIdentifier("message"),
-            ts.createIdentifier(field.oneof)
+        let groupPropertyAccess = ts.factory.createPropertyAccessExpression(
+            ts.factory.createIdentifier("message"),
+            ts.factory.createIdentifier(field.oneof)
         );
 
-        let statement = ts.createIf(
+        let statement = ts.factory.createIfStatement(
             // if (message.result.oneofKind === 'value')
-            ts.createBinary(
-                ts.createPropertyAccess(
+            ts.factory.createBinaryExpression(
+                ts.factory.createPropertyAccessExpression(
                     groupPropertyAccess,
-                    ts.createIdentifier(this.options.oneofKindDiscriminator)
+                    ts.factory.createIdentifier(this.options.oneofKindDiscriminator)
                 ),
-                ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
-                ts.createStringLiteral(field.localName)
+                ts.factory.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
+                ts.factory.createStringLiteral(field.localName)
             ),
             // writer.tag( <field no>, <wire type> ).string(message.stringField)
-            ts.createExpressionStatement(
+            ts.factory.createExpressionStatement(
                 this.makeWriterCall(
                     this.makeWriterTagCall(source, 'writer', field.no, this.wireTypeForSingleScalar(type)),
                     type,
-                    ts.createPropertyAccess(
+                    ts.factory.createPropertyAccessExpression(
                         groupPropertyAccess,
                         field.localName
                     )
@@ -327,22 +330,22 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         );
 
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.messageField, <writeTagAndFork>, options);
-        let binaryWrite = ts.createCall(
-            ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
-                ts.createIdentifier("internalBinaryWrite")
+        let binaryWrite = ts.factory.createCallExpression(
+            ts.factory.createPropertyAccessExpression(
+                ts.factory.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
+                ts.factory.createIdentifier("internalBinaryWrite")
             ),
             undefined,
-            [fieldPropertyAccess, writeTagAndFork, ts.createIdentifier("options")],
+            [fieldPropertyAccess, writeTagAndFork, ts.factory.createIdentifier("options")],
         );
 
         // <...>.join()
         let binaryWriteAndJoin = this.makeWriterCall(binaryWrite, 'join');
 
         // if (message.messageField) {
-        let statement = ts.createIf(
+        let statement = ts.factory.createIfStatement(
             fieldPropertyAccess,
-            ts.createExpressionStatement(binaryWriteAndJoin),
+            ts.factory.createExpressionStatement(binaryWriteAndJoin),
             undefined
         )
 
@@ -355,7 +358,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
     private messageRepeated(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: rt.RepeatType.PACKED | rt.RepeatType.UNPACKED; oneof: undefined; }, fieldPropertyAccess: ts.PropertyAccessExpression, fieldDeclarationComment: string): ts.Statement[] {
         // message.repeatedMessageField[i]
-        let fieldPropI = ts.createElementAccess(fieldPropertyAccess, ts.createIdentifier("i"));
+        let fieldPropI = ts.factory.createNonNullExpression(ts.factory.createElementAccessExpression(fieldPropertyAccess, ts.factory.createIdentifier("i")));
 
         // writer.tag(<field no>, WireType.LengthDelimited).fork();
         let writeTagAndFork = this.makeWriterCall(
@@ -364,28 +367,28 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         );
 
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.repeatedMessageField, <writeTagAndFork>, options);
-        let binaryWrite = ts.createCall(
-            ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
-                ts.createIdentifier("internalBinaryWrite")
+        let binaryWrite = ts.factory.createCallExpression(
+            ts.factory.createPropertyAccessExpression(
+                ts.factory.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
+                ts.factory.createIdentifier("internalBinaryWrite")
             ),
             undefined,
-            [fieldPropI, writeTagAndFork, ts.createIdentifier("options")],
+            [fieldPropI, writeTagAndFork, ts.factory.createIdentifier("options")],
         );
 
         // <...>.join()
         let binaryWriteAndJoin = this.makeWriterCall(binaryWrite, 'join');
 
         // for (let i = 0; i < message.repeatedMessageField.length; i++) {
-        let statement = ts.createFor(
-            ts.createVariableDeclarationList([ts.createVariableDeclaration(ts.createIdentifier("i"), undefined, ts.createNumericLiteral("0"))], ts.NodeFlags.Let),
-            ts.createBinary(
-                ts.createIdentifier("i"),
-                ts.createToken(ts.SyntaxKind.LessThanToken),
-                ts.createPropertyAccess(fieldPropertyAccess, ts.createIdentifier("length"))
+        let statement = ts.factory.createForStatement(
+            ts.factory.createVariableDeclarationList([ts.factory.createVariableDeclaration(ts.factory.createIdentifier("i"), undefined, undefined, ts.factory.createNumericLiteral("0"))], ts.NodeFlags.Let),
+            ts.factory.createBinaryExpression(
+                ts.factory.createIdentifier("i"),
+                ts.factory.createToken(ts.SyntaxKind.LessThanToken),
+                ts.factory.createPropertyAccessExpression(fieldPropertyAccess, ts.factory.createIdentifier("length"))
             ),
-            ts.createPostfix(ts.createIdentifier("i"), ts.SyntaxKind.PlusPlusToken),
-            ts.createExpressionStatement(binaryWriteAndJoin),
+            ts.factory.createPostfixUnaryExpression(ts.factory.createIdentifier("i"), ts.SyntaxKind.PlusPlusToken),
+            ts.factory.createExpressionStatement(binaryWriteAndJoin),
         );
         ts.addSyntheticLeadingComment(
             statement, ts.SyntaxKind.MultiLineCommentTrivia, ' ' + fieldDeclarationComment + ' ', true
@@ -396,9 +399,9 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
     private messageOneof(source: TypescriptFile, field: rt.FieldInfo & { kind: "message"; repeat: undefined | rt.RepeatType.NO; oneof: string; }, fieldDeclarationComment: string): ts.Statement[] {
         // message.<oneof name>
-        let groupPropertyAccess = ts.createPropertyAccess(
-            ts.createIdentifier("message"),
-            ts.createIdentifier(field.oneof)
+        let groupPropertyAccess = ts.factory.createPropertyAccessExpression(
+            ts.factory.createIdentifier("message"),
+            ts.factory.createIdentifier(field.oneof)
         );
 
         // writer.tag(<field no>, WireType.LengthDelimited).fork();
@@ -408,19 +411,19 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         );
 
         // MessageFieldMessage_TestMessage.internalBinaryWrite(message.<groupPropertyAccess>.<fieldLocalName>, <writeTagAndFork>, options);
-        let binaryWrite = ts.createCall(
-            ts.createPropertyAccess(
-                ts.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
-                ts.createIdentifier("internalBinaryWrite")
+        let binaryWrite = ts.factory.createCallExpression(
+            ts.factory.createPropertyAccessExpression(
+                ts.factory.createIdentifier(this.imports.typeByName(source, field.T().typeName)),
+                ts.factory.createIdentifier("internalBinaryWrite")
             ),
             undefined,
             [
-                ts.createPropertyAccess(
+                ts.factory.createPropertyAccessExpression(
                     groupPropertyAccess,
                     field.localName
                 ),
                 writeTagAndFork,
-                ts.createIdentifier("options")
+                ts.factory.createIdentifier("options")
             ],
         );
 
@@ -428,16 +431,16 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         let binaryWriteAndJoin = this.makeWriterCall(binaryWrite, 'join');
 
         // if (message.objects.oneofKind === 'a') {
-        let statement = ts.createIf(
-            ts.createBinary(
-                ts.createPropertyAccess(
+        let statement = ts.factory.createIfStatement(
+            ts.factory.createBinaryExpression(
+                ts.factory.createPropertyAccessExpression(
                     groupPropertyAccess,
-                    ts.createIdentifier(this.options.oneofKindDiscriminator)
+                    ts.factory.createIdentifier(this.options.oneofKindDiscriminator)
                 ),
-                ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
-                ts.createStringLiteral(field.localName)
+                ts.factory.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken),
+                ts.factory.createStringLiteral(field.localName)
             ),
-            ts.createExpressionStatement(binaryWriteAndJoin),
+            ts.factory.createExpressionStatement(binaryWriteAndJoin),
             undefined
         )
 
@@ -452,11 +455,11 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
         // all javascript property keys are strings, need to do some conversion for wire format
         let mapEntryKeyRead: ts.Expression;
-        let mapEntryValueRead: ts.Expression = ts.createElementAccess(fieldPropertyAccess, ts.createIdentifier("k"));
+        let mapEntryValueRead: ts.Expression = ts.factory.createElementAccessExpression(fieldPropertyAccess, ts.factory.createIdentifier("k"));
         switch (field.K) {
             case rt.ScalarType.BOOL:
                 // parse bool for writer
-                mapEntryKeyRead = ts.createBinary(ts.createIdentifier("k"), ts.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken), ts.createStringLiteral("true"));
+                mapEntryKeyRead = ts.factory.createBinaryExpression(ts.factory.createIdentifier("k"), ts.factory.createToken(ts.SyntaxKind.EqualsEqualsEqualsToken), ts.factory.createStringLiteral("true"));
                 break;
             case rt.ScalarType.INT32:
             case rt.ScalarType.SINT32:
@@ -464,18 +467,18 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             case rt.ScalarType.FIXED32:
             case rt.ScalarType.SFIXED32:
                 // parse int for writer
-                mapEntryKeyRead = ts.createCall(ts.createIdentifier("parseInt"), undefined, [ts.createIdentifier("k")]);
+                mapEntryKeyRead = ts.factory.createCallExpression(ts.factory.createIdentifier("parseInt"), undefined, [ts.factory.createIdentifier("k")]);
                 // convince compiler key works for index type
                 // message.int32KeyedMap[k as any]
                 //                      ^^^^^^^^^^
-                mapEntryValueRead = ts.createElementAccess(
+                mapEntryValueRead = ts.factory.createElementAccessExpression(
                     fieldPropertyAccess,
-                    ts.createAsExpression(ts.createIdentifier("k"), ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword))
+                    ts.factory.createAsExpression(ts.factory.createIdentifier("k"), ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword))
                 );
                 break;
             default:
                 // writer method accepts string for all other cases, no need to modify
-                mapEntryKeyRead = ts.createIdentifier("k");
+                mapEntryKeyRead = ts.factory.createIdentifier("k");
                 break;
         }
 
@@ -487,10 +490,10 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             const descMessage = this.registry.getMessage(field.V.T().typeName);
             assert(descMessage);
 
-            forBody = ts.createBlock(
+            forBody = ts.factory.createBlock(
                 [
                     // same as for scalar maps
-                    ts.createExpressionStatement(
+                    ts.factory.createExpressionStatement(
                         this.makeWriterCall(
                             // this.makeWriterCall(
                             this.makeWriterTagCall(
@@ -509,7 +512,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                     ),
 
                     //
-                    ts.createExpressionStatement(
+                    ts.factory.createExpressionStatement(
                         this.makeWriterCall(
                             this.makeWriterTagCall(
                                 source,
@@ -522,21 +525,21 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                     ),
 
                     // MessageMapMessage_MyItem.internalBinaryWrite(message.strMsgField[k], writer, options);
-                    ts.createExpressionStatement(ts.createCall(
-                        ts.createPropertyAccess(
-                            ts.createIdentifier(this.imports.type(source, descMessage)),
-                            ts.createIdentifier("internalBinaryWrite")
+                    ts.factory.createExpressionStatement(ts.factory.createCallExpression(
+                        ts.factory.createPropertyAccessExpression(
+                            ts.factory.createIdentifier(this.imports.type(source, descMessage)),
+                            ts.factory.createIdentifier("internalBinaryWrite")
                         ),
                         undefined,
                         [
                             mapEntryValueRead,
-                            ts.createIdentifier("writer"),
-                            ts.createIdentifier("options")
+                            ts.factory.createIdentifier("writer"),
+                            ts.factory.createIdentifier("options")
                         ]
                     )),
 
                     // end message and end map entry
-                    ts.createExpressionStatement(
+                    ts.factory.createExpressionStatement(
                         this.makeWriterCall(
                             this.makeWriterCall('writer', 'join'),
                             'join'
@@ -553,7 +556,7 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
             let mapEntryValueScalarType: rt.ScalarType = field.V.kind == "enum" ? rt.ScalarType.INT32 : field.V.T;
 
             // *rolleyes*
-            forBody = ts.createExpressionStatement(
+            forBody = ts.factory.createExpressionStatement(
                 this.makeWriterCall(
                     this.makeWriterCall(
                         this.makeWriterTagCall(
@@ -591,16 +594,16 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
         }
 
         // for (let k of Object.keys(message.strStrField))
-        let statement = ts.createForOf(
+        let statement = ts.factory.createForOfStatement(
             undefined,
-            ts.createVariableDeclarationList([ts.createVariableDeclaration(ts.createIdentifier("k"), undefined, undefined)], ts.NodeFlags.Let),
-            ts.createCall(
-                ts.createPropertyAccess(
-                    ts.createPropertyAccess(
-                        ts.createIdentifier("globalThis"),
-                        ts.createIdentifier("Object")
+            ts.factory.createVariableDeclarationList([ts.factory.createVariableDeclaration(ts.factory.createIdentifier("k"), undefined, undefined)], ts.NodeFlags.Let),
+            ts.factory.createCallExpression(
+                ts.factory.createPropertyAccessExpression(
+                    ts.factory.createPropertyAccessExpression(
+                        ts.factory.createIdentifier("globalThis"),
+                        ts.factory.createIdentifier("Object")
                     ),
-                    ts.createIdentifier("keys")
+                    ts.factory.createIdentifier("keys")
                 ),
                 undefined,
                 [fieldPropertyAccess]
@@ -616,15 +619,15 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
 
     private  makeWriterCall(writerExpressionOrName: string | ts.Expression, type: rt.ScalarType | 'fork' | 'join', argument?: ts.Expression): ts.Expression {
         let methodName = typeof type == "string" ? type : ScalarType[type].toLowerCase();
-        let writerExpression = typeof writerExpressionOrName == "string" ? ts.createIdentifier(writerExpressionOrName) : writerExpressionOrName;
-        let methodProp = ts.createPropertyAccess(writerExpression, ts.createIdentifier(methodName));
-        return ts.createCall(methodProp, undefined, argument ? [argument] : undefined);
+        let writerExpression = typeof writerExpressionOrName == "string" ? ts.factory.createIdentifier(writerExpressionOrName) : writerExpressionOrName;
+        let methodProp = ts.factory.createPropertyAccessExpression(writerExpression, ts.factory.createIdentifier(methodName));
+        return ts.factory.createCallExpression(methodProp, undefined, argument ? [argument] : undefined);
     }
 
 
     private  makeWriterTagCall(source: TypescriptFile, writerExpressionOrName: string | ts.Expression, fieldNo: number, wireType: rt.WireType): ts.Expression {
-        let writerExpression = typeof writerExpressionOrName == "string" ? ts.createIdentifier(writerExpressionOrName) : writerExpressionOrName;
-        let methodProp = ts.createPropertyAccess(writerExpression, ts.createIdentifier("tag"));
+        let writerExpression = typeof writerExpressionOrName == "string" ? ts.factory.createIdentifier(writerExpressionOrName) : writerExpressionOrName;
+        let methodProp = ts.factory.createPropertyAccessExpression(writerExpression, ts.factory.createIdentifier("tag"));
         let wireTypeName: string;
         switch (wireType) {
             case rt.WireType.LengthDelimited:
@@ -646,12 +649,12 @@ export class InternalBinaryWrite implements CustomMethodGenerator {
                 wireTypeName = "StartGroup";
                 break;
         }
-        let wireTypeAccess = ts.createPropertyAccess(
-            ts.createIdentifier(this.imports.name(source, 'WireType', this.options.runtimeImportPath)),
+        let wireTypeAccess = ts.factory.createPropertyAccessExpression(
+            ts.factory.createIdentifier(this.imports.name(source, 'WireType', this.options.runtimeImportPath)),
             wireTypeName
         );
-        return ts.createCall(methodProp, undefined, [
-            ts.createNumericLiteral(fieldNo.toString()),
+        return ts.factory.createCallExpression(methodProp, undefined, [
+            ts.factory.createNumericLiteral(fieldNo.toString()),
             wireTypeAccess
         ]);
     }
