@@ -1,7 +1,7 @@
-import type {MessageInfo} from "./reflection-info";
+import {MergeOptions} from "./merge-options";
+import type {FieldInfo} from "./reflection-info";
 import type {PartialMessage} from "./message-type-contract";
 import type {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
-
 
 /**
  * Copy partial data into the target message.
@@ -9,92 +9,113 @@ import type {UnknownMessage, UnknownOneofGroup} from "./unknown-types";
  * If a singular scalar or enum field is present in the source, it
  * replaces the field in the target.
  *
- * If a singular message field is present in the source, it is merged
- * with the target field by calling mergePartial() of the responsible
- * message type.
+ * By default if a singular message field is present in the source,
+ * it is merged with the target field by calling mergePartial() of
+ * the responsible message type.
  *
- * If a repeated field is present in the source, its values replace
- * all values in the target array, removing extraneous values.
- * Repeated message fields are copied, not merged.
+ * By default if a repeated field is present in the source, its values
+ * replace all values in the target array, removing extraneous values.
+ * By default repeated message fields are copied, not merged.
  *
- * If a map field is present in the source, entries are added to the
- * target map, replacing entries with the same key. Entries that only
- * exist in the target remain. Entries with message values are copied,
- * not merged.
+ * By default if a map field is present in the source, entries are added
+ * to the target map, replacing entries with the same key. Entries that
+ * only exist in the target remain. By default, entries with message
+ * values are copied, not merged.
  *
- * Note that this function differs from protobuf merge semantics,
- * which appends repeated fields.
+ * Note that this function's defaults differs from protobuf merge
+ * semantics, which appends repeated fields.
  */
-export function reflectionMergePartial<T extends object>(info: MessageInfo, target: T, source: PartialMessage<T>) {
-
-    let
-        fieldValue: UnknownMessage[string], // the field value we are working with
-        input = source as Partial<UnknownMessage>,
-        output: UnknownMessage | UnknownOneofGroup; // where we want our field value to go
-
+export function reflectionMergePartial<T extends object>(info: {
+    /** Simple information for each message field in `T` */
+    readonly fields: readonly FieldInfo[]
+}, target: T, source: PartialMessage<T>, maybeMergeOptions?: MergeOptions) {
+    const mergeOptions = MergeOptions.withDefaults(maybeMergeOptions);
     for (let field of info.fields) {
         let name = field.localName;
-
-        if (field.oneof) {
-            const group = input[field.oneof] as UnknownOneofGroup | undefined; // this is the oneof`s group in the source
-            if (group?.oneofKind == undefined) { // the user is free to omit
-                continue; // we skip this field, and all other members too
-            }
-            fieldValue = group[name]; // our value comes from the the oneof group of the source
-            output = (target as UnknownMessage)[field.oneof] as UnknownOneofGroup; // and our output is the oneof group of the target
-            output.oneofKind = group.oneofKind; // always update discriminator
-            if (fieldValue == undefined) {
-                delete output[name]; // remove any existing value
-                continue; // skip further work on field
-            }
-        } else {
-            fieldValue = input[name]; // we are using the source directly
-            output = target as UnknownMessage; // we want our field value to go directly into the target
-            if (fieldValue == undefined) {
-                continue; // skip further work on field, existing value is used as is
+        if (!field.oneof)
+            mergeFromFieldValue(field, (source as UnknownMessage)[name], target as UnknownMessage, mergeOptions);
+        else {
+            let sourceGroup = (source as UnknownMessage)[field.oneof] as UnknownOneofGroup | undefined,
+                targetGroup = (target as UnknownMessage)[field.oneof] as UnknownOneofGroup;
+            if (sourceGroup?.oneofKind === name) {
+                delete targetGroup[targetGroup.oneofKind!];
+                targetGroup.oneofKind = name;
+                mergeFromFieldValue(field, sourceGroup[name], targetGroup, mergeOptions);
             }
         }
+    }
+}
 
-        if (field.repeat)
-            (output[name] as any[]).length = (fieldValue as any[]).length; // resize target array to match source array
-
-        // now we just work with `fieldValue` and `output` to merge the value
+export function mergeFromFieldValue(
+    field: FieldInfo,
+    fieldValue: UnknownMessage[string],
+    output: UnknownMessage,
+    mergeOptions: MergeOptions.NonNullable,
+): void {
+    const name = field.localName;
+    if (field.repeat) {
+        if (!fieldValue)
+            return;
+        let outArr = output[name] as any[];
+        if (mergeOptions.repeated === MergeOptions.Repeated.REPLACE)
+            outArr.length = 0;
+        let srcArr = fieldValue as any[],
+            lo = outArr.length,
+            hi = lo + srcArr.length;
+        
         switch (field.kind) {
             case "scalar":
             case "enum":
-                if (field.repeat)
-                    for (let i = 0; i < (fieldValue as any[]).length; i++)
-                        (output[name] as any[])[i] = (fieldValue as any[])[i]; // not a reference type
-                else
-                    output[name] = fieldValue; // not a reference type
-                break;
-
+                for (let i = lo; i < hi; i++)
+                    outArr[i] = srcArr[i - lo]; // elements are not reference types
+                return;
             case "message":
                 let T = field.T();
-                if (field.repeat)
-                    for (let i = 0; i < (fieldValue as any[]).length; i++)
-                        (output[name] as any[])[i] = T.create((fieldValue as any[])[i]);
-                else if (output[name] === undefined)
-                    output[name] = T.create(fieldValue as PartialMessage<any>); // nothing to merge with
-                else
-                    T.mergePartial(output[name], fieldValue as PartialMessage<any>);
-                break;
-
-            case "map":
-                // Map and repeated fields are simply overwritten, not appended or merged
-                switch (field.V.kind) {
-                    case "scalar":
-                    case "enum":
-                        Object.assign(output[name], fieldValue); // elements are not reference types
-                        break;
-                    case "message":
-                        let T = field.V.T();
-                        for (let k of Object.keys(fieldValue as any))
-                            (output[name] as any)[k] = T.create((fieldValue as any)[k]);
-                        break;
-                }
-                break;
-
+                for (let i = lo; i < hi; i++)
+                    if (mergeOptions.repeated === MergeOptions.Repeated.DEEP && outArr[i])
+                        T.mergePartial(outArr[i], srcArr[i - lo], mergeOptions);
+                    else
+                        outArr[i] = T.create(srcArr[i - lo]);
+                return;
         }
+        return;
+    }
+
+    // Only deal with non-repeated values
+    switch (field.kind) {
+        case "scalar":
+        case "enum":
+            if (fieldValue != undefined)
+                output[name] = fieldValue; // not a reference type
+            return;
+        case "message":
+            if (!fieldValue) {
+                if (mergeOptions.replaceMessages === MergeOptions.ReplaceMessages.ALWAYS)
+                    delete output[name];
+            } else if (mergeOptions.replaceMessages || !output[name])
+                output[name] = field.T().create(fieldValue as PartialMessage<any>);
+            else
+                field.T().mergePartial(output[name], fieldValue as PartialMessage<any>, mergeOptions);
+            return;
+        case "map":
+            if (!fieldValue)
+                return;
+            let outMap = (mergeOptions.map === MergeOptions.Map.REPLACE
+                ? output[name] = {}
+                : output[name]) as any;
+            switch (field.V.kind) {
+                case "scalar":
+                case "enum":
+                    Object.assign(outMap, fieldValue); // elements are not reference types
+                    return;
+                case "message":
+                    let T = field.V.T();
+                    for (let [k, v] of Object.entries(fieldValue as any))
+                        if (mergeOptions.map === MergeOptions.Map.DEEP && outMap[k])
+                            T.mergePartial(outMap[k], v as PartialMessage<any>, mergeOptions);
+                        else
+                            outMap[k] = T.create(v as UnknownMessage);
+                    return;
+            }
     }
 }
