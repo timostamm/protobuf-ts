@@ -81,11 +81,13 @@ export function createGrpcWebRequestBody(message: Uint8Array, format: GrpcWebFor
  * If given a fetch response, checks for fetch-specific error information
  * ("type" property) and whether the "body" is null and throws a RpcError.
  */
-export function readGrpcWebResponseHeader(fetchResponse: Response): [GrpcStatusCode | undefined, string | undefined, RpcMetadata];
-export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: number, httpStatusText: string): [GrpcStatusCode | undefined, string | undefined, RpcMetadata];
-export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatus?: number, httpStatusText?: string): [GrpcStatusCode | undefined, string | undefined, RpcMetadata] {
-    if (arguments.length === 1) {
+export function readGrpcWebResponseHeader(fetchResponse: Response, decodeMessage?: boolean): [GrpcStatusCode | undefined, string | undefined, RpcMetadata];
+export function readGrpcWebResponseHeader(headers: HttpHeaders, httpStatus: number, httpStatusText: string, decodeMessage?: boolean): [GrpcStatusCode | undefined, string | undefined, RpcMetadata];
+export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | Response, httpStatusOrDecode?: number | boolean, httpStatusText?: string, decodeMessage?: boolean): [GrpcStatusCode | undefined, string | undefined, RpcMetadata] {
+    // 1-2 args: Response overload; 3-4 args: HttpHeaders overload
+    if (arguments.length <= 2) {
         let fetchResponse = headersOrFetchResponse as Response;
+        let decode = httpStatusOrDecode as boolean | undefined;
 
         // Cloudflare Workers throw when the type property of a fetch response
         // is accessed, so wrap access with try/catch. See:
@@ -104,17 +106,19 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
         return readGrpcWebResponseHeader(
             fetchHeadersToHttp(fetchResponse.headers),
             fetchResponse.status,
-            fetchResponse.statusText
+            fetchResponse.statusText,
+            decode
         );
     }
     let
         headers = headersOrFetchResponse as HttpHeaders,
-        httpOk = httpStatus! >= 200 && httpStatus! < 300,
+        httpStatus = httpStatusOrDecode as number,
+        httpOk = httpStatus >= 200 && httpStatus < 300,
         responseMeta = parseMetadata(headers),
-        [statusCode, statusDetail] = parseStatus(headers);
+        [statusCode, statusDetail] = parseStatus(headers, decodeMessage);
 
     if ((statusCode === undefined || statusCode === GrpcStatusCode.OK) && !httpOk) {
-        statusCode = httpStatusToGrpc(httpStatus!);
+        statusCode = httpStatusToGrpc(httpStatus);
         statusDetail = httpStatusText;
     }
     return [statusCode, statusDetail, responseMeta];
@@ -129,10 +133,10 @@ export function readGrpcWebResponseHeader(headersOrFetchResponse: HttpHeaders | 
  * ASCII string with HTTP headers. Just pass the data of a grpc-web trailer
  * frame.
  */
-export function readGrpcWebResponseTrailer(data: Uint8Array): [GrpcStatusCode, string | undefined, RpcMetadata] {
+export function readGrpcWebResponseTrailer(data: Uint8Array, decodeMessage?: boolean): [GrpcStatusCode, string | undefined, RpcMetadata] {
     let
         headers = parseTrailer(data),
-        [code, detail] = parseStatus(headers),
+        [code, detail] = parseStatus(headers, decodeMessage),
         meta = parseMetadata(headers);
     return [code ?? GrpcStatusCode.OK, detail, meta];
 }
@@ -311,14 +315,22 @@ function parseFormat(contentType: string | undefined | null): GrpcWebFormat {
 
 
 // returns error code on parse failure
-function parseStatus(headers: HttpHeaders): [GrpcStatusCode | undefined, string | undefined] {
+function parseStatus(headers: HttpHeaders, decodeMessage?: boolean): [GrpcStatusCode | undefined, string | undefined] {
     let code: GrpcStatusCode | undefined,
         message: string | undefined;
     let m = headers['grpc-message'];
     if (m !== undefined) {
         if (Array.isArray(m))
             return [GrpcStatusCode.INTERNAL, "invalid grpc-web message"];
-        message = m;
+        if (decodeMessage) {
+            try {
+                message = decodeURIComponent(m);
+            } catch {
+                message = m;
+            }
+        } else {
+            message = m;
+        }
     }
     let s = headers['grpc-status'];
     if (s !== undefined) {
