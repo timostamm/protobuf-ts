@@ -37,4 +37,15 @@ export interface GrpcWebOptions extends RpcOptions {
      * A `fetch` function to use in place of `globalThis.fetch`
      */
     fetch?: typeof fetch;
+
+    /**
+     * Decode percent-encoded grpc-message header values.
+     *
+     * Per the gRPC over HTTP/2 specification, the grpc-message header
+     * must be percent-encoded. When this option is true, the transport
+     * will decode the message using decodeURIComponent().
+     *
+     * Defaults to false for backwards compatibility.
+     */
+    decodeGrpcMessage?: boolean;
 }

@@ -202,6 +202,22 @@ describe('readGrpcWebResponse', () => {
             expect(actual).toEqual([GrpcStatusCode.OK, 'ok', { foo: 'bar, baz, qux'}]);
         });
 
+        it('does not decode percent-encoded grpc-message by default', function () {
+            const actual = readGrpcWebResponseHeader({ 'grpc-status': '2', 'grpc-message': 'error%20message' }, 200, '');
+            expect(actual).toEqual([GrpcStatusCode.UNKNOWN, 'error%20message', {}]);
+        });
+
+        it('decodes percent-encoded grpc-message when decodeMessage is true', function () {
+            const actual = readGrpcWebResponseHeader({ 'grpc-status': '2', 'grpc-message': 'error%20message%3A%20something%20failed' }, 200, '', true);
+            expect(actual).toEqual([GrpcStatusCode.UNKNOWN, 'error message: something failed', {}]);
+        });
+
+        it('falls back to raw value if grpc-message percent-decoding fails', function () {
+            // Invalid percent-encoding (% followed by non-hex chars)
+            const actual = readGrpcWebResponseHeader({ 'grpc-status': '2', 'grpc-message': 'invalid%ZZencoding' }, 200, '', true);
+            expect(actual).toEqual([GrpcStatusCode.UNKNOWN, 'invalid%ZZencoding', {}]);
+        });
+
         it('translates non-OK HTTP responses into gRPC status and message', function () {
             const statusMap = new Map([
                 [400, GrpcStatusCode.INVALID_ARGUMENT],
@@ -406,6 +422,30 @@ describe('readGrpcWebResponse', () => {
                 'grpc-message': message,
             }));
             expect(trailer).toEqual([GrpcStatusCode.OK, message, {}])
+        });
+
+        it('does not decode percent-encoded grpc-message by default', function () {
+            const trailer = readGrpcWebResponseTrailer(trailerFromObject({
+                'grpc-status': GrpcStatusCode.INVALID_ARGUMENT,
+                'grpc-message': 'validation%20failed',
+            }));
+            expect(trailer).toEqual([GrpcStatusCode.INVALID_ARGUMENT, 'validation%20failed', {}])
+        });
+
+        it('decodes percent-encoded grpc-message when decodeMessage is true', function () {
+            const trailer = readGrpcWebResponseTrailer(trailerFromObject({
+                'grpc-status': GrpcStatusCode.INVALID_ARGUMENT,
+                'grpc-message': 'validation%20failed%3A%20field%20%22name%22%20is%20required',
+            }), true);
+            expect(trailer).toEqual([GrpcStatusCode.INVALID_ARGUMENT, 'validation failed: field "name" is required', {}])
+        });
+
+        it('falls back to raw value if grpc-message percent-decoding fails', function () {
+            const trailer = readGrpcWebResponseTrailer(trailerFromObject({
+                'grpc-status': GrpcStatusCode.INTERNAL,
+                'grpc-message': 'bad%GGencoding',
+            }), true);
+            expect(trailer).toEqual([GrpcStatusCode.INTERNAL, 'bad%GGencoding', {}])
         });
 
         it('adds other headers to meta', function () {

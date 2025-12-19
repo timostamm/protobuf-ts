@@ -91,6 +91,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             format = opt.format ?? 'text',
             fetch = opt.fetch ?? globalThis.fetch,
             fetchInit = opt.fetchInit ?? {},
+            decodeGrpcMessage = opt.decodeGrpcMessage ?? false,
             url = this.makeUrl(method, opt),
             inputBytes = method.I.toBinary(input, opt.binaryOptions),
             defHeader = new Deferred<RpcMetadata>(),
@@ -109,7 +110,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             signal: options.abort ?? null // node-fetch@3.0.0-beta.9 rejects `undefined`
         })
             .then(fetchResponse => {
-                let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse);
+                let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse, decodeGrpcMessage);
                 defHeader.resolve(meta);
                 if (code != null && code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
@@ -134,7 +135,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                             break;
                         case GrpcWebFrame.TRAILER:
                             let code, detail;
-                            [code, detail, maybeTrailer] = readGrpcWebResponseTrailer(data);
+                            [code, detail, maybeTrailer] = readGrpcWebResponseTrailer(data, decodeGrpcMessage);
                             maybeStatus = {
                                 code: GrpcStatusCode[code],
                                 detail: detail ?? GrpcStatusCode[code]
@@ -200,6 +201,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             format = opt.format ?? 'text',
             fetch = opt.fetch ?? globalThis.fetch,
             fetchInit = opt.fetchInit ?? {},
+            decodeGrpcMessage = opt.decodeGrpcMessage ?? false,
             url = this.makeUrl(method, opt),
             inputBytes = method.I.toBinary(input, opt.binaryOptions),
             defHeader = new Deferred<RpcMetadata>(),
@@ -218,7 +220,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
             signal: options.abort ?? null // node-fetch@3.0.0-beta.9 rejects `undefined`
         })
             .then(fetchResponse => {
-                let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse);
+                let [code, detail, meta] = readGrpcWebResponseHeader(fetchResponse, decodeGrpcMessage);
                 defHeader.resolve(meta);
                 if (code != null && code !== GrpcStatusCode.OK)
                     throw new RpcError(detail ?? GrpcStatusCode[code], GrpcStatusCode[code], meta);
@@ -242,7 +244,7 @@ export class GrpcWebFetchTransport implements RpcTransport {
                             break;
                         case GrpcWebFrame.TRAILER:
                             let code, detail;
-                            [code, detail, maybeTrailer] = readGrpcWebResponseTrailer(data);
+                            [code, detail, maybeTrailer] = readGrpcWebResponseTrailer(data, decodeGrpcMessage);
                             maybeStatus = {
                                 code: GrpcStatusCode[code],
                                 detail: detail ?? GrpcStatusCode[code]
