@@ -195,6 +195,7 @@ export class ProtobuftsPlugin extends PluginBaseProtobufES {
             moduleResolution: ts.ModuleResolutionKind.NodeJs,
             skipLibCheck: true,
             declaration: true,
+            noResolve: true,
             module: options.transpileModule,
             target: options.transpileTarget,
         };
