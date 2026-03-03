@@ -175,14 +175,14 @@ export class ReflectionJsonWriter {
         if (type[0] == 'google.protobuf.NullValue')
             return !emitDefaultValues && !optional ? undefined : null;
         if (value === undefined) {
-            assert(optional);
+            assert(optional, `[field: ${fieldName}] enum value is undefined but field is not optional`);
             return undefined;
         }
         if (value === 0 && !emitDefaultValues && !optional)
             // we require 0 to be default value for all enums
             return undefined;
-        assert(typeof value == 'number');
-        assert(Number.isInteger(value));
+        assert(typeof value == 'number', `[field: ${fieldName}] expected number for enum, got ${typeof value} (value: ${value})`);
+        assert(Number.isInteger(value), `[field: ${fieldName}] expected integer for enum, got ${value}`);
         if (enumAsInteger || !type[1].hasOwnProperty(value))
             // if we don't now the enum value, just return the number
             return value;
@@ -202,7 +202,7 @@ export class ReflectionJsonWriter {
     scalar(type: ScalarType, value: unknown, fieldName: string, optional: boolean, emitDefaultValues: boolean): JsonValue | undefined;
     scalar(type: ScalarType, value: unknown, fieldName: string, optional: boolean, emitDefaultValues: boolean): JsonValue | undefined {
         if (value === undefined) {
-            assert(optional);
+            assert(optional, `[field: ${fieldName}] value is undefined but field is not optional`);
             return undefined;
         }
 
@@ -217,25 +217,25 @@ export class ReflectionJsonWriter {
             case ScalarType.SINT32:
                 if (value === 0)
                     return ed ? 0 : undefined;
-                assertInt32(value);
+                try { assertInt32(value); } catch (e) { throw new Error(`[field: ${fieldName}] ${(e as Error).message}`); }
                 return value;
 
             case ScalarType.FIXED32:
             case ScalarType.UINT32:
                 if (value === 0)
                     return ed ? 0 : undefined;
-                assertUInt32(value);
+                try { assertUInt32(value); } catch (e) { throw new Error(`[field: ${fieldName}] ${(e as Error).message}`); }
                 return value;
 
 
             // float, double: JSON value will be a number or one of the special string values "NaN", "Infinity", and "-Infinity".
             // Either numbers or strings are accepted. Exponent notation is also accepted.
             case ScalarType.FLOAT:
-                assertFloat32(value);
+                try { assertFloat32(value); } catch (e) { throw new Error(`[field: ${fieldName}] ${(e as Error).message}`); }
             case ScalarType.DOUBLE:
                 if (value === 0)
                     return ed ? 0 : undefined;
-                assert(typeof value == 'number');
+                assert(typeof value == 'number', `[field: ${fieldName}] expected number, got ${typeof value} (value: ${value})`);
                 if (Number.isNaN(value))
                     return 'NaN';
                 if (value === Number.POSITIVE_INFINITY)
@@ -249,7 +249,7 @@ export class ReflectionJsonWriter {
             case ScalarType.STRING:
                 if (value === "")
                     return ed ? '' : undefined;
-                assert(typeof value == 'string');
+                assert(typeof value == 'string', `[field: ${fieldName}] expected string, got ${typeof value} (value: ${value})`);
                 return value;
 
 
@@ -257,14 +257,14 @@ export class ReflectionJsonWriter {
             case ScalarType.BOOL:
                 if (value === false)
                     return ed ? false : undefined;
-                assert(typeof value == 'boolean');
+                assert(typeof value == 'boolean', `[field: ${fieldName}] expected boolean, got ${typeof value} (value: ${value})`);
                 return value;
 
 
             // JSON value will be a decimal string. Either numbers or strings are accepted.
             case ScalarType.UINT64:
             case ScalarType.FIXED64:
-                assert(typeof value == 'number' || typeof value == 'string' || typeof value == 'bigint');
+                assert(typeof value == 'number' || typeof value == 'string' || typeof value == 'bigint', `[field: ${fieldName}] expected number/string/bigint for uint64, got ${typeof value} (value: ${value})`);
                 let ulong = PbULong.from(value);
                 if (ulong.isZero() && !ed)
                     return undefined;
@@ -274,7 +274,7 @@ export class ReflectionJsonWriter {
             case ScalarType.INT64:
             case ScalarType.SFIXED64:
             case ScalarType.SINT64:
-                assert(typeof value == 'number' || typeof value == 'string' || typeof value == 'bigint');
+                assert(typeof value == 'number' || typeof value == 'string' || typeof value == 'bigint', `[field: ${fieldName}] expected number/string/bigint for int64, got ${typeof value} (value: ${value})`);
                 let long = PbLong.from(value);
                 if (long.isZero() && !ed)
                     return undefined;
@@ -284,7 +284,7 @@ export class ReflectionJsonWriter {
             // bytes: JSON value will be the data encoded as a string using standard base64 encoding with paddings.
             // Either standard or URL-safe base64 encoding with/without paddings are accepted.
             case ScalarType.BYTES:
-                assert(value instanceof Uint8Array);
+                assert(value instanceof Uint8Array, `[field: ${fieldName}] expected Uint8Array, got ${typeof value} (value: ${value})`);
                 if (!value.byteLength)
                     return ed ? "" : undefined;
                 return base64encode(value);
