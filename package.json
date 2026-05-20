@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
     "protobuf-conformance": "^29.2.0",
-    "turbo": "^2.4.4",
+    "turbo": "^2.9.14",
     "typescript": ">=3.8.3 <4"
   },
   "license": "(Apache-2.0 AND BSD-3-Clause)",
