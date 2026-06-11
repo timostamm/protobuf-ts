@@ -8,7 +8,7 @@
     "generate": "buf generate"
   },
   "devDependencies": {
-    "@grpc/grpc-js": "^1.2.2",
+    "@grpc/grpc-js": "^1.14.4",
     "@bufbuild/buf": "^1.50.1",
     "@protobuf-ts/plugin": "^2.11.1",
     "@protobuf-ts/runtime": "^2.11.1",
