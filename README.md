@@ -1,6 +1,8 @@
 protobuf-ts [![npm](https://img.shields.io/npm/v/@protobuf-ts/plugin?x)](https://www.npmjs.com/package/@protobuf-ts/plugin)
 ===========
 
+**Please note that `snakeToCamel` defaults to true. If you are using auto-generated proto, please note this.**
+
 
 [Protocol buffers](https://developers.google.com/protocol-buffers) 
 and [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) 
