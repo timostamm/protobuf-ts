@@ -10,7 +10,8 @@
     "affected": "turbo run --affected --ui tui build generate test",
     "setversion": "node scripts/set-version.mjs",
     "postsetversion": "npm run all",
-    "publish": "./scripts/publish.bash"
+    "publish": "./scripts/publish.bash",
+    "pack:release": "node scripts/pack-release.mjs dist"
   },
   "workspaces": [
     "packages/plugin",

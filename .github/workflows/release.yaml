@@ -1,0 +1,47 @@
+name: release
+on:
+  # Version tags without a "v" prefix, e.g. 7.1.0
+  push:
+    tags: ['[0-9]+.[0-9]+.[0-9]+*']
+
+permissions: read-all
+
+env:
+  # https://consoledonottrack.com/
+  DO_NOT_TRACK: 1
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yaml
+    permissions: read-all
+
+  # Attach npm tarballs of all packages to a GitHub release, so other
+  # projects can install them by URL without a registry token.
+  release:
+    needs: [ci]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate code and build packages
+        run: npx turbo run generate build
+
+      - name: Pack release tarballs
+        run: node scripts/pack-release.mjs dist
+
+      - name: Create release and upload tarballs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/*.tgz --clobber
+          else
+            gh release create "$TAG" dist/*.tgz --title "$TAG" --generate-notes --verify-tag
+          fi
